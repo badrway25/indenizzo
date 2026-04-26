@@ -345,7 +345,7 @@ def test_anonymize_simulation_creates_event_and_privacy_log(italy_setup):
     )
     anonymize_simulation(sim)
 
-    events = SimulationEvent.objects.filter(simulation=sim).order_by("created_at")
+    events = SimulationEvent.objects.filter(simulation=sim).order_by("created_at", "pk")
     assert events.count() == 2
     assert events.last().event_type == SimulationEvent.EventType.ANONYMIZED
 

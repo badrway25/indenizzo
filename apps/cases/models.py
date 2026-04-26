@@ -201,7 +201,11 @@ class SimulationEvent(models.Model):
     class Meta:
         verbose_name = _("simulation event")
         verbose_name_plural = _("simulation events")
-        ordering = ["-created_at"]
+        # `-pk` come tiebreak deterministico: `auto_now_add` su Windows ha
+        # risoluzione ~15.6ms, due eventi consecutivi (es. COMPUTED →
+        # ANONYMIZED) collidono spesso. Stesso pattern del fix F3 su
+        # `has_consent`.
+        ordering = ["-created_at", "-pk"]
         indexes = [
             models.Index(fields=["simulation", "event_type"]),
             models.Index(fields=["event_type", "created_at"]),
