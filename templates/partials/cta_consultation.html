@@ -1,13 +1,13 @@
 {% load i18n %}
-{# CTA verso lo Studio. Rimane non operativo finché non c'è F6 lead form: #}
-{# per ora linkiamo al sito madre, dove esiste il form di contatto. #}
+{# CTA primario verso il form interno /contact/ (F6). Il sito madre resta #}
+{# linkato come secondario nel footer e nella pagina di thank-you. #}
 {% if variant == "header" %}
-  <a href="{{ PARENT_SITE_URL }}" class="hidden lg:inline-flex items-center gap-2 ms-2 px-4 py-2 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 transition text-sm font-semibold">
+  <a href="{% url 'crm:contact' %}" class="hidden lg:inline-flex items-center gap-2 ms-2 px-4 py-2 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 transition text-sm font-semibold">
     {% translate "Request legal review" %}
     <span aria-hidden="true">→</span>
   </a>
 {% else %}
-  <a href="{{ PARENT_SITE_URL }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 transition font-semibold">
+  <a href="{% url 'crm:contact' %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 transition font-semibold">
     {% translate "Request legal review" %}
     <span aria-hidden="true">→</span>
   </a>

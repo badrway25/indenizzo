@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Request legal review" %} — {{ SITE_NAME }}{% endblock %}
+{% block meta_robots %}noindex, nofollow{% endblock %}
+
+{% block content %}
+<section class="max-w-3xl mx-auto px-5 lg:px-8 py-16">
+  <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Contact the Studio" %}</p>
+  <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Request a legal review" %}</h1>
+  <p class="mt-4 text-lg text-ink-800 leading-relaxed">
+    {% blocktranslate %}Tell us about your case in your own words. A member of the Studio will get back to you to evaluate whether and how we can help.{% endblocktranslate %}
+  </p>
+
+  <form method="post" novalidate class="mt-10 bg-white border border-stone2-200 rounded-3xl shadow-card p-6 sm:p-8 space-y-6">
+    {% csrf_token %}
+
+    {# Honeypot anti-bot (nascosto agli utenti reali via CSS + aria-hidden) #}
+    <div aria-hidden="true" style="position:absolute; left:-9999px; top:-9999px;">
+      <label for="id_website">{% translate "Website (do not fill)" %}</label>
+      {{ form.website }}
+    </div>
+
+    {% if form.non_field_errors %}
+      <div class="rounded-xl border border-red-300 bg-red-50 p-3 text-sm text-red-800">
+        {{ form.non_field_errors }}
+      </div>
+    {% endif %}
+
+    <div class="grid sm:grid-cols-2 gap-5">
+      <div>
+        <label for="{{ form.first_name.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.first_name.label }}</label>
+        <input type="text" name="{{ form.first_name.html_name }}" id="{{ form.first_name.id_for_label }}" value="{{ form.first_name.value|default_if_none:'' }}" required maxlength="80"
+          class="mt-1 w-full rounded-xl border border-stone2-200 bg-sand-50 px-3 py-2.5 focus:border-gold-500 focus:bg-white outline-none">
+        {% for err in form.first_name.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
+      </div>
+      <div>
+        <label for="{{ form.last_name.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.last_name.label }}</label>
+        <input type="text" name="{{ form.last_name.html_name }}" id="{{ form.last_name.id_for_label }}" value="{{ form.last_name.value|default_if_none:'' }}" required maxlength="80"
+          class="mt-1 w-full rounded-xl border border-stone2-200 bg-sand-50 px-3 py-2.5 focus:border-gold-500 focus:bg-white outline-none">
+        {% for err in form.last_name.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
+      </div>
+    </div>
+
+    <div class="grid sm:grid-cols-2 gap-5">
+      <div>
+        <label for="{{ form.email.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.email.label }}</label>
+        <input type="email" name="{{ form.email.html_name }}" id="{{ form.email.id_for_label }}" value="{{ form.email.value|default_if_none:'' }}" required
+          class="mt-1 w-full rounded-xl border border-stone2-200 bg-sand-50 px-3 py-2.5 focus:border-gold-500 focus:bg-white outline-none">
+        {% for err in form.email.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
+      </div>
+      <div>
+        <label for="{{ form.phone_number.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.phone_number.label }} <span class="text-stone2-500 font-normal">{% translate "(optional)" %}</span></label>
+        <input type="tel" name="{{ form.phone_number.html_name }}" id="{{ form.phone_number.id_for_label }}" value="{{ form.phone_number.value|default_if_none:'' }}" maxlength="32"
+          class="mt-1 w-full rounded-xl border border-stone2-200 bg-sand-50 px-3 py-2.5 focus:border-gold-500 focus:bg-white outline-none">
+        {% for err in form.phone_number.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
+      </div>
+    </div>
+
+    <div class="grid sm:grid-cols-3 gap-5">
+      <div>
+        <label for="{{ form.preferred_language.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.preferred_language.label }}</label>
+        <select name="{{ form.preferred_language.html_name }}" id="{{ form.preferred_language.id_for_label }}"
+          class="mt-1 w-full rounded-xl border border-stone2-200 bg-sand-50 px-3 py-2.5 focus:border-gold-500 focus:bg-white outline-none">
+          {% for code, label in form.preferred_language.field.choices %}
+            <option value="{{ code }}" {% if form.preferred_language.value|default:'it' == code %}selected{% endif %}>{{ code|upper }} — {{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label for="{{ form.country.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.country.label }}</label>
+        {{ form.country }}
+        {% for err in form.country.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
+      </div>
+      <div>
+        <label for="{{ form.case_type.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.case_type.label }}</label>
+        {{ form.case_type }}
+        {% for err in form.case_type.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
+      </div>
+    </div>
+
+    <div>
+      <label for="{{ form.message.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.message.label }}</label>
+      <textarea name="{{ form.message.html_name }}" id="{{ form.message.id_for_label }}" rows="6" required minlength="20"
+        class="mt-1 w-full rounded-xl border border-stone2-200 bg-sand-50 px-3 py-2.5 focus:border-gold-500 focus:bg-white outline-none">{{ form.message.value|default_if_none:'' }}</textarea>
+      <p class="mt-1 text-xs text-stone2-500">{% blocktranslate %}Briefly describe what happened, when, and where. Avoid sharing sensitive medical details now — we will request them only if needed.{% endblocktranslate %}</p>
+      {% for err in form.message.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
+    </div>
+
+    <div class="rounded-xl bg-sand-100 border border-stone2-200 p-4 flex items-start gap-3">
+      <input type="checkbox" name="{{ form.privacy_accepted.html_name }}" id="{{ form.privacy_accepted.id_for_label }}" {% if form.privacy_accepted.value %}checked{% endif %} required
+        class="mt-1 w-5 h-5 rounded border-stone2-200 text-ink-950 focus:ring-gold-500">
+      <label for="{{ form.privacy_accepted.id_for_label }}" class="text-sm text-ink-800 leading-relaxed">
+        {% blocktranslate %}I have read the <a href="/privacy/" class="underline">privacy notice</a> and the <a href="/disclaimer/" class="underline">disclaimer</a>, and I consent to my data being processed by the Studio for the sole purpose of replying to this request.{% endblocktranslate %}
+      </label>
+    </div>
+    {% for err in form.privacy_accepted.errors %}<p class="text-xs text-red-700">{{ err }}</p>{% endfor %}
+
+    {{ form.simulation_public_id }}
+
+    <div class="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between pt-2">
+      <p class="text-xs text-stone2-500">
+        {% blocktranslate %}Submitting this form does not create a professional engagement.{% endblocktranslate %}
+      </p>
+      <button type="submit" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
+        {% translate "Send my request" %}
+        <span aria-hidden="true">→</span>
+      </button>
+    </div>
+  </form>
+</section>
+{% endblock %}
