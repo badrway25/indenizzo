@@ -16,6 +16,7 @@ Le storiche dei record (chi ha cambiato cosa, quando) sono garantite da:
 from __future__ import annotations
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -143,6 +144,18 @@ class LegalSource(models.Model):
     def __str__(self) -> str:
         country = self.country.code if self.country_id else "??"
         return f"[{country}] {self.title}"
+
+    def clean(self) -> None:
+        # REQ-1 (multilingua): le fonti pubblicamente usabili devono dichiarare
+        # la lingua originale. Vincolo applicativo, non DB: lasciamo le bozze
+        # senza language per consentire bulk import in cui la lingua viene
+        # arricchita dopo. Una fonte può essere promossa ad APPROVED solo se
+        # la lingua è nota.
+        super().clean()
+        if self.status == SourceStatus.APPROVED and not self.language_id:
+            raise ValidationError(
+                {"language": _("An approved legal source must declare its original language.")}
+            )
 
     @property
     def is_usable_for_calculations(self) -> bool:

@@ -13,8 +13,9 @@ import io
 from datetime import date, timedelta
 
 import pytest
+from django.core.exceptions import ValidationError
 
-from apps.jurisdictions.models import Country, Jurisdiction
+from apps.jurisdictions.models import Country, Jurisdiction, Language
 from apps.legal_sources.enums import Reliability, SourceStatus, SourceType
 from apps.legal_sources.models import LegalSource
 from apps.legal_sources.utils import compute_bytes_sha256, compute_sha256
@@ -164,3 +165,46 @@ def test_compute_sha256_resets_cursor():
     assert digest == compute_bytes_sha256(payload)
     # Il cursore deve essere riposizionato a 0 per non disturbare il salvataggio file.
     assert buffer.tell() == 0
+
+
+# ---------------------------------------------------------------------------
+# F2 — clean() language enforcement (REQ-1)
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_approved_legal_source_requires_language(italy: Country):
+    source = LegalSource(
+        title="Fonte senza lingua",
+        country=italy,
+        source_type=SourceType.OFFICIAL_LAW,
+        status=SourceStatus.APPROVED,
+    )
+    with pytest.raises(ValidationError) as exc:
+        source.full_clean()
+    assert "language" in exc.value.error_dict
+
+
+@pytest.mark.django_db
+def test_draft_legal_source_can_omit_language(italy: Country):
+    source = LegalSource(
+        title="Bozza senza lingua",
+        country=italy,
+        source_type=SourceType.OFFICIAL_LAW,
+        status=SourceStatus.DRAFT,
+    )
+    # Draft può non avere lingua: l'arricchimento può avvenire dopo.
+    source.full_clean()
+
+
+@pytest.mark.django_db
+def test_approved_legal_source_passes_clean_when_language_set(italy: Country):
+    italian = Language.objects.create(code="it", name="Italiano")
+    source = LegalSource(
+        title="Fonte con lingua",
+        country=italy,
+        language=italian,
+        source_type=SourceType.OFFICIAL_LAW,
+        status=SourceStatus.APPROVED,
+    )
+    source.full_clean()
