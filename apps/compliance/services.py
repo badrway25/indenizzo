@@ -153,7 +153,12 @@ def has_consent(
     else:
         return False
 
-    latest = qs.order_by("-accepted_at").first()
+    # Tiebreak su `-pk`: due `record_consent()` chiamati a distanza < 16ms
+    # producono lo stesso `accepted_at` su Windows (risoluzione del timer).
+    # Senza tiebreak il DB sceglie l'ordine di inserzione *crescente*,
+    # facendo "vincere" il record più vecchio: una revoca subito dopo
+    # un'accettazione verrebbe ignorata. Il pk è monotono per definizione.
+    latest = qs.order_by("-accepted_at", "-pk").first()
     return bool(latest and latest.accepted)
 
 
