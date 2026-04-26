@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Disclaimer" %} — {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+  <section class="max-w-3xl mx-auto px-5 lg:px-8 py-16">
+    <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Legal notice" %}</p>
+    <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Disclaimer" %}</h1>
+
+    <div class="mt-8 prose prose-lg max-w-none text-ink-800 leading-relaxed">
+      <p>
+        {% blocktranslate %}This platform offers indicative simulations of compensation and inheritance scenarios across multiple jurisdictions. Each simulation is based on legal sources catalogued and validated by our team.{% endblocktranslate %}
+      </p>
+      <p>
+        {% blocktranslate %}A simulation is not legal advice, is not a medico-legal opinion and is not a guarantee of outcome. The actual evaluation of a case depends on documents, expert reports, liability assessment, applicable law, competent jurisdiction, case law and insurance practice.{% endblocktranslate %}
+      </p>
+      <p>
+        {% blocktranslate %}If you require a binding evaluation, please request a legal review through our office.{% endblocktranslate %}
+      </p>
+      <p class="text-sm text-stone2-500 mt-10">
+        {% blocktranslate %}This text is a working version. The final wording will be reviewed and signed off by the Studio's legal team.{% endblocktranslate %}
+      </p>
+    </div>
+
+    <div class="mt-10">
+      {% include "partials/cta_consultation.html" with variant="block" %}
+    </div>
+  </section>
+{% endblock %}

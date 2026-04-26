@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Methodology" %} — {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+  <section class="max-w-4xl mx-auto px-5 lg:px-8 py-16">
+    <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "How we work" %}</p>
+    <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Methodology" %}</h1>
+    <p class="mt-4 text-lg text-ink-800 leading-relaxed">
+      {% blocktranslate %}Our simulator is built on a single principle: no figure is shown to the public unless we can cite the legal source behind it. This page explains how we collect, validate and version those sources.{% endblocktranslate %}
+    </p>
+
+    <div class="mt-12 space-y-10">
+      <article>
+        <h2 class="font-serif text-2xl text-ink-950">{% translate "Sources of law" %}</h2>
+        <p class="mt-3 text-ink-800 leading-relaxed">
+          {% blocktranslate %}For each jurisdiction we maintain a catalogue of laws, ministerial decrees, court compensation tables, administrative guidelines, insurance references and academic doctrine. Each source records its country, jurisdiction, language, citation, official URL, publication date and effective date.{% endblocktranslate %}
+        </p>
+      </article>
+
+      <article>
+        <h2 class="font-serif text-2xl text-ink-950">{% translate "Validation status" %}</h2>
+        <p class="mt-3 text-ink-800 leading-relaxed">
+          {% blocktranslate %}A source moves through a controlled lifecycle: draft, extracted, needs review, reviewed, approved, deprecated, replaced. Only sources marked as approved can feed a public calculation.{% endblocktranslate %}
+        </p>
+        <div class="mt-4 flex flex-wrap gap-2 text-xs">
+          <span class="px-3 py-1 rounded-full bg-stone2-100 text-stone2-500">{% translate "draft" %}</span>
+          <span class="px-3 py-1 rounded-full bg-stone2-100 text-stone2-500">{% translate "needs review" %}</span>
+          <span class="px-3 py-1 rounded-full bg-ok-600/10 text-ok-600 font-semibold">{% translate "approved" %}</span>
+          <span class="px-3 py-1 rounded-full bg-stone2-100 text-stone2-500">{% translate "deprecated" %}</span>
+        </div>
+      </article>
+
+      <article>
+        <h2 class="font-serif text-2xl text-ink-950">{% translate "When a calculation is not available" %}</h2>
+        <p class="mt-3 text-ink-800 leading-relaxed">
+          {% blocktranslate %}If no approved source exists for the jurisdiction or the case type you select, the platform tells you explicitly. We do not invent a fallback estimate. Instead, we invite you to request a human legal evaluation.{% endblocktranslate %}
+        </p>
+      </article>
+
+      <article>
+        <h2 class="font-serif text-2xl text-ink-950">{% translate "Ranges, assumptions and confidence" %}</h2>
+        <p class="mt-3 text-ink-800 leading-relaxed">
+          {% blocktranslate %}Every available simulation reports a minimum, a midpoint and a maximum, with the formulas, the assumptions, the missing documents and a confidence level (low, medium, high). The full disclaimer is always attached.{% endblocktranslate %}
+        </p>
+      </article>
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% load i18n %}
+<aside class="bg-ink-950 text-sand-100 text-xs sm:text-sm" role="note" aria-label="{% translate 'Legal disclaimer' %}">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+    <p class="leading-relaxed">
+      <span class="font-semibold text-gold-400">{% translate "Notice" %}.</span>
+      {% blocktranslate %}This platform provides indicative simulations only. It is not legal, medico-legal advice nor a guarantee of outcome.{% endblocktranslate %}
+    </p>
+    <a href="{% url 'core:disclaimer' %}" class="underline text-sand-100 hover:text-gold-400 whitespace-nowrap">{% translate "Read the full disclaimer" %} →</a>
+  </div>
+</aside>

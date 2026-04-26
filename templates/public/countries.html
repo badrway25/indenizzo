@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Countries" %} — {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+  <section class="max-w-5xl mx-auto px-5 lg:px-8 py-16">
+    <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Coverage map" %}</p>
+    <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Countries we cover" %}</h1>
+    <p class="mt-4 text-lg text-ink-800 leading-relaxed">
+      {% blocktranslate %}We start with a focused MVP perimeter and extend country by country, only after legal sources are validated. Each country progresses through three states: in preparation, requires legal validation, available.{% endblocktranslate %}
+    </p>
+
+    <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {% for country in countries %}
+        <article class="bg-white border border-stone2-200 rounded-3xl p-6 shadow-card flex flex-col">
+          <div class="flex items-center justify-between">
+            <span class="font-serif text-3xl text-ink-950">{{ country.code }}</span>
+            {% if country.has_calculator %}
+              <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-ok-600/10 text-ok-600">
+                {% translate "Available" %}
+              </span>
+            {% else %}
+              <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-stone2-100 text-stone2-500">
+                {% translate "In preparation" %}
+              </span>
+            {% endif %}
+          </div>
+          <p class="mt-3 text-ink-900 font-medium">{{ country.name_key }}</p>
+          <p class="mt-2 text-sm text-stone2-500 leading-relaxed">
+            {% if country.has_calculator %}
+              {% blocktranslate %}A calculator is registered for this country. Real estimates require approved legal sources.{% endblocktranslate %}
+            {% else %}
+              {% blocktranslate %}Modules for this country are being prepared. Sources are still under legal validation.{% endblocktranslate %}
+            {% endif %}
+          </p>
+        </article>
+      {% endfor %}
+    </div>
+
+    <p class="mt-12 text-sm text-stone2-500 leading-relaxed">
+      {% blocktranslate %}Future jurisdictions on the roadmap include Spain, Germany, Canada, Romania, Algeria and Egypt.{% endblocktranslate %}
+    </p>
+  </section>
+{% endblock %}

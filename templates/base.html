@@ -1,0 +1,67 @@
+{% load i18n static %}<!doctype html>
+<html lang="{{ CURRENT_LANGUAGE }}" dir="{% if IS_RTL %}rtl{% else %}ltr{% endif %}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{{ SITE_NAME }}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{% blocktranslate with site=SITE_NAME %}{{ site }} — simulazioni indicative su risarcimenti e successioni internazionali, basate su fonti legali validate.{% endblocktranslate %}{% endblock %}">
+    <meta name="robots" content="{% block meta_robots %}index, follow{% endblock %}">
+
+    {# Tailwind via CDN: pragmatico per F7. In F11 si passerà a build pipeline. #}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ink:    { 950: '#07172f', 900: '#0c2046', 800: '#172e62', 700: '#243f7a' },
+              gold:   { 600: '#9a6b21', 500: '#b88336', 400: '#cba36b' },
+              sand:   { 50:  '#faf6ef', 100: '#f3ece0' },
+              stone2: { 100: '#ecebe7', 200: '#d6d3cc', 500: '#7a786f' },
+              ok:     { 600: '#246b3a' }
+            },
+            fontFamily: {
+              serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+              sans: ['"Inter"', 'system-ui', 'sans-serif']
+            },
+            boxShadow: {
+              card: '0 12px 40px rgba(7, 23, 47, .08)'
+            }
+          }
+        }
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+      html { scroll-behavior: smooth; }
+      body { font-family: 'Inter', system-ui, sans-serif; background: #faf6ef; color: #0c2046; }
+      h1, h2, h3 { font-family: 'Cormorant Garamond', Georgia, serif; letter-spacing: -.01em; }
+      [dir="rtl"] body { font-family: 'Inter', 'Tajawal', system-ui, sans-serif; }
+      /* Focus ring uniforme per accessibilità. */
+      a:focus-visible, button:focus-visible {
+        outline: 2px solid #b88336;
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+    </style>
+
+    {% block head_extra %}{% endblock %}
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:bg-ink-950 focus:text-sand-50 focus:px-3 focus:py-2 focus:rounded">
+      {% translate "Skip to content" %}
+    </a>
+
+    {% include "partials/header.html" %}
+
+    <main id="main" class="flex-1">
+      {% block content %}{% endblock %}
+    </main>
+
+    {% include "partials/disclaimer_banner.html" %}
+    {% include "partials/footer.html" %}
+  </body>
+</html>

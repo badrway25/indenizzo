@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Case types" %} — {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+  <section class="max-w-5xl mx-auto px-5 lg:px-8 py-16">
+    <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Modular taxonomy" %}</p>
+    <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Case types" %}</h1>
+    <p class="mt-4 text-lg text-ink-800 leading-relaxed">
+      {% blocktranslate %}We implement modules in depth, one at a time. Each case type is activated only after the relevant legal sources are catalogued and validated for the chosen jurisdiction.{% endblocktranslate %}
+    </p>
+
+    <div class="mt-10 grid sm:grid-cols-2 gap-4">
+      {% for case in case_types %}
+        <article class="bg-white border border-stone2-200 rounded-3xl p-6 shadow-card">
+          <div class="flex items-start justify-between gap-4">
+            <h3 class="font-serif text-xl text-ink-950">{{ case.label }}</h3>
+            {% if case.available %}
+              <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-ok-600/10 text-ok-600 whitespace-nowrap">
+                {% translate "Module ready" %}
+              </span>
+            {% else %}
+              <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-stone2-100 text-stone2-500 whitespace-nowrap">
+                {% translate "In preparation" %}
+              </span>
+            {% endif %}
+          </div>
+          <p class="mt-2 text-xs text-stone2-500 font-mono">{{ case.code }}</p>
+          <p class="mt-3 text-sm text-ink-800 leading-relaxed">
+            {% if case.available %}
+              {% blocktranslate %}A calculator is registered for this case type. Estimates appear only when approved legal sources are available for the chosen jurisdiction.{% endblocktranslate %}
+            {% else %}
+              {% blocktranslate %}This module is on the roadmap. The Studio will activate it once the underlying legal sources are validated.{% endblocktranslate %}
+            {% endif %}
+          </p>
+        </article>
+      {% endfor %}
+    </div>
+
+    <div class="mt-14 bg-sand-100 border border-stone2-200 rounded-3xl p-6">
+      <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">{% translate "Coming next" %}</p>
+      <p class="mt-2 text-ink-900 leading-relaxed">
+        {% blocktranslate %}Additional modules under preparation include catastrophic damage, loss of chance, defamation, school/professional damage and ruined holiday claims, where legally tractable.{% endblocktranslate %}
+      </p>
+    </div>
+  </section>
+{% endblock %}

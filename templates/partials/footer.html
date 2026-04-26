@@ -1,0 +1,46 @@
+{% load i18n %}
+<footer class="bg-sand-100 border-t border-stone2-200 mt-12">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 py-12 grid gap-10 lg:grid-cols-4">
+    <div class="lg:col-span-2">
+      <div class="flex items-center gap-3">
+        <span aria-hidden="true" class="w-9 h-9 rounded-full bg-ink-950 text-sand-50 flex items-center justify-center font-serif text-lg font-bold">B</span>
+        <div>
+          <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">{% translate "Studio Legale Internazionale" %}</p>
+          <p class="font-serif text-xl text-ink-950">Badrane</p>
+        </div>
+      </div>
+      <p class="mt-4 max-w-md text-sm text-ink-800 leading-relaxed">
+        {% blocktranslate %}International legal practice with cross-border experience in compensation, inheritance and complex jurisdictional matters.{% endblocktranslate %}
+      </p>
+      <a href="{{ PARENT_SITE_URL }}" class="mt-4 inline-flex items-center gap-2 text-sm text-ink-950 hover:text-gold-600">
+        {% translate "Visit institutional website" %}
+        <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+
+    <div>
+      <h2 class="text-xs uppercase tracking-[0.18em] text-stone2-500 font-semibold mb-3">{% translate "Platform" %}</h2>
+      <ul class="space-y-2 text-sm">
+        <li><a href="{% url 'core:countries' %}" class="text-ink-800 hover:text-ink-950">{% translate "Countries" %}</a></li>
+        <li><a href="{% url 'core:case_types' %}" class="text-ink-800 hover:text-ink-950">{% translate "Case types" %}</a></li>
+        <li><a href="{% url 'core:methodology' %}" class="text-ink-800 hover:text-ink-950">{% translate "Methodology" %}</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="text-xs uppercase tracking-[0.18em] text-stone2-500 font-semibold mb-3">{% translate "Legal" %}</h2>
+      <ul class="space-y-2 text-sm">
+        <li><a href="{% url 'core:disclaimer' %}" class="text-ink-800 hover:text-ink-950">{% translate "Disclaimer" %}</a></li>
+        <li><a href="{% url 'core:privacy' %}" class="text-ink-800 hover:text-ink-950">{% translate "Privacy" %}</a></li>
+        <li><a href="{{ PARENT_SITE_URL }}" class="text-ink-800 hover:text-ink-950">{% translate "Institutional website" %}</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-stone2-200">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8 py-5 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between text-xs text-stone2-500">
+      <p>© {{ SITE_NAME }}.</p>
+      <p>{% blocktranslate %}Indicative simulations. Not legal advice.{% endblocktranslate %}</p>
+    </div>
+  </div>
+</footer>
