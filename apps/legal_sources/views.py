@@ -1,3 +1,1 @@
-from django.shortcuts import render
-
-# Create your views here.
+# Views per apps.legal_sources saranno introdotte in fasi successive.

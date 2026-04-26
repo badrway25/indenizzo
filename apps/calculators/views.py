@@ -1,3 +1,1 @@
-from django.shortcuts import render
-
-# Create your views here.
+# Views per apps.calculators saranno introdotte in fasi successive.

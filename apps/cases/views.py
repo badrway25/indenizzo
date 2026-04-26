@@ -1,3 +1,1 @@
-from django.shortcuts import render
-
-# Create your views here.
+# Views per apps.cases saranno introdotte in fasi successive.
