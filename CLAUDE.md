@@ -1,5 +1,13 @@
 ﻿# CLAUDE.md — Studio Legale Badrane LegalTech Platform
 
+## Requisiti permanenti di prodotto
+
+I 6 requisiti vincolanti (multilingua, design premium, fonti validate,
+tassonomia modulare, report trasparenti, collegamento al sito madre)
+sono in `docs/architecture/PRODUCT_REQUIREMENTS.md`. Quel file è la
+fonte canonica: ogni scelta architetturale deve esservi conforme.
+In caso di conflitto con questo `CLAUDE.md`, prevalgono i requisiti.
+
 ## Missione del progetto
 
 Stai lavorando su una piattaforma Django professionale per lo Studio Legale Internazionale Badrane.
