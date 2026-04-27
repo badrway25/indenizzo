@@ -148,6 +148,14 @@ def wizard_result(request, public_id: uuid.UUID):
         for k in ("estimated_min", "estimated_mid", "estimated_max")
     )
 
+    # Label pubblica dello status: il template mostra questa, mentre il
+    # `simulation.status` raw resta visibile come "internal status code"
+    # per audit/trasparenza.
+    from apps.calculators.status_labels import get_public_status_label
+
+    locale = (translation.get_language() or simulation.locale or "it").split("-", 1)[0]
+    status_public_label = get_public_status_label(simulation.status, language=locale)
+
     return render(
         request,
         "public/wizard_result.html",
@@ -160,6 +168,7 @@ def wizard_result(request, public_id: uuid.UUID):
             "legal_disclaimer": legal_disclaimer,
             "contact_url": contact_url,
             "has_estimate": has_estimate,
+            "status_public_label": status_public_label,
         },
     )
 

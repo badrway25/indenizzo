@@ -142,3 +142,111 @@ def test_skip_to_content_link_present_for_accessibility():
     response = Client().get(reverse("core:home"))
     body = response.content.decode("utf-8")
     assert "Skip to content" in body or 'href="#main"' in body
+
+
+# ---------------------------------------------------------------------------
+# F-post-approval-stabilization — staff dashboard, status labels, wizard fix
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_status_label_helper_returns_localized_strings():
+    from apps.calculators.enums import CalculationStatus
+    from apps.calculators.status_labels import get_public_status_label
+
+    assert (
+        get_public_status_label(CalculationStatus.CALCULATED.value, language="it")
+        == "Stima disponibile"
+    )
+    assert (
+        get_public_status_label(
+            CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value, language="it"
+        )
+        == "Validazione legale richiesta"
+    )
+    assert (
+        get_public_status_label(CalculationStatus.INSUFFICIENT_INPUT.value, language="fr")
+        == "Données insuffisantes"
+    )
+    assert (
+        get_public_status_label(CalculationStatus.ERROR.value, language="en") == "Technical error"
+    )
+    # unknown lang → fallback to default (it)
+    assert (
+        get_public_status_label(CalculationStatus.CALCULATED.value, language="xx")
+        == "Stima disponibile"
+    )
+
+
+@pytest.mark.django_db
+def test_status_label_helper_falls_back_for_unknown_status():
+    from apps.calculators.status_labels import get_public_status_label
+
+    # Unknown status code → returns the code itself (the helper never crashes)
+    assert get_public_status_label("never_seen_status") == "never_seen_status"
+    assert get_public_status_label(None) == ""
+
+
+@pytest.mark.django_db
+def test_wizard_template_does_not_leak_django_comment():
+    """
+    The wizard template once contained a multi-line `{# ... #}` comment
+    that Django renders as visible text. After the fix it must use
+    `{% comment %}` and the body must NOT contain the leaked tokens.
+    """
+    response = Client().get(reverse("cases:wizard_italy_road_accident"))
+    body = response.content.decode("utf-8")
+    assert "Tailwind defaults aren't applied" not in body
+    assert "JS-free fallback" not in body
+    assert "{#" not in body
+    assert "#}" not in body
+
+
+# ---------------------------------------------------------------------------
+# Staff project-status dashboard
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_project_status_requires_authentication():
+    """Anonymous → redirect to admin login."""
+    response = Client().get(reverse("core:project_status"))
+    # staff_member_required redirects to admin login (302)
+    assert response.status_code == 302
+    assert "/admin/login" in response["Location"]
+
+
+@pytest.mark.django_db
+def test_project_status_rejects_non_staff_user():
+    from apps.accounts.models import User
+
+    User.objects.create_user(
+        username="not_staff_user", password="x", is_staff=False, is_active=True
+    )
+    client = Client()
+    client.login(username="not_staff_user", password="x")
+    response = client.get(reverse("core:project_status"))
+    assert response.status_code == 302
+    assert "/admin/login" in response["Location"]
+
+
+@pytest.mark.django_db
+def test_project_status_returns_200_for_staff():
+    from apps.accounts.models import User
+
+    User.objects.create_user(username="staff_user", password="x", is_staff=True, is_active=True)
+    client = Client()
+    client.login(username="staff_user", password="x")
+    response = client.get(reverse("core:project_status"))
+    assert response.status_code == 200
+    body = response.content.decode("utf-8")
+    # Static labels that should always be present
+    assert "Project status" in body
+    assert "LegalSource" in body
+    assert "CompensationDataset" in body
+    assert "CalculationFormula" in body
+    assert "Active calculators" in body
+    assert "No-go for production" in body
+    # Module pair always-active for IT (placeholder + real engine)
+    assert "IT-NATIONAL" in body
+    assert "road_accident_bodily_injury" in body

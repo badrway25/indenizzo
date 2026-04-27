@@ -10,6 +10,7 @@ Il wizard pubblico (F-wizard) e il lead form (F6) avranno view dedicate.
 
 from __future__ import annotations
 
+from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render
 from django.views.decorators.http import require_GET
 
@@ -108,3 +109,94 @@ def case_types(request):
         "public/case_types.html",
         {"case_types": case_types_view},
     )
+
+
+# ---------------------------------------------------------------------------
+# Staff project status dashboard
+# ---------------------------------------------------------------------------
+
+NO_GO_PRODUCTION = [
+    "DB ancora SQLite (CLAUDE.md richiede Postgres in prod).",
+    "SECRET_KEY di default — sostituire via env in prod.",
+    "DJANGO_DEBUG=true in dev — verificare false in prod.",
+    "Translation .mo non compilate per fr/en/ar.",
+    "Tailwind via CDN (warning console) — passare a build PostCSS.",
+    "Cookie consent banner EU non implementato.",
+    "Email transactional Lead non configurate.",
+    "Backup / monitoring / Sentry assenti.",
+    "Nessun rate-limit sui POST pubblici.",
+]
+
+
+@staff_member_required
+@require_GET
+def project_status(request):
+    """
+    Pagina di stato per staff Studio: snapshot live della pipeline TUN
+    + contatori. Solo lettura. Richiede `is_staff=True`.
+    """
+    # Lazy imports per non rompere circular deps.
+    from apps.cases.models import Simulation
+    from apps.compensation.models import (
+        CalculationFormula,
+        CompensationDataset,
+        CompensationTableRow,
+        ExtractionLog,
+    )
+    from apps.crm.models import Lead
+    from apps.legal_sources.models import LegalReview, LegalSource
+    from apps.reports.models import SimulationReport
+
+    src = LegalSource.objects.filter(slug="it-dpr-12-2025-tun-danno-biologico").first()
+    attach = src.attachments.first() if src else None
+    dataset = (
+        CompensationDataset.objects.filter(version_label="DPR-12-2025")
+        .select_related("source", "jurisdiction", "country")
+        .first()
+    )
+    formula = (
+        CalculationFormula.objects.filter(code="italy_art_138_tun_2025_base")
+        .select_related("dataset")
+        .first()
+    )
+    rows_count = CompensationTableRow.objects.filter(dataset=dataset).count() if dataset else 0
+    last_extraction = (
+        ExtractionLog.objects.filter(method=ExtractionLog.Method.CSV_IMPORT)
+        .order_by("-created_at", "-pk")
+        .first()
+    )
+    last_review = (
+        LegalReview.objects.filter(source=src).order_by("-created_at", "-pk").first()
+        if src
+        else None
+    )
+
+    registered_pairs = list_available_calculators()
+    modules_active = [{"jurisdiction": j, "case_type": c} for j, c in sorted(registered_pairs)]
+    upcoming = [
+        {"jurisdiction": "FR-NATIONAL", "case_type": CaseType.ROAD_ACCIDENT_BODILY_INJURY.value},
+        {"jurisdiction": "BE-NATIONAL", "case_type": CaseType.ROAD_ACCIDENT_BODILY_INJURY.value},
+        {"jurisdiction": "MA-NATIONAL", "case_type": CaseType.INTERNATIONAL_INHERITANCE.value},
+        {"jurisdiction": "TN-NATIONAL", "case_type": CaseType.INTERNATIONAL_INHERITANCE.value},
+    ]
+
+    context = {
+        "source": src,
+        "attachment": attach,
+        "dataset": dataset,
+        "formula": formula,
+        "rows_count": rows_count,
+        "last_extraction_log": last_extraction,
+        "last_review": last_review,
+        "simulation_total": Simulation.objects.count(),
+        "simulation_calculated": Simulation.objects.filter(status="calculated").count(),
+        "simulation_unavailable": Simulation.objects.filter(
+            status="unavailable_requires_legal_validation"
+        ).count(),
+        "lead_total": Lead.objects.count(),
+        "report_total": SimulationReport.objects.count(),
+        "modules_active": modules_active,
+        "modules_upcoming": upcoming,
+        "no_go_production": NO_GO_PRODUCTION,
+    }
+    return render(request, "staff/project_status.html", context)

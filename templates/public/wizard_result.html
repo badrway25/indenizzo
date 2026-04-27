@@ -12,7 +12,7 @@
   {# -------- Status box -------- #}
   {% if has_estimate %}
     <div class="mt-8 rounded-3xl border border-ok-600/30 bg-ok-600/5 p-6">
-      <p class="text-[11px] uppercase tracking-[0.18em] text-ok-600 font-semibold">{% translate "Estimate available" %}</p>
+      <p class="text-[11px] uppercase tracking-[0.18em] text-ok-600 font-semibold">{{ status_public_label }}</p>
       <h2 class="mt-2 font-serif text-2xl text-ink-950">{% translate "Indicative range" %}</h2>
       <dl class="mt-4 grid sm:grid-cols-3 gap-4">
         <div>
@@ -31,7 +31,7 @@
     </div>
   {% else %}
     <div class="mt-8 rounded-3xl border border-stone2-200 bg-sand-100 p-6">
-      <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">{% translate "Status" %}</p>
+      <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">{{ status_public_label }}</p>
       <h2 class="mt-2 font-serif text-2xl text-ink-950">
         {% blocktranslate %}Economic estimate not available without approved sources or legal validation.{% endblocktranslate %}
       </h2>

@@ -127,9 +127,12 @@
   </p>
 </section>
 
-{# Tailwind defaults aren't applied to native inputs/selects rendered via {{ form.field }}.
-   We add minimal classes via a tiny DOM hook to keep the form premium without breaking
-   server-side rendering. JS-free fallback: the inputs still work, just look browser-default. #}
+{% comment %}
+Tailwind defaults aren't applied to native inputs/selects rendered via
+{{ form.field }}. We add minimal classes via a tiny DOM hook to keep the
+form premium without breaking server-side rendering. JS-free fallback:
+the inputs still work, just look browser-default.
+{% endcomment %}
 <script>
   (function(){
     const cls = "mt-1 w-full rounded-xl border border-stone2-200 bg-sand-50 px-3 py-2.5 focus:border-gold-500 focus:bg-white outline-none";
