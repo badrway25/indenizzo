@@ -421,7 +421,12 @@ class ExtractionLog(models.Model):
     class Meta:
         verbose_name = _("extraction log")
         verbose_name_plural = _("extraction logs")
-        ordering = ["-created_at"]
+        # `-pk` come tiebreak deterministico: `auto_now_add` ha
+        # risoluzione ~15.6 ms su Windows, e due ExtractionLog creati
+        # nello stesso burst (es. due re-run del command nello stesso
+        # test) possono condividere `created_at`. Stesso pattern usato
+        # in cases.SimulationEvent e crm.ConsentRecord.
+        ordering = ["-created_at", "-pk"]
         indexes = [
             models.Index(fields=["source", "-created_at"]),
             models.Index(fields=["dataset", "-created_at"]),

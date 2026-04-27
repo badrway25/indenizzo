@@ -656,8 +656,10 @@ def test_import_command_refuses_to_overwrite_non_draft_dataset(fake_pdf_file, fa
 
     last_log = (
         ExtractionLog.objects.filter(method=ExtractionLog.Method.CSV_IMPORT)
-        .order_by("-created_at")
-        .first()
+        # `-pk` tiebreak: due CSV_IMPORT log nello stesso test possono
+        # condividere `created_at` (risoluzione ~15.6 ms su Windows);
+        # senza il pk fallback, l'ordine sarebbe non deterministico.
+        .order_by("-created_at", "-pk").first()
     )
     assert last_log.result == ExtractionLog.Result.FAILED
     assert "DRAFT" in last_log.error_message
