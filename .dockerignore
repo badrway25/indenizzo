@@ -1,0 +1,88 @@
+# Dockerignore — escludi tutto ciò che NON deve finire nell'immagine.
+# Il principio è: l'immagine è artefatto distribuibile, deve contenere
+# solo codice e asset di build. Mai dati personali, dati legali in
+# chiaro, segreti, db locali.
+
+# --- Python / virtualenv ---
+.venv
+venv
+ENV
+__pycache__
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+.pytest_cache
+.ruff_cache
+.mypy_cache
+htmlcov
+.coverage
+*.egg-info
+
+# --- Django dev ---
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+
+# --- Secrets ---
+.env
+.env.*
+!.env.staging.example
+!.env.example
+secrets/
+*.pem
+*.key
+
+# --- Backups locali ---
+backups/
+*.bak
+
+# --- Legal data: PDF, CSV, exports — NON entrano nell'immagine.
+# In staging/prod questi vivono in volumi montati.
+legal_data/sources/**/*.pdf
+legal_data/sources/**/*.PDF
+legal_data/sources/**/*.csv
+legal_data/sources/**/*.xlsx
+legal_data/sources/**/*.xls
+legal_data/sources/**/*.docx
+legal_data/sources/**/extraction_notes.md
+legal_data/extraction_logs/*.json
+legal_data/extraction_logs/*.log
+legal_data/exports/
+
+# --- Git / IDE / OS ---
+.git
+.gitignore
+.gitattributes
+.github
+.vscode
+.idea
+.DS_Store
+Thumbs.db
+
+# --- Node (preview Tailwind future) ---
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- Docs / screenshot QA: utili per repo, non per immagine prod ---
+docs/screenshots/
+docs/dev-notes/
+.playwright-mcp/
+
+# --- Test / CI ---
+.tox
+.nox
+junit.xml
+test-results/
+
+# --- Claude / dev tools ---
+.claude
+.vscode
+PROMPT_FIRST_RUN.md
+
+# --- File di compose stessi (l'immagine non si auto-orchestra) ---
+docker-compose*.yml
+Dockerfile.*
