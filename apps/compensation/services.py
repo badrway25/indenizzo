@@ -44,7 +44,17 @@ from .models import (
 # scrivere `engine=foo` in admin e attivare un calcolo non vetting-ato.
 # ---------------------------------------------------------------------------
 SUPPORTED_ENGINES: frozenset[str] = frozenset({"italy_tun_point_value_v1"})
-SUPPORTED_AMOUNT_RULES: frozenset[str] = frozenset({"point_value_times_disability_percentage"})
+SUPPORTED_AMOUNT_RULES: frozenset[str] = frozenset(
+    {
+        # Cell value is a per-point amount: final = point_value × disability%.
+        "point_value_times_disability_percentage",
+        # Cell value is the FINAL amount for the (age, disability) cell:
+        # final = row.point_value (no further multiplication). Used by tables
+        # that are "comprensive" / pre-computed, e.g. the Italian TUN
+        # Tabella 1 of the D.P.R. 12/2025.
+        "row_amount_direct",
+    }
+)
 
 
 # ---------------------------------------------------------------------------
@@ -246,6 +256,12 @@ def apply_amount_rule(
             input_data=input_data,
             fault_reduction_enabled=fault_reduction_enabled,
         )
+    if rule == "row_amount_direct":
+        return _rule_row_amount_direct(
+            row=row,
+            input_data=input_data,
+            fault_reduction_enabled=fault_reduction_enabled,
+        )
     raise ValueError(f"Unsupported amount_rule: {rule!r}")
 
 
@@ -272,6 +288,37 @@ def _rule_point_value_times_disability(
         return Decimal(0)
 
     amount = point_value * disability
+
+    if fault_reduction_enabled:
+        fault = _to_decimal_or_none(input_data.get("fault_percentage"))
+        if fault is not None and Decimal(0) <= fault <= Decimal(100):
+            amount = amount * (Decimal(100) - fault) / Decimal(100)
+
+    return amount
+
+
+def _rule_row_amount_direct(
+    *,
+    row: CompensationTableRow,
+    input_data: dict[str, Any],
+    fault_reduction_enabled: bool,
+) -> Decimal:
+    """
+    amount = row.point_value (interpretato come importo FINALE della cella).
+
+    Pensata per le tabelle "comprensive" (precomputate) come la TUN
+    italiana Tabella 1: la cella contiene direttamente l'importo per la
+    combinazione (età, % invalidità) che il `row_match` ha trovato. Non
+    moltiplichiamo di nuovo per `permanent_disability_percentage`,
+    altrimenti l'importo sarebbe doppio-contato.
+
+    Il nome del campo `point_value` è preservato per back-compat dello
+    schema; la sua semantica viene determinata dall'`amount_rule` della
+    formula (un campo a uso del registro, non del DB).
+
+    Fault reduction si applica come per l'altra rule, se abilitata.
+    """
+    amount = row.point_value or Decimal(0)
 
     if fault_reduction_enabled:
         fault = _to_decimal_or_none(input_data.get("fault_percentage"))

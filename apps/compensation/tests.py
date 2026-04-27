@@ -1090,6 +1090,119 @@ def test_fault_reduction_not_applied_when_formula_disables_it(full_approved_stac
     assert result.estimated_mid == Decimal("10.0000")
 
 
+# --- amount_rule: row_amount_direct (TUN Tabella 1 semantics) -------------
+
+
+@pytest.mark.django_db
+def test_row_amount_direct_uses_cell_value_as_final_amount(italy, italy_jurisdiction):
+    """
+    Con `amount_rule="row_amount_direct"`, il calculator NON moltiplica
+    `row.point_value` per la percentuale di invalidità: il valore della
+    cella È già l'importo finale (semantica della TUN 'tabella
+    comprensiva'). Importo fittizio test-only.
+    """
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+    from apps.calculators.enums import CalculationStatus
+
+    src = _approved_source(italy, italy_jurisdiction)
+    dataset = CompensationDataset.objects.create(
+        source=src,
+        jurisdiction=italy_jurisdiction,
+        country=italy,
+        case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
+        name="Test-only TUN-style dataset (NOT real values)",
+        status=DatasetStatus.APPROVED,
+    )
+    CalculationFormula.objects.create(
+        dataset=dataset,
+        code="tun_direct_test",
+        name="Test-only direct formula",
+        status=DatasetStatus.APPROVED,
+        parameters={
+            "engine": "italy_tun_point_value_v1",
+            "requires": ["victim_age", "permanent_disability_percentage"],
+            "row_match": ["victim_age", "permanent_disability_percentage"],
+            "amount_rule": "row_amount_direct",
+            "fault_reduction": False,
+        },
+    )
+    # Cella fittizia: età=30, invalidità=10% → "importo finale" 12345.67.
+    # Il valore è volutamente NON tondo per dimostrare che NON viene
+    # moltiplicato per 10 (sarebbe 123456.7) — è già il finale.
+    CompensationTableRow.objects.create(
+        dataset=dataset,
+        row_type="tun_biological_total_amount",
+        age_min=30,
+        age_max=30,
+        disability_min=10,
+        disability_max=10,
+        point_value=Decimal("12345.6700"),
+        notes="fixture only — NOT a real TUN value",
+    )
+
+    calc = ItalyRoadAccidentBodilyInjuryCalculator()
+    result = calc.compute({"victim_age": 30, "permanent_disability_percentage": 10})
+
+    assert result.status == CalculationStatus.CALCULATED.value
+    # CRITICO: il valore atteso è ESATTAMENTE 12345.67, NON 12345.67 × 10.
+    assert result.estimated_min == Decimal("12345.6700")
+    assert result.estimated_mid == Decimal("12345.6700")
+    assert result.estimated_max == Decimal("12345.6700")
+
+
+@pytest.mark.django_db
+def test_row_amount_direct_applies_fault_reduction(italy, italy_jurisdiction):
+    """
+    `row_amount_direct` rispetta il flag `fault_reduction` come la regola
+    moltiplicativa: 50% fault dimezza l'importo finale.
+    """
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+
+    src = _approved_source(italy, italy_jurisdiction)
+    dataset = CompensationDataset.objects.create(
+        source=src,
+        jurisdiction=italy_jurisdiction,
+        country=italy,
+        case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
+        name="Test-only TUN-style with fault",
+        status=DatasetStatus.APPROVED,
+    )
+    CalculationFormula.objects.create(
+        dataset=dataset,
+        code="tun_direct_fault_test",
+        name="Test-only direct formula with fault",
+        status=DatasetStatus.APPROVED,
+        parameters={
+            "engine": "italy_tun_point_value_v1",
+            "requires": ["victim_age", "permanent_disability_percentage"],
+            "row_match": ["victim_age", "permanent_disability_percentage"],
+            "amount_rule": "row_amount_direct",
+            "fault_reduction": True,
+        },
+    )
+    CompensationTableRow.objects.create(
+        dataset=dataset,
+        row_type="tun_biological_total_amount",
+        age_min=30,
+        age_max=30,
+        disability_min=10,
+        disability_max=10,
+        point_value=Decimal("100.0000"),
+        notes="fixture only",
+    )
+
+    calc = ItalyRoadAccidentBodilyInjuryCalculator()
+    result = calc.compute(
+        {
+            "victim_age": 30,
+            "permanent_disability_percentage": 10,
+            "fault_percentage": 50,
+        }
+    )
+    # 100 × (100-50)/100 = 50
+    assert result.estimated_mid == Decimal("50.0000")
+
+
 # --- medical_expenses / lost_income ---------------------------------------
 
 
