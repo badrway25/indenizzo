@@ -137,6 +137,10 @@
       {% translate "Request legal review" %}
       <span aria-hidden="true">→</span>
     </a>
+    <a href="{% url 'reports:simulation_pdf' public_id=simulation.public_id %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-gold-500/40 text-ink-950 hover:bg-sand-100 font-semibold">
+      {% translate "Download PDF report" %}
+      <span aria-hidden="true">↓</span>
+    </a>
     <a href="{% url 'core:methodology' %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink-950/15 text-ink-950 hover:bg-stone2-100 font-semibold">
       {% translate "Back to methodology" %}
     </a>
