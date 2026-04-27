@@ -11,6 +11,7 @@ Verifichiamo:
 
 import io
 from datetime import date, timedelta
+from decimal import Decimal
 
 import pytest
 from django.core.exceptions import ValidationError
@@ -368,6 +369,159 @@ def test_seed_marks_tabelle_milano_as_court_table_not_decree():
     assert src.source_type == SourceType.COURT_TABLE
     assert src.source_type != SourceType.MINISTRY_DECREE
     assert src.reliability != Reliability.OFFICIAL
+
+
+# ---------------------------------------------------------------------------
+# F-production-bootstrap-preflight — export_italy_tun_dataset
+# ---------------------------------------------------------------------------
+
+
+def _build_italy_tun_stack(italy: Country):
+    """Helper: minimal approved Italy TUN stack for export tests."""
+    from apps.compensation.models import (
+        CalculationFormula,
+        CompensationDataset,
+        CompensationTableRow,
+        DatasetStatus,
+    )
+    from apps.jurisdictions.models import Jurisdiction, Language
+    from apps.legal_sources.enums import Reliability, SourceStatus, SourceType
+    from apps.legal_sources.models import LegalSource
+
+    italian = Language.objects.create(code="it", name="Italiano")
+    jurisdiction = Jurisdiction.objects.create(
+        country=italy,
+        code="IT-NATIONAL",
+        name="Italia",
+        legal_system=Jurisdiction.LegalSystem.CIVIL_LAW,
+    )
+    src = LegalSource.objects.create(
+        slug="it-dpr-12-2025-tun-danno-biologico",
+        title="D.P.R. 12/2025 (test fixture)",
+        country=italy,
+        jurisdiction=jurisdiction,
+        language=italian,
+        source_type=SourceType.MINISTRY_DECREE,
+        reliability=Reliability.OFFICIAL,
+        status=SourceStatus.APPROVED,
+    )
+    dataset = CompensationDataset.objects.create(
+        source=src,
+        jurisdiction=jurisdiction,
+        country=italy,
+        case_type="road_accident_bodily_injury",
+        name="Test TUN dataset",
+        version_label="DPR-12-2025",
+        status=DatasetStatus.APPROVED,
+    )
+    CalculationFormula.objects.create(
+        dataset=dataset,
+        code="italy_art_138_tun_2025_base",
+        name="Test formula",
+        status=DatasetStatus.APPROVED,
+        parameters={
+            "engine": "italy_tun_point_value_v1",
+            "amount_rule": "row_amount_direct",
+            "fault_reduction": True,
+        },
+    )
+    # 3 fixture rows (NOT real TUN values).
+    for i in range(3):
+        CompensationTableRow.objects.create(
+            dataset=dataset,
+            row_type="tun_biological_total_amount",
+            age_min=i,
+            age_max=i,
+            disability_min=10,
+            disability_max=10,
+            point_value=Decimal("1.00"),
+            notes="fixture only",
+        )
+    return src, dataset
+
+
+@pytest.mark.django_db
+def test_export_italy_tun_dataset_writes_json(italy: Country, tmp_path):
+    from django.core.management import call_command
+
+    _build_italy_tun_stack(italy)
+    out = tmp_path / "snap.json"
+    call_command("export_italy_tun_dataset", "--output", str(out), "--quiet")
+
+    import json as _json
+
+    payload = _json.loads(out.read_text(encoding="utf-8"))
+
+    assert payload["schema_version"] == "1.0"
+    assert payload["module"]["country"] == "IT"
+    assert payload["source"]["slug"] == "it-dpr-12-2025-tun-danno-biologico"
+    assert payload["source"]["status"] == "approved"
+    assert payload["dataset"]["status"] == "approved"
+    assert payload["formula"]["status"] == "approved"
+    assert payload["formula"]["parameters"]["amount_rule"] == "row_amount_direct"
+    assert payload["rows_count"] == 3
+    assert len(payload["rows"]) == 3
+    # Every row carries the structural fields:
+    for r in payload["rows"]:
+        assert {"age_min", "age_max", "disability_min", "disability_max", "point_value"}.issubset(r)
+
+
+@pytest.mark.django_db
+def test_export_italy_tun_dataset_excludes_pii_models(italy: Country, tmp_path):
+    """Export MUST NOT include Simulation/Lead/Consent/PrivacyAudit/User."""
+    from django.core.management import call_command
+
+    _build_italy_tun_stack(italy)
+    out = tmp_path / "snap.json"
+    call_command("export_italy_tun_dataset", "--output", str(out), "--quiet")
+
+    raw = out.read_text(encoding="utf-8").lower()
+    # The JSON keys are namespaced — these tokens must not appear:
+    assert "simulation_id" not in raw
+    assert "consent_record" not in raw
+    assert "privacyauditevent" not in raw
+    assert "lead_id" not in raw
+    # Top-level structure should NOT have those collections:
+    import json as _json
+
+    payload = _json.loads(out.read_text(encoding="utf-8"))
+    forbidden_keys = {"simulations", "leads", "consents", "privacy_events", "users"}
+    assert forbidden_keys.isdisjoint(payload.keys())
+
+
+@pytest.mark.django_db
+def test_export_italy_tun_dataset_fails_when_source_missing(tmp_path):
+    """No seed → command refuses to write a partial export."""
+    from django.core.management import call_command
+    from django.core.management.base import CommandError
+
+    out = tmp_path / "snap.json"
+    with pytest.raises(CommandError):
+        call_command("export_italy_tun_dataset", "--output", str(out), "--quiet")
+    assert not out.exists()
+
+
+# ---------------------------------------------------------------------------
+# F-production-bootstrap-preflight — settings security guards
+# ---------------------------------------------------------------------------
+
+
+def test_settings_csrf_trusted_origins_is_list():
+    from django.conf import settings
+
+    assert isinstance(settings.CSRF_TRUSTED_ORIGINS, list)
+
+
+def test_settings_database_uses_env_db_url_or_sqlite_default():
+    from django.conf import settings
+
+    db = settings.DATABASES["default"]
+    # Either Postgres (when DATABASE_URL is set) or SQLite default
+    assert db["ENGINE"] in (
+        "django.db.backends.sqlite3",
+        "django.db.backends.postgresql",
+        "django.db.backends.postgresql_psycopg2",
+    )
 
 
 @pytest.mark.django_db

@@ -1,0 +1,95 @@
+# Docker Compose skeleton for staging.
+#
+# NON è un file di production-ready. È un punto di partenza
+# documentato: lo Studio (o un DevOps) deve completare reverse-proxy,
+# certificati TLS, backup, monitoring prima di passare a prod.
+#
+# Avvio:
+#     docker compose -f docker-compose.staging.yml up -d
+# Migrazioni:
+#     docker compose -f docker-compose.staging.yml exec web python manage.py migrate
+# Seed iniziale (one-shot):
+#     docker compose -f docker-compose.staging.yml exec web python manage.py seed_jurisdictions
+#     docker compose -f docker-compose.staging.yml exec web python manage.py seed_italy_legal_sources
+# Import TUN (richiede PDF + CSV nel volume legal_data):
+#     docker compose -f docker-compose.staging.yml exec web python manage.py \
+#         import_italy_tun_2025 --source-file /app/legal_data/sources/italy/tun_2025/dpr_12_2025_tun.pdf
+#     docker compose -f docker-compose.staging.yml exec web python manage.py \
+#         import_italy_tun_2025 --csv /app/legal_data/sources/italy/tun_2025/tun_2025_rows.csv
+
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-badrane_staging}
+      POSTGRES_USER: ${POSTGRES_USER:-badrane}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set in .env.staging}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-badrane}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    # Porta NON esposta su host: solo accessibile dalla rete docker.
+    expose:
+      - "5432"
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DJANGO_DEBUG: "False"
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?DJANGO_SECRET_KEY must be set in .env.staging}
+      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:-staging.studiolegalebadrane.it}
+      DJANGO_CSRF_TRUSTED_ORIGINS: ${DJANGO_CSRF_TRUSTED_ORIGINS:-https://staging.studiolegalebadrane.it}
+      DJANGO_SECURE_SSL_REDIRECT: "True"
+      DJANGO_SESSION_COOKIE_SECURE: "True"
+      DJANGO_CSRF_COOKIE_SECURE: "True"
+      DATABASE_URL: postgres://${POSTGRES_USER:-badrane}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-badrane_staging}
+      LANGUAGE_CODE: ${LANGUAGE_CODE:-it}
+      TIME_ZONE: ${TIME_ZONE:-Europe/Rome}
+      SITE_NAME: ${SITE_NAME:-Simulatore Risarcimenti Studio Legale Badrane}
+      SITE_DOMAIN: ${SITE_DOMAIN:-staging.studiolegalebadrane.it}
+      PARENT_SITE_URL: ${PARENT_SITE_URL:-https://international.studiolegalebadrane.it/}
+    volumes:
+      # Persistenza media (PDF generati, attachment fonti) e legal_data
+      # (PDF G.U., CSV TUN, exports). Da backuppare regolarmente.
+      - media_data:/app/media
+      - staticfiles_data:/app/staticfiles
+      - ./legal_data:/app/legal_data:ro
+    expose:
+      - "8000"
+    # In prod davanti va un nginx con TLS che monta i volumi static/media
+    # in read-only e proxy_pass al web container.
+    command: >
+      sh -c "python manage.py migrate --noinput &&
+             python manage.py collectstatic --noinput &&
+             gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3"
+
+volumes:
+  postgres_data:
+  media_data:
+  staticfiles_data:
+
+# NOTE: il file `Dockerfile` non è incluso in questo skeleton: è uno dei
+# task open prima del go-live. Suggerimento di base:
+#
+#   FROM python:3.12-slim
+#   WORKDIR /app
+#   RUN apt-get update && apt-get install -y --no-install-recommends \
+#       libpq-dev gcc && rm -rf /var/lib/apt/lists/*
+#   COPY requirements.txt .
+#   RUN pip install --no-cache-dir -r requirements.txt psycopg[binary] gunicorn
+#   COPY . .
+#   RUN python manage.py collectstatic --noinput
+#   EXPOSE 8000
+#   CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]

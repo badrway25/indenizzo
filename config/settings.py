@@ -34,6 +34,40 @@ ALLOWED_HOSTS = env.list(
     default=["127.0.0.1", "localhost"],
 )
 
+# CSRF: lista degli origin trusted (richiesto da Django 4+ per CSRF
+# protection dietro reverse proxy SSL). In dev resta vuota.
+CSRF_TRUSTED_ORIGINS = env.list(
+    "DJANGO_CSRF_TRUSTED_ORIGINS",
+    default=[],
+)
+
+
+# ---------------------------------------------------------------------------
+# Production hardening — solo quando DEBUG=False.
+# Tutti i flag sono env-driven con default sicuri per dev (False),
+# così che attivare la produzione richieda configurazione esplicita.
+# ---------------------------------------------------------------------------
+if not DEBUG:
+    SECURE_SSL_REDIRECT = env.bool("DJANGO_SECURE_SSL_REDIRECT", default=True)
+    SESSION_COOKIE_SECURE = env.bool("DJANGO_SESSION_COOKIE_SECURE", default=True)
+    CSRF_COOKIE_SECURE = env.bool("DJANGO_CSRF_COOKIE_SECURE", default=True)
+    SECURE_HSTS_SECONDS = env.int("DJANGO_SECURE_HSTS_SECONDS", default=60 * 60 * 24 * 30)
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool("DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS", default=True)
+    SECURE_HSTS_PRELOAD = env.bool("DJANGO_SECURE_HSTS_PRELOAD", default=False)
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_REFERRER_POLICY = env("DJANGO_SECURE_REFERRER_POLICY", default="same-origin")
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    X_FRAME_OPTIONS = "DENY"
+
+    # Guard difensivo: una piattaforma legale in prod NON deve girare
+    # con la SECRET_KEY di sviluppo. Il fail è fatale all'avvio: meglio
+    # 500 immediato che vulnerabilità silenziosa.
+    if SECRET_KEY.startswith("django-insecure-"):
+        raise RuntimeError(
+            "DJANGO_SECRET_KEY is the insecure default. Refusing to start "
+            "in production. Set a real secret via DJANGO_SECRET_KEY env var."
+        )
+
 
 # ---------------------------------------------------------------------------
 # Applications
@@ -120,13 +154,16 @@ TEMPLATES = [
 
 
 # ---------------------------------------------------------------------------
-# Database — SQLite in dev. PostgreSQL switch in F13 (deploy).
+# Database — SQLite in dev, Postgres in prod via DATABASE_URL.
+# `env.db_url` parses a single URL like:
+#   postgres://user:pass@host:5432/dbname
+# Default fallback resta SQLite per non rompere lo sviluppo locale.
 # ---------------------------------------------------------------------------
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    "default": env.db_url(
+        "DATABASE_URL",
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+    ),
 }
 
 
