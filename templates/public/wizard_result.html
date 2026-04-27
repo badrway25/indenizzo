@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Simulation result" %} — {{ SITE_NAME }}{% endblock %}
+{% block meta_robots %}noindex, nofollow{% endblock %}
+
+{% block content %}
+<section class="max-w-3xl mx-auto px-5 lg:px-8 py-16">
+  <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Indicative simulation" %}</p>
+  <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Preliminary result" %}</h1>
+
+  {# -------- Status box -------- #}
+  {% if has_estimate %}
+    <div class="mt-8 rounded-3xl border border-ok-600/30 bg-ok-600/5 p-6">
+      <p class="text-[11px] uppercase tracking-[0.18em] text-ok-600 font-semibold">{% translate "Estimate available" %}</p>
+      <h2 class="mt-2 font-serif text-2xl text-ink-950">{% translate "Indicative range" %}</h2>
+      <dl class="mt-4 grid sm:grid-cols-3 gap-4">
+        <div>
+          <dt class="text-xs text-stone2-500 uppercase tracking-[0.12em]">{% translate "Min" %}</dt>
+          <dd class="mt-1 font-serif text-2xl text-ink-950">{{ simulation.estimated_min|default:"—" }} {{ simulation.currency }}</dd>
+        </div>
+        <div>
+          <dt class="text-xs text-stone2-500 uppercase tracking-[0.12em]">{% translate "Mid" %}</dt>
+          <dd class="mt-1 font-serif text-2xl text-ink-950">{{ simulation.estimated_mid|default:"—" }} {{ simulation.currency }}</dd>
+        </div>
+        <div>
+          <dt class="text-xs text-stone2-500 uppercase tracking-[0.12em]">{% translate "Max" %}</dt>
+          <dd class="mt-1 font-serif text-2xl text-ink-950">{{ simulation.estimated_max|default:"—" }} {{ simulation.currency }}</dd>
+        </div>
+      </dl>
+    </div>
+  {% else %}
+    <div class="mt-8 rounded-3xl border border-stone2-200 bg-sand-100 p-6">
+      <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">{% translate "Status" %}</p>
+      <h2 class="mt-2 font-serif text-2xl text-ink-950">
+        {% blocktranslate %}Economic estimate not available without approved sources or legal validation.{% endblocktranslate %}
+      </h2>
+      <p class="mt-3 text-sm text-ink-800 leading-relaxed">
+        {% blocktranslate %}This is the platform behaving as designed: rather than producing a number that could mislead you, the simulation explicitly reports that the underlying legal sources have not yet been validated for this jurisdiction and case type.{% endblocktranslate %}
+      </p>
+      <p class="mt-3 text-xs text-stone2-500">
+        {% translate "Internal status code" %}: <span class="font-mono">{{ simulation.status }}</span>
+      </p>
+    </div>
+  {% endif %}
+
+  {# -------- Warnings -------- #}
+  {% if warnings %}
+    <div class="mt-8">
+      <h3 class="font-serif text-xl text-ink-950">{% translate "Warnings" %}</h3>
+      <ul class="mt-3 space-y-2">
+        {% for w in warnings %}
+          <li class="flex gap-3 text-sm text-ink-800 leading-relaxed">
+            <span aria-hidden="true" class="mt-1 inline-block w-1.5 h-1.5 rounded-full bg-gold-500"></span>
+            <span>{{ w }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  {# -------- Missing documents -------- #}
+  {% if missing_documents %}
+    <div class="mt-8">
+      <h3 class="font-serif text-xl text-ink-950">{% translate "Missing documents" %}</h3>
+      <ul class="mt-3 space-y-2">
+        {% for d in missing_documents %}
+          <li class="flex gap-3 text-sm text-ink-800 leading-relaxed">
+            <span aria-hidden="true" class="mt-1 inline-block w-1.5 h-1.5 rounded-full bg-stone2-500"></span>
+            <span>{{ d }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  {# -------- Assumptions -------- #}
+  {% if assumptions %}
+    <div class="mt-8">
+      <h3 class="font-serif text-xl text-ink-950">{% translate "Assumptions" %}</h3>
+      <ul class="mt-3 space-y-2">
+        {% for a in assumptions %}
+          <li class="text-sm text-ink-800 leading-relaxed">{{ a }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  {# -------- Sources -------- #}
+  {% if sources %}
+    <div class="mt-8">
+      <h3 class="font-serif text-xl text-ink-950">{% translate "Cited legal sources" %}</h3>
+      <ul class="mt-4 space-y-3">
+        {% for src in sources %}
+          <li class="rounded-2xl border border-stone2-200 bg-white p-4 shadow-card">
+            <p class="text-sm font-semibold text-ink-950">{{ src.title }}</p>
+            {% if src.citation %}<p class="mt-1 text-xs text-stone2-500 font-mono">{{ src.citation }}</p>{% endif %}
+            <div class="mt-2 flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.12em] text-stone2-500">
+              {% if src.country %}<span class="px-2 py-0.5 rounded-full bg-stone2-100">{{ src.country }}</span>{% endif %}
+              {% if src.jurisdiction %}<span class="px-2 py-0.5 rounded-full bg-stone2-100">{{ src.jurisdiction }}</span>{% endif %}
+              {% if src.source_type %}<span class="px-2 py-0.5 rounded-full bg-stone2-100">{{ src.source_type }}</span>{% endif %}
+              {% if src.publication_date %}<span class="px-2 py-0.5 rounded-full bg-stone2-100">{{ src.publication_date }}</span>{% endif %}
+            </div>
+            {% if src.official_url %}
+              <a href="{{ src.official_url }}" rel="noopener noreferrer" target="_blank" class="mt-3 inline-block text-sm text-gold-600 hover:text-gold-500">
+                {% translate "Open official source" %} ↗
+              </a>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  {# -------- Disclaimer -------- #}
+  <div class="mt-10 rounded-2xl bg-ink-950 text-sand-100 p-6 leading-relaxed text-sm">
+    <p class="text-[11px] uppercase tracking-[0.18em] text-gold-400 font-semibold">{% translate "Legal disclaimer" %}</p>
+    <p class="mt-2">
+      {% if legal_disclaimer %}{{ legal_disclaimer }}{% else %}{% blocktranslate %}This simulation is indicative and does not constitute legal advice or guarantee of outcome.{% endblocktranslate %}{% endif %}
+    </p>
+  </div>
+
+  {# -------- Meta + CTAs -------- #}
+  <div class="mt-10 grid sm:grid-cols-2 gap-4 text-sm text-stone2-500">
+    <div>
+      <p class="text-[11px] uppercase tracking-[0.14em] font-semibold">{% translate "Simulation ID" %}</p>
+      <p class="mt-1 font-mono text-ink-900 break-all">{{ simulation.public_id }}</p>
+    </div>
+    <div>
+      <p class="text-[11px] uppercase tracking-[0.14em] font-semibold">{% translate "Created at" %}</p>
+      <p class="mt-1 text-ink-900">{{ simulation.created_at|date:"DATETIME_FORMAT" }}</p>
+    </div>
+  </div>
+
+  <div class="mt-10 flex flex-wrap gap-3">
+    <a href="{{ contact_url }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
+      {% translate "Request legal review" %}
+      <span aria-hidden="true">→</span>
+    </a>
+    <a href="{% url 'core:methodology' %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink-950/15 text-ink-950 hover:bg-stone2-100 font-semibold">
+      {% translate "Back to methodology" %}
+    </a>
+  </div>
+</section>
+{% endblock %}

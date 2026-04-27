@@ -1,17 +1,9 @@
 """
-Tests F5 — apps.cases.
+Tests F5 + F-wizard — apps.cases.
 
-Verifichiamo il "ponte" architetturale:
-- `run_simulation` crea una `Simulation` con UUID + scrive output engine;
-- comportamento difensivo: calculator mancante non fa crash;
-- senza fonti `approved` lo status è `unavailable_requires_legal_validation`;
-- con fonti approved (placeholder F4) lo status resta unavailable ma le
-  fonti vengono snapshot-ate;
-- consent_record viene linkato se passato;
-- request metadata (IP, UA, path, session_key) viene salvata;
-- anonimizzazione cancella i dati personali e crea evento + privacy log;
-- get_simulation_by_public_id funziona;
-- output_data è JSON serializzabile.
+Coprono:
+- `run_simulation`: ponte architetturale (F5);
+- wizard pubblico `/wizard/...` end-to-end (F-wizard).
 """
 
 from __future__ import annotations
@@ -21,9 +13,11 @@ import uuid
 
 import pytest
 from django.contrib.auth import get_user_model
-from django.test import RequestFactory
+from django.test import Client, RequestFactory
+from django.urls import reverse
 
 from apps.calculators.enums import CalculationStatus, CaseType, ConfidenceLevel
+from apps.cases.forms import ItalyRoadAccidentWizardForm
 from apps.cases.models import Simulation, SimulationEvent
 from apps.cases.services import (
     anonymize_simulation,
@@ -36,6 +30,7 @@ from apps.compliance.models import (
     ConsentRecord,
     PrivacyAuditEvent,
 )
+from apps.crm.models import Lead
 from apps.jurisdictions.models import Country, Currency, Jurisdiction, Language
 from apps.legal_sources.enums import SourceStatus, SourceType
 from apps.legal_sources.models import LegalSource
@@ -355,3 +350,240 @@ def test_anonymize_simulation_creates_event_and_privacy_log(italy_setup):
         event_type=PrivacyEventType.DATA_DELETION_COMPLETED,
     )
     assert privacy_events.count() == 1
+
+
+# ---------------------------------------------------------------------------
+# Wizard pubblico (F-wizard)
+# ---------------------------------------------------------------------------
+
+
+WIZARD_VALID_PAYLOAD = {
+    "accident_date": "",
+    "victim_age": "",
+    "permanent_disability_percentage": "",
+    "total_temporary_disability_days": "",
+    "partial_temporary_disability_days": "",
+    "medical_expenses": "",
+    "lost_income": "",
+    "fault_percentage": "",
+    "accident_country": "IT",
+    "consent_simulation": "on",
+    "website": "",
+}
+
+
+@pytest.mark.django_db
+def test_wizard_start_returns_200():
+    response = Client().get(reverse("cases:wizard_start"))
+    assert response.status_code == 200
+    body = response.content.decode("utf-8")
+    # Linka almeno il modulo Italia road accident.
+    assert reverse("cases:wizard_italy_road_accident") in body
+
+
+@pytest.mark.django_db
+def test_wizard_italy_road_accident_get_returns_200():
+    response = Client().get(reverse("cases:wizard_italy_road_accident"))
+    assert response.status_code == 200
+    body = response.content.decode("utf-8")
+    assert 'name="consent_simulation"' in body
+    assert 'name="website"' in body  # honeypot presente nel markup
+
+
+@pytest.mark.django_db
+def test_wizard_form_valid_minimal():
+    form = ItalyRoadAccidentWizardForm(data=WIZARD_VALID_PAYLOAD)
+    assert form.is_valid(), form.errors
+    assert form.is_likely_bot is False
+
+
+@pytest.mark.django_db
+def test_wizard_form_rejects_missing_consent():
+    payload = {**WIZARD_VALID_PAYLOAD}
+    payload.pop("consent_simulation")
+    form = ItalyRoadAccidentWizardForm(data=payload)
+    assert not form.is_valid()
+    assert "consent_simulation" in form.errors
+
+
+@pytest.mark.django_db
+def test_wizard_form_rejects_future_accident_date():
+    from datetime import date, timedelta
+
+    payload = {
+        **WIZARD_VALID_PAYLOAD,
+        "accident_date": (date.today() + timedelta(days=2)).isoformat(),
+    }
+    form = ItalyRoadAccidentWizardForm(data=payload)
+    assert not form.is_valid()
+    assert "accident_date" in form.errors
+
+
+@pytest.mark.django_db
+def test_wizard_form_honeypot_is_bot():
+    payload = {**WIZARD_VALID_PAYLOAD, "website": "http://spam.example/"}
+    form = ItalyRoadAccidentWizardForm(data=payload)
+    assert form.is_valid()
+    assert form.is_likely_bot is True
+
+
+@pytest.mark.django_db
+def test_wizard_form_to_input_data_only_expected_keys():
+    form = ItalyRoadAccidentWizardForm(data=WIZARD_VALID_PAYLOAD)
+    assert form.is_valid(), form.errors
+    payload = form.to_input_data()
+    expected = {
+        "accident_country",
+        "accident_date",
+        "victim_age",
+        "permanent_disability_percentage",
+        "total_temporary_disability_days",
+        "partial_temporary_disability_days",
+        "medical_expenses",
+        "lost_income",
+        "fault_percentage",
+    }
+    assert set(payload.keys()) == expected
+    # Niente consent / website nel payload di dominio.
+    assert "consent_simulation" not in payload
+    assert "website" not in payload
+
+
+@pytest.mark.django_db
+def test_wizard_post_valid_creates_simulation_and_redirects(italy_setup):
+    response = Client().post(
+        reverse("cases:wizard_italy_road_accident"),
+        WIZARD_VALID_PAYLOAD,
+    )
+    assert Simulation.objects.count() == 1
+    sim = Simulation.objects.get()
+    assert response.status_code == 302
+    assert response.url == reverse("cases:wizard_result", kwargs={"public_id": str(sim.public_id)})
+
+
+@pytest.mark.django_db
+def test_wizard_post_creates_consent_record(italy_setup):
+    Client().post(reverse("cases:wizard_italy_road_accident"), WIZARD_VALID_PAYLOAD)
+    purpose = ConsentPurpose.objects.get(code="simulation_processing")
+    record = ConsentRecord.objects.filter(purpose=purpose).first()
+    assert record is not None
+    assert record.accepted is True
+    sim = Simulation.objects.get()
+    assert sim.consent_record == record
+
+
+@pytest.mark.django_db
+def test_wizard_post_without_consent_does_not_create_simulation(italy_setup):
+    payload = {**WIZARD_VALID_PAYLOAD}
+    payload.pop("consent_simulation")
+    response = Client().post(reverse("cases:wizard_italy_road_accident"), payload)
+    assert response.status_code == 200  # form re-rendered
+    assert Simulation.objects.count() == 0
+    assert ConsentRecord.objects.count() == 0
+
+
+@pytest.mark.django_db
+def test_wizard_post_honeypot_does_not_create_simulation(italy_setup):
+    payload = {**WIZARD_VALID_PAYLOAD, "website": "http://spam/"}
+    response = Client().post(reverse("cases:wizard_italy_road_accident"), payload)
+    # Redirect alla landing wizard, ma niente Simulation né ConsentRecord.
+    assert response.status_code == 302
+    assert response.url == reverse("cases:wizard_start")
+    assert Simulation.objects.count() == 0
+    assert ConsentRecord.objects.count() == 0
+
+
+@pytest.mark.django_db
+def test_wizard_post_does_not_create_lead(italy_setup):
+    """REQ: il wizard NON crea Lead. Il funnel passa per /contact/."""
+    initial = Lead.objects.count()
+    Client().post(reverse("cases:wizard_italy_road_accident"), WIZARD_VALID_PAYLOAD)
+    assert Lead.objects.count() == initial
+
+
+@pytest.mark.django_db
+def test_wizard_post_status_is_unavailable_without_sources(italy_setup):
+    """Senza fonti `approved` lo status deve essere 'unavailable...'."""
+    Client().post(reverse("cases:wizard_italy_road_accident"), WIZARD_VALID_PAYLOAD)
+    sim = Simulation.objects.get()
+    assert sim.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
+    assert sim.estimated_min is None
+    assert sim.estimated_mid is None
+    assert sim.estimated_max is None
+
+
+@pytest.mark.django_db
+def test_wizard_post_input_data_persisted_with_expected_keys(italy_setup):
+    payload = {
+        **WIZARD_VALID_PAYLOAD,
+        "victim_age": "42",
+        "permanent_disability_percentage": "12.5",
+    }
+    Client().post(reverse("cases:wizard_italy_road_accident"), payload)
+    sim = Simulation.objects.get()
+    assert sim.input_data["victim_age"] == 42
+    assert sim.input_data["permanent_disability_percentage"] == "12.5"
+    # Nessun campo di flusso/honeypot persistito.
+    assert "consent_simulation" not in sim.input_data
+    assert "website" not in sim.input_data
+
+
+@pytest.mark.django_db
+def test_wizard_result_page_returns_200(italy_setup):
+    Client().post(reverse("cases:wizard_italy_road_accident"), WIZARD_VALID_PAYLOAD)
+    sim = Simulation.objects.get()
+    response = Client().get(
+        reverse("cases:wizard_result", kwargs={"public_id": str(sim.public_id)})
+    )
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_wizard_result_shows_disclaimer(italy_setup):
+    Client().post(reverse("cases:wizard_italy_road_accident"), WIZARD_VALID_PAYLOAD)
+    sim = Simulation.objects.get()
+    response = Client().get(
+        reverse("cases:wizard_result", kwargs={"public_id": str(sim.public_id)})
+    )
+    body = response.content.decode("utf-8")
+    # Il disclaimer del motore F4 contiene "indicativa" (it).
+    assert "indicativa" in body.lower() or "indicative" in body.lower()
+
+
+@pytest.mark.django_db
+def test_wizard_result_cta_links_to_contact_with_sim(italy_setup):
+    Client().post(reverse("cases:wizard_italy_road_accident"), WIZARD_VALID_PAYLOAD)
+    sim = Simulation.objects.get()
+    response = Client().get(
+        reverse("cases:wizard_result", kwargs={"public_id": str(sim.public_id)})
+    )
+    body = response.content.decode("utf-8")
+    expected = reverse("crm:contact") + f"?sim={sim.public_id}"
+    assert expected in body
+
+
+@pytest.mark.django_db
+def test_wizard_result_404_for_unknown_public_id():
+    response = Client().get(reverse("cases:wizard_result", kwargs={"public_id": str(uuid.uuid4())}))
+    assert response.status_code == 404
+
+
+@pytest.mark.django_db
+def test_wizard_arabic_locale_renders_rtl(italy_setup):
+    response = Client().get(
+        reverse("cases:wizard_italy_road_accident"),
+        HTTP_ACCEPT_LANGUAGE="ar",
+    )
+    assert response.status_code == 200
+    body = response.content.decode("utf-8")
+    # Il context_processor `site_context` setta dir="rtl" per la lingua araba.
+    assert 'dir="rtl"' in body
+
+
+@pytest.mark.django_db
+def test_wizard_post_unavailable_warning_in_output(italy_setup):
+    """Senza fonti approved il calculator (placeholder) emette un warning."""
+    Client().post(reverse("cases:wizard_italy_road_accident"), WIZARD_VALID_PAYLOAD)
+    sim = Simulation.objects.get()
+    warnings = sim.output_data.get("warnings") or []
+    assert any("approved" in w.lower() or "validation" in w.lower() for w in warnings)

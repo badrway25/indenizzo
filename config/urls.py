@@ -10,5 +10,6 @@ urlpatterns = [
 urlpatterns += i18n_patterns(
     path("", include("apps.core.urls")),
     path("", include("apps.crm.urls")),
+    path("", include("apps.cases.urls")),
     prefix_default_language=False,
 )

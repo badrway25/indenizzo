@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Start a simulation" %} — {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="max-w-5xl mx-auto px-5 lg:px-8 py-16">
+  <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Indicative simulation" %}</p>
+  <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Start a guided simulation" %}</h1>
+  <p class="mt-4 text-lg text-ink-800 leading-relaxed max-w-3xl">
+    {% blocktranslate %}Pick the country and the case type that best fits your situation. The simulation is indicative: it will only produce an estimate when validated legal sources are available — otherwise it returns a clear "requires legal validation" status.{% endblocktranslate %}
+  </p>
+
+  <div class="mt-10 grid sm:grid-cols-2 gap-5">
+    {% for option in options %}
+      <article class="bg-white border border-stone2-200 rounded-3xl p-6 shadow-card flex flex-col">
+        <div class="flex items-center justify-between">
+          <span class="font-serif text-3xl text-ink-950">{{ option.country_code }}</span>
+          {% if option.available %}
+            <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-ok-600/10 text-ok-600">
+              {% translate "Module ready" %}
+            </span>
+          {% else %}
+            <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-stone2-100 text-stone2-500">
+              {% translate "In preparation" %}
+            </span>
+          {% endif %}
+        </div>
+        <h2 class="mt-3 font-serif text-2xl text-ink-950">{{ option.country_name }} — {{ option.case_label }}</h2>
+        <p class="mt-3 text-sm text-ink-800 leading-relaxed">
+          {% blocktranslate %}Bodily injury after a road accident in Italy. The wizard collects optional inputs and persists a simulation. No estimate is produced unless validated legal sources are available.{% endblocktranslate %}
+        </p>
+
+        <div class="mt-6">
+          {% if option.available %}
+            <a href="{{ option.url }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
+              {% translate "Start this simulation" %}
+              <span aria-hidden="true">→</span>
+            </a>
+          {% else %}
+            <span class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-stone2-100 text-stone2-500 font-semibold cursor-not-allowed">
+              {% translate "Coming soon" %}
+            </span>
+          {% endif %}
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+
+  <div class="mt-14 bg-sand-100 border border-stone2-200 rounded-3xl p-6">
+    <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">{% translate "Coming next" %}</p>
+    <ul class="mt-3 grid sm:grid-cols-2 gap-2 text-sm text-ink-900">
+      {% for item in upcoming %}
+        <li class="flex items-center gap-2">
+          <span aria-hidden="true" class="inline-block w-1.5 h-1.5 rounded-full bg-gold-500"></span>
+          <span class="font-mono text-xs">{{ item.country_code }}</span>
+          <span>· {{ item.case_label }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+    <p class="mt-4 text-xs text-stone2-500 leading-relaxed">
+      {% blocktranslate %}Each module is activated only after the underlying legal sources are catalogued and validated by the Studio.{% endblocktranslate %}
+    </p>
+  </div>
+
+  <p class="mt-10 text-sm text-stone2-500 leading-relaxed">
+    {% blocktranslate %}A simulation is not legal advice. It is an informative starting point. The Studio remains free to accept or decline a matter.{% endblocktranslate %}
+  </p>
+</section>
+{% endblock %}
