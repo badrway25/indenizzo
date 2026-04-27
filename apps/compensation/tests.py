@@ -743,12 +743,13 @@ def test_calculator_gate_level3_formula_draft(italy, italy_jurisdiction):
 
 
 @pytest.mark.django_db
-def test_calculator_does_not_invent_amounts_even_with_all_approved(italy, italy_jurisdiction):
+def test_calculator_with_all_approved_but_unknown_engine_stays_unavailable(
+    italy, italy_jurisdiction
+):
     """
-    Anche con fonte + dataset + formula tutti APPROVED, in F-extract-italy-tun
-    l'engine economico non è ancora implementato: il calculator deve
-    restituire `unavailable` con missing_documents=['economic_engine_implementation'].
-    NON deve inventare importi.
+    Fonte + dataset + formula tutti APPROVED ma `parameters.engine` non è
+    nei registri supportati: il calculator NON tira a indovinare,
+    restituisce `unavailable` con missing=`formula_engine_unknown`.
     """
     from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
     from apps.calculators.enums import CalculationStatus
@@ -767,6 +768,7 @@ def test_calculator_does_not_invent_amounts_even_with_all_approved(italy, italy_
         code="approved_formula",
         name="Approved formula",
         status=DatasetStatus.APPROVED,
+        parameters={},  # nessun engine dichiarato → engine_unknown
     )
 
     calc = ItalyRoadAccidentBodilyInjuryCalculator()
@@ -776,4 +778,373 @@ def test_calculator_does_not_invent_amounts_even_with_all_approved(italy, italy_
     assert result.estimated_min is None
     assert result.estimated_mid is None
     assert result.estimated_max is None
-    assert "economic_engine_implementation" in result.missing_documents
+    assert "formula_engine_unknown" in result.missing_documents
+
+
+# ---------------------------------------------------------------------------
+# F-italy-engine-implementation — engine economico Italia road accident
+#
+# REGOLA TEST: nessun valore reale TUN. Le `point_value` qui sono fixture
+# fittizie (es. Decimal("1.0000")) volutamente fuori scala. Servono solo
+# a dimostrare che la pipeline matematica funziona, non a rappresentare
+# importi legali. Sono chiaramente etichettate con `notes="fixture only"`.
+# ---------------------------------------------------------------------------
+
+
+def _build_full_stack(
+    italy, italy_jurisdiction, *, formula_parameters=None, with_row=True, point_value=None
+):
+    """
+    Helper di scenario: crea una catena fonte/dataset/formula tutti
+    APPROVED. Restituisce (source, dataset, formula, row_or_none).
+    """
+    src = _approved_source(italy, italy_jurisdiction)
+    dataset = CompensationDataset.objects.create(
+        source=src,
+        jurisdiction=italy_jurisdiction,
+        country=italy,
+        case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
+        name="Test-only dataset (NOT real TUN data)",
+        version_label="DPR-12-2025",
+        status=DatasetStatus.APPROVED,
+    )
+    formula = CalculationFormula.objects.create(
+        dataset=dataset,
+        code="italy_art_138_tun_2025_base",
+        name="Test-only formula",
+        status=DatasetStatus.APPROVED,
+        parameters=formula_parameters
+        or {
+            "engine": "italy_tun_point_value_v1",
+            "requires": ["victim_age", "permanent_disability_percentage"],
+            "row_match": ["victim_age", "permanent_disability_percentage"],
+            "amount_rule": "point_value_times_disability_percentage",
+            "fault_reduction": False,
+        },
+    )
+    row = None
+    if with_row:
+        row = CompensationTableRow.objects.create(
+            dataset=dataset,
+            row_type="point_value",
+            age_min=0,
+            age_max=120,
+            disability_min=0,
+            disability_max=100,
+            point_value=point_value or Decimal("1.0000"),  # fixture only
+            notes="fixture only — NOT a real TUN value",
+        )
+    return src, dataset, formula, row
+
+
+@pytest.fixture
+def full_approved_stack(italy, italy_jurisdiction):
+    return _build_full_stack(italy, italy_jurisdiction)
+
+
+# --- happy path -----------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_calculator_calculated_with_full_stack_and_sufficient_input(full_approved_stack):
+    """
+    Tutto APPROVED + input sufficiente + riga match → CALCULATED con
+    estimated_* non nulli, breakdown popolato, confidence medium.
+    """
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+    from apps.calculators.enums import CalculationStatus, ConfidenceLevel
+
+    calc = ItalyRoadAccidentBodilyInjuryCalculator()
+    result = calc.compute({"victim_age": 30, "permanent_disability_percentage": 10})
+
+    assert result.status == CalculationStatus.CALCULATED.value
+    assert result.confidence == ConfidenceLevel.MEDIUM.value
+    # 1.0 (fixture) × 10 = 10
+    assert result.estimated_min == Decimal("10.0000")
+    assert result.estimated_mid == Decimal("10.0000")
+    assert result.estimated_max == Decimal("10.0000")
+    assert result.estimated_min <= result.estimated_mid <= result.estimated_max
+    assert len(result.breakdown) == 1
+    assert result.breakdown[0].label == "Danno biologico permanente"
+
+
+@pytest.mark.django_db
+def test_breakdown_references_source_and_formula(full_approved_stack):
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+
+    src, _, formula, _ = full_approved_stack
+    calc = ItalyRoadAccidentBodilyInjuryCalculator()
+    result = calc.compute({"victim_age": 30, "permanent_disability_percentage": 10})
+
+    item = result.breakdown[0]
+    assert item.formula == formula.code
+    # source_ref_ids contiene almeno la fonte approvata.
+    assert src.pk in item.source_ref_ids
+    # Le fonti complessive del risultato non sono vuote.
+    assert len(result.sources) >= 1
+
+
+@pytest.mark.django_db
+def test_calculated_result_is_json_serializable(full_approved_stack):
+    import json
+
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+
+    calc = ItalyRoadAccidentBodilyInjuryCalculator()
+    result = calc.compute({"victim_age": 30, "permanent_disability_percentage": 10})
+    payload = json.loads(result.to_json())
+    assert payload["status"] == "calculated"
+    assert payload["estimated_min"] == "10.0000"
+    assert payload["legal_disclaimer"]
+    assert payload["breakdown"][0]["label"] == "Danno biologico permanente"
+
+
+# --- input validation -----------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_missing_victim_age_returns_insufficient_input(full_approved_stack):
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+    from apps.calculators.enums import CalculationStatus
+
+    calc = ItalyRoadAccidentBodilyInjuryCalculator()
+    result = calc.compute({"permanent_disability_percentage": 10})
+    assert result.status == CalculationStatus.INSUFFICIENT_INPUT.value
+    assert any("victim_age" in w for w in result.warnings)
+    assert result.estimated_min is None
+
+
+@pytest.mark.django_db
+def test_missing_disability_returns_insufficient_input(full_approved_stack):
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+    from apps.calculators.enums import CalculationStatus
+
+    calc = ItalyRoadAccidentBodilyInjuryCalculator()
+    result = calc.compute({"victim_age": 30})
+    assert result.status == CalculationStatus.INSUFFICIENT_INPUT.value
+    assert any("permanent_disability_percentage" in w for w in result.warnings)
+
+
+@pytest.mark.django_db
+def test_fault_percentage_out_of_range_returns_insufficient_input(
+    full_approved_stack,
+):
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+    from apps.calculators.enums import CalculationStatus
+
+    calc = ItalyRoadAccidentBodilyInjuryCalculator()
+    result = calc.compute(
+        {
+            "victim_age": 30,
+            "permanent_disability_percentage": 10,
+            "fault_percentage": 150,
+        }
+    )
+    assert result.status == CalculationStatus.INSUFFICIENT_INPUT.value
+    assert any("fault_percentage" in w.lower() for w in result.warnings)
+
+
+# --- formula gating: engine / amount_rule -------------------------------
+
+
+@pytest.mark.django_db
+def test_formula_with_unknown_engine_returns_unavailable(italy, italy_jurisdiction):
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+    from apps.calculators.enums import CalculationStatus
+
+    _build_full_stack(
+        italy,
+        italy_jurisdiction,
+        formula_parameters={"engine": "made_up_engine_v1"},
+    )
+    calc = ItalyRoadAccidentBodilyInjuryCalculator()
+    result = calc.compute({"victim_age": 30, "permanent_disability_percentage": 10})
+    assert result.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
+    assert "formula_engine_unknown" in result.missing_documents
+
+
+@pytest.mark.django_db
+def test_formula_with_known_engine_unknown_rule_returns_unavailable(italy, italy_jurisdiction):
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+    from apps.calculators.enums import CalculationStatus
+
+    _build_full_stack(
+        italy,
+        italy_jurisdiction,
+        formula_parameters={
+            "engine": "italy_tun_point_value_v1",
+            "amount_rule": "made_up_rule_xyz",
+            "requires": ["victim_age", "permanent_disability_percentage"],
+            "row_match": ["victim_age", "permanent_disability_percentage"],
+        },
+    )
+    calc = ItalyRoadAccidentBodilyInjuryCalculator()
+    result = calc.compute({"victim_age": 30, "permanent_disability_percentage": 10})
+    assert result.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
+    assert "formula_amount_rule_unknown" in result.missing_documents
+
+
+# --- row matching --------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_no_matching_row_returns_unavailable(italy, italy_jurisdiction):
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+    from apps.calculators.enums import CalculationStatus
+
+    src, dataset, formula, _ = _build_full_stack(italy, italy_jurisdiction, with_row=False)
+    # Crea una riga che NON copre il range richiesto.
+    CompensationTableRow.objects.create(
+        dataset=dataset,
+        row_type="point_value",
+        age_min=70,
+        age_max=80,
+        disability_min=50,
+        disability_max=100,
+        point_value=Decimal("1.0000"),
+    )
+
+    calc = ItalyRoadAccidentBodilyInjuryCalculator()
+    result = calc.compute({"victim_age": 30, "permanent_disability_percentage": 10})
+    assert result.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
+    assert "compensation_row_match" in result.missing_documents
+
+
+@pytest.mark.django_db
+def test_multiple_matching_rows_returns_unavailable_no_arbitrary_choice(italy, italy_jurisdiction):
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+    from apps.calculators.enums import CalculationStatus
+
+    src, dataset, formula, _ = _build_full_stack(italy, italy_jurisdiction, with_row=False)
+    # Due righe che entrambe matchano l'input → engine deve rifiutarsi
+    # di scegliere a caso.
+    for i in range(2):
+        CompensationTableRow.objects.create(
+            dataset=dataset,
+            row_type="point_value",
+            age_min=0,
+            age_max=120,
+            disability_min=0,
+            disability_max=100,
+            point_value=Decimal(str(i + 1)),
+            notes=f"fixture row {i}",
+        )
+
+    calc = ItalyRoadAccidentBodilyInjuryCalculator()
+    result = calc.compute({"victim_age": 30, "permanent_disability_percentage": 10})
+    assert result.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
+    assert "compensation_row_disambiguation" in result.missing_documents
+    assert result.estimated_min is None
+
+
+# --- fault reduction toggle ----------------------------------------------
+
+
+@pytest.mark.django_db
+def test_fault_reduction_applied_only_when_formula_enables_it(italy, italy_jurisdiction):
+    """
+    Con `fault_reduction=True` nella formula e fault_percentage=50,
+    l'importo deve dimezzarsi. Con `fault_reduction=False`, no.
+    """
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+
+    _build_full_stack(
+        italy,
+        italy_jurisdiction,
+        formula_parameters={
+            "engine": "italy_tun_point_value_v1",
+            "requires": ["victim_age", "permanent_disability_percentage"],
+            "row_match": ["victim_age", "permanent_disability_percentage"],
+            "amount_rule": "point_value_times_disability_percentage",
+            "fault_reduction": True,
+        },
+    )
+    calc = ItalyRoadAccidentBodilyInjuryCalculator()
+    result = calc.compute(
+        {
+            "victim_age": 30,
+            "permanent_disability_percentage": 10,
+            "fault_percentage": 50,
+        }
+    )
+    # 1.0 × 10 × (100-50)/100 = 5
+    assert result.estimated_mid == Decimal("5.0000")
+
+
+@pytest.mark.django_db
+def test_fault_reduction_not_applied_when_formula_disables_it(full_approved_stack):
+    """
+    `fault_reduction=False` (default fixture): il fault_percentage NON
+    riduce l'importo, il valore resta intero.
+    """
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+
+    calc = ItalyRoadAccidentBodilyInjuryCalculator()
+    result = calc.compute(
+        {
+            "victim_age": 30,
+            "permanent_disability_percentage": 10,
+            "fault_percentage": 50,
+        }
+    )
+    assert result.estimated_mid == Decimal("10.0000")
+
+
+# --- medical_expenses / lost_income ---------------------------------------
+
+
+@pytest.mark.django_db
+def test_medical_expenses_does_not_affect_amount_but_emits_warning(
+    full_approved_stack,
+):
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+
+    calc = ItalyRoadAccidentBodilyInjuryCalculator()
+    result = calc.compute(
+        {
+            "victim_age": 30,
+            "permanent_disability_percentage": 10,
+            "medical_expenses": "5000.00",
+        }
+    )
+    assert result.estimated_mid == Decimal("10.0000")  # immutato
+    assert any("medical_expenses" in w for w in result.warnings)
+
+
+# --- gating temporale dataset --------------------------------------------
+
+
+@pytest.mark.django_db
+def test_dataset_with_future_valid_from_is_not_used(italy, italy_jurisdiction):
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+    from apps.calculators.enums import CalculationStatus
+
+    src = _approved_source(italy, italy_jurisdiction)
+    dataset = CompensationDataset.objects.create(
+        source=src,
+        jurisdiction=italy_jurisdiction,
+        country=italy,
+        case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
+        name="Future dataset",
+        status=DatasetStatus.APPROVED,
+        valid_from=date.today() + timedelta(days=365),
+    )
+    CalculationFormula.objects.create(
+        dataset=dataset,
+        code="future",
+        name="Future formula",
+        status=DatasetStatus.APPROVED,
+        parameters={
+            "engine": "italy_tun_point_value_v1",
+            "requires": ["victim_age", "permanent_disability_percentage"],
+            "row_match": ["victim_age", "permanent_disability_percentage"],
+            "amount_rule": "point_value_times_disability_percentage",
+            "fault_reduction": False,
+        },
+    )
+
+    calc = ItalyRoadAccidentBodilyInjuryCalculator()
+    result = calc.compute({"victim_age": 30, "permanent_disability_percentage": 10})
+    # Dataset non ancora vigente → trattato come "nessun dataset approved".
+    assert result.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
+    assert "compensation_dataset_approved" in result.missing_documents

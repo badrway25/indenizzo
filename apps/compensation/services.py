@@ -1,0 +1,308 @@
+"""
+Service layer per il dominio compensation.
+
+Funzioni pure e leggere che incapsulano l'interrogazione al DB delle
+strutture validate e l'applicazione delle regole di calcolo dichiarate
+nelle `CalculationFormula`. Nessuna costante economica vive qui:
+
+- importi e coefficienti stanno in `CompensationTableRow` (popolata
+  manualmente dallo Studio dopo legal review);
+- la regola da applicare alla riga sta in `CalculationFormula.parameters`
+  (JSON dichiarativo, non codice eseguibile);
+- questa modulo contiene solo l'**interpretazione** delle regole note,
+  con un registro esplicito (`SUPPORTED_ENGINES`, `SUPPORTED_AMOUNT_RULES`).
+
+Estendere il motore in futuro = aggiungere un nuovo identificatore al
+registro e una nuova funzione `_rule_*`. Questo costringe ogni nuovo
+"engine" a passare per code review e test, invece di essere un side
+effect di un campo JSON cambiato in admin.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from datetime import date as _date
+from decimal import Decimal, InvalidOperation
+from enum import StrEnum
+from typing import Any
+
+from django.db.models import Q
+
+from apps.legal_sources.enums import SourceStatus
+
+from .models import (
+    CalculationFormula,
+    CompensationDataset,
+    CompensationTableRow,
+    DatasetStatus,
+)
+
+# ---------------------------------------------------------------------------
+# Registro esplicito degli engine e delle amount_rule supportate.
+# Chi vuole aggiungere un engine DEVE registrarlo qui e implementare la
+# corrispondente funzione `_rule_*`. Senza questo gate chiunque potrebbe
+# scrivere `engine=foo` in admin e attivare un calcolo non vetting-ato.
+# ---------------------------------------------------------------------------
+SUPPORTED_ENGINES: frozenset[str] = frozenset({"italy_tun_point_value_v1"})
+SUPPORTED_AMOUNT_RULES: frozenset[str] = frozenset({"point_value_times_disability_percentage"})
+
+
+# ---------------------------------------------------------------------------
+# Resolver: dataset approvato per una lista di fonti / case_type
+# ---------------------------------------------------------------------------
+
+
+def get_approved_dataset_for_sources(
+    sources,
+    case_type: str,
+    *,
+    calculation_date: _date | None = None,
+) -> CompensationDataset | None:
+    """
+    Primo `CompensationDataset` APPROVED collegato a una delle `sources`,
+    coerente con `case_type` e vigente alla data di riferimento.
+
+    `valid_from`/`valid_to` sono rispettati: un dataset con `valid_from`
+    futura o `valid_to` passata non viene considerato. Se `valid_from`
+    o `valid_to` sono NULL, il vincolo non si applica (dataset "aperto").
+
+    Importante: la query verifica esplicitamente che `source.status` sia
+    `APPROVED`. Un dataset il cui source è stato deprecato dopo la
+    promozione del dataset NON è usabile, anche se il dataset stesso è
+    ancora `APPROVED`. Questo evita inconsistenze nel workflow.
+    """
+    ref = calculation_date or _date.today()
+    qs = (
+        CompensationDataset.objects.filter(
+            source__in=sources,
+            case_type=case_type,
+            status=DatasetStatus.APPROVED,
+            source__status=SourceStatus.APPROVED,
+        )
+        .filter(Q(valid_from__isnull=True) | Q(valid_from__lte=ref))
+        .filter(Q(valid_to__isnull=True) | Q(valid_to__gte=ref))
+        .select_related("source")
+        .order_by("-valid_from", "-pk")
+    )
+    return qs.first()
+
+
+# ---------------------------------------------------------------------------
+# Resolver: formula eseguibile per un dataset
+# ---------------------------------------------------------------------------
+
+
+class FormulaResolutionStatus(StrEnum):
+    OK = "ok"
+    NO_APPROVED = "no_approved"
+    ENGINE_UNKNOWN = "engine_unknown"
+    AMOUNT_RULE_UNKNOWN = "amount_rule_unknown"
+
+
+@dataclass(frozen=True)
+class FormulaResolution:
+    formula: CalculationFormula | None
+    status: FormulaResolutionStatus
+
+
+def get_executable_formula(dataset: CompensationDataset) -> FormulaResolution:
+    """
+    Cerca una formula APPROVED associata al dataset il cui `engine` e
+    `amount_rule` siano nei registri supportati.
+
+    - se non esistono formule APPROVED → `NO_APPROVED`;
+    - se ne esistono ma nessuna ha un `engine` riconosciuto → `ENGINE_UNKNOWN`;
+    - se l'engine è riconosciuto ma `amount_rule` non lo è → `AMOUNT_RULE_UNKNOWN`;
+    - altrimenti restituisce la prima formula utilizzabile.
+
+    La diagnostica granulare permette al calculator di esporre
+    `missing_documents` precisi al chiamante (e quindi all'admin).
+    """
+    approved = list(dataset.formulas.filter(status=DatasetStatus.APPROVED))
+    if not approved:
+        return FormulaResolution(formula=None, status=FormulaResolutionStatus.NO_APPROVED)
+
+    # Cerchiamo prima una formula completamente eseguibile.
+    for formula in approved:
+        params = formula.parameters or {}
+        if params.get("engine") not in SUPPORTED_ENGINES:
+            continue
+        if params.get("amount_rule") not in SUPPORTED_AMOUNT_RULES:
+            continue
+        return FormulaResolution(formula=formula, status=FormulaResolutionStatus.OK)
+
+    # Nessuna formula è completamente eseguibile: diagnostichiamo perché.
+    # Se almeno una ha un engine riconosciuto, la regola è il problema.
+    has_known_engine = any(
+        (f.parameters or {}).get("engine") in SUPPORTED_ENGINES for f in approved
+    )
+    if has_known_engine:
+        return FormulaResolution(formula=None, status=FormulaResolutionStatus.AMOUNT_RULE_UNKNOWN)
+    return FormulaResolution(formula=None, status=FormulaResolutionStatus.ENGINE_UNKNOWN)
+
+
+# ---------------------------------------------------------------------------
+# Row matching
+# ---------------------------------------------------------------------------
+
+
+class RowMatchKind(StrEnum):
+    OK = "ok"
+    NONE = "none"
+    MULTIPLE = "multiple"
+
+
+@dataclass(frozen=True)
+class RowMatch:
+    kind: RowMatchKind
+    row: CompensationTableRow | None = None
+    candidates: int = 0
+
+
+def find_matching_row(
+    dataset: CompensationDataset,
+    *,
+    row_match_fields: list[str],
+    input_data: dict[str, Any],
+) -> RowMatch:
+    """
+    Trova l'unica riga del dataset che soddisfa tutti i predicati di
+    matching dichiarati in `row_match_fields`.
+
+    Predicati attualmente supportati:
+    - `victim_age`: `row.age_min <= age <= row.age_max` (NULL = unbounded)
+    - `permanent_disability_percentage`: idem su `disability_min/max`
+
+    Se nessuna riga matcha → `NONE`. Se più di una matcha → `MULTIPLE`
+    (il calculator NON sceglie a caso: blocca il calcolo). Solo con una
+    riga unica → `OK`.
+
+    L'enumerazione delle righe avviene in Python (non SQL): le tabelle
+    realisticamente hanno < 1000 righe (TUN ne ha ~91 voci di età ×
+    classi di invalidità) e questo permette regole più espressive senza
+    moltiplicare gli indici.
+    """
+    rows = list(dataset.rows.all())
+    matches = [r for r in rows if _row_matches(r, row_match_fields, input_data)]
+
+    if not matches:
+        return RowMatch(kind=RowMatchKind.NONE, candidates=0)
+    if len(matches) > 1:
+        return RowMatch(kind=RowMatchKind.MULTIPLE, candidates=len(matches))
+    return RowMatch(kind=RowMatchKind.OK, row=matches[0], candidates=1)
+
+
+def _row_matches(
+    row: CompensationTableRow,
+    fields: list[str],
+    input_data: dict[str, Any],
+) -> bool:
+    if "victim_age" in fields:
+        age = _to_int_or_none(input_data.get("victim_age"))
+        if age is None:
+            return False
+        if row.age_min is not None and age < row.age_min:
+            return False
+        if row.age_max is not None and age > row.age_max:
+            return False
+    if "permanent_disability_percentage" in fields:
+        disability = _to_int_or_none(input_data.get("permanent_disability_percentage"))
+        if disability is None:
+            return False
+        if row.disability_min is not None and disability < row.disability_min:
+            return False
+        if row.disability_max is not None and disability > row.disability_max:
+            return False
+    return True
+
+
+# ---------------------------------------------------------------------------
+# Application of `amount_rule`
+# ---------------------------------------------------------------------------
+
+
+def apply_amount_rule(
+    rule: str,
+    *,
+    row: CompensationTableRow,
+    input_data: dict[str, Any],
+    fault_reduction_enabled: bool,
+) -> Decimal:
+    """
+    Calcola l'importo applicando la regola dichiarata dalla formula.
+
+    Solleva `ValueError` se la regola non è nel registro supportato.
+    Il chiamante (calculator) deve aver già verificato che
+    `rule in SUPPORTED_AMOUNT_RULES` via `get_executable_formula`.
+
+    La ragione per cui è una `ValueError` invece di un fallback silenzioso:
+    se mai una regola sconosciuta arriva fin qui, è un bug del wiring fra
+    services e calculator; meglio crashare il singolo calcolo che produrre
+    un numero inventato.
+    """
+    if rule == "point_value_times_disability_percentage":
+        return _rule_point_value_times_disability(
+            row=row,
+            input_data=input_data,
+            fault_reduction_enabled=fault_reduction_enabled,
+        )
+    raise ValueError(f"Unsupported amount_rule: {rule!r}")
+
+
+def _rule_point_value_times_disability(
+    *,
+    row: CompensationTableRow,
+    input_data: dict[str, Any],
+    fault_reduction_enabled: bool,
+) -> Decimal:
+    """
+    amount = row.point_value × permanent_disability_percentage
+
+    Con `fault_reduction_enabled=True` e un `fault_percentage` fornito,
+    applica la riduzione: amount × (100 - fault) / 100.
+
+    `point_value` NULL viene trattato come 0: non vogliamo crashare se
+    il revisore promuove per errore una riga incompleta. L'effetto è un
+    importo zero, ben visibile nel report come "il dataset non contiene
+    valori utili per questa fattispecie".
+    """
+    point_value = row.point_value or Decimal(0)
+    disability = _to_decimal_or_none(input_data.get("permanent_disability_percentage"))
+    if disability is None:
+        return Decimal(0)
+
+    amount = point_value * disability
+
+    if fault_reduction_enabled:
+        fault = _to_decimal_or_none(input_data.get("fault_percentage"))
+        if fault is not None and Decimal(0) <= fault <= Decimal(100):
+            amount = amount * (Decimal(100) - fault) / Decimal(100)
+
+    return amount
+
+
+# ---------------------------------------------------------------------------
+# helpers parsing
+# ---------------------------------------------------------------------------
+
+
+def _to_int_or_none(value) -> int | None:
+    if value is None or value == "":
+        return None
+    if isinstance(value, bool):
+        return None
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _to_decimal_or_none(value) -> Decimal | None:
+    if value is None or value == "":
+        return None
+    if isinstance(value, Decimal):
+        return value
+    try:
+        return Decimal(str(value))
+    except (InvalidOperation, ValueError):
+        return None
