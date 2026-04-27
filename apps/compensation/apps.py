@@ -12,8 +12,14 @@ class CompensationConfig(AppConfig):
         # cosa è cambiato.
         from auditlog.registry import auditlog
 
-        from .models import CalculationFormula, CompensationDataset, CompensationTableRow
+        from .models import (
+            CalculationFormula,
+            CompensationDataset,
+            CompensationTableRow,
+            ExtractionLog,
+        )
 
         auditlog.register(CompensationDataset)
         auditlog.register(CompensationTableRow)
         auditlog.register(CalculationFormula)
+        auditlog.register(ExtractionLog)

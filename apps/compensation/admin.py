@@ -12,7 +12,12 @@ from __future__ import annotations
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
-from .models import CalculationFormula, CompensationDataset, CompensationTableRow
+from .models import (
+    CalculationFormula,
+    CompensationDataset,
+    CompensationTableRow,
+    ExtractionLog,
+)
 
 
 class CompensationTableRowInline(admin.TabularInline):
@@ -45,15 +50,21 @@ class CompensationDatasetAdmin(admin.ModelAdmin):
         "jurisdiction",
         "case_type",
         "status",
+        "rows_count",
         "valid_from",
         "valid_to",
         "source",
     )
-    list_filter = ("status", "case_type", "country", "jurisdiction")
+    list_filter = ("status", "case_type", "country", "jurisdiction", "source__status")
     search_fields = ("name", "version_label", "notes", "source__title")
     autocomplete_fields = ("source", "jurisdiction", "country")
     readonly_fields = ("created_at", "updated_at")
     inlines = [CompensationTableRowInline, CalculationFormulaInline]
+
+    @admin.display(description=_("rows"))
+    def rows_count(self, obj: CompensationDataset) -> int:
+        return obj.rows.count()
+
     fieldsets = (
         (None, {"fields": ("name", "version_label", "case_type", "status")}),
         (_("Source & geography"), {"fields": ("source", "jurisdiction", "country")}),
@@ -89,3 +100,40 @@ class CalculationFormulaAdmin(admin.ModelAdmin):
     search_fields = ("code", "name", "expression_text", "source_reference")
     autocomplete_fields = ("dataset",)
     readonly_fields = ("created_at", "updated_at")
+
+
+@admin.register(ExtractionLog)
+class ExtractionLogAdmin(admin.ModelAdmin):
+    list_display = (
+        "created_at",
+        "source",
+        "dataset",
+        "method",
+        "result",
+        "rows_imported",
+        "rows_skipped",
+    )
+    list_filter = ("result", "method", "source__country")
+    search_fields = ("source__title", "file_path", "file_sha256", "error_message")
+    autocomplete_fields = ("source", "dataset")
+    readonly_fields = (
+        "source",
+        "dataset",
+        "method",
+        "file_path",
+        "file_sha256",
+        "file_size_bytes",
+        "rows_imported",
+        "rows_skipped",
+        "result",
+        "error_message",
+        "metadata",
+        "created_at",
+    )
+
+    def has_add_permission(self, request):  # pragma: no cover
+        # Append-only: i log devono nascere dal command, non a mano.
+        return False
+
+    def has_delete_permission(self, request, obj=None):  # pragma: no cover
+        return False

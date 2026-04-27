@@ -349,3 +349,431 @@ def test_dataset_validity_window_can_predate_today(italy, italy_jurisdiction):
     )
     dataset.full_clean()
     assert dataset.valid_to < date.today()
+
+
+# ---------------------------------------------------------------------------
+# F-extract-italy-tun — import_italy_tun_2025 + 3-level gating
+# ---------------------------------------------------------------------------
+
+
+def _ensure_italian_seed():
+    """Esegue il seed metadata necessario al command (idempotente)."""
+    from django.core.management import call_command
+
+    call_command("seed_italy_legal_sources", "--quiet")
+
+
+@pytest.fixture
+def fake_pdf_file(tmp_path):
+    """File 'PDF' fittizio: bytes arbitrari, header PDF-like per mime."""
+    path = tmp_path / "dpr_12_2025_tun.pdf"
+    # Bytes test-only. Non rappresentano un PDF reale del decreto. Sono
+    # sufficienti perché il command li hashi e li alleghi come blob.
+    path.write_bytes(b"%PDF-1.7\n% test fixture only - non un PDF reale\n")
+    return path
+
+
+@pytest.fixture
+def fake_csv_file(tmp_path):
+    """
+    CSV test-only con UNA riga di placeholder (nessun valore reale).
+
+    I valori sono volutamente fuori scala (`row_type=test_placeholder`,
+    point_value=1.0) per evidenziare che NON sono dati legali. Il test
+    valida solo che il pipeline di import funzioni.
+    """
+    path = tmp_path / "tun_2025_rows.csv"
+    path.write_text(
+        "row_type,age_min,age_max,disability_min,disability_max,"
+        "point_value,coefficient,daily_amount,source_page,source_note\n"
+        "test_placeholder,30,40,10,20,1.0000,1.000000,,12,fixture row only\n",
+        encoding="utf-8",
+    )
+    return path
+
+
+@pytest.mark.django_db
+def test_import_command_fails_on_missing_pdf(tmp_path):
+    """File PDF inesistente → CommandError + ExtractionLog FAILED."""
+    from django.core.management import call_command
+    from django.core.management.base import CommandError
+
+    from apps.compensation.models import ExtractionLog
+
+    _ensure_italian_seed()
+    missing = tmp_path / "does_not_exist.pdf"
+
+    with pytest.raises(CommandError):
+        call_command("import_italy_tun_2025", "--source-file", str(missing))
+
+    log = ExtractionLog.objects.first()
+    assert log is not None
+    assert log.result == ExtractionLog.Result.FAILED
+    assert log.method == ExtractionLog.Method.PDF_ATTACH
+    assert "does_not_exist" in log.file_path
+
+
+@pytest.mark.django_db
+def test_import_command_fails_on_missing_csv(tmp_path):
+    """File CSV inesistente → CommandError + ExtractionLog FAILED."""
+    from django.core.management import call_command
+    from django.core.management.base import CommandError
+
+    from apps.compensation.models import ExtractionLog
+
+    _ensure_italian_seed()
+    missing = tmp_path / "does_not_exist.csv"
+
+    with pytest.raises(CommandError):
+        call_command("import_italy_tun_2025", "--csv", str(missing))
+
+    log = ExtractionLog.objects.filter(result=ExtractionLog.Result.FAILED).first()
+    assert log is not None
+    assert log.method == ExtractionLog.Method.CSV_IMPORT
+
+
+@pytest.mark.django_db
+def test_import_command_requires_at_least_one_arg():
+    """Senza --source-file e senza --csv il command rifiuta di avviarsi."""
+    from django.core.management import call_command
+    from django.core.management.base import CommandError
+
+    _ensure_italian_seed()
+    with pytest.raises(CommandError):
+        call_command("import_italy_tun_2025")
+
+
+@pytest.mark.django_db
+def test_import_command_requires_seed_already_run(tmp_path):
+    """Senza la LegalSource seedata il command si rifiuta di proseguire."""
+    from django.core.management import call_command
+    from django.core.management.base import CommandError
+
+    pdf = tmp_path / "dpr_12_2025_tun.pdf"
+    pdf.write_bytes(b"%PDF-1.7\n")
+    with pytest.raises(CommandError):
+        call_command("import_italy_tun_2025", "--source-file", str(pdf))
+
+
+@pytest.mark.django_db
+def test_import_command_creates_dataset_in_draft(fake_pdf_file):
+    """Pipeline base: PDF → attachment + dataset DRAFT + formula DRAFT."""
+    from django.core.management import call_command
+
+    from apps.compensation.models import (
+        CalculationFormula,
+        CompensationDataset,
+        ExtractionLog,
+    )
+
+    _ensure_italian_seed()
+    call_command("import_italy_tun_2025", "--source-file", str(fake_pdf_file))
+
+    dataset = CompensationDataset.objects.get(version_label="DPR-12-2025")
+    assert dataset.status == DatasetStatus.DRAFT
+    assert dataset.case_type == CaseType.ROAD_ACCIDENT_BODILY_INJURY.value
+
+    formula = CalculationFormula.objects.get(dataset=dataset)
+    assert formula.status == DatasetStatus.DRAFT
+    assert formula.code == "italy_art_138_tun_2025_base"
+
+    # ExtractionLog scritto.
+    log = ExtractionLog.objects.filter(method=ExtractionLog.Method.PDF_ATTACH).first()
+    assert log is not None
+    assert log.result == ExtractionLog.Result.SUCCESS
+    assert log.file_sha256 != ""
+
+
+@pytest.mark.django_db
+def test_import_command_does_not_promote_source(fake_pdf_file):
+    """La fonte resta NEEDS_REVIEW dopo l'import."""
+    from django.core.management import call_command
+
+    _ensure_italian_seed()
+    call_command("import_italy_tun_2025", "--source-file", str(fake_pdf_file))
+
+    src = LegalSource.objects.get(slug="it-dpr-12-2025-tun-danno-biologico")
+    assert src.status == SourceStatus.NEEDS_REVIEW
+
+
+@pytest.mark.django_db
+def test_import_command_is_idempotent(fake_pdf_file):
+    """Re-run senza nuovi file: nessun duplicato di attachment, dataset, formula."""
+    from django.core.management import call_command
+
+    from apps.compensation.models import (
+        CalculationFormula,
+        CompensationDataset,
+        ExtractionLog,
+    )
+    from apps.legal_sources.models import LegalSourceAttachment
+
+    _ensure_italian_seed()
+    call_command("import_italy_tun_2025", "--source-file", str(fake_pdf_file))
+    call_command("import_italy_tun_2025", "--source-file", str(fake_pdf_file))
+
+    assert LegalSourceAttachment.objects.count() == 1
+    assert CompensationDataset.objects.count() == 1
+    assert CalculationFormula.objects.count() == 1
+    # Due ExtractionLog (uno per run), entrambi SUCCESS.
+    assert (
+        ExtractionLog.objects.filter(
+            method=ExtractionLog.Method.PDF_ATTACH,
+            result=ExtractionLog.Result.SUCCESS,
+        ).count()
+        == 2
+    )
+
+
+@pytest.mark.django_db
+def test_import_command_imports_csv_rows_in_draft(fake_pdf_file, fake_csv_file):
+    """CSV → righe DRAFT. ExtractionLog success con rows_imported=1."""
+    from django.core.management import call_command
+
+    from apps.compensation.models import (
+        CompensationDataset,
+        CompensationTableRow,
+        ExtractionLog,
+    )
+
+    _ensure_italian_seed()
+    call_command(
+        "import_italy_tun_2025",
+        "--source-file",
+        str(fake_pdf_file),
+        "--csv",
+        str(fake_csv_file),
+    )
+
+    dataset = CompensationDataset.objects.get(version_label="DPR-12-2025")
+    rows = CompensationTableRow.objects.filter(dataset=dataset)
+    assert rows.count() == 1
+    row = rows.first()
+    assert row.row_type == "test_placeholder"
+    assert row.age_min == 30 and row.age_max == 40
+    assert row.disability_min == 10 and row.disability_max == 20
+
+    # Dataset resta DRAFT (no auto-approve).
+    assert dataset.status == DatasetStatus.DRAFT
+
+    csv_log = ExtractionLog.objects.filter(method=ExtractionLog.Method.CSV_IMPORT).first()
+    assert csv_log is not None
+    assert csv_log.result == ExtractionLog.Result.SUCCESS
+    assert csv_log.rows_imported == 1
+
+
+@pytest.mark.django_db
+def test_import_command_csv_rejects_bad_header(tmp_path, fake_pdf_file):
+    """CSV con header incompleto → ExtractionLog FAILED, niente righe."""
+    from django.core.management import call_command
+
+    from apps.compensation.models import (
+        CompensationDataset,
+        CompensationTableRow,
+        ExtractionLog,
+    )
+
+    _ensure_italian_seed()
+    call_command("import_italy_tun_2025", "--source-file", str(fake_pdf_file))
+
+    bad_csv = tmp_path / "bad.csv"
+    bad_csv.write_text("only_one_column\nfoo\n", encoding="utf-8")
+    call_command("import_italy_tun_2025", "--csv", str(bad_csv))
+
+    dataset = CompensationDataset.objects.get(version_label="DPR-12-2025")
+    assert CompensationTableRow.objects.filter(dataset=dataset).count() == 0
+
+    log = ExtractionLog.objects.filter(method=ExtractionLog.Method.CSV_IMPORT).first()
+    assert log is not None
+    assert log.result == ExtractionLog.Result.FAILED
+    assert "header" in log.error_message.lower()
+
+
+@pytest.mark.django_db
+def test_import_command_csv_skips_invalid_rows(tmp_path, fake_pdf_file):
+    """Una riga con valori non parsabili → skip + log PARTIAL."""
+    from django.core.management import call_command
+
+    from apps.compensation.models import (
+        CompensationDataset,
+        CompensationTableRow,
+        ExtractionLog,
+    )
+
+    _ensure_italian_seed()
+    call_command("import_italy_tun_2025", "--source-file", str(fake_pdf_file))
+
+    csv_path = tmp_path / "mixed.csv"
+    csv_path.write_text(
+        "row_type,age_min,age_max,disability_min,disability_max,"
+        "point_value,coefficient,daily_amount,source_page,source_note\n"
+        "good_row,20,30,5,10,1.0,1.0,,1,\n"
+        "bad_row,not_a_number,40,10,20,1.0,1.0,,2,\n",
+        encoding="utf-8",
+    )
+    call_command("import_italy_tun_2025", "--csv", str(csv_path))
+
+    dataset = CompensationDataset.objects.get(version_label="DPR-12-2025")
+    rows = CompensationTableRow.objects.filter(dataset=dataset)
+    assert rows.count() == 1
+    assert rows.first().row_type == "good_row"
+
+    log = ExtractionLog.objects.filter(method=ExtractionLog.Method.CSV_IMPORT).first()
+    assert log is not None
+    assert log.result == ExtractionLog.Result.PARTIAL
+    assert log.rows_imported == 1
+    assert log.rows_skipped == 1
+
+
+@pytest.mark.django_db
+def test_import_command_refuses_to_overwrite_non_draft_dataset(fake_pdf_file, fake_csv_file):
+    """
+    Se il dataset non è più DRAFT (es. il revisore l'ha promosso a
+    NEEDS_REVIEW o APPROVED), il command CSV non sovrascrive le righe.
+    """
+    from django.core.management import call_command
+
+    from apps.compensation.models import (
+        CompensationDataset,
+        CompensationTableRow,
+        ExtractionLog,
+    )
+
+    _ensure_italian_seed()
+    call_command("import_italy_tun_2025", "--source-file", str(fake_pdf_file))
+    call_command("import_italy_tun_2025", "--csv", str(fake_csv_file))
+
+    dataset = CompensationDataset.objects.get(version_label="DPR-12-2025")
+    assert CompensationTableRow.objects.filter(dataset=dataset).count() == 1
+
+    # Promozione manuale a NEEDS_REVIEW (simula intervento dello Studio).
+    dataset.status = DatasetStatus.NEEDS_REVIEW
+    dataset.save(update_fields=["status"])
+
+    # Re-run del CSV: il command rifiuta di toccare le righe.
+    call_command("import_italy_tun_2025", "--csv", str(fake_csv_file))
+    assert CompensationTableRow.objects.filter(dataset=dataset).count() == 1
+
+    last_log = (
+        ExtractionLog.objects.filter(method=ExtractionLog.Method.CSV_IMPORT)
+        .order_by("-created_at")
+        .first()
+    )
+    assert last_log.result == ExtractionLog.Result.FAILED
+    assert "DRAFT" in last_log.error_message
+
+
+# ---------------------------------------------------------------------------
+# Calculator gating a 3 livelli
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_calculator_gate_level1_no_approved_source(italy, italy_jurisdiction):
+    """Livello 1: nessuna fonte APPROVED → unavailable, niente gating successivo."""
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+    from apps.calculators.enums import CalculationStatus
+
+    _needs_review_source(italy, italy_jurisdiction)
+    calc = ItalyRoadAccidentBodilyInjuryCalculator()
+    result = calc.compute({})
+    assert result.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
+    assert result.sources == []
+    # Nessun missing_documents: il primo gate è la fonte stessa.
+
+
+@pytest.mark.django_db
+def test_calculator_gate_level2_dataset_draft(italy, italy_jurisdiction):
+    """
+    Livello 2: fonte APPROVED ma dataset DRAFT → unavailable con
+    missing_documents=['compensation_dataset_approved'].
+    """
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+    from apps.calculators.enums import CalculationStatus
+
+    src = _approved_source(italy, italy_jurisdiction)
+    CompensationDataset.objects.create(
+        source=src,
+        jurisdiction=italy_jurisdiction,
+        country=italy,
+        case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
+        name="Draft dataset",
+        status=DatasetStatus.DRAFT,
+    )
+
+    calc = ItalyRoadAccidentBodilyInjuryCalculator()
+    result = calc.compute({})
+
+    assert result.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
+    assert "compensation_dataset_approved" in result.missing_documents
+    assert result.estimated_min is None
+
+
+@pytest.mark.django_db
+def test_calculator_gate_level3_formula_draft(italy, italy_jurisdiction):
+    """
+    Livello 3: fonte + dataset APPROVED, formula DRAFT → unavailable con
+    missing_documents=['calculation_formula_approved'].
+    """
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+    from apps.calculators.enums import CalculationStatus
+
+    src = _approved_source(italy, italy_jurisdiction)
+    dataset = CompensationDataset.objects.create(
+        source=src,
+        jurisdiction=italy_jurisdiction,
+        country=italy,
+        case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
+        name="Approved dataset",
+        status=DatasetStatus.APPROVED,
+    )
+    CalculationFormula.objects.create(
+        dataset=dataset,
+        code="placeholder",
+        name="Placeholder",
+        status=DatasetStatus.DRAFT,
+    )
+
+    calc = ItalyRoadAccidentBodilyInjuryCalculator()
+    result = calc.compute({})
+
+    assert result.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
+    assert "calculation_formula_approved" in result.missing_documents
+    assert result.estimated_min is None
+
+
+@pytest.mark.django_db
+def test_calculator_does_not_invent_amounts_even_with_all_approved(italy, italy_jurisdiction):
+    """
+    Anche con fonte + dataset + formula tutti APPROVED, in F-extract-italy-tun
+    l'engine economico non è ancora implementato: il calculator deve
+    restituire `unavailable` con missing_documents=['economic_engine_implementation'].
+    NON deve inventare importi.
+    """
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+    from apps.calculators.enums import CalculationStatus
+
+    src = _approved_source(italy, italy_jurisdiction)
+    dataset = CompensationDataset.objects.create(
+        source=src,
+        jurisdiction=italy_jurisdiction,
+        country=italy,
+        case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
+        name="Fully approved dataset",
+        status=DatasetStatus.APPROVED,
+    )
+    CalculationFormula.objects.create(
+        dataset=dataset,
+        code="approved_formula",
+        name="Approved formula",
+        status=DatasetStatus.APPROVED,
+    )
+
+    calc = ItalyRoadAccidentBodilyInjuryCalculator()
+    result = calc.compute({})
+
+    assert result.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
+    assert result.estimated_min is None
+    assert result.estimated_mid is None
+    assert result.estimated_max is None
+    assert "economic_engine_implementation" in result.missing_documents

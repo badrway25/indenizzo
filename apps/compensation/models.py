@@ -358,3 +358,74 @@ class CalculationFormula(models.Model):
                         )
                     }
                 )
+
+
+class ExtractionLog(models.Model):
+    """
+    Audit append-only delle esecuzioni di import di dati tabellari.
+
+    Ogni esecuzione di un command `import_*` lascia una riga qui:
+    - quale fonte / dataset è stato toccato;
+    - quale file è stato letto, con SHA-256;
+    - quante righe sono entrate;
+    - esito (success / partial / failed) ed eventuale errore.
+
+    Append-only: non c'è `update`, non c'è cancellazione automatica. Lo
+    Studio può consultare lo storico per dimostrare la provenienza di
+    qualsiasi dato finito in calcolo.
+    """
+
+    class Method(models.TextChoices):
+        PDF_ATTACH = "pdf_attach", _("PDF attached")
+        CSV_IMPORT = "csv_import", _("CSV import")
+        MANUAL = "manual", _("Manual entry")
+
+    class Result(models.TextChoices):
+        SUCCESS = "success", _("Success")
+        PARTIAL = "partial", _("Partial")
+        FAILED = "failed", _("Failed")
+
+    source = models.ForeignKey(
+        "legal_sources.LegalSource",
+        on_delete=models.PROTECT,
+        related_name="extraction_logs",
+        verbose_name=_("legal source"),
+    )
+    dataset = models.ForeignKey(
+        CompensationDataset,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="extraction_logs",
+        verbose_name=_("dataset"),
+        help_text=_(
+            "Può essere null se l'estrazione non è arrivata a creare il "
+            "dataset (es. errore durante l'attach del PDF)."
+        ),
+    )
+
+    method = models.CharField(_("method"), max_length=24, choices=Method.choices)
+    file_path = models.CharField(_("file path"), max_length=1024, blank=True)
+    file_sha256 = models.CharField(_("file sha256"), max_length=64, blank=True)
+    file_size_bytes = models.PositiveBigIntegerField(_("file size (bytes)"), default=0)
+
+    rows_imported = models.PositiveIntegerField(_("rows imported"), default=0)
+    rows_skipped = models.PositiveIntegerField(_("rows skipped"), default=0)
+
+    result = models.CharField(_("result"), max_length=16, choices=Result.choices)
+    error_message = models.TextField(_("error message"), blank=True)
+    metadata = models.JSONField(_("metadata"), default=dict, blank=True)
+
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("extraction log")
+        verbose_name_plural = _("extraction logs")
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["source", "-created_at"]),
+            models.Index(fields=["dataset", "-created_at"]),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.method} {self.result} {self.source} ({self.created_at:%Y-%m-%d})"

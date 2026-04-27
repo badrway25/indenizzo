@@ -40,3 +40,16 @@ yarn-error.log*
 # OS
 .DS_Store
 Thumbs.db
+
+# Legal data — PDFs ufficiali, CSV di estrazione, log audit (vedi
+# legal_data/README.md). Solo i README/template restano in repository:
+# i materiali legali ufficiali non vanno committati.
+legal_data/sources/**/*.pdf
+legal_data/sources/**/*.PDF
+legal_data/sources/**/*.csv
+legal_data/sources/**/*.xlsx
+legal_data/sources/**/*.xls
+legal_data/sources/**/*.docx
+legal_data/sources/**/extraction_notes.md
+legal_data/extraction_logs/*.json
+legal_data/extraction_logs/*.log
