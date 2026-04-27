@@ -349,6 +349,106 @@ def test_find_approved_sources_filters_by_source_type(italy_setup):
     assert [s.title for s in only_tables] == ["Tabella corte"]
 
 
+# ---------------------------------------------------------------------------
+# F-sources-italy — calculation_date / DB-derived fallback / no-fallback flag
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_find_approved_sources_excludes_future_effective_date(italy_setup):
+    """Una fonte non ancora in vigore non deve apparire nei risultati."""
+    LegalSource.objects.create(
+        title="Decreto futuro",
+        country=italy_setup["country"],
+        jurisdiction=italy_setup["jurisdiction"],
+        language=italy_setup["language"],
+        source_type=SourceType.MINISTRY_DECREE,
+        status=SourceStatus.APPROVED,
+        effective_date=date.today() + timedelta(days=30),
+    )
+    found = find_approved_sources(jurisdiction_code="IT-NATIONAL")
+    assert found == []
+
+
+@pytest.mark.django_db
+def test_find_approved_sources_uses_calculation_date_for_dated_simulations(italy_setup):
+    """Calcolo retroattivo: le fonti vigenti al `calculation_date` sono incluse."""
+    LegalSource.objects.create(
+        title="Decreto 2025",
+        country=italy_setup["country"],
+        jurisdiction=italy_setup["jurisdiction"],
+        language=italy_setup["language"],
+        source_type=SourceType.MINISTRY_DECREE,
+        status=SourceStatus.APPROVED,
+        effective_date=date(2025, 2, 26),
+    )
+    LegalSource.objects.create(
+        title="Decreto 2023",
+        country=italy_setup["country"],
+        jurisdiction=italy_setup["jurisdiction"],
+        language=italy_setup["language"],
+        source_type=SourceType.MINISTRY_DECREE,
+        status=SourceStatus.APPROVED,
+        effective_date=date(2023, 1, 1),
+    )
+
+    found_2024 = find_approved_sources(
+        jurisdiction_code="IT-NATIONAL",
+        calculation_date=date(2024, 6, 15),
+    )
+    titles_2024 = {s.title for s in found_2024}
+    assert "Decreto 2023" in titles_2024
+    assert "Decreto 2025" not in titles_2024
+
+    found_2026 = find_approved_sources(
+        jurisdiction_code="IT-NATIONAL",
+        calculation_date=date(2026, 1, 1),
+    )
+    titles_2026 = {s.title for s in found_2026}
+    assert {"Decreto 2023", "Decreto 2025"}.issubset(titles_2026)
+
+
+@pytest.mark.django_db
+def test_find_approved_sources_derives_country_from_jurisdiction_db(italy_setup):
+    """
+    Con `country_code=None`, il resolver legge il paese dalla
+    `Jurisdiction` su DB invece di fare uno split testuale del codice.
+    """
+    LegalSource.objects.create(
+        title="National-level only",
+        country=italy_setup["country"],
+        jurisdiction=None,
+        language=italy_setup["language"],
+        source_type=SourceType.OFFICIAL_LAW,
+        status=SourceStatus.APPROVED,
+    )
+    found = find_approved_sources(jurisdiction_code="IT-NATIONAL")
+    assert len(found) == 1
+    assert found[0].title == "National-level only"
+
+
+@pytest.mark.django_db
+def test_find_approved_sources_no_fallback_returns_only_jurisdiction_match(italy_setup):
+    """
+    Con `fallback_to_country=False`, il resolver non risale a livello
+    paese: utile per calculator che esigono fonti specificamente taggate
+    alla giurisdizione.
+    """
+    LegalSource.objects.create(
+        title="Solo country",
+        country=italy_setup["country"],
+        jurisdiction=None,
+        language=italy_setup["language"],
+        source_type=SourceType.OFFICIAL_LAW,
+        status=SourceStatus.APPROVED,
+    )
+    found = find_approved_sources(
+        jurisdiction_code="IT-NATIONAL",
+        fallback_to_country=False,
+    )
+    assert found == []
+
+
 @pytest.mark.django_db
 def test_source_ref_from_legal_source_snapshot(italy_setup):
     source = LegalSource.objects.create(

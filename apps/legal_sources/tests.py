@@ -208,3 +208,184 @@ def test_approved_legal_source_passes_clean_when_language_set(italy: Country):
         status=SourceStatus.APPROVED,
     )
     source.full_clean()
+
+
+# ---------------------------------------------------------------------------
+# F-sources-italy — effective_date filter + reference_date in approved()
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_approved_manager_excludes_sources_with_future_effective_date(italy: Country):
+    """Una fonte APPROVED ma non ancora vigente NON deve essere usata."""
+    not_yet_in_force = LegalSource.objects.create(
+        title="Decreto futuro",
+        country=italy,
+        source_type=SourceType.MINISTRY_DECREE,
+        status=SourceStatus.APPROVED,
+        effective_date=date.today() + timedelta(days=30),
+    )
+    in_force = LegalSource.objects.create(
+        title="Decreto vigente",
+        country=italy,
+        source_type=SourceType.MINISTRY_DECREE,
+        status=SourceStatus.APPROVED,
+        effective_date=date.today() - timedelta(days=30),
+    )
+    titles = set(LegalSource.objects.approved().values_list("title", flat=True))
+    assert in_force.title in titles
+    assert not_yet_in_force.title not in titles
+
+
+@pytest.mark.django_db
+def test_approved_manager_accepts_reference_date_for_dated_simulations(italy: Country):
+    """
+    Una simulazione su un evento del 2024 deve usare le fonti vigenti
+    al 2024, non quelle promulgate dopo.
+    """
+    promulgated_in_2025 = LegalSource.objects.create(
+        title="Decreto 2025",
+        country=italy,
+        source_type=SourceType.MINISTRY_DECREE,
+        status=SourceStatus.APPROVED,
+        effective_date=date(2025, 2, 26),
+    )
+    pre_2024 = LegalSource.objects.create(
+        title="Decreto pre-2024",
+        country=italy,
+        source_type=SourceType.MINISTRY_DECREE,
+        status=SourceStatus.APPROVED,
+        effective_date=date(2023, 1, 1),
+    )
+
+    # Riferimento al 2024-06-15: la 2025 NON è ancora in vigore.
+    titles_2024 = set(
+        LegalSource.objects.approved(reference_date=date(2024, 6, 15)).values_list(
+            "title", flat=True
+        )
+    )
+    assert pre_2024.title in titles_2024
+    assert promulgated_in_2025.title not in titles_2024
+
+    # Riferimento al 2025-12-31: la 2025 è in vigore.
+    titles_2025 = set(
+        LegalSource.objects.approved(reference_date=date(2025, 12, 31)).values_list(
+            "title", flat=True
+        )
+    )
+    assert promulgated_in_2025.title in titles_2025
+
+
+@pytest.mark.django_db
+def test_is_usable_at_respects_effective_date(italy: Country):
+    not_yet = LegalSource.objects.create(
+        title="Decreto futuro",
+        country=italy,
+        source_type=SourceType.MINISTRY_DECREE,
+        status=SourceStatus.APPROVED,
+        effective_date=date.today() + timedelta(days=10),
+    )
+    # Oggi non è usabile.
+    assert not_yet.is_usable_at() is False
+    # Lo è in una data successiva all'effective_date.
+    assert not_yet.is_usable_at(date.today() + timedelta(days=20)) is True
+
+
+# ---------------------------------------------------------------------------
+# F-sources-italy — seed_italy_legal_sources management command
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_seed_italy_legal_sources_creates_metadata_only():
+    """
+    Il command crea solo metadati, mai status APPROVED automatico, mai
+    importi tabellari. Le 5 fonti del seed devono comparire come
+    `needs_review`, in italiano, con paese IT.
+    """
+    from django.core.management import call_command
+
+    from apps.legal_sources.management.commands.seed_italy_legal_sources import (
+        SEED_SOURCES,
+    )
+
+    call_command("seed_italy_legal_sources", "--quiet")
+
+    sources = LegalSource.objects.filter(country__code="IT")
+    assert sources.count() == len(SEED_SOURCES)
+    for src in sources:
+        assert src.status == SourceStatus.NEEDS_REVIEW
+        assert src.language is not None
+        assert src.language.code == "it"
+        assert src.country.code == "IT"
+
+
+@pytest.mark.django_db
+def test_seed_italy_legal_sources_is_idempotent():
+    """Eseguibile più volte senza creare duplicati."""
+    from django.core.management import call_command
+
+    from apps.legal_sources.management.commands.seed_italy_legal_sources import (
+        SEED_SOURCES,
+    )
+
+    call_command("seed_italy_legal_sources", "--quiet")
+    first_count = LegalSource.objects.count()
+    call_command("seed_italy_legal_sources", "--quiet")
+    second_count = LegalSource.objects.count()
+    assert first_count == second_count == len(SEED_SOURCES)
+
+
+@pytest.mark.django_db
+def test_seed_does_not_demote_manually_approved_sources():
+    """
+    Se un legal reviewer ha promosso una fonte ad APPROVED, un re-run
+    del seed non deve riportarla a NEEDS_REVIEW.
+    """
+    from django.core.management import call_command
+
+    call_command("seed_italy_legal_sources", "--quiet")
+    src = LegalSource.objects.get(slug="it-dpr-12-2025-tun-danno-biologico")
+    src.status = SourceStatus.APPROVED
+    src.save(update_fields=["status"])
+
+    call_command("seed_italy_legal_sources", "--quiet")
+    src.refresh_from_db()
+    assert src.status == SourceStatus.APPROVED
+
+
+@pytest.mark.django_db
+def test_seed_marks_tabelle_milano_as_court_table_not_decree():
+    """
+    Le Tabelle Milano sono uno standard giurisprudenziale, NON una
+    fonte ministeriale: garanzia anti-confusione documentata in
+    REQ-3 e nelle note del seed.
+    """
+    from django.core.management import call_command
+
+    call_command("seed_italy_legal_sources", "--quiet")
+    src = LegalSource.objects.get(slug="it-tabelle-milano-2024")
+    assert src.source_type == SourceType.COURT_TABLE
+    assert src.source_type != SourceType.MINISTRY_DECREE
+    assert src.reliability != Reliability.OFFICIAL
+
+
+@pytest.mark.django_db
+def test_seeded_sources_do_not_unlock_public_calculations():
+    """
+    Conferma fine-a-fine: anche dopo aver seedato 5 fonti italiane, il
+    calculator pubblico Italia/road_accident resta `unavailable`. Le
+    fonti sono `needs_review`, quindi il manager `.approved()` le esclude.
+    """
+    from django.core.management import call_command
+
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+    from apps.calculators.enums import CalculationStatus
+
+    call_command("seed_italy_legal_sources", "--quiet")
+
+    calc = ItalyRoadAccidentBodilyInjuryCalculator()
+    result = calc.compute({})
+    assert result.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
+    assert result.sources == []
+    assert result.estimated_min is None

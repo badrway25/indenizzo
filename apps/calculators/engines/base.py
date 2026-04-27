@@ -80,11 +80,14 @@ class BaseCalculator(ABC):
         return []
 
     def resolve_sources(self) -> list[LegalSource]:
-        country_code = self._infer_country_code() if self.fallback_to_country else None
+        # Fallback country: lasciamo che il resolver lo derivi da
+        # `Jurisdiction.country` su DB (più robusto dello split testuale
+        # del codice). Se `fallback_to_country=False`, il resolver vincola
+        # esplicitamente il match alla sola jurisdiction.
         return find_approved_sources(
             jurisdiction_code=self.jurisdiction_code,
-            country_code=country_code,
             source_types=list(self.required_source_types) or None,
+            fallback_to_country=self.fallback_to_country,
         )
 
     @abstractmethod
@@ -94,12 +97,6 @@ class BaseCalculator(ABC):
         """Calcolo vero. Subclassi placeholder lo lasciano "unavailable"."""
 
     # --- helper interni --------------------------------------------------
-    def _infer_country_code(self) -> str | None:
-        """`IT-NATIONAL` → `IT`. `FR-PARIS` → `FR`. Vuoto se non parsabile."""
-        if not self.jurisdiction_code:
-            return None
-        return self.jurisdiction_code.split("-", 1)[0] or None
-
     def get_currency(self) -> str:
         """
         Valuta del risultato. Deriva dalla `Jurisdiction.default_currency`,

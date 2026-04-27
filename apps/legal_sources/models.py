@@ -160,13 +160,27 @@ class LegalSource(models.Model):
     @property
     def is_usable_for_calculations(self) -> bool:
         """True solo se la fonte può essere consumata da un calcolo pubblico."""
+        return self.is_usable_at()
+
+    def is_usable_at(self, reference_date=None) -> bool:
+        """
+        Vigenza alla `reference_date` indicata (default: oggi).
+
+        Coerente con `LegalSourceManager.approved(reference_date=...)`:
+        esclude fonti scadute (`valid_until < ref`) ed esclude fonti non
+        ancora in vigore (`effective_date > ref`). Necessario per
+        simulazioni datate, dove la fonte applicabile è quella vigente
+        al momento del fatto, non al momento della query.
+        """
         if self.status != SourceStatus.APPROVED:
             return False
-        if self.valid_until:
-            from django.utils import timezone
+        from django.utils import timezone
 
-            if self.valid_until < timezone.now().date():
-                return False
+        ref = reference_date or timezone.now().date()
+        if self.valid_until and self.valid_until < ref:
+            return False
+        if self.effective_date and self.effective_date > ref:
+            return False
         return True
 
 
