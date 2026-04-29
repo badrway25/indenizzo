@@ -84,7 +84,7 @@ def countries(request):
     # le fonti non sono `approved`. Lo distinguiamo da "really available".
     # Hardcoded per ora — quando FR avrà engine + sources approved si
     # toglierà da SCAFFOLD_ONLY_COUNTRIES.
-    SCAFFOLD_ONLY_COUNTRIES = {"FR"}
+    SCAFFOLD_ONLY_COUNTRIES = {"FR", "BE"}
     countries_view = []
     for country in MVP_COUNTRIES:
         registered = country["code"] in available_countries
@@ -264,7 +264,10 @@ def project_status(request):
     # operativa (calcola davvero) o solo scaffold (calculator placeholder
     # che restituisce `unavailable`). Hardcoded — quando FR avrà il vero
     # engine si toglierà da SCAFFOLD_ONLY_PAIRS.
-    SCAFFOLD_ONLY_PAIRS = {("FR-NATIONAL", CaseType.ROAD_ACCIDENT_BODILY_INJURY.value)}
+    SCAFFOLD_ONLY_PAIRS = {
+        ("FR-NATIONAL", CaseType.ROAD_ACCIDENT_BODILY_INJURY.value),
+        ("BE-NATIONAL", CaseType.ROAD_ACCIDENT_BODILY_INJURY.value),
+    }
     modules_active = [
         {
             "jurisdiction": j,
@@ -274,7 +277,6 @@ def project_status(request):
         for j, c in sorted(registered_pairs)
     ]
     upcoming = [
-        {"jurisdiction": "BE-NATIONAL", "case_type": CaseType.ROAD_ACCIDENT_BODILY_INJURY.value},
         {"jurisdiction": "MA-NATIONAL", "case_type": CaseType.INTERNATIONAL_INHERITANCE.value},
         {"jurisdiction": "TN-NATIONAL", "case_type": CaseType.INTERNATIONAL_INHERITANCE.value},
     ]

@@ -465,3 +465,40 @@ def test_wizard_start_page_offers_france_scaffold_link():
     body = response.content.decode("utf-8")
     assert "/wizard/fr/road-accident/" in body
     assert "Open scaffold wizard" in body or "Legal sources under review" in body
+
+
+# ---------------------------------------------------------------------------
+# F-belgium-road-accident-bootstrap — UI assertions
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_project_status_marks_belgium_as_scaffold():
+    from apps.accounts.models import User
+
+    User.objects.create_user(username="staff_be", password="x", is_staff=True, is_active=True)
+    client = Client()
+    client.login(username="staff_be", password="x")
+    response = client.get(reverse("core:project_status"))
+    assert response.status_code == 200
+    body = response.content.decode("utf-8")
+    assert "BE-NATIONAL" in body
+    assert "road_accident_bodily_injury" in body
+    assert "scaffold" in body
+
+
+@pytest.mark.django_db
+def test_countries_page_shows_belgium_as_legal_sources_under_review():
+    response = Client().get(reverse("core:countries"))
+    assert response.status_code == 200
+    body = response.content.decode("utf-8")
+    # Both FR and BE are scaffold-only.
+    assert body.count("Legal sources under review") >= 2
+
+
+@pytest.mark.django_db
+def test_wizard_start_page_offers_belgium_scaffold_link():
+    response = Client().get(reverse("cases:wizard_start"))
+    assert response.status_code == 200
+    body = response.content.decode("utf-8")
+    assert "/wizard/be/road-accident/" in body

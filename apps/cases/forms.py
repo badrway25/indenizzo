@@ -213,8 +213,29 @@ class FranceRoadAccidentWizardForm(ItalyRoadAccidentWizardForm):
         return value or "FR"
 
 
+class BelgiumRoadAccidentWizardForm(ItalyRoadAccidentWizardForm):
+    """Belgique — accident de la circulation. Stesso schema input.
+
+    Differenza unica: il default di ``accident_country`` passa a "BE".
+    Stesso pattern di scaffold del modulo francese: il calculator BE
+    è ancora un placeholder che restituisce ``unavailable``.
+    """
+
+    accident_country = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(),
+        initial="BE",
+        max_length=2,
+    )
+
+    def clean_accident_country(self) -> str:
+        value = (self.cleaned_data.get("accident_country") or "").upper().strip()
+        return value or "BE"
+
+
 __all__ = [
     "ItalyRoadAccidentWizardForm",
     "FranceRoadAccidentWizardForm",
+    "BelgiumRoadAccidentWizardForm",
     "ACCIDENT_COUNTRY_DEFAULT",
 ]

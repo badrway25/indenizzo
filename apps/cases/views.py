@@ -36,7 +36,11 @@ from apps.calculators.registry import list_available_calculators
 from apps.compliance.models import ConsentPurpose
 from apps.compliance.services import record_consent
 
-from .forms import FranceRoadAccidentWizardForm, ItalyRoadAccidentWizardForm
+from .forms import (
+    BelgiumRoadAccidentWizardForm,
+    FranceRoadAccidentWizardForm,
+    ItalyRoadAccidentWizardForm,
+)
 from .models import Simulation
 from .services import run_simulation
 
@@ -46,6 +50,8 @@ ITALY_ROAD_ACCIDENT_JURISDICTION = "IT-NATIONAL"
 ITALY_ROAD_ACCIDENT_CASE_TYPE = CaseType.ROAD_ACCIDENT_BODILY_INJURY.value
 FRANCE_ROAD_ACCIDENT_JURISDICTION = "FR-NATIONAL"
 FRANCE_ROAD_ACCIDENT_CASE_TYPE = CaseType.ROAD_ACCIDENT_BODILY_INJURY.value
+BELGIUM_ROAD_ACCIDENT_JURISDICTION = "BE-NATIONAL"
+BELGIUM_ROAD_ACCIDENT_CASE_TYPE = CaseType.ROAD_ACCIDENT_BODILY_INJURY.value
 SIMULATION_CONSENT_PURPOSE_CODE = "simulation_processing"
 
 
@@ -65,6 +71,10 @@ def wizard_start(request):
     is_france_road_scaffolded = (
         FRANCE_ROAD_ACCIDENT_JURISDICTION,
         FRANCE_ROAD_ACCIDENT_CASE_TYPE,
+    ) in registered
+    is_belgium_road_scaffolded = (
+        BELGIUM_ROAD_ACCIDENT_JURISDICTION,
+        BELGIUM_ROAD_ACCIDENT_CASE_TYPE,
     ) in registered
 
     options = [
@@ -88,10 +98,18 @@ def wizard_start(request):
             "scaffold_only": is_france_road_scaffolded,
             "description_key": "france_road_accident",
         },
+        {
+            "country_code": "BE",
+            "country_name": "Belgique",
+            "case_label": CaseType.ROAD_ACCIDENT_BODILY_INJURY.label,
+            "url": reverse("cases:wizard_belgium_road_accident"),
+            "available": False,
+            "scaffold_only": is_belgium_road_scaffolded,
+            "description_key": "belgium_road_accident",
+        },
     ]
     upcoming = [
         {"country_code": "IT", "case_label": CaseType.INHERITANCE_BASIC.label},
-        {"country_code": "BE", "case_label": CaseType.ROAD_ACCIDENT_BODILY_INJURY.label},
         {"country_code": "MA", "case_label": CaseType.INTERNATIONAL_INHERITANCE.label},
         {"country_code": "TN", "case_label": CaseType.INTERNATIONAL_INHERITANCE.label},
     ]
@@ -282,6 +300,70 @@ def _run_france_road_accident(request, form: FranceRoadAccidentWizardForm) -> Si
     return run_simulation(
         jurisdiction_code=FRANCE_ROAD_ACCIDENT_JURISDICTION,
         case_type=FRANCE_ROAD_ACCIDENT_CASE_TYPE,
+        input_data=form.to_input_data(),
+        request=request,
+        user=request.user if request.user.is_authenticated else None,
+        consent_record=consent,
+        locale=locale,
+    )
+
+
+# ---------------------------------------------------------------------------
+# /wizard/be/road-accident/  — Belgium, accident de la circulation (scaffold)
+# ---------------------------------------------------------------------------
+
+
+@require_http_methods(["GET", "POST"])
+def wizard_belgium_road_accident(request):
+    """Step unico scaffold MVP Belgio. Stesso pattern di Francia.
+
+    Anche con submit valido, la `Simulation` risultante avrà
+    ``status=unavailable_requires_legal_validation`` finché lo Studio
+    non promuove a ``approved`` fonte/dataset/formula.
+    """
+    if request.method == "POST":
+        form = BelgiumRoadAccidentWizardForm(request.POST)
+        if form.is_valid():
+            if form.is_likely_bot:
+                logger.info("cases.wizard.dropped reason=honeypot path=%s", request.path)
+                return redirect(reverse("cases:wizard_start"))
+
+            simulation = _run_belgium_road_accident(request, form)
+            return redirect(
+                reverse(
+                    "cases:wizard_result",
+                    kwargs={"public_id": str(simulation.public_id)},
+                )
+            )
+    else:
+        form = BelgiumRoadAccidentWizardForm()
+
+    return render(
+        request,
+        "public/wizard_belgium_road_accident.html",
+        {
+            "form": form,
+            "jurisdiction_code": BELGIUM_ROAD_ACCIDENT_JURISDICTION,
+            "case_type": BELGIUM_ROAD_ACCIDENT_CASE_TYPE,
+        },
+    )
+
+
+def _run_belgium_road_accident(request, form: BelgiumRoadAccidentWizardForm) -> Simulation:
+    """Stesso pattern di `_run_france_road_accident` ma su giurisdizione BE."""
+    purpose = _get_or_create_simulation_purpose()
+    consent = record_consent(
+        purpose=purpose,
+        accepted=True,
+        request=request,
+        user=request.user if request.user.is_authenticated else None,
+        metadata={"trigger": "wizard_belgium_road_accident"},
+    )
+    locale = (translation.get_language() or "fr").split("-", 1)[0].lower()
+
+    return run_simulation(
+        jurisdiction_code=BELGIUM_ROAD_ACCIDENT_JURISDICTION,
+        case_type=BELGIUM_ROAD_ACCIDENT_CASE_TYPE,
         input_data=form.to_input_data(),
         request=request,
         user=request.user if request.user.is_authenticated else None,

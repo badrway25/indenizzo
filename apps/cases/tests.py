@@ -701,3 +701,106 @@ def test_wizard_france_post_no_estimates_in_output(france_setup):
     assert output.get("estimated_max") is None
     # Lo status è blockante per qualunque downstream (PDF, ecc.).
     assert sim.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
+
+
+# ---------------------------------------------------------------------------
+# F-belgium-road-accident-bootstrap — wizard BE scaffold.
+# ---------------------------------------------------------------------------
+
+
+@pytest.fixture
+def belgium_setup(db):
+    belgium = Country.objects.create(code="BE", code_alpha3="BEL", name="Belgique")
+    eur = Currency.objects.filter(code="EUR").first() or Currency.objects.create(
+        code="EUR", name="Euro", symbol="€"
+    )
+    french_be = Language.objects.filter(code="fr").first() or Language.objects.create(
+        code="fr", name="Français"
+    )
+    juris = Jurisdiction.objects.create(
+        country=belgium,
+        code="BE-NATIONAL",
+        name="Belgique (niveau fédéral)",
+        legal_system=Jurisdiction.LegalSystem.CIVIL_LAW,
+        default_currency=eur,
+        default_language=french_be,
+    )
+    return {"country": belgium, "currency": eur, "language": french_be, "jurisdiction": juris}
+
+
+WIZARD_BE_VALID_PAYLOAD = {
+    "accident_country": "BE",
+    "victim_age": "35",
+    "permanent_disability_percentage": "10",
+    "fault_percentage": "0",
+    "consent_simulation": "on",
+    "website": "",
+}
+
+
+@pytest.mark.django_db
+def test_wizard_start_links_to_belgium_scaffold():
+    response = Client().get(reverse("cases:wizard_start"))
+    assert response.status_code == 200
+    body = response.content.decode("utf-8")
+    assert reverse("cases:wizard_belgium_road_accident") in body
+
+
+@pytest.mark.django_db
+def test_wizard_belgium_road_accident_get_returns_200():
+    response = Client().get(reverse("cases:wizard_belgium_road_accident"))
+    assert response.status_code == 200
+    body = response.content.decode("utf-8")
+    assert 'name="consent_simulation"' in body
+    assert 'name="website"' in body
+    assert "Module under legal validation" in body
+
+
+@pytest.mark.django_db
+def test_wizard_belgium_post_creates_simulation_unavailable(belgium_setup):
+    response = Client().post(
+        reverse("cases:wizard_belgium_road_accident"),
+        WIZARD_BE_VALID_PAYLOAD,
+    )
+    assert Simulation.objects.count() == 1
+    sim = Simulation.objects.get()
+    assert sim.jurisdiction == belgium_setup["jurisdiction"]
+    assert sim.country == belgium_setup["country"]
+    assert sim.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
+    assert sim.estimated_min is None
+    assert sim.estimated_mid is None
+    assert sim.estimated_max is None
+    assert response.status_code == 302
+    assert response.url == reverse("cases:wizard_result", kwargs={"public_id": str(sim.public_id)})
+
+
+@pytest.mark.django_db
+def test_wizard_belgium_post_input_data_uses_BE(belgium_setup):
+    Client().post(
+        reverse("cases:wizard_belgium_road_accident"),
+        WIZARD_BE_VALID_PAYLOAD,
+    )
+    sim = Simulation.objects.get()
+    assert sim.input_data["accident_country"] == "BE"
+
+
+@pytest.mark.django_db
+def test_wizard_belgium_form_default_country_is_BE():
+    from apps.cases.forms import BelgiumRoadAccidentWizardForm
+
+    form = BelgiumRoadAccidentWizardForm()
+    assert form.fields["accident_country"].initial == "BE"
+
+
+@pytest.mark.django_db
+def test_wizard_belgium_post_no_estimates_in_output(belgium_setup):
+    Client().post(
+        reverse("cases:wizard_belgium_road_accident"),
+        WIZARD_BE_VALID_PAYLOAD,
+    )
+    sim = Simulation.objects.get()
+    output = sim.output_data or {}
+    assert output.get("estimated_min") is None
+    assert output.get("estimated_mid") is None
+    assert output.get("estimated_max") is None
+    assert sim.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
