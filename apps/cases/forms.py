@@ -190,4 +190,31 @@ def _decimal_or_none(value: Decimal | None) -> str | None:
     return str(value)
 
 
-__all__ = ["ItalyRoadAccidentWizardForm", "ACCIDENT_COUNTRY_DEFAULT"]
+class FranceRoadAccidentWizardForm(ItalyRoadAccidentWizardForm):
+    """France — accident de la circulation. Stesso schema input dell'Italia.
+
+    Differenza unica: il default di ``accident_country`` passa da "IT" a
+    "FR". I campi numerici/temporali sono identici (età, % invalidità
+    permanente, giorni ITT, ecc.); le translation strings ``gettext_lazy``
+    sono già localizzate via i18n. Il calculator FR è ancora un
+    placeholder che restituisce ``unavailable`` — il form serve solo
+    per scaffold del funnel.
+    """
+
+    accident_country = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(),
+        initial="FR",
+        max_length=2,
+    )
+
+    def clean_accident_country(self) -> str:
+        value = (self.cleaned_data.get("accident_country") or "").upper().strip()
+        return value or "FR"
+
+
+__all__ = [
+    "ItalyRoadAccidentWizardForm",
+    "FranceRoadAccidentWizardForm",
+    "ACCIDENT_COUNTRY_DEFAULT",
+]

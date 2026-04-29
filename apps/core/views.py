@@ -78,12 +78,22 @@ def privacy(request):
 def countries(request):
     registered_pairs = list_available_calculators()
     available_countries = {jurisdiction.split("-", 1)[0] for jurisdiction, _ in registered_pairs}
+    # Lista dei paesi in cui il calculator pubblico produce stime reali
+    # (CALCULATED). Un calculator può essere registrato come "scaffold"
+    # ma restituire SOLO `unavailable_requires_legal_validation` finché
+    # le fonti non sono `approved`. Lo distinguiamo da "really available".
+    # Hardcoded per ora — quando FR avrà engine + sources approved si
+    # toglierà da SCAFFOLD_ONLY_COUNTRIES.
+    SCAFFOLD_ONLY_COUNTRIES = {"FR"}
     countries_view = []
     for country in MVP_COUNTRIES:
+        registered = country["code"] in available_countries
+        is_scaffold = country["code"] in SCAFFOLD_ONLY_COUNTRIES
         countries_view.append(
             {
                 **country,
-                "has_calculator": country["code"] in available_countries,
+                "has_calculator": registered and not is_scaffold,
+                "scaffold_only": registered and is_scaffold,
             }
         )
     return render(
@@ -250,9 +260,20 @@ def project_status(request):
     }
 
     registered_pairs = list_available_calculators()
-    modules_active = [{"jurisdiction": j, "case_type": c} for j, c in sorted(registered_pairs)]
+    # Per ogni coppia (jurisdiction, case_type) registrata, marchiamo se è
+    # operativa (calcola davvero) o solo scaffold (calculator placeholder
+    # che restituisce `unavailable`). Hardcoded — quando FR avrà il vero
+    # engine si toglierà da SCAFFOLD_ONLY_PAIRS.
+    SCAFFOLD_ONLY_PAIRS = {("FR-NATIONAL", CaseType.ROAD_ACCIDENT_BODILY_INJURY.value)}
+    modules_active = [
+        {
+            "jurisdiction": j,
+            "case_type": c,
+            "scaffold_only": (j, c) in SCAFFOLD_ONLY_PAIRS,
+        }
+        for j, c in sorted(registered_pairs)
+    ]
     upcoming = [
-        {"jurisdiction": "FR-NATIONAL", "case_type": CaseType.ROAD_ACCIDENT_BODILY_INJURY.value},
         {"jurisdiction": "BE-NATIONAL", "case_type": CaseType.ROAD_ACCIDENT_BODILY_INJURY.value},
         {"jurisdiction": "MA-NATIONAL", "case_type": CaseType.INTERNATIONAL_INHERITANCE.value},
         {"jurisdiction": "TN-NATIONAL", "case_type": CaseType.INTERNATIONAL_INHERITANCE.value},

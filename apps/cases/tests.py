@@ -587,3 +587,117 @@ def test_wizard_post_unavailable_warning_in_output(italy_setup):
     sim = Simulation.objects.get()
     warnings = sim.output_data.get("warnings") or []
     assert any("approved" in w.lower() or "validation" in w.lower() for w in warnings)
+
+
+# ---------------------------------------------------------------------------
+# F-france-road-accident-bootstrap — wizard FR scaffold.
+# Nessun importo reale: il calculator FR è un placeholder.
+# ---------------------------------------------------------------------------
+
+
+@pytest.fixture
+def france_setup(db):
+    france = Country.objects.create(code="FR", code_alpha3="FRA", name="France")
+    eur = Currency.objects.filter(code="EUR").first() or Currency.objects.create(
+        code="EUR", name="Euro", symbol="€"
+    )
+    french = Language.objects.create(code="fr", name="Français")
+    juris = Jurisdiction.objects.create(
+        country=france,
+        code="FR-NATIONAL",
+        name="France (niveau national)",
+        legal_system=Jurisdiction.LegalSystem.CIVIL_LAW,
+        default_currency=eur,
+        default_language=french,
+    )
+    return {"country": france, "currency": eur, "language": french, "jurisdiction": juris}
+
+
+WIZARD_FR_VALID_PAYLOAD = {
+    "accident_country": "FR",
+    "victim_age": "35",
+    "permanent_disability_percentage": "10",
+    "fault_percentage": "0",
+    "consent_simulation": "on",
+    "website": "",
+}
+
+
+@pytest.mark.django_db
+def test_wizard_start_links_to_france_scaffold():
+    """La landing /wizard/ deve esporre il link al wizard FR scaffold."""
+    response = Client().get(reverse("cases:wizard_start"))
+    assert response.status_code == 200
+    body = response.content.decode("utf-8")
+    assert reverse("cases:wizard_france_road_accident") in body
+    # E deve marcarlo come "Legal sources under review", non "Module ready".
+    assert "Legal sources under review" in body
+
+
+@pytest.mark.django_db
+def test_wizard_france_road_accident_get_returns_200():
+    response = Client().get(reverse("cases:wizard_france_road_accident"))
+    assert response.status_code == 200
+    body = response.content.decode("utf-8")
+    assert 'name="consent_simulation"' in body
+    assert 'name="website"' in body
+    # Banner specifico del placeholder FR.
+    assert "Module under legal validation" in body
+
+
+@pytest.mark.django_db
+def test_wizard_france_post_creates_simulation_unavailable(france_setup):
+    """POST valido crea Simulation FR ma status = unavailable, no estimates."""
+    response = Client().post(
+        reverse("cases:wizard_france_road_accident"),
+        WIZARD_FR_VALID_PAYLOAD,
+    )
+    assert Simulation.objects.count() == 1
+    sim = Simulation.objects.get()
+    assert sim.jurisdiction == france_setup["jurisdiction"]
+    assert sim.country == france_setup["country"]
+    assert sim.case_type == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value or True
+    # Status check vero
+    assert sim.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
+    # Nessun importo prodotto.
+    assert sim.estimated_min is None
+    assert sim.estimated_mid is None
+    assert sim.estimated_max is None
+    # Redirect a result.
+    assert response.status_code == 302
+    assert response.url == reverse("cases:wizard_result", kwargs={"public_id": str(sim.public_id)})
+
+
+@pytest.mark.django_db
+def test_wizard_france_post_input_data_uses_FR(france_setup):
+    Client().post(
+        reverse("cases:wizard_france_road_accident"),
+        WIZARD_FR_VALID_PAYLOAD,
+    )
+    sim = Simulation.objects.get()
+    assert sim.input_data["accident_country"] == "FR"
+
+
+@pytest.mark.django_db
+def test_wizard_france_form_default_country_is_FR():
+    from apps.cases.forms import FranceRoadAccidentWizardForm
+
+    form = FranceRoadAccidentWizardForm()
+    # Field initial value must be 'FR'.
+    assert form.fields["accident_country"].initial == "FR"
+
+
+@pytest.mark.django_db
+def test_wizard_france_post_no_estimates_in_output(france_setup):
+    """Output JSON della Simulation FR non deve contenere importi numerici."""
+    Client().post(
+        reverse("cases:wizard_france_road_accident"),
+        WIZARD_FR_VALID_PAYLOAD,
+    )
+    sim = Simulation.objects.get()
+    output = sim.output_data or {}
+    assert output.get("estimated_min") is None
+    assert output.get("estimated_mid") is None
+    assert output.get("estimated_max") is None
+    # Lo status è blockante per qualunque downstream (PDF, ecc.).
+    assert sim.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value

@@ -20,6 +20,10 @@
             <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-ok-600/10 text-ok-600">
               {% translate "Module ready" %}
             </span>
+          {% elif option.scaffold_only %}
+            <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-gold-500/10 text-gold-600">
+              {% translate "Legal sources under review" %}
+            </span>
           {% else %}
             <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-stone2-100 text-stone2-500">
               {% translate "In preparation" %}
@@ -28,13 +32,22 @@
         </div>
         <h2 class="mt-3 font-serif text-2xl text-ink-950">{{ option.country_name }} — {{ option.case_label }}</h2>
         <p class="mt-3 text-sm text-ink-800 leading-relaxed">
-          {% blocktranslate %}Bodily injury after a road accident in Italy. The wizard collects optional inputs and persists a simulation. No estimate is produced unless validated legal sources are available.{% endblocktranslate %}
+          {% if option.scaffold_only %}
+            {% blocktranslate %}Bodily injury after a road accident. The wizard accepts inputs but the legal sources are still under Studio review, so the simulation returns "requires legal validation" rather than a numeric estimate.{% endblocktranslate %}
+          {% else %}
+            {% blocktranslate %}Bodily injury after a road accident. The wizard collects optional inputs and persists a simulation. No estimate is produced unless validated legal sources are available.{% endblocktranslate %}
+          {% endif %}
         </p>
 
         <div class="mt-6">
           {% if option.available %}
             <a href="{{ option.url }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
               {% translate "Start this simulation" %}
+              <span aria-hidden="true">→</span>
+            </a>
+          {% elif option.scaffold_only %}
+            <a href="{{ option.url }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-sand-50 border border-stone2-200 text-ink-900 hover:bg-white font-semibold">
+              {% translate "Open scaffold wizard" %}
               <span aria-hidden="true">→</span>
             </a>
           {% else %}

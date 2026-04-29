@@ -20,6 +20,10 @@
               <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-ok-600/10 text-ok-600">
                 {% translate "Available" %}
               </span>
+            {% elif country.scaffold_only %}
+              <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-gold-500/10 text-gold-600">
+                {% translate "Legal sources under review" %}
+              </span>
             {% else %}
               <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-stone2-100 text-stone2-500">
                 {% translate "In preparation" %}
@@ -30,6 +34,8 @@
           <p class="mt-2 text-sm text-stone2-500 leading-relaxed">
             {% if country.has_calculator %}
               {% blocktranslate %}A calculator is registered for this country. Real estimates require approved legal sources.{% endblocktranslate %}
+            {% elif country.scaffold_only %}
+              {% blocktranslate %}A calculator scaffold is registered. Legal sources are still under Studio review, so the wizard returns "requires legal validation" and never invents numbers.{% endblocktranslate %}
             {% else %}
               {% blocktranslate %}Modules for this country are being prepared. Sources are still under legal validation.{% endblocktranslate %}
             {% endif %}

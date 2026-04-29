@@ -428,3 +428,40 @@ def test_project_status_shows_single_value_when_range_inactive():
     assert "DPR-12-2025-MORAL" in body
     # Status badge "draft" visible somewhere on its card.
     assert "draft" in body
+
+
+@pytest.mark.django_db
+def test_project_status_marks_france_as_scaffold():
+    """FR-NATIONAL × road_accident_bodily_injury must show as `scaffold`."""
+    from apps.accounts.models import User
+
+    User.objects.create_user(username="staff3", password="x", is_staff=True, is_active=True)
+    client = Client()
+    client.login(username="staff3", password="x")
+    response = client.get(reverse("core:project_status"))
+    assert response.status_code == 200
+    body = response.content.decode("utf-8")
+    # The FR pair must be listed.
+    assert "FR-NATIONAL" in body
+    assert "road_accident_bodily_injury" in body
+    # And badged as scaffold (not as a regular active calculator).
+    assert "scaffold" in body
+
+
+@pytest.mark.django_db
+def test_countries_page_shows_france_as_legal_sources_under_review():
+    """Public /countries/ marks FR with the scaffold-only badge."""
+    response = Client().get(reverse("core:countries"))
+    assert response.status_code == 200
+    body = response.content.decode("utf-8")
+    assert "Legal sources under review" in body
+
+
+@pytest.mark.django_db
+def test_wizard_start_page_offers_france_scaffold_link():
+    """Public /wizard/ shows the FR option as scaffold."""
+    response = Client().get(reverse("cases:wizard_start"))
+    assert response.status_code == 200
+    body = response.content.decode("utf-8")
+    assert "/wizard/fr/road-accident/" in body
+    assert "Open scaffold wizard" in body or "Legal sources under review" in body
