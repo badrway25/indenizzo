@@ -12,8 +12,7 @@
 > (status `needs_review`) senza scaricare il file: lo Studio carica il
 > PDF a mano via Django admin → `LegalSourceAttachment`. Nessuna fonte
 > approvata, nessun dataset, nessuna formula creata dal command.
-> **Il re-run reale non è ancora stato eseguito**: questo report
-> documenta lo stato del package post-triage e gli esiti attesi.
+> **Re-run reale eseguito 2026-04-29 09:28-09:29 UTC** — vedi §0ter.
 
 ## 0bis. URL triage applicato (iter1 → iter2)
 
@@ -76,7 +75,154 @@ oltre a `succeeded` / `failed`.
 Il re-run reale è gating per lo Studio: prima conferma del triage,
 poi `python manage.py download_international_legal_sources --all`.
 
-## 0. Riepilogo per paese
+## 0ter. Esiti reali del re-run iter2 (2026-04-29 09:28-09:29 UTC)
+
+Re-run eseguito paese-per-paese a triage applicato. **Tutte le righe
+di `succeeded`/`failed`/`manual_required` sono lette dai 4 manifest
+correnti.**
+
+| Paese | Run UTC | succeeded | failed | manual_required | LegalSource (DB) | Attachment PDF |
+|---|---|---:|---:|---:|---:|---:|
+| FR | 2026-04-29 09:28:43 | 4 | 0 | 1 | 5 needs_review | 2 |
+| BE | 2026-04-29 09:28:49 | 5 | 0 | 0 | 5 needs_review | 2 |
+| MA | 2026-04-29 09:28:53 | 4 | 0 | 0 | 4 needs_review | 3 |
+| TN | 2026-04-29 09:29:00 | 3 | 0 | 2 | 5 needs_review | 0 |
+| **Totale** | | **16** | **0** | **3** | **19** | **7** |
+
+I conteggi attesi del triage sono rispettati al 100%.
+
+### 0ter.1. Distribuzione `classification` reale
+
+| classe | FR | BE | MA | TN | totale | note |
+|---|---:|---:|---:|---:|---:|---|
+| `PDF_OK` | 2 | 2 | 3 | 0 | **7** | tutti con `Attachment` PDF in DB |
+| `HTML_OK_SOURCE_PAGE` | 1 | 3 | 0 | 2 | **6** | nessun `Attachment` (HTML è metadata) |
+| `HTML_WARNING_NOT_FINAL_DOCUMENT` | 1 | 0 | 0 | 0 | **1** | landing Gazette du Palais 2025 |
+| `HTTP_202_WARNING` | 0 | 0 | 1 | 1 | **2** | EUR-Lex Reg. 650/2012 — vedi §0ter.4 |
+| `MANUAL_DOWNLOAD_REQUIRED` | 1 | 0 | 0 | 2 | **3** | metadata creata, file da caricare a mano |
+| `FAILED_NEEDS_REPLACEMENT_URL` | 0 | 0 | 0 | 0 | **0** | nessun fallimento — triage efficace |
+
+### 0ter.2. Lista `manual_download_required` (3 fonti)
+
+| Slug | Paese | URL ufficiale | Motivo | Azione richiesta |
+|---|---|---|---|---|
+| `fr-loi-badinter-1985` | FR | `https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000693454` | Legifrance 403 su UA non-browser | Scaricare consolidée PDF da browser, attaccare via Django admin |
+| `tn-jort-code-statut-personnel-1956` | TN | `https://www.pist.tn/jort/1956/1956F/Jo10456.pdf` | `pist.tn` ConnectTimeout | Scaricare JORT 1956 da `pist.tn`/`iort.gov.tn` da browser |
+| `tn-code-statut-personnel-compiled` | TN | `https://jafbase.fr/docMaghreb/TunisieStatutpersonnel.PDF` | `jafbase.fr` SSL hostname mismatch | Per scope successioni il livre-IX HTML basta; se serve la versione completa scaricare da `legislation.tn`/`iort.gov.tn` |
+
+In DB ciascuna ha `LegalSource(status=needs_review)` con `notes`
+che riporta integralmente la `manual_reason` + il prefisso "Manual
+download required:". Nessun `LegalSourceAttachment` finché lo Studio
+non carica il file a mano.
+
+### 0ter.3. Hash + size + local_path delle fonti scaricate
+
+| slug | classe | size (B) | sha256 (12c) | local_path |
+|---|---|---:|---|---|
+| `fr-nomenclature-dintilhac-2005` | HTML_OK | 60 751 | `0db1f1d220b3` | `legal_data/sources/france/downloaded/fr-nomenclature-dintilhac-2005.html` |
+| `fr-referentiel-mornet-2024` | PDF_OK | 898 965 | `2dd2e760bc05` | `legal_data/sources/france/downloaded/fr-referentiel-mornet-2024.pdf` |
+| `fr-bareme-capitalisation-gazette-palais-2022` | PDF_OK | 978 456 | `686a557b23fa` | `legal_data/sources/france/downloaded/fr-bareme-capitalisation-gazette-palais-2022.pdf` |
+| `fr-bareme-capitalisation-gazette-palais-2025-page` | HTML_WARN | 56 413 | `6e42ec8378f1` | `legal_data/sources/france/downloaded/fr-bareme-capitalisation-gazette-palais-2025-page.html` |
+| `be-loi-1989-11-21-rc-auto` | HTML_OK | 24 224 | `58402e522116` | `legal_data/sources/belgium/downloaded/be-loi-1989-11-21-rc-auto.html` |
+| `be-tableau-indicatif-2024` | PDF_OK | 2 373 682 | `37b0a0b4606e` | `legal_data/sources/belgium/downloaded/be-tableau-indicatif-2024.pdf` |
+| `be-tableau-indicatif-2020` | PDF_OK | 1 985 686 | `1b073f5c41c8` | `legal_data/sources/belgium/downloaded/be-tableau-indicatif-2020.pdf` |
+| `be-tables-schryvers-2026-page` | HTML_OK | 181 518 | `1e4229479a38` | `legal_data/sources/belgium/downloaded/be-tables-schryvers-2026-page.html` |
+| `be-tables-schryvers-tableurs` | HTML_OK | 186 071 | `c70e16124b3c` | `legal_data/sources/belgium/downloaded/be-tables-schryvers-tableurs.html` |
+| `ma-code-famille-moudawana-fr-pdf` | PDF_OK | 489 071 | `41db4ab3d505` | `legal_data/sources/morocco/downloaded/ma-code-famille-moudawana-fr-pdf.pdf` |
+| `ma-code-droits-reels-loi-39-08` | PDF_OK | 282 302 | `55e190cfd1b1` | `legal_data/sources/morocco/downloaded/ma-code-droits-reels-loi-39-08.pdf` |
+| `ma-code-droits-reels-traduction-aute` | PDF_OK | 548 484 | `605d1a65fcce` | `legal_data/sources/morocco/downloaded/ma-code-droits-reels-traduction-aute.pdf` |
+| `eu-regulation-650-2012-successions-fr-ma` | HTTP_202 | 0 | `e3b0c44298fc` | `legal_data/sources/morocco/downloaded/eu-regulation-650-2012-successions-fr-ma.html` |
+| `tn-code-statut-personnel-livre-ix-succession` | HTML_OK | 36 183 | `ab8078968ccf` | `legal_data/sources/tunisia/downloaded/tn-code-statut-personnel-livre-ix-succession.html` |
+| `tn-code-dip-loi-98-97` | HTML_OK | 181 484 | `bc292813708d` | `legal_data/sources/tunisia/downloaded/tn-code-dip-loi-98-97.html` |
+| `eu-regulation-650-2012-successions-fr-tn` | HTTP_202 | 0 | `e3b0c44298fc` | `legal_data/sources/tunisia/downloaded/eu-regulation-650-2012-successions-fr-tn.html` |
+
+> **Nota stabilità contenuto rispetto a iter1.** Tutti gli sha256 dei
+> contenuti già scaricati a iter1 (es. moudawana, mornet, tableau
+> indicatif) sono **identici** a quelli registrati in iter1: nessuna
+> variazione lato server. L'unico contenuto nuovo è
+> `tn-code-dip-loi-98-97` (sha `bc292813708d` nuovo vs `3ee9c7d11dbc`
+> di iter1) — la pagina `legislation-securite.tn` ha contenuto
+> dinamico (timestamp/cookie banner). **Nota**: lo sha cambia ma il
+> contenuto giuridico è lo stesso; lo Studio lo confermerà nella
+> review.
+
+### 0ter.4. EUR-Lex 202 — switch `/TXT/PDF/` → `/TXT/` NON ha risolto
+
+Il triage iter2 prevedeva che lo switch all'endpoint HTML
+`/legal-content/FR/TXT/?uri=CELEX:32012R0650` restituisse `200 + corpo
+HTML completo`. **Nei fatti, anche l'endpoint HTML risponde HTTP 202 +
+body vuoto** quando interrogato da `requests` con UA programmatico:
+
+| slug | http | size | sha256 | classification |
+|---|---:|---:|---|---|
+| `eu-regulation-650-2012-successions-fr-ma` | 202 | 0 | `e3b0c44298fc…` (null hash) | `HTTP_202_WARNING` |
+| `eu-regulation-650-2012-successions-fr-tn` | 202 | 0 | `e3b0c44298fc…` (null hash) | `HTTP_202_WARNING` |
+
+Diagnosi: EUR-Lex applica throttling/rendering asincrono **a tutti**
+gli endpoint `/legal-content/FR/TXT/...` con response cache miss.
+La `LegalSource` è creata come metadata ma **il file su disco è
+vuoto**. Le strategie residue:
+
+1. **Manuale**: scaricare il testo HTML/PDF da browser e attaccare via
+   Django admin (analoga al pattern `manual_download_required`).
+2. **Re-run con polling**: estendere `_fetch` per ritentare al primo
+   202 con back-off di 2-5 secondi finché lo status diventa 200.
+   Invasivo: cambia il command, va testato.
+3. **Mirror EUR-Lex JSON-LD**: API REST `webapi.legaltools.org` o
+   `oeil.secure.europarl.europa.eu` espone il regolamento. Da
+   verificare la stabilità.
+
+**Raccomandazione**: trattare come `manual_download_required` in iter3
+del triage (file finale via download manuale dallo Studio).
+
+### 0ter.5. Garanzie verificate post re-run
+
+Verifiche eseguite via `python manage.py shell` (read-only):
+
+- `LegalSource` FR/BE/MA/TN: **19 totale, 19 needs_review, 0 approved**.
+- `LegalReview` per `country__code__in=("FR","BE","MA","TN")`: **0**.
+- `CompensationDataset.objects.count()` = **2** (solo i 2 IT pre-esistenti).
+- `CalculationFormula.objects.count()` = **1** (solo IT base).
+- Italia `it-dpr-12-2025-tun-danno-biologico`: **approved** (invariato).
+- Dataset `DPR-12-2025` base: **approved**, **9 191 righe** (invariato).
+- Dataset `DPR-12-2025-MORAL`: **approved**, **27 573 righe** (invariato).
+- Formula `italy_art_138_tun_2025_base`: **approved**, `amount_rule = row_amount_range_direct` (invariato).
+- Smoke `35/10/0` → `min=26 268 / mid=27 353 / max=28 439` ✓ (invariato).
+
+### 0ter.6. Prossimi step (post re-run iter2)
+
+1. **Studio carica i 3 manuali via admin** (Badinter, JORT 1956, CSP
+   compiled). Per ciascuno: aprire la `LegalSource` esistente,
+   sezione `Attachments`, upload del PDF reale. Lo SHA-256 verrà
+   calcolato dal `LegalSourceAttachment.save()`.
+2. **Trattare i 2 EUR-Lex come manuali** (vedi §0ter.4): sostituire i
+   file vuoti scaricando il testo da browser. In alternativa, in un
+   iter3 del triage marcarli `manual_download_required: True` per
+   coerenza con il pattern.
+3. **Legal review** per le 19 fonti: lo Studio analizza ciascuna,
+   crea `LegalReview(decision=approve|reject|needs_changes)` con
+   commento esplicito. Non c'è gating sull'ordine: ogni fonte è
+   indipendente.
+4. **Estrazione dati per le fonti `approved`** — solo dopo legal
+   review:
+   - BE Tableau Indicatif 2024 → parser PDF dedicato → CSV → import
+     additivo.
+   - FR Mornet 2024 → parser PDF dedicato → CSV → import.
+   - FR Barème Gazette du Palais 2022 → parser tabellare per
+     coefficienti di capitalizzazione.
+5. **Engine** (in fase successiva, non ora): stub MA/TN inheritance
+   già scaffold; FR/BE road accident scaffold. Nessuna logica
+   numerica fino a `approved` su almeno una fonte E `LegalReview`
+   esplicita sullo scope.
+6. **Lasciare invariato il calculator Italia** — il re-run di iter2
+   non l'ha toccato e non deve essere toccato. Smoke 35/10/0 sigilla.
+
+## 0. Riepilogo per paese — STORICO iter1 (sostituito da §0ter)
+
+> Le sezioni §0 / §§1-4 / §5 / §6 documentano il run di iter1
+> (2026-04-29 08:57-08:58 UTC), prima del triage. Sono mantenute come
+> traccia storica per spiegare *perché* il triage URL è stato necessario;
+> i conteggi e le classification *correnti* sono in §0ter.
 
 | Paese | Run | OK | FAIL | HTTP_202 | LegalSource (DB) | Attachment PDF | Manifest |
 |---|---|---:|---:|---:|---:|---:|---|
