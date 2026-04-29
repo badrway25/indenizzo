@@ -54,3 +54,7 @@ legal_data/sources/**/extraction_notes.md
 legal_data/extraction_logs/*.json
 legal_data/extraction_logs/*.log
 legal_data/exports/*.json
+
+# Local runtime/dev artifacts
+backups/
+.playwright-mcp/
