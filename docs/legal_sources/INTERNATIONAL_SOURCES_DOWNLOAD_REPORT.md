@@ -255,22 +255,58 @@ via Django admin → `LegalSourceAttachment`.
 
 ### Effetti del micro-fix sul DB
 
-Re-run **non ancora eseguito**. Quando verrà rieseguito (`--country MA`
-e `--country TN`), il command:
-- per gli EUR-Lex non chiamerà `_fetch` (pattern manuale già esistente);
-- aggiornerà la `LegalSource` esistente impostando le notes con
-  `manual_reason` ma **non** retrocederà lo status (logica
+Comportamento del command su EUR-Lex post iter3:
+- per gli EUR-Lex non chiama `_fetch` (pattern manuale già esistente);
+- aggiorna la `LegalSource` esistente impostando le notes con
+  `manual_reason` ma **non** retrocede lo status (logica
   `_upsert_legal_source` su esistente: aggiorna solo metadata neutri);
-- non scriverà alcun nuovo file su disco; i file vuoti già scaricati
+- non scrive alcun nuovo file su disco; i file vuoti già scaricati
   in iter2 (sha256 = null hash) restano sul disco — lo Studio può
   scaricarli a mano e caricarli via admin (il vecchio file vuoto sarà
   sovrascritto dall'`Attachment.save()` come nuovo blob).
 
 > **Nessun file viene cancellato dal command**: i due HTML vuoti di
 > iter2 restano in `legal_data/sources/{morocco,tunisia}/downloaded/`
-> finché lo Studio non li sostituisce manualmente. Il manifest verrà
-> riscritto al prossimo run con `classification: MANUAL_DOWNLOAD_REQUIRED`,
+> finché lo Studio non li sostituisce manualmente. Il manifest viene
+> riscritto al re-run con `classification: MANUAL_DOWNLOAD_REQUIRED`,
 > `size_bytes: 0`, `local_path: ""`.
+
+### 0quater.1. Re-run iter3 — esiti reali (2026-04-29 14:10 UTC, MA + TN)
+
+Re-run eseguito post iter3 limitato a MA e TN (FR/BE invariati).
+Esiti reali letti dai due manifest rigenerati:
+
+| Paese | succeeded | failed | manual_required | atteso |
+|---|---:|---:|---:|---|
+| MA | 3 | 0 | 1 | OK (3 PDF + 1 EUR-Lex MANUAL) |
+| TN | 2 | 0 | 3 | OK (1 HTML CSP + 1 HTML DIP + 3 MANUAL: JORT + CSP-compiled + EUR-Lex) |
+
+**EUR-Lex post iter3** — entrambi gli item nei manifest MA/TN hanno:
+- `classification: "MANUAL_DOWNLOAD_REQUIRED"`;
+- `manual_download_required: true`;
+- `http_status: null`, `final_url: ""`, `local_path: ""`,
+  `sha256: ""`, `size_bytes: 0`;
+- `notes` contiene `"Manual download required: EUR-Lex returns HTTP 202 with empty body for automated requests; Studio must attach official PDF/HTML manually."`.
+
+**Stato DB verificato post re-run iter3**:
+- `LegalSource` INTL totali: **19** (4 FR + 5 BE + 4 MA + 5 TN, costante);
+- `LegalSource` INTL `approved`: **0** (vincolo rispettato);
+- `LegalSource` INTL `needs_review`: **19** (zero retrocessioni);
+- `LegalReview` su INTL: **0** (nessuna revisione legale automatizzata);
+- `CompensationDataset` totali: **2** (`DPR-12-2025`, `DPR-12-2025-MORAL`,
+  entrambi `approved`, **invariati**);
+- `CalculationFormula` totali: **1** (`italy_art_138_tun_2025_base`,
+  `approved`, `parameters.amount_rule = "row_amount_range_direct"`,
+  **invariata**);
+- EUR-Lex MA + TN: `LegalSource` esistono in `needs_review` con
+  `attachments.count() == 0` (zero allegati come atteso).
+
+**Italia smoke 35 / 10 / 0** — invariata post re-run iter3:
+`min = 26 268,00` · `mid = 27 353,00` · `max = 28 439,00` €
+(formula range a 3 righe: min/mid/max coerenti con dataset moral).
+
+Totali consolidati post iter3 (tutti i 4 paesi): **OK 14 · FAIL 0 ·
+MANUAL 5** su 19 item totali — coerente con la previsione in §0quater.
 
 ## 0. Riepilogo per paese — STORICO iter1 (sostituito da §0ter)
 
