@@ -247,6 +247,184 @@ def test_project_status_returns_200_for_staff():
     assert "CalculationFormula" in body
     assert "Active calculators" in body
     assert "No-go for production" in body
+    # F-staff-dashboard-moral-range-display: new always-present sections.
+    assert "Approved datasets" in body
+    assert "Active calculation rule" in body
+    assert "Reference smoke" in body
     # Module pair always-active for IT (placeholder + real engine)
     assert "IT-NATIONAL" in body
     assert "road_accident_bodily_injury" in body
+
+
+# ---------------------------------------------------------------------------
+# F-staff-dashboard-moral-range-display — content with fixture data.
+# REGOLA D'ORO: nessun valore TUN reale qui. I Decimal sono segnaposto
+# (1, 100, 200, 300 EUR) per esercitare la dashboard, non per riprodurre
+# la fonte legale.
+# ---------------------------------------------------------------------------
+
+
+def _seed_full_stack_with_moral_range(*, range_active: bool):
+    """Crea base + moral datasets + formula con o senza range attivo.
+
+    Usato per testare la dashboard staff in due scenari:
+    - range_active=True: amount_rule == "row_amount_range_direct" e
+      moral dataset APPROVED — la dashboard deve mostrare il range.
+    - range_active=False: amount_rule == "row_amount_direct" e moral
+      dataset DRAFT — la dashboard deve mostrare il single-value path.
+    """
+    from datetime import date as _date
+    from decimal import Decimal as _Dec
+
+    from apps.calculators.enums import CaseType
+    from apps.compensation.models import (
+        CalculationFormula,
+        CompensationDataset,
+        CompensationTableRow,
+        DatasetStatus,
+    )
+    from apps.jurisdictions.models import Country, Jurisdiction, Language
+    from apps.legal_sources.enums import SourceStatus, SourceType
+    from apps.legal_sources.models import LegalSource
+
+    italy = Country.objects.create(code="IT", code_alpha3="ITA", name="Italia")
+    juris = Jurisdiction.objects.create(
+        country=italy,
+        code="IT-NATIONAL",
+        name="Italia (livello nazionale)",
+        legal_system=Jurisdiction.LegalSystem.CIVIL_LAW,
+    )
+    italian = Language.objects.create(code="it", name="Italiano")
+    src = LegalSource.objects.create(
+        slug="it-dpr-12-2025-tun-danno-biologico",
+        title="D.P.R. 12/2025 (test stub)",
+        country=italy,
+        jurisdiction=juris,
+        language=italian,
+        source_type=SourceType.MINISTRY_DECREE,
+        status=SourceStatus.APPROVED,
+        publication_date=_date(2025, 2, 11),
+        effective_date=_date(2025, 1, 13),
+    )
+    base = CompensationDataset.objects.create(
+        source=src,
+        jurisdiction=juris,
+        country=italy,
+        case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
+        name="TUN base (test)",
+        version_label="DPR-12-2025",
+        status=DatasetStatus.APPROVED,
+        valid_from=_date(2025, 1, 13),
+    )
+    CompensationTableRow.objects.create(
+        dataset=base,
+        row_type="tun_biological_total_amount",
+        age_min=0,
+        age_max=0,
+        disability_min=10,
+        disability_max=10,
+        point_value=_Dec("1"),
+    )
+    moral = CompensationDataset.objects.create(
+        source=src,
+        jurisdiction=juris,
+        country=italy,
+        case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
+        name="TUN moral (test)",
+        version_label="DPR-12-2025-MORAL",
+        status=DatasetStatus.APPROVED if range_active else DatasetStatus.DRAFT,
+        valid_from=_date(2025, 1, 13),
+    )
+    for kind, point_value in (("min", "100"), ("mid", "200"), ("max", "300")):
+        CompensationTableRow.objects.create(
+            dataset=moral,
+            row_type=f"tun_biological_moral_{kind}_total_amount",
+            age_min=0,
+            age_max=0,
+            disability_min=10,
+            disability_max=10,
+            point_value=_Dec(point_value),
+        )
+    if range_active:
+        params = {
+            "engine": "italy_tun_point_value_v1",
+            "requires": ["victim_age", "permanent_disability_percentage"],
+            "row_match": ["victim_age", "permanent_disability_percentage"],
+            "amount_rule": "row_amount_range_direct",
+            "fault_reduction": True,
+            "range_dataset_version_label": "DPR-12-2025-MORAL",
+            "min_row_type": "tun_biological_moral_min_total_amount",
+            "mid_row_type": "tun_biological_moral_mid_total_amount",
+            "max_row_type": "tun_biological_moral_max_total_amount",
+        }
+    else:
+        params = {
+            "engine": "italy_tun_point_value_v1",
+            "requires": ["victim_age", "permanent_disability_percentage"],
+            "row_match": ["victim_age", "permanent_disability_percentage"],
+            "amount_rule": "row_amount_direct",
+            "fault_reduction": True,
+        }
+    CalculationFormula.objects.create(
+        dataset=base,
+        code="italy_art_138_tun_2025_base",
+        name="Stub formula",
+        expression_text="placeholder",
+        source_reference="placeholder",
+        parameters=params,
+        status=DatasetStatus.APPROVED,
+    )
+    return src, base, moral
+
+
+def _login_staff(client):
+    from apps.accounts.models import User
+
+    User.objects.create_user(username="staff2", password="x", is_staff=True, is_active=True)
+    client.login(username="staff2", password="x")
+
+
+@pytest.mark.django_db
+def test_project_status_shows_moral_range_when_active():
+    _seed_full_stack_with_moral_range(range_active=True)
+    client = Client()
+    _login_staff(client)
+    response = client.get(reverse("core:project_status"))
+    assert response.status_code == 200
+    body = response.content.decode("utf-8")
+
+    # Both dataset version_labels visible.
+    assert "DPR-12-2025" in body
+    assert "DPR-12-2025-MORAL" in body
+    # Active rule must be the range one.
+    assert "row_amount_range_direct" in body
+    # All three moral row_types must be listed.
+    assert "tun_biological_moral_min_total_amount" in body
+    assert "tun_biological_moral_mid_total_amount" in body
+    assert "tun_biological_moral_max_total_amount" in body
+    # The "min/mid/max range active" hint must be visible.
+    assert "min/mid/max range active" in body
+    # Reference smoke values surfaced (display-only, no real TUN computation).
+    assert "26268" in body
+    assert "27353" in body
+    assert "28439" in body
+
+
+@pytest.mark.django_db
+def test_project_status_shows_single_value_when_range_inactive():
+    _seed_full_stack_with_moral_range(range_active=False)
+    client = Client()
+    _login_staff(client)
+    response = client.get(reverse("core:project_status"))
+    assert response.status_code == 200
+    body = response.content.decode("utf-8")
+
+    # Single-value rule visible.
+    assert "row_amount_direct" in body
+    # Range hint NOT shown; the gentle warning IS shown.
+    assert "min/mid/max range active" not in body
+    assert "Reference range applicable only when row_amount_range_direct is active" in body
+    # Moral dataset still listed (it exists, just DRAFT).
+    assert "DPR-12-2025-MORAL" in body
+    # Status badge "draft" visible somewhere on its card.
+    assert "draft" in body

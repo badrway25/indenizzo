@@ -141,6 +141,7 @@ def project_status(request):
         CalculationFormula,
         CompensationDataset,
         CompensationTableRow,
+        DatasetStatus,
         ExtractionLog,
     )
     from apps.crm.models import Lead
@@ -160,6 +161,60 @@ def project_status(request):
         .first()
     )
     rows_count = CompensationTableRow.objects.filter(dataset=dataset).count() if dataset else 0
+    # Nota: il `Meta.ordering` di CompensationTableRow include `age_min` /
+    # `disability_min`, che Django propaga al SELECT e rompe `distinct()`.
+    # `.order_by("row_type")` ripristina il distinct corretto.
+    base_row_types = (
+        list(
+            CompensationTableRow.objects.filter(dataset=dataset)
+            .order_by("row_type")
+            .values_list("row_type", flat=True)
+            .distinct()
+        )
+        if dataset
+        else []
+    )
+
+    # Range moral dataset (secondario, referenziato da formula.parameters
+    # quando amount_rule == row_amount_range_direct).
+    moral = (
+        CompensationDataset.objects.filter(version_label="DPR-12-2025-MORAL")
+        .select_related("source", "jurisdiction", "country")
+        .first()
+    )
+    moral_row_type_counts: list[dict] = []
+    moral_rows_total = 0
+    if moral:
+        # Conta per row_type. Se la formula dichiara dei row_type espliciti
+        # nei parameters range, li mostriamo nell'ordine min/mid/max anche
+        # se nel DB risultano in altro ordine alfabetico.
+        params = formula.parameters or {} if formula else {}
+        ordered = [
+            ("min", params.get("min_row_type") or "tun_biological_moral_min_total_amount"),
+            ("mid", params.get("mid_row_type") or "tun_biological_moral_mid_total_amount"),
+            ("max", params.get("max_row_type") or "tun_biological_moral_max_total_amount"),
+        ]
+        for kind, rt in ordered:
+            cnt = CompensationTableRow.objects.filter(dataset=moral, row_type=rt).count()
+            moral_rows_total += cnt
+            moral_row_type_counts.append({"kind": kind, "row_type": rt, "count": cnt})
+
+    # Active calculation rule: vista "umana" dei parametri della formula
+    # approvata, focalizzata sui campi rilevanti per il range engine.
+    active_rule = None
+    if formula and formula.status == DatasetStatus.APPROVED:
+        params = formula.parameters or {}
+        active_rule = {
+            "amount_rule": params.get("amount_rule"),
+            "fault_reduction": params.get("fault_reduction"),
+            "is_range": params.get("amount_rule") == "row_amount_range_direct",
+            "range_dataset_version_label": params.get("range_dataset_version_label"),
+            "min_row_type": params.get("min_row_type"),
+            "mid_row_type": params.get("mid_row_type"),
+            "max_row_type": params.get("max_row_type"),
+            "engine": params.get("engine"),
+        }
+
     last_extraction = (
         ExtractionLog.objects.filter(method=ExtractionLog.Method.CSV_IMPORT)
         .order_by("-created_at", "-pk")
@@ -170,6 +225,29 @@ def project_status(request):
         if src
         else None
     )
+    # Latest LegalReview che cita esplicitamente le Tabelle 2.A/2.B/2.C —
+    # è quella che ha autorizzato l'attivazione del range moral. Se non
+    # esiste (range non ancora attivato) restiamo a None senza errore.
+    last_moral_review = (
+        LegalReview.objects.filter(source=src, comment__icontains="2.A")
+        .filter(comment__icontains="2.B")
+        .filter(comment__icontains="2.C")
+        .order_by("-created_at", "-pk")
+        .first()
+        if src
+        else None
+    )
+
+    # Reference smoke values (display-only). NON eseguiamo il calculator
+    # qui: i numeri sono il contratto storico documentato dei test/QA,
+    # mostrati per dare un riferimento veloce all'oncall di Studio.
+    reference_smoke = {
+        "input": {"victim_age": 35, "permanent_disability_percentage": 10, "fault_percentage": 0},
+        "expected_min": "26268",
+        "expected_mid": "27353",
+        "expected_max": "28439",
+        "applicable": active_rule is not None and active_rule.get("is_range"),
+    }
 
     registered_pairs = list_available_calculators()
     modules_active = [{"jurisdiction": j, "case_type": c} for j, c in sorted(registered_pairs)]
@@ -184,10 +262,17 @@ def project_status(request):
         "source": src,
         "attachment": attach,
         "dataset": dataset,
+        "base_row_types": base_row_types,
+        "moral_dataset": moral,
+        "moral_row_type_counts": moral_row_type_counts,
+        "moral_rows_total": moral_rows_total,
+        "active_rule": active_rule,
+        "reference_smoke": reference_smoke,
         "formula": formula,
         "rows_count": rows_count,
         "last_extraction_log": last_extraction,
         "last_review": last_review,
+        "last_moral_review": last_moral_review,
         "simulation_total": Simulation.objects.count(),
         "simulation_calculated": Simulation.objects.filter(status="calculated").count(),
         "simulation_unavailable": Simulation.objects.filter(

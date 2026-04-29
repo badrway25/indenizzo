@@ -1,7 +1,35 @@
 # MVP status — Studio Legale Internazionale Badrane LegalTech
 
-> Snapshot al 2026-04-27. Living document. Aggiornare a ogni promozione
+> Snapshot al 2026-04-29. Living document. Aggiornare a ogni promozione
 > di status legale o aggiunta di un nuovo modulo.
+
+## 0. Moral range activated
+
+Stato attuale (post F-italy-moral-legal-review-and-activation):
+
+- Tabelle 2.A / 2.B / 2.C del D.P.R. 12/2025 importate in dataset
+  separato `DPR-12-2025-MORAL` (27 573 righe), promosso a `approved`
+  con `LegalReview` formale dello Studio.
+- La formula `italy_art_138_tun_2025_base` ora dichiara
+  `amount_rule = "row_amount_range_direct"` con
+  `range_dataset_version_label = "DPR-12-2025-MORAL"` e i 3 row_type
+  morali min/mid/max.
+- **Cosa significa**: il calculator pubblico restituisce un range
+  reale `min < mid < max` invece di tre valori coincidenti. La cella
+  base biological non viene più letta dal funnel — sostituita dalle
+  tre celle "comprensive" del moral dataset (biologico + morale).
+- **Smoke 35/10/0**: `min = 26 268 EUR`, `mid = 27 353 EUR`,
+  `max = 28 439 EUR`. `confidence = medium`. Tutti > 21 709 (= valore
+  biologico solo) di un incremento ~21–31% in linea con i parametri di
+  legge.
+- **Rollback** (1 edit, ~5 secondi):
+  ripristinare `formula.parameters.amount_rule = "row_amount_direct"` e
+  rimuovere i 4 campi range. Il calculator torna immediatamente a
+  `min == mid == max == 21 709`. Il dataset moral resta in DB intatto
+  (mai cancellato, mai cambia per il rollback).
+
+Le 9 191 righe Tabella 1 base restano `approved` e intatte. La
+`LegalSource` resta `approved` invariata.
 
 ## 1. Cosa è operativo oggi
 
