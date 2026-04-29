@@ -50,6 +50,11 @@ legal_data/sources/**/*.csv
 legal_data/sources/**/*.xlsx
 legal_data/sources/**/*.xls
 legal_data/sources/**/*.docx
+# HTML scaricati dai download command — voluminosi, contenuto esterno.
+# Solo il manifest (JSON) e i README restano committabili.
+legal_data/sources/**/*.html
+legal_data/sources/**/*.htm
+legal_data/sources/**/*.HTML
 legal_data/sources/**/extraction_notes.md
 legal_data/extraction_logs/*.json
 legal_data/extraction_logs/*.log
