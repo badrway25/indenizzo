@@ -1,0 +1,126 @@
+# Caddyfile.staging.example — Studio Legale Badrane LegalTech
+#
+# Reverse proxy con HTTPS automatico per lo staging.
+#
+# Cosa fa:
+#   - HTTPS automatico via Let's Encrypt (ACME HTTP-01).
+#   - Reverse proxy verso il container web docker (127.0.0.1:8000).
+#   - Basic auth davanti a TUTTO lo staging (deterrente accesso pubblico).
+#   - Security headers base (HSTS, Referrer-Policy, X-Content-Type-Options).
+#   - Limite upload 20 MB (sufficiente per allegati LegalSourceAttachment).
+#
+# Cosa NON fa (responsabilità di chi configura il VPS):
+#   - Nessun login Studio reale (la basic auth è deterrente, non SSO/MFA).
+#   - Nessuna IP allowlist (commentata sotto, abilita se serve).
+#   - Nessun rate-limit applicativo (vedi PRODUCTION_PREFLIGHT.md).
+#   - Nessuna cache statica (Caddy serve direttamente il backend; in
+#     prod conviene un volume condiviso o un CDN).
+#
+# Installazione (Ubuntu 24.04):
+#   sudo apt install -y caddy
+#   sudo cp Caddyfile.staging.example /etc/caddy/Caddyfile
+#   # personalizza dominio + admin email + basic_auth hash
+#   sudo systemctl reload caddy
+#
+# Genera l'hash bcrypt per basic auth:
+#   caddy hash-password
+#   # incolla la password staging, copia l'hash nel campo qui sotto
+
+# ---------------------------------------------------------------------------
+# Email per le notifiche ACME / scadenza certificato.
+# Sostituisci con un indirizzo monitorato dello Studio.
+# ---------------------------------------------------------------------------
+{
+    email ops@studiolegalebadrane.it
+    # Per provare in locale senza certificato pubblico, abilita:
+    # local_certs
+    # debug
+}
+
+# ---------------------------------------------------------------------------
+# Sito staging.
+# Sostituisci STAGING_DOMAIN con il vero hostname (es.
+# `staging.studiolegalebadrane.it`). Deve avere un record DNS A/AAAA
+# che punta a questo VPS PRIMA del primo reload, altrimenti l'ACME
+# challenge fallisce.
+# ---------------------------------------------------------------------------
+STAGING_DOMAIN {
+    # Reverse proxy verso il container web (publish su 127.0.0.1:8000
+    # via docker-compose.staging.override.yml — vedi VPS_STAGING_RUNBOOK §5).
+    reverse_proxy 127.0.0.1:8000 {
+        # Pass-through degli header originali (Django legge X-Forwarded-*
+        # via SECURE_PROXY_SSL_HEADER per generare URL HTTPS corretti).
+        header_up X-Real-IP {remote_host}
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Proto {scheme}
+        header_up Host {host}
+
+        # Timeout coerente con gunicorn --timeout 60 (PDF reportlab
+        # richiede ~5-10s sui report grandi, alziamo a 90s a monte).
+        transport http {
+            response_header_timeout 90s
+            dial_timeout 5s
+        }
+    }
+
+    # ----------------------------------------------------------------------
+    # Basic auth a livello reverse-proxy.
+    # Sostituisci `staff` e l'hash con valori reali. Hash NON è la password:
+    #     caddy hash-password
+    # NON committare mai l'hash reale in repo: questo file è example.
+    # ----------------------------------------------------------------------
+    basic_auth {
+        staff REPLACE_WITH_BCRYPT_HASH_FROM_caddy_hash_password
+    }
+
+    # ----------------------------------------------------------------------
+    # Optional: IP allowlist (commenta basic_auth sopra se preferisci IP).
+    # @blocked not remote_ip 203.0.113.0/24 198.51.100.42
+    # respond @blocked "Forbidden" 403
+    # ----------------------------------------------------------------------
+
+    # ----------------------------------------------------------------------
+    # Security headers base. HSTS lo gestisce anche Django via
+    # DJANGO_SECURE_HSTS_SECONDS, ma lo emettiamo qui pure per coerenza
+    # quando una request bypassa il backend (es. errore 502).
+    # ----------------------------------------------------------------------
+    header {
+        Strict-Transport-Security "max-age=2592000; includeSubDomains"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        # Rimuove header che leakano stack info.
+        -Server
+        -X-Powered-By
+    }
+
+    # ----------------------------------------------------------------------
+    # Limiti richiesta. 20 MB copre upload PDF G.U. (~3 MB) + margine.
+    # Aumenta solo se serve davvero (più upload = più rischio DoS).
+    # ----------------------------------------------------------------------
+    request_body {
+        max_size 20MB
+    }
+
+    # ----------------------------------------------------------------------
+    # Log request (utile per audit accessi staging). I log vanno in
+    # /var/log/caddy/staging-access.log se Caddy gira come servizio
+    # systemd con la default unit. Adatta path se necessario.
+    # ----------------------------------------------------------------------
+    log {
+        output file /var/log/caddy/staging-access.log {
+            roll_size 10MB
+            roll_keep 5
+        }
+        format json
+        # Non loggare campi che possono contenere PII (Authorization,
+        # Cookie). Caddy loggerà comunque method/path/status/duration.
+        level INFO
+    }
+
+    # ----------------------------------------------------------------------
+    # Encoding (gzip + zstd). Riduce banda significativamente per i
+    # PDF download? No, sono già compressi — ma riduce HTML/JSON.
+    # ----------------------------------------------------------------------
+    encode zstd gzip
+}
