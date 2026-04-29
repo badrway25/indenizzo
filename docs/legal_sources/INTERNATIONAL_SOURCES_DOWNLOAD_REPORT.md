@@ -13,6 +13,12 @@
 > PDF a mano via Django admin → `LegalSourceAttachment`. Nessuna fonte
 > approvata, nessun dataset, nessuna formula creata dal command.
 > **Re-run reale eseguito 2026-04-29 09:28-09:29 UTC** — vedi §0ter.
+>
+> **Iter3 (2026-04-29) — micro-fix EUR-Lex.** I due item
+> `eu-regulation-650-2012-successions-fr-ma` e `…-fr-tn` sono ora
+> marcati `manual_download_required: True`. Anche l'endpoint HTML
+> `/legal-content/FR/TXT/?uri=CELEX:32012R0650` rispondeva HTTP 202 +
+> body vuoto (vedi §0ter.4). Vedi §0quater per i dettagli.
 
 ## 0bis. URL triage applicato (iter1 → iter2)
 
@@ -216,6 +222,55 @@ Verifiche eseguite via `python manage.py shell` (read-only):
    esplicita sullo scope.
 6. **Lasciare invariato il calculator Italia** — il re-run di iter2
    non l'ha toccato e non deve essere toccato. Smoke 35/10/0 sigilla.
+
+## 0quater. Micro-fix iter3 — EUR-Lex Reg. 650/2012 → manual
+
+Sulla base dell'evidenza in §0ter.4 (HTTP 202 + body vuoto anche
+all'endpoint HTML), i due item EUR-Lex sono stati marcati
+`manual_download_required: True`. Lo Studio carica il PDF/HTML reale
+via Django admin → `LegalSourceAttachment`.
+
+| Slug | Paese | URL ufficiale | manual_reason |
+|---|---|---|---|
+| `eu-regulation-650-2012-successions-fr-ma` | MA | `https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32012R0650` | "EUR-Lex returns HTTP 202 with empty body for automated requests; Studio must attach official PDF/HTML manually." |
+| `eu-regulation-650-2012-successions-fr-tn` | TN | `https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32012R0650` | (idem) |
+
+### Esiti attesi del prossimo re-run (post iter3)
+
+| Paese | Item totali | OK | FAIL | MANUAL | HTTP_202 |
+|---|---:|---:|---:|---:|---:|
+| FR | 5 | 4 | 0 | 1 | 0 |
+| BE | 5 | 5 | 0 | 0 | 0 |
+| MA | 4 | 3 | 0 | 1 (EUR-Lex) | 0 |
+| TN | 5 | 2 | 0 | 3 (JORT + CSP-compiled + EUR-Lex) | 0 |
+| **Totale** | **19** | **14** | **0** | **5** | **0** |
+
+### Lista finale `manual_download_required` (5 fonti, post iter3)
+
+1. `fr-loi-badinter-1985` (FR) — Legifrance 403
+2. `tn-jort-code-statut-personnel-1956` (TN) — `pist.tn` ConnectTimeout
+3. `tn-code-statut-personnel-compiled` (TN) — `jafbase.fr` SSL hostname mismatch
+4. `eu-regulation-650-2012-successions-fr-ma` (MA) — EUR-Lex HTTP 202
+5. `eu-regulation-650-2012-successions-fr-tn` (TN) — EUR-Lex HTTP 202
+
+### Effetti del micro-fix sul DB
+
+Re-run **non ancora eseguito**. Quando verrà rieseguito (`--country MA`
+e `--country TN`), il command:
+- per gli EUR-Lex non chiamerà `_fetch` (pattern manuale già esistente);
+- aggiornerà la `LegalSource` esistente impostando le notes con
+  `manual_reason` ma **non** retrocederà lo status (logica
+  `_upsert_legal_source` su esistente: aggiorna solo metadata neutri);
+- non scriverà alcun nuovo file su disco; i file vuoti già scaricati
+  in iter2 (sha256 = null hash) restano sul disco — lo Studio può
+  scaricarli a mano e caricarli via admin (il vecchio file vuoto sarà
+  sovrascritto dall'`Attachment.save()` come nuovo blob).
+
+> **Nessun file viene cancellato dal command**: i due HTML vuoti di
+> iter2 restano in `legal_data/sources/{morocco,tunisia}/downloaded/`
+> finché lo Studio non li sostituisce manualmente. Il manifest verrà
+> riscritto al prossimo run con `classification: MANUAL_DOWNLOAD_REQUIRED`,
+> `size_bytes: 0`, `local_path: ""`.
 
 ## 0. Riepilogo per paese — STORICO iter1 (sostituito da §0ter)
 

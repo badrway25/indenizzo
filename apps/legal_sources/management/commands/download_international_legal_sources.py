@@ -233,6 +233,9 @@ MOROCCO_PACKAGE: list[dict] = [
     # Triage applied (iter1 → iter2):
     # - REMOVED `ma-code-famille-loi-70-03-dgct`: timeout su DGCT host +
     #   duplicato funzionale di `ma-code-famille-moudawana-fr-pdf` (PDF_OK).
+    # Triage iter3:
+    # - `eu-regulation-650-2012-successions-fr-ma` → manual_download_required
+    #   (EUR-Lex risponde HTTP 202 + body vuoto anche all'endpoint /TXT/).
     {
         "slug": "ma-code-famille-moudawana-fr-pdf",
         "title": "Code de la famille marocain / Moudawana — version française",
@@ -267,8 +270,8 @@ MOROCCO_PACKAGE: list[dict] = [
         "status": "needs_review",
     },
     {
-        # Triage applied: l'endpoint /TXT/PDF/ di EUR-Lex risponde 202 +
-        # body vuoto (rendering PDF asincrono). Switch a /TXT/ HTML.
+        # Triage iter3: anche l'endpoint HTML /TXT/ di EUR-Lex risponde
+        # 202 + body vuoto per richieste programmatiche. Pattern manuale.
         "slug": "eu-regulation-650-2012-successions-fr-ma",
         "title": "Règlement UE n°650/2012 — successions transfrontalières",
         "url": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32012R0650",
@@ -278,6 +281,11 @@ MOROCCO_PACKAGE: list[dict] = [
         "source_type": "official_law",
         "reliability": "official",
         "status": "needs_review",
+        "manual_download_required": True,
+        "manual_reason": (
+            "EUR-Lex returns HTTP 202 with empty body for automated requests; "
+            "Studio must attach official PDF/HTML manually."
+        ),
     },
 ]
 
@@ -292,6 +300,9 @@ TUNISIA_PACKAGE: list[dict] = [
     #   (jafbase.fr ha SSL hostname mismatch; nessun mirror ufficiale TN
     #   verificato come stabile).
     # - EUR-Lex switch a /TXT/ HTML (vedi commento MA).
+    # Triage iter3:
+    # - `eu-regulation-650-2012-successions-fr-tn` → manual_download_required
+    #   (EUR-Lex risponde HTTP 202 + body vuoto anche all'endpoint /TXT/).
     {
         "slug": "tn-jort-code-statut-personnel-1956",
         "title": "JORT 1956 — Code du statut personnel tunisien",
@@ -358,7 +369,8 @@ TUNISIA_PACKAGE: list[dict] = [
         "status": "needs_review",
     },
     {
-        # Triage applied: switch a /TXT/ HTML, vedi commento MA.
+        # Triage iter3: vedi commento MA — EUR-Lex non scaricabile in
+        # automatico, pattern manuale.
         "slug": "eu-regulation-650-2012-successions-fr-tn",
         "title": "Règlement UE n°650/2012 — successions transfrontalières",
         "url": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32012R0650",
@@ -368,6 +380,11 @@ TUNISIA_PACKAGE: list[dict] = [
         "source_type": "official_law",
         "reliability": "official",
         "status": "needs_review",
+        "manual_download_required": True,
+        "manual_reason": (
+            "EUR-Lex returns HTTP 202 with empty body for automated requests; "
+            "Studio must attach official PDF/HTML manually."
+        ),
     },
 ]
 

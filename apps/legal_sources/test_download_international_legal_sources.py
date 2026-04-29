@@ -379,6 +379,65 @@ def test_eur_lex_url_uses_html_endpoint_not_pdf():
     assert len(found) == 2
 
 
+def test_eur_lex_items_are_manual_download_required():
+    """Triage iter3: EUR-Lex returns 202 + empty body to programmatic UAs.
+
+    Both endpoints are flagged `manual_download_required` so the command
+    skips the fetch and the Studio attaches the official PDF/HTML manually.
+    """
+    eur_lex_slugs = (
+        "eu-regulation-650-2012-successions-fr-ma",
+        "eu-regulation-650-2012-successions-fr-tn",
+    )
+    found = []
+    for package in cmd.PACKAGES.values():
+        for item in package:
+            if item["slug"] in eur_lex_slugs:
+                found.append(item)
+                assert item.get("manual_download_required") is True
+                assert "EUR-Lex" in item.get("manual_reason", "")
+                assert "HTTP 202" in item.get("manual_reason", "")
+    assert len(found) == 2
+
+
+@pytest.mark.django_db
+def test_eur_lex_creates_legal_source_without_attachment(tmp_legal_data, fake_fetch, monkeypatch):
+    """End-to-end: EUR-Lex items skip _fetch and produce no Attachment."""
+    fetched_urls: list[str] = []
+
+    def tracking_fetch(url, timeout=cmd.DOWNLOAD_TIMEOUT_SECONDS):
+        fetched_urls.append(url)
+        if url not in fake_fetch["table"]:
+            import requests
+
+            raise requests.HTTPError(f"unmocked URL: {url}")
+        return fake_fetch["table"][url]
+
+    monkeypatch.setattr(cmd, "_fetch", tracking_fetch)
+
+    # Populate fakes only for non-manual items in MA + TN.
+    for code in ("MA", "TN"):
+        for item in cmd.PACKAGES[code]:
+            if item.get("manual_download_required"):
+                continue
+            fake_fetch["table"][item["url"]] = _ok_pdf(item["url"])
+
+    call_command("download_international_legal_sources", "--country", "MA", stdout=StringIO())
+    call_command("download_international_legal_sources", "--country", "TN", stdout=StringIO())
+
+    eur_lex_url = "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32012R0650"
+    assert eur_lex_url not in fetched_urls
+
+    for slug in (
+        "eu-regulation-650-2012-successions-fr-ma",
+        "eu-regulation-650-2012-successions-fr-tn",
+    ):
+        src = LegalSource.objects.get(slug=slug)
+        assert src.status == SourceStatus.NEEDS_REVIEW
+        assert src.attachments.count() == 0
+        assert "EUR-Lex" in src.notes
+
+
 def test_manual_download_required_skips_fetch(tmp_legal_data, fake_fetch, monkeypatch):
     """Manual items must not call _fetch — the URL is unreachable from the datacenter."""
     fetched_urls: list[str] = []
