@@ -110,10 +110,14 @@ class ItalyRoadAccidentBodilyInjuryCalculator(_ItalyPlaceholderCalculator):
         # apps.compensation pronta (test isolati, scaffolding).
         from apps.compensation.services import (
             RowMatchKind,
+            apply_amount_range_rule,
             apply_amount_rule,
             find_matching_row,
+            find_matching_row_by_type,
+            get_approved_dataset_by_version_label,
             get_approved_dataset_for_sources,
             get_executable_formula,
+            is_range_rule,
         )
 
         source_refs = [SourceRef.from_legal_source(s) for s in sources]
@@ -165,8 +169,33 @@ class ItalyRoadAccidentBodilyInjuryCalculator(_ItalyPlaceholderCalculator):
                 warnings=[fault_warning],
             )
 
-        # --- gate 8/9: row match unico ---------------------------------
+        # --- branch: range rule vs single-row rule --------------------
+        # Backward compat: single-row rules (row_amount_direct,
+        # point_value_times_disability_percentage) preservano il flusso
+        # storico (estimated_min == estimated_mid == estimated_max).
+        # La nuova rule row_amount_range_direct usa un dataset secondario
+        # APPROVED (DPR-12-2025-MORAL) per produrre min/mid/max distinti.
+        rule = params["amount_rule"]
         row_match_fields = params.get("row_match") or []
+        fault_reduction_enabled = bool(params.get("fault_reduction"))
+
+        if is_range_rule(rule):
+            return self._compute_range(
+                input_data=input_data,
+                source_refs=source_refs,
+                dataset=dataset,
+                formula=formula,
+                params=params,
+                row_match_fields=row_match_fields,
+                fault_reduction_enabled=fault_reduction_enabled,
+                # Inject service helpers (already imported in outer scope)
+                _apply=apply_amount_range_rule,
+                _find=find_matching_row_by_type,
+                _get_secondary_dataset=get_approved_dataset_by_version_label,
+                _RowMatchKind=RowMatchKind,
+            )
+
+        # --- gate 8/9: row match unico (single-row rule) ---------------
         match = find_matching_row(
             dataset,
             row_match_fields=row_match_fields,
@@ -195,10 +224,9 @@ class ItalyRoadAccidentBodilyInjuryCalculator(_ItalyPlaceholderCalculator):
                 missing_documents=["compensation_row_disambiguation"],
             )
 
-        # --- step 10: calcolo vero -------------------------------------
-        fault_reduction_enabled = bool(params.get("fault_reduction"))
+        # --- step 10: calcolo vero (single-row rule) -------------------
         amount = apply_amount_rule(
-            params["amount_rule"],
+            rule,
             row=match.row,
             input_data=input_data,
             fault_reduction_enabled=fault_reduction_enabled,
@@ -215,13 +243,13 @@ class ItalyRoadAccidentBodilyInjuryCalculator(_ItalyPlaceholderCalculator):
                 notes=(
                     f"Computed from CompensationTableRow id={match.row.pk} "
                     f"using formula '{formula.code}' "
-                    f"(rule='{params['amount_rule']}')."
+                    f"(rule='{rule}')."
                 ),
             )
         ]
 
         assumptions = [
-            f"Formula applied: {formula.code} ({params['amount_rule']}).",
+            f"Formula applied: {formula.code} ({rule}).",
             f"Source dataset: '{dataset.name}' (version " f"'{dataset.version_label or 'n/a'}').",
         ]
         if fault_reduction_enabled and _has_value(input_data, "fault_percentage"):
@@ -248,6 +276,161 @@ class ItalyRoadAccidentBodilyInjuryCalculator(_ItalyPlaceholderCalculator):
             estimated_min=amount,
             estimated_mid=amount,
             estimated_max=amount,
+            breakdown=breakdown,
+            sources=source_refs,
+            assumptions=assumptions,
+            warnings=warnings_out,
+            confidence=ConfidenceLevel.MEDIUM.value,
+        )
+
+    # ------------------------------------------------------------------
+    # Range engine — usa un dataset secondario APPROVED per min/mid/max.
+    # Mai esegue se quel dataset è DRAFT (caso di moral non ancora
+    # approvato dallo Studio): fallisce in modo controllato.
+    # ------------------------------------------------------------------
+
+    def _compute_range(
+        self,
+        *,
+        input_data: dict[str, Any],
+        source_refs,
+        dataset,
+        formula,
+        params: dict[str, Any],
+        row_match_fields: list[str],
+        fault_reduction_enabled: bool,
+        _apply,
+        _find,
+        _get_secondary_dataset,
+        _RowMatchKind,
+    ) -> CalculationResult:
+        # I parametri necessari per il range devono essere TUTTI presenti.
+        version_label = params.get("range_dataset_version_label")
+        min_rt = params.get("min_row_type")
+        mid_rt = params.get("mid_row_type")
+        max_rt = params.get("max_row_type")
+        if not (version_label and min_rt and mid_rt and max_rt):
+            return self._build_result(
+                status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
+                sources=source_refs,
+                warnings=[
+                    "Approved formula declares a range amount_rule but its "
+                    "parameters are incomplete (missing range_dataset_"
+                    "version_label or one of min/mid/max_row_type)."
+                ],
+                missing_documents=["formula_range_parameters_incomplete"],
+            )
+
+        # Lookup del dataset secondario APPROVED. Se è DRAFT (caso moral
+        # non promosso), ritorna None e qui blocchiamo: il pubblico non
+        # vede mai un dataset draft.
+        range_dataset = _get_secondary_dataset(
+            source=dataset.source,
+            case_type=self.case_type,
+            version_label=version_label,
+        )
+        if range_dataset is None:
+            return self._build_result(
+                status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
+                sources=source_refs,
+                warnings=[
+                    f"Range dataset '{version_label}' is not APPROVED yet. "
+                    "The calculator refuses to read draft data into the "
+                    "public estimate."
+                ],
+                missing_documents=["range_dataset_approved"],
+            )
+
+        # Match unico riga per ciascun row_type del range.
+        matches: dict[str, Any] = {}
+        for kind, rt in (("min", min_rt), ("mid", mid_rt), ("max", max_rt)):
+            m = _find(
+                range_dataset,
+                row_type=rt,
+                row_match_fields=row_match_fields,
+                input_data=input_data,
+            )
+            if m.kind == _RowMatchKind.NONE:
+                return self._build_result(
+                    status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
+                    sources=source_refs,
+                    warnings=[
+                        f"No table row of type '{rt}' matches the input in "
+                        f"the approved range dataset '{version_label}'."
+                    ],
+                    missing_documents=["compensation_row_match"],
+                )
+            if m.kind == _RowMatchKind.MULTIPLE:
+                return self._build_result(
+                    status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
+                    sources=source_refs,
+                    warnings=[
+                        f"Multiple ({m.candidates}) rows of type '{rt}' match "
+                        "the input. Disambiguation requires legal review."
+                    ],
+                    missing_documents=["compensation_row_disambiguation"],
+                )
+            matches[kind] = m.row
+
+        amounts = _apply(
+            params["amount_rule"],
+            row_min=matches["min"],
+            row_mid=matches["mid"],
+            row_max=matches["max"],
+            input_data=input_data,
+            fault_reduction_enabled=fault_reduction_enabled,
+        )
+        if not amounts.is_monotone():
+            return self._build_result(
+                status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
+                sources=source_refs,
+                warnings=[
+                    "Range amounts violate monotonicity (expected min <= mid "
+                    f"<= max, got {amounts.min_amount}/{amounts.mid_amount}/"
+                    f"{amounts.max_amount}). The calculator refuses to "
+                    "publish a non-monotone range."
+                ],
+                missing_documents=["compensation_range_inconsistent"],
+            )
+
+        breakdown = [
+            BreakdownItem(
+                label="Danno biologico + morale",
+                amount_min=amounts.min_amount,
+                amount_mid=amounts.mid_amount,
+                amount_max=amounts.max_amount,
+                formula=formula.code,
+                source_ref_ids=tuple(s.id for s in source_refs),
+                notes=(
+                    f"Computed from approved range dataset "
+                    f"'{range_dataset.version_label}' "
+                    f"(rule='{params['amount_rule']}')."
+                ),
+            )
+        ]
+        assumptions = [
+            f"Formula applied: {formula.code} ({params['amount_rule']}).",
+            (
+                f"Range dataset: '{range_dataset.name}' "
+                f"(version '{range_dataset.version_label}')."
+            ),
+        ]
+        if fault_reduction_enabled and _has_value(input_data, "fault_percentage"):
+            assumptions.append("Fault reduction applied uniformly to min/mid/max.")
+        warnings_out: list[str] = []
+        for field in ("medical_expenses", "lost_income"):
+            if _has_value(input_data, field):
+                warnings_out.append(
+                    f"Reported '{field}' is not included in the automatic "
+                    "calculation: the approved formula does not aggregate "
+                    "it. Verify with legal review for case-specific "
+                    "evaluation."
+                )
+        return self._build_result(
+            status=CalculationStatus.CALCULATED.value,
+            estimated_min=amounts.min_amount,
+            estimated_mid=amounts.mid_amount,
+            estimated_max=amounts.max_amount,
             breakdown=breakdown,
             sources=source_refs,
             assumptions=assumptions,

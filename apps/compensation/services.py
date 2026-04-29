@@ -53,8 +53,25 @@ SUPPORTED_AMOUNT_RULES: frozenset[str] = frozenset(
         # that are "comprensive" / pre-computed, e.g. the Italian TUN
         # Tabella 1 of the D.P.R. 12/2025.
         "row_amount_direct",
+        # Range version of `row_amount_direct`: reads THREE rows (one per
+        # row_type) from a SECONDARY APPROVED dataset, returning three
+        # distinct amounts (min/mid/max) for the same (age, disability)
+        # cell. Used by the Italian TUN Tabelle 2.A/2.B/2.C (danno morale)
+        # of the D.P.R. 12/2025 once the moral dataset has been promoted
+        # to APPROVED. While the moral dataset is DRAFT the calculator
+        # MUST refuse to execute (see `get_approved_dataset_by_version_label`).
+        "row_amount_range_direct",
     }
 )
+
+# Subset of SUPPORTED_AMOUNT_RULES that operate on three rows (min/mid/max)
+# instead of one. The calculator dispatches differently for these.
+RANGE_AMOUNT_RULES: frozenset[str] = frozenset({"row_amount_range_direct"})
+
+
+def is_range_rule(rule: str) -> bool:
+    """Return True iff ``rule`` is a range rule (3 rows in, 3 amounts out)."""
+    return rule in RANGE_AMOUNT_RULES
 
 
 # ---------------------------------------------------------------------------
@@ -94,7 +111,58 @@ def get_approved_dataset_for_sources(
         .select_related("source")
         .order_by("-valid_from", "-pk")
     )
-    return qs.first()
+    candidates = list(qs)
+    if not candidates:
+        return None
+    # Prefer the dataset that holds at least one APPROVED formula. This
+    # handles the case where a single LegalSource has multiple approved
+    # datasets (e.g. base + moral): only the formula-bearing one is the
+    # calculator's primary; the secondary is referenced via
+    # `range_dataset_version_label` in the formula's parameters and looked
+    # up explicitly via `get_approved_dataset_by_version_label`.
+    for ds in candidates:
+        if ds.formulas.filter(status=DatasetStatus.APPROVED).exists():
+            return ds
+    return candidates[0]
+
+
+def get_approved_dataset_by_version_label(
+    *,
+    source,
+    case_type: str,
+    version_label: str,
+    calculation_date: _date | None = None,
+) -> CompensationDataset | None:
+    """
+    Lookup di un dataset secondario per `version_label`, **solo se APPROVED**.
+
+    Pensata per la regola di range: la formula primaria, attaccata al
+    dataset base, dichiara `range_dataset_version_label="DPR-12-2025-MORAL"`.
+    Questo helper recupera quel dataset solo se:
+    - lo `version_label` corrisponde esattamente;
+    - lo status è `APPROVED`;
+    - la fonte è `APPROVED`;
+    - la data di riferimento è dentro `valid_from`/`valid_to`.
+
+    Se il dataset moral è ancora `DRAFT` (status iniziale post-import)
+    ritorna ``None``: il calculator pubblico non potrà mai leggerlo.
+    Questa è la difesa applicativa contro l'attivazione prematura del
+    range — la regola gating è in code, non solo in admin.
+    """
+    ref = calculation_date or _date.today()
+    return (
+        CompensationDataset.objects.filter(
+            source=source,
+            case_type=case_type,
+            version_label=version_label,
+            status=DatasetStatus.APPROVED,
+            source__status=SourceStatus.APPROVED,
+        )
+        .filter(Q(valid_from__isnull=True) | Q(valid_from__lte=ref))
+        .filter(Q(valid_to__isnull=True) | Q(valid_to__gte=ref))
+        .select_related("source")
+        .first()
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -167,6 +235,34 @@ class RowMatch:
     kind: RowMatchKind
     row: CompensationTableRow | None = None
     candidates: int = 0
+
+
+def find_matching_row_by_type(
+    dataset: CompensationDataset,
+    *,
+    row_type: str,
+    row_match_fields: list[str],
+    input_data: dict[str, Any],
+) -> RowMatch:
+    """
+    Variante di `find_matching_row` che pre-filtra per `row_type`.
+
+    Necessaria per il range engine: il dataset moral DPR-12-2025-MORAL
+    contiene 3 row_type sovrapposti per ogni (age, inv) — chiamare
+    `find_matching_row` senza filtro restituisce sempre `MULTIPLE`. Il
+    range engine cerca invece UN row per ciascun row_type e li combina.
+
+    NB: filtrare a livello SQL via `dataset.rows.filter(row_type=...)`
+    riduce il working set da 27.573 a 9.191 righe per chiamata, evitando
+    di scansionarle tutte in Python.
+    """
+    rows = list(dataset.rows.filter(row_type=row_type))
+    matches = [r for r in rows if _row_matches(r, row_match_fields, input_data)]
+    if not matches:
+        return RowMatch(kind=RowMatchKind.NONE, candidates=0)
+    if len(matches) > 1:
+        return RowMatch(kind=RowMatchKind.MULTIPLE, candidates=len(matches))
+    return RowMatch(kind=RowMatchKind.OK, row=matches[0], candidates=1)
 
 
 def find_matching_row(
@@ -295,6 +391,82 @@ def _rule_point_value_times_disability(
             amount = amount * (Decimal(100) - fault) / Decimal(100)
 
     return amount
+
+
+@dataclass(frozen=True)
+class RangeAmounts:
+    """Result of a range rule: three amounts for the same (age, disability)."""
+
+    min_amount: Decimal
+    mid_amount: Decimal
+    max_amount: Decimal
+
+    def is_monotone(self) -> bool:
+        """True if min ≤ mid ≤ max. Sanity contract for any range output."""
+        return self.min_amount <= self.mid_amount <= self.max_amount
+
+
+def apply_amount_range_rule(
+    rule: str,
+    *,
+    row_min: CompensationTableRow,
+    row_mid: CompensationTableRow,
+    row_max: CompensationTableRow,
+    input_data: dict[str, Any],
+    fault_reduction_enabled: bool,
+) -> RangeAmounts:
+    """
+    Range version of `apply_amount_rule`. Operates on THREE rows
+    (one per row_type) and returns three amounts.
+
+    Caller must have verified that ``rule in RANGE_AMOUNT_RULES`` via
+    `is_range_rule`. As with `apply_amount_rule`, an unknown rule
+    raises `ValueError` rather than falling back silently.
+    """
+    if rule == "row_amount_range_direct":
+        return _rule_row_amount_range_direct(
+            row_min=row_min,
+            row_mid=row_mid,
+            row_max=row_max,
+            input_data=input_data,
+            fault_reduction_enabled=fault_reduction_enabled,
+        )
+    raise ValueError(f"Unsupported range amount_rule: {rule!r}")
+
+
+def _rule_row_amount_range_direct(
+    *,
+    row_min: CompensationTableRow,
+    row_mid: CompensationTableRow,
+    row_max: CompensationTableRow,
+    input_data: dict[str, Any],
+    fault_reduction_enabled: bool,
+) -> RangeAmounts:
+    """
+    Range counterpart of ``row_amount_direct``: each row's `point_value`
+    is interpreted as the FINAL amount for the (age, disability) cell,
+    one per row_type. Returns the three values verbatim, with optional
+    fault reduction applied uniformly.
+
+    No multiplication by disability%: as for the single-row variant, the
+    cells of TUN Tabelle 2.A/2.B/2.C are precomputed totals (biological +
+    moral increment), already comprehensive of the disability factor.
+    """
+    fault = (
+        _to_decimal_or_none(input_data.get("fault_percentage")) if fault_reduction_enabled else None
+    )
+
+    def _value_of(row: CompensationTableRow) -> Decimal:
+        amount = row.point_value or Decimal(0)
+        if fault is not None and Decimal(0) <= fault <= Decimal(100):
+            amount = amount * (Decimal(100) - fault) / Decimal(100)
+        return amount
+
+    return RangeAmounts(
+        min_amount=_value_of(row_min),
+        mid_amount=_value_of(row_mid),
+        max_amount=_value_of(row_max),
+    )
 
 
 def _rule_row_amount_direct(
