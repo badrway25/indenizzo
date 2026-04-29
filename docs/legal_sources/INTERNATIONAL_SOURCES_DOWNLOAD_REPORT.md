@@ -4,6 +4,77 @@
 > `python manage.py download_international_legal_sources`. Aggiornare
 > ad ogni nuovo run. I PDF/HTML scaricati restano locali (gitignore);
 > il manifest JSON è la traccia di audit canonica.
+>
+> **Iter1 → iter2 (2026-04-29).** Triage URL applicato al `PACKAGES`
+> in `download_international_legal_sources.py` sulla base degli esiti
+> reali di iter1 (vedi §0bis). Il command supporta ora un flag
+> `manual_download_required` che crea la `LegalSource` come metadata
+> (status `needs_review`) senza scaricare il file: lo Studio carica il
+> PDF a mano via Django admin → `LegalSourceAttachment`. Nessuna fonte
+> approvata, nessun dataset, nessuna formula creata dal command.
+> **Il re-run reale non è ancora stato eseguito**: questo report
+> documenta lo stato del package post-triage e gli esiti attesi.
+
+## 0bis. URL triage applicato (iter1 → iter2)
+
+Tre azioni su tre paesi. Belgio invariato (5/5 OK in iter1).
+
+### Slug rimossi (duplicati funzionali, host non raggiungibile)
+
+| Slug rimosso | Paese | Motivo | Coperto da |
+|---|---|---|---|
+| `ma-code-famille-loi-70-03-dgct` | MA | `ConnectTimeout` su `collectivites-territoriales.gov.ma` (host offline) | `ma-code-famille-moudawana-fr-pdf` (PDF_OK in iter1) |
+| `tn-code-dip-pdf-support` | TN | `ConnectionRefused` su `marouani-avocat.com` | `tn-code-dip-loi-98-97` (HTML_OK in iter1) |
+
+### Slug marcati `manual_download_required: True`
+
+Manteniamo la `LegalSource` come metadata + audit trail; il file va
+scaricato a mano da browser e attaccato via Django admin.
+
+| Slug | Paese | Motivo | Note operative |
+|---|---|---|---|
+| `fr-loi-badinter-1985` | FR | Legifrance restituisce `403 Forbidden` per User-Agent non-browser | Scaricare la versione consolidée PDF da `legifrance.gouv.fr` da browser |
+| `tn-jort-code-statut-personnel-1956` | TN | `ConnectTimeout` su `pist.tn`; nessuna URL JORT alternativa stabile identificata | Scaricare il fascicolo JORT 1956 da `pist.tn` o `iort.gov.tn` da browser |
+| `tn-code-statut-personnel-compiled` | TN | `SSLError` (hostname mismatch) su `jafbase.fr`; nessun mirror ufficiale TN verificato | Per scope successioni il livre-IX HTML basta. Scaricare la versione completa da `legislation.tn` o `iort.gov.tn` se serve la copertura completa |
+
+### URL switch — EUR-Lex Reg. 650/2012
+
+Endpoint `/legal-content/FR/TXT/PDF/?uri=CELEX:32012R0650` risponde
+`HTTP 202` + body vuoto (rendering PDF asincrono lato server). Switch
+a `/legal-content/FR/TXT/?uri=CELEX:32012R0650` (HTML completo, sempre
+`200`). Applicato a entrambi i collegamenti MA + TN.
+
+| Slug | Endpoint precedente | Endpoint nuovo | Classe attesa |
+|---|---|---|---|
+| `eu-regulation-650-2012-successions-fr-ma` | `/TXT/PDF/?uri=CELEX:32012R0650` | `/TXT/?uri=CELEX:32012R0650` | `HTML_OK_SOURCE_PAGE` |
+| `eu-regulation-650-2012-successions-fr-tn` | `/TXT/PDF/?uri=CELEX:32012R0650` | `/TXT/?uri=CELEX:32012R0650` | `HTML_OK_SOURCE_PAGE` |
+
+### Nuovi campi nel manifest
+
+`download_manifest.json` ora include per ogni voce:
+- `classification`: tag derivato dall'esito (`MANUAL_DOWNLOAD_REQUIRED`,
+  `FAILED_NEEDS_REPLACEMENT_URL`, `HTTP_202_WARNING`,
+  `HTML_WARNING_NOT_FINAL_DOCUMENT`, `PDF_OK`, `HTML_OK_SOURCE_PAGE`,
+  `BIN_OK`).
+- `manual_download_required`: bool. Quando `true` il file non viene
+  scaricato; la `LegalSource` viene comunque creata come metadata
+  per consentire l'upload manuale via admin.
+
+Il livello paese del manifest aggiunge il contatore `manual_required`
+oltre a `succeeded` / `failed`.
+
+### Esiti attesi del re-run (post-triage)
+
+| Paese | Item totali | OK attesi | FAIL attesi | MANUAL attesi | HTTP_202 attesi |
+|---|---:|---:|---:|---:|---:|
+| FR | 5 | 4 | 0 | 1 (Badinter) | 0 |
+| BE | 5 | 5 | 0 | 0 | 0 |
+| MA | 4 | 4 | 0 | 0 | 0 |
+| TN | 5 | 3 | 0 | 2 (JORT + CSP-compiled) | 0 |
+| **Totale** | **19** | **16** | **0** | **3** | **0** |
+
+Il re-run reale è gating per lo Studio: prima conferma del triage,
+poi `python manage.py download_international_legal_sources --all`.
 
 ## 0. Riepilogo per paese
 

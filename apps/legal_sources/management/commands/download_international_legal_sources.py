@@ -95,8 +95,10 @@ _RELIABILITY_MAP: dict[str, str] = {
 # Adding/removing items here is the only way to change the download set.
 # ---------------------------------------------------------------------------
 
-FRANCE_PACKAGE: list[dict[str, str]] = [
+FRANCE_PACKAGE: list[dict] = [
     {
+        # Triage applied: Legifrance restituisce 403 sui client programmatici.
+        # Manteniamo la fonte come metadata e marchiamo download manuale.
         "slug": "fr-loi-badinter-1985",
         "title": "Loi n°85-677 du 5 juillet 1985 dite Loi Badinter",
         "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000693454",
@@ -106,6 +108,12 @@ FRANCE_PACKAGE: list[dict[str, str]] = [
         "source_type": "official_law",
         "reliability": "official",
         "status": "needs_review",
+        "manual_download_required": True,
+        "manual_reason": (
+            "Legifrance returns HTTP 403 for non-browser User-Agents. "
+            "Download the consolidated PDF from the browser and attach via "
+            "Django admin (LegalSourceAttachment)."
+        ),
     },
     {
         "slug": "fr-nomenclature-dintilhac-2005",
@@ -158,10 +166,12 @@ FRANCE_PACKAGE: list[dict[str, str]] = [
         "source_type": "capitalization_table",
         "reliability": "high",
         "status": "needs_review",
+        # È una landing page con form: il PDF reale non è esposto pubblicamente.
+        "classification_hint": "HTML_WARNING_NOT_FINAL_DOCUMENT",
     },
 ]
 
-BELGIUM_PACKAGE: list[dict[str, str]] = [
+BELGIUM_PACKAGE: list[dict] = [
     {
         "slug": "be-loi-1989-11-21-rc-auto",
         "title": "Loi du 21 novembre 1989 — assurance obligatoire RC véhicules automoteurs",
@@ -219,20 +229,10 @@ BELGIUM_PACKAGE: list[dict[str, str]] = [
     },
 ]
 
-MOROCCO_PACKAGE: list[dict[str, str]] = [
-    {
-        "slug": "ma-code-famille-loi-70-03-dgct",
-        "title": (
-            "Dahir n°1-04-22 portant promulgation de la loi n°70-03 portant Code " "de la famille"
-        ),
-        "url": "https://www.collectivites-territoriales.gov.ma/fr/node/2779",
-        "country": "MA",
-        "jurisdiction": "MA-NATIONAL",
-        "language": "fr",
-        "source_type": "official_law",
-        "reliability": "official",
-        "status": "needs_review",
-    },
+MOROCCO_PACKAGE: list[dict] = [
+    # Triage applied (iter1 → iter2):
+    # - REMOVED `ma-code-famille-loi-70-03-dgct`: timeout su DGCT host +
+    #   duplicato funzionale di `ma-code-famille-moudawana-fr-pdf` (PDF_OK).
     {
         "slug": "ma-code-famille-moudawana-fr-pdf",
         "title": "Code de la famille marocain / Moudawana — version française",
@@ -267,9 +267,11 @@ MOROCCO_PACKAGE: list[dict[str, str]] = [
         "status": "needs_review",
     },
     {
+        # Triage applied: l'endpoint /TXT/PDF/ di EUR-Lex risponde 202 +
+        # body vuoto (rendering PDF asincrono). Switch a /TXT/ HTML.
         "slug": "eu-regulation-650-2012-successions-fr-ma",
         "title": "Règlement UE n°650/2012 — successions transfrontalières",
-        "url": "https://eur-lex.europa.eu/legal-content/FR/TXT/PDF/?uri=CELEX:32012R0650",
+        "url": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32012R0650",
         "country": "MA",
         "jurisdiction": "MA-NATIONAL",
         "language": "fr",
@@ -279,7 +281,17 @@ MOROCCO_PACKAGE: list[dict[str, str]] = [
     },
 ]
 
-TUNISIA_PACKAGE: list[dict[str, str]] = [
+TUNISIA_PACKAGE: list[dict] = [
+    # Triage applied (iter1 → iter2):
+    # - REMOVED `tn-code-dip-pdf-support`: ConnectionRefused su marouani-
+    #   avocat.com + duplicato funzionale di `tn-code-dip-loi-98-97`.
+    # - `tn-jort-code-statut-personnel-1956` → manual_download_required
+    #   (`pist.tn` non raggiungibile dal datacenter; nessuna URL JORT
+    #   ufficiale stabile identificata).
+    # - `tn-code-statut-personnel-compiled` → manual_download_required
+    #   (jafbase.fr ha SSL hostname mismatch; nessun mirror ufficiale TN
+    #   verificato come stabile).
+    # - EUR-Lex switch a /TXT/ HTML (vedi commento MA).
     {
         "slug": "tn-jort-code-statut-personnel-1956",
         "title": "JORT 1956 — Code du statut personnel tunisien",
@@ -290,6 +302,13 @@ TUNISIA_PACKAGE: list[dict[str, str]] = [
         "source_type": "official_law",
         "reliability": "official",
         "status": "needs_review",
+        "manual_download_required": True,
+        "manual_reason": (
+            "pist.tn host non raggiungibile dal datacenter (ConnectTimeout). "
+            "Nessuna URL JORT alternativa ufficiale identificata come stabile. "
+            "Scaricare il fascicolo JORT 1956 da pist.tn o IORT.gov.tn da "
+            "browser e attaccare via Django admin."
+        ),
     },
     {
         "slug": "tn-code-statut-personnel-compiled",
@@ -301,6 +320,16 @@ TUNISIA_PACKAGE: list[dict[str, str]] = [
         "source_type": "official_law",
         "reliability": "high",
         "status": "needs_review",
+        "manual_download_required": True,
+        "manual_reason": (
+            "jafbase.fr presenta SSL hostname mismatch. "
+            "Nessun mirror ufficiale TN verificato come stabile. "
+            "Per lo scope successioni `tn-code-statut-personnel-livre-ix-"
+            "succession` (HTML scaricato) copre il Livre IX. "
+            "Scaricare la versione consolidata completa da legislation.tn "
+            "(o iort.gov.tn) da browser e attaccare via Django admin se "
+            "serve la copertura completa."
+        ),
     },
     {
         "slug": "tn-code-statut-personnel-livre-ix-succession",
@@ -329,20 +358,10 @@ TUNISIA_PACKAGE: list[dict[str, str]] = [
         "status": "needs_review",
     },
     {
-        "slug": "tn-code-dip-pdf-support",
-        "title": "Code de droit international privé tunisien — PDF support",
-        "url": "https://marouani-avocat.com/fr/assets/dip.pdf",
-        "country": "TN",
-        "jurisdiction": "TN-NATIONAL",
-        "language": "fr",
-        "source_type": "official_law",
-        "reliability": "medium",
-        "status": "needs_review",
-    },
-    {
+        # Triage applied: switch a /TXT/ HTML, vedi commento MA.
         "slug": "eu-regulation-650-2012-successions-fr-tn",
         "title": "Règlement UE n°650/2012 — successions transfrontalières",
-        "url": "https://eur-lex.europa.eu/legal-content/FR/TXT/PDF/?uri=CELEX:32012R0650",
+        "url": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32012R0650",
         "country": "TN",
         "jurisdiction": "TN-NATIONAL",
         "language": "fr",
@@ -471,6 +490,8 @@ class _ManifestEntry:
     status: str = ""
     notes: str = ""
     error: str = ""
+    classification: str = ""
+    manual_download_required: bool = False
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -492,7 +513,36 @@ class _ManifestEntry:
             "status": self.status,
             "notes": self.notes,
             "error": self.error,
+            "classification": self.classification,
+            "manual_download_required": self.manual_download_required,
         }
+
+
+def _classify_entry(entry: _ManifestEntry, *, ext: str, hint: str | None) -> str:
+    """Compute the classification tag for the manifest entry.
+
+    Order of precedence:
+    1. manual_download_required → MANUAL_DOWNLOAD_REQUIRED
+    2. error not empty → FAILED_NEEDS_REPLACEMENT_URL
+    3. http_status == 202 → HTTP_202_WARNING
+    4. classification_hint dal package (es. HTML_WARNING_NOT_FINAL_DOCUMENT)
+    5. ext == "pdf" → PDF_OK
+    6. ext == "html" → HTML_OK_SOURCE_PAGE
+    7. fallback → BIN_OK
+    """
+    if entry.manual_download_required:
+        return "MANUAL_DOWNLOAD_REQUIRED"
+    if entry.error:
+        return "FAILED_NEEDS_REPLACEMENT_URL"
+    if entry.http_status == 202:
+        return "HTTP_202_WARNING"
+    if hint:
+        return hint
+    if ext == "pdf":
+        return "PDF_OK"
+    if ext == "html":
+        return "HTML_OK_SOURCE_PAGE"
+    return "BIN_OK"
 
 
 @dataclass
@@ -502,11 +552,15 @@ class _CountrySummary:
 
     @property
     def succeeded(self) -> int:
-        return sum(1 for i in self.items if not i.error)
+        return sum(1 for i in self.items if not i.error and not i.manual_download_required)
 
     @property
     def failed(self) -> int:
         return sum(1 for i in self.items if i.error)
+
+    @property
+    def manual_required(self) -> int:
+        return sum(1 for i in self.items if i.manual_download_required)
 
 
 class Command(BaseCommand):
@@ -556,10 +610,16 @@ class Command(BaseCommand):
         for item in package:
             entry = self._handle_item(item, base_dir=base_dir)
             summary.items.append(entry)
-            mark = "OK" if not entry.error else "FAIL"
+            if entry.manual_download_required:
+                mark = "MANUAL"
+            elif entry.error:
+                mark = "FAIL"
+            else:
+                mark = "OK"
             self.stdout.write(
-                f"  [{mark}] {entry.slug} -> {entry.local_path or '(no file)'} "
-                f"http={entry.http_status} type={entry.content_type or '?'}"
+                f"  [{mark:>6}] {entry.slug} class={entry.classification:>32} "
+                f"http={entry.http_status} type={entry.content_type or '?'} "
+                f"-> {entry.local_path or '(no file)'}"
             )
 
         # Manifest persisted regardless of partial failures.
@@ -572,6 +632,7 @@ class Command(BaseCommand):
                     "user_agent": USER_AGENT,
                     "succeeded": summary.succeeded,
                     "failed": summary.failed,
+                    "manual_required": summary.manual_required,
                     "items": [e.to_dict() for e in summary.items],
                 },
                 ensure_ascii=False,
@@ -581,11 +642,29 @@ class Command(BaseCommand):
         )
         self.stdout.write(
             self.style.SUCCESS(
-                f"  manifest -> {manifest_path} " f"(ok={summary.succeeded} fail={summary.failed})"
+                f"  manifest -> {manifest_path} "
+                f"(ok={summary.succeeded} fail={summary.failed} "
+                f"manual={summary.manual_required})"
             )
         )
 
-    def _handle_item(self, item: dict[str, str], *, base_dir: Path) -> _ManifestEntry:
+    def _handle_item(self, item: dict, *, base_dir: Path) -> _ManifestEntry:
+        manual_required = bool(item.get("manual_download_required"))
+        manual_reason = item.get("manual_reason", "")
+        hint = item.get("classification_hint")
+
+        if manual_required:
+            base_notes = (
+                "Manual download required: "
+                + (manual_reason or "URL not reachable from datacenter.")
+                + " Upload via Django admin once retrieved. "
+                "Requires Studio legal review before any calculation."
+            )
+        else:
+            base_notes = (
+                "Downloaded metadata only. Requires Studio legal review before " "any calculation."
+            )
+
         entry = _ManifestEntry(
             slug=item["slug"],
             title=item["title"],
@@ -596,16 +675,27 @@ class Command(BaseCommand):
             source_type=_TYPE_MAP.get(item["source_type"], item["source_type"]),
             reliability=_RELIABILITY_MAP.get(item["reliability"], item["reliability"]),
             status=SourceStatus.NEEDS_REVIEW,
-            notes=(
-                "Downloaded metadata only. Requires Studio legal review before " "any calculation."
-            ),
+            notes=base_notes,
+            manual_download_required=manual_required,
         )
+
+        # Manual path: no fetch, no file, but still create a LegalSource so
+        # the metadata is present and the Studio can attach the file via admin.
+        if manual_required:
+            entry.downloaded_at = datetime.now(UTC).isoformat()
+            try:
+                self._upsert_legal_source(item, entry, payload=b"", ext="")
+            except Exception as exc:  # noqa: BLE001
+                entry.error = f"db_upsert_failed: {exc.__class__.__name__}: {exc}"
+            entry.classification = _classify_entry(entry, ext="", hint=None)
+            return entry
 
         # 1. Fetch
         try:
             fetched = _fetch(item["url"])
         except requests.RequestException as exc:
             entry.error = f"fetch_failed: {exc.__class__.__name__}: {exc}"
+            entry.classification = _classify_entry(entry, ext="", hint=None)
             return entry
 
         entry.final_url = fetched.final_url
@@ -619,6 +709,7 @@ class Command(BaseCommand):
             local_path.write_bytes(fetched.payload)
         except OSError as exc:
             entry.error = f"write_failed: {exc.__class__.__name__}: {exc}"
+            entry.classification = _classify_entry(entry, ext=ext, hint=hint)
             return entry
 
         entry.local_path = str(local_path.relative_to(Path(settings.BASE_DIR)))
@@ -632,6 +723,7 @@ class Command(BaseCommand):
         except Exception as exc:  # noqa: BLE001 — defensive: log and continue
             entry.error = f"db_upsert_failed: {exc.__class__.__name__}: {exc}"
 
+        entry.classification = _classify_entry(entry, ext=ext, hint=hint)
         return entry
 
     @transaction.atomic
