@@ -59,6 +59,11 @@ legal_data/sources/**/extraction_notes.md
 # OCR spike outputs (rendered PNG, raw OCR text, spike summary) — gitignored
 # perché candidate read-only e voluminosi.
 legal_data/sources/**/ocr_spike/
+# Eccezione: i template di checklist review non contengono dati legali
+# (solo header + righe pre-popolate con status=pending) e sono
+# committabili come strumento operativo per lo Studio.
+!legal_data/sources/*/review/
+!legal_data/sources/*/review/*_template.csv
 legal_data/extraction_logs/*.json
 legal_data/extraction_logs/*.log
 legal_data/exports/*.json
