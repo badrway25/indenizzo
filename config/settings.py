@@ -222,6 +222,23 @@ PARENT_SITE_URL = env(
 
 
 # ---------------------------------------------------------------------------
+# Public POST rate-limit (F-local-product-hardening-pass1)
+#
+# Limite cache-based applicato dal decoratore
+# `apps.core.rate_limit.public_post_rate_limit` agli endpoint POST pubblici
+# (contact form, wizard simulazione). NON sostituisce un WAF/reverse proxy
+# in produzione: serve come prima linea di difesa contro flooding banale e
+# come gating per evitare creazione di Lead/Simulation in massa durante
+# demo locale o smoke su staging.
+# ---------------------------------------------------------------------------
+PUBLIC_POST_RATE_LIMIT_ENABLED = env.bool("PUBLIC_POST_RATE_LIMIT_ENABLED", default=True)
+PUBLIC_POST_RATE_LIMIT_WINDOW_SECONDS = env.int(
+    "PUBLIC_POST_RATE_LIMIT_WINDOW_SECONDS", default=3600
+)
+PUBLIC_POST_RATE_LIMIT_MAX_ATTEMPTS = env.int("PUBLIC_POST_RATE_LIMIT_MAX_ATTEMPTS", default=20)
+
+
+# ---------------------------------------------------------------------------
 # DRF (placeholder; serializers introdotti in fasi successive)
 # ---------------------------------------------------------------------------
 REST_FRAMEWORK = {

@@ -18,12 +18,15 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_GET, require_http_methods
 
+from apps.core.rate_limit import public_post_rate_limit
+
 from .forms import ContactForm
 from .services import create_lead_from_form
 
 logger = logging.getLogger(__name__)
 
 
+@public_post_rate_limit
 @require_http_methods(["GET", "POST"])
 def contact(request):
     initial = {}

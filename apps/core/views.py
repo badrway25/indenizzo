@@ -11,6 +11,7 @@ Il wizard pubblico (F-wizard) e il lead form (F6) avranno view dedicate.
 from __future__ import annotations
 
 from django.contrib.admin.views.decorators import staff_member_required
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_GET
 
@@ -45,6 +46,20 @@ PUBLIC_CASE_TYPES = [
 def _registered_case_types() -> set[str]:
     """Insieme dei case_type per cui esiste almeno un calculator registrato."""
     return {case_type for _, case_type in list_available_calculators()}
+
+
+@require_GET
+def healthz(request):
+    """
+    Healthcheck leggero per Docker/Caddy/monitoring.
+
+    Volutamente non tocca DB né sessioni: deve restare verde anche se
+    il database è temporaneamente sotto stress, così che il loadbalancer
+    non spenga il container per un picco di IO. Per un check più
+    profondo (DB ping, cache ping) si farà un endpoint separato in fase
+    di hardening produzione.
+    """
+    return JsonResponse({"status": "ok"})
 
 
 @require_GET
@@ -84,7 +99,7 @@ def countries(request):
     # le fonti non sono `approved`. Lo distinguiamo da "really available".
     # Hardcoded per ora — quando FR avrà engine + sources approved si
     # toglierà da SCAFFOLD_ONLY_COUNTRIES.
-    SCAFFOLD_ONLY_COUNTRIES = {"FR", "BE"}
+    SCAFFOLD_ONLY_COUNTRIES = {"FR", "BE", "MA", "TN"}
     countries_view = []
     for country in MVP_COUNTRIES:
         registered = country["code"] in available_countries
@@ -105,15 +120,34 @@ def countries(request):
 
 @require_GET
 def case_types(request):
-    registered = _registered_case_types()
-    case_types_view = [
-        {
-            "code": case_type.value,
-            "label": case_type.label,
-            "available": case_type.value in registered,
-        }
-        for case_type in PUBLIC_CASE_TYPES
-    ]
+    registered_pairs = list_available_calculators()
+    pairs_by_case_type: dict[str, list[str]] = {}
+    for j, c in registered_pairs:
+        pairs_by_case_type.setdefault(c, []).append(j)
+    # Per-case-type 3-state: available / scaffold_only / in_preparation.
+    # Lo stesso set hardcoded usato in `countries` per coerenza.
+    SCAFFOLD_ONLY_PAIRS_FOR_CT = {
+        ("FR-NATIONAL", CaseType.ROAD_ACCIDENT_BODILY_INJURY.value),
+        ("BE-NATIONAL", CaseType.ROAD_ACCIDENT_BODILY_INJURY.value),
+        ("MA-NATIONAL", CaseType.INTERNATIONAL_INHERITANCE.value),
+        ("TN-NATIONAL", CaseType.INTERNATIONAL_INHERITANCE.value),
+    }
+    case_types_view = []
+    for case_type in PUBLIC_CASE_TYPES:
+        jurisdictions = pairs_by_case_type.get(case_type.value, [])
+        registered = bool(jurisdictions)
+        # Operative se ALMENO una pair (j, c) NON è in SCAFFOLD_ONLY_PAIRS.
+        all_scaffold = registered and all(
+            (j, case_type.value) in SCAFFOLD_ONLY_PAIRS_FOR_CT for j in jurisdictions
+        )
+        case_types_view.append(
+            {
+                "code": case_type.value,
+                "label": case_type.label,
+                "available": registered and not all_scaffold,
+                "scaffold_only": all_scaffold,
+            }
+        )
     return render(
         request,
         "public/case_types.html",
@@ -267,6 +301,8 @@ def project_status(request):
     SCAFFOLD_ONLY_PAIRS = {
         ("FR-NATIONAL", CaseType.ROAD_ACCIDENT_BODILY_INJURY.value),
         ("BE-NATIONAL", CaseType.ROAD_ACCIDENT_BODILY_INJURY.value),
+        ("MA-NATIONAL", CaseType.INTERNATIONAL_INHERITANCE.value),
+        ("TN-NATIONAL", CaseType.INTERNATIONAL_INHERITANCE.value),
     }
     modules_active = [
         {
@@ -276,10 +312,7 @@ def project_status(request):
         }
         for j, c in sorted(registered_pairs)
     ]
-    upcoming = [
-        {"jurisdiction": "MA-NATIONAL", "case_type": CaseType.INTERNATIONAL_INHERITANCE.value},
-        {"jurisdiction": "TN-NATIONAL", "case_type": CaseType.INTERNATIONAL_INHERITANCE.value},
-    ]
+    upcoming = []
 
     context = {
         "source": src,

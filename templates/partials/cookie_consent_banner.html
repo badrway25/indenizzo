@@ -1,0 +1,61 @@
+{% load i18n %}
+{% comment %}
+  Cookie consent banner minimale (F-local-product-hardening-pass1).
+  Mostra solo cookie tecnici/sessione obbligatori. Nessun analytics o
+  marketing è attivo: il banner serve a comunicarlo in modo trasparente
+  e a soddisfare il requisito di "informativa visibile" pre-deploy.
+  Nessuna richiesta a servizi esterni. Persistenza in localStorage.
+{% endcomment %}
+<div
+  id="cookie-consent-banner"
+  role="region"
+  aria-live="polite"
+  aria-label="{% translate 'Cookie notice' %}"
+  data-cookie-consent-key="badrane.cookieConsent.v1"
+  class="hidden fixed inset-x-0 bottom-0 z-40 px-4 pb-4"
+>
+  <div class="max-w-4xl mx-auto bg-ink-950 text-sand-50 rounded-2xl shadow-card border border-ink-700/40 p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center gap-4">
+    <p class="text-sm leading-relaxed flex-1">
+      <span class="font-semibold text-gold-400">{% translate "Cookies" %}.</span>
+      {% blocktranslate %}This site uses only strictly necessary technical cookies (session, CSRF). No analytics or marketing trackers are active.{% endblocktranslate %}
+      <a href="{% url 'core:privacy' %}" class="underline hover:text-gold-400 whitespace-nowrap">{% translate "Read the privacy notice" %} →</a>
+    </p>
+    <button
+      id="cookie-consent-accept"
+      type="button"
+      class="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-gold-500 text-ink-950 font-semibold hover:bg-gold-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-400 whitespace-nowrap"
+    >
+      {% translate "OK" %}
+    </button>
+  </div>
+</div>
+<script>
+  (function () {
+    var banner = document.getElementById("cookie-consent-banner");
+    if (!banner) return;
+    var storageKey = banner.getAttribute("data-cookie-consent-key");
+    var hasConsent = false;
+    try {
+      hasConsent = window.localStorage.getItem(storageKey) === "1";
+    } catch (err) {
+      // Privacy mode / quota exceeded: il banner si mostra ma non
+      // riusciremo a persistere la dismissione. Failure-soft: meglio
+      // mostrare il banner ad ogni visita che bloccare il sito.
+      hasConsent = false;
+    }
+    if (!hasConsent) {
+      banner.classList.remove("hidden");
+    }
+    var acceptBtn = document.getElementById("cookie-consent-accept");
+    if (acceptBtn) {
+      acceptBtn.addEventListener("click", function () {
+        try {
+          window.localStorage.setItem(storageKey, "1");
+        } catch (err) {
+          // ignora — la dismissione resta valida solo per la sessione.
+        }
+        banner.classList.add("hidden");
+      });
+    }
+  })();
+</script>
