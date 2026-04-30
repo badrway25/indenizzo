@@ -56,6 +56,9 @@ legal_data/sources/**/*.html
 legal_data/sources/**/*.htm
 legal_data/sources/**/*.HTML
 legal_data/sources/**/extraction_notes.md
+# OCR spike outputs (rendered PNG, raw OCR text, spike summary) — gitignored
+# perché candidate read-only e voluminosi.
+legal_data/sources/**/ocr_spike/
 legal_data/extraction_logs/*.json
 legal_data/extraction_logs/*.log
 legal_data/exports/*.json
