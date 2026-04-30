@@ -18,6 +18,9 @@ staticfiles/
 .env
 .env.*
 !.env.example
+# Eccezioni per template .example versionati (no secret reali, solo
+# struttura). I file `.env.local.docker` reali restano gitignored.
+!.env.local.docker.example
 secrets/
 *.pem
 *.key

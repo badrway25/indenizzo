@@ -1,0 +1,114 @@
+# Docker Compose per sviluppo LOCALE — stack web + db + redis.
+#
+# Iter: F-local-product-hardening-pass6-docker-compose.
+#
+# Differenze rispetto a docker-compose.staging.yml:
+# - Web: usa `runserver 0.0.0.0:8000` (NON gunicorn) per ricaricare a
+#   modifica file. Hot-reload via bind mount del codice sorgente.
+# - DB: porta 5432 esposta su host (psql/pgAdmin diretti per debug
+#   locale; in staging la porta è solo expose).
+# - Redis: predisposto ma NON usato per Celery in questo iter (vedi
+#   docs/deploy/LOCAL_DOCKER_COMPOSE.md §11).
+# - Nessun nginx/Caddy/TLS davanti.
+# - DEBUG=True; ALLOWED_HOSTS include 0.0.0.0 per il container.
+#
+# Pre-condizioni:
+#   1. Copia .env.local.docker.example -> .env.local.docker (gitignored).
+#   2. Avvia con: ./scripts/local/up.sh  (oppure .ps1 su Windows).
+#
+# Avvio diretto (senza wrapper):
+#   docker compose -f docker-compose.local.yml --env-file .env.local.docker up --build
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-badrane_local}
+      POSTGRES_USER: ${POSTGRES_USER:-badrane}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-badrane_local_dev}
+    volumes:
+      - postgres_local_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-badrane} -d ${POSTGRES_DB:-badrane_local}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+    # Porta esposta su host: per debug locale (psql, pgAdmin, ecc.).
+    # In staging/prod la porta resta interna alla rete docker.
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 3s
+    # Predisposto ma NON usato in questo iter (Celery viene aggiunto
+    # in un pass futuro). La porta è esposta solo su host per ispezione
+    # diretta in dev.
+    ports:
+      - "6379:6379"
+    # Volume effimero: in dev non vogliamo persistere stato Redis.
+    # Volume nominato disponibile per chi vuole opt-in.
+    # volumes:
+    #   - redis_local_data:/data
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: badrane-legaltech:local
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      # Settings di base — tutto env-driven via .env.local.docker.
+      DJANGO_DEBUG: ${DJANGO_DEBUG:-True}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-django-insecure-local-docker-only}
+      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:-127.0.0.1,localhost,0.0.0.0,web}
+      DJANGO_CSRF_TRUSTED_ORIGINS: ${DJANGO_CSRF_TRUSTED_ORIGINS:-http://127.0.0.1:8000,http://localhost:8000}
+      DATABASE_URL: ${DATABASE_URL:-postgres://${POSTGRES_USER:-badrane}:${POSTGRES_PASSWORD:-badrane_local_dev}@db:5432/${POSTGRES_DB:-badrane_local}}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+      LANGUAGE_CODE: ${LANGUAGE_CODE:-it}
+      TIME_ZONE: ${TIME_ZONE:-Europe/Rome}
+      SITE_NAME: ${SITE_NAME:-Simulatore Risarcimenti Studio Legale Badrane (LOCAL)}
+      SITE_DOMAIN: ${SITE_DOMAIN:-localhost:8000}
+      PARENT_SITE_URL: ${PARENT_SITE_URL:-https://international.studiolegalebadrane.it/}
+      LEAD_NOTIFICATION_ENABLED: ${LEAD_NOTIFICATION_ENABLED:-False}
+      LEAD_NOTIFICATION_TO_EMAILS: ${LEAD_NOTIFICATION_TO_EMAILS:-}
+      SENTRY_DSN: ${SENTRY_DSN:-}
+      ADMIN_MFA_REQUIRED: ${ADMIN_MFA_REQUIRED:-False}
+      PUBLIC_POST_RATE_LIMIT_ENABLED: ${PUBLIC_POST_RATE_LIMIT_ENABLED:-True}
+    volumes:
+      # Bind mount del codice sorgente per hot reload tramite
+      # `runserver`. NON è una pratica produzione: in staging il
+      # codice è copiato dentro l'immagine. Per dev locale è quello
+      # che vogliamo.
+      - .:/app
+      # Mount-point persistenti per artefatti di run (PDF reports,
+      # collectstatic).
+      - media_local_data:/app/media
+      - staticfiles_local_data:/app/staticfiles
+    ports:
+      - "8000:8000"
+    # In dev usiamo `runserver` (auto-reload). Migrate viene eseguito
+    # solo se PG è healthy. Nessun collectstatic (DEBUG=True serve i
+    # file static direttamente).
+    command: >
+      sh -c "python manage.py migrate --noinput &&
+             python manage.py runserver 0.0.0.0:8000"
+
+volumes:
+  postgres_local_data:
+  media_local_data:
+  staticfiles_local_data:
+  # redis_local_data:  # opt-in se serve persistenza Redis in dev
