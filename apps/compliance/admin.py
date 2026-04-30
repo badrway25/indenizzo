@@ -20,6 +20,7 @@ from .models import (
     DataDeletionRequest,
     DataRetentionPolicy,
     PrivacyAuditEvent,
+    StaffAccessEvent,
 )
 
 
@@ -134,6 +135,37 @@ class DataDeletionRequestAdmin(admin.ModelAdmin):
         (_("Workflow"), {"fields": ("status", "handled_by", "completed_at")}),
         (_("Internal"), {"fields": ("internal_notes", "requested_at")}),
     )
+
+
+@admin.register(StaffAccessEvent)
+class StaffAccessEventAdmin(_ReadOnlyAdminMixin, admin.ModelAdmin):
+    """Read-only admin per audit accessi staff/admin (pass 8)."""
+
+    list_display = (
+        "created_at",
+        "event_type",
+        "user",
+        "username_hash",
+        "ip_address_masked",
+        "path",
+    )
+    list_filter = ("event_type",)
+    # Search SOLO su campi non-PII: l'email è esclusa di proposito.
+    # Per cercare un evento di un utente specifico, usare l'ID utente
+    # o l'hash dell'username (calcolabile via shell).
+    search_fields = ("username_hash", "user__id", "ip_address_masked", "path")
+    autocomplete_fields = ("user",)
+    readonly_fields = (
+        "event_type",
+        "user",
+        "username_hash",
+        "ip_address_masked",
+        "user_agent_hash",
+        "path",
+        "metadata",
+        "created_at",
+    )
+    date_hierarchy = "created_at"
 
 
 @admin.register(PrivacyAuditEvent)

@@ -314,3 +314,76 @@ class PrivacyAuditEvent(models.Model):
     def __str__(self) -> str:
         who = self.actor.get_username() if self.actor_id else "system"
         return f"[{self.event_type}] {who} → {self.target_model}:{self.target_object_id}"
+
+
+class StaffAccessEvent(models.Model):
+    """
+    Evento di accesso allo staff/admin Django (login success/failed,
+    logout). Append-only, privacy-minimized.
+
+    Iter: F-local-product-hardening-pass8-audit-log-staff-access.
+
+    Cosa registra:
+    - tipo evento (login_success / login_failed / logout);
+    - hash dell'username tentato/loggato (mai in chiaro);
+    - FK al `User` quando disponibile (login_success/logout);
+    - IP mascherato (ultimo octet → `x`);
+    - hash dello user-agent (mai in chiaro);
+    - path della richiesta (es. `/admin/login/`);
+    - timestamp UTC e metadata JSON.
+
+    Cosa NON registra mai:
+    - password (raw o hashed);
+    - username in chiaro;
+    - IP completo;
+    - user-agent raw;
+    - body della richiesta.
+
+    Append-only: l'admin disabilita add/change/delete (vedi
+    `apps/compliance/admin.py::StaffAccessEventAdmin`).
+    """
+
+    class EventType(models.TextChoices):
+        LOGIN_SUCCESS = "login_success", _("Login success")
+        LOGIN_FAILED = "login_failed", _("Login failed")
+        LOGOUT = "logout", _("Logout")
+
+    event_type = models.CharField(
+        _("event type"),
+        max_length=24,
+        choices=EventType.choices,
+        db_index=True,
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        related_name="staff_access_events",
+        verbose_name=_("user"),
+        null=True,
+        blank=True,
+    )
+    # SHA-256 troncato dell'username tentato/loggato. Mai in chiaro.
+    username_hash = models.CharField(_("username hash"), max_length=64, blank=True, db_index=True)
+    # IP normalizzato + mascherato (es. "203.0.113.x"). Mai completo.
+    ip_address_masked = models.CharField(_("ip address (masked)"), max_length=64, blank=True)
+    # SHA-256 troncato dello user-agent. Mai raw.
+    user_agent_hash = models.CharField(_("user agent hash"), max_length=64, blank=True)
+    # Path della richiesta (es. /admin/login/). Non PII.
+    path = models.CharField(_("path"), max_length=512, blank=True)
+    metadata = models.JSONField(_("metadata"), default=dict, blank=True)
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True, db_index=True)
+
+    class Meta:
+        verbose_name = _("staff access event")
+        verbose_name_plural = _("staff access events")
+        # Append-only ordering: dal più recente al più vecchio. `-pk`
+        # come tiebreak deterministico (timer Windows ~15.6ms).
+        ordering = ["-created_at", "-pk"]
+        indexes = [
+            models.Index(fields=["event_type", "created_at"]),
+            models.Index(fields=["user", "event_type"]),
+        ]
+
+    def __str__(self) -> str:
+        who = self.user.get_username() if self.user_id else f"hash={self.username_hash[:8]}…"
+        return f"[{self.event_type}] {who} @ {self.created_at:%Y-%m-%d %H:%M}"

@@ -15,3 +15,8 @@ class ComplianceConfig(AppConfig):
 
         auditlog.register(DataDeletionRequest)
         auditlog.register(DataRetentionPolicy)
+
+        # Auth signals → StaffAccessEvent (pass 8). L'import qui registra
+        # i receiver `@receiver(user_logged_in/out/failed)`. Read-only:
+        # mai blocca o altera il flow di autenticazione.
+        from . import signals  # noqa: F401
