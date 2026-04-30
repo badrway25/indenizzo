@@ -89,6 +89,164 @@ def privacy(request):
     return render(request, "public/privacy.html")
 
 
+def _country_landing_context(country_code: str) -> dict:
+    """
+    Context per le landing page paese (pass F-product-country-landing).
+
+    NIENTE valori monetari né claim numerici: la landing è informativa.
+    Il calcolatore reale (se esiste) è dietro il CTA wizard.
+
+    Convenzioni:
+    - `status_label`: badge mostrato nell'hero (Available / Under review).
+    - `is_calculator_available`: gates il messaggio "real range" vs "no estimate".
+    - `wizard_url_name`: URL name del wizard CTA (può essere None se non c'è).
+    - `legal_sources`: lista di tuple (slug, status) per la sezione Legal basis.
+    """
+    italian = country_code == "italy"
+    france = country_code == "france"
+    belgium = country_code == "belgium"
+    morocco = country_code == "morocco"
+    tunisia = country_code == "tunisia"
+
+    if italian:
+        return {
+            "country_code": "italy",
+            "country_iso": "IT",
+            "country_name_key": "Italy",
+            "case_type_key": "road_accident_bodily_injury",
+            "is_calculator_available": True,
+            "status_label_key": "Calculator available",
+            "status_tone": "ok",
+            "wizard_url_name": "cases:wizard_italy_road_accident",
+            "legal_sources": [
+                (
+                    "D.P.R. 13 gennaio 2025, n. 12 — Tabella Unica Nazionale art. 138 CAP",
+                    "approved",
+                ),
+                ("D.Lgs. 209/2005 — Codice delle Assicurazioni Private (CAP)", "needs_review"),
+                ("MIMIT — aggiornamento art. 139 (lieve entità)", "needs_review"),
+                ("MIMIT — aggiornamento macrolesioni", "needs_review"),
+                ("Tabelle Tribunale di Milano 2024", "needs_review"),
+            ],
+        }
+    if france:
+        return {
+            "country_code": "france",
+            "country_iso": "FR",
+            "country_name_key": "France",
+            "case_type_key": "road_accident_bodily_injury",
+            "is_calculator_available": False,
+            "status_label_key": "Legal sources under review",
+            "status_tone": "warn",
+            "wizard_url_name": "cases:wizard_france_road_accident",
+            "legal_sources": [
+                (
+                    "Référentiel Mornet 2024 — indemnisation des préjudices corporels",
+                    "needs_review",
+                ),
+                ("Barème de capitalisation Gazette du Palais 2022", "needs_review"),
+                ("Loi n°85-677 du 5 juillet 1985 (Loi Badinter)", "needs_review"),
+                ("Rapport Dintilhac — nomenclature des préjudices corporels", "needs_review"),
+            ],
+        }
+    if belgium:
+        return {
+            "country_code": "belgium",
+            "country_iso": "BE",
+            "country_name_key": "Belgium",
+            "case_type_key": "road_accident_bodily_injury",
+            "is_calculator_available": False,
+            "status_label_key": "Legal sources under review",
+            "status_tone": "warn",
+            "wizard_url_name": "cases:wizard_belgium_road_accident",
+            "legal_sources": [
+                ("Tableau Indicatif 2020 (édition Magistrats / Avocats)", "needs_review"),
+                ("Tableau Indicatif 2024 (image-scanned, OCR pendente)", "needs_review"),
+                ("Tables Schryvers (capitalisation belge)", "needs_review"),
+                ("Loi du 21 novembre 1989 — assurance RC auto", "needs_review"),
+            ],
+        }
+    if morocco:
+        return {
+            "country_code": "morocco",
+            "country_iso": "MA",
+            "country_name_key": "Morocco",
+            "case_type_key": "international_inheritance",
+            "is_calculator_available": False,
+            "status_label_key": "Legal sources under review",
+            "status_tone": "warn",
+            "wizard_url_name": "cases:wizard_morocco_inheritance",
+            "legal_sources": [
+                ("Code de la famille — Moudawana, Loi n°70-03 (2004)", "needs_review"),
+                ("Code des droits réels — Loi n°39-08", "needs_review"),
+                ("Règlement UE n°650/2012 — successions internationales", "needs_review"),
+            ],
+        }
+    if tunisia:
+        return {
+            "country_code": "tunisia",
+            "country_iso": "TN",
+            "country_name_key": "Tunisia",
+            "case_type_key": "international_inheritance",
+            "is_calculator_available": False,
+            "status_label_key": "Legal sources under review",
+            "status_tone": "warn",
+            "wizard_url_name": "cases:wizard_tunisia_inheritance",
+            "legal_sources": [
+                ("Code du statut personnel (CSP) — Livre IX «De la succession»", "needs_review"),
+                ("Loi n°98-97 — Code de droit international privé", "needs_review"),
+                ("JORT 1956 — Code du statut personnel (édition originale)", "needs_review"),
+                ("Règlement UE n°650/2012 — successions internationales", "needs_review"),
+            ],
+        }
+    raise ValueError(f"Unknown country_code: {country_code!r}")
+
+
+@require_GET
+def country_italy(request):
+    return render(
+        request,
+        "public/country_landing.html",
+        _country_landing_context("italy"),
+    )
+
+
+@require_GET
+def country_france(request):
+    return render(
+        request,
+        "public/country_landing.html",
+        _country_landing_context("france"),
+    )
+
+
+@require_GET
+def country_belgium(request):
+    return render(
+        request,
+        "public/country_landing.html",
+        _country_landing_context("belgium"),
+    )
+
+
+@require_GET
+def country_morocco(request):
+    return render(
+        request,
+        "public/country_landing.html",
+        _country_landing_context("morocco"),
+    )
+
+
+@require_GET
+def country_tunisia(request):
+    return render(
+        request,
+        "public/country_landing.html",
+        _country_landing_context("tunisia"),
+    )
+
+
 @require_GET
 def countries(request):
     registered_pairs = list_available_calculators()

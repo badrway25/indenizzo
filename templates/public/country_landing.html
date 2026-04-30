@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% comment %}
+  Landing per paese (F-product-country-landing-seo-multilang).
+
+  Driven da `_country_landing_context(...)` in apps/core/views.py:
+  - country_code, country_iso, country_name_key
+  - case_type_key (road_accident_bodily_injury / international_inheritance)
+  - is_calculator_available (bool)
+  - status_label_key (string per badge: "Calculator available" / "Legal sources under review")
+  - status_tone ("ok" | "warn")
+  - wizard_url_name (URL name del wizard, opzionale)
+  - legal_sources (lista di tuple [titolo, status])
+
+  Regole produttive:
+  - UN solo H1 per pagina.
+  - Nessun importo né claim numerico nel testo.
+  - Per paesi non operativi: messaggio chiaro che NON viene emessa alcuna stima.
+  - Disclaimer in fondo, conforme a CLAUDE.md.
+{% endcomment %}
+
+{% block title %}{% blocktranslate with country=country_name_key %}{{ country }} — coverage and legal sources{% endblocktranslate %} — {{ SITE_NAME }}{% endblock %}
+
+{% block meta_description %}
+{% if is_calculator_available %}
+{% blocktranslate with country=country_name_key %}Indicative compensation simulation for {{ country }}, based on approved legal sources. The estimate is informative and never a guarantee of outcome.{% endblocktranslate %}
+{% else %}
+{% blocktranslate with country=country_name_key %}{{ country }} legal sources are under Studio review. No automatic estimate is currently issued; the wizard collects your request for a legal review.{% endblocktranslate %}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<article class="bg-sand-50">
+  <!-- Breadcrumb -->
+  <nav class="max-w-5xl mx-auto px-5 lg:px-8 pt-6" aria-label="{% translate 'Breadcrumb' %}">
+    <ol class="flex flex-wrap items-center gap-2 text-xs text-stone2-500">
+      <li><a href="{% url 'core:home' %}" class="hover:text-ink-800">{% translate "Home" %}</a></li>
+      <li aria-hidden="true">/</li>
+      <li><a href="{% url 'core:countries' %}" class="hover:text-ink-800">{% translate "Countries" %}</a></li>
+      <li aria-hidden="true">/</li>
+      <li class="text-ink-800 font-medium">{{ country_name_key }}</li>
+    </ol>
+  </nav>
+
+  <!-- Hero -->
+  <section class="max-w-5xl mx-auto px-5 lg:px-8 pt-8 pb-12">
+    <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">
+      {{ country_iso }} · {% translate "Country page" %}
+    </p>
+    <h1 class="mt-4 font-serif text-4xl sm:text-5xl text-ink-950 leading-tight">
+      {% blocktranslate with country=country_name_key %}{{ country }} — what we currently cover{% endblocktranslate %}
+    </h1>
+    <p class="mt-5 text-lg text-ink-800 leading-relaxed max-w-3xl">
+      {% if is_calculator_available %}
+        {% blocktranslate with country=country_name_key %}Studio Legale Badrane provides an indicative compensation simulation for {{ country }} based on approved legal sources. The estimate is informative and never a guarantee of outcome.{% endblocktranslate %}
+      {% else %}
+        {% blocktranslate with country=country_name_key %}Legal sources for {{ country }} are currently under Studio review. The wizard accepts your request and our team replies after a manual legal validation. No automatic estimate is issued until that review is complete.{% endblocktranslate %}
+      {% endif %}
+    </p>
+
+    <p class="mt-6">
+      {% if status_tone == "ok" %}
+        <span class="inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.18em] font-semibold px-3 py-1.5 rounded-full bg-ok-600/10 text-ok-600">
+          <span aria-hidden="true">●</span>
+          {% translate status_label_key %}
+        </span>
+      {% else %}
+        <span class="inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.18em] font-semibold px-3 py-1.5 rounded-full bg-gold-500/10 text-gold-600">
+          <span aria-hidden="true">●</span>
+          {% translate status_label_key %}
+        </span>
+      {% endif %}
+    </p>
+  </section>
+
+  <!-- What this page covers -->
+  <section class="max-w-5xl mx-auto px-5 lg:px-8 py-10 border-t border-stone2-200">
+    <h2 class="font-serif text-2xl text-ink-950">{% translate "What this page covers" %}</h2>
+    <div class="mt-4 text-ink-900 leading-relaxed max-w-3xl space-y-3">
+      {% if country_code == "italy" %}
+        <p>{% blocktranslate %}Road traffic accident — bodily injury (danno biologico) under Italian law (CAP, art. 138).{% endblocktranslate %}</p>
+        <p>{% blocktranslate %}Reference dataset: Tabella Unica Nazionale 2025 (D.P.R. 13 gennaio 2025, n. 12), with the biological component and the moral range (Tabelle 2.A/2.B/2.C).{% endblocktranslate %}</p>
+      {% elif country_code == "france" %}
+        <p>{% blocktranslate %}Road traffic accident — bodily injury (préjudice corporel) under French law.{% endblocktranslate %}</p>
+        <p>{% blocktranslate %}Candidate sources currently under Studio review: Référentiel Mornet 2024 and Barème de capitalisation Gazette du Palais 2022. The wizard is in scaffold mode: it returns "requires legal validation" rather than a number.{% endblocktranslate %}</p>
+      {% elif country_code == "belgium" %}
+        <p>{% blocktranslate %}Road traffic accident — bodily injury under Belgian law.{% endblocktranslate %}</p>
+        <p>{% blocktranslate %}Candidate sources under Studio review: Tableau Indicatif 2020 (historical fallback), Tableau Indicatif 2024 (still being processed), and Tables Schryvers for capitalisation. The wizard is in scaffold mode and never invents amounts.{% endblocktranslate %}</p>
+      {% elif country_code == "morocco" %}
+        <p>{% blocktranslate %}International inheritance with Moroccan elements — heirs, foreign assets, applicable law.{% endblocktranslate %}</p>
+        <p>{% blocktranslate %}Reference framework: Moudawana (Code de la famille, Loi 70-03), Code des droits réels and the EU Succession Regulation 650/2012 for cross-border conflict-of-laws. The wizard collects qualitative inputs; no automatic share calculation is performed yet.{% endblocktranslate %}</p>
+      {% elif country_code == "tunisia" %}
+        <p>{% blocktranslate %}International inheritance with Tunisian elements — heirs, foreign assets, applicable law.{% endblocktranslate %}</p>
+        <p>{% blocktranslate %}Reference framework: Code du statut personnel — Livre IX, Loi n°98-97 (Code de droit international privé) and the EU Succession Regulation 650/2012. The wizard collects qualitative inputs; no automatic share calculation is performed yet.{% endblocktranslate %}</p>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- Current status -->
+  <section class="max-w-5xl mx-auto px-5 lg:px-8 py-10 border-t border-stone2-200">
+    <h2 class="font-serif text-2xl text-ink-950">{% translate "Current status" %}</h2>
+    <div class="mt-4 text-ink-900 leading-relaxed max-w-3xl space-y-3">
+      {% if is_calculator_available %}
+        <p>{% blocktranslate %}The wizard accepts compatible inputs and returns an indicative range (minimum, central, maximum) based on the approved dataset. The result is not legal advice and depends on documents, expert reports and applicable case law.{% endblocktranslate %}</p>
+      {% else %}
+        <p>{% blocktranslate %}The wizard collects your request and persists it. The calculator is in scaffold mode, so the response is "requires legal validation": no automatic estimate is issued until the Studio review is complete.{% endblocktranslate %}</p>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- Legal basis -->
+  <section class="max-w-5xl mx-auto px-5 lg:px-8 py-10 border-t border-stone2-200">
+    <h2 class="font-serif text-2xl text-ink-950">{% translate "Legal basis" %}</h2>
+    <p class="mt-2 text-sm text-stone2-500 leading-relaxed max-w-3xl">
+      {% blocktranslate %}Approved sources have been validated by the Studio's legal team. Sources marked as "needs review" are catalogued but cannot drive any public estimate yet.{% endblocktranslate %}
+    </p>
+    <ul class="mt-5 divide-y divide-stone2-200 border border-stone2-200 rounded-2xl bg-white">
+      {% for title, status in legal_sources %}
+        <li class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 px-5 py-3">
+          <span class="text-ink-900 leading-snug">{{ title }}</span>
+          {% if status == "approved" %}
+            <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2 py-1 rounded-full bg-ok-600/10 text-ok-600 whitespace-nowrap">{% translate "approved" %}</span>
+          {% else %}
+            <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2 py-1 rounded-full bg-gold-500/10 text-gold-600 whitespace-nowrap">{% translate "needs review" %}</span>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <!-- CTA -->
+  <section class="max-w-5xl mx-auto px-5 lg:px-8 py-12 border-t border-stone2-200">
+    <h2 class="font-serif text-2xl text-ink-950">{% translate "Next step" %}</h2>
+    <div class="mt-5 flex flex-wrap gap-3">
+      {% if wizard_url_name %}
+        {% if country_code == "italy" %}
+          <a href="{% url wizard_url_name %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
+            {% translate "Start Italian compensation simulation" %} →
+          </a>
+        {% elif country_code == "france" %}
+          <a href="{% url wizard_url_name %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
+            {% translate "Open France validation wizard" %} →
+          </a>
+        {% elif country_code == "belgium" %}
+          <a href="{% url wizard_url_name %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
+            {% translate "Open Belgium validation wizard" %} →
+          </a>
+        {% elif country_code == "morocco" %}
+          <a href="{% url wizard_url_name %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
+            {% translate "Request Moroccan inheritance review" %} →
+          </a>
+        {% elif country_code == "tunisia" %}
+          <a href="{% url wizard_url_name %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
+            {% translate "Request Tunisian inheritance review" %} →
+          </a>
+        {% endif %}
+      {% endif %}
+      <a href="{% url 'crm:contact' %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink-950/15 text-ink-950 hover:bg-stone2-100 font-semibold">
+        {% translate "Request legal review" %}
+      </a>
+    </div>
+  </section>
+
+  <!-- Disclaimer -->
+  <section class="max-w-5xl mx-auto px-5 lg:px-8 py-10 border-t border-stone2-200">
+    <p class="text-sm text-stone2-500 leading-relaxed max-w-3xl">
+      {% blocktranslate %}This page is informative. Any simulation provided by the platform is indicative and does not constitute legal, medical-legal advice nor a guarantee of outcome. The actual valuation depends on documents, expert reports, liability, applicable law, competent jurisdiction, judicial orientations and insurance practice.{% endblocktranslate %}
+    </p>
+    {% if not is_calculator_available %}
+      <p class="mt-3 text-sm text-stone2-500 leading-relaxed max-w-3xl">
+        {% blocktranslate %}No automatic estimate is currently issued until legal review is complete.{% endblocktranslate %}
+      </p>
+    {% endif %}
+  </section>
+</article>
+{% endblock %}

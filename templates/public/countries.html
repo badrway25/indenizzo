@@ -11,6 +11,7 @@
       {% blocktranslate %}We start with a focused MVP perimeter and extend country by country, only after legal sources are validated. Each country progresses through three states: in preparation, requires legal validation, available.{% endblocktranslate %}
     </p>
 
+    {# Mappa code → URL name della landing per paese (pass F-product-country-landing). #}
     <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
       {% for country in countries %}
         <article class="bg-white border border-stone2-200 rounded-3xl p-6 shadow-card flex flex-col">
@@ -40,6 +41,19 @@
               {% blocktranslate %}Modules for this country are being prepared. Sources are still under legal validation.{% endblocktranslate %}
             {% endif %}
           </p>
+          <div class="mt-4 flex">
+            {% if country.code == "IT" %}
+              <a href="{% url 'core:country_italy' %}" class="text-sm text-ink-800 underline underline-offset-4 hover:text-ink-950">{% translate "Open country page" %} →</a>
+            {% elif country.code == "FR" %}
+              <a href="{% url 'core:country_france' %}" class="text-sm text-ink-800 underline underline-offset-4 hover:text-ink-950">{% translate "Open country page" %} →</a>
+            {% elif country.code == "BE" %}
+              <a href="{% url 'core:country_belgium' %}" class="text-sm text-ink-800 underline underline-offset-4 hover:text-ink-950">{% translate "Open country page" %} →</a>
+            {% elif country.code == "MA" %}
+              <a href="{% url 'core:country_morocco' %}" class="text-sm text-ink-800 underline underline-offset-4 hover:text-ink-950">{% translate "Open country page" %} →</a>
+            {% elif country.code == "TN" %}
+              <a href="{% url 'core:country_tunisia' %}" class="text-sm text-ink-800 underline underline-offset-4 hover:text-ink-950">{% translate "Open country page" %} →</a>
+            {% endif %}
+          </div>
         </article>
       {% endfor %}
     </div>
