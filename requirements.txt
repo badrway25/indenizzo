@@ -31,3 +31,10 @@ playwright>=1.47
 # è configurato (vedi apps/core/observability.py). Pinning sulla 2.x
 # per evitare break-changes della 3.x ancora non rilasciata stabile.
 sentry-sdk[django]>=2.18,<3
+# MFA admin — django-otp + plugin TOTP. NON aggiunti a
+# INSTALLED_APPS di default per evitare migrazioni schema premature
+# su ambienti dev. Vedi
+# docs/architecture/LOCAL_PRODUCT_HARDENING_PASS5_MFA_ADMIN.md per
+# il flusso di attivazione (locale-first → staging → prod).
+django-otp>=1.5,<2
+qrcode>=7.4,<9

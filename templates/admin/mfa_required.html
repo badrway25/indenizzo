@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MFA required — Studio Legale Badrane LegalTech admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+           background: #f4f3ed; color: #0c2046; margin: 0;
+           min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    main { max-width: 36rem; background: #fff; padding: 2rem 2.5rem;
+           border-radius: 1rem; box-shadow: 0 12px 40px rgba(7,23,47,.08); }
+    h1 { margin: 0 0 .75rem 0; font-size: 1.4rem; }
+    p { line-height: 1.55; }
+    .note { background: #faf6ef; border-left: 4px solid #b88336;
+            padding: 1rem; border-radius: .5rem; margin: 1rem 0; }
+    code { background: #ecebe7; padding: .1rem .3rem; border-radius: .25rem;
+           font-size: .9em; }
+    a { color: #243f7a; }
+    a:focus-visible { outline: 2px solid #b88336; outline-offset: 3px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <main role="main">
+    <h1>Multi-factor authentication required</h1>
+    <p>
+      The admin area requires a verified second factor (TOTP) for
+      staff and superuser accounts. Your current session does not
+      have a verified MFA device.
+    </p>
+    <div class="note" role="note">
+      <strong>What to do:</strong>
+      <ul>
+        <li>Sign out (<a href="/admin/logout/">/admin/logout/</a>).</li>
+        <li>Set up a TOTP authenticator app following the Studio's
+            internal procedure (see
+            <code>LOCAL_PRODUCT_HARDENING_PASS5_MFA_ADMIN.md</code>).</li>
+        <li>Sign in again and complete the MFA verification step.</li>
+      </ul>
+    </div>
+    <p>
+      If you believe this is an error, please contact the Studio's
+      operations team. Do not share recovery codes or QR images via
+      insecure channels.
+    </p>
+  </main>
+</body>
+</html>

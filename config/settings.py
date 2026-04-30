@@ -125,6 +125,10 @@ MIDDLEWARE = [
     "django_htmx.middleware.HtmxMiddleware",
     "simple_history.middleware.HistoryRequestMiddleware",
     "auditlog.middleware.AuditlogMiddleware",
+    # MFA admin guard: no-op quando ADMIN_MFA_REQUIRED=False (default).
+    # Posizionato dopo AuthenticationMiddleware perché ha bisogno di
+    # `request.user` valorizzato.
+    "apps.core.admin_mfa.AdminMFAMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -290,6 +294,22 @@ SENTRY_ENVIRONMENT = env(
 SENTRY_TRACES_SAMPLE_RATE = env.float("SENTRY_TRACES_SAMPLE_RATE", default=0.0)
 SENTRY_PROFILES_SAMPLE_RATE = env.float("SENTRY_PROFILES_SAMPLE_RATE", default=0.0)
 SENTRY_SEND_DEFAULT_PII = env.bool("SENTRY_SEND_DEFAULT_PII", default=False)
+
+
+# ---------------------------------------------------------------------------
+# MFA admin (F-local-product-hardening-pass5-mfa-admin)
+#
+# Quando `ADMIN_MFA_REQUIRED=False` (default in dev), il middleware
+# `apps.core.admin_mfa.AdminMFAMiddleware` non altera il flusso admin.
+# Quando `True`, gli staff senza OTP verificato vedono una pagina di
+# enforcement (HTTP 403) e devono passare per il flusso TOTP. Il
+# verifier è duck-typed:
+# - se django-otp è installato + cabled (OTPMiddleware), usa
+#   `user.is_verified()`;
+# - altrimenti fallback a `request.session["mfa_verified"]==True`,
+#   utile per test e per un eventuale flusso custom interno.
+# ---------------------------------------------------------------------------
+ADMIN_MFA_REQUIRED = env.bool("ADMIN_MFA_REQUIRED", default=False)
 
 
 # ---------------------------------------------------------------------------
