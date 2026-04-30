@@ -330,6 +330,21 @@ STAFF_LOGIN_ALERT_TO_EMAILS = env.list("STAFF_LOGIN_ALERT_TO_EMAILS", default=[]
 
 
 # ---------------------------------------------------------------------------
+# Staff audit retention (F-local-product-hardening-pass10)
+#
+# Policy retention per StaffAccessEvent (pass 8) e StaffSecurityAlert
+# (pass 9). Default dry-run=True: nessuna cancellazione finché lo
+# Studio non setta esplicitamente STAFF_AUDIT_RETENTION_DRY_RUN=False.
+# Si applica SOLO ai due modelli di audit staff: NON tocca
+# PrivacyAuditEvent, LegalReview, SimulationReport, Lead, Simulation.
+# ---------------------------------------------------------------------------
+STAFF_ACCESS_EVENT_RETENTION_DAYS = env.int("STAFF_ACCESS_EVENT_RETENTION_DAYS", default=90)
+STAFF_SECURITY_ALERT_RETENTION_DAYS = env.int("STAFF_SECURITY_ALERT_RETENTION_DAYS", default=180)
+STAFF_AUDIT_RETENTION_ENABLED = env.bool("STAFF_AUDIT_RETENTION_ENABLED", default=True)
+STAFF_AUDIT_RETENTION_DRY_RUN = env.bool("STAFF_AUDIT_RETENTION_DRY_RUN", default=True)
+
+
+# ---------------------------------------------------------------------------
 # Celery (F-local-product-hardening-pass7-celery-async)
 #
 # Locale-first: i settings sono pronti ma il dispatch async è OFF di
