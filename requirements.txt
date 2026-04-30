@@ -27,3 +27,7 @@ black>=24.8
 mypy>=1.11
 coverage>=7.6
 playwright>=1.47
+# Sentry — error monitoring opzionale. Inizializzato solo se SENTRY_DSN
+# è configurato (vedi apps/core/observability.py). Pinning sulla 2.x
+# per evitare break-changes della 3.x ancora non rilasciata stabile.
+sentry-sdk[django]>=2.18,<3

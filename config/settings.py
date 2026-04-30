@@ -272,6 +272,27 @@ LEAD_NOTIFICATION_TO_EMAILS = env.list("LEAD_NOTIFICATION_TO_EMAILS", default=[]
 
 
 # ---------------------------------------------------------------------------
+# Sentry — error monitoring opzionale (F-local-product-hardening-pass3-sentry)
+#
+# DSN vuoto = no-op completo: `init_sentry_from_settings()` esce
+# subito senza importare sentry_sdk, così il codebase resta
+# eseguibile anche su una macchina senza il pacchetto installato.
+# `send_default_pii=False` di default per non spedire IP/user-id a
+# Sentry; il privacy scrubber `scrub_sentry_event` redige email,
+# telefoni, nomi, message, session/CSRF token in qualunque punto del
+# payload (request body, breadcrumbs, ecc.).
+# ---------------------------------------------------------------------------
+SENTRY_DSN = env("SENTRY_DSN", default="")
+SENTRY_ENVIRONMENT = env(
+    "SENTRY_ENVIRONMENT",
+    default=("local" if DEBUG else "production"),
+)
+SENTRY_TRACES_SAMPLE_RATE = env.float("SENTRY_TRACES_SAMPLE_RATE", default=0.0)
+SENTRY_PROFILES_SAMPLE_RATE = env.float("SENTRY_PROFILES_SAMPLE_RATE", default=0.0)
+SENTRY_SEND_DEFAULT_PII = env.bool("SENTRY_SEND_DEFAULT_PII", default=False)
+
+
+# ---------------------------------------------------------------------------
 # DRF (placeholder; serializers introdotti in fasi successive)
 # ---------------------------------------------------------------------------
 REST_FRAMEWORK = {
