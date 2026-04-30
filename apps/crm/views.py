@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import logging
 
+from django.conf import settings
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_GET, require_http_methods
@@ -25,6 +26,48 @@ from .forms import ContactForm
 from .services import create_lead_from_form
 
 logger = logging.getLogger(__name__)
+
+
+def _dispatch_lead_notification(lead, *, request) -> None:
+    """
+    Dispatch della notifica email Lead.
+
+    - Se `LEAD_NOTIFICATION_ASYNC_ENABLED=True`: prova `delay()` sul
+      task Celery. Se il broker è down (qualunque eccezione), fa
+      fallback al send sincrono. Né l'enqueue né il send sincrono
+      possono rompere il funnel utente: tutte le eccezioni sono
+      assorbite e loggate senza PII.
+    - Se `LEAD_NOTIFICATION_ASYNC_ENABLED=False` (default): comportamento
+      pass 2, sincrono in-request.
+    """
+    use_async = bool(getattr(settings, "LEAD_NOTIFICATION_ASYNC_ENABLED", False))
+    if use_async:
+        try:
+            # Lazy import: il modulo `tasks` importa Celery, e vogliamo
+            # che il path sync resti completamente indipendente da Celery.
+            from .tasks import send_lead_notification_task
+
+            send_lead_notification_task.delay(lead.pk)
+            return
+        except Exception as exc:
+            # Broker down (es. Redis non raggiungibile) o errore di
+            # serializzazione. Fallback sicuro a invio sincrono. Mai
+            # propagare: la thank-you page deve essere raggiungibile.
+            logger.warning(
+                "crm.lead.notification.delay_failed pk=%s error=%s — fallback sync",
+                lead.pk,
+                exc.__class__.__name__,
+            )
+    # Sync path (default o fallback).
+    try:
+        send_lead_notification(lead, request=request)
+    except Exception as exc:  # pragma: no cover — send_lead_notification
+        # è già failure-soft. Difensivo per assoluto non-rotture.
+        logger.warning(
+            "crm.lead.notification.sync_failed pk=%s error=%s",
+            lead.pk,
+            exc.__class__.__name__,
+        )
 
 
 @public_post_rate_limit
@@ -49,11 +92,10 @@ def contact(request):
                 simulation_public_id=form.cleaned_data.get("simulation_public_id") or "",
                 request=request,
             )
-            # Notifica transazionale allo Studio. Failure-soft: se la
-            # send fallisce il Lead resta creato e l'utente vede comunque
-            # la thank-you page. Mai bloccare il funnel utente per un
-            # problema email-side.
-            send_lead_notification(lead, request=request)
+            # Notifica transazionale allo Studio. Failure-soft a tutti i
+            # livelli: né Celery né SMTP possono rompere il redirect
+            # thank-you (vedi `_dispatch_lead_notification`).
+            _dispatch_lead_notification(lead, request=request)
             return redirect(reverse("crm:contact_thank_you"))
     else:
         form = ContactForm(initial=initial)

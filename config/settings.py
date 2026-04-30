@@ -313,6 +313,45 @@ ADMIN_MFA_REQUIRED = env.bool("ADMIN_MFA_REQUIRED", default=False)
 
 
 # ---------------------------------------------------------------------------
+# Celery (F-local-product-hardening-pass7-celery-async)
+#
+# Locale-first: i settings sono pronti ma il dispatch async è OFF di
+# default (`LEAD_NOTIFICATION_ASYNC_ENABLED=False`). In dev/test,
+# avviare Celery non è obbligatorio: il fallback sincrono in
+# `apps/crm/views.py::contact` continua a funzionare.
+#
+# In Docker locale (vedi docker-compose.local.yml + il pass 6),
+# `redis` è già up come broker. Per attivare il dispatch async:
+#   LEAD_NOTIFICATION_ASYNC_ENABLED=True
+#   CELERY_BROKER_URL=redis://redis:6379/0  (default in compose)
+# e un container `celery-worker` deve essere in piedi.
+# ---------------------------------------------------------------------------
+CELERY_BROKER_URL = env(
+    "CELERY_BROKER_URL",
+    default=env("REDIS_URL", default="redis://localhost:6379/0"),
+)
+# Result backend disabilitato di default: il task `send_lead_notification_task`
+# non ha bisogno di tracking risultato (è "fire-and-forget" con retry).
+# Settare a `redis://...` o a `db+postgresql://...` se si introducono task
+# che richiedono il risultato (es. PDF report jobs).
+CELERY_RESULT_BACKEND = env("CELERY_RESULT_BACKEND", default="")
+# In dev/test eager=False di default così il flusso resta esplicito.
+# Test che vogliono eseguire il task sincronamente fanno
+# `override_settings(CELERY_TASK_ALWAYS_EAGER=True)`.
+CELERY_TASK_ALWAYS_EAGER = env.bool("CELERY_TASK_ALWAYS_EAGER", default=False)
+CELERY_TASK_EAGER_PROPAGATES = env.bool("CELERY_TASK_EAGER_PROPAGATES", default=True)
+# Serializzazione esplicita (default storico Celery 5.x).
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TIMEZONE = TIME_ZONE
+
+# Lead notification: dispatch async opt-in. Default False = comportamento
+# del pass 2 (sincrono in-request).
+LEAD_NOTIFICATION_ASYNC_ENABLED = env.bool("LEAD_NOTIFICATION_ASYNC_ENABLED", default=False)
+
+
+# ---------------------------------------------------------------------------
 # DRF (placeholder; serializers introdotti in fasi successive)
 # ---------------------------------------------------------------------------
 REST_FRAMEWORK = {

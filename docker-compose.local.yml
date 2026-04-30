@@ -107,6 +107,51 @@ services:
       sh -c "python manage.py migrate --noinput &&
              python manage.py runserver 0.0.0.0:8000"
 
+  # ---------------------------------------------------------------------------
+  # Celery worker (F-local-product-hardening-pass7-celery-async)
+  #
+  # Default OFF a livello applicativo: anche se il container è up, il
+  # dispatch async è gated da `LEAD_NOTIFICATION_ASYNC_ENABLED=True`
+  # nel container web. Senza il flag, il worker resta inattivo (la
+  # coda non riceve messaggi) ma serve da rehearsal del setup prod.
+  #
+  # Per attivare end-to-end il flusso async:
+  #   1. .env.local.docker: LEAD_NOTIFICATION_ASYNC_ENABLED=True
+  #   2. .env.local.docker: LEAD_NOTIFICATION_TO_EMAILS=studio@example.test
+  #   3. ./scripts/local/up.sh
+  #   4. Apri /contact/, submit, verifica logs `celery-worker`.
+  # ---------------------------------------------------------------------------
+  celery-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: badrane-legaltech:local
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DJANGO_DEBUG: ${DJANGO_DEBUG:-True}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-django-insecure-local-docker-only}
+      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:-127.0.0.1,localhost,0.0.0.0,web}
+      DATABASE_URL: ${DATABASE_URL:-postgres://${POSTGRES_USER:-badrane}:${POSTGRES_PASSWORD:-badrane_local_dev}@db:5432/${POSTGRES_DB:-badrane_local}}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL:-redis://redis:6379/0}
+      LANGUAGE_CODE: ${LANGUAGE_CODE:-it}
+      TIME_ZONE: ${TIME_ZONE:-Europe/Rome}
+      LEAD_NOTIFICATION_ENABLED: ${LEAD_NOTIFICATION_ENABLED:-False}
+      LEAD_NOTIFICATION_TO_EMAILS: ${LEAD_NOTIFICATION_TO_EMAILS:-}
+      LEAD_NOTIFICATION_ASYNC_ENABLED: ${LEAD_NOTIFICATION_ASYNC_ENABLED:-False}
+      SENTRY_DSN: ${SENTRY_DSN:-}
+    volumes:
+      - .:/app
+      - media_local_data:/app/media
+    # `--concurrency 2` ragionevole per dev (2 task in parallelo);
+    # prod userà valore diverso (es. uguale al numero di vCPU).
+    command: celery -A config worker -l INFO --concurrency 2
+
 volumes:
   postgres_local_data:
   media_local_data:

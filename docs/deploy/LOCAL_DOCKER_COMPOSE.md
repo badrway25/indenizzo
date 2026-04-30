@@ -255,14 +255,15 @@ il rollback più ampio.
 
 ---
 
-## 10. Ruolo di Redis: solo predisposto
+## 10. Ruolo di Redis: broker per Celery
 
-Redis è in piedi (`redis:7-alpine`, healthcheck attivo) ma NON
-è ancora cablato a Celery o a un broker async.
+Redis è in piedi (`redis:7-alpine`, healthcheck attivo) e dal
+**pass 7** è anche cablato come **broker Celery**.
 
-**Cosa è usabile oggi:**
-- `REDIS_URL=redis://redis:6379/0` è disponibile come variabile
-  d'ambiente nel container web.
+**Cosa è usabile oggi (post pass 7):**
+- `REDIS_URL=redis://redis:6379/0` come variabile container web.
+- `CELERY_BROKER_URL=redis://redis:6379/0` per il container
+  `celery-worker` (vedi §10.1).
 - `django.core.cache` può essere puntato a Redis aggiungendo a
   settings:
   ```python
@@ -274,16 +275,45 @@ Redis è in piedi (`redis:7-alpine`, healthcheck attivo) ma NON
   }
   ```
   (oggi `CACHES` non è settato; il rate-limit pass 1 usa
-  `LocMemCache` di default. Questo cambio è **fuori scope** di
-  questo iter.)
+  `LocMemCache` di default. Vedi pass futuro per la promozione.)
+
+### 10.1 Container `celery-worker` (pass 7)
+
+Lo stack locale include un servizio `celery-worker` che esegue
+`celery -A config worker -l INFO --concurrency 2`. Di default
+**non riceve messaggi** perché il dispatch async è OFF a
+livello applicativo:
+- `LEAD_NOTIFICATION_ASYNC_ENABLED=False` (default).
+- Il path sincrono di `apps/crm/views.py::contact` continua a
+  essere preso.
+
+**Per attivare il flusso end-to-end async** in dev:
+1. Modificare `.env.local.docker`:
+   ```env
+   LEAD_NOTIFICATION_ENABLED=True
+   LEAD_NOTIFICATION_TO_EMAILS=studio@example.test
+   LEAD_NOTIFICATION_ASYNC_ENABLED=True
+   ```
+2. `./scripts/local/down.sh && ./scripts/local/up.sh` (rebuild env).
+3. Aprire `http://localhost:8000/contact/` e submittare il form.
+4. Verificare che il task sia stato consumato:
+   ```bash
+   docker compose -f docker-compose.local.yml logs -f celery-worker
+   ```
+5. Atteso: log `crm.lead.notification.sent public_id=...
+   recipients=1`.
+
+**Fallback se il broker Redis è down**: il view `contact` cattura
+qualsiasi eccezione di `delay()` e ricade sull'invio sincrono
+(stesso comportamento del pass 2). Il funnel utente resta
+operativo anche se Redis crasha.
 
 **Cosa è ancora da fare (pass futuri):**
-- `F-local-product-hardening-pass7-celery-async` — aggiungere
-  `celery` worker container che consuma da Redis (broker +
-  result backend). Spostare `send_lead_notification` su task
-  async + retry. CLAUDE.md richiede già Celery in produzione.
-
-Per ora, Redis sta lì pronto. Non costa nulla.
+- Celery Beat per task schedulati (es. cleanup retention GDPR).
+- Monitoring queue (Flower / Prometheus exporter).
+- Idempotency keys robuste per evitare re-send su retry.
+- Dead-letter / failed-task tracking via Sentry o tabella
+  dedicata.
 
 ---
 
