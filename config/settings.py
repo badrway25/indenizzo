@@ -239,6 +239,39 @@ PUBLIC_POST_RATE_LIMIT_MAX_ATTEMPTS = env.int("PUBLIC_POST_RATE_LIMIT_MAX_ATTEMP
 
 
 # ---------------------------------------------------------------------------
+# Email — notifica transazionale Lead (F-local-product-hardening-pass2-email-lead)
+#
+# In dev (DEBUG=True) il backend default è `console` così le email
+# stampano in stdout senza richiedere SMTP. In produzione si configurerà
+# `DJANGO_EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend` +
+# i settings SMTP standard via env. Per i test, `pytest` usa
+# automaticamente il backend `locmem` se non override (vedi conftest /
+# override_settings nei test dedicati).
+# ---------------------------------------------------------------------------
+EMAIL_BACKEND = env(
+    "DJANGO_EMAIL_BACKEND",
+    default=(
+        "django.core.mail.backends.console.EmailBackend"
+        if DEBUG
+        else "django.core.mail.backends.smtp.EmailBackend"
+    ),
+)
+DEFAULT_FROM_EMAIL = env(
+    "DJANGO_DEFAULT_FROM_EMAIL",
+    default="no-reply@badrane.local",
+)
+EMAIL_SUBJECT_PREFIX = env("DJANGO_EMAIL_SUBJECT_PREFIX", default="[Badrane LegalTech] ")
+
+# Lead notification: invia un'email allo Studio quando un nuovo Lead
+# entra. Privacy-minimized: il body include solo public_id, timestamp,
+# nome/email/telefono, country/case_type/lingua, simulation public_id se
+# presente. NON include ip_address, user_agent, session_key,
+# internal_notes (lo Studio li consulta in admin).
+LEAD_NOTIFICATION_ENABLED = env.bool("LEAD_NOTIFICATION_ENABLED", default=True)
+LEAD_NOTIFICATION_TO_EMAILS = env.list("LEAD_NOTIFICATION_TO_EMAILS", default=[])
+
+
+# ---------------------------------------------------------------------------
 # DRF (placeholder; serializers introdotti in fasi successive)
 # ---------------------------------------------------------------------------
 REST_FRAMEWORK = {

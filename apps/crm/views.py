@@ -20,6 +20,7 @@ from django.views.decorators.http import require_GET, require_http_methods
 
 from apps.core.rate_limit import public_post_rate_limit
 
+from .email_notifications import send_lead_notification
 from .forms import ContactForm
 from .services import create_lead_from_form
 
@@ -43,11 +44,16 @@ def contact(request):
                 logger.info("crm.lead.dropped reason=honeypot path=%s", request.path)
                 return redirect(reverse("crm:contact_thank_you"))
 
-            create_lead_from_form(
+            lead = create_lead_from_form(
                 form_kwargs=form.to_lead_kwargs(),
                 simulation_public_id=form.cleaned_data.get("simulation_public_id") or "",
                 request=request,
             )
+            # Notifica transazionale allo Studio. Failure-soft: se la
+            # send fallisce il Lead resta creato e l'utente vede comunque
+            # la thank-you page. Mai bloccare il funnel utente per un
+            # problema email-side.
+            send_lead_notification(lead, request=request)
             return redirect(reverse("crm:contact_thank_you"))
     else:
         form = ContactForm(initial=initial)
