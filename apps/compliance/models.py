@@ -387,3 +387,66 @@ class StaffAccessEvent(models.Model):
     def __str__(self) -> str:
         who = self.user.get_username() if self.user_id else f"hash={self.username_hash[:8]}…"
         return f"[{self.event_type}] {who} @ {self.created_at:%Y-%m-%d %H:%M}"
+
+
+class StaffSecurityAlert(models.Model):
+    """
+    Alert di sicurezza derivato dall'analisi di `StaffAccessEvent`.
+
+    Iter: F-local-product-hardening-pass9-staff-audit-brute-force-detector.
+
+    Detection-only: questo modello rappresenta un *evento di sospetto*
+    consultabile dall'admin (e opzionalmente notificato via email).
+    Non blocca login né IP. Lockout/blacklisting sono fuori scope di
+    pass 9.
+
+    Privacy: stesso disegno di `StaffAccessEvent`. Mai IP/UA raw, mai
+    password, mai username in chiaro.
+    """
+
+    class AlertType(models.TextChoices):
+        ADMIN_LOGIN_BRUTEFORCE = "admin_login_bruteforce", _("Admin login brute-force")
+
+    class Severity(models.TextChoices):
+        LOW = "low", _("Low")
+        MEDIUM = "medium", _("Medium")
+        HIGH = "high", _("High")
+
+    alert_type = models.CharField(
+        _("alert type"),
+        max_length=64,
+        choices=AlertType.choices,
+        db_index=True,
+    )
+    severity = models.CharField(
+        _("severity"),
+        max_length=16,
+        choices=Severity.choices,
+        default=Severity.MEDIUM,
+    )
+    username_hash = models.CharField(_("username hash"), max_length=64, blank=True, db_index=True)
+    ip_address_masked = models.CharField(
+        _("ip address (masked)"), max_length=64, blank=True, db_index=True
+    )
+    event_count = models.PositiveIntegerField(_("event count"), default=0)
+    window_seconds = models.PositiveIntegerField(_("window seconds"), default=0)
+    triggered_at = models.DateTimeField(_("triggered at"), auto_now_add=True, db_index=True)
+    cooldown_until = models.DateTimeField(_("cooldown until"), null=True, blank=True)
+    metadata = models.JSONField(_("metadata"), default=dict, blank=True)
+
+    class Meta:
+        verbose_name = _("staff security alert")
+        verbose_name_plural = _("staff security alerts")
+        ordering = ["-triggered_at", "-pk"]
+        indexes = [
+            models.Index(fields=["alert_type", "triggered_at"]),
+            models.Index(fields=["severity", "triggered_at"]),
+            models.Index(fields=["alert_type", "cooldown_until"]),
+        ]
+
+    def __str__(self) -> str:
+        return (
+            f"[{self.alert_type}/{self.severity}] "
+            f"count={self.event_count} window={self.window_seconds}s "
+            f"@ {self.triggered_at:%Y-%m-%d %H:%M}"
+        )

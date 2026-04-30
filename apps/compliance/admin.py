@@ -21,6 +21,7 @@ from .models import (
     DataRetentionPolicy,
     PrivacyAuditEvent,
     StaffAccessEvent,
+    StaffSecurityAlert,
 )
 
 
@@ -166,6 +167,35 @@ class StaffAccessEventAdmin(_ReadOnlyAdminMixin, admin.ModelAdmin):
         "created_at",
     )
     date_hierarchy = "created_at"
+
+
+@admin.register(StaffSecurityAlert)
+class StaffSecurityAlertAdmin(_ReadOnlyAdminMixin, admin.ModelAdmin):
+    """Read-only admin per alert sicurezza staff (pass 9)."""
+
+    list_display = (
+        "triggered_at",
+        "alert_type",
+        "severity",
+        "event_count",
+        "username_hash",
+        "ip_address_masked",
+        "cooldown_until",
+    )
+    list_filter = ("alert_type", "severity")
+    search_fields = ("username_hash", "ip_address_masked", "alert_type")
+    readonly_fields = (
+        "alert_type",
+        "severity",
+        "username_hash",
+        "ip_address_masked",
+        "event_count",
+        "window_seconds",
+        "triggered_at",
+        "cooldown_until",
+        "metadata",
+    )
+    date_hierarchy = "triggered_at"
 
 
 @admin.register(PrivacyAuditEvent)

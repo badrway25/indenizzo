@@ -58,13 +58,21 @@ def _create_event(*, event_type: str, request, user, username):
         username=username,
     )
     try:
-        StaffAccessEvent.objects.create(**kwargs)
+        event = StaffAccessEvent.objects.create(**kwargs)
     except Exception as exc:  # pragma: no cover — difensivo
         logger.warning(
             "compliance.staff_access_event.write_failed event=%s error=%s",
             event_type,
             exc.__class__.__name__,
         )
+        return None
+    # Pass 9: dopo aver registrato un login_failed admin, attiva il
+    # detector brute-force. Failure-soft: la funzione non solleva mai.
+    if event_type == "login_failed":
+        from .staff_security import create_staff_security_alert_if_needed
+
+        create_staff_security_alert_if_needed(event)
+    return event
 
 
 @receiver(user_logged_in)

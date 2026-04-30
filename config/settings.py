@@ -313,6 +313,23 @@ ADMIN_MFA_REQUIRED = env.bool("ADMIN_MFA_REQUIRED", default=False)
 
 
 # ---------------------------------------------------------------------------
+# Staff brute-force detector (F-local-product-hardening-pass9)
+#
+# Detection-only: nessun blocco automatico, nessuna lockout. Quando
+# il detector individua N failed login admin entro la window per lo
+# stesso username_hash o ip_address_masked, crea un
+# `StaffSecurityAlert` consultabile dall'admin (e opzionalmente
+# notificato via email).
+# ---------------------------------------------------------------------------
+STAFF_LOGIN_ALERTS_ENABLED = env.bool("STAFF_LOGIN_ALERTS_ENABLED", default=True)
+STAFF_LOGIN_ALERT_WINDOW_SECONDS = env.int("STAFF_LOGIN_ALERT_WINDOW_SECONDS", default=900)
+STAFF_LOGIN_ALERT_THRESHOLD = env.int("STAFF_LOGIN_ALERT_THRESHOLD", default=5)
+STAFF_LOGIN_ALERT_COOLDOWN_SECONDS = env.int("STAFF_LOGIN_ALERT_COOLDOWN_SECONDS", default=3600)
+STAFF_LOGIN_ALERT_EMAIL_ENABLED = env.bool("STAFF_LOGIN_ALERT_EMAIL_ENABLED", default=False)
+STAFF_LOGIN_ALERT_TO_EMAILS = env.list("STAFF_LOGIN_ALERT_TO_EMAILS", default=[])
+
+
+# ---------------------------------------------------------------------------
 # Celery (F-local-product-hardening-pass7-celery-async)
 #
 # Locale-first: i settings sono pronti ma il dispatch async è OFF di
