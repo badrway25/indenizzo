@@ -202,49 +202,42 @@ def _country_landing_context(country_code: str) -> dict:
     raise ValueError(f"Unknown country_code: {country_code!r}")
 
 
+def _render_country_landing(request, country_code: str, view_name: str):
+    """
+    Render shared per le 5 landing paese. Aggiunge canonical
+    self-reference + hreflang alternates (pass 2).
+    """
+    from .seo import build_canonical_url, build_hreflang_alternates
+
+    ctx = _country_landing_context(country_code)
+    ctx["canonical_url"] = build_canonical_url(request)
+    ctx["hreflang_alternates"] = build_hreflang_alternates(request, view_name)
+    return render(request, "public/country_landing.html", ctx)
+
+
 @require_GET
 def country_italy(request):
-    return render(
-        request,
-        "public/country_landing.html",
-        _country_landing_context("italy"),
-    )
+    return _render_country_landing(request, "italy", "core:country_italy")
 
 
 @require_GET
 def country_france(request):
-    return render(
-        request,
-        "public/country_landing.html",
-        _country_landing_context("france"),
-    )
+    return _render_country_landing(request, "france", "core:country_france")
 
 
 @require_GET
 def country_belgium(request):
-    return render(
-        request,
-        "public/country_landing.html",
-        _country_landing_context("belgium"),
-    )
+    return _render_country_landing(request, "belgium", "core:country_belgium")
 
 
 @require_GET
 def country_morocco(request):
-    return render(
-        request,
-        "public/country_landing.html",
-        _country_landing_context("morocco"),
-    )
+    return _render_country_landing(request, "morocco", "core:country_morocco")
 
 
 @require_GET
 def country_tunisia(request):
-    return render(
-        request,
-        "public/country_landing.html",
-        _country_landing_context("tunisia"),
-    )
+    return _render_country_landing(request, "tunisia", "core:country_tunisia")
 
 
 @require_GET

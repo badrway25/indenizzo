@@ -30,6 +30,13 @@
 {% endif %}
 {% endblock %}
 
+{% block head_extra %}
+  {# Canonical self-reference + hreflang alternates (pass 2). #}
+  {% if canonical_url %}<link rel="canonical" href="{{ canonical_url }}">{% endif %}
+  {% for alt in hreflang_alternates %}<link rel="alternate" hreflang="{{ alt.lang }}" href="{{ alt.href }}">
+  {% endfor %}
+{% endblock %}
+
 {% block content %}
 <article class="bg-sand-50">
   <!-- Breadcrumb -->

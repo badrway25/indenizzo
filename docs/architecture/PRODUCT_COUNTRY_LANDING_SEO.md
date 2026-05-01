@@ -284,6 +284,106 @@ Per condivisione social:
 
 ---
 
+## 9-bis. Appendice — Pass 2: canonical + hreflang
+
+**Iter**: F-product-country-landing-pass2-canonical-hreflang.
+**Data**: 2026-05-01.
+
+### File aggiunti / modificati (pass 2)
+
+| Area | File | Tipo |
+|---|---|---|
+| Helpers | `apps/core/seo.py` (nuovo) | `build_canonical_url`, `build_hreflang_alternates` |
+| Views | `apps/core/views.py` | `_render_country_landing()` shared che inietta canonical+alternates |
+| Template | `templates/public/country_landing.html` | block `head_extra` con `<link rel=canonical>` + `<link rel=alternate hreflang=...>` |
+| Test | `apps/core/test_country_landings_seo.py` (nuovo) | 9 test (21 con parametric expanded) |
+
+### Helper API
+
+```python
+from apps.core.seo import build_canonical_url, build_hreflang_alternates
+
+build_canonical_url(request) -> str
+# es. "https://example.test/countries/italy/"
+# Self-reference: la versione localizzata canonicalizza se stessa.
+
+build_hreflang_alternates(request, view_name="core:country_italy") -> list[dict]
+# [
+#   {"lang": "it",        "href": "https://.../countries/italy/"},
+#   {"lang": "fr",        "href": "https://.../fr/countries/italy/"},
+#   {"lang": "en",        "href": "https://.../en/countries/italy/"},
+#   {"lang": "ar",        "href": "https://.../ar/countries/italy/"},
+#   {"lang": "x-default", "href": "https://.../countries/italy/"},
+# ]
+```
+
+Pure-functions, nessun touch DB. Mai sollevano: se `reverse(view_name)`
+fallisce per una lingua, quell'entry viene saltata (la pagina
+resta servibile).
+
+### Mapping lingue → URL
+
+`config/urls.py` usa `i18n_patterns(prefix_default_language=False)` con
+`LANGUAGE_CODE=it`, quindi:
+
+| Lingua | URL pattern |
+|---|---|
+| `it` (default) | `/countries/<slug>/` |
+| `fr` | `/fr/countries/<slug>/` |
+| `en` | `/en/countries/<slug>/` |
+| `ar` | `/ar/countries/<slug>/` |
+
+`x-default` punta sempre alla versione `it` (no prefisso). Verificato
+dal test #4: `x-default` href è identico a `it` href.
+
+### Comportamento canonical
+
+- Self-reference: la versione `/fr/countries/france/` ha
+  `<link rel="canonical" href=".../fr/countries/france/">`.
+  Pattern raccomandato da Google quando si usa hreflang.
+- `request.build_absolute_uri(request.path)` → niente dominio
+  hardcoded.
+
+### Limiti pass 2
+
+- Solo le 5 landing paese sono cablate. Home, methodology, privacy
+  ecc. NON hanno ancora canonical/hreflang. Sarà un pass futuro
+  (richiede uno sweep templates).
+- Nessun OG/Twitter card aggiunto (pass futuro).
+- Nessun `og:locale` / `og:locale:alternate`.
+- Le traduzioni `.po` non sono compilate: il content delle
+  alternates è ancora in inglese sul body, ma i `<link>` puntano
+  correttamente alle URL i18n-prefixed.
+
+### Test aggiunti (21 totali, tutti passati)
+
+`apps/core/test_country_landings_seo.py`:
+1. `test_italy_landing_has_canonical` — `/countries/italy/` → canonical termina con `/countries/italy/`.
+2. `test_france_landing_has_canonical` — idem per Francia.
+3. `test_country_landings_have_all_hreflang_alternates` × 5 — ogni landing ha {it, fr, en, ar, x-default}.
+4. `test_x_default_points_to_italian_default_version` — `x-default` href = `it` href, no prefisso.
+5. `test_french_prefixed_path_canonical_contains_fr_prefix` — `/fr/countries/france/` → canonical contiene `/fr/`.
+6. `test_arabic_landing_has_arabic_alternate` — `/ar/countries/morocco/` ha `hreflang=ar`.
+7. `test_no_duplicate_hreflang` × 5 — nessun lang duplicato per pagina.
+8. `test_country_landings_still_200` × 5 — 200 invariato.
+9. `test_italy_smoke_run_simulation_35_10_0` — 26 268 / 27 353 / 28 439.
+
+### Cosa resta per produzione
+
+- **Sitemap dynamic** (`django.contrib.sitemaps`): includere le 5
+  landing × 4 lingue (20 entry) con `<lastmod>`.
+- **OG / Twitter cards**: per paese, con immagine dedicata.
+- **`og:locale:alternate`**: equivalente OG di hreflang.
+- **JSON-LD `LegalService`**: schema.org markup per migliorare
+  SERP rich result.
+- **Traduzioni professionali** validate dallo Studio (i `.po` di
+  ogni lingua), poi `compilemessages` in pipeline.
+- Estendere canonical/hreflang **a tutte le pagine pubbliche**
+  (home, methodology, privacy, disclaimer, /countries/, /case-types/),
+  non solo le 5 landing paese.
+
+---
+
 ## 10. Disclaimer
 
 Questo iter aggiunge solo pagine informative pubbliche. Non
