@@ -365,15 +365,27 @@ def countries(request):
     # Hardcoded per ora — quando FR avrà engine + sources approved si
     # toglierà da SCAFFOLD_ONLY_COUNTRIES.
     SCAFFOLD_ONLY_COUNTRIES = {"FR", "BE", "MA", "TN"}
+    # Per ogni paese cerchiamo l'immagine country-specific dal manifest
+    # (purpose="country_landing", country_code=ISO). Niente chiamata API.
+    from .pexels import get_image_for_slot, media_url_for_entry
+
     countries_view = []
     for country in MVP_COUNTRIES:
         registered = country["code"] in available_countries
         is_scaffold = country["code"] in SCAFFOLD_ONLY_COUNTRIES
+        country_image_entry = get_image_for_slot("country_landing", country_code=country["code"])
+        country_image = None
+        if country_image_entry:
+            country_image = {
+                "src": request.build_absolute_uri(media_url_for_entry(country_image_entry)),
+                "alt": country_image_entry.get("alt") or country["name_key"],
+            }
         countries_view.append(
             {
                 **country,
                 "has_calculator": registered and not is_scaffold,
                 "scaffold_only": registered and is_scaffold,
+                "image": country_image,
             }
         )
     return render(

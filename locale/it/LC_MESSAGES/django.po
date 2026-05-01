@@ -484,7 +484,7 @@ msgid "Cannot mark formula APPROVED while its dataset is not APPROVED."
 msgstr ""
 
 msgid "PDF attached"
-msgstr ""
+msgstr "PDF allegato"
 
 msgid "CSV import"
 msgstr ""
@@ -782,15 +782,15 @@ msgstr ""
 
 #, python-format
 msgid "%(country)s — coverage and legal sources"
-msgstr ""
+msgstr "%(country)s — copertura e fonti legali"
 
 #, python-format
 msgid "Indicative compensation simulation for %(country)s, based on approved legal sources. The estimate is informative and never a guarantee of outcome."
-msgstr ""
+msgstr "Simulazione indicativa di risarcimento per %(country)s, basata su fonti legali approvate. La stima è informativa e mai una garanzia di risultato."
 
 #, python-format
 msgid "%(country)s legal sources are under Studio review. No automatic estimate is currently issued; the wizard collects your request for a legal review."
-msgstr ""
+msgstr "Le fonti legali per %(country)s sono in revisione presso lo Studio. Nessuna stima automatica viene attualmente emessa; la procedura raccoglie la richiesta per una valutazione legale."
 
 msgid "Contact"
 msgstr ""
@@ -1185,13 +1185,13 @@ msgid "Cookie notice"
 msgstr ""
 
 msgid "Cookies"
-msgstr ""
+msgstr "Cookie"
 
 msgid "This site uses only strictly necessary technical cookies (session, CSRF). No analytics or marketing trackers are active."
 msgstr ""
 
 msgid "Read the privacy notice"
-msgstr ""
+msgstr "Leggi l'informativa privacy"
 
 msgid "OK"
 msgstr ""
@@ -1203,25 +1203,25 @@ msgid "Legal disclaimer"
 msgstr ""
 
 msgid "Notice"
-msgstr ""
+msgstr "Avviso"
 
 msgid "This platform provides indicative simulations only. It is not legal, medico-legal advice nor a guarantee of outcome."
 msgstr ""
 
 msgid "Read the full disclaimer"
-msgstr ""
+msgstr "Leggi il disclaimer completo"
 
 msgid "Studio Legale Internazionale"
 msgstr ""
 
 msgid "International legal practice with cross-border experience in compensation, inheritance and complex jurisdictional matters."
-msgstr ""
+msgstr "Studio legale internazionale con esperienza transfrontaliera in risarcimenti, successioni e questioni giurisdizionali complesse."
 
 msgid "Visit institutional website"
 msgstr ""
 
 msgid "Platform"
-msgstr ""
+msgstr "Piattaforma"
 
 msgid "Countries"
 msgstr "Paesi"
@@ -1233,22 +1233,22 @@ msgid "Methodology"
 msgstr "Metodologia"
 
 msgid "Legal"
-msgstr ""
+msgstr "Legale"
 
 msgid "Disclaimer"
 msgstr "Avvertenze"
 
 msgid "Institutional website"
-msgstr ""
+msgstr "Sito istituzionale"
 
 msgid "Indicative simulations. Not legal advice."
-msgstr ""
+msgstr "Simulazioni indicative. Non costituiscono parere legale."
 
 msgid "Primary navigation"
 msgstr ""
 
 msgid "Choose language"
-msgstr ""
+msgstr "Scegli la lingua"
 
 msgid "Apply"
 msgstr ""
@@ -1257,16 +1257,16 @@ msgid "Website (do not fill)"
 msgstr ""
 
 msgid "About the deceased"
-msgstr ""
+msgstr "Informazioni sul defunto"
 
 msgid "Heirs"
 msgstr ""
 
 msgid "Assets and context"
-msgstr ""
+msgstr "Beni e contesto"
 
 msgid "I have read the <a href=\"/privacy/\" class=\"underline\">privacy notice</a> and consent to processing the data above for the sole purpose of producing an indicative simulation."
-msgstr ""
+msgstr "Ho letto l'<a href=\"/privacy/\" class=\"underline\">informativa privacy</a> e acconsento al trattamento dei dati indicati al solo fine di produrre una simulazione indicativa."
 
 msgid "Submitting this form does not create a professional engagement. No documents are collected."
 msgstr ""
@@ -1281,7 +1281,7 @@ msgid "We implement modules in depth, one at a time. Each case type is activated
 msgstr ""
 
 msgid "Module ready"
-msgstr ""
+msgstr "Modulo pronto"
 
 msgid "Legal sources under review"
 msgstr "Fonti legali in revisione"
@@ -1299,7 +1299,7 @@ msgid "This module is on the roadmap. The Studio will activate it once the under
 msgstr ""
 
 msgid "Coming next"
-msgstr ""
+msgstr "Prossimamente"
 
 msgid "Additional modules under preparation include catastrophic damage, loss of chance, defamation, school/professional damage and ruined holiday claims, where legally tractable."
 msgstr ""
@@ -1311,10 +1311,10 @@ msgid "Request a legal review"
 msgstr "Richiedi una valutazione legale"
 
 msgid "Tell us about your case in your own words. A member of the Studio will get back to you to evaluate whether and how we can help."
-msgstr ""
+msgstr "Raccontaci il tuo caso con parole tue. Un membro dello Studio ti risponderà per valutare se e come possiamo aiutarti."
 
 msgid "(optional)"
-msgstr ""
+msgstr "(facoltativo)"
 
 msgid "Briefly describe what happened, when, and where. Avoid sharing sensitive medical details now — we will request them only if needed."
 msgstr ""
@@ -1344,7 +1344,7 @@ msgid "Submitting this form does not create a professional engagement. The Studi
 msgstr ""
 
 msgid "Back to homepage"
-msgstr ""
+msgstr "Torna alla home"
 
 msgid "Coverage map"
 msgstr "Mappa di copertura"
@@ -1353,34 +1353,34 @@ msgid "Countries we cover"
 msgstr "I paesi che copriamo"
 
 msgid "We start with a focused MVP perimeter and extend country by country, only after legal sources are validated. Each country progresses through three states: in preparation, requires legal validation, available."
-msgstr ""
+msgstr "Partiamo da un perimetro MVP mirato ed estendiamo paese per paese, solo dopo che le fonti legali sono validate. Ogni paese attraversa tre stati: in preparazione, richiede validazione legale, disponibile."
 
 msgid "Available"
 msgstr "Disponibile"
 
 msgid "A calculator is registered for this country. Real estimates require approved legal sources."
-msgstr ""
+msgstr "È registrato un calcolatore per questo paese. Le stime reali richiedono fonti legali approvate."
 
 msgid "A calculator scaffold is registered. Legal sources are still under Studio review, so the wizard returns \"requires legal validation\" and never invents numbers."
-msgstr ""
+msgstr "È registrato uno scaffold del calcolatore. Le fonti legali sono ancora in revisione, quindi la procedura risponde \"richiede validazione legale\" e non inventa numeri."
 
 msgid "Modules for this country are being prepared. Sources are still under legal validation."
-msgstr ""
+msgstr "I moduli per questo paese sono in preparazione. Le fonti sono ancora in validazione legale."
 
 msgid "Open country page"
 msgstr "Apri la pagina paese"
 
 msgid "Need a direct review?"
-msgstr ""
+msgstr "Hai bisogno di una valutazione diretta?"
 
 msgid "Request a legal review on a complex case"
-msgstr ""
+msgstr "Richiedi una valutazione legale su un caso complesso"
 
 msgid "If your case spans multiple jurisdictions, includes foreign assets, or the calculator status reads \"Legal sources under review\", the Studio team can review the file directly and propose the next step."
-msgstr ""
+msgstr "Se il tuo caso coinvolge più giurisdizioni, beni esteri, o il calcolatore indica \"fonti legali in revisione\", il team dello Studio può esaminare il fascicolo direttamente e proporre il passo successivo."
 
 msgid "Future jurisdictions on the roadmap include Spain, Germany, Canada, Romania, Algeria and Egypt."
-msgstr ""
+msgstr "Le giurisdizioni future in roadmap includono Spagna, Germania, Canada, Romania, Algeria ed Egitto."
 
 msgid "Breadcrumb"
 msgstr "Percorso"
@@ -1393,66 +1393,66 @@ msgstr "Pagina paese"
 
 #, python-format
 msgid "%(country)s — what we currently cover"
-msgstr ""
+msgstr "%(country)s — cosa copriamo attualmente"
 
 #, python-format
 msgid "Studio Legale Badrane provides an indicative compensation simulation for %(country)s based on approved legal sources. The estimate is informative and never a guarantee of outcome."
-msgstr ""
+msgstr "Lo Studio Legale Badrane fornisce una simulazione indicativa di risarcimento per %(country)s basata su fonti legali approvate. La stima è informativa e mai una garanzia di risultato."
 
 #, python-format
 msgid "Legal sources for %(country)s are currently under Studio review. The wizard accepts your request and our team replies after a manual legal validation. No automatic estimate is issued until that review is complete."
-msgstr ""
+msgstr "Le fonti legali per %(country)s sono attualmente in revisione presso lo Studio. La procedura raccoglie la richiesta e il nostro team risponde dopo una validazione legale manuale. Nessuna stima automatica viene emessa finché la revisione non è completa."
 
 msgid "Road traffic accident — bodily injury (danno biologico) under Italian law."
-msgstr ""
+msgstr "Incidente stradale — danno biologico secondo il diritto italiano."
 
 msgid "Reference dataset: Tabella Unica Nazionale 2025 (D.P.R. 12/2025), with the biological component and the moral range (Tabelle 2.A/2.B/2.C)."
-msgstr ""
+msgstr "Dataset di riferimento: Tabella Unica Nazionale 2025 (D.P.R. 12/2025), con la componente biologica e l'intervallo morale (Tabelle 2.A/2.B/2.C)."
 
 msgid "Approved TUN 2025 dataset feeds an indicative range (minimum, central, maximum). Result is not legal advice."
-msgstr ""
+msgstr "Il dataset TUN 2025 approvato alimenta un intervallo indicativo (minimo, centrale, massimo). Il risultato non costituisce parere legale."
 
 msgid "Road traffic accident — bodily injury (préjudice corporel) under French law."
-msgstr ""
+msgstr "Incidente stradale — préjudice corporel secondo il diritto francese."
 
 msgid "Candidate sources under Studio review: Référentiel Mornet 2024 and Barème de capitalisation Gazette du Palais 2022."
-msgstr ""
+msgstr "Fonti candidate in revisione presso lo Studio: Référentiel Mornet 2024 e Barème de capitalisation Gazette du Palais 2022."
 
 msgid "The wizard is in scaffold mode: it returns \"requires legal validation\" rather than a number."
-msgstr ""
+msgstr "La procedura è in modalità scaffold: restituisce \"richiede validazione legale\" anziché un numero."
 
 msgid "Road traffic accident — bodily injury under Belgian law."
-msgstr ""
+msgstr "Incidente stradale — danno corporale secondo il diritto belga."
 
 msgid "Candidate sources under Studio review: Tableau Indicatif 2020, Tableau Indicatif 2024 and Tables Schryvers for capitalisation."
-msgstr ""
+msgstr "Fonti candidate in revisione presso lo Studio: Tableau Indicatif 2020, Tableau Indicatif 2024 e Tables Schryvers per la capitalizzazione."
 
 msgid "The wizard is in scaffold mode and never invents amounts."
-msgstr ""
+msgstr "La procedura è in modalità scaffold e non inventa mai importi."
 
 msgid "International inheritance with Moroccan elements — heirs, foreign assets, applicable law."
-msgstr ""
+msgstr "Successione internazionale con elementi marocchini — eredi, beni esteri, legge applicabile."
 
 msgid "Reference framework: Moudawana (Code de la famille, Loi 70-03), Code des droits réels and EU Succession Regulation 650/2012."
-msgstr ""
+msgstr "Quadro di riferimento: Moudawana (Code de la famille, Loi 70-03), Code des droits réels e Regolamento UE Successioni 650/2012."
 
 msgid "The wizard collects qualitative inputs; no automatic share calculation is performed yet."
-msgstr ""
+msgstr "La procedura raccoglie input qualitativi; nessun calcolo automatico delle quote viene ancora eseguito."
 
 msgid "International inheritance with Tunisian elements — heirs, foreign assets, applicable law."
-msgstr ""
+msgstr "Successione internazionale con elementi tunisini — eredi, beni esteri, legge applicabile."
 
 msgid "Reference framework: Code du statut personnel — Livre IX, Loi n°98-97 (Code de droit international privé), EU Regulation 650/2012."
-msgstr ""
+msgstr "Quadro di riferimento: Code du statut personnel — Livre IX, Loi n°98-97 (Codice di diritto internazionale privato), Regolamento UE 650/2012."
 
 msgid "Status"
 msgstr "Stato"
 
 msgid "The wizard accepts compatible inputs and returns an indicative range based on the approved dataset."
-msgstr ""
+msgstr "La procedura accetta input compatibili e restituisce un intervallo indicativo basato sul dataset approvato."
 
 msgid "The wizard collects your request and persists it. The calculator is in scaffold mode: response is \"requires legal validation\" — no automatic estimate is issued."
-msgstr ""
+msgstr "La procedura raccoglie e archivia la richiesta. Il calcolatore è in modalità scaffold: la risposta è \"richiede validazione legale\" — nessuna stima automatica viene emessa."
 
 msgid "Start Italian compensation simulation"
 msgstr "Avvia la simulazione risarcimento Italia"
@@ -1473,7 +1473,7 @@ msgid "Legal basis"
 msgstr "Base legale"
 
 msgid "Approved sources have been validated by the Studio's legal team. Sources marked as \"needs review\" are catalogued but cannot drive any public estimate yet."
-msgstr ""
+msgstr "Le fonti approvate sono state validate dal team legale dello Studio. Le fonti marcate come \"in revisione\" sono catalogate ma non possono ancora alimentare alcuna stima pubblica."
 
 msgid "approved"
 msgstr "approvata"
@@ -1494,10 +1494,10 @@ msgid "Submit a structured request"
 msgstr "Invia una richiesta strutturata"
 
 msgid "Provide age, disability percentage and fault percentage. The wizard returns an indicative range based on the approved TUN 2025 dataset."
-msgstr ""
+msgstr "Inserisci età, percentuale di invalidità e percentuale di colpa. La procedura restituisce un intervallo indicativo basato sul dataset TUN 2025 approvato."
 
 msgid "Open the country wizard to share the case context. We persist the request and reply after a manual legal review. No automatic estimate is issued."
-msgstr ""
+msgstr "Apri la procedura del paese per condividere il contesto del caso. Archiviamo la richiesta e rispondiamo dopo una revisione legale manuale. Nessuna stima automatica viene emessa."
 
 msgid "Option 2"
 msgstr "Opzione 2"
@@ -1506,13 +1506,13 @@ msgid "Direct legal review"
 msgstr "Revisione legale diretta"
 
 msgid "If the case is complex, write to the Studio. A lawyer reviews the file, identifies applicable law and competent jurisdiction, and proposes the next step."
-msgstr ""
+msgstr "Se il caso è complesso, scrivi allo Studio. Un avvocato esamina il fascicolo, identifica legge applicabile e giurisdizione competente, e propone il passo successivo."
 
 msgid "This page is informative. Any simulation provided by the platform is indicative and does not constitute legal, medical-legal advice nor a guarantee of outcome. The actual valuation depends on documents, expert reports, liability, applicable law, competent jurisdiction, judicial orientations and insurance practice."
-msgstr ""
+msgstr "Questa pagina è informativa. Qualsiasi simulazione fornita dalla piattaforma è indicativa e non costituisce parere legale, medico-legale, né garanzia di risultato. La valutazione effettiva dipende da documenti, perizie, responsabilità, legge applicabile, giurisdizione competente, orientamenti giudiziari e prassi assicurative."
 
 msgid "No automatic estimate is currently issued until legal review is complete."
-msgstr ""
+msgstr "Attualmente nessuna stima automatica viene emessa finché la revisione legale non è completa."
 
 msgid "Legal notice"
 msgstr ""
@@ -1540,7 +1540,7 @@ msgid "Indicative simulations for compensation and inheritance, grounded in vali
 msgstr "Simulazioni indicative su risarcimenti e successioni, fondate su fonti legali validate."
 
 msgid "A professional tool by Studio Legale Internazionale Badrane. Each estimate is supported by validated legal sources, transparent ranges and clear assumptions. We do not promise outcomes — we help you understand them."
-msgstr ""
+msgstr "Uno strumento professionale dello Studio Legale Internazionale Badrane. Ogni stima si basa su fonti legali validate, intervalli trasparenti e ipotesi esplicite. Non promettiamo risultati: aiutiamo a comprenderli."
 
 msgid "Explore case types"
 msgstr "Esplora i tipi di caso"
@@ -1549,22 +1549,22 @@ msgid "Read our methodology"
 msgstr "Leggi la nostra metodologia"
 
 msgid "Simulations are indicative. They do not constitute legal advice or guarantee any outcome."
-msgstr ""
+msgstr "Le simulazioni sono indicative. Non costituiscono parere legale né garanzia di risultato."
 
 msgid "Trust by design"
 msgstr "Affidabilità progettuale"
 
 msgid "Every estimate cites the legal sources behind it: title, version and date."
-msgstr ""
+msgstr "Ogni stima cita le fonti legali sottostanti: titolo, versione e data."
 
 msgid "If a jurisdiction is not yet legally validated, we say so explicitly — no fabricated numbers."
-msgstr ""
+msgstr "Se una giurisdizione non è ancora validata, lo diciamo in modo esplicito: nessun numero inventato."
 
 msgid "Reports include ranges, assumptions, missing documents and confidence level."
-msgstr ""
+msgstr "I report includono intervalli, ipotesi, documenti mancanti e livello di affidabilità."
 
 msgid "Available in Italian, French, English and Arabic."
-msgstr ""
+msgstr "Disponibile in italiano, francese, inglese e arabo."
 
 msgid "Jurisdictions"
 msgstr "Giurisdizioni"
@@ -1579,43 +1579,43 @@ msgid "Validated sources only"
 msgstr "Solo fonti validate"
 
 msgid "Every coefficient and figure used in a public calculation is tied to a legal source marked as approved by our team."
-msgstr ""
+msgstr "Ogni coefficiente e cifra usata in un calcolo pubblico è legata a una fonte legale marcata come approvata dal nostro team."
 
 msgid "Transparent ranges"
 msgstr "Intervalli trasparenti"
 
 msgid "You receive a minimum, a midpoint and a maximum, with the assumptions, the formulas and the missing documents clearly listed."
-msgstr ""
+msgstr "Ricevi un minimo, un valore centrale e un massimo, con ipotesi, formule e documenti mancanti elencati in modo chiaro."
 
 msgid "Human review"
 msgstr "Revisione umana"
 
 msgid "A simulation is a starting point. The Studio takes over for real legal evaluation when you need a binding opinion."
-msgstr ""
+msgstr "Una simulazione è un punto di partenza. Lo Studio subentra con una valutazione legale reale quando serve un parere vincolante."
 
 msgid "Ready for a real legal evaluation?"
 msgstr "Pronto per una valutazione legale reale?"
 
 msgid "Our international team handles compensation, medical liability and cross-border inheritance matters across Europe and North Africa."
-msgstr ""
+msgstr "Il nostro team internazionale gestisce risarcimenti, responsabilità medica e successioni transfrontaliere in Europa e Nord Africa."
 
 msgid "How we work"
 msgstr "Come lavoriamo"
 
 msgid "Our simulator is built on a single principle: no figure is shown to the public unless we can cite the legal source behind it. This page explains how we collect, validate and version those sources."
-msgstr ""
+msgstr "Il nostro simulatore si basa su un solo principio: nessuna cifra viene mostrata al pubblico senza poter citare la fonte legale che la fonda. Questa pagina spiega come raccogliamo, validiamo e versioniamo le fonti."
 
 msgid "Sources of law"
 msgstr "Fonti di diritto"
 
 msgid "For each jurisdiction we maintain a catalogue of laws, ministerial decrees, court compensation tables, administrative guidelines, insurance references and academic doctrine. Each source records its country, jurisdiction, language, citation, official URL, publication date and effective date."
-msgstr ""
+msgstr "Per ogni giurisdizione manteniamo un catalogo di leggi, decreti ministeriali, tabelle risarcitorie, linee guida amministrative, riferimenti assicurativi e dottrina accademica. Ogni fonte registra paese, giurisdizione, lingua, citazione, URL ufficiale, data di pubblicazione ed efficacia."
 
 msgid "Validation status"
 msgstr "Stato di validazione"
 
 msgid "A source moves through a controlled lifecycle: draft, extracted, needs review, reviewed, approved, deprecated, replaced. Only sources marked as approved can feed a public calculation."
-msgstr ""
+msgstr "Una fonte attraversa un ciclo di vita controllato: bozza, estratta, in revisione, revisionata, approvata, deprecata, sostituita. Solo le fonti marcate come approvate alimentano un calcolo pubblico."
 
 msgid "draft"
 msgstr "bozza"
@@ -1627,13 +1627,13 @@ msgid "When a calculation is not available"
 msgstr "Quando un calcolo non è disponibile"
 
 msgid "If no approved source exists for the jurisdiction or the case type you select, the platform tells you explicitly. We do not invent a fallback estimate. Instead, we invite you to request a human legal evaluation."
-msgstr ""
+msgstr "Se non esiste alcuna fonte approvata per la giurisdizione o il tipo di caso scelto, la piattaforma lo dichiara in modo esplicito. Non inventiamo una stima di ripiego: invitiamo a richiedere una valutazione legale umana."
 
 msgid "Ranges, assumptions and confidence"
 msgstr "Intervalli, ipotesi e affidabilità"
 
 msgid "Every available simulation reports a minimum, a midpoint and a maximum, with the formulas, the assumptions, the missing documents and a confidence level (low, medium, high). The full disclaimer is always attached."
-msgstr ""
+msgstr "Ogni simulazione disponibile riporta un minimo, un valore centrale e un massimo, con formule, ipotesi, documenti mancanti e livello di affidabilità (bassa, media, alta). Il disclaimer completo è sempre allegato."
 
 msgid "Personal data"
 msgstr ""
@@ -1669,7 +1669,7 @@ msgid "Belgium — road accident bodily injury"
 msgstr ""
 
 msgid "Indicative simulation wizard"
-msgstr ""
+msgstr "Procedura di simulazione indicativa"
 
 msgid "All fields below are optional. If you don't know a value, leave it empty. The simulation will not invent numbers: it produces an estimate only when validated legal sources are available, and otherwise returns an honest \"requires legal validation\" status."
 msgstr ""
@@ -1681,13 +1681,13 @@ msgid "This module is a scaffold. The Belgian calculator engine is registered bu
 msgstr ""
 
 msgid "About the accident"
-msgstr ""
+msgstr "Informazioni sull'incidente"
 
 msgid "Injury and disability"
-msgstr ""
+msgstr "Lesione e invalidità"
 
 msgid "Documented economic impact"
-msgstr ""
+msgstr "Impatto economico documentato"
 
 msgid "The simulation is indicative and does not constitute legal advice, medical-legal opinion, or guarantee of outcome."
 msgstr ""
@@ -1702,7 +1702,7 @@ msgid "Italy — road accident bodily injury"
 msgstr ""
 
 msgid "Important"
-msgstr ""
+msgstr "Importante"
 
 msgid "This wizard is informative. It does not replace a medical-legal report or a lawyer's opinion. It does not collect documents."
 msgstr ""
@@ -1729,7 +1729,7 @@ msgid "Preliminary result"
 msgstr ""
 
 msgid "Indicative range"
-msgstr ""
+msgstr "Intervallo indicativo"
 
 msgid "Min"
 msgstr ""
@@ -1756,10 +1756,10 @@ msgid "Missing documents"
 msgstr ""
 
 msgid "Assumptions"
-msgstr ""
+msgstr "Ipotesi"
 
 msgid "Cited legal sources"
-msgstr ""
+msgstr "Fonti legali citate"
 
 msgid "Open official source"
 msgstr ""
@@ -1771,13 +1771,13 @@ msgid "Simulation ID"
 msgstr ""
 
 msgid "Created at"
-msgstr ""
+msgstr "Creato il"
 
 msgid "Download PDF report"
-msgstr ""
+msgstr "Scarica report PDF"
 
 msgid "Back to methodology"
-msgstr ""
+msgstr "Torna alla metodologia"
 
 msgid "Start a simulation"
 msgstr "Avvia una simulazione"
@@ -1786,7 +1786,7 @@ msgid "Start a guided simulation"
 msgstr "Avvia una simulazione guidata"
 
 msgid "Pick the country and the case type that best fits your situation. The simulation is indicative: it will only produce an estimate when validated legal sources are available — otherwise it returns a clear \"requires legal validation\" status."
-msgstr ""
+msgstr "Scegli il paese e il tipo di caso più adatto alla tua situazione. La simulazione è indicativa: produrrà una stima solo se sono disponibili fonti legali validate — altrimenti restituisce uno stato chiaro \"richiede validazione legale\"."
 
 msgid "Bodily injury after a road accident. The wizard accepts inputs but the legal sources are still under Studio review, so the simulation returns \"requires legal validation\" rather than a numeric estimate."
 msgstr ""
@@ -1801,7 +1801,7 @@ msgid "Open scaffold wizard"
 msgstr ""
 
 msgid "Coming soon"
-msgstr ""
+msgstr "In arrivo"
 
 msgid "Each module is activated only after the underlying legal sources are catalogued and validated by the Studio."
 msgstr ""

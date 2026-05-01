@@ -273,7 +273,7 @@ def _safe_request(method: str, url: str, **kwargs: Any) -> requests.Response:
     Wrapper che converte 401/403/429/5xx in `PexelsAPIError` con
     messaggio utile MA SENZA la API key.
     """
-    timeout = kwargs.pop("timeout", 10)
+    timeout = kwargs.pop("timeout", 30)
     try:
         resp = requests.request(method, url, timeout=timeout, **kwargs)
     except requests.RequestException as exc:
@@ -468,7 +468,10 @@ def fetch_one_slot(
         purpose=purpose,
         country_code=country,
         query=query,
-        local_path=str(Path("pexels") / fname),
+        # Forward slash always: il manifest viene servito come URL
+        # dentro un href, quindi l'OS-native backslash di Windows
+        # romperebbe il path. `as_posix()` garantisce `/` portabile.
+        local_path=(Path("pexels") / fname).as_posix(),
         photo_id=photo.id,
         photographer=photo.photographer,
         photographer_url=photo.photographer_url,
