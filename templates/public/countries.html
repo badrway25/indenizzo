@@ -4,35 +4,38 @@
 {% block title %}{% translate "Countries" %} — {{ SITE_NAME }}{% endblock %}
 
 {% block content %}
-  <section class="max-w-5xl mx-auto px-5 lg:px-8 py-16">
+  <section class="max-w-6xl mx-auto px-5 lg:px-8 py-16">
     <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Coverage map" %}</p>
-    <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Countries we cover" %}</h1>
-    <p class="mt-4 text-lg text-ink-800 leading-relaxed">
+    <h1 class="mt-4 font-serif text-4xl sm:text-5xl text-ink-950 leading-tight">{% translate "Countries we cover" %}</h1>
+    <p class="mt-5 text-lg text-ink-800 leading-relaxed max-w-3xl">
       {% blocktranslate %}We start with a focused MVP perimeter and extend country by country, only after legal sources are validated. Each country progresses through three states: in preparation, requires legal validation, available.{% endblocktranslate %}
     </p>
 
     {# Mappa code → URL name della landing per paese (pass F-product-country-landing). #}
-    <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+    <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {% for country in countries %}
-        <article class="bg-white border border-stone2-200 rounded-3xl p-6 shadow-card flex flex-col">
-          <div class="flex items-center justify-between">
-            <span class="font-serif text-3xl text-ink-950">{{ country.code }}</span>
+        <article class="bg-white border border-stone2-200 rounded-3xl p-6 lg:p-7 shadow-card flex flex-col hover:border-gold-400/60 transition-colors">
+          <div class="flex items-center justify-between gap-3">
+            <span class="font-serif text-3xl text-ink-950 leading-none">{{ country.code }}</span>
             {% if country.has_calculator %}
-              <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-ok-600/10 text-ok-600">
+              <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-ok-600/10 text-ok-600 whitespace-nowrap">
+                <span aria-hidden="true">●</span>
                 {% translate "Available" %}
               </span>
             {% elif country.scaffold_only %}
-              <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-gold-500/10 text-gold-600">
+              <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-gold-500/10 text-gold-600 whitespace-nowrap">
+                <span aria-hidden="true">●</span>
                 {% translate "Legal sources under review" %}
               </span>
             {% else %}
-              <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-stone2-100 text-stone2-500">
+              <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-stone2-100 text-stone2-500 whitespace-nowrap">
+                <span aria-hidden="true">●</span>
                 {% translate "In preparation" %}
               </span>
             {% endif %}
           </div>
-          <p class="mt-3 text-ink-900 font-medium">{{ country.name_key }}</p>
-          <p class="mt-2 text-sm text-stone2-500 leading-relaxed">
+          <p class="mt-4 text-ink-900 font-serif text-2xl leading-tight">{{ country.name_key }}</p>
+          <p class="mt-3 text-sm text-stone2-500 leading-relaxed flex-1">
             {% if country.has_calculator %}
               {% blocktranslate %}A calculator is registered for this country. Real estimates require approved legal sources.{% endblocktranslate %}
             {% elif country.scaffold_only %}
@@ -41,21 +44,35 @@
               {% blocktranslate %}Modules for this country are being prepared. Sources are still under legal validation.{% endblocktranslate %}
             {% endif %}
           </p>
-          <div class="mt-4 flex">
+          <div class="mt-6 pt-5 border-t border-stone2-100 flex items-center justify-between gap-3">
             {% if country.code == "IT" %}
-              <a href="{% url 'core:country_italy' %}" class="text-sm text-ink-800 underline underline-offset-4 hover:text-ink-950">{% translate "Open country page" %} →</a>
+              <a href="{% url 'core:country_italy' %}" class="text-sm font-semibold text-ink-900 hover:text-ink-950 inline-flex items-center gap-1.5">{% translate "Open country page" %} <span aria-hidden="true">→</span></a>
             {% elif country.code == "FR" %}
-              <a href="{% url 'core:country_france' %}" class="text-sm text-ink-800 underline underline-offset-4 hover:text-ink-950">{% translate "Open country page" %} →</a>
+              <a href="{% url 'core:country_france' %}" class="text-sm font-semibold text-ink-900 hover:text-ink-950 inline-flex items-center gap-1.5">{% translate "Open country page" %} <span aria-hidden="true">→</span></a>
             {% elif country.code == "BE" %}
-              <a href="{% url 'core:country_belgium' %}" class="text-sm text-ink-800 underline underline-offset-4 hover:text-ink-950">{% translate "Open country page" %} →</a>
+              <a href="{% url 'core:country_belgium' %}" class="text-sm font-semibold text-ink-900 hover:text-ink-950 inline-flex items-center gap-1.5">{% translate "Open country page" %} <span aria-hidden="true">→</span></a>
             {% elif country.code == "MA" %}
-              <a href="{% url 'core:country_morocco' %}" class="text-sm text-ink-800 underline underline-offset-4 hover:text-ink-950">{% translate "Open country page" %} →</a>
+              <a href="{% url 'core:country_morocco' %}" class="text-sm font-semibold text-ink-900 hover:text-ink-950 inline-flex items-center gap-1.5">{% translate "Open country page" %} <span aria-hidden="true">→</span></a>
             {% elif country.code == "TN" %}
-              <a href="{% url 'core:country_tunisia' %}" class="text-sm text-ink-800 underline underline-offset-4 hover:text-ink-950">{% translate "Open country page" %} →</a>
+              <a href="{% url 'core:country_tunisia' %}" class="text-sm font-semibold text-ink-900 hover:text-ink-950 inline-flex items-center gap-1.5">{% translate "Open country page" %} <span aria-hidden="true">→</span></a>
             {% endif %}
           </div>
         </article>
       {% endfor %}
+    </div>
+
+    <!-- Global CTA -->
+    <div class="mt-14 bg-ink-950 text-sand-50 rounded-3xl px-7 py-9 lg:px-10 lg:py-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 shadow-card">
+      <div class="max-w-2xl">
+        <p class="text-[11px] uppercase tracking-[0.22em] text-gold-400 font-semibold">{% translate "Need a direct review?" %}</p>
+        <h2 class="mt-3 font-serif text-3xl leading-tight">{% translate "Request a legal review on a complex case" %}</h2>
+        <p class="mt-3 text-sm text-sand-50/80 leading-relaxed">
+          {% blocktranslate %}If your case spans multiple jurisdictions, includes foreign assets, or the calculator status reads "Legal sources under review", the Studio team can review the file directly and propose the next step.{% endblocktranslate %}
+        </p>
+      </div>
+      <a href="{% url 'crm:contact' %}" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-gold-500 text-ink-950 hover:bg-gold-400 font-semibold whitespace-nowrap">
+        {% translate "Request legal review" %} →
+      </a>
     </div>
 
     <p class="mt-12 text-sm text-stone2-500 leading-relaxed">

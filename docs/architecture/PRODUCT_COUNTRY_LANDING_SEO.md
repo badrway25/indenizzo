@@ -392,3 +392,202 @@ Le claim sono caute e conformi a CLAUDE.md (nessuna garanzia di
 risultato, nessun valore inventato per i paesi non operativi).
 Il disclaimer obbligatorio CLAUDE.md è presente in fondo a ogni
 landing e nel partial `disclaimer_banner.html` globale.
+
+---
+
+## §9-ter. Pass 3 — sitemap.xml + JSON-LD LegalService + UX premium + browser live
+
+**Iter**: F-product-country-landing-pass3-sitemap-schema-ux-live
+**Data**: 2026-05-01
+**Stato**: implementato + testato in locale + verificato live nel browser. **Nessun deploy.**
+
+### Obiettivo
+
+Completare il blocco SEO tecnico con:
+1. **`/sitemap.xml`** dichiarativo, alimentato da `django.contrib.sitemaps`.
+2. **JSON-LD `LegalService`** (schema.org) sulle 5 country landing.
+3. **Polish UX premium** del template country landing (hero 2-col, status card, badges, CTA stack) e dell'index `/countries/`.
+4. **Verifica live nel browser** su porta libera, con screenshot.
+
+### File modificati / nuovi
+
+| Area | File | Tipo |
+|---|---|---|
+| Sitemap | `apps/core/sitemaps.py` | nuovo — `CountryLandingSitemap` + `StaticSitemap` |
+| Routing | `config/urls.py` | aggiunto `path("sitemap.xml", sitemap, ...)` fuori da `i18n_patterns` |
+| Apps | `config/settings.py` | aggiunto `django.contrib.sitemaps` a `DJANGO_APPS` |
+| SEO helper | `apps/core/seo.py` | aggiunta `build_legal_service_json_ld(...)` |
+| Views | `apps/core/views.py` | `_render_country_landing()` arricchito con JSON-LD dict + JSON string |
+| Template | `templates/public/country_landing.html` | hero 2-col + status card sticky + 3-bullet coverage + Legal basis badges + How-to-proceed (Option 1/Option 2) + JSON-LD `<script>` |
+| Template | `templates/public/countries.html` | card paesi premium con hover, CTA stack "Need a direct review?" |
+| Test | `apps/core/test_country_landings_pass3.py` (nuovo) | 25 test (sitemap + JSON-LD + RTL + IT smoke) |
+| Screenshots | `docs/screenshots/live_qa/country_landing_pass3/` | 10 PNG |
+| Docs | questo file | sezione §9-ter |
+
+Nessuna nuova dipendenza esterna oltre a `django.contrib.sitemaps` (built-in).
+
+### Sitemap
+
+`/sitemap.xml` è OUT of `i18n_patterns` (single XML neutrale; gli URL
+al suo interno sono nella lingua default `it`, no prefisso). I bot
+scoprono le altre lingue via gli `<link rel="alternate" hreflang>`
+già presenti in `<head>` (pass 2).
+
+`apps/core/sitemaps.py`:
+
+| Sitemap | Items | priority | changefreq |
+|---|---|---|---|
+| `CountryLandingSitemap` | `core:country_{italy,france,belgium,morocco,tunisia}` (5) | 0.9 | weekly |
+| `StaticSitemap` | `core:home`, `core:countries`, `core:methodology`, `core:case_types`, `cases:wizard_start`, `core:privacy`, `core:disclaimer` (7) | 0.8 / 0.6 / 0.3 | monthly |
+
+Totale: **12 URL**. `protocol="https"` hardcoded (in produzione gli URL
+saranno serviti via Caddy/HTTPS). Esclusioni esplicite: niente
+`/admin/`, niente `/staff/...`, niente detail page transactional
+(simulation/lead).
+
+### JSON-LD `LegalService`
+
+Iniettato in `<head>` come `<script type="application/ld+json">` su
+ognuna delle 5 country landing. Helper puro:
+`apps/core/seo.py::build_legal_service_json_ld(country_code, canonical_url, language_code)`.
+
+Schema:
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "LegalService",
+  "name": "Studio Legale Internazionale Badrane",
+  "areaServed": "Italy" | "France" | "Belgium" | "Morocco" | "Tunisia",
+  "serviceType": "<country-specific>",
+  "url": "<canonical_url>",
+  "inLanguage": "it" | "fr" | "en" | "ar"
+}
+```
+
+`serviceType` per paese (riflette quello che il prodotto fa
+realmente, non claim aspirational):
+
+| Country | serviceType |
+|---|---|
+| Italy | Road accident bodily injury compensation simulation |
+| France | Road accident bodily injury legal review |
+| Belgium | Road accident bodily injury legal review |
+| Morocco | International inheritance legal review |
+| Tunisia | International inheritance legal review |
+
+**Volutamente NON include**: `aggregateRating`, `review`, `priceRange`,
+`offers`, `sameAs`. Niente claim non validati, niente prezzi (servizio
+legale non e-commerce), niente review pubbliche fittizie.
+
+### UX premium — country landing
+
+Il template `country_landing.html` ora ha:
+
+- **Hero a 2 colonne** desktop (lg:grid-cols-12 / 7+5), 1 col mobile.
+- **Status card sticky** (lg:sticky top-6) con badge `●` + descrizione
+  + CTA primaria (paese-specifica) + CTA secondaria "Request legal review".
+- **3-bullet Coverage section** dentro l'hero, paese-specifica.
+- **Legal basis** in `<ul>` dentro card bianca con divisori, badge
+  status (approved=ok-600, needs_review=gold-500).
+- **How to proceed** in 2 card affiancate: Option 1 (wizard) /
+  Option 2 (direct legal review).
+- **Disclaimer + "no automatic estimate"** per paesi scaffold.
+
+Italia evidenzia "Approved TUN 2025 dataset feeds an indicative
+range". FR/BE/MA/TN dichiarano esplicitamente: "Sources under Studio
+review", "wizard in scaffold mode", "no automatic estimate is issued".
+
+Palette: `ink-{950,900,800,700}`, `sand-{50}`, `gold-{600,500,400}`,
+`stone2-{100,200,500}`, `ok-600`. Font serif `Cormorant Garamond` per
+H1/H2/H3, sans `Inter` per body.
+
+### UX premium — `/countries/` index
+
+`countries.html`:
+- card più alte (px-7 py-9), hover border `gold-400/60`,
+  font-serif 2xl per il country name;
+- badge stato con cerchio `●` + label uppercase letterspaced;
+- footer card con link "Open country page" stilizzato come bottone
+  ghost con freccia;
+- nuova banner CTA finale dark `ink-950` con titolo serif "Request a
+  legal review on a complex case" + bottone gold solid.
+
+### Browser live verification
+
+Porta libera scelta via:
+```
+python -c "import socket; s=socket.socket(); s.bind(('127.0.0.1',0)); print(s.getsockname()[1]); s.close()"
+```
+→ port `60927`.
+
+Server avviato:
+```
+DJANGO_DEBUG=true DJANGO_ALLOWED_HOSTS=127.0.0.1,localhost \
+  manage.py runserver 127.0.0.1:60927 --noreload
+```
+
+URL visitati con Playwright MCP:
+1. `/countries/` (desktop 1366×900)
+2. `/countries/italy/` (desktop)
+3. `/countries/france/` (desktop)
+4. `/countries/belgium/` (desktop)
+5. `/countries/morocco/` (desktop)
+6. `/countries/tunisia/` (desktop)
+7. `/fr/countries/france/` (desktop)
+8. `/ar/countries/morocco/` (desktop, RTL flip verificato)
+9. `/sitemap.xml` (XML tree)
+10. `/countries/italy/` (mobile 390×844)
+
+Screenshot salvati in `docs/screenshots/live_qa/country_landing_pass3/`:
+
+| File | Verifica |
+|---|---|
+| `01_countries_index_desktop.png` | grid 3-col, badge stato, banner CTA dark |
+| `02_italy_desktop.png` | status `Calculator available`, CTA "Start Italian compensation simulation", DPR approved badge |
+| `03_france_desktop.png` | status `Legal sources under review`, CTA "Open France validation wizard" |
+| `04_belgium_desktop.png` | idem Belgium |
+| `05_morocco_desktop.png` | inheritance wording, Moudawana visibile |
+| `06_tunisia_desktop.png` | inheritance wording, Loi 98-97 visibile |
+| `07_fr_france_i18n.png` | language selector "FR — Français", breadcrumb "Accueil", URL prefix `/fr/` |
+| `08_ar_morocco_rtl.png` | layout RTL: status card a sinistra, breadcrumb da destra, "Option 2/Option 1" invertiti |
+| `09_sitemap_xml.png` | 12 url, country landings con priority 0.9 |
+| `10_italy_mobile.png` | layout 1-col, hero+status card stacked, no overflow orizzontale |
+
+Problemi visuali trovati: nessuno richiede fix di codice. Note:
+- Le traduzioni `.po` non sono compilate, quindi il body del
+  template AR/FR/EN resta in inglese — il `dir="rtl"` e i path
+  i18n-prefixed funzionano correttamente (verificato).
+- Il cookie consent banner (partial globale) overlappa
+  marginalmente lo status badge su mobile prima del dismiss; non
+  è una regressione.
+
+### Test aggiunti (25 nuovi, tutti passati)
+
+`apps/core/test_country_landings_pass3.py`:
+1. `test_sitemap_returns_200_xml`
+2. `test_sitemap_contains_five_country_landings`
+3. `test_sitemap_excludes_admin_and_staff`
+4. `test_country_landings_emit_parseable_json_ld` × 5
+5. `test_json_ld_url_matches_canonical` × 5
+6. `test_italy_json_ld_service_type_is_compensation_simulation`
+7. `test_france_belgium_json_ld_service_type_is_legal_review` × 2
+8. `test_morocco_tunisia_json_ld_service_type_is_inheritance_review` × 2
+9. `test_scaffold_country_landings_have_no_calculated_claim` × 4
+10. `test_countries_index_links_to_five_landings`
+11. `test_arabic_landing_is_rtl`
+12. `test_italy_smoke_run_simulation_35_10_0` (canarino)
+
+Totale tests country-landing (pass1 + pass2 + pass3): **71 passati**.
+
+### Cosa resta per produzione
+
+- **OG / Twitter cards** per paese (image, title, description);
+- **`og:locale:alternate`** equivalente OG di hreflang;
+- **FAQ schema** (schema.org `FAQPage`) sulle landing — utile per
+  rich results se aggiungiamo una sezione FAQ;
+- **Traduzioni professionali** dei `.po` it/fr/en/ar + `compilemessages`
+  in pipeline;
+- **Sitemap dinamica multi-lingua** (`SITE`-hreflang nelle entry);
+- **Lighthouse audit** completo (perf, a11y, SEO, best-practices)
+  con baseline + gating CI;
+- **Tailwind PostCSS build** (CDN attuale → pipeline production-grade).

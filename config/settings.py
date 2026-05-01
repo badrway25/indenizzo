@@ -79,6 +79,10 @@ DJANGO_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Sitemap framework — usato da apps.core.sitemaps per /sitemap.xml.
+    # Non richiede `django.contrib.sites`: il view-helper passa
+    # `RequestSite(request)` quando il sites framework non è installato.
+    "django.contrib.sitemaps",
 ]
 
 THIRD_PARTY_APPS = [

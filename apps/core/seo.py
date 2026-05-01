@@ -1,7 +1,9 @@
 """
-SEO helpers — canonical + hreflang alternates.
+SEO helpers — canonical, hreflang alternates, JSON-LD LegalService.
 
-Iter: F-product-country-landing-pass2-canonical-hreflang.
+Iter:
+- F-product-country-landing-pass2-canonical-hreflang (canonical, hreflang).
+- F-product-country-landing-pass3-sitemap-schema-ux-live (JSON-LD).
 
 Coerente col setup `i18n_patterns(prefix_default_language=False)`
 di `config/urls.py`: la lingua default (`LANGUAGE_CODE=it`) NON ha
@@ -15,6 +17,11 @@ Funzioni pure, nessuna dipendenza DB:
   default).
 - `build_hreflang_alternates(request, view_name, kwargs=None) -> list[dict]`
   Una entry per lingua + `x-default`. Ogni entry: `{"lang", "href"}`.
+- `build_legal_service_json_ld(country_code, canonical_url, language_code) -> dict`
+  Schema.org `LegalService` per le 5 country landing. NON include
+  prezzi, rating, recensioni, garanzie: il prodotto è un servizio
+  legale informativo, e qualsiasi pricing/rating sarebbe non
+  validato e potenzialmente fuorviante.
 
 Niente dominio hardcoded: usa `request.build_absolute_uri()`.
 """
@@ -98,3 +105,77 @@ def build_hreflang_alternates(
     if default_href is not None:
         alternates.append({"lang": "x-default", "href": default_href})
     return alternates
+
+
+# ---------------------------------------------------------------------------
+# JSON-LD LegalService (pass 3)
+# ---------------------------------------------------------------------------
+
+# Mappa country_code → (areaServed, serviceType).
+#
+# `serviceType` riflette ESATTAMENTE quello che il prodotto fa oggi, non
+# claim aspirational:
+# - Italia: "Road accident bodily injury compensation simulation" — il
+#   calcolatore è attivo con TUN 2025 approvato.
+# - Francia/Belgio: "Road accident bodily injury legal review" — il
+#   calcolatore è scaffold; lo Studio fa una review manuale.
+# - Marocco/Tunisia: "International inheritance legal review" — niente
+#   calcolo automatico, lo Studio analizza il caso.
+#
+# `areaServed` resta il country ISO-3166 (Italy, France, Belgium,
+# Morocco, Tunisia) per essere coerente con `Schema.org LegalService`
+# e con l'identità multipaese del Studio.
+_COUNTRY_LEGAL_SERVICE: dict[str, dict[str, str]] = {
+    "italy": {
+        "area_served": "Italy",
+        "service_type": "Road accident bodily injury compensation simulation",
+    },
+    "france": {
+        "area_served": "France",
+        "service_type": "Road accident bodily injury legal review",
+    },
+    "belgium": {
+        "area_served": "Belgium",
+        "service_type": "Road accident bodily injury legal review",
+    },
+    "morocco": {
+        "area_served": "Morocco",
+        "service_type": "International inheritance legal review",
+    },
+    "tunisia": {
+        "area_served": "Tunisia",
+        "service_type": "International inheritance legal review",
+    },
+}
+
+
+def build_legal_service_json_ld(
+    country_code: str,
+    canonical_url: str,
+    language_code: str,
+) -> dict[str, Any]:
+    """
+    JSON-LD Schema.org `LegalService` per la landing paese.
+
+    Volutamente NON include:
+    - `aggregateRating` / `review` (nessuna review pubblica validata);
+    - `priceRange` / `offers` (servizio legale, non e-commerce);
+    - `sameAs` (rinviamo al sito madre solo via link nel template,
+      non come signal automatico).
+
+    Il documento è un dict serializzabile JSON (no oggetti Django).
+    Il template fa `{{ json_ld_legal_service|json_script }}` per
+    iniettarlo come `<script type="application/json">`.
+    """
+    spec = _COUNTRY_LEGAL_SERVICE.get(country_code)
+    if spec is None:
+        raise ValueError(f"Unknown country_code for JSON-LD: {country_code!r}")
+    return {
+        "@context": "https://schema.org",
+        "@type": "LegalService",
+        "name": "Studio Legale Internazionale Badrane",
+        "areaServed": spec["area_served"],
+        "serviceType": spec["service_type"],
+        "url": canonical_url,
+        "inLanguage": language_code,
+    }

@@ -204,14 +204,39 @@ def _country_landing_context(country_code: str) -> dict:
 
 def _render_country_landing(request, country_code: str, view_name: str):
     """
-    Render shared per le 5 landing paese. Aggiunge canonical
-    self-reference + hreflang alternates (pass 2).
+    Render shared per le 5 landing paese. Aggiunge:
+    - canonical self-reference + hreflang alternates (pass 2);
+    - JSON-LD `LegalService` schema.org (pass 3).
+
+    Il dict JSON-LD è serializzato qui come stringa JSON valida e
+    passato al template marcato safe (il dict NON contiene input
+    utente: solo costanti country e canonical URL costruito da
+    `request.path`, già sanitizzato da Django).
     """
-    from .seo import build_canonical_url, build_hreflang_alternates
+    import json
+
+    from django.utils.translation import get_language
+
+    from .seo import (
+        build_canonical_url,
+        build_hreflang_alternates,
+        build_legal_service_json_ld,
+    )
 
     ctx = _country_landing_context(country_code)
-    ctx["canonical_url"] = build_canonical_url(request)
+    canonical = build_canonical_url(request)
+    ctx["canonical_url"] = canonical
     ctx["hreflang_alternates"] = build_hreflang_alternates(request, view_name)
+    json_ld = build_legal_service_json_ld(
+        country_code=country_code,
+        canonical_url=canonical,
+        language_code=(get_language() or "it").lower(),
+    )
+    # Il dict resta in ctx come dict (utile per i test) e in più
+    # serializziamo la versione JSON che il template inietta nel
+    # <script type="application/ld+json">.
+    ctx["json_ld_legal_service"] = json_ld
+    ctx["json_ld_legal_service_json"] = json.dumps(json_ld, ensure_ascii=False)
     return render(request, "public/country_landing.html", ctx)
 
 
