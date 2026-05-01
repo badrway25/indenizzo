@@ -175,6 +175,52 @@ def manifest_slot_key(purpose: str, country_code: str | None) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Overrides system (pass curation-1)
+# ---------------------------------------------------------------------------
+
+# Path al file JSON con override editoriale per slot.
+# Schema: {"slots": {"<purpose>" o "<purpose>_<COUNTRY_ISO>": {...}}}.
+# Mai contiene secret; sempre committabile.
+_OVERRIDES_PATH = (
+    Path(getattr(settings, "BASE_DIR", ".")) / "config" / "pexels_image_overrides.json"
+)
+
+
+def override_lookup_key(purpose: str, country_code: str | None) -> str:
+    """Chiave usata nel JSON override per la slot. Es. `country_landing_IT`."""
+    if country_code:
+        return f"{purpose}_{country_code.upper()}"
+    return purpose
+
+
+def load_overrides() -> dict[str, dict[str, Any]]:
+    """
+    Legge `config/pexels_image_overrides.json`. Ritorna `{}` se assente o
+    corrotto: il fetch deve restare possibile senza override.
+    """
+    if not _OVERRIDES_PATH.exists():
+        return {}
+    try:
+        with _OVERRIDES_PATH.open("r", encoding="utf-8") as f:
+            data = json.load(f)
+    except (json.JSONDecodeError, OSError):
+        logger.warning("Pexels overrides unreadable, ignoring.")
+        return {}
+    slots = data.get("slots") if isinstance(data, dict) else None
+    return slots if isinstance(slots, dict) else {}
+
+
+def slot_override(
+    purpose: str,
+    country_code: str | None,
+    overrides: dict[str, dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    """Ritorna l'override per la slot, o `{}` se non definito."""
+    overrides = overrides if overrides is not None else load_overrides()
+    return overrides.get(override_lookup_key(purpose, country_code), {}) or {}
+
+
+# ---------------------------------------------------------------------------
 # Path helpers
 # ---------------------------------------------------------------------------
 
@@ -342,6 +388,28 @@ def curated_photos(*, per_page: int | None = None) -> list[PexelsPhoto]:
     return [PexelsPhoto.from_api(p) for p in photos if isinstance(p, dict)]
 
 
+def photo_by_id(photo_id: int) -> PexelsPhoto | None:
+    """
+    `GET /v1/photos/{id}` — recupera una foto specifica per pin manuale.
+
+    Ritorna None se 404; solleva `PexelsAPIError` su altri errori.
+    """
+    url = f"{_base_url()}/photos/{int(photo_id)}"
+    try:
+        resp = _safe_request("GET", url, headers=_auth_headers())
+    except PexelsAPIError as exc:
+        if "404" in str(exc):
+            return None
+        raise
+    payload = resp.json() or {}
+    return PexelsPhoto.from_api(payload) if "id" in payload else None
+
+
+def _photo_text_blob(photo: PexelsPhoto) -> str:
+    """Lower-cased haystack su cui matchare avoid_terms (alt + URL)."""
+    return f"{photo.alt or ''} {photo.pexels_url or ''}".lower()
+
+
 def select_best_photo(
     query: str,
     *,
@@ -349,19 +417,41 @@ def select_best_photo(
     purpose: str | None = None,  # noqa: ARG001
     orientation: str | None = None,
     per_page: int | None = None,
+    avoid_terms: list[str] | None = None,
 ) -> PexelsPhoto | None:
     """
-    Sceglie la foto "migliore" per la slot. Heuristic minimale:
-    prima foto landscape con altezza ≥ 600px (preferiamo immagini
-    da hero / og:image). Cade alla prima disponibile se nessuna
-    soddisfa il criterio. Restituisce None se zero risultati.
+    Sceglie la foto "migliore" per la slot. Heuristic:
+
+    1. landscape con altezza ≥ 600px;
+    2. NESSUNO degli `avoid_terms` (case-insensitive) compare in
+       `photo.alt` né in `photo.pexels_url`;
+    3. fallback alla prima foto della search se nessuna soddisfa.
+
+    Restituisce None se zero risultati totali.
     """
     photos = search_photos(query, orientation=orientation, per_page=per_page)
     if not photos:
         return None
+    avoid = [t.lower() for t in (avoid_terms or []) if t]
+
+    def is_landscape_min(p: PexelsPhoto) -> bool:
+        return p.height >= 600 and p.width >= p.height
+
+    def passes_avoid(p: PexelsPhoto) -> bool:
+        if not avoid:
+            return True
+        blob = _photo_text_blob(p)
+        return not any(term in blob for term in avoid)
+
+    # Pass 1: landscape + passes avoid.
     for photo in photos:
-        if photo.height >= 600 and photo.width >= photo.height:
+        if is_landscape_min(photo) and passes_avoid(photo):
             return photo
+    # Pass 2: any photo passing avoid.
+    for photo in photos:
+        if passes_avoid(photo):
+            return photo
+    # Pass 3: fallback (avoid filter would empty the list).
     return photos[0]
 
 
@@ -430,33 +520,50 @@ def fetch_one_slot(
     force: bool = False,
     orientation: str | None = None,
     per_page: int | None = None,
+    pinned_photo_id: int | None = None,
+    overrides: dict[str, dict[str, Any]] | None = None,
 ) -> ManifestEntry | None:
     """
     Esegue search + download per una slot e ritorna la `ManifestEntry`.
-    Ritorna None se nessun risultato.
 
-    Caller del comando si occupa di aggiornare il manifest e
-    stampare attribution.
+    Logica override (pass curation-1):
+    1. Se `pinned_photo_id` è esplicito, usa direttamente
+       `photo_by_id(pinned_photo_id)`.
+    2. Altrimenti, se l'override JSON ha `photo_id` valorizzato, idem.
+    3. Altrimenti, search con la `query` dell'override (se presente)
+       o con quella di default della slot. Applica `avoid_terms` per
+       filtrare risultati fuori contesto.
+
+    Caller del comando si occupa di aggiornare il manifest e stampare
+    attribution.
     """
     purpose = slot["purpose"]
     country = slot.get("country")
-    query = slot["query"]
+    default_query = slot["query"]
 
-    photo = select_best_photo(
-        query,
-        country_code=country,
-        purpose=purpose,
-        orientation=orientation,
-        per_page=per_page,
-    )
+    over = slot_override(purpose, country, overrides=overrides)
+    query = over.get("query") or default_query
+    avoid_terms = over.get("avoid_terms") or []
+    pin_from_override = over.get("photo_id")
+    pin = pinned_photo_id if pinned_photo_id is not None else pin_from_override
+
+    if pin:
+        photo = photo_by_id(int(pin))
+    else:
+        photo = select_best_photo(
+            query,
+            country_code=country,
+            purpose=purpose,
+            orientation=orientation,
+            per_page=per_page,
+            avoid_terms=avoid_terms,
+        )
     if photo is None:
         return None
 
     fname = _safe_filename(purpose, country, photo.id)
     target = pexels_cache_dir() / fname
     if target.exists() and not force:
-        # Manifest può essere out-of-sync ma il file è già là: ricostruiamo
-        # l'entry senza ri-download.
         sha = _hash_file(target)
         size = target.stat().st_size
     else:
@@ -468,9 +575,6 @@ def fetch_one_slot(
         purpose=purpose,
         country_code=country,
         query=query,
-        # Forward slash always: il manifest viene servito come URL
-        # dentro un href, quindi l'OS-native backslash di Windows
-        # romperebbe il path. `as_posix()` garantisce `/` portabile.
         local_path=(Path("pexels") / fname).as_posix(),
         photo_id=photo.id,
         photographer=photo.photographer,

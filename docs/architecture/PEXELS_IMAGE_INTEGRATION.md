@@ -17,6 +17,29 @@ site-wide 9 → 15)
 > `contact_hero`. Il template hero unificato vive in
 > `templates/partials/_premium_hero_image.html`.
 
+> **Update pass premium-visual-i18n-pass2**: 15/15 slot fetched
+> realmente da Pexels (`PEXELS_API_KEY` impostata come env var di
+> sessione, mai committata). Foto di alta risoluzione (1920×1080
+> → 8096×5397). Bug `local_path` Windows backslash fixato:
+> `(Path("pexels") / fname).as_posix()`. HTTP timeout bumpato da
+> 10s → 30s (alcune query Pexels superano i 10s). `og:image`
+> punta automaticamente al file Pexels locale quando esiste.
+> La home ora ha hero **image-as-backdrop** custom (non usa il
+> partial). Le countries cards mostrano la foto country-specific
+> in head card.
+
+> **Update pass curation-1**: introdotto sistema override editoriale
+> (`config/pexels_image_overrides.json`, committato, mai con secret).
+> Schema per slot: `{query, photo_id, avoid_terms, editorial_notes}`.
+> Comando esteso con `--slot`, `--photo-id`, `--audit`. 5 slot fuori
+> contesto rifetchati: Morocco landing (era Odense Danimarca → ora
+> Mausoleum Mohammed V Rabat), methodology_hero (era duplicato →
+> ora hand signing legal document), wizard_start_hero (era person
+> stock → ora certificate + Lady Justice), wizard_morocco_inheritance
+> (era "divorce certificate" → ora historic Moroccan building),
+> wizard_tunisia_inheritance (era Sidi Bou Said tourism → ora El Jem
+> amphitheater). Vedi `PEXELS_CURATION_PASS1.md` per dettagli.
+
 > Sorgente immagini professionali per home + country landing.
 > Server-side, cache-first, opt-in via env var. Niente API key
 > esposta. Niente immagine committata.
