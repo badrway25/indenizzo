@@ -28,6 +28,7 @@ Niente dominio hardcoded: usa `request.build_absolute_uri()`.
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 from django.conf import settings
@@ -179,3 +180,149 @@ def build_legal_service_json_ld(
         "url": canonical_url,
         "inLanguage": language_code,
     }
+
+
+# ---------------------------------------------------------------------------
+# Open Graph + Twitter Card metadata (pass 4)
+# ---------------------------------------------------------------------------
+
+# Mappa lingua app → tag `og:locale` standard.
+# I tag OG vogliono il formato POSIX `lang_TERRITORY` (es. `it_IT`).
+# Quando il territory non è ovvio (en, ar) scegliamo la variante più
+# comunemente usata sul web (`en_US`, `ar_AR`).
+_OG_LOCALE_BY_LANG: dict[str, str] = {
+    "it": "it_IT",
+    "fr": "fr_FR",
+    "en": "en_US",
+    "ar": "ar_AR",
+}
+
+
+def _og_locale(lang: str) -> str:
+    """Codice OG-locale per una lingua app, fallback `<lang>_<LANG>`."""
+    return _OG_LOCALE_BY_LANG.get(lang, f"{lang.lower()}_{lang.upper()}")
+
+
+# ---------------------------------------------------------------------------
+# OG image picker (pass og-images-pass1)
+# ---------------------------------------------------------------------------
+
+# Map: country_code (lowercase) → static slug per il PNG OG.
+# `country_code` proviene dal context view (`"italy"`, `"france"`, …).
+_COUNTRY_TO_OG_SLUG = {
+    "italy": "italy",
+    "france": "france",
+    "belgium": "belgium",
+    "morocco": "morocco",
+    "tunisia": "tunisia",
+}
+
+
+def _resolve_og_image_static_path(country_code: str | None) -> str:
+    """
+    Sceglie il path STATIC dell'immagine OG. Strategia:
+
+    1. Se `country_code` mappato e `static/img/og/og-{slug}.png` esiste
+       → usalo (immagine country-specific generata da
+       `scripts/generate_og_images.py`).
+    2. Altrimenti, se `static/img/og/og-country-default.png` esiste →
+       fallback raster default.
+    3. Altrimenti fallback finale all'SVG `static/img/og-country-default.svg`
+       (pass 4) — sempre presente.
+    """
+    base_dir = Path(getattr(settings, "BASE_DIR", "."))
+    static_dir = base_dir / "static"
+    if country_code:
+        slug = _COUNTRY_TO_OG_SLUG.get(country_code.lower())
+        if slug:
+            country_png = static_dir / "img" / "og" / f"og-{slug}.png"
+            if country_png.exists():
+                return f"img/og/og-{slug}.png"
+    default_png = static_dir / "img" / "og" / "og-country-default.png"
+    if default_png.exists():
+        return "img/og/og-country-default.png"
+    return "img/og-country-default.svg"
+
+
+def _is_png(static_path: str) -> bool:
+    return static_path.lower().endswith(".png")
+
+
+def build_open_graph_metadata(
+    request: Any,
+    *,
+    title: str,
+    description: str,
+    canonical_url: str,
+    image_static_path: str | None = None,
+    country_code: str | None = None,
+) -> dict[str, Any]:
+    """
+    Costruisce i metadati Open Graph + Twitter Card per la pagina.
+
+    Parametri:
+    - `title`, `description`: stringhe già localizzate dal chiamante
+      (la view passa il title/description usati in <title> e <meta
+      name="description"> per coerenza con quello che gli scraper
+      OG vedrebbero comunque).
+    - `canonical_url`: URL canonico assoluto (pass 2). Va anche in
+      `og:url` per evitare scraping della versione localizzata
+      sbagliata.
+    - `image_static_path`: path relativo dentro `STATICFILES_DIRS`.
+      Se None (default), `_resolve_og_image_static_path(country_code)`
+      sceglie automaticamente la PNG country-specific (pass og-images-1)
+      o il fallback default. Caller può forzare un path esplicito (es.
+      override Pexels in `_render_country_landing`).
+    - `country_code`: usato per il picker OG image. È in lowercase
+      come nel context (`"italy"`, `"france"`, …).
+
+    Output dict:
+    ```
+    {
+      "og": [{"property": "og:title", "content": "..."}, ...],
+      "twitter": [{"name": "twitter:card", "content": "..."}, ...],
+    }
+    ```
+    Il template itera direttamente le due liste e renderizza i tag.
+    Quando l'immagine è PNG, vengono emessi anche `og:image:width=1200`
+    e `og:image:height=630` (Facebook/X best practice).
+    """
+    from django.templatetags.static import static
+
+    current = (translation.get_language() or _default_language()).lower()
+    other_langs = [code for code in _supported_languages() if code != current]
+
+    if image_static_path is None:
+        image_static_path = _resolve_og_image_static_path(country_code)
+    image_url = request.build_absolute_uri(static(image_static_path))
+
+    site_name = getattr(settings, "SITE_NAME", "Studio Legale Internazionale Badrane")
+
+    og_tags: list[dict[str, str]] = [
+        {"property": "og:type", "content": "website"},
+        {"property": "og:site_name", "content": site_name},
+        {"property": "og:title", "content": title},
+        {"property": "og:description", "content": description},
+        {"property": "og:url", "content": canonical_url},
+        {"property": "og:image", "content": image_url},
+        {"property": "og:image:alt", "content": title},
+        {"property": "og:locale", "content": _og_locale(current)},
+    ]
+    if _is_png(image_static_path):
+        # Pass og-images-pass1: tutte le PNG sono 1200×630.
+        og_tags.append({"property": "og:image:width", "content": "1200"})
+        og_tags.append({"property": "og:image:height", "content": "630"})
+    for other in other_langs:
+        og_tags.append(
+            {"property": "og:locale:alternate", "content": _og_locale(other)},
+        )
+
+    twitter_tags: list[dict[str, str]] = [
+        {"name": "twitter:card", "content": "summary_large_image"},
+        {"name": "twitter:title", "content": title},
+        {"name": "twitter:description", "content": description},
+        {"name": "twitter:image", "content": image_url},
+        {"name": "twitter:image:alt", "content": title},
+    ]
+
+    return {"og": og_tags, "twitter": twitter_tags}

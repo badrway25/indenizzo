@@ -591,3 +591,150 @@ Totale tests country-landing (pass1 + pass2 + pass3): **71 passati**.
 - **Lighthouse audit** completo (perf, a11y, SEO, best-practices)
   con baseline + gating CI;
 - **Tailwind PostCSS build** (CDN attuale → pipeline production-grade).
+
+---
+
+## §9-quinquies. Pass og-images-pass1 — PNG raster per Twitter Card
+
+**Iter**: F-product-og-images-pass1
+**Data**: 2026-05-01
+
+Aggiunti 6 PNG 1200×630 in `static/img/og/`
+(`og-country-default.png` + `og-italy/france/belgium/morocco/tunisia.png`)
+generati da `scripts/generate_og_images.py` a partire dalle foto
+Pexels congelate. Picker `_resolve_og_image_static_path` in
+`apps/core/seo.py`: country-specific PNG → default PNG → SVG.
+Quando l'immagine OG è PNG, emessi anche `og:image:width=1200` e
+`og:image:height=630`. Vedi `PRODUCT_OG_IMAGES_PASS1.md`.
+
+---
+
+## §9-quater. Pass 4 — Open Graph + Twitter Card metadata
+
+**Iter**: F-product-country-landing-pass4-og-twitter-cards
+**Data**: 2026-05-01
+**Stato**: implementato + testato in locale + verificato live nel browser. **Nessun deploy.**
+
+### Obiettivo
+
+Aggiungere Open Graph (Facebook/LinkedIn) e Twitter Card metadata
+alle 5 country landing, con asset placeholder neutrale, mantenendo
+la stessa cautela di linguaggio già in pass 1-3 (niente claim di
+"calcolo reale" per FR/BE/MA/TN, niente importi).
+
+### File modificati / nuovi
+
+| Area | File | Tipo |
+|---|---|---|
+| Helper | `apps/core/seo.py` | nuovo `build_open_graph_metadata(...)` + mappa `_OG_LOCALE_BY_LANG` |
+| Asset | `static/img/og-country-default.svg` | nuovo, placeholder 1200×630 con palette del sito |
+| Views | `apps/core/views.py` | `_render_country_landing()` arricchito con `og_meta` + title/description gettext-coerenti col template |
+| Template | `templates/public/country_landing.html` | aggiunto blocco `{% for tag in og_meta.og %}` + `{% for tag in og_meta.twitter %}` in `head_extra` |
+| Test | `apps/core/test_country_landings_pass4.py` (nuovo) | 51 test (12 logici × parametriche per path/lingua) |
+| Screenshots | `docs/screenshots/live_qa/country_landing_pass4/` | 1 PNG (AR Morocco, conferma RTL invariato) |
+| Docs | questo file | sezione §9-quater |
+
+Nessuna nuova dipendenza esterna. Niente migrazione DB.
+
+### Metadata implementati
+
+Tag emessi su ogni country landing:
+
+| Tag | Tipo | Esempio |
+|---|---|---|
+| `og:type` | property | `website` |
+| `og:site_name` | property | `Simulatore Risarcimenti Studio Legale Badrane` |
+| `og:title` | property | `Italy — coverage and legal sources` |
+| `og:description` | property | gettext-coerente con `<meta name="description">` |
+| `og:url` | property | uguale a `<link rel="canonical">` |
+| `og:image` | property | URL assoluto SVG placeholder |
+| `og:image:alt` | property | identico a `og:title` |
+| `og:locale` | property | `it_IT` / `fr_FR` / `en_US` / `ar_AR` (lingua corrente) |
+| `og:locale:alternate` | property × N | una entry per lingua ≠ corrente |
+| `twitter:card` | name | `summary_large_image` |
+| `twitter:title` | name | identico a `og:title` |
+| `twitter:description` | name | identico a `og:description` |
+| `twitter:image` | name | identico a `og:image` |
+| `twitter:image:alt` | name | identico a `og:image:alt` |
+
+Single source of truth: `og:title`/`og:description` sono costruiti
+in view con `gettext()` usando le STESSE chiavi dei
+`{% blocktranslate %}` del template, così quando i `.po` saranno
+compilati la traduzione si applicherà sia al body che ai tag OG.
+
+### og:image strategy
+
+Asset: `static/img/og-country-default.svg` (1200×630).
+
+- **Brand mark**: cerchio ink-950 con "B" sand, accanto allo
+  smallcap "STUDIO LEGALE INTERNAZIONALE" gold + "Badrane" serif.
+- **Headline**: "Indicative compensation and inheritance reviews".
+- **Subhead**: "IT · FR · BE · MA · TN — based on validated legal sources".
+- **Footer**: disclaimer + dominio istituzionale.
+- **Palette**: ink-950 / gold / sand, gradiente sottile, niente
+  fotografia stock, niente claim numerico, niente promessa di
+  guadagno.
+
+URL servito assoluto via `request.build_absolute_uri(static(...))`,
+così che gli scraper (Facebook, LinkedIn, X) lo vedano sempre
+risolvibile su qualunque dominio (dev `127.0.0.1:PORT`, prod
+`simulatore.studiolegalebadrane.it`).
+
+L'asset è uguale per tutte e 5 le country landing: per pass futuro
+si può differenziare per paese (`og-italy.png`, `og-france.png`,
+ecc.). Il parametro `country_code` è già passato all'helper come
+hook.
+
+### Browser live verification
+
+Porta libera **15515**. URL visitati con Playwright MCP +
+estrazione meta tags via `page.evaluate(...)`:
+
+| URL | og:locale | Note |
+|---|---|---|
+| `/countries/italy/` | `it_IT` | og:description "Indicative compensation simulation…approved legal sources" |
+| `/countries/france/` | `it_IT` | og:description "France legal sources are under Studio review. No automatic estimate is currently issued…" — **niente claim "calculated"** |
+| `/ar/countries/morocco/` | `ar_AR`, alternates `[it_IT, fr_FR, en_US]` | `<html dir="rtl" lang="ar">` confermato, layout RTL invariato (screenshot pass4) |
+
+Screenshot AR Morocco salvato in
+`docs/screenshots/live_qa/country_landing_pass4/01_morocco_ar_rtl_pass4.png`.
+
+### Test aggiunti (51 nuovi, tutti passati)
+
+`apps/core/test_country_landings_pass4.py`:
+1. `test_country_landing_has_og_title` × 5
+2. `test_country_landing_has_og_description` × 5
+3. `test_country_landing_og_url_equals_canonical` × 5
+4. `test_country_landing_og_type_is_website` × 5
+5. `test_country_landing_twitter_card_is_summary_large_image` × 5
+6. `test_country_landing_og_locale_matches_current_language` × 4 (it/fr/en/ar)
+7. `test_default_landing_has_locale_alternates_for_other_languages`
+8. `test_arabic_landing_has_locale_alternates_for_other_languages`
+9. `test_country_landing_og_image_is_absolute_url` × 5
+10. `test_scaffold_country_og_metadata_has_no_calculated_claim` × 4 (FR/BE/MA/TN)
+11. `test_country_landing_has_og_site_name` × 5
+12. `test_country_landing_has_no_duplicate_singleton_og_tags` × 5
+13. `test_italy_smoke_run_simulation_35_10_0` (canarino)
+
+Totale tests country-landing (pass1+pass2+pass3+pass4): **122 passati**.
+
+### Limiti
+
+- **Preview social va testata "online"**: gli strumenti ufficiali
+  (Facebook Sharing Debugger, LinkedIn Post Inspector, X Card
+  Validator) richiedono un URL pubblico raggiungibile dai loro
+  bot. Localmente possiamo verificare solo la presenza/correttezza
+  dei meta tag, non il rendering finale del social card.
+- **og:image è SVG**: alcuni scraper preferiscono PNG/JPEG (es.
+  X non supporta SVG per Card image). Per produzione, generare un
+  PNG 1200×630 derivato dall'SVG (script Node/Python con
+  resvg/svglib) e servire `og-country-default.png`.
+- **Stesso asset per tutti i paesi**: in pass futuro differenziare
+  per paese (`og-italy.png`, `og-france.png`, ecc.).
+- **`og:locale=it_IT` su `/countries/france/`**: corretto perché
+  quel path è servito in lingua default (italiano, no prefisso).
+  Per il social locale italiano è la versione canonical; un
+  utente francese arriva via `/fr/countries/france/` (og:locale
+  `fr_FR`).
+- **Twitter site/creator handle**: non aggiunti — non c'è ancora
+  un account X ufficiale dello Studio collegato al prodotto.

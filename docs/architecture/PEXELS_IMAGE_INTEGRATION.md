@@ -28,6 +28,16 @@ site-wide 9 → 15)
 > partial). Le countries cards mostrano la foto country-specific
 > in head card.
 
+> **Update pass og-images-pass1**: 6 PNG OG 1200×630
+> (`static/img/og/og-country-default.png` + 5 country-specific)
+> generati da `scripts/generate_og_images.py`. Pillow legge le foto
+> Pexels frozen e applica overlay ink + wordmark + headline.
+> `apps/core/seo.py::_resolve_og_image_static_path` applica
+> picker: Pexels media → PNG country → PNG default → SVG.
+> Quando l'og:image è PNG, vengono emessi anche
+> `og:image:width=1200` e `og:image:height=630`. Vedi
+> `PRODUCT_OG_IMAGES_PASS1.md` per dettagli.
+
 > **Update pass photo-id-freeze**: i 15 `photo_id` validati sono
 > stati congelati nel file `config/pexels_image_overrides.json`
 > (campo `photo_id` per slot, più `approved_visual: true` e

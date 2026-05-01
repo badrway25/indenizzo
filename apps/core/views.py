@@ -300,22 +300,19 @@ def _render_country_landing(request, country_code: str, view_name: str):
     else:
         ctx["pexels_image"] = None
 
-    # OG image override: se abbiamo una Pexels cached, la preferiamo
-    # al SVG placeholder (immagine "vera" → migliore preview social).
-    og_image_static_path = "img/og-country-default.svg"
-    if pexels_entry and pexels_entry.get("local_path"):
-        # `build_open_graph_metadata` accetta solo `image_static_path`
-        # relativo a STATIC_URL. Per usare un'immagine MEDIA, costruiamo
-        # i tag OG manualmente sovrascrivendo og:image / twitter:image
-        # dopo la chiamata al builder.
-        pass
+    # OG image strategy (pass og-images-pass1):
+    # - Se Pexels manifest ha un'entry country-specific, og:image punta
+    #   a quel file (foto "vera" cached, migliore signal social).
+    # - Altrimenti, l'helper `build_open_graph_metadata` auto-sceglie
+    #   il PNG country-specific generato da
+    #   `scripts/generate_og_images.py` (es. `static/img/og/og-italy.png`).
+    # - Fallback finale: PNG default → SVG default.
     ctx["og_meta"] = build_open_graph_metadata(
         request,
         title=og_title,
         description=og_description,
         canonical_url=canonical,
         country_code=country_code,
-        image_static_path=og_image_static_path,
     )
     if pexels_entry and pexels_entry.get("local_path"):
         pexels_image_url = request.build_absolute_uri(media_url_for_entry(pexels_entry))
@@ -325,6 +322,15 @@ def _render_country_landing(request, country_code: str, view_name: str):
         for tag in ctx["og_meta"]["twitter"]:
             if tag["name"] in ("twitter:image", "twitter:image:alt"):
                 tag["content"] = pexels_image_url if tag["name"] == "twitter:image" else (og_title)
+        # I tag og:image:width/height vengono emessi dall'helper SOLO se
+        # l'image_static_path è PNG. La foto Pexels è JPG con dimensioni
+        # arbitrarie; rimuoviamo i tag width/height per evitare di
+        # comunicare dimensioni sbagliate agli scraper.
+        ctx["og_meta"]["og"] = [
+            tag
+            for tag in ctx["og_meta"]["og"]
+            if tag["property"] not in ("og:image:width", "og:image:height")
+        ]
 
     return render(request, "public/country_landing.html", ctx)
 
