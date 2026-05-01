@@ -192,12 +192,28 @@ class Command(BaseCommand):
     # ------------------------------------------------------------------
 
     def _audit(self) -> None:
-        """Stampa stato corrente: per ogni slot, presenza nel manifest +
-        match con override + dimensioni + photo_id. Niente API key
-        richiesta. Niente rete. Mai stampa la API key."""
+        """Audit completo per ogni slot. Niente rete, niente API key
+        richiesta, mai logga la API key.
+
+        Status per slot:
+        - **FROZEN_MATCH**: override.photo_id == manifest.photo_id E
+          il file locale esiste. Stato target.
+        - **FROZEN_MISSING_LOCAL**: override.photo_id == manifest.photo_id
+          MA il file locale non c'è — serve `--slot <key> --force`.
+        - **OVERRIDE_DIFFERS**: override.photo_id != manifest.photo_id
+          (manifest "drift" da quanto approvato visivamente, oppure
+          override appena cambiato e fetch non ancora rieseguito).
+        - **UNPINNED**: override esiste ma `photo_id` è null/assente —
+          la slot è governata solo dalla query search.
+        - **NOT_IN_MANIFEST**: lo slot non ha ancora una entry locale.
+        """
+        from pathlib import Path as _Path
+
         overrides = pexels.load_overrides()
         manifest = pexels.load_manifest()
+        media_root = _Path(getattr(__import__("django.conf").conf.settings, "MEDIA_ROOT", "media"))
         self.stdout.write(self.style.NOTICE("AUDIT — Pexels manifest snapshot (no network).\n"))
+        counts: dict[str, int] = {}
         for slot in pexels.SITE_IMAGE_SLOTS:
             purpose = slot["purpose"]
             country = slot.get("country")
@@ -205,25 +221,55 @@ class Command(BaseCommand):
             ovkey = pexels.override_lookup_key(purpose, country)
             entry = manifest.get(mkey)
             over = overrides.get(ovkey, {}) or {}
-            line = f"[{mkey}] override={'yes' if over else 'no'}"
+            override_pid = over.get("photo_id")
+            manifest_pid = (entry or {}).get("photo_id")
+
+            # Compute status.
+            if entry is None:
+                status = "NOT_IN_MANIFEST"
+            elif override_pid is None:
+                status = "UNPINNED"
+            elif int(override_pid) != int(manifest_pid):
+                status = "OVERRIDE_DIFFERS"
+            else:
+                # photo_id pinned and matches manifest. Check local file.
+                local = entry.get("local_path") or ""
+                local_path = media_root / local if local else None
+                if local_path and local_path.exists():
+                    status = "FROZEN_MATCH"
+                else:
+                    status = "FROZEN_MISSING_LOCAL"
+            counts[status] = counts.get(status, 0) + 1
+
+            style = self.style.SUCCESS if status == "FROZEN_MATCH" else self.style.WARNING
+            line = (
+                f"[{mkey}]  status={status}"
+                f"  override={'yes' if over else 'no'}"
+                f"  override_pid={override_pid}"
+                f"  manifest_pid={manifest_pid}"
+            )
+            self.stdout.write(style(line))
             if entry:
-                line += (
-                    f"  photo_id={entry.get('photo_id')}"
-                    f"  size={entry.get('width')}x{entry.get('height')}"
+                self.stdout.write(
+                    f"    size={entry.get('width')}x{entry.get('height')}"
                     f"  file={entry.get('local_path')}"
                 )
-                self.stdout.write(line)
                 if entry.get("pexels_url"):
                     self.stdout.write(f"    url: {entry.get('pexels_url')}")
                 if entry.get("alt"):
                     self.stdout.write(f"    alt: {entry.get('alt')[:90]}")
-            else:
-                line += "  status=MISSING"
-                self.stdout.write(self.style.WARNING(line))
-            if over.get("editorial_notes"):
+            if over.get("approved_reason"):
+                self.stdout.write(f"    approved: {over['approved_reason']}")
+            elif over.get("editorial_notes"):
                 self.stdout.write(f"    notes: {over['editorial_notes']}")
             self.stdout.write("")
-        self.stdout.write(self.style.SUCCESS(f"Audit done. {len(manifest)} entries in manifest."))
+
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"Audit done. {len(manifest)} entries in manifest.  "
+                + "  ".join(f"{k}={v}" for k, v in sorted(counts.items()))
+            )
+        )
 
     # ------------------------------------------------------------------
     # Slot resolution

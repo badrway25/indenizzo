@@ -220,6 +220,112 @@ in PNG 1200×630 + generare 5 OG image country-specific (Italy,
 France, Belgium, Morocco, Tunisia) usando le foto Pexels appena
 curate. X non supporta SVG nelle Twitter Card image.
 
-Subito dopo: pin manuale staff-validato dei 15 photo_id nel JSON
-override (così che ogni successivo `--all --force` non rischi di
-ridurre la qualità con nuove immagini Pexels più recenti).
+---
+
+## §11. Pass photo-id-freeze
+
+**Iter**: F-product-pexels-photo-id-freeze
+**Data**: 2026-05-01
+
+Tutti i 15 `photo_id` nel manifest validato sono stati congelati nel
+file `config/pexels_image_overrides.json` (campo `photo_id` per
+slot, più `approved_visual: true` e `approved_reason` con la
+ragione editoriale). Risultato: ogni `python manage.py
+fetch_pexels_site_images --all --force` riproduce **esattamente**
+le stesse immagini, e `--audit` segnala in chiaro lo stato
+`FROZEN_MATCH` per tutte le slot.
+
+### Tabella dei 15 photo_id congelati
+
+| Slot | photo_id | Soggetto |
+|---|---|---|
+| `home_hero` | 6077091 | Books + gavel + Lady Justice (KATRIN BOLOVTSOVA) |
+| `countries_index` | 7876093 | Lawyer workspace (kaboompics.com) |
+| `country_landing_IT` | 35878530 | Neoclassical Roman courthouse with palms (Alec Doualetas) |
+| `country_landing_FR` | 21253838 | Palais de Justice Nice (Laura Paredis) |
+| `country_landing_BE` | 14192312 | Palais de Justice Brussels (Ivan Dražić) |
+| `country_landing_MA` | 35786061 | Mausoleum Mohammed V Rabat (Abduljaleel tijjani Muhammad) |
+| `country_landing_TN` | 35677445 | Tunis government building (Elijah Cobb) |
+| `methodology_hero` | 48195 | Hand signing document with fountain pen (Pixabay) |
+| `wizard_start_hero` | 8112198 | Certificate + Lady Justice on desk (Pavel Danilyuk) |
+| `wizard_italy_road_accident_hero_IT` | 35878530 | Roman courthouse (shared) |
+| `wizard_france_road_accident_hero_FR` | 21253838 | Palais de Justice Nice (shared) |
+| `wizard_belgium_road_accident_hero_BE` | 36376007 | Royal Palace Brussels (János Csatlós) |
+| `wizard_morocco_inheritance_hero_MA` | 28976477 | Historic Moroccan building (MAG Photography) |
+| `wizard_tunisia_inheritance_hero_TN` | 35812446 | Roman amphitheater El Jem (Memory Lane) |
+| `contact_hero` | 7841469 | Office meeting (RDNE Stock project) |
+
+### Significato di `frozen photo_id`
+
+Quando uno slot ha `photo_id` valorizzato nell'override JSON:
+
+- il comando `fetch_pexels_site_images` chiama `GET /v1/photos/{id}`
+  invece della search → la **stessa** foto viene scaricata ad ogni
+  esecuzione, indipendentemente dal cambiamento dei risultati di
+  ricerca Pexels nel tempo;
+- `--audit` mostra `FROZEN_MATCH` se manifest e file locale sono
+  coerenti con l'override.
+
+### Come cambiare una foto già approvata
+
+1. Identificare la slot e la nuova `photo_id`:
+
+   ```bash
+   python manage.py fetch_pexels_site_images --audit
+   ```
+
+2. Aggiornare `config/pexels_image_overrides.json`: settare il nuovo
+   `photo_id` e aggiornare `approved_reason` con la motivazione del
+   cambio.
+
+3. Rifetchare lo slot:
+
+   ```bash
+   python manage.py fetch_pexels_site_images \
+     --slot <override_key> \
+     --force
+   ```
+
+   (oppure pinning ad-hoc senza modificare il file:
+   `--photo-id <NEW_ID>` insieme a `--slot`.)
+
+4. Re-eseguire `--audit` per verificare `FROZEN_MATCH`.
+
+### Status dell'audit
+
+- **FROZEN_MATCH**: `override.photo_id == manifest.photo_id` E il
+  file locale esiste. Stato target.
+- **FROZEN_MISSING_LOCAL**: i `photo_id` coincidono ma il file non
+  c'è (cache pulita); rifetchare.
+- **OVERRIDE_DIFFERS**: i due `photo_id` sono diversi → o il manifest
+  è "drifted" (qualcuno ha rifetchato senza aggiornare l'override),
+  o l'override è cambiato e il manifest non è ancora stato rigenerato.
+- **UNPINNED**: l'override esiste ma `photo_id` è null/assente; la
+  slot è governata solo dalla query.
+- **NOT_IN_MANIFEST**: lo slot non ha ancora una entry locale.
+
+### Precedence (verificata da test)
+
+`fetch_one_slot` applica nell'ordine:
+
+1. **CLI `--photo-id`** (se passato) → `photo_by_id()`.
+2. **`override.photo_id`** (se valorizzato) → `photo_by_id()`.
+3. **`override.query`** (se presente) o `slot.query` → `select_best_photo()`
+   con `avoid_terms` filter.
+
+### Test (15 nuovi, tutti passati)
+
+`apps/core/test_pexels_photo_id_freeze.py`:
+
+- `test_all_slots_have_frozen_photo_id_in_overrides` — guard freeze
+- `test_override_file_no_secret_after_freeze`
+- `test_override_photo_id_beats_query`
+- `test_cli_photo_id_beats_override_photo_id`
+- `test_audit_shows_frozen_match_when_manifest_and_override_match`
+- `test_audit_shows_override_differs`
+- `test_audit_shows_unpinned_when_no_photo_id`
+- `test_audit_does_not_leak_api_key_post_freeze`
+- `test_freeze_no_visible_attribution` × 6 paths
+- `test_freeze_italy_smoke_run_simulation` (canarino IT 35/10/0)
+
+Totale repo: **702 passed in 33s** (era 687 → +15).

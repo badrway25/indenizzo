@@ -28,6 +28,16 @@ site-wide 9 → 15)
 > partial). Le countries cards mostrano la foto country-specific
 > in head card.
 
+> **Update pass photo-id-freeze**: i 15 `photo_id` validati sono
+> stati congelati nel file `config/pexels_image_overrides.json`
+> (campo `photo_id` per slot, più `approved_visual: true` e
+> `approved_reason`). Ogni `--all --force` riproduce esattamente le
+> stesse immagini. Il comando `--audit` ora mostra status
+> `FROZEN_MATCH` / `FROZEN_MISSING_LOCAL` / `OVERRIDE_DIFFERS` /
+> `UNPINNED` / `NOT_IN_MANIFEST`. Precedence verificata:
+> CLI `--photo-id` > override.photo_id > override.query > slot
+> default. Vedi `PEXELS_CURATION_PASS1.md` §11 per dettagli.
+
 > **Update pass curation-1**: introdotto sistema override editoriale
 > (`config/pexels_image_overrides.json`, committato, mai con secret).
 > Schema per slot: `{query, photo_id, avoid_terms, editorial_notes}`.
