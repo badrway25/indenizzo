@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Morocco — international inheritance" %} — {{ SITE_NAME }}{% endblock %}
+{% block meta_robots %}noindex, nofollow{% endblock %}
+
+{% block content %}
+{% include "partials/_premium_hero_image.html" %}
+<section class="max-w-3xl mx-auto px-5 lg:px-8 py-16">
+  <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Morocco — international inheritance" %}</p>
+  <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Indicative simulation wizard" %}</h1>
+  <p class="mt-4 text-lg text-ink-800 leading-relaxed">
+    {% blocktranslate %}All fields below are optional. The simulation will not invent inheritance shares or amounts: it produces an estimate only when validated legal sources are available, and otherwise returns an honest "requires legal validation" status.{% endblocktranslate %}
+  </p>
+
+  <div class="mt-6 rounded-2xl border border-gold-400/40 bg-sand-100 px-5 py-4 text-sm text-ink-900 leading-relaxed">
+    <strong class="font-semibold">{% translate "Module under legal validation" %}.</strong>
+    {% blocktranslate %}This module is a scaffold. The Moroccan calculator engine is registered but the legal sources (Moudawana Livre III, Code des obligations et des contrats, Code de procédure civile) are still under Studio review. The wizard will return "requires legal validation" rather than computed shares.{% endblocktranslate %}
+  </div>
+
+  <form method="post" novalidate class="mt-10 bg-white border border-stone2-200 rounded-3xl shadow-card p-6 sm:p-8 space-y-6">
+    {% csrf_token %}
+    {% include "public/_inheritance_wizard_fields.html" %}
+  </form>
+
+  <p class="mt-8 text-xs text-stone2-500 leading-relaxed">
+    {% blocktranslate %}The simulation is indicative and does not constitute legal advice or guarantee of outcome. Inheritance matters in Morocco follow the Moudawana (Code de la famille), Livre III: a precise computation requires Studio review of the actual case context.{% endblocktranslate %}
+  </p>
+</section>
+
+{% comment %}
+Native inputs rendered via {{ form.field }} need CSS classes applied at
+runtime to look premium. JS-free fallback: inputs work browser-default.
+{% endcomment %}
+<script>
+  (function(){
+    const cls = "mt-1 w-full rounded-xl border border-stone2-200 bg-sand-50 px-3 py-2.5 focus:border-gold-500 focus:bg-white outline-none";
+    document.querySelectorAll('form input[type="text"]:not([type="hidden"]), form input[type="number"], form select, form textarea').forEach(function(el){
+      if (el.type === "checkbox" || el.type === "hidden") return;
+      el.className = cls;
+    });
+  })();
+</script>
+{% endblock %}

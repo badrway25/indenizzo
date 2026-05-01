@@ -100,10 +100,15 @@ def contact(request):
     else:
         form = ContactForm(initial=initial)
 
+    from apps.core.views import _pexels_hero
+
     return render(
         request,
         "public/contact.html",
-        {"form": form},
+        {
+            "form": form,
+            "pexels_image": _pexels_hero(request, "contact_hero"),
+        },
     )
 
 

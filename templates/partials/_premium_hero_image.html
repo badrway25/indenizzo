@@ -1,0 +1,33 @@
+{% load i18n %}
+{% comment %}
+  Premium hero image partial.
+
+  Iter: F-product-premium-visual-i18n-pass1.
+
+  Renderizza un'immagine "hero" sopra il contenuto principale di
+  una pagina pubblica. NIENTE attribution visibile (quella resta
+  solo nel manifest interno, vedi pass "no-caption-live-server").
+
+  Input context:
+  - pexels_image  -> dict con almeno {"src", "alt"} (vedi
+    apps.core.views.* per la struttura).
+
+  Se `pexels_image` è None / non passato, il partial NON renderizza
+  nulla: il template chiamante manterrà il fallback che già esiste
+  (di solito un gradient o un layout text-only).
+
+  Uso (template caller):
+    {% include "partials/_premium_hero_image.html" with pexels_image=pexels_image %}
+{% endcomment %}
+{% if pexels_image %}
+<section class="max-w-7xl mx-auto px-5 lg:px-8 pt-6">
+  <div class="rounded-3xl overflow-hidden shadow-card">
+    <img
+      src="{{ pexels_image.src }}"
+      alt="{{ pexels_image.alt }}"
+      class="w-full h-56 sm:h-72 lg:h-96 object-cover"
+      loading="lazy"
+      decoding="async">
+  </div>
+</section>
+{% endif %}

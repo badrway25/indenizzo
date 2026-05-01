@@ -1,0 +1,1819 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-01 09:41+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+msgid "Studio profile"
+msgstr ""
+
+msgid "Client"
+msgstr ""
+
+msgid "Lawyer"
+msgstr ""
+
+msgid "Staff"
+msgstr ""
+
+msgid "Admin"
+msgstr ""
+
+msgid "Italiano"
+msgstr ""
+
+msgid "Français"
+msgstr ""
+
+msgid "English"
+msgstr ""
+
+msgid "العربية"
+msgstr ""
+
+msgid "role"
+msgstr ""
+
+msgid "preferred language"
+msgstr ""
+
+msgid "phone number"
+msgstr ""
+
+msgid "company or firm name"
+msgstr ""
+
+msgid "created at"
+msgstr ""
+
+msgid "updated at"
+msgstr ""
+
+msgid "user"
+msgstr ""
+
+msgid "users"
+msgstr ""
+
+msgid "Road accident — bodily injury"
+msgstr ""
+
+msgid "Medical malpractice"
+msgstr ""
+
+msgid "Work injury"
+msgstr ""
+
+msgid "Death compensation"
+msgstr ""
+
+msgid "Parental loss"
+msgstr ""
+
+msgid "Patrimonial damage"
+msgstr ""
+
+msgid "Inheritance — basic"
+msgstr ""
+
+msgid "Inheritance — international"
+msgstr ""
+
+msgid "Generic legal assessment"
+msgstr ""
+
+msgid "Unavailable — requires legal validation"
+msgstr ""
+
+msgid "Insufficient input"
+msgstr ""
+
+msgid "Calculated"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "Low"
+msgstr ""
+
+msgid "Medium"
+msgstr ""
+
+msgid "High"
+msgstr ""
+
+msgid "Geography"
+msgstr ""
+
+msgid "Output"
+msgstr ""
+
+msgid "Input & consent"
+msgstr ""
+
+msgid "Request metadata"
+msgstr ""
+
+msgid "Anonymization"
+msgstr ""
+
+msgid "Audit"
+msgstr ""
+
+msgid "Anonymize selected simulations (GDPR)"
+msgstr ""
+
+#, python-format
+msgid "%(count)d simulation(s) anonymized."
+msgstr ""
+
+msgid "Date of the accident"
+msgstr ""
+
+msgid "If you don't know the exact date, leave this empty."
+msgstr ""
+
+msgid "Age of the injured person"
+msgstr ""
+
+msgid "Age at the time of the accident, in years."
+msgstr ""
+
+msgid "Permanent disability (%)"
+msgstr ""
+
+msgid "Only if a medical report has assessed it. Otherwise leave empty."
+msgstr ""
+
+msgid "Total temporary disability — days"
+msgstr ""
+
+msgid "Partial temporary disability — days"
+msgstr ""
+
+msgid "Documented medical expenses"
+msgstr ""
+
+msgid "Currency: EUR. Only amounts you can document."
+msgstr ""
+
+msgid "Lost income"
+msgstr ""
+
+msgid "Currency: EUR. Net income lost due to the accident."
+msgstr ""
+
+msgid "Estimated own fault (%)"
+msgstr ""
+
+msgid "0% if you believe you bear no responsibility."
+msgstr ""
+
+msgid "I consent to processing the data above for the sole purpose of producing an indicative simulation."
+msgstr ""
+
+msgid "You must accept the simulation consent to run a simulation."
+msgstr ""
+
+msgid "The accident date cannot be in the future."
+msgstr ""
+
+msgid "Country of the deceased's last domicile"
+msgstr ""
+
+msgid "ISO 3166-1 alpha-2 code, e.g. MA, TN, IT, FR, BE."
+msgstr ""
+
+msgid "Habitual residence country at death"
+msgstr ""
+
+msgid "If different from the country of last domicile."
+msgstr ""
+
+msgid "Nationality of the deceased"
+msgstr ""
+
+msgid "ISO 3166-1 alpha-2 code."
+msgstr ""
+
+msgid "Did the deceased leave a will?"
+msgstr ""
+
+msgid "Surviving spouse?"
+msgstr ""
+
+msgid "Number of surviving children"
+msgstr ""
+
+msgid "Number of surviving parents (0, 1, or 2)"
+msgstr ""
+
+msgid "Countries where assets are located"
+msgstr ""
+
+msgid "Comma-separated ISO codes, e.g. 'MA, FR, IT'."
+msgstr ""
+
+msgid "Additional context"
+msgstr ""
+
+msgid "Anything you think is relevant. No documents needed."
+msgstr ""
+
+msgid "public id"
+msgstr ""
+
+msgid "session key"
+msgstr ""
+
+msgid "jurisdiction"
+msgstr ""
+
+msgid "country"
+msgstr ""
+
+msgid "case type"
+msgstr ""
+
+msgid "locale"
+msgstr ""
+
+msgid "input data"
+msgstr ""
+
+msgid "output data"
+msgstr ""
+
+msgid "sources snapshot"
+msgstr ""
+
+msgid "status"
+msgstr ""
+
+msgid "confidence"
+msgstr ""
+
+msgid "currency"
+msgstr ""
+
+msgid "estimated min"
+msgstr ""
+
+msgid "estimated mid"
+msgstr ""
+
+msgid "estimated max"
+msgstr ""
+
+msgid "consent record"
+msgstr ""
+
+msgid "ip address"
+msgstr ""
+
+msgid "user agent"
+msgstr ""
+
+msgid "source path"
+msgstr ""
+
+msgid "anonymized"
+msgstr ""
+
+msgid "anonymized at"
+msgstr ""
+
+msgid "simulation"
+msgstr ""
+
+msgid "simulations"
+msgstr ""
+
+msgid "Created"
+msgstr ""
+
+msgid "Computed"
+msgstr ""
+
+msgid "Anonymized"
+msgstr ""
+
+msgid "Other"
+msgstr ""
+
+msgid "event type"
+msgstr ""
+
+msgid "message"
+msgstr ""
+
+msgid "metadata"
+msgstr ""
+
+msgid "simulation event"
+msgstr ""
+
+msgid "simulation events"
+msgstr ""
+
+msgid "rows"
+msgstr ""
+
+msgid "Source & geography"
+msgstr ""
+
+msgid "Validity"
+msgstr ""
+
+msgid "Notes"
+msgstr ""
+
+msgid "Draft"
+msgstr ""
+
+msgid "Needs review"
+msgstr ""
+
+msgid "Approved"
+msgstr ""
+
+msgid "Deprecated"
+msgstr ""
+
+msgid "legal source"
+msgstr ""
+
+msgid "Fonte legale da cui i dati sono estratti."
+msgstr ""
+
+msgid "Tipo di caso a cui il dataset si applica. Determina quale calculator può eventualmente leggerlo."
+msgstr ""
+
+msgid "name"
+msgstr ""
+
+msgid "Etichetta umana, es. 'Tabella Unica Nazionale 2025'."
+msgstr ""
+
+msgid "version label"
+msgstr ""
+
+msgid "Versione interna, es. '2025.1'."
+msgstr ""
+
+msgid "valid from"
+msgstr ""
+
+msgid "valid to"
+msgstr ""
+
+msgid "notes"
+msgstr ""
+
+msgid "compensation dataset"
+msgstr ""
+
+msgid "compensation datasets"
+msgstr ""
+
+msgid "An approved dataset must reference a legal source."
+msgstr ""
+
+msgid "Cannot mark dataset APPROVED while its legal source is not APPROVED."
+msgstr ""
+
+msgid "`valid_to` must be greater than or equal to `valid_from`."
+msgstr ""
+
+msgid "dataset"
+msgstr ""
+
+msgid "row type"
+msgstr ""
+
+msgid "Categoria libera della riga, es. 'point_value', 'daily_temporary_disability', 'multiplier'."
+msgstr ""
+
+msgid "age min"
+msgstr ""
+
+msgid "age max"
+msgstr ""
+
+msgid "disability % min"
+msgstr ""
+
+msgid "disability % max"
+msgstr ""
+
+msgid "point value"
+msgstr ""
+
+msgid "daily amount"
+msgstr ""
+
+msgid "coefficient"
+msgstr ""
+
+msgid "extra"
+msgstr ""
+
+msgid "Campi opzionali specifici della tabella, JSON libero."
+msgstr ""
+
+msgid "compensation table row"
+msgstr ""
+
+msgid "compensation table rows"
+msgstr ""
+
+msgid "`age_max` must be >= `age_min`."
+msgstr ""
+
+msgid "`disability_max` must be >= `disability_min`."
+msgstr ""
+
+msgid "internal code"
+msgstr ""
+
+msgid "Identificatore stabile, es. 'tun_biologico_punto'."
+msgstr ""
+
+msgid "expression text"
+msgstr ""
+
+msgid "Descrizione testuale della formula, riprodotta dalla fonte. Non viene valutata automaticamente: serve come traccia."
+msgstr ""
+
+msgid "parameters"
+msgstr ""
+
+msgid "Mappa parametri opzionale, JSON libero."
+msgstr ""
+
+msgid "source reference"
+msgstr ""
+
+msgid "Riferimento testuale alla porzione di fonte da cui la formula è stata estratta, es. 'art. 138 comma 2'."
+msgstr ""
+
+msgid "calculation formula"
+msgstr ""
+
+msgid "calculation formulas"
+msgstr ""
+
+msgid "An approved formula must belong to a dataset."
+msgstr ""
+
+msgid "Cannot mark formula APPROVED while its dataset is not APPROVED."
+msgstr ""
+
+msgid "PDF attached"
+msgstr ""
+
+msgid "CSV import"
+msgstr ""
+
+msgid "Manual entry"
+msgstr ""
+
+msgid "Success"
+msgstr ""
+
+msgid "Partial"
+msgstr ""
+
+msgid "Failed"
+msgstr ""
+
+msgid "Può essere null se l'estrazione non è arrivata a creare il dataset (es. errore durante l'attach del PDF)."
+msgstr ""
+
+msgid "method"
+msgstr ""
+
+msgid "file path"
+msgstr ""
+
+msgid "file sha256"
+msgstr ""
+
+msgid "file size (bytes)"
+msgstr ""
+
+msgid "rows imported"
+msgstr ""
+
+msgid "rows skipped"
+msgstr ""
+
+msgid "result"
+msgstr ""
+
+msgid "error message"
+msgstr ""
+
+msgid "extraction log"
+msgstr ""
+
+msgid "extraction logs"
+msgstr ""
+
+msgid "Workflow"
+msgstr ""
+
+msgid "Internal"
+msgstr ""
+
+msgid "Simulation inputs"
+msgstr ""
+
+msgid "Simulation results"
+msgstr ""
+
+msgid "Lead / contact requests"
+msgstr ""
+
+msgid "Uploaded documents"
+msgstr ""
+
+msgid "Consent records"
+msgstr ""
+
+msgid "Audit / privacy events"
+msgstr ""
+
+msgid "Received"
+msgstr ""
+
+msgid "Verifying identity"
+msgstr ""
+
+msgid "Rejected"
+msgstr ""
+
+msgid "Completed"
+msgstr ""
+
+msgid "Consent given"
+msgstr ""
+
+msgid "Consent withdrawn"
+msgstr ""
+
+msgid "Data accessed"
+msgstr ""
+
+msgid "Data exported"
+msgstr ""
+
+msgid "Data deletion requested"
+msgstr ""
+
+msgid "Data deletion completed"
+msgstr ""
+
+msgid "Legal source reviewed"
+msgstr ""
+
+msgid "code"
+msgstr ""
+
+msgid "description"
+msgstr ""
+
+msgid "active"
+msgstr ""
+
+msgid "required for simulation"
+msgstr ""
+
+msgid "Se True, il wizard di simulazione non può procedere senza."
+msgstr ""
+
+msgid "required for contact"
+msgstr ""
+
+msgid "Se True, il lead form non può inviare senza."
+msgstr ""
+
+msgid "consent purpose"
+msgstr ""
+
+msgid "consent purposes"
+msgstr ""
+
+msgid "purpose"
+msgstr ""
+
+msgid "version"
+msgstr ""
+
+msgid "Etichetta umana stabile, es. '2026-04' o '1.0'."
+msgstr ""
+
+msgid "language"
+msgstr ""
+
+msgid "title"
+msgstr ""
+
+msgid "body"
+msgstr ""
+
+msgid "effective from"
+msgstr ""
+
+msgid "effective to"
+msgstr ""
+
+msgid "created by"
+msgstr ""
+
+msgid "consent text version"
+msgstr ""
+
+msgid "consent text versions"
+msgstr ""
+
+msgid "text version"
+msgstr ""
+
+msgid "Versione del testo che l'utente ha visto al momento del consenso."
+msgstr ""
+
+msgid "accepted"
+msgstr ""
+
+msgid "accepted at"
+msgstr ""
+
+msgid "consent records"
+msgstr ""
+
+msgid "retention days"
+msgstr ""
+
+msgid "Giorni dopo i quali il dato deve essere eliminato/anonymizzato."
+msgstr ""
+
+msgid "applies to"
+msgstr ""
+
+msgid "data retention policy"
+msgstr ""
+
+msgid "data retention policies"
+msgstr ""
+
+msgid "email"
+msgstr ""
+
+msgid "Email di contatto, anche per richieste anonime senza account."
+msgstr ""
+
+msgid "reason"
+msgstr ""
+
+msgid "requested at"
+msgstr ""
+
+msgid "completed at"
+msgstr ""
+
+msgid "handled by"
+msgstr ""
+
+msgid "internal notes"
+msgstr ""
+
+msgid "data deletion request"
+msgstr ""
+
+msgid "data deletion requests"
+msgstr ""
+
+msgid "actor"
+msgstr ""
+
+msgid "target model"
+msgstr ""
+
+msgid "Es. 'cases.Simulation' o 'legal_sources.LegalSource'."
+msgstr ""
+
+msgid "target object id"
+msgstr ""
+
+msgid "path"
+msgstr ""
+
+msgid "privacy audit event"
+msgstr ""
+
+msgid "privacy audit events"
+msgstr ""
+
+msgid "Login success"
+msgstr ""
+
+msgid "Login failed"
+msgstr ""
+
+msgid "Logout"
+msgstr ""
+
+msgid "username hash"
+msgstr ""
+
+msgid "ip address (masked)"
+msgstr ""
+
+msgid "user agent hash"
+msgstr ""
+
+msgid "staff access event"
+msgstr ""
+
+msgid "staff access events"
+msgstr ""
+
+msgid "Admin login brute-force"
+msgstr ""
+
+msgid "alert type"
+msgstr ""
+
+msgid "severity"
+msgstr ""
+
+msgid "event count"
+msgstr ""
+
+msgid "window seconds"
+msgstr ""
+
+msgid "triggered at"
+msgstr ""
+
+msgid "cooldown until"
+msgstr ""
+
+msgid "staff security alert"
+msgstr ""
+
+msgid "staff security alerts"
+msgstr ""
+
+#, python-format
+msgid "%(country)s — coverage and legal sources"
+msgstr ""
+
+#, python-format
+msgid "Indicative compensation simulation for %(country)s, based on approved legal sources. The estimate is informative and never a guarantee of outcome."
+msgstr ""
+
+#, python-format
+msgid "%(country)s legal sources are under Studio review. No automatic estimate is currently issued; the wizard collects your request for a legal review."
+msgstr ""
+
+msgid "Contact"
+msgstr ""
+
+msgid "Case context"
+msgstr ""
+
+msgid "Privacy"
+msgstr "Privacy"
+
+msgid "Mark selected leads as Contacted"
+msgstr ""
+
+#, python-format
+msgid "%(n)d lead(s) marked as contacted."
+msgstr ""
+
+msgid "Mark selected leads as Qualified"
+msgstr ""
+
+#, python-format
+msgid "%(n)d lead(s) marked as qualified."
+msgstr ""
+
+msgid "Archive selected leads"
+msgstr ""
+
+#, python-format
+msgid "%(n)d lead(s) archived."
+msgstr ""
+
+msgid "First name"
+msgstr ""
+
+msgid "Last name"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Phone number"
+msgstr ""
+
+msgid "Preferred language"
+msgstr ""
+
+msgid "Country"
+msgstr ""
+
+msgid "Select a country (optional)"
+msgstr ""
+
+msgid "Case type"
+msgstr ""
+
+msgid "Not specified"
+msgstr ""
+
+msgid "How can we help?"
+msgstr ""
+
+msgid "I have read and accept the privacy notice."
+msgstr ""
+
+msgid "You must accept the privacy notice to send your request."
+msgstr ""
+
+#, python-format
+msgid "Please describe your case in at least %(n)d characters."
+msgstr ""
+
+msgid "Contacted"
+msgstr ""
+
+msgid "Qualified"
+msgstr ""
+
+msgid "Converted"
+msgstr ""
+
+msgid "Archived"
+msgstr ""
+
+msgid "Normal"
+msgstr ""
+
+msgid "Urgent"
+msgstr ""
+
+msgid "first name"
+msgstr ""
+
+msgid "last name"
+msgstr ""
+
+msgid "priority"
+msgstr ""
+
+msgid "utm source"
+msgstr ""
+
+msgid "utm medium"
+msgstr ""
+
+msgid "utm campaign"
+msgstr ""
+
+msgid "assigned to"
+msgstr ""
+
+msgid "contacted at"
+msgstr ""
+
+msgid "converted at"
+msgstr ""
+
+msgid "lead"
+msgstr ""
+
+msgid "leads"
+msgstr ""
+
+msgid "Note"
+msgstr ""
+
+msgid "lead event"
+msgstr ""
+
+msgid "lead events"
+msgstr ""
+
+msgid "ISO alpha-2 code"
+msgstr ""
+
+msgid "Codice ISO 3166-1 alpha-2, es. IT, FR, BE, MA, TN."
+msgstr ""
+
+msgid "ISO alpha-3 code"
+msgstr ""
+
+msgid "Codice ISO 3166-1 alpha-3, opzionale."
+msgstr ""
+
+msgid "Se False, il paese non viene proposto nei wizard pubblici."
+msgstr ""
+
+msgid "countries"
+msgstr ""
+
+msgid "ISO 4217 code"
+msgstr ""
+
+msgid "Codice ISO 4217, es. EUR, MAD, TND, USD."
+msgstr ""
+
+msgid "symbol"
+msgstr ""
+
+msgid "currencies"
+msgstr ""
+
+msgid "ISO 639-1 code"
+msgstr ""
+
+msgid "Codice ISO 639-1, es. it, fr, en, ar."
+msgstr ""
+
+msgid "languages"
+msgstr ""
+
+msgid "Civil law"
+msgstr ""
+
+msgid "Common law"
+msgstr ""
+
+msgid "Mixed system"
+msgstr ""
+
+msgid "Religious-based"
+msgstr ""
+
+msgid "Unknown / not classified"
+msgstr ""
+
+msgid "Identificatore interno stabile, es. IT, IT-LOM, FR, BE, MA, TN."
+msgstr ""
+
+msgid "legal system"
+msgstr ""
+
+msgid "default currency"
+msgstr ""
+
+msgid "default language"
+msgstr ""
+
+msgid "jurisdictions"
+msgstr ""
+
+msgid "Geography & language"
+msgstr ""
+
+msgid "Classification"
+msgstr ""
+
+msgid "Dates"
+msgstr ""
+
+msgid "Lineage"
+msgstr ""
+
+msgid "Extracted"
+msgstr ""
+
+msgid "Reviewed"
+msgstr ""
+
+msgid "Replaced"
+msgstr ""
+
+msgid "Official law / statute"
+msgstr ""
+
+msgid "Ministry decree"
+msgstr ""
+
+msgid "Court compensation table"
+msgstr ""
+
+msgid "Administrative guideline"
+msgstr ""
+
+msgid "Insurance reference"
+msgstr ""
+
+msgid "Doctrine / academic"
+msgstr ""
+
+msgid "Internal legal note"
+msgstr ""
+
+msgid "Demo / placeholder (non legal)"
+msgstr ""
+
+msgid "Official"
+msgstr ""
+
+msgid "Unknown"
+msgstr ""
+
+msgid "slug"
+msgstr ""
+
+msgid "Giurisdizione specifica, se più precisa del paese."
+msgstr ""
+
+msgid "source type"
+msgstr ""
+
+msgid "official URL"
+msgstr ""
+
+msgid "citation / reference"
+msgstr ""
+
+msgid "Riferimento testuale stabile, es. 'D.Lgs. 209/2005, art. 139'."
+msgstr ""
+
+msgid "publication date"
+msgstr ""
+
+msgid "effective date"
+msgstr ""
+
+msgid "valid until"
+msgstr ""
+
+msgid "last checked at"
+msgstr ""
+
+msgid "reliability"
+msgstr ""
+
+msgid "legal reviewer"
+msgstr ""
+
+msgid "supersedes"
+msgstr ""
+
+msgid "replaced by"
+msgstr ""
+
+msgid "legal sources"
+msgstr ""
+
+msgid "An approved legal source must declare its original language."
+msgstr ""
+
+msgid "Etichetta umana, es. '2024.1' o 'Tabelle Milano 2024'."
+msgstr ""
+
+msgid "content hash (sha256)"
+msgstr ""
+
+msgid "SHA-256 del contenuto canonico, per integrità."
+msgstr ""
+
+msgid "legal source version"
+msgstr ""
+
+msgid "legal source versions"
+msgstr ""
+
+msgid "file"
+msgstr ""
+
+msgid "original filename"
+msgstr ""
+
+msgid "mime type"
+msgstr ""
+
+msgid "size (bytes)"
+msgstr ""
+
+msgid "sha256"
+msgstr ""
+
+msgid "legal source attachment"
+msgstr ""
+
+msgid "legal source attachments"
+msgstr ""
+
+msgid "Request changes"
+msgstr ""
+
+msgid "Approve"
+msgstr ""
+
+msgid "Reject"
+msgstr ""
+
+msgid "Reopen"
+msgstr ""
+
+msgid "reviewer"
+msgstr ""
+
+msgid "decision"
+msgstr ""
+
+msgid "previous status"
+msgstr ""
+
+msgid "new status"
+msgstr ""
+
+msgid "comment"
+msgstr ""
+
+msgid "legal review"
+msgstr ""
+
+msgid "legal reviews"
+msgstr ""
+
+msgid "Generated"
+msgstr ""
+
+msgid "generated at"
+msgstr ""
+
+msgid "generated by"
+msgstr ""
+
+msgid "simulation report"
+msgstr ""
+
+msgid "simulation reports"
+msgstr ""
+
+#, python-format
+msgid "%(site)s — simulazioni indicative su risarcimenti e successioni internazionali, basate su fonti legali validate."
+msgstr ""
+
+msgid "Skip to content"
+msgstr "Vai al contenuto"
+
+msgid "Cookie notice"
+msgstr ""
+
+msgid "Cookies"
+msgstr ""
+
+msgid "This site uses only strictly necessary technical cookies (session, CSRF). No analytics or marketing trackers are active."
+msgstr ""
+
+msgid "Read the privacy notice"
+msgstr ""
+
+msgid "OK"
+msgstr ""
+
+msgid "Request legal review"
+msgstr "Richiedi una valutazione legale"
+
+msgid "Legal disclaimer"
+msgstr ""
+
+msgid "Notice"
+msgstr ""
+
+msgid "This platform provides indicative simulations only. It is not legal, medico-legal advice nor a guarantee of outcome."
+msgstr ""
+
+msgid "Read the full disclaimer"
+msgstr ""
+
+msgid "Studio Legale Internazionale"
+msgstr ""
+
+msgid "International legal practice with cross-border experience in compensation, inheritance and complex jurisdictional matters."
+msgstr ""
+
+msgid "Visit institutional website"
+msgstr ""
+
+msgid "Platform"
+msgstr ""
+
+msgid "Countries"
+msgstr "Paesi"
+
+msgid "Case types"
+msgstr "Tipi di caso"
+
+msgid "Methodology"
+msgstr "Metodologia"
+
+msgid "Legal"
+msgstr ""
+
+msgid "Disclaimer"
+msgstr "Avvertenze"
+
+msgid "Institutional website"
+msgstr ""
+
+msgid "Indicative simulations. Not legal advice."
+msgstr ""
+
+msgid "Primary navigation"
+msgstr ""
+
+msgid "Choose language"
+msgstr ""
+
+msgid "Apply"
+msgstr ""
+
+msgid "Website (do not fill)"
+msgstr ""
+
+msgid "About the deceased"
+msgstr ""
+
+msgid "Heirs"
+msgstr ""
+
+msgid "Assets and context"
+msgstr ""
+
+msgid "I have read the <a href=\"/privacy/\" class=\"underline\">privacy notice</a> and consent to processing the data above for the sole purpose of producing an indicative simulation."
+msgstr ""
+
+msgid "Submitting this form does not create a professional engagement. No documents are collected."
+msgstr ""
+
+msgid "Run simulation"
+msgstr ""
+
+msgid "Modular taxonomy"
+msgstr ""
+
+msgid "We implement modules in depth, one at a time. Each case type is activated only after the relevant legal sources are catalogued and validated for the chosen jurisdiction."
+msgstr ""
+
+msgid "Module ready"
+msgstr ""
+
+msgid "Legal sources under review"
+msgstr "Fonti legali in revisione"
+
+msgid "In preparation"
+msgstr "In preparazione"
+
+msgid "A calculator is registered for this case type. Estimates appear only when approved legal sources are available for the chosen jurisdiction."
+msgstr ""
+
+msgid "A calculator scaffold is registered for this case type. Legal sources are still under Studio review, so the wizard returns \"requires legal validation\" and never invents amounts or shares."
+msgstr ""
+
+msgid "This module is on the roadmap. The Studio will activate it once the underlying legal sources are validated."
+msgstr ""
+
+msgid "Coming next"
+msgstr ""
+
+msgid "Additional modules under preparation include catastrophic damage, loss of chance, defamation, school/professional damage and ruined holiday claims, where legally tractable."
+msgstr ""
+
+msgid "Contact the Studio"
+msgstr "Contatta lo Studio"
+
+msgid "Request a legal review"
+msgstr "Richiedi una valutazione legale"
+
+msgid "Tell us about your case in your own words. A member of the Studio will get back to you to evaluate whether and how we can help."
+msgstr ""
+
+msgid "(optional)"
+msgstr ""
+
+msgid "Briefly describe what happened, when, and where. Avoid sharing sensitive medical details now — we will request them only if needed."
+msgstr ""
+
+msgid "I have read the <a href=\"/privacy/\" class=\"underline\">privacy notice</a> and the <a href=\"/disclaimer/\" class=\"underline\">disclaimer</a>, and I consent to my data being processed by the Studio for the sole purpose of replying to this request."
+msgstr ""
+
+msgid "Submitting this form does not create a professional engagement."
+msgstr ""
+
+msgid "Send my request"
+msgstr ""
+
+msgid "Request received"
+msgstr ""
+
+msgid "Thank you"
+msgstr ""
+
+msgid "Your request has been received."
+msgstr ""
+
+msgid "A member of our team will review your request and get back to you. Cross-border cases may take a few working days to assess."
+msgstr ""
+
+msgid "Submitting this form does not create a professional engagement. The Studio remains free to accept or decline the matter."
+msgstr ""
+
+msgid "Back to homepage"
+msgstr ""
+
+msgid "Coverage map"
+msgstr "Mappa di copertura"
+
+msgid "Countries we cover"
+msgstr "I paesi che copriamo"
+
+msgid "We start with a focused MVP perimeter and extend country by country, only after legal sources are validated. Each country progresses through three states: in preparation, requires legal validation, available."
+msgstr ""
+
+msgid "Available"
+msgstr "Disponibile"
+
+msgid "A calculator is registered for this country. Real estimates require approved legal sources."
+msgstr ""
+
+msgid "A calculator scaffold is registered. Legal sources are still under Studio review, so the wizard returns \"requires legal validation\" and never invents numbers."
+msgstr ""
+
+msgid "Modules for this country are being prepared. Sources are still under legal validation."
+msgstr ""
+
+msgid "Open country page"
+msgstr "Apri la pagina paese"
+
+msgid "Need a direct review?"
+msgstr ""
+
+msgid "Request a legal review on a complex case"
+msgstr ""
+
+msgid "If your case spans multiple jurisdictions, includes foreign assets, or the calculator status reads \"Legal sources under review\", the Studio team can review the file directly and propose the next step."
+msgstr ""
+
+msgid "Future jurisdictions on the roadmap include Spain, Germany, Canada, Romania, Algeria and Egypt."
+msgstr ""
+
+msgid "Breadcrumb"
+msgstr "Percorso"
+
+msgid "Home"
+msgstr "Home"
+
+msgid "Country page"
+msgstr "Pagina paese"
+
+#, python-format
+msgid "%(country)s — what we currently cover"
+msgstr ""
+
+#, python-format
+msgid "Studio Legale Badrane provides an indicative compensation simulation for %(country)s based on approved legal sources. The estimate is informative and never a guarantee of outcome."
+msgstr ""
+
+#, python-format
+msgid "Legal sources for %(country)s are currently under Studio review. The wizard accepts your request and our team replies after a manual legal validation. No automatic estimate is issued until that review is complete."
+msgstr ""
+
+msgid "Road traffic accident — bodily injury (danno biologico) under Italian law."
+msgstr ""
+
+msgid "Reference dataset: Tabella Unica Nazionale 2025 (D.P.R. 12/2025), with the biological component and the moral range (Tabelle 2.A/2.B/2.C)."
+msgstr ""
+
+msgid "Approved TUN 2025 dataset feeds an indicative range (minimum, central, maximum). Result is not legal advice."
+msgstr ""
+
+msgid "Road traffic accident — bodily injury (préjudice corporel) under French law."
+msgstr ""
+
+msgid "Candidate sources under Studio review: Référentiel Mornet 2024 and Barème de capitalisation Gazette du Palais 2022."
+msgstr ""
+
+msgid "The wizard is in scaffold mode: it returns \"requires legal validation\" rather than a number."
+msgstr ""
+
+msgid "Road traffic accident — bodily injury under Belgian law."
+msgstr ""
+
+msgid "Candidate sources under Studio review: Tableau Indicatif 2020, Tableau Indicatif 2024 and Tables Schryvers for capitalisation."
+msgstr ""
+
+msgid "The wizard is in scaffold mode and never invents amounts."
+msgstr ""
+
+msgid "International inheritance with Moroccan elements — heirs, foreign assets, applicable law."
+msgstr ""
+
+msgid "Reference framework: Moudawana (Code de la famille, Loi 70-03), Code des droits réels and EU Succession Regulation 650/2012."
+msgstr ""
+
+msgid "The wizard collects qualitative inputs; no automatic share calculation is performed yet."
+msgstr ""
+
+msgid "International inheritance with Tunisian elements — heirs, foreign assets, applicable law."
+msgstr ""
+
+msgid "Reference framework: Code du statut personnel — Livre IX, Loi n°98-97 (Code de droit international privé), EU Regulation 650/2012."
+msgstr ""
+
+msgid "Status"
+msgstr "Stato"
+
+msgid "The wizard accepts compatible inputs and returns an indicative range based on the approved dataset."
+msgstr ""
+
+msgid "The wizard collects your request and persists it. The calculator is in scaffold mode: response is \"requires legal validation\" — no automatic estimate is issued."
+msgstr ""
+
+msgid "Start Italian compensation simulation"
+msgstr "Avvia la simulazione risarcimento Italia"
+
+msgid "Open France validation wizard"
+msgstr "Apri la procedura di validazione Francia"
+
+msgid "Open Belgium validation wizard"
+msgstr "Apri la procedura di validazione Belgio"
+
+msgid "Request Moroccan inheritance review"
+msgstr "Richiedi revisione successione marocchina"
+
+msgid "Request Tunisian inheritance review"
+msgstr "Richiedi revisione successione tunisina"
+
+msgid "Legal basis"
+msgstr "Base legale"
+
+msgid "Approved sources have been validated by the Studio's legal team. Sources marked as \"needs review\" are catalogued but cannot drive any public estimate yet."
+msgstr ""
+
+msgid "approved"
+msgstr "approvata"
+
+msgid "needs review"
+msgstr "in revisione"
+
+msgid "How to proceed"
+msgstr "Come procedere"
+
+msgid "Option 1"
+msgstr "Opzione 1"
+
+msgid "Run the simulation wizard"
+msgstr "Avvia la simulazione guidata"
+
+msgid "Submit a structured request"
+msgstr "Invia una richiesta strutturata"
+
+msgid "Provide age, disability percentage and fault percentage. The wizard returns an indicative range based on the approved TUN 2025 dataset."
+msgstr ""
+
+msgid "Open the country wizard to share the case context. We persist the request and reply after a manual legal review. No automatic estimate is issued."
+msgstr ""
+
+msgid "Option 2"
+msgstr "Opzione 2"
+
+msgid "Direct legal review"
+msgstr "Revisione legale diretta"
+
+msgid "If the case is complex, write to the Studio. A lawyer reviews the file, identifies applicable law and competent jurisdiction, and proposes the next step."
+msgstr ""
+
+msgid "This page is informative. Any simulation provided by the platform is indicative and does not constitute legal, medical-legal advice nor a guarantee of outcome. The actual valuation depends on documents, expert reports, liability, applicable law, competent jurisdiction, judicial orientations and insurance practice."
+msgstr ""
+
+msgid "No automatic estimate is currently issued until legal review is complete."
+msgstr ""
+
+msgid "Legal notice"
+msgstr ""
+
+msgid "This platform offers indicative simulations of compensation and inheritance scenarios across multiple jurisdictions. Each simulation is based on legal sources catalogued and validated by our team."
+msgstr ""
+
+msgid "A simulation is not legal advice, is not a medico-legal opinion and is not a guarantee of outcome. The actual evaluation of a case depends on documents, expert reports, liability assessment, applicable law, competent jurisdiction, case law and insurance practice."
+msgstr ""
+
+msgid "If you require a binding evaluation, please request a legal review through our office."
+msgstr ""
+
+msgid "This text is a working version. The final wording will be reviewed and signed off by the Studio's legal team."
+msgstr ""
+
+#, python-format
+msgid "%(site)s — International compensation simulator"
+msgstr ""
+
+msgid "Cross-border legal-tech platform"
+msgstr "Piattaforma legal-tech transfrontaliera"
+
+msgid "Indicative simulations for compensation and inheritance, grounded in validated legal sources."
+msgstr "Simulazioni indicative su risarcimenti e successioni, fondate su fonti legali validate."
+
+msgid "A professional tool by Studio Legale Internazionale Badrane. Each estimate is supported by validated legal sources, transparent ranges and clear assumptions. We do not promise outcomes — we help you understand them."
+msgstr ""
+
+msgid "Explore case types"
+msgstr "Esplora i tipi di caso"
+
+msgid "Read our methodology"
+msgstr "Leggi la nostra metodologia"
+
+msgid "Simulations are indicative. They do not constitute legal advice or guarantee any outcome."
+msgstr ""
+
+msgid "Trust by design"
+msgstr "Affidabilità progettuale"
+
+msgid "Every estimate cites the legal sources behind it: title, version and date."
+msgstr ""
+
+msgid "If a jurisdiction is not yet legally validated, we say so explicitly — no fabricated numbers."
+msgstr ""
+
+msgid "Reports include ranges, assumptions, missing documents and confidence level."
+msgstr ""
+
+msgid "Available in Italian, French, English and Arabic."
+msgstr ""
+
+msgid "Jurisdictions"
+msgstr "Giurisdizioni"
+
+msgid "MVP coverage"
+msgstr "Copertura MVP"
+
+msgid "See all countries"
+msgstr "Vedi tutti i paesi"
+
+msgid "Validated sources only"
+msgstr "Solo fonti validate"
+
+msgid "Every coefficient and figure used in a public calculation is tied to a legal source marked as approved by our team."
+msgstr ""
+
+msgid "Transparent ranges"
+msgstr "Intervalli trasparenti"
+
+msgid "You receive a minimum, a midpoint and a maximum, with the assumptions, the formulas and the missing documents clearly listed."
+msgstr ""
+
+msgid "Human review"
+msgstr "Revisione umana"
+
+msgid "A simulation is a starting point. The Studio takes over for real legal evaluation when you need a binding opinion."
+msgstr ""
+
+msgid "Ready for a real legal evaluation?"
+msgstr "Pronto per una valutazione legale reale?"
+
+msgid "Our international team handles compensation, medical liability and cross-border inheritance matters across Europe and North Africa."
+msgstr ""
+
+msgid "How we work"
+msgstr "Come lavoriamo"
+
+msgid "Our simulator is built on a single principle: no figure is shown to the public unless we can cite the legal source behind it. This page explains how we collect, validate and version those sources."
+msgstr ""
+
+msgid "Sources of law"
+msgstr "Fonti di diritto"
+
+msgid "For each jurisdiction we maintain a catalogue of laws, ministerial decrees, court compensation tables, administrative guidelines, insurance references and academic doctrine. Each source records its country, jurisdiction, language, citation, official URL, publication date and effective date."
+msgstr ""
+
+msgid "Validation status"
+msgstr "Stato di validazione"
+
+msgid "A source moves through a controlled lifecycle: draft, extracted, needs review, reviewed, approved, deprecated, replaced. Only sources marked as approved can feed a public calculation."
+msgstr ""
+
+msgid "draft"
+msgstr "bozza"
+
+msgid "deprecated"
+msgstr "deprecata"
+
+msgid "When a calculation is not available"
+msgstr "Quando un calcolo non è disponibile"
+
+msgid "If no approved source exists for the jurisdiction or the case type you select, the platform tells you explicitly. We do not invent a fallback estimate. Instead, we invite you to request a human legal evaluation."
+msgstr ""
+
+msgid "Ranges, assumptions and confidence"
+msgstr "Intervalli, ipotesi e affidabilità"
+
+msgid "Every available simulation reports a minimum, a midpoint and a maximum, with the formulas, the assumptions, the missing documents and a confidence level (low, medium, high). The full disclaimer is always attached."
+msgstr ""
+
+msgid "Personal data"
+msgstr ""
+
+msgid "We process personal data in accordance with the EU General Data Protection Regulation (GDPR) and the privacy laws applicable in each jurisdiction we cover."
+msgstr ""
+
+msgid "When you use the simulator we may collect: the inputs you provide for the simulation, the language and country you choose, technical metadata such as IP address and user agent, and the consents you grant."
+msgstr ""
+
+msgid "We do not sell personal data. We do not share it with third parties beyond what is strictly necessary to provide our legal services and meet legal obligations."
+msgstr ""
+
+msgid "You can request access, rectification, deletion or anonymization of your data at any time by contacting the Studio."
+msgstr ""
+
+msgid "A complete privacy policy will be published before the simulator goes live to the public. This page is a working summary."
+msgstr ""
+
+msgid "Too many requests"
+msgstr ""
+
+msgid "Rate limit"
+msgstr ""
+
+msgid "For security reasons we received too many submissions from your network in a short time. Please try again later."
+msgstr ""
+
+msgid "If you need urgent assistance, please contact the Studio directly via the institutional website."
+msgstr ""
+
+msgid "Belgium — road accident bodily injury"
+msgstr ""
+
+msgid "Indicative simulation wizard"
+msgstr ""
+
+msgid "All fields below are optional. If you don't know a value, leave it empty. The simulation will not invent numbers: it produces an estimate only when validated legal sources are available, and otherwise returns an honest \"requires legal validation\" status."
+msgstr ""
+
+msgid "Module under legal validation"
+msgstr ""
+
+msgid "This module is a scaffold. The Belgian calculator engine is registered but the legal sources (Loi du 21 novembre 1989, Tableau indicatif des cours et tribunaux, barème Schryvers) are still under Studio review. The wizard will return \"requires legal validation\" rather than a numeric estimate."
+msgstr ""
+
+msgid "About the accident"
+msgstr ""
+
+msgid "Injury and disability"
+msgstr ""
+
+msgid "Documented economic impact"
+msgstr ""
+
+msgid "The simulation is indicative and does not constitute legal advice, medical-legal opinion, or guarantee of outcome."
+msgstr ""
+
+msgid "France — road accident bodily injury"
+msgstr ""
+
+msgid "This module is a scaffold. The French calculator engine is registered but the legal sources (Loi Badinter, Référentiel indicatif, barème de capitalisation) are still under Studio review. The wizard will return \"requires legal validation\" rather than a numeric estimate."
+msgstr ""
+
+msgid "Italy — road accident bodily injury"
+msgstr ""
+
+msgid "Important"
+msgstr ""
+
+msgid "This wizard is informative. It does not replace a medical-legal report or a lawyer's opinion. It does not collect documents."
+msgstr ""
+
+msgid "Morocco — international inheritance"
+msgstr ""
+
+msgid "All fields below are optional. The simulation will not invent inheritance shares or amounts: it produces an estimate only when validated legal sources are available, and otherwise returns an honest \"requires legal validation\" status."
+msgstr ""
+
+msgid "This module is a scaffold. The Moroccan calculator engine is registered but the legal sources (Moudawana Livre III, Code des obligations et des contrats, Code de procédure civile) are still under Studio review. The wizard will return \"requires legal validation\" rather than computed shares."
+msgstr ""
+
+msgid "The simulation is indicative and does not constitute legal advice or guarantee of outcome. Inheritance matters in Morocco follow the Moudawana (Code de la famille), Livre III: a precise computation requires Studio review of the actual case context."
+msgstr ""
+
+msgid "Simulation result"
+msgstr ""
+
+msgid "Indicative simulation"
+msgstr "Simulazione indicativa"
+
+msgid "Preliminary result"
+msgstr ""
+
+msgid "Indicative range"
+msgstr ""
+
+msgid "Min"
+msgstr ""
+
+msgid "Mid"
+msgstr ""
+
+msgid "Max"
+msgstr ""
+
+msgid "Economic estimate not available without approved sources or legal validation."
+msgstr ""
+
+msgid "This is the platform behaving as designed: rather than producing a number that could mislead you, the simulation explicitly reports that the underlying legal sources have not yet been validated for this jurisdiction and case type."
+msgstr ""
+
+msgid "Internal status code"
+msgstr ""
+
+msgid "Warnings"
+msgstr ""
+
+msgid "Missing documents"
+msgstr ""
+
+msgid "Assumptions"
+msgstr ""
+
+msgid "Cited legal sources"
+msgstr ""
+
+msgid "Open official source"
+msgstr ""
+
+msgid "This simulation is indicative and does not constitute legal advice or guarantee of outcome."
+msgstr ""
+
+msgid "Simulation ID"
+msgstr ""
+
+msgid "Created at"
+msgstr ""
+
+msgid "Download PDF report"
+msgstr ""
+
+msgid "Back to methodology"
+msgstr ""
+
+msgid "Start a simulation"
+msgstr "Avvia una simulazione"
+
+msgid "Start a guided simulation"
+msgstr "Avvia una simulazione guidata"
+
+msgid "Pick the country and the case type that best fits your situation. The simulation is indicative: it will only produce an estimate when validated legal sources are available — otherwise it returns a clear \"requires legal validation\" status."
+msgstr ""
+
+msgid "Bodily injury after a road accident. The wizard accepts inputs but the legal sources are still under Studio review, so the simulation returns \"requires legal validation\" rather than a numeric estimate."
+msgstr ""
+
+msgid "Bodily injury after a road accident. The wizard collects optional inputs and persists a simulation. No estimate is produced unless validated legal sources are available."
+msgstr ""
+
+msgid "Start this simulation"
+msgstr ""
+
+msgid "Open scaffold wizard"
+msgstr ""
+
+msgid "Coming soon"
+msgstr ""
+
+msgid "Each module is activated only after the underlying legal sources are catalogued and validated by the Studio."
+msgstr ""
+
+msgid "A simulation is not legal advice. It is an informative starting point. The Studio remains free to accept or decline a matter."
+msgstr ""
+
+msgid "Tunisia — international inheritance"
+msgstr ""
+
+msgid "This module is a scaffold. The Tunisian calculator engine is registered but the legal sources (Code du statut personnel Livre IX, Code des obligations et des contrats, Code de droit international privé) are still under Studio review. The wizard will return \"requires legal validation\" rather than computed shares."
+msgstr ""
+
+msgid "The simulation is indicative and does not constitute legal advice or guarantee of outcome. Inheritance matters in Tunisia follow the Code du statut personnel, Livre IX: a precise computation requires Studio review of the actual case context."
+msgstr ""

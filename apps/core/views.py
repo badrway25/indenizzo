@@ -62,6 +62,23 @@ def healthz(request):
     return JsonResponse({"status": "ok"})
 
 
+def _pexels_hero(request, purpose: str, country_code: str | None = None) -> dict | None:
+    """
+    Lookup read-only del manifest Pexels per la slot indicata.
+    Ritorna `{"src", "alt"}` per il template (URL assoluto), oppure
+    None per fallback. Niente chiamata API live.
+    """
+    from .pexels import get_image_for_slot, media_url_for_entry
+
+    entry = get_image_for_slot(purpose, country_code=country_code)
+    if not entry:
+        return None
+    return {
+        "src": request.build_absolute_uri(media_url_for_entry(entry)),
+        "alt": entry.get("alt") or "",
+    }
+
+
 @require_GET
 def home(request):
     return render(
@@ -70,13 +87,18 @@ def home(request):
         {
             "mvp_countries": MVP_COUNTRIES,
             "case_types_count": len(PUBLIC_CASE_TYPES),
+            "pexels_image": _pexels_hero(request, "home_hero"),
         },
     )
 
 
 @require_GET
 def methodology(request):
-    return render(request, "public/methodology.html")
+    return render(
+        request,
+        "public/methodology.html",
+        {"pexels_image": _pexels_hero(request, "methodology_hero")},
+    )
 
 
 @require_GET
@@ -206,7 +228,8 @@ def _render_country_landing(request, country_code: str, view_name: str):
     """
     Render shared per le 5 landing paese. Aggiunge:
     - canonical self-reference + hreflang alternates (pass 2);
-    - JSON-LD `LegalService` schema.org (pass 3).
+    - JSON-LD `LegalService` schema.org (pass 3);
+    - Open Graph + Twitter Card metadata (pass 4).
 
     Il dict JSON-LD è serializzato qui come stringa JSON valida e
     passato al template marcato safe (il dict NON contiene input
@@ -216,11 +239,13 @@ def _render_country_landing(request, country_code: str, view_name: str):
     import json
 
     from django.utils.translation import get_language
+    from django.utils.translation import gettext as _
 
     from .seo import (
         build_canonical_url,
         build_hreflang_alternates,
         build_legal_service_json_ld,
+        build_open_graph_metadata,
     )
 
     ctx = _country_landing_context(country_code)
@@ -237,6 +262,70 @@ def _render_country_landing(request, country_code: str, view_name: str):
     # <script type="application/ld+json">.
     ctx["json_ld_legal_service"] = json_ld
     ctx["json_ld_legal_service_json"] = json.dumps(json_ld, ensure_ascii=False)
+
+    # OG/Twitter title e description: ricalchiamo le stesse stringhe
+    # gettext-translatable usate nei {% blocktranslate %} di
+    # `country_landing.html`, così il social scraper vede esattamente
+    # quello che vedrebbe leggendo il <title> e la
+    # <meta name="description">. Senza il SITE_NAME appended (per OG
+    # il `og:site_name` è già un tag separato).
+    country_label = ctx["country_name_key"]
+    og_title = _("%(country)s — coverage and legal sources") % {"country": country_label}
+    if ctx["is_calculator_available"]:
+        og_description = _(
+            "Indicative compensation simulation for %(country)s, based on approved "
+            "legal sources. The estimate is informative and never a guarantee of "
+            "outcome."
+        ) % {"country": country_label}
+    else:
+        og_description = _(
+            "%(country)s legal sources are under Studio review. No automatic estimate "
+            "is currently issued; the wizard collects your request for a legal "
+            "review."
+        ) % {"country": country_label}
+    # Pexels hero image: lookup READ-ONLY del manifest. Niente chiamata
+    # API live al render: solo file locali. Se assente → fallback
+    # gradient/SVG nel template.
+    from .pexels import attribution_for_entry, get_image_for_country_landing, media_url_for_entry
+
+    pexels_entry = get_image_for_country_landing(country_code)
+    if pexels_entry:
+        ctx["pexels_image"] = {
+            "src": request.build_absolute_uri(media_url_for_entry(pexels_entry)),
+            "alt": pexels_entry.get("alt") or og_title,
+            "attribution": attribution_for_entry(pexels_entry),
+            "photographer_url": pexels_entry.get("photographer_url") or "",
+            "pexels_url": pexels_entry.get("pexels_url") or "",
+        }
+    else:
+        ctx["pexels_image"] = None
+
+    # OG image override: se abbiamo una Pexels cached, la preferiamo
+    # al SVG placeholder (immagine "vera" → migliore preview social).
+    og_image_static_path = "img/og-country-default.svg"
+    if pexels_entry and pexels_entry.get("local_path"):
+        # `build_open_graph_metadata` accetta solo `image_static_path`
+        # relativo a STATIC_URL. Per usare un'immagine MEDIA, costruiamo
+        # i tag OG manualmente sovrascrivendo og:image / twitter:image
+        # dopo la chiamata al builder.
+        pass
+    ctx["og_meta"] = build_open_graph_metadata(
+        request,
+        title=og_title,
+        description=og_description,
+        canonical_url=canonical,
+        country_code=country_code,
+        image_static_path=og_image_static_path,
+    )
+    if pexels_entry and pexels_entry.get("local_path"):
+        pexels_image_url = request.build_absolute_uri(media_url_for_entry(pexels_entry))
+        for tag in ctx["og_meta"]["og"]:
+            if tag["property"] in ("og:image", "og:image:alt"):
+                tag["content"] = pexels_image_url if tag["property"] == "og:image" else (og_title)
+        for tag in ctx["og_meta"]["twitter"]:
+            if tag["name"] in ("twitter:image", "twitter:image:alt"):
+                tag["content"] = pexels_image_url if tag["name"] == "twitter:image" else (og_title)
+
     return render(request, "public/country_landing.html", ctx)
 
 
@@ -290,7 +379,10 @@ def countries(request):
     return render(
         request,
         "public/countries.html",
-        {"countries": countries_view},
+        {
+            "countries": countries_view,
+            "pexels_image": _pexels_hero(request, "countries_index"),
+        },
     )
 
 

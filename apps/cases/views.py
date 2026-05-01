@@ -142,10 +142,16 @@ def wizard_start(request):
     upcoming = [
         {"country_code": "IT", "case_label": CaseType.INHERITANCE_BASIC.label},
     ]
+    from apps.core.views import _pexels_hero
+
     return render(
         request,
         "public/wizard_start.html",
-        {"options": options, "upcoming": upcoming},
+        {
+            "options": options,
+            "upcoming": upcoming,
+            "pexels_image": _pexels_hero(request, "wizard_start_hero"),
+        },
     )
 
 
@@ -175,6 +181,8 @@ def wizard_italy_road_accident(request):
     else:
         form = ItalyRoadAccidentWizardForm()
 
+    from apps.core.views import _pexels_hero
+
     return render(
         request,
         "public/wizard_italy_road_accident.html",
@@ -182,6 +190,9 @@ def wizard_italy_road_accident(request):
             "form": form,
             "jurisdiction_code": ITALY_ROAD_ACCIDENT_JURISDICTION,
             "case_type": ITALY_ROAD_ACCIDENT_CASE_TYPE,
+            "pexels_image": _pexels_hero(
+                request, "wizard_italy_road_accident_hero", country_code="IT"
+            ),
         },
     )
 
@@ -305,6 +316,8 @@ def wizard_france_road_accident(request):
     else:
         form = FranceRoadAccidentWizardForm()
 
+    from apps.core.views import _pexels_hero
+
     return render(
         request,
         "public/wizard_france_road_accident.html",
@@ -312,6 +325,9 @@ def wizard_france_road_accident(request):
             "form": form,
             "jurisdiction_code": FRANCE_ROAD_ACCIDENT_JURISDICTION,
             "case_type": FRANCE_ROAD_ACCIDENT_CASE_TYPE,
+            "pexels_image": _pexels_hero(
+                request, "wizard_france_road_accident_hero", country_code="FR"
+            ),
         },
     )
 
@@ -370,6 +386,8 @@ def wizard_belgium_road_accident(request):
     else:
         form = BelgiumRoadAccidentWizardForm()
 
+    from apps.core.views import _pexels_hero
+
     return render(
         request,
         "public/wizard_belgium_road_accident.html",
@@ -377,6 +395,9 @@ def wizard_belgium_road_accident(request):
             "form": form,
             "jurisdiction_code": BELGIUM_ROAD_ACCIDENT_JURISDICTION,
             "case_type": BELGIUM_ROAD_ACCIDENT_CASE_TYPE,
+            "pexels_image": _pexels_hero(
+                request, "wizard_belgium_road_accident_hero", country_code="BE"
+            ),
         },
     )
 
@@ -416,6 +437,8 @@ def _wizard_inheritance_view(
     template_name: str,
     trigger: str,
     default_locale: str,
+    pexels_purpose: str | None = None,
+    pexels_country: str | None = None,
 ):
     """Vista comune ai wizard inheritance MA/TN.
 
@@ -457,6 +480,8 @@ def _wizard_inheritance_view(
     else:
         form = InternationalInheritanceWizardForm()
 
+    from apps.core.views import _pexels_hero
+
     return render(
         request,
         template_name,
@@ -464,6 +489,11 @@ def _wizard_inheritance_view(
             "form": form,
             "jurisdiction_code": jurisdiction_code,
             "case_type": INTERNATIONAL_INHERITANCE_CASE_TYPE,
+            "pexels_image": (
+                _pexels_hero(request, pexels_purpose, country_code=pexels_country)
+                if pexels_purpose
+                else None
+            ),
         },
     )
 
@@ -477,6 +507,8 @@ def wizard_morocco_inheritance(request):
         template_name="public/wizard_morocco_inheritance.html",
         trigger="wizard_morocco_inheritance",
         default_locale="fr",
+        pexels_purpose="wizard_morocco_inheritance_hero",
+        pexels_country="MA",
     )
 
 
@@ -489,6 +521,8 @@ def wizard_tunisia_inheritance(request):
         template_name="public/wizard_tunisia_inheritance.html",
         trigger="wizard_tunisia_inheritance",
         default_locale="fr",
+        pexels_purpose="wizard_tunisia_inheritance_hero",
+        pexels_country="TN",
     )
 
 

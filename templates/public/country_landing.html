@@ -45,6 +45,17 @@
   {% for alt in hreflang_alternates %}<link rel="alternate" hreflang="{{ alt.lang }}" href="{{ alt.href }}">
   {% endfor %}
   {% comment %}
+    Open Graph + Twitter Card metadata (pass 4). Costruiti in
+    apps/core/views.py via build_open_graph_metadata(...). title e
+    description usano le stesse stringhe gettext del title block /
+    meta description, così gli scraper sociali vedono lo stesso
+    contenuto del browser.
+  {% endcomment %}
+  {% if og_meta %}
+  {% for tag in og_meta.og %}<meta property="{{ tag.property }}" content="{{ tag.content }}">
+  {% endfor %}{% for tag in og_meta.twitter %}<meta name="{{ tag.name }}" content="{{ tag.content }}">
+  {% endfor %}{% endif %}
+  {% comment %}
     JSON-LD LegalService (pass 3). Il dict è serializzato in views
     come stringa JSON valida (json_ld_legal_service_json). Lo
     iniettiamo come script type=application/ld+json usando safe
@@ -68,6 +79,31 @@
       <li class="text-ink-800 font-medium">{{ country_name_key }}</li>
     </ol>
   </nav>
+
+  {% comment %}
+    Pexels hero photo. Servita localmente da media/pexels/, mai
+    URL remoto Pexels nel HTML.
+
+    Pass "pexels-polish-no-caption-live-server-and-i18n-status":
+    NIENTE attribution visibile nel template pubblico (no
+    figcaption, no link al fotografo, no menzione "Pexels"). Le
+    informazioni photographer/photographer_url/pexels_url restano
+    SOLO nel manifest JSON interno per uso futuro (audit, debug,
+    eventuale pagina credits dedicata, future feature di rotation).
+    L'<img> mantiene un alt professionale.
+  {% endcomment %}
+  {% if pexels_image %}
+  <section class="max-w-6xl mx-auto px-5 lg:px-8 pt-6">
+    <div class="rounded-3xl overflow-hidden shadow-card">
+      <img
+        src="{{ pexels_image.src }}"
+        alt="{{ pexels_image.alt }}"
+        class="w-full h-56 sm:h-72 lg:h-80 object-cover"
+        loading="lazy"
+        decoding="async">
+    </div>
+  </section>
+  {% endif %}
 
   <!-- Hero 2-col (desktop) / 1-col (mobile) -->
   <section class="max-w-6xl mx-auto px-5 lg:px-8 pt-10 pb-14">
