@@ -325,7 +325,8 @@ def test_cookie_banner_is_present_on_home(client: Client):
     body = resp.content.decode("utf-8")
     assert 'id="cookie-consent-banner"' in body
     assert 'role="region"' in body
-    assert 'aria-label="Cookie notice"' in body
+    # aria-label è gettext-tradotta: accettiamo source EN o IT translation.
+    assert 'aria-label="Cookie notice"' in body or 'aria-label="Informativa cookie"' in body
     # localStorage usato per persistenza.
     assert "localStorage" in body
 

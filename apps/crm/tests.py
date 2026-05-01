@@ -281,7 +281,14 @@ def test_thank_you_returns_200():
     response = Client().get(reverse("crm:contact_thank_you"))
     assert response.status_code == 200
     body = response.content.decode("utf-8")
-    assert "Thank you" in body or "received" in body.lower()
+    # Accept English source OR Italian translation (default LANGUAGE_CODE=it).
+    body_lower = body.lower()
+    assert (
+        "thank you" in body_lower
+        or "received" in body_lower
+        or "grazie" in body_lower
+        or "ricevuta" in body_lower
+    )
 
 
 @pytest.mark.django_db

@@ -94,8 +94,9 @@ def test_default_locale_sets_ltr_direction():
 @pytest.mark.django_db
 def test_disclaimer_banner_is_present_on_public_pages():
     response = Client().get(reverse("core:home"))
-    body = response.content.decode("utf-8")
-    assert "indicative simulations" in body.lower()
+    body = response.content.decode("utf-8").lower()
+    # Accept English source OR Italian translation (default LANGUAGE_CODE=it).
+    assert "indicative simulations" in body or "simulazioni indicative" in body
 
 
 @pytest.mark.django_db

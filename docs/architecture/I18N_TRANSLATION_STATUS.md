@@ -1,8 +1,33 @@
 # I18N translation status
 
-**Iter di riferimento**: F-product-premium-visual-i18n-pass1
+**Iter di riferimento**: F-product-i18n-translations-pass3-visible-copy
 **Data**: 2026-05-01
-**Stato**: pass 1 implementato — 55 stringhe ad alta visibilità tradotte in IT/FR/AR.
+**Stato**: pass 3 implementato — **282 stringhe** (138 pass1+pass2 + **144 pass3 visibili sul body**) tradotte in IT/FR/AR.
+
+> **Update pass 3** (2026-05-01): aggiunte 144 traduzioni visibili
+> per ognuna delle 3 lingue IT/FR/AR (totale 432 msgstr riempiti).
+> Coperte:
+> - footer disclaimer / cookies / "Visit institutional website";
+> - 9 case-type label (Road accident, Medical malpractice, …);
+> - tutti i form field di contact (First name, Last name, Phone,
+>   Country, Case type, How can we help, Send my request, ecc.);
+> - tutti i form field del wizard (Date of accident, Age, Permanent
+>   disability, Medical expenses, Lost income, Estimated own fault,
+>   inheritance fields, ecc.);
+> - intro country wizard (Italy/France/Belgium/Morocco/Tunisia
+>   road-accident e inheritance scaffold);
+> - simulation result UI (Min/Mid/Max, Warnings, Missing documents,
+>   Open official source, Internal status code, Run simulation);
+> - privacy/disclaimer/rate-limit pagine ufficiali.
+> 
+> File `.mo` ricompilati. Server live verificato in chromium
+> headless: `/fr/contact/`, `/ar/contact/`, `/fr/wizard/`,
+> `/ar/wizard/`, `/fr/`, `/ar/` mostrano traduzioni reali e nessun
+> "Apply"/"First name"/"Send my request" inglese visibile sul body
+> principale.
+
+> **Update pass 2** (precedente): **138 stringhe** (55 pass1 + 37
+> pass2A long-form + 46 pass2B labels) tradotte in IT/FR/AR.
 
 > **Update pass 1**: le `.po` sono ora **popolate** per le 55
 > stringhe più visibili (header, footer, hero CTA, status badge,
@@ -131,3 +156,142 @@ con il body, perché il view usa le stesse chiavi del template.
   descrizioni, CTA), non i riferimenti normativi.
 - Per Pexels (immagini), nessun problema i18n: non c'è copy
   visibile sopra/sotto le foto (vedi pass corrente).
+
+---
+
+## 7. Pass 3 — dettaglio (F-product-i18n-translations-pass3-visible-copy)
+
+### 7.1 Numeri
+
+| Lingua | msgid totali | msgstr riempiti pass3 | msgstr ancora vuoti |
+|---|---:|---:|---:|
+| IT | 597 | +144 (= 282 totali) | 316 |
+| FR | 597 | +144 (= 282 totali) | 316 |
+| AR | 597 | +144 (= 282 totali) | 316 |
+
+I 316 msgstr residui per lingua sono **non visibili a utente
+finale**: sono label admin/backend (nomi modello in lowercase,
+verbose-plural ORM, help_text amministratore, choices interne di
+admin-action, ecc.). Verranno tradotti solo se/quando lo Studio
+attiverà l'admin in lingue diverse dall'italiano.
+
+### 7.2 Cosa è stato tradotto in questo iter
+
+Categorie ad alta visibilità (vedi `scripts/apply_translations_pass3.py`):
+
+- **Header/footer/disclaimer**: "This platform provides indicative
+  simulations only…", "This site uses only strictly necessary
+  cookies…", "Visit institutional website", "Studio Legale
+  Internazionale", "Cookie notice", "Legal disclaimer", "OK",
+  "Primary navigation", "Apply".
+- **Hero CTA**: "Start Italian compensation simulation",
+  "%(site)s — International compensation simulator".
+- **Case types** (9 label): Road accident, Medical malpractice,
+  Work injury, Death compensation, Parental loss, Patrimonial
+  damage, Inheritance basic/international, Generic legal assessment.
+- **Status / confidence**: Unavailable — requires legal validation,
+  Insufficient input, Calculated, Error, Low/Medium/High.
+- **Wizard CTA**: Start this simulation, Open scaffold wizard,
+  "Each module is activated only after…", "A simulation is not
+  legal advice…", description bodily-injury / scaffold-review.
+- **Contact form**: Website (do not fill), First name, Last name,
+  Email, Phone number, Preferred language, Country, Select a
+  country, Case type, Not specified, How can we help?, helptext
+  ("Briefly describe…"), consent checkbox label con link a
+  /privacy /disclaimer, Submitting this form does not create…,
+  Send my request, Request received, Thank you, validators.
+- **Wizard form (Italy bodily injury)**: Date of accident, Age,
+  Permanent disability %, Total / partial temporary disability,
+  Medical expenses, Lost income, Estimated own fault, consent
+  checkbox + validators.
+- **Wizard form (inheritance)**: Country of last domicile, Habitual
+  residence, Nationality, Will, Surviving spouse, Children, Parents,
+  Countries with assets, Additional context.
+- **Country wizard intros** (FR/BE/MA/TN scaffold): "Module under
+  legal validation", "All fields below are optional…", "This
+  module is a scaffold…" per ciascuno dei 4 paesi sotto revisione.
+- **Result UI**: Min/Mid/Max, Warnings, Missing documents, Open
+  official source, Internal status code, "This simulation is
+  indicative…", Run simulation, fallback "Economic estimate not
+  available…".
+- **Privacy / disclaimer / rate-limit**: Personal data, Too many
+  requests, Rate limit, "We process personal data in accordance
+  with the EU GDPR…", "We do not sell personal data…", "You can
+  request access, rectification, deletion…", "If you require a
+  binding evaluation…", "This text is a working version. The final
+  wording will be reviewed and signed off by the Studio's legal
+  team."
+
+### 7.3 Cosa resta (NON in scope di pass3)
+
+1. **Admin label backend** (~316 msgid per lingua): nomi modello,
+   help_text admin, action labels, ORM verbose names. Solo lo Studio
+   userà l'admin, oggi in italiano. Da tradurre solo se in futuro
+   l'admin sarà condiviso con avvocati FR/AR.
+2. **Stringhe template-side ancora intrinseche al codice**: alcuni
+   template injettano testo non `gettext`-wrapped (es. logo
+   "Studio Legale Internazionale Badrane" hard-coded — già
+   intenzionale per brand consistency). Questo non è un bug.
+3. **EN translations**: il file `locale/en/LC_MESSAGES/django.po`
+   resta non tradotto (i msgid stessi sono in inglese). Quindi
+   `/en/` mostra il source. Coerente con design.
+
+### 7.4 Termini che richiedono revisione Studio / madrelingua
+
+**Francese — revisione avvocato FR**:
+- "Préjudice corporel" vs "dommage corporel": uniformati a
+  "préjudice corporel" (più tecnico-giuridico). Validare con
+  avvocato FR.
+- "Concorso di colpa" → "Part de responsabilité personnelle":
+  termine assicurativo standard FR ma può variare per regione
+  (Belgique ha "concours de fautes"). Per Belgio considerare
+  variante.
+- "Incarico professionale" → "Mandat professionnel": terminologia
+  ordine-degli-avvocati FR. OK.
+
+**Arabo — revisione madrelingua + giurista MA/TN**:
+- **Rischio elevato**: termini legali arabi non hanno traduzione
+  univoca cross-paese. Es.:
+  - "Inheritance — international" → "ميراث — دولي" (universale, OK)
+  - "Bodily injury" → "أضرار جسدية" (modern standard arabic, neutro
+    geograficamente)
+  - "Liability" → tradotto come "مسؤولية" in più punti, ma in
+    diritto MA/TN spesso si trova "تبعة" o "مسؤولية مدنية".
+- **Verbose vs concise**: il copy AR generato è in MSA letterario
+  (es. "تقدّم هذه المنصة محاكاة إرشادية فقط"). Un native MA/TN
+  potrebbe preferire forme più colloquiali. Da validare con
+  Studio.
+- **Codice di famiglia / Moudawana**: lasciato sempre come
+  "Moudawana" o tra parentesi accanto al termine arabo, perché è
+  il nome legale ufficiale del Code de la famille marocchino.
+  Non tradotto come "مدوّنة الأسرة" da solo per coerenza con
+  citazioni FR già presenti nei country wizard.
+
+**Italiano**:
+- "Incarico professionale" / "mandato professionale": entrambi
+  validi. Scelto "incarico" (più colloquiale, in linea con
+  comunicazione cliente). Da validare.
+- "Concorso di colpa" → standard giuridico italiano. OK.
+
+### 7.5 Verifica live
+
+Server `manage.py runserver --noreload` attivo durante tutto il
+pass su `http://127.0.0.1:31448/`. 8 screenshot full-page salvati
+in `docs/screenshots/live_qa/i18n_translations_pass3/` (FR home,
+FR France landing, FR wizard, FR contact, AR home RTL, AR Morocco
+RTL, AR wizard RTL, AR contact RTL).
+
+### 7.6 Test
+
+`apps/core/test_i18n_translations_pass3.py` (14 test):
+1. `/fr/` ha ≥10 marker FR pass3 (real-content).
+2. `/fr/countries/france/` non contiene "Visit institutional website",
+   "Send my request", "First name" (regression-guard).
+3. `/ar/` ha ≥8 marker AR pass3 reali.
+4. `/ar/countries/morocco/` ha `dir="rtl"` + ≥5 marker AR + parola
+   "محاكاة إرشادية".
+5. `/en/` resta inglese (no contamination FR/AR).
+6. Nomi fonti legali (Mornet, Moudawana, Loi Badinter, D.P.R.,
+   Tableau, Reg. UE 650/2012) preservati su 5 path.
+7. Italia smoke 35/10/0 → 26 268 / 27 353 / 28 439 EUR invariato.
+8. `.mo` esistono e > 30 KB per IT/FR/AR.
