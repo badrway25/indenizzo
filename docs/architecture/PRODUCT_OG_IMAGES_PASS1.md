@@ -204,5 +204,116 @@ Totale repo: **729 passed in 30s** (era 702 → +27).
 ogni paese (IT/FR/EN/AR) con headline tradotto, puntate da
 `og:locale`. X non supporta automaticamente la rotation per locale,
 quindi servirebbe negoziazione lato server (locale-aware static
-URL). Subito dopo: comprimere i 6 PNG via `oxipng` per ridurre
-peso senza degradare qualità visiva.
+URL).
+
+---
+
+## 10. Pass 2 — compressione lossless (F-product-og-images-pass2-compress)
+
+**Data**: 2026-05-01
+**Stato**: implementato + testato in locale + verificato live nel browser. **Nessun deploy.**
+
+### 10.1 Tool scelto
+
+`oxipng` (Rust) tramite il binding Python **`pyoxipng`** (≥9.1).
+Strategia di selezione runtime in `scripts/optimize_og_images.py`:
+
+1. se `import oxipng` ha successo → usa oxipng (level=6, strip=safe,
+   interlace=Off) — riduzione tipica 7–10%;
+2. altrimenti → fallback a `Pillow optimize=True compress_level=9`,
+   che su file già generati con `optimize=True` è no-op (0% gain).
+
+`pyoxipng` **NON è in `requirements.txt`** per evitare di forzare una
+toolchain Rust su tutti gli ambienti. Per attivarlo localmente:
+
+```powershell
+pip install pyoxipng
+```
+
+### 10.2 Tabella before/after
+
+Eseguito una volta su `static/img/og/*.png`:
+
+| File | Before (B) | After (B) | Δ |
+|---|---:|---:|---:|
+| `og-belgium.png`         | 511 179 | 474 465 | **−7.2%** |
+| `og-country-default.png` | 385 865 | 345 793 | **−10.4%** |
+| `og-france.png`          | 342 708 | 315 262 | **−8.0%** |
+| `og-italy.png`           | 484 045 | 439 385 | **−9.2%** |
+| `og-morocco.png`         | 361 118 | 332 757 | **−7.9%** |
+| `og-tunisia.png`         | 315 343 | 289 671 | **−8.1%** |
+| **TOTAL**                | **2 400 258** | **2 197 333** | **−8.5%** |
+
+≈ 200 KB risparmiati su 6 file. Lossless verificato (oxipng non
+modifica i pixel, solo filter+zlib). Dimensioni invariate
+(1200×630 confermato dai test).
+
+### 10.3 Comandi
+
+```bash
+# Ottimizza in place (idempotente: 2ª esecuzione = no-op).
+python scripts/optimize_og_images.py
+
+# Verifica che i PNG siano già al minimo. Esce 1 se uno potrebbe
+# essere ulteriormente ridotto, o se dim != 1200×630, o se non è
+# un PNG valido. Da usare in CI.
+python scripts/optimize_og_images.py --check
+```
+
+Lo script stampa una tabella `file | before | after | delta | sha256`
+e una riga TOTAL.
+
+Output `--check` su file già ottimizzati:
+
+```
+[og-opt] mode: CHECK
+[og-opt] tool: oxipng
+... (delta 0.0% per ogni riga)
+TOTAL                            2,197,333 2,197,333    0.0%
+```
+
+### 10.4 Test (8 nuovi, tutti passati)
+
+`apps/core/test_og_images_pass2_compress.py`:
+
+1. `test_og_png_exists_after_compression` × 6 — i 6 PNG esistono.
+2. `test_og_png_size_is_1200x630_after_compression` × 6 — dim invariate.
+3. `test_og_png_is_valid_after_compression` × 6 — signature + Pillow verify.
+4. `test_optimize_script_check_passes` — invoca lo script via subprocess.
+5. `test_og_image_still_points_to_png_after_compression` × 5 — meta tag PNG.
+6. `test_og_pages_no_api_key_leak_after_compression` × 3.
+7. `test_og_pages_have_no_visible_attribution_after_compression` × 3.
+8. `test_og_pass2_italy_smoke_run_simulation` — canarino IT 35/10/0.
+
+Totale conteggio test del file pass2: **31 passed**.
+
+### 10.5 Browser live
+
+| Campo | Valore |
+|---|---|
+| Porta | **31446** |
+| URL base | `http://127.0.0.1:31446/` |
+| PID | **63408** |
+| Stop | `Stop-Process -Id 63408 -Force` |
+
+URL verificati live:
+
+- `http://127.0.0.1:31446/static/img/og/og-italy.png` → 200, 439 385 B (sha256 `00c316bcc871df7f…` coincide con quello prodotto da oxipng).
+- `http://127.0.0.1:31446/static/img/og/og-morocco.png` → 200, 332 757 B.
+- `http://127.0.0.1:31446/countries/italy/` → 200; `og:image` punta al JPG Pexels (manifest presente in dev) — comportamento atteso identico al pass 1.
+- `http://127.0.0.1:31446/countries/morocco/` → 200; idem.
+
+Quando il manifest Pexels NON c'è (deploy fresh), `og:image` cade
+sul PNG country-specific ottimizzato (verificato dai test
+`test_og_image_still_points_to_png_after_compression`).
+
+### 10.6 Limiti
+
+- Senza `pyoxipng` installato, lo script gira ma non riduce nulla
+  (Pillow optimize=True è già stato applicato in fase di
+  generazione). In CI: o si installa `pyoxipng`, o si accetta che
+  `--check` passi anche su file non ottimizzati al massimo
+  raggiungibile da oxipng.
+- Per ulteriore riduzione si potrebbe valutare `pngquant` (lossy a
+  256 colori), ma non è compatibile con il vincolo "lossless" di
+  questo iter.
