@@ -29,13 +29,13 @@
   - Disclaimer in fondo, conforme a CLAUDE.md.
 {% endcomment %}
 
-{% block title %}{% blocktranslate with country=country_name_key %}{{ country }} — coverage and legal sources{% endblocktranslate %} — {{ SITE_NAME }}{% endblock %}
+{% block title %}{% blocktranslate with country=country_name %}{{ country }} — coverage and legal sources{% endblocktranslate %} — {{ SITE_NAME }}{% endblock %}
 
 {% block meta_description %}
 {% if is_calculator_available %}
-{% blocktranslate with country=country_name_key %}Indicative compensation simulation for {{ country }}, based on approved legal sources. The estimate is informative and never a guarantee of outcome.{% endblocktranslate %}
+{% blocktranslate with country=country_name %}Indicative compensation simulation for {{ country }}, based on approved legal sources. The estimate is informative and never a guarantee of outcome.{% endblocktranslate %}
 {% else %}
-{% blocktranslate with country=country_name_key %}{{ country }} legal sources are under Studio review. No automatic estimate is currently issued; the wizard collects your request for a legal review.{% endblocktranslate %}
+{% blocktranslate with country=country_name %}{{ country }} legal sources are under Studio review. No automatic estimate is currently issued; the wizard collects your request for a legal review.{% endblocktranslate %}
 {% endif %}
 {% endblock %}
 
@@ -76,7 +76,7 @@
       <li aria-hidden="true">/</li>
       <li><a href="{% url 'core:countries' %}" class="hover:text-ink-800">{% translate "Countries" %}</a></li>
       <li aria-hidden="true">/</li>
-      <li class="text-ink-800 font-medium">{{ country_name_key }}</li>
+      <li class="text-ink-800 font-medium">{% translate country_name_key %}</li>
     </ol>
   </nav>
 
@@ -114,13 +114,13 @@
           {{ country_iso }} · {% translate "Country page" %}
         </p>
         <h1 class="mt-4 font-serif text-4xl sm:text-5xl text-ink-950 leading-tight">
-          {% blocktranslate with country=country_name_key %}{{ country }} — what we currently cover{% endblocktranslate %}
+          {% blocktranslate with country=country_name %}{{ country }} — what we currently cover{% endblocktranslate %}
         </h1>
         <p class="mt-5 text-lg text-ink-800 leading-relaxed">
           {% if is_calculator_available %}
-            {% blocktranslate with country=country_name_key %}Studio Legale Badrane provides an indicative compensation simulation for {{ country }} based on approved legal sources. The estimate is informative and never a guarantee of outcome.{% endblocktranslate %}
+            {% blocktranslate with country=country_name %}Studio Legale Badrane provides an indicative compensation simulation for {{ country }} based on approved legal sources. The estimate is informative and never a guarantee of outcome.{% endblocktranslate %}
           {% else %}
-            {% blocktranslate with country=country_name_key %}Legal sources for {{ country }} are currently under Studio review. The wizard accepts your request and our team replies after a manual legal validation. No automatic estimate is issued until that review is complete.{% endblocktranslate %}
+            {% blocktranslate with country=country_name %}Legal sources for {{ country }} are currently under Studio review. The wizard accepts your request and our team replies after a manual legal validation. No automatic estimate is issued until that review is complete.{% endblocktranslate %}
           {% endif %}
         </p>
 

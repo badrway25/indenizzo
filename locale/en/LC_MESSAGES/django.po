@@ -1817,3 +1817,18 @@ msgstr ""
 
 msgid "The simulation is indicative and does not constitute legal advice or guarantee of outcome. Inheritance matters in Tunisia follow the Code du statut personnel, Livre IX: a precise computation requires Studio review of the actual case context."
 msgstr ""
+
+msgid "Italy"
+msgstr "Italy"
+
+msgid "France"
+msgstr "France"
+
+msgid "Belgium"
+msgstr "Belgium"
+
+msgid "Morocco"
+msgstr "Morocco"
+
+msgid "Tunisia"
+msgstr "Tunisia"

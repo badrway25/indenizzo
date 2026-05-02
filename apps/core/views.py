@@ -269,7 +269,8 @@ def _render_country_landing(request, country_code: str, view_name: str):
     # quello che vedrebbe leggendo il <title> e la
     # <meta name="description">. Senza il SITE_NAME appended (per OG
     # il `og:site_name` è già un tag separato).
-    country_label = ctx["country_name_key"]
+    country_label = _(ctx["country_name_key"])
+    ctx["country_name"] = country_label
     og_title = _("%(country)s — coverage and legal sources") % {"country": country_label}
     if ctx["is_calculator_available"]:
         og_description = _(

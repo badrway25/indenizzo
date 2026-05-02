@@ -1818,3 +1818,18 @@ msgstr "هذه الوحدة في الوضع الهيكلي. تم تسجيل مح
 
 msgid "The simulation is indicative and does not constitute legal advice or guarantee of outcome. Inheritance matters in Tunisia follow the Code du statut personnel, Livre IX: a precise computation requires Studio review of the actual case context."
 msgstr "المحاكاة إرشادية ولا تشكّل رأيًا قانونيًا ولا ضمانًا للنتيجة. تخضع المواريث في تونس لمجلة الأحوال الشخصية، الكتاب التاسع: يتطلّب الحساب الدقيق مراجعة المكتب لسياق القضية الفعلي."
+
+msgid "Italy"
+msgstr "إيطاليا"
+
+msgid "France"
+msgstr "فرنسا"
+
+msgid "Belgium"
+msgstr "بلجيكا"
+
+msgid "Morocco"
+msgstr "المغرب"
+
+msgid "Tunisia"
+msgstr "تونس"

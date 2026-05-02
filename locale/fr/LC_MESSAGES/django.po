@@ -1817,3 +1817,18 @@ msgstr "Ce module est un canevas. Le moteur de calcul tunisien est enregistré m
 
 msgid "The simulation is indicative and does not constitute legal advice or guarantee of outcome. Inheritance matters in Tunisia follow the Code du statut personnel, Livre IX: a precise computation requires Studio review of the actual case context."
 msgstr "La simulation est indicative et ne constitue ni un avis juridique ni une garantie de résultat. Les successions en Tunisie relèvent du Code du statut personnel, Livre IX : un calcul précis nécessite la revue du Cabinet sur le contexte réel du dossier."
+
+msgid "Italy"
+msgstr "Italie"
+
+msgid "France"
+msgstr "France"
+
+msgid "Belgium"
+msgstr "Belgique"
+
+msgid "Morocco"
+msgstr "Maroc"
+
+msgid "Tunisia"
+msgstr "Tunisie"

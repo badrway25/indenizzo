@@ -64,7 +64,7 @@
             </div>
           {% endif %}
           <div class="p-6 lg:p-7 flex flex-col flex-1">
-            <p class="text-ink-900 font-serif text-2xl leading-tight">{{ country.name_key }}</p>
+            <p class="text-ink-900 font-serif text-2xl leading-tight">{% translate country.name_key %}</p>
             <p class="mt-3 text-sm text-stone2-500 leading-relaxed flex-1">
               {% if country.has_calculator %}
                 {% blocktranslate %}A calculator is registered for this country. Real estimates require approved legal sources.{% endblocktranslate %}

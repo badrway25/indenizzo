@@ -31,7 +31,7 @@
         <div class="mt-9 flex flex-wrap gap-3">
           <a href="{% url 'cases:wizard_italy_road_accident' %}"
              class="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-gold-500 text-ink-950 hover:bg-gold-400 font-semibold shadow-card">
-            {% translate "Start Italy simulation" %}
+            {% translate "Start Italian compensation simulation" %}
             <span aria-hidden="true">→</span>
           </a>
           <a href="{% url 'crm:contact' %}"
@@ -86,7 +86,7 @@
           <a href="{% if country.code == 'IT' %}{% url 'core:country_italy' %}{% elif country.code == 'FR' %}{% url 'core:country_france' %}{% elif country.code == 'BE' %}{% url 'core:country_belgium' %}{% elif country.code == 'MA' %}{% url 'core:country_morocco' %}{% elif country.code == 'TN' %}{% url 'core:country_tunisia' %}{% endif %}"
              class="group rounded-2xl border border-stone2-200 bg-sand-50 px-4 py-5 text-center hover:border-gold-400/60 hover:shadow-card transition">
             <p class="font-serif text-3xl text-ink-950 leading-none">{{ country.code }}</p>
-            <p class="text-xs text-stone2-500 uppercase tracking-[0.14em] mt-2 group-hover:text-gold-600">{{ country.name_key }}</p>
+            <p class="text-xs text-stone2-500 uppercase tracking-[0.14em] mt-2 group-hover:text-gold-600">{% translate country.name_key %}</p>
           </a>
         {% endfor %}
       </div>
