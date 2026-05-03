@@ -254,6 +254,92 @@ calcolatori MA + TN. Gli step 1-4 sopra restano `human_exception_review`.
 
 ---
 
+## 5d. TN Code DIP Loi 98-97 — fetch attivo (iter F-official-source-tn-code-dip-fetch-and-trace)
+
+Aggiunto al registry come nuova entry. Promosso direttamente a
+`ingest_mode: fetch`.
+
+| Field | Valore |
+|-------|--------|
+| Slug | `tn-code-dip-loi-98-97` |
+| Source kind | `official_law` |
+| Authority | `ministry` (mirror via jurisitetunisie.com) |
+| Official URL | `https://www.jurisitetunisie.com/tunisie/codes/cdip/cdip1010.htm` |
+| Final URL | `https://www.jurisitetunisie.com/tunisie/codes/cdip/cdip1010.htm` |
+| HTTP status | `200` |
+| Local path | `legal_data/sources/tunisia/official_downloaded/tn-code-dip-loi-98-97.html` |
+| Size | 15 424 bytes |
+| sha256 | `d379a07076177f66cf0fc6ad4704b78dd8c7b79acef03954c598a5218eb8e76a` |
+| Content-Type | `text/html` (verified — `<title>Code de Droit International Privé</title>`) |
+| Classification | `fetch_success` |
+| LegalSource status | `needs_review` (NON promosso ad `approved`) |
+
+**Nota host**. L'URL originale `legislation-securite.tn` (usato in
+`download_international_legal_sources`) **non è raggiungibile** dal
+datacenter (`NameResolutionError`). Sostituito con il mirror
+`jurisitetunisie.com` (stesso host del CSP Livre IX) per garantire
+sincronizzabilità ripetibile dalle istanze CI / dev.
+
+**Cosa NON è stato attivato:**
+
+- Nessun `LegalReview` creato.
+- Nessun `CompensationDataset` creato.
+- Nessun `CalculationFormula` creato.
+- Nessun `CompensationTableRow` creato.
+- Calculator TN × `international_inheritance` resta
+  `unavailable_requires_legal_validation` — verificato live via
+  `scripts/live_simulation_matrix.py` e in
+  `test_tn_dip_calculator_remains_unavailable_after_fetch`.
+- Italia 35/10/0 invariato.
+
+**Perché completa il trio TN per inheritance internazionale:**
+
+| Ruolo | Source | Stato fetch |
+|-------|--------|-------------|
+| Diritto successorio sostanziale | `tn-code-statut-personnel-livre-ix-succession` | ✅ `fetch_success` (36 183 B) |
+| Conflitto di leggi (lato Tunisia) | `tn-code-dip-loi-98-97` | ✅ `fetch_success` (15 424 B) |
+| Quadro UE (lato Europa) | `eu-regulation-650-2012-successions` | metadata-only (EUR-Lex 202) |
+
+I tre cataloghi insieme coprono ~95% del materiale normativo
+necessario per un calcolatore TN inheritance internazionale.
+Il 5% residuo: casi misti che richiedono dottrina/giurisprudenza
+specifica.
+
+**Cosa serve per arrivare a un engine TN inheritance reale:**
+
+1. **Mapping articoli CSP Livre IX → quote successorie strutturate**:
+   tabelle deterministiche per ogni configurazione familiare
+   (coniuge + figli, ascendenti, collaterali, riserva). Richiede
+   review giurista madrelingua arabo/francese esperto in diritto
+   musulmano della famiglia tunisino.
+2. **Mapping articoli Code DIP Titolo II → conflitto foro**:
+   identificare deterministicamente quando si applica la giurisdizione
+   tunisina vs UE 650/2012 vs Stato di residenza abituale.
+3. **Riconoscimento casi esclusi/ambigui**: matrimonio misto, beni
+   immobili in Stato terzo, opt-out testamentario UE, residenza
+   abituale dubbia. Questi casi devono uscire come
+   `unavailable_requires_legal_validation` con explanation
+   dedicata, mai con quote inventate.
+4. **Quote successorie come tabella numerica reviewata**: solo
+   dopo review Studio si crea il `CompensationDataset`
+   `tn-inheritance-shares-2026` (o equivalente) e la
+   `CalculationFormula` `tn_inheritance_share_calculator_v1`. Il
+   sync `[official_sync]` resta separato — non promuove
+   automaticamente nessuno dei tre.
+5. **Smoke test deterministici** su 10+ configurazioni-tipo prima
+   di esporre il calculator al pubblico.
+
+**Stato pipeline ufficiali (aggiornato):**
+
+| Country | Source slug | Fetch | sha256 | Calculator |
+|---------|-------------|-------|--------|------------|
+| MA | `ma-code-famille-moudawana-fr-pdf` | ✅ PDF 489 071 B | `41db4ab3…` | unavailable |
+| TN | `tn-code-statut-personnel-livre-ix-succession` | ✅ HTML 36 183 B | `ab807896…` | unavailable |
+| TN | `tn-code-dip-loi-98-97` | ✅ HTML 15 424 B | `d379a070…` | unavailable |
+| EU | `eu-regulation-650-2012-successions` | metadata_only | — | n/a (quadro) |
+
+---
+
 ## 6. Riferimenti incrociati
 
 - Pacchetto pre-esistente: `download_international_legal_sources` in

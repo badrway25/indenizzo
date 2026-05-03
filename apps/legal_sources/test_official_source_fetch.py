@@ -535,3 +535,222 @@ def test_tn_fetch_failure_does_not_create_legal_layer(tmp_path, settings):
     assert block["http_status"] is None
     assert block["sha256"] == ""
     assert block["local_path"] == ""
+
+
+# ---------------------------------------------------------------------------
+# 8 — TN Code DIP Loi 98-97 (post F-official-source-tn-code-dip-fetch-and-trace)
+# ---------------------------------------------------------------------------
+
+
+TN_DIP_SLUG = "tn-code-dip-loi-98-97"
+
+
+def _fake_fetch_dip_html(url, timeout=30):
+    body = (
+        b'<!DOCTYPE html><html lang="fr"><head><title>'
+        b"Code de Droit International Prive</title></head>"
+        b"<body><h1>TITRE II - La competence des juridictions tunisiennes</h1>"
+        b"<p>Loi 98-97 du 27 novembre 1998</p></body></html>"
+    )
+    return (
+        "https://www.jurisitetunisie.com/tunisie/codes/cdip/cdip1010.htm",
+        200,
+        "text/html",
+        body,
+    )
+
+
+def test_tn_dip_registry_entry_is_present_and_valid():
+    """Il registry committato deve contenere un entry per Code DIP TN
+    classificato come official_law / fetch / can_auto_ingest=true."""
+    registry_path = REPO_ROOT / "config" / "official_source_registry.json"
+    payload = json.loads(registry_path.read_text(encoding="utf-8"))
+    entry = next(
+        (e for e in payload["entries"] if e["source_slug"] == TN_DIP_SLUG),
+        None,
+    )
+    assert entry is not None, f"registry missing entry {TN_DIP_SLUG!r}"
+    assert entry["country"] == "TN"
+    assert entry["jurisdiction"] == "TN-NATIONAL"
+    assert entry["case_type"] == "international_inheritance"
+    assert entry["source_kind"] == "official_law"
+    assert entry["machine_readable"] is True
+    assert entry["expected_format"] == "html"
+    assert entry["can_auto_ingest"] is True
+    assert entry["human_exception_review_required"] is False
+    assert entry["ingest_mode"] == "fetch"
+
+
+@pytest.mark.django_db
+def test_tn_dip_html_fetch_success_writes_sha256_and_notes(tmp_path, settings):
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.legal_sources.models import LegalSource
+
+    out = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_dip_html,
+    ):
+        call_command("sync_official_sources", "--country", "TN", "--slug", TN_DIP_SLUG, stdout=out)
+
+    src = LegalSource.objects.get(slug=TN_DIP_SLUG)
+    block = _extract_official_sync_block(src.notes)
+    assert block["classification"] == "fetch_success"
+    assert block["http_status"] == 200
+    assert block["ingest_mode"] == "fetch"
+    assert block["source_kind"] == "official_law"
+    assert block["local_path"].endswith(".html")
+    assert block["no_calculator_activation"] is True
+    assert block["error"] == ""
+
+    repo_local = Path(settings.BASE_DIR) / block["local_path"]
+    assert repo_local.exists()
+    body = repo_local.read_bytes()
+    assert b"International Prive" in body or b"droit international" in body.lower()
+
+
+@pytest.mark.django_db
+def test_tn_dip_html_extension_is_html(tmp_path, settings):
+    """Content-Type=text/html → extension `.html` (not `.bin`)."""
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.legal_sources.models import LegalSource
+
+    out = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_dip_html,
+    ):
+        call_command("sync_official_sources", "--country", "TN", "--slug", TN_DIP_SLUG, stdout=out)
+
+    src = LegalSource.objects.get(slug=TN_DIP_SLUG)
+    block = _extract_official_sync_block(src.notes)
+    assert block["local_path"].endswith(".html")
+
+
+@pytest.mark.django_db
+def test_tn_dip_idempotent_replaces_block(tmp_path, settings):
+    """Re-run con payload diverso → un solo blocco, sha256 diverso."""
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.legal_sources.models import LegalSource
+
+    out1 = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_dip_html,
+    ):
+        call_command("sync_official_sources", "--country", "TN", "--slug", TN_DIP_SLUG, stdout=out1)
+    src = LegalSource.objects.get(slug=TN_DIP_SLUG)
+    first = _extract_official_sync_block(src.notes)
+
+    def _fake_fetch_dip_html_v2(url, timeout=30):
+        body = b"<html><body><h1>Code DIP v2</h1><p>updated</p></body></html>"
+        return (
+            "https://www.jurisitetunisie.com/tunisie/codes/cdip/cdip1010.htm",
+            200,
+            "text/html",
+            body,
+        )
+
+    out2 = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_dip_html_v2,
+    ):
+        call_command("sync_official_sources", "--country", "TN", "--slug", TN_DIP_SLUG, stdout=out2)
+    src.refresh_from_db()
+    assert src.notes.count(NOTES_MARKER_BEGIN) == 1
+    assert src.notes.count(NOTES_MARKER_END) == 1
+    second = _extract_official_sync_block(src.notes)
+    assert first["sha256"] != second["sha256"]
+
+
+@pytest.mark.django_db
+def test_tn_dip_calculator_remains_unavailable_after_fetch(tmp_path, settings):
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.calculators.enums import CalculationStatus, CaseType
+    from apps.cases.services import run_simulation
+
+    out = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_dip_html,
+    ):
+        call_command("sync_official_sources", "--country", "TN", "--slug", TN_DIP_SLUG, stdout=out)
+
+    sim = run_simulation(
+        jurisdiction_code="TN-NATIONAL",
+        case_type=CaseType.INTERNATIONAL_INHERITANCE.value,
+        input_data={},
+    )
+    assert sim.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
+    assert sim.estimated_min is None
+    assert sim.estimated_mid is None
+    assert sim.estimated_max is None
+
+
+@pytest.mark.django_db
+def test_tn_dip_fetch_failure_does_not_create_legal_layer(tmp_path, settings):
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.compensation.models import (
+        CalculationFormula,
+        CompensationDataset,
+        CompensationTableRow,
+    )
+    from apps.legal_sources.models import LegalReview, LegalSource
+
+    review_before = LegalReview.objects.count()
+    dataset_before = CompensationDataset.objects.count()
+    formula_before = CalculationFormula.objects.count()
+    rows_before = CompensationTableRow.objects.count()
+
+    out = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_failure,
+    ):
+        call_command("sync_official_sources", "--country", "TN", "--slug", TN_DIP_SLUG, stdout=out)
+
+    assert LegalReview.objects.count() == review_before
+    assert CompensationDataset.objects.count() == dataset_before
+    assert CalculationFormula.objects.count() == formula_before
+    assert CompensationTableRow.objects.count() == rows_before
+
+    src = LegalSource.objects.get(slug=TN_DIP_SLUG)
+    block = _extract_official_sync_block(src.notes)
+    assert block["classification"] == "fetch_failed"
+    assert block["http_status"] is None
+    assert block["sha256"] == ""
+
+
+@pytest.mark.django_db
+def test_tn_csp_and_dip_can_coexist(tmp_path, settings):
+    """Eseguendo sync TN senza --slug, entrambe le entry vengono
+    fetchate e il manifest ne contiene i due result; nessuno
+    sovrascrive l'altro."""
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.legal_sources.models import LegalSource
+
+    def _fake_either(url, timeout=30):
+        if "csp" in url.lower() or "csp1100" in url.lower():
+            return _fake_fetch_html(url, timeout)
+        return _fake_fetch_dip_html(url, timeout)
+
+    out = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_either,
+    ):
+        call_command("sync_official_sources", "--country", "TN", stdout=out)
+
+    csp = LegalSource.objects.get(slug=TN_SLUG)
+    dip = LegalSource.objects.get(slug=TN_DIP_SLUG)
+    csp_block = _extract_official_sync_block(csp.notes)
+    dip_block = _extract_official_sync_block(dip.notes)
+    assert csp_block["classification"] == "fetch_success"
+    assert dip_block["classification"] == "fetch_success"
+    assert csp_block["sha256"] != dip_block["sha256"]
+    assert csp_block["registry_slug"] == TN_SLUG
+    assert dip_block["registry_slug"] == TN_DIP_SLUG
+    # Each LegalSource has exactly one block (no duplication).
+    assert csp.notes.count(NOTES_MARKER_BEGIN) == 1
+    assert dip.notes.count(NOTES_MARKER_BEGIN) == 1
