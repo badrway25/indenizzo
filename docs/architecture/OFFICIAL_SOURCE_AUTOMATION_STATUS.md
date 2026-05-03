@@ -462,6 +462,95 @@ Nessun calculator è stato promosso.
 
 ---
 
+## 5f. IT D.P.R. 12/2025 — official cross-check (iter F-official-source-it-dpr-12-2025-gazzetta-crosscheck)
+
+Il D.P.R. 13 gennaio 2025, n. 12 (Tabella Unica Nazionale art. 138 CAP) ha
+già `LegalSource.status=approved` e dataset `DPR-12-2025` /
+`DPR-12-2025-MORAL` `approved` con review Studio del 2026-04-27. Lo Studio
+ha chiesto una verifica ufficiale aggiuntiva su `gazzettaufficiale.it`
+**senza** reimport del dataset né modifica di formula/righe. Per coprire
+questo caso d'uso introduciamo un nuovo `ingest_mode=verify_existing`
+nel registry e un classification dedicato `crosscheck_success` /
+`crosscheck_failed` (mai `fetch_*`) — così il manifest e le notes restano
+distinguibili da una run di estrazione vera.
+
+**URL provati nell'iter (in ordine, con esito reale):**
+
+| # | URL | Stato | Esito |
+|---|-----|-------|-------|
+| 1 | `https://www.gazzettaufficiale.it/eli/id/2025/02/11/25G00021/sg` | 200 | scartato — body 11 296 B (SPA shell, contenuto JS-rendered, nessun marker raw) |
+| 2 | `https://www.gazzettaufficiale.it/eli/gu/2025/02/11/34/sg/pdf` | 200 | **scelto** — PDF Serie Generale n. 34 dell'11 febbraio 2025, 2 820 562 B, marker confermato via `pdfplumber` |
+
+**Estrazione testuale per i PDF.** Il corpo del PDF Gazzetta usa font CMap
+con glyph table proprietaria: i marker italiani (`D.P.R.`, `13 gennaio
+2025`, `n. 12`, `danno biologico`, `Tabella`) **non** appaiono nei byte
+crudi del file. Per supportare il marker check su PDF abbiamo aggiunto un
+fallback in `validate_fetch_response`: se il body inizia con `%PDF-` e i
+marker non si trovano nei byte, viene tentata l'estrazione testo via
+`pdfplumber` sulle prime 16 pagine. Questo cattura `13 gennaio 2025` (data
+di firma del decreto, presente nell'indice e nel testo articolato) e
+sblocca `marker_check_passed=true`. Per HTML/XML il check resta sui byte
+crudi (fast path, già usato per MA/TN/EU).
+
+| Field | Valore |
+|-------|--------|
+| Slug | `it-dpr-12-2025-tun-danno-biologico` |
+| Source kind | `official_decree` |
+| Authority | `official_gazette` |
+| Ingest mode | `verify_existing` |
+| Official URL | `https://www.gazzettaufficiale.it/eli/id/2025/02/11/25G00021/sg` |
+| Final URL | `https://www.gazzettaufficiale.it/eli/gu/2025/02/11/34/sg/pdf` |
+| HTTP status | `200` |
+| Local path | `legal_data/sources/italy/official_downloaded/it-dpr-12-2025-tun-danno-biologico.pdf` |
+| Size | 2 820 562 bytes |
+| sha256 | `3ecd8597f44c473cb35582cac53d2f2832fd455ca702d876f7280a87e8ba3f19` |
+| Content-Type | `application/pdf` |
+| Classification | `crosscheck_success` |
+| `crosscheck_only` | `true` |
+| `no_reimport` | `true` |
+| `no_calculator_activation_change` | `true` |
+| `marker_check_passed` | `true` (via pdfplumber sulle prime 16 pagine) |
+| Fallback attempts | 1 (HTML ELI rifiutato per marker mancanti, atteso) |
+| LegalSource status | `approved` (preservato — il flow `verify_existing` non altera mai lo status) |
+
+**Cosa NON è stato modificato (invariants confermati live).**
+
+| Layer | Stato pre-iter | Stato post-iter |
+|-------|----------------|-----------------|
+| `LegalSource` `it-dpr-12-2025-tun-danno-biologico` | `approved` | `approved` (notes annotate con `[official_sync]`, niente altro) |
+| `CompensationDataset` count `approved` (IT) | 2 (`DPR-12-2025` + `DPR-12-2025-MORAL`) | 2 (intatti) |
+| `CalculationFormula` count | 1 (`italy_art_138_tun_2025_base`, `amount_rule=row_amount_range_direct`, `approved`) | 1 (intatta) |
+| `CompensationTableRow` total | 36 764 | 36 764 |
+| `LegalReview` count | 2 | 2 |
+| Italia 35/10/0 EUR | 26 268 / 27 353 / 28 439 | 26 268 / 27 353 / 28 439 |
+
+**Relazione con il pipeline TUN 2025 esistente.** Il PDF locale autoritativo
+del *solo* D.P.R. 12/2025 — quello effettivamente estratto in 36 764 righe —
+resta `legal_data/sources/italy/tun_2025/dpr_12_2025_tun.pdf` (sha256 e
+review pipeline indipendenti, non rifirmati da questo iter). Il file
+nuovo `legal_data/sources/italy/official_downloaded/it-dpr-12-2025-tun-danno-biologico.pdf`
+è invece l'**intero** fascicolo Gazzetta Serie Generale n. 34 dell'11
+febbraio 2025 (multi-decreto, 2.8 MB) — utile come traccia di
+pubblicazione/identificazione ELI ma *non* sostituto del PDF di
+riferimento per l'estrazione tabellare. I due file convivono per design.
+
+**Stato pipeline ufficiali (post-iter IT crosscheck):**
+
+| Country | Source slug | Mode | Classification | sha256 | Size | Calculator |
+|---------|-------------|------|----------------|--------|------|------------|
+| IT | `it-dpr-12-2025-tun-danno-biologico` | verify_existing | crosscheck_success | `3ecd8597…` | 2 820 562 B | calculated (35/10/0 = 26268/27353/28439) |
+| MA | `ma-code-famille-moudawana-fr-pdf` | fetch | fetch_success | `41db4ab3…` | 489 071 B | unavailable |
+| TN | `tn-code-statut-personnel-livre-ix-succession` | fetch | fetch_success | `ab807896…` | 36 183 B | unavailable |
+| TN | `tn-code-dip-loi-98-97` | fetch | fetch_success | `d379a070…` | 15 424 B | unavailable |
+| EU | `eu-regulation-650-2012-successions` | fetch | fetch_success | `24732567…` (volatile) | 581 041 B | n/a (quadro) |
+
+Cinque fonti ufficiali ora con sha256 tracciato e marker integrity
+verificata. Italia è l'unica con `verify_existing` perché è l'unica con
+calculator già `approved` e dataset/formula già rivisti dallo Studio: ogni
+ulteriore re-fetch deve essere puramente verificatorio.
+
+---
+
 ## 6. Riferimenti incrociati
 
 - Pacchetto pre-esistente: `download_international_legal_sources` in

@@ -117,6 +117,15 @@ class SyncResult:
     classification: str = ""
     fetched_at: str = ""
     fallback_attempts: list[str] = field(default_factory=list)
+    # verify_existing (cross-check) bookkeeping. Populated only for entries
+    # whose registry ``ingest_mode`` is ``verify_existing`` — i.e. the source
+    # is already wired to an APPROVED dataset/formula and we re-fetch the
+    # official URL purely to record sha256 + marker integrity, never to
+    # reimport rows.
+    crosscheck_only: bool = False
+    no_reimport: bool = False
+    no_calculator_activation_change: bool = False
+    marker_check_passed: bool | None = None
 
 
 @dataclass
@@ -252,6 +261,35 @@ def _fetch(url: str, *, timeout: int = DOWNLOAD_TIMEOUT_SECONDS) -> tuple[str, i
     )
 
 
+def _extract_pdf_text(payload: bytes, max_pages: int = 16) -> str:
+    """Extract text from the first ``max_pages`` of a PDF payload.
+
+    Used as a fallback when raw-bytes marker search fails on a PDF — many
+    PDFs encode glyphs through font tables, so the literal ASCII bytes of
+    a marker like ``"D.P.R."`` are not present in the file even though
+    the page renders that string. ``pdfplumber`` decodes the font CMap so
+    we can search the visible text. Returns ``""`` on any extraction
+    error to keep the validator robust (the caller decides what to do
+    with an empty extraction).
+    """
+    try:
+        import io
+
+        import pdfplumber
+    except ImportError:
+        return ""
+    try:
+        with pdfplumber.open(io.BytesIO(payload)) as pdf:
+            chunks: list[str] = []
+            for page in pdf.pages[:max_pages]:
+                txt = page.extract_text() or ""
+                if txt:
+                    chunks.append(txt)
+        return "\n".join(chunks)
+    except Exception:  # noqa: BLE001 — extraction is best-effort
+        return ""
+
+
 def validate_fetch_response(
     payload_bytes: bytes,
     http_status: int | None,
@@ -267,7 +305,12 @@ def validate_fetch_response(
     - reject HTTP 202 (``Accepted`` — content not yet final);
     - reject the well-known empty-content sha256 (``e3b0c44…``);
     - if the registry entry declares ``content_must_contain``, reject
-      bodies that miss every marker (case-insensitive).
+      bodies that miss every marker. The check is case-insensitive and
+      runs first against raw bytes (fast path for HTML/XML/JSON). For
+      PDF payloads where raw bytes don't contain the markers, fall back
+      to ``pdfplumber`` text extraction so semantic markers (e.g.
+      ``"D.P.R."``, ``"13 gennaio 2025"``) can be matched against the
+      visible text rather than the raw glyph stream.
     """
     if not payload_bytes:
         return "fetch_failed: empty body (size_bytes=0)"
@@ -277,11 +320,16 @@ def validate_fetch_response(
         return "fetch_failed: null sha256 (empty content hash)"
     if content_must_contain:
         body_lower = payload_bytes.lower()
-        if not any(marker.lower().encode("utf-8") in body_lower for marker in content_must_contain):
-            return (
-                "fetch_failed: missing required content markers "
-                f"{content_must_contain!r} (likely cookie/banner page)"
-            )
+        if any(marker.lower().encode("utf-8") in body_lower for marker in content_must_contain):
+            return ""
+        if payload_bytes[:5] == b"%PDF-":
+            extracted = _extract_pdf_text(payload_bytes).lower()
+            if extracted and any(marker.lower() in extracted for marker in content_must_contain):
+                return ""
+        return (
+            "fetch_failed: missing required content markers "
+            f"{content_must_contain!r} (likely cookie/banner page)"
+        )
     return ""
 
 
@@ -300,29 +348,35 @@ def _strip_existing_marker(notes: str) -> str:
 
 
 def build_notes_block(result: SyncResult) -> str:
-    body = json.dumps(
-        {
-            "synced_at": result.synced_at,
-            "fetched_at": result.fetched_at,
-            "registry_slug": result.slug,
-            "official_url": result.official_url,
-            "final_url": result.final_url,
-            "http_status": result.http_status,
-            "sha256": result.sha256,
-            "size_bytes": result.size_bytes,
-            "local_path": result.local_path,
-            "ingest_mode": result.ingest_mode,
-            "classification": result.classification,
-            "source_kind": result.source_kind,
-            "authority": result.authority,
-            "can_auto_ingest": result.can_auto_ingest,
-            "no_calculator_activation": True,
-            "fallback_attempts": result.fallback_attempts,
-            "error": result.error,
-        },
-        ensure_ascii=False,
-        indent=2,
-    )
+    payload: dict[str, Any] = {
+        "synced_at": result.synced_at,
+        "fetched_at": result.fetched_at,
+        "registry_slug": result.slug,
+        "official_url": result.official_url,
+        "final_url": result.final_url,
+        "http_status": result.http_status,
+        "sha256": result.sha256,
+        "size_bytes": result.size_bytes,
+        "local_path": result.local_path,
+        "ingest_mode": result.ingest_mode,
+        "classification": result.classification,
+        "source_kind": result.source_kind,
+        "authority": result.authority,
+        "can_auto_ingest": result.can_auto_ingest,
+        "no_calculator_activation": True,
+        "fallback_attempts": result.fallback_attempts,
+        "error": result.error,
+    }
+    # Cross-check only sources (registry ingest_mode=verify_existing) carry
+    # extra invariants we want to make explicit in the trailer: this run
+    # never reimports rows, never demotes an APPROVED source, never alters
+    # CompensationDataset / CalculationFormula / CompensationTableRow.
+    if result.crosscheck_only:
+        payload["crosscheck_only"] = True
+        payload["no_reimport"] = result.no_reimport
+        payload["no_calculator_activation_change"] = result.no_calculator_activation_change
+        payload["marker_check_passed"] = result.marker_check_passed
+    body = json.dumps(payload, ensure_ascii=False, indent=2)
     return f"\n\n{NOTES_MARKER_BEGIN}\n{body}\n{NOTES_MARKER_END}\n"
 
 
@@ -536,12 +590,23 @@ class Command(BaseCommand):
             official_url=entry["official_url"],
             synced_at=datetime.now(UTC).isoformat(),
         )
+        # verify_existing flag — set early so build_notes_block can include
+        # the cross-check invariants in every classification (success, failed,
+        # metadata_only override).
+        result.crosscheck_only = result.ingest_mode == "verify_existing"
+        result.no_reimport = bool(entry.get("no_reimport", result.crosscheck_only))
+        result.no_calculator_activation_change = bool(
+            entry.get("no_calculator_activation_change", result.crosscheck_only)
+        )
 
         # Decision tree:
         # - human_exception_review_required → record but never download
         # - ingest_mode == "manual_attach"/"human_exception_only" → record only
         # - metadata_only flag → skip HTTP, just write notes
         # - ingest_mode == "metadata_only" → skip HTTP, just write notes
+        # - ingest_mode == "verify_existing" → fetch + sha256 + marker check,
+        #   classification crosscheck_success/crosscheck_failed; never touches
+        #   dataset/formula/rows, never demotes APPROVED source.
         # - else (ingest_mode == "fetch" or absent and can_auto_ingest=true) → fetch
         if result.human_exception_review_required or result.ingest_mode in {
             "manual_attach",
@@ -590,19 +655,31 @@ class Command(BaseCommand):
                 result.size_bytes = len(body)
                 ext = self._extension_for(content_type, candidate_url, ext)
                 result.fetched_at = datetime.now(UTC).isoformat()
-                result.classification = "fetch_success"
+                result.classification = (
+                    "crosscheck_success" if result.crosscheck_only else "fetch_success"
+                )
+                if content_must_contain:
+                    result.marker_check_passed = True
                 # Track URLs that failed before this one — useful for ops
                 # diagnostics in the manifest, never confused with errors.
                 result.fallback_attempts = list(attempts)
                 success = True
                 break
             if not success:
-                result.classification = "fetch_failed"
+                result.classification = (
+                    "crosscheck_failed" if result.crosscheck_only else "fetch_failed"
+                )
                 result.error = (
                     " | ".join(attempts)
                     if attempts
                     else "fetch_failed: no candidate URL configured"
                 )
+                # If marker validation was the cause of the last failure,
+                # surface that explicitly for cross-check runs.
+                if content_must_contain and any(
+                    "missing required content markers" in att for att in attempts
+                ):
+                    result.marker_check_passed = False
                 payload_bytes = b""
 
         # Persist file when we have payload.

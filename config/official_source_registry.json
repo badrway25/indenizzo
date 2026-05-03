@@ -30,11 +30,25 @@
       "source_kind": "official_decree",
       "authority": "official_gazette",
       "machine_readable": false,
-      "expected_format": "pdf",
+      "expected_format": "html",
       "can_auto_ingest": true,
-      "auto_ingest_reason": "Decreto presidenziale già scaricato, sha256 known, dataset TUN 2025 approved con smoke test 35/10/0=26268/27353/28439 EUR.",
+      "auto_ingest_reason": "Decreto presidenziale già scaricato in legal_data/sources/italy/tun_2025/dpr_12_2025_tun.pdf. Sha256 known, dataset TUN 2025 (DPR-12-2025 + DPR-12-2025-MORAL) approved con smoke test 35/10/0=26268/27353/28439 EUR. Iter F-official-source-it-dpr-12-2025-gazzetta-crosscheck attiva un crosscheck ufficiale aggiuntivo su gazzettaufficiale.it (modalità verify_existing) — solo verifica/tracciamento URL+sha256+marker, nessun reimport, nessun cambio amount_rule/formula/dataset.",
       "human_exception_review_required": false,
-      "why_human_exception_review_if_any": ""
+      "why_human_exception_review_if_any": "",
+      "ingest_mode": "verify_existing",
+      "fetch_url_alternatives": [
+        "https://www.gazzettaufficiale.it/eli/gu/2025/02/11/34/sg/pdf"
+      ],
+      "content_must_contain": [
+        "D.P.R.",
+        "13 gennaio 2025",
+        "n. 12",
+        "danno biologico",
+        "Tabella"
+      ],
+      "no_reimport": true,
+      "no_calculator_activation_change": true,
+      "notes": "Dataset/formula/rows già APPROVED dal pipeline di import TUN 2025 (Studio review 2026-04-27). Questo entry serve come crosscheck ufficiale aggiuntivo verso gazzettaufficiale.it: l'`official_url` ELI è la landing page citabile dello Studio (HTML + JS-rendered) e l'`fetch_url_alternatives` contiene il PDF originale dell'intero fascicolo Serie Generale n. 34 dell'11 febbraio 2025. La validazione marker accetta la prima fonte la cui estrazione testuale (pdfplumber per i PDF, raw bytes per gli HTML) contiene almeno uno tra `D.P.R.`, `13 gennaio 2025`, `n. 12`, `danno biologico`, `Tabella`. La pipeline NON modifica CompensationDataset, CalculationFormula, CompensationTableRow né retrocede LegalSource.status da APPROVED. Il PDF locale `legal_data/sources/italy/tun_2025/dpr_12_2025_tun.pdf` resta sha256 di riferimento del solo D.P.R. 12/2025 (estratto dal fascicolo Gazzetta originale, già nel pipeline TUN 2025)."
     },
     {
       "country": "EU",
