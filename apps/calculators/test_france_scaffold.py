@@ -125,8 +125,13 @@ def test_france_calculator_unavailable_even_with_approved_source(
     # Sources DEVONO essere comunque echo-ate per audit, anche se non usate.
     assert len(r.sources) >= 1
     assert any(s.country == "FR" for s in r.sources)
-    # Missing-document specifico per il placeholder.
-    assert "calculator_engine_pending_for_jurisdiction" in r.missing_documents
+    # Missing-document: post-iter F-france-engine-inactive-fixture-only the
+    # FR engine's gating advances past the placeholder, so with an APPROVED
+    # source but no APPROVED dataset the engine surfaces the more specific
+    # `compensation_dataset_approved` marker. The legacy placeholder marker
+    # `calculator_engine_pending_for_jurisdiction` still applies when no
+    # APPROVED source is present at all (covered by other tests).
+    assert "compensation_dataset_approved" in r.missing_documents
 
 
 # ---------------------------------------------------------------------------

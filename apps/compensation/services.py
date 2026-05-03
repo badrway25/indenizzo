@@ -43,7 +43,18 @@ from .models import (
 # corrispondente funzione `_rule_*`. Senza questo gate chiunque potrebbe
 # scrivere `engine=foo` in admin e attivare un calcolo non vetting-ato.
 # ---------------------------------------------------------------------------
-SUPPORTED_ENGINES: frozenset[str] = frozenset({"italy_tun_point_value_v1"})
+SUPPORTED_ENGINES: frozenset[str] = frozenset(
+    {
+        "italy_tun_point_value_v1",
+        # France: scaffolded engine for road accident bodily injury, fed by
+        # the Mornet 2024 DFP table once Studio promotes it to APPROVED.
+        # Until then the engine returns ``unavailable`` on the public path
+        # because the gating still requires APPROVED source/dataset/formula.
+        # See ``apps/calculators/engines/france.py`` and
+        # ``docs/architecture/FRANCE_ENGINE_INACTIVE_FIXTURE_ONLY.md``.
+        "france_road_accident_v1",
+    }
+)
 SUPPORTED_AMOUNT_RULES: frozenset[str] = frozenset(
     {
         # Cell value is a per-point amount: final = point_value × disability%.
@@ -61,6 +72,14 @@ SUPPORTED_AMOUNT_RULES: frozenset[str] = frozenset(
         # to APPROVED. While the moral dataset is DRAFT the calculator
         # MUST refuse to execute (see `get_approved_dataset_by_version_label`).
         "row_amount_range_direct",
+        # France DFP table (Référentiel Mornet 2024): single-row range rule.
+        # The matched row provides a per-point amount in ``row.point_value``
+        # and an optional ``row.extra.amount_min/amount_mid/amount_max``
+        # triple. Final per-bucket amount = per_point × disability%, with
+        # min/mid/max applied uniformly when distinct (Mornet today emits
+        # equal min=mid=max but the range support is wired upfront).
+        # See ``_rule_france_dfp_point_value_direct``.
+        "france_dfp_point_value_direct",
     }
 )
 
@@ -68,10 +87,24 @@ SUPPORTED_AMOUNT_RULES: frozenset[str] = frozenset(
 # instead of one. The calculator dispatches differently for these.
 RANGE_AMOUNT_RULES: frozenset[str] = frozenset({"row_amount_range_direct"})
 
+# Subset of SUPPORTED_AMOUNT_RULES that operate on **one** row but emit a
+# (min, mid, max) triple — typically because the row carries a range under
+# its ``extra`` JSON, not because the dataset is split into three row_types.
+# Used by France DFP today; can host future single-row range rules.
+SINGLE_ROW_RANGE_AMOUNT_RULES: frozenset[str] = frozenset({"france_dfp_point_value_direct"})
+
 
 def is_range_rule(rule: str) -> bool:
     """Return True iff ``rule`` is a range rule (3 rows in, 3 amounts out)."""
     return rule in RANGE_AMOUNT_RULES
+
+
+def is_single_row_range_rule(rule: str) -> bool:
+    """Return True iff ``rule`` is a single-row range rule (1 row in, 3
+    amounts out). The matched row carries the range either via
+    ``row.extra.amount_min/mid/max`` or by collapsing to a single value
+    duplicated across min/mid/max."""
+    return rule in SINGLE_ROW_RANGE_AMOUNT_RULES
 
 
 # ---------------------------------------------------------------------------
@@ -466,6 +499,99 @@ def _rule_row_amount_range_direct(
         min_amount=_value_of(row_min),
         mid_amount=_value_of(row_mid),
         max_amount=_value_of(row_max),
+    )
+
+
+def apply_amount_single_row_range_rule(
+    rule: str,
+    *,
+    row: CompensationTableRow,
+    input_data: dict[str, Any],
+    fault_reduction_enabled: bool,
+) -> RangeAmounts:
+    """Single-row range version of ``apply_amount_rule``.
+
+    Reads ONE matched row, returns three amounts (``min``, ``mid``, ``max``).
+    The triple typically comes from ``row.extra.amount_min/mid/max`` when
+    the upstream extractor emits a range; if those are absent the rule
+    falls back to ``row.point_value`` duplicated across all three.
+
+    Caller must have verified ``rule in SINGLE_ROW_RANGE_AMOUNT_RULES`` via
+    :func:`is_single_row_range_rule`. Unknown rules raise ``ValueError``,
+    matching :func:`apply_amount_rule` and :func:`apply_amount_range_rule`.
+    """
+    if rule == "france_dfp_point_value_direct":
+        return _rule_france_dfp_point_value_direct(
+            row=row,
+            input_data=input_data,
+            fault_reduction_enabled=fault_reduction_enabled,
+        )
+    raise ValueError(f"Unsupported single-row range amount_rule: {rule!r}")
+
+
+def _rule_france_dfp_point_value_direct(
+    *,
+    row: CompensationTableRow,
+    input_data: dict[str, Any],
+    fault_reduction_enabled: bool,
+) -> RangeAmounts:
+    """France DFP per-point single-row range rule.
+
+    For the Mornet 2024 DFP table (per-age × per-disability), each cell
+    declares a per-point indemnity. The final per-victim amount is::
+
+        amount_X = point_value_per_point_X × permanent_disability_percentage
+
+    where ``point_value_per_point_X`` is taken from
+    ``row.extra.amount_min/amount_mid/amount_max`` if present, otherwise
+    falls back to ``row.point_value`` duplicated across the three. This
+    matches the upstream Mornet extractor, which emits all three columns
+    today (currently equal because Mornet publishes a point-value, not a
+    range — the range support is wired upfront so future per-cell
+    fourchettes can flow through unchanged).
+
+    Fault reduction is applied uniformly to min/mid/max when the formula
+    declares ``fault_reduction=true`` and a valid ``fault_percentage`` is
+    in the input. ``permanent_disability_percentage`` missing or zero
+    yields zero across the triple — the calculator never invents a
+    fallback.
+    """
+    disability = _to_decimal_or_none(input_data.get("permanent_disability_percentage"))
+    if disability is None:
+        return RangeAmounts(
+            min_amount=Decimal(0),
+            mid_amount=Decimal(0),
+            max_amount=Decimal(0),
+        )
+
+    extra = row.extra or {}
+    fallback = row.point_value or Decimal(0)
+    pp_min = _to_decimal_or_none(extra.get("amount_min"))
+    pp_mid = _to_decimal_or_none(extra.get("amount_mid"))
+    pp_max = _to_decimal_or_none(extra.get("amount_max"))
+    if pp_min is None:
+        pp_min = fallback
+    if pp_mid is None:
+        pp_mid = fallback
+    if pp_max is None:
+        pp_max = fallback
+
+    amount_min = pp_min * disability
+    amount_mid = pp_mid * disability
+    amount_max = pp_max * disability
+
+    if fault_reduction_enabled:
+        fault = _to_decimal_or_none(input_data.get("fault_percentage"))
+        if fault is not None and Decimal(0) <= fault <= Decimal(100):
+            factor = (Decimal(100) - fault) / Decimal(100)
+            amount_min = amount_min * factor
+            amount_mid = amount_mid * factor
+            amount_max = amount_max * factor
+
+    return RangeAmounts(
+        min_amount=amount_min,
+        mid_amount=amount_mid,
+        max_amount=amount_max,
     )
 
 
