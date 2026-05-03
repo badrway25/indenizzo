@@ -642,6 +642,125 @@ tabellare resta `human_exception_review`.
 
 ---
 
+## 5h. Manual attach pipeline (iter F-official-source-manual-attach-pipeline)
+
+### Perché esiste
+
+Alcune fonti ufficiali sono inaccessibili al fetcher automatico anche con
+User-Agent browser-like e retry on 202:
+
+- **Légifrance** (FR Loi Badinter, FR Code des assurances) → HTTP 403
+  permanente per i client non-browser, anche dietro Cloudflare in
+  modalità challenge.
+- **Pagine SPA puramente JS** (varianti specifiche di
+  `gazzettaufficiale.it` o portali ministeriali con bundle React/Vue) →
+  raw HTML è un guscio di 5-15 KB senza marker; serve un browser
+  headless per estrarre il testo.
+- **Endpoint con TLS strict / mTLS** (raramente, ma alcune anagrafi
+  pubbliche europee) → handshake fallisce sotto `requests`.
+- **PDF dietro paywall / login** (Schryvers PDF, alcune banche dati
+  giurisprudenziali) → la pipeline auto-fetch è inutile per design.
+
+Per queste fonti lo Studio scarica manualmente il file (browser, accesso
+abbonato, download da PEC istituzionale, ecc.) e lo registra con il
+nuovo command `attach_official_source_file`.
+
+### Cosa fa il command
+
+```text
+python manage.py attach_official_source_file --slug <slug> --file <path>
+```
+
+1. Legge `config/official_source_registry.json` e richiede
+   `manual_attach_allowed=true` per lo slug.
+2. Calcola `sha256` e `size_bytes` del file fornito.
+3. Esegue il marker check `content_must_contain` con la **stessa**
+   logica del fetch automatico (raw bytes per HTML/text, fallback
+   `pdfplumber` sulle prime 16 pagine per i PDF).
+4. Copia il file in
+   `legal_data/sources/<country>/manual_attached/<slug>.<ext>`.
+5. Aggiorna `legal_data/sources/<country>/manual_attached/manual_attach_manifest.json`
+   (cumulativo per paese, idempotente per slug).
+6. Annota `LegalSource.notes` con un blocco `[manual_attach] BEGIN…END`
+   che **convive** con un eventuale `[official_sync]` precedente — il
+   trailer del fetch automatico non viene toccato.
+
+### Cosa NON fa
+
+| Layer | Comportamento |
+|-------|---------------|
+| `LegalReview` | mai creato |
+| `CompensationDataset` | mai creato/modificato |
+| `CalculationFormula` | mai creata/modificata |
+| `CompensationTableRow` | mai creata/modificata |
+| `LegalSource.status` | mai promosso a `APPROVED`. Le nuove righe sono inserite con `NEEDS_REVIEW` |
+| Enum `SourceStatus` | mai esteso |
+| Calculator del paese | nessuna riattivazione: `unavailable_requires_legal_validation` resta tale finché lo Studio non valida l'engine + dataset (separati) |
+| Italia 35/10/0 EUR | invariato (verificato live + via test `test_italy_smoke_unchanged_after_manual_attach`) |
+
+Marker check fallito → `CommandError`, **nessuna** scrittura su file
+system o DB. È una protezione esplicita contro l'errore operativo
+("ho attaccato il file sbagliato").
+
+### Differenza rispetto a `LegalReview`
+
+`manual_attach` è il *layer integrità*: registra che un certo file con
+un certo sha256 è stato depositato in un certo momento. Non ha alcun
+effetto semantico — l'estensione, le righe, le formule che lo Studio
+deciderà di trarre dalla fonte sono materia di un *secondo* passaggio
+manuale (review legale + import dataset).
+
+`LegalReview` è il *layer semantico*: certifica che un revisore
+qualificato ha letto la fonte ed esprime un giudizio sul suo uso per un
+calculator specifico. Solo questo step può promuovere
+`LegalSource.status` a `APPROVED` e sbloccare un engine.
+
+I due layer sono indipendenti per design: una fonte può avere
+`manual_attach` ma nessuna `LegalReview` (caso comune al primo upload),
+e viceversa una vecchia review umana può esistere senza un manual
+attach (se la fonte è stata caricata prima di questo iter).
+
+### Esempio — FR Loi Badinter
+
+La Loi du 5 juillet 1985 è il primo target di questa pipeline:
+
+- Registry: `fr-loi-badinter-1985`, `manual_attach_allowed=true`,
+  markers `["5 juillet 1985", "accidents de la circulation", "indemnisation", "victimes"]`.
+- Comando:
+
+  ```powershell
+  python manage.py attach_official_source_file `
+      --slug fr-loi-badinter-1985 `
+      --file C:\Users\studio\Downloads\loi-badinter-consolidee.pdf
+  ```
+
+- Effetto: file copiato in
+  `legal_data/sources/france/manual_attached/fr-loi-badinter-1985.pdf`,
+  trailer `[manual_attach]` aggiunto a `LegalSource.notes`,
+  `manual_attach_manifest.json` aggiornato.
+
+Runbook completo: [`docs/legal_sources/MANUAL_ATTACH_OFFICIAL_SOURCE_RUNBOOK.md`](../legal_sources/MANUAL_ATTACH_OFFICIAL_SOURCE_RUNBOOK.md).
+
+### Cosa resta necessario per attivare l'engine Francia
+
+Il manual attach è lo *step 0*. Per attivare `apps/calculators/engines/france.py`
+servono ancora, in ordine:
+
+1. **Review legale Studio** della Loi Badinter sul perimetro `road_accident_bodily_injury` → promozione manuale di `LegalSource.status` a `APPROVED`.
+2. **Fonte di quantificazione** validata (Référentiel Mornet 2024
+   oppure deductive table giurisprudenziale): oggi `private_bareme` /
+   `human_exception_only`, richiede review legale esplicita.
+3. **`CompensationDataset` + `CalculationFormula`** allineati al
+   bareme validato (pipeline import separata, fuori scope manual_attach).
+4. **Engine FR** in `apps/calculators/engines/`: oggi assente,
+   `run_simulation` smista FR × road accident a
+   `unavailable_requires_legal_validation` di default.
+
+Il manual attach copre il *file integrity* ma non delega né accelera
+nessuno degli step 1-4.
+
+---
+
 ## 6. Riferimenti incrociati
 
 - Pacchetto pre-esistente: `download_international_legal_sources` in
@@ -653,6 +772,10 @@ tabellare resta `human_exception_review`.
 - Stato attuale fonti per paese:
   - `docs/architecture/MOROCCO_INHERITANCE_MODULE_STATUS.md`
   - `docs/architecture/TUNISIA_INHERITANCE_MODULE_STATUS.md`
+- Pipeline manual attach (fonti con blocco tecnico al fetch automatico):
+  - Comando: `apps/legal_sources/management/commands/attach_official_source_file.py`
+  - Runbook: `docs/legal_sources/MANUAL_ATTACH_OFFICIAL_SOURCE_RUNBOOK.md`
+  - Output: `legal_data/sources/<country>/manual_attached/`
 - Review umana già in pipeline:
   - `legal_data/sources/it/dpr-12-2025/review/` — TUN 2025 review
     pacchetto (gitignore allow-listato per i template).

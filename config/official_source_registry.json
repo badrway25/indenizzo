@@ -141,8 +141,16 @@
       "can_auto_ingest": false,
       "auto_ingest_reason": "",
       "human_exception_review_required": true,
-      "why_human_exception_review_if_any": "Légifrance restituisce HTTP 403 ai client non-browser. Lo Studio deve scaricare manualmente la versione consolidata e attaccarla via Django admin (LegalSourceAttachment). Il sync metadata-only resta possibile (URL + titolo) ma non il file.",
-      "ingest_mode": "manual_attach"
+      "why_human_exception_review_if_any": "Légifrance restituisce HTTP 403 ai client non-browser. Lo Studio deve scaricare manualmente la versione consolidata e attaccarla via il command `attach_official_source_file` (iter F-official-source-manual-attach-pipeline). Il sync metadata-only resta possibile (URL + titolo) ma non il file. Il manual attach è la pipeline ufficiale per fonti con blocchi tecnici (403, anti-bot, JS-only, TLS strict): sha256 + marker check + manifest, mai promozione a APPROVED.",
+      "ingest_mode": "manual_attach",
+      "manual_attach_allowed": true,
+      "content_must_contain": [
+        "5 juillet 1985",
+        "accidents de la circulation",
+        "indemnisation",
+        "victimes"
+      ],
+      "no_calculator_activation": true
     },
     {
       "country": "BE",
