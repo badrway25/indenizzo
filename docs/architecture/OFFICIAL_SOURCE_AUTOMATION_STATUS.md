@@ -761,6 +761,133 @@ nessuno degli step 1-4.
 
 ---
 
+## 5i. FR Loi Badinter — official source validation via manual attach (iter F-official-source-fr-badinter-manual-attach-and-legal-source-validation)
+
+Primo uso reale della pipeline `attach_official_source_file`. Lo Studio
+ha scaricato dal browser la versione consolidata della Loi Badinter dal
+canonical Légifrance (URL bloccato al fetch programmatico per HTTP 403)
+e l'ha depositata in `legal_data/sources/france/manual_inbox/badinter.pdf`.
+
+### Manual attach
+
+```text
+python manage.py attach_official_source_file \
+    --slug fr-loi-badinter-1985 \
+    --file legal_data/sources/france/manual_inbox/badinter.pdf
+```
+
+| Field | Valore |
+|-------|--------|
+| Slug | `fr-loi-badinter-1985` |
+| Source kind | `official_law` |
+| Authority | `legifrance` |
+| Ingest mode | `manual_attach` |
+| Local path | `legal_data/sources/france/manual_attached/fr-loi-badinter-1985.pdf` |
+| Size | 342 697 bytes |
+| sha256 | `6165313bad9dd4cbe07648ce5e554047edd4bf6d0394ecd7a1545b748b2c876e` |
+| Magic bytes | `%PDF-1.x` (verified) |
+| Classification | `manual_attach_success` |
+| `marker_check_passed` | `true` (4/4 marker FR raw bytes) |
+| LegalSource status (post-attach) | `needs_review` (preservato) |
+
+### Légifrance structural validation
+
+Lo script read-only `scripts/verify_badinter_against_legifrance.py`
+estrae il testo via `pdfplumber` e cerca 11 marker strutturali che
+qualsiasi copia autentica di Loi n°85-677 deve contenere — identità
+(numero + data), oggetto (titolo della legge), perimetro (`Article 1` +
+`véhicule terrestre à moteur`), dottrina della colpa (`Article 3` +
+`faute inexcusable`, `Article 4` + `faute commise par le conducteur`),
+regime offerta (`Article 12` + `délai maximum de huit mois`).
+
+Risultato: **11/11 PASS, source authenticity verified.**
+
+URL Légifrance canonico: <https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000693454>
+
+Report completo:
+[`docs/legal_sources/FR_BADINTER_OFFICIAL_SOURCE_VALIDATION.md`](../legal_sources/FR_BADINTER_OFFICIAL_SOURCE_VALIDATION.md).
+
+### Status finale `LegalSource`
+
+`LegalSource(slug='fr-loi-badinter-1985')` resta `needs_review`. Il
+trailer `[manual_attach]` (file integrity) e il nuovo trailer
+`[official_source_validation]` coesistono nelle notes:
+
+```json
+[official_source_validation] BEGIN
+{
+  "official_source_validation": "passed",
+  "structural_markers_passed": 11,
+  "structural_markers_total": 11,
+  "legal_calculator_activation": false,
+  "awaiting_mapping_or_human_legal_decision": true,
+  "no_legal_review_created_by_this_step": true,
+  ...
+}
+[official_source_validation] END
+```
+
+**Perché lo status non è promosso ad `APPROVED`.** Sul progetto, ogni
+fonte attualmente `APPROVED` (oggi: solo `it-dpr-12-2025-tun-danno-biologico`)
+è coperta da una `LegalReview.decision=approve` di un revisore umano +
+`LegalSource.legal_reviewer` FK valorizzato. La validazione meccanica
+del file (sha256 + 11/11 marker) prova **autenticità della copia**, non
+**adeguatezza alla pipeline di calcolo**: la decisione semantica resta
+delegata al revisore Studio. Promuovere ad `APPROVED` con un solo passo
+automatico romperebbe l'invariante e creerebbe una falsa simmetria con
+il flow esistente.
+
+### Cosa NON è stato attivato (verificato live + via test)
+
+| Layer | Stato post-iter |
+|-------|-----------------|
+| Calculator FR × `road_accident_bodily_injury` | `unavailable_requires_legal_validation` |
+| `CompensationDataset` (FR) | nessuno creato |
+| `CalculationFormula` (FR) | nessuna creata |
+| `CompensationTableRow` (FR) | 0 (totale rimane 36 764 — solo IT TUN) |
+| `LegalReview` (FR) | nessuna creata |
+| Promozione `LegalSource.status` | nessuna (resta `needs_review`) |
+| Italia 35/10/0 EUR | invariato (verificato live + via test `test_italy_smoke_unchanged_after_badinter_validation`) |
+
+### Cosa serve per rendere FR road accident calcolabile
+
+1. **Studio legal review** della Loi Badinter sul perimetro
+   `road_accident_bodily_injury` → creazione di `LegalReview.decision=approve`
+   da utenza Studio autenticata + promozione manuale di
+   `LegalSource.status` ad `APPROVED`.
+2. **Dataset Mornet 2024 / Gazette du Palais 2025** validati e importati
+   come `CompensationDataset`. Oggi `private_bareme` /
+   `human_exception_only` nel registry — richiedono review legale
+   esplicita Studio prima di qualsiasi import.
+3. **Engine FR** in `apps/calculators/engines/france.py` — assente.
+4. **Mapping Dintilhac** delle poste di danno (`fr-nomenclature-dintilhac-2005`
+   già in DB come `needs_review`) → tabella di corrispondenza
+   poste di pregiudizio ↔ campi del wizard.
+5. **Tabelle di capitalizzazione** Gazette du Palais 2022/2025 per
+   rendite e pertes futures.
+6. **Smoke test calculator FR** (almeno una tripla age × disability ×
+   fault) committata in `apps/calculators/test_*.py`, sulla stessa
+   linea del test IT 35/10/0 = 26 268 / 27 353 / 28 439 EUR.
+
+### Stato pipeline ufficiali (post-iter Badinter validation)
+
+| Country | Source slug | Mode | Classification | sha256 | Size | Calculator |
+|---------|-------------|------|----------------|--------|------|------------|
+| IT | `it-dpr-12-2025-tun-danno-biologico` | verify_existing | crosscheck_success | `3ecd8597…` | 2 820 562 B | calculated (35/10/0 = 26268/27353/28439) |
+| MA | `ma-code-famille-moudawana-fr-pdf` | fetch | fetch_success | `41db4ab3…` | 489 071 B | unavailable |
+| TN | `tn-code-statut-personnel-livre-ix-succession` | fetch | fetch_success | `ab807896…` | 36 183 B | unavailable |
+| TN | `tn-code-dip-loi-98-97` | fetch | fetch_success | `d379a070…` | 15 424 B | unavailable |
+| EU | `eu-regulation-650-2012-successions` | fetch | fetch_success | `24732567…` (volatile) | 581 041 B | n/a (quadro) |
+| BE | `be-loi-1989-11-21-rc-auto` | fetch | fetch_success | `f806f105…` | 28 155 B | unavailable |
+| FR | `fr-loi-badinter-1985` | manual_attach | manual_attach_success + official_source_validation=passed | `6165313b…` | 342 697 B | unavailable |
+
+Sette fonti ufficiali ora con sha256 tracciato e marker integrity
+verificata. La Loi Badinter è la prima fonte ad attraversare la pipeline
+manual_attach + structural validation; chiude lo strato cornice
+normativa per FR road accident senza attivare il calculator.
+
+---
+
 ## 6. Riferimenti incrociati
 
 - Pacchetto pre-esistente: `download_international_legal_sources` in
