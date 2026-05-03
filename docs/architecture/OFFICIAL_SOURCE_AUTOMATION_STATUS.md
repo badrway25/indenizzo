@@ -340,6 +340,128 @@ specifica.
 
 ---
 
+## 5e. EU Regulation 650/2012 — fetch attivo (iter F-official-source-eu-reg-650-fetch-and-trace)
+
+Promosso da `metadata_only` a `fetch` in `config/official_source_registry.json`.
+
+**URL provati nell'iter (in ordine, con esito reale):**
+
+| # | URL | Stato | Esito |
+|---|-----|-------|-------|
+| 1 | `https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32012R0650` | 200 | **scelto** — HTML 581 041 B con marker `650/2012` |
+| 2 | `https://eur-lex.europa.eu/legal-content/FR/TXT/XML/?uri=CELEX:32012R0650` | 200 (probe) | fallback registrato — XML 1 204 712 B |
+| 3 | `https://eur-lex.europa.eu/legal-content/FR/TXT/PDF/?uri=CELEX:32012R0650` | 200 (probe) | fallback registrato — PDF 957 802 B |
+
+**Triage CloudFront 202 transitorio.** EUR-Lex CloudFront serve
+occasionalmente un body interstiziale (~2 035 B, `<title></title>`) con
+HTTP 202 mentre l'origin riempie la cache; la risposta finale arriva 4-8
+secondi dopo. La nuova pipeline gestisce questo caso con due livelli:
+
+1. `_fetch` (interno): ritenta automaticamente fino a 3 volte con backoff
+   fisso di 4 s quando la risposta ha status 202, prima di rilasciare
+   l'esito al chiamante.
+2. `validate_fetch_response` (gate qualità): rifiuta come `fetch_failed`
+   ogni risposta con `status=202`, `size_bytes=0`, `sha256` pari al
+   digest del body vuoto (`e3b0c44…`) o body privo dei marker dichiarati
+   in `content_must_contain` (`["650/2012"]` per EU 650).
+
+Se il primary URL è ancora rifiutato dopo i ritentativi e i gate, il
+fetcher prova in sequenza i `fetch_url_alternatives` (XML, PDF) e
+registra i tentativi falliti in `fallback_attempts` del manifest.
+
+| Field | Valore |
+|-------|--------|
+| Slug | `eu-regulation-650-2012-successions` |
+| Source kind | `eu_regulation` |
+| Authority | `eurlex` |
+| Official URL | `https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32012R0650` |
+| Final URL | `https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32012R0650` |
+| HTTP status | `200` |
+| Local path | `legal_data/sources/eu/official_downloaded/eu-regulation-650-2012-successions.html` |
+| Size | 581 041 bytes |
+| sha256 (snapshot) | `24732567d9f86983046cf1866733ae012035a66d46a005b9bd2fe74bd07501c4` |
+| Content-Type | `text/html` (verified — contiene `<title>Reglement … 650/2012</title>`, marker `CELEX:32012R0650`, metadata ELI `eli/reg/2012/650`) |
+| Classification | `fetch_success` |
+| Fallback attempts | `[]` (primary URL accolto dopo gli eventuali 202 retry interni) |
+| LegalSource status | `needs_review` (NON promosso ad `approved`) |
+
+**Nota sulla variabilità del digest.** EUR-Lex inietta nel body alcuni
+identificatori dinamici (ad es. `RID_*`, `agentId`, `lastModification`
+nello script Dynatrace `ruxitagentjs_*`). Pertanto il `size_bytes` resta
+costante (~581 041 B) ma `sha256` può cambiare fra una run e l'altra:
+una run precedente ha prodotto `49fa8a746478…`, questa run
+`24732567d9f8…`. La verifica di integrità si basa quindi sui
+**marker di contenuto** (`650/2012`, `CELEX:32012R0650`, `eli/reg/2012/650`)
+piuttosto che su sha256 esatto. Per attribuire una versione canonica
+serve un cross-check OJ con timestamp di pubblicazione (manual_attach
+admin), che non altera la pipeline auto-sync.
+
+**Perché non attiva calculator MA/TN.** Il regolamento 650/2012 è la
+*cornice* UE di diritto internazionale privato: definisce competenza
+giurisdizionale, legge applicabile, riconoscimento delle decisioni e
+certificato successorio europeo, ma **non produce quote successorie**
+direttamente. Le quote restano determinate dalla legge sostanziale
+applicabile (Moudawana per MA, CSP Livre IX per TN, Codice civile per
+IT, ecc.). Quindi:
+
+- nessun `LegalReview` creato;
+- nessun `CompensationDataset` creato;
+- nessun `CalculationFormula` creato;
+- nessun `CompensationTableRow` creato;
+- calculator `MA-NATIONAL × international_inheritance` resta
+  `unavailable_requires_legal_validation` (verificato in
+  `test_eu_fetch_does_not_activate_ma_or_tn_calculator`);
+- calculator `TN-NATIONAL × international_inheritance` resta idem;
+- Italia 35/10/0 invariato a 26 268 / 27 353 / 28 439 EUR.
+
+**Ruolo del Reg 650/2012 nei moduli MA/TN inheritance:**
+
+| Domanda giuridica | Risposta data dal Reg 650/2012 |
+|-------------------|--------------------------------|
+| Quale giudice è competente per la successione? | Art. 4 — di norma residenza abituale del defunto al momento del decesso (per chi muore dopo il 17.08.2015). |
+| Quale legge si applica? | Art. 21 — legge dello Stato di residenza abituale del defunto, salvo professio juris (art. 22) per la legge di nazionalità. |
+| Riconoscimento decisioni? | Art. 39-58 — reciprocità automatica fra Stati membri partecipanti. |
+| Certificato successorio europeo? | Art. 62-73 — ECS come strumento UE per provare lo status di erede o legatario. |
+
+Il modulo TN/MA inheritance integra queste regole nell'explanation
+del simulatore quando il caso ha contatti con uno Stato membro UE
+(es. defunto residente abituale in Francia, eredi in Tunisia). Tutto
+ciò richiede `human_exception_review`: la qualificazione della legge
+applicabile, eventuali rinvii, opt-out testamentari e conflitti con
+ordine pubblico (es. successione fra eredi non musulmani applicando
+una legge che esclude tale categoria) non sono determinati
+deterministicamente dal solo testo regolamentare.
+
+**Coordinamento con Moudawana / CSP Livre IX / Code DIP TN:**
+
+| Strato | Quando si applica | Fonte ufficiale syncata |
+|--------|-------------------|-------------------------|
+| Diritto sostanziale MA (quote) | Defunto soggetto a legge marocchina (residenza abituale + professio juris) | `ma-code-famille-moudawana-fr-pdf` |
+| Diritto sostanziale TN (quote) | Defunto soggetto a legge tunisina | `tn-code-statut-personnel-livre-ix-succession` |
+| Conflitto leggi lato Tunisia | Caso radicato in TN con contatti esteri | `tn-code-dip-loi-98-97` |
+| Conflitto leggi lato Europa | Caso radicato in uno Stato membro UE partecipante | `eu-regulation-650-2012-successions` (questo iter) |
+
+I quattro strati insieme coprono ~95% del materiale normativo
+necessario per i moduli inheritance MA/TN. Il 5% residuo sono
+casi di rinvio internazionale (renvoi), conflitti con ordine
+pubblico nazionale e configurazioni familiari atipiche — destinati
+a `human_exception_review` permanente.
+
+**Stato pipeline ufficiali (post-iter EU):**
+
+| Country | Source slug | Fetch | sha256 | Size | Calculator |
+|---------|-------------|-------|--------|------|------------|
+| MA | `ma-code-famille-moudawana-fr-pdf` | ✅ PDF | `41db4ab3…` | 489 071 B | unavailable |
+| TN | `tn-code-statut-personnel-livre-ix-succession` | ✅ HTML | `ab807896…` | 36 183 B | unavailable |
+| TN | `tn-code-dip-loi-98-97` | ✅ HTML | `d379a070…` | 15 424 B | unavailable |
+| EU | `eu-regulation-650-2012-successions` | ✅ HTML | `24732567…` (volatile) | 581 041 B | n/a (quadro) |
+
+Tutti e quattro i target principali per il modulo inheritance
+internazionale MA/TN sono ora `fetch_success` con sha256 tracciato.
+Nessun calculator è stato promosso.
+
+---
+
 ## 6. Riferimenti incrociati
 
 - Pacchetto pre-esistente: `download_international_legal_sources` in

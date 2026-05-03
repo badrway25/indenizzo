@@ -45,6 +45,7 @@ Output:
 from __future__ import annotations
 
 import json
+import time
 from dataclasses import asdict, dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
@@ -65,7 +66,12 @@ from apps.legal_sources.utils import compute_bytes_sha256
 # ---------------------------------------------------------------------------
 
 DEFAULT_REGISTRY_PATH = Path(settings.BASE_DIR) / "config" / "official_source_registry.json"
-USER_AGENT = "StudioLegaleBadrane-OfficialSourceSync/0.1"
+# Browser-like ma sobrio: alcuni portali ufficiali (EUR-Lex storicamente)
+# rispondono 202 + body vuoto a User-Agent puramente programmatici.
+USER_AGENT = (
+    "Mozilla/5.0 (compatible; StudioLegaleBadrane-OfficialSourceSync/0.2; "
+    "+https://international.studiolegalebadrane.it)"
+)
 DOWNLOAD_TIMEOUT_SECONDS = 30
 COUNTRY_FOLDER_BY_CODE: dict[str, str] = {
     "IT": "italy",
@@ -78,6 +84,10 @@ COUNTRY_FOLDER_BY_CODE: dict[str, str] = {
 
 NOTES_MARKER_BEGIN = "[official_sync] BEGIN"
 NOTES_MARKER_END = "[official_sync] END"
+
+# sha256 of an empty byte string. Used to detect "null" responses where the
+# server returns 200 with body size 0 (or 202 + empty).
+EMPTY_SHA256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 
 
 @dataclass
@@ -106,6 +116,7 @@ class SyncResult:
     skipped_reason: str = ""
     classification: str = ""
     fetched_at: str = ""
+    fallback_attempts: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -204,13 +215,34 @@ def validate_registry(payload: dict[str, Any]) -> list[str]:
 # ---------------------------------------------------------------------------
 
 
+RETRY_ON_202_ATTEMPTS = 3
+RETRY_ON_202_BACKOFF_SECONDS = 4
+
+
 def _fetch(url: str, *, timeout: int = DOWNLOAD_TIMEOUT_SECONDS) -> tuple[str, int, str, bytes]:
-    response = requests.get(
-        url,
-        timeout=timeout,
-        allow_redirects=True,
-        headers={"User-Agent": USER_AGENT, "Accept": "*/*"},
-    )
+    """GET ``url`` once, with transient HTTP 202 retry.
+
+    Some upstreams (notably EUR-Lex via CloudFront) serve a small
+    interstitial body with status 202 while the backend is warming the
+    cache, then return the real 200 response a few seconds later. We
+    retry up to ``RETRY_ON_202_ATTEMPTS`` times with a fixed backoff;
+    if we still get 202 after that, the caller's
+    ``validate_fetch_response`` will classify it as fetch_failed.
+    """
+    headers = {
+        "User-Agent": USER_AGENT,
+        "Accept": (
+            "text/html,application/xhtml+xml,application/xml;q=0.9,"
+            "application/pdf;q=0.9,*/*;q=0.8"
+        ),
+        "Accept-Language": "fr,en;q=0.9,it;q=0.8",
+    }
+    response = requests.get(url, timeout=timeout, allow_redirects=True, headers=headers)
+    attempts_left = RETRY_ON_202_ATTEMPTS
+    while response.status_code == 202 and attempts_left > 0:
+        time.sleep(RETRY_ON_202_BACKOFF_SECONDS)
+        attempts_left -= 1
+        response = requests.get(url, timeout=timeout, allow_redirects=True, headers=headers)
     response.raise_for_status()
     return (
         response.url,
@@ -218,6 +250,39 @@ def _fetch(url: str, *, timeout: int = DOWNLOAD_TIMEOUT_SECONDS) -> tuple[str, i
         (response.headers.get("Content-Type") or "").split(";")[0].strip(),
         response.content,
     )
+
+
+def validate_fetch_response(
+    payload_bytes: bytes,
+    http_status: int | None,
+    sha256_hex: str,
+    *,
+    content_must_contain: list[str] | None = None,
+) -> str:
+    """Return error string if response invalid, empty string if valid.
+
+    Generic post-fetch quality gates that apply to every source:
+
+    - reject empty body (``size_bytes == 0``);
+    - reject HTTP 202 (``Accepted`` — content not yet final);
+    - reject the well-known empty-content sha256 (``e3b0c44…``);
+    - if the registry entry declares ``content_must_contain``, reject
+      bodies that miss every marker (case-insensitive).
+    """
+    if not payload_bytes:
+        return "fetch_failed: empty body (size_bytes=0)"
+    if http_status == 202:
+        return "fetch_failed: HTTP 202 (Accepted, body not final)"
+    if sha256_hex == EMPTY_SHA256:
+        return "fetch_failed: null sha256 (empty content hash)"
+    if content_must_contain:
+        body_lower = payload_bytes.lower()
+        if not any(marker.lower().encode("utf-8") in body_lower for marker in content_must_contain):
+            return (
+                "fetch_failed: missing required content markers "
+                f"{content_must_contain!r} (likely cookie/banner page)"
+            )
+    return ""
 
 
 # ---------------------------------------------------------------------------
@@ -252,6 +317,7 @@ def build_notes_block(result: SyncResult) -> str:
             "authority": result.authority,
             "can_auto_ingest": result.can_auto_ingest,
             "no_calculator_activation": True,
+            "fallback_attempts": result.fallback_attempts,
             "error": result.error,
         },
         ensure_ascii=False,
@@ -487,22 +553,57 @@ class Command(BaseCommand):
             result.skipped_reason = "metadata_only"
             result.classification = "metadata_only"
 
-        # Try HTTP only if not skipped.
+        # Try HTTP only if not skipped. Walk through primary URL plus
+        # any ``fetch_url_alternatives`` declared in the registry, and
+        # stop at the first response that passes ``validate_fetch_response``.
         payload_bytes: bytes = b""
         ext = entry.get("expected_format", "bin")
         if not result.skipped_reason and not dry_run:
-            try:
-                final_url, status, content_type, payload_bytes = _fetch(result.official_url)
+            urls_to_try: list[str] = [result.official_url]
+            urls_to_try.extend(entry.get("fetch_url_alternatives") or [])
+            content_must_contain: list[str] | None = entry.get("content_must_contain")
+            attempts: list[str] = []
+            success = False
+            for candidate_url in urls_to_try:
+                try:
+                    final_url, status, content_type, body = _fetch(candidate_url)
+                except requests.RequestException as exc:
+                    attempts.append(
+                        f"{candidate_url} -> fetch_failed: {exc.__class__.__name__}: {exc}"
+                    )
+                    continue
+                sha256_hex = compute_bytes_sha256(body)
+                err = validate_fetch_response(
+                    body,
+                    status,
+                    sha256_hex,
+                    content_must_contain=content_must_contain,
+                )
+                if err:
+                    attempts.append(f"{candidate_url} -> {err}")
+                    continue
+                # Accepted.
+                payload_bytes = body
                 result.final_url = final_url
                 result.http_status = status
-                result.sha256 = compute_bytes_sha256(payload_bytes)
-                result.size_bytes = len(payload_bytes)
-                ext = self._extension_for(content_type, result.official_url, ext)
+                result.sha256 = sha256_hex
+                result.size_bytes = len(body)
+                ext = self._extension_for(content_type, candidate_url, ext)
                 result.fetched_at = datetime.now(UTC).isoformat()
                 result.classification = "fetch_success"
-            except requests.RequestException as exc:
-                result.error = f"fetch_failed: {exc.__class__.__name__}: {exc}"
+                # Track URLs that failed before this one — useful for ops
+                # diagnostics in the manifest, never confused with errors.
+                result.fallback_attempts = list(attempts)
+                success = True
+                break
+            if not success:
                 result.classification = "fetch_failed"
+                result.error = (
+                    " | ".join(attempts)
+                    if attempts
+                    else "fetch_failed: no candidate URL configured"
+                )
+                payload_bytes = b""
 
         # Persist file when we have payload.
         if payload_bytes and not dry_run and not result.error:

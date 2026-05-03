@@ -178,7 +178,7 @@ def test_fetch_failure_does_not_create_legal_layer(tmp_path, settings):
     src = LegalSource.objects.get(slug=MA_SLUG)
     block = _extract_official_sync_block(src.notes)
     assert block["classification"] == "fetch_failed"
-    assert block["error"].startswith("fetch_failed: ConnectionError"), block["error"]
+    assert "fetch_failed: ConnectionError" in block["error"], block["error"]
     assert block["http_status"] is None
     assert block["sha256"] == ""
     assert block["local_path"] == ""
@@ -531,7 +531,7 @@ def test_tn_fetch_failure_does_not_create_legal_layer(tmp_path, settings):
     src = LegalSource.objects.get(slug=TN_SLUG)
     block = _extract_official_sync_block(src.notes)
     assert block["classification"] == "fetch_failed"
-    assert block["error"].startswith("fetch_failed: ConnectionError")
+    assert "fetch_failed: ConnectionError" in block["error"]
     assert block["http_status"] is None
     assert block["sha256"] == ""
     assert block["local_path"] == ""
@@ -754,3 +754,331 @@ def test_tn_csp_and_dip_can_coexist(tmp_path, settings):
     # Each LegalSource has exactly one block (no duplication).
     assert csp.notes.count(NOTES_MARKER_BEGIN) == 1
     assert dip.notes.count(NOTES_MARKER_BEGIN) == 1
+
+
+# ---------------------------------------------------------------------------
+# 9 — EU Reg 650/2012 (post F-official-source-eu-reg-650-fetch-and-trace)
+# ---------------------------------------------------------------------------
+
+
+EU_SLUG = "eu-regulation-650-2012-successions"
+
+
+def _fake_fetch_eu_html(url, timeout=30):
+    body = (
+        b'<!DOCTYPE html><html lang="fr"><head>'
+        b"<title>Reglement (UE) 650/2012 - successions transfrontalieres - EUR-Lex</title></head>"
+        b"<body><h1>REGLEMENT (UE) No 650/2012 DU PARLEMENT EUROPEEN ET DU CONSEIL</h1>"
+        b"<p>du 4 juillet 2012 relatif a la competence, la loi applicable, "
+        b"la reconnaissance et l'execution des decisions, et l'acceptation et "
+        b"l'execution des actes authentiques en matiere de successions et a la "
+        b"creation d'un certificat successoral europeen.</p>"
+        b"</body></html>"
+    )
+    return (
+        "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32012R0650",
+        200,
+        "text/html",
+        body,
+    )
+
+
+def _fake_fetch_eu_xml(url, timeout=30):
+    body = (
+        b'<?xml version="1.0" encoding="UTF-8"?>'
+        b"<NOTICE><WORK><URI>"
+        b"http://publications.europa.eu/resource/cellar/650/2012</URI>"
+        b"</WORK></NOTICE>"
+    )
+    return (
+        "https://eur-lex.europa.eu/legal-content/FR/TXT/XML/?uri=CELEX:32012R0650",
+        200,
+        "text/xml",
+        body,
+    )
+
+
+def _fake_fetch_eu_pdf(url, timeout=30):
+    body = b"%PDF-1.4 fake EU 650/2012 payload " + b"x" * 200
+    return (
+        "https://eur-lex.europa.eu/legal-content/FR/TXT/PDF/?uri=CELEX:32012R0650",
+        200,
+        "application/pdf",
+        body,
+    )
+
+
+def _fake_fetch_eu_202_empty(url, timeout=30):
+    """EUR-Lex CloudFront interstitial: 202 + tiny holding page senza marker."""
+    body = b"<!DOCTYPE html><html><head><title></title></head><body></body></html>"
+    return (url, 202, "text/html", body)
+
+
+def _fake_fetch_zero_bytes(url, timeout=30):
+    return (url, 200, "text/html", b"")
+
+
+def _fake_fetch_html_no_marker(url, timeout=30):
+    """200 OK con HTML che non contiene il marker 650/2012 (es. cookie banner)."""
+    body = (
+        b"<!DOCTYPE html><html><head><title>Cookie consent</title></head>"
+        b"<body><p>This site uses cookies. Click accept.</p></body></html>"
+    )
+    return (url, 200, "text/html", body)
+
+
+def test_eu_registry_entry_is_present_and_valid():
+    registry_path = REPO_ROOT / "config" / "official_source_registry.json"
+    payload = json.loads(registry_path.read_text(encoding="utf-8"))
+    entry = next(
+        (e for e in payload["entries"] if e["source_slug"] == EU_SLUG),
+        None,
+    )
+    assert entry is not None, f"registry missing entry {EU_SLUG!r}"
+    assert entry["country"] == "EU"
+    assert entry["jurisdiction"] == "EU-INTL"
+    assert entry["case_type"] == "international_inheritance"
+    assert entry["source_kind"] == "eu_regulation"
+    assert entry["authority"] == "eurlex"
+    assert entry["machine_readable"] is True
+    assert entry["expected_format"] == "html"
+    assert entry["can_auto_ingest"] is True
+    assert entry["human_exception_review_required"] is False
+    assert entry["ingest_mode"] == "fetch"
+    # Fallback URLs must include XML and PDF endpoints.
+    alts = entry.get("fetch_url_alternatives") or []
+    assert any("XML" in u for u in alts), alts
+    assert any("PDF" in u for u in alts), alts
+    # Content validation marker.
+    assert "650/2012" in (entry.get("content_must_contain") or [])
+
+
+@pytest.mark.django_db
+def test_eu_html_fetch_success_writes_sha256_and_notes(tmp_path, settings):
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.legal_sources.models import LegalSource
+
+    out = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_eu_html,
+    ):
+        call_command("sync_official_sources", "--country", "EU", "--slug", EU_SLUG, stdout=out)
+
+    src = LegalSource.objects.get(slug=EU_SLUG)
+    block = _extract_official_sync_block(src.notes)
+    assert block["classification"] == "fetch_success"
+    assert block["http_status"] == 200
+    assert block["ingest_mode"] == "fetch"
+    assert block["source_kind"] == "eu_regulation"
+    assert block["authority"] == "eurlex"
+    assert block["local_path"].endswith(".html")
+    assert block["no_calculator_activation"] is True
+    assert block["error"] == ""
+    assert len(block["sha256"]) == 64
+
+    repo_local = Path(settings.BASE_DIR) / block["local_path"]
+    assert repo_local.exists()
+    body = repo_local.read_bytes()
+    assert b"650/2012" in body
+
+
+@pytest.mark.django_db
+def test_eu_fetch_falls_back_to_xml_when_html_returns_202(tmp_path, settings):
+    """Primary URL gives 202 (rejected) → fallback to XML succeeds."""
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.legal_sources.models import LegalSource
+
+    def _fake_eu_dispatcher(url, timeout=30):
+        if "/XML/" in url:
+            return _fake_fetch_eu_xml(url, timeout)
+        if "/PDF/" in url:
+            return _fake_fetch_eu_pdf(url, timeout)
+        # Primary HTML returns 202 + empty stub.
+        return _fake_fetch_eu_202_empty(url, timeout)
+
+    out = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_eu_dispatcher,
+    ):
+        call_command("sync_official_sources", "--country", "EU", "--slug", EU_SLUG, stdout=out)
+
+    src = LegalSource.objects.get(slug=EU_SLUG)
+    block = _extract_official_sync_block(src.notes)
+    assert block["classification"] == "fetch_success"
+    assert block["local_path"].endswith(".xml")
+    assert "/XML/" in block["final_url"]
+    # The HTML primary URL is recorded as a fallback attempt.
+    assert any("HTTP 202" in att for att in block["fallback_attempts"]), block["fallback_attempts"]
+
+
+@pytest.mark.django_db
+def test_eu_fetch_rejects_http_202_with_empty_body(tmp_path, settings):
+    """When ALL URLs return 202, classification stays fetch_failed."""
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.legal_sources.models import LegalSource
+
+    out = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_eu_202_empty,
+    ):
+        call_command("sync_official_sources", "--country", "EU", "--slug", EU_SLUG, stdout=out)
+
+    src = LegalSource.objects.get(slug=EU_SLUG)
+    block = _extract_official_sync_block(src.notes)
+    assert block["classification"] == "fetch_failed"
+    assert block["http_status"] is None
+    assert block["sha256"] == ""
+    assert block["local_path"] == ""
+    assert "HTTP 202" in block["error"]
+
+
+@pytest.mark.django_db
+def test_eu_fetch_rejects_zero_byte_response(tmp_path, settings):
+    """200 OK with size_bytes=0 must be classified fetch_failed."""
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.legal_sources.models import LegalSource
+
+    out = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_zero_bytes,
+    ):
+        call_command("sync_official_sources", "--country", "EU", "--slug", EU_SLUG, stdout=out)
+
+    src = LegalSource.objects.get(slug=EU_SLUG)
+    block = _extract_official_sync_block(src.notes)
+    assert block["classification"] == "fetch_failed"
+    assert "empty body" in block["error"]
+
+
+@pytest.mark.django_db
+def test_eu_fetch_rejects_missing_content_marker(tmp_path, settings):
+    """200 OK with body that lacks the registry's content_must_contain
+    markers (e.g. a cookie-only banner page) is rejected."""
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.legal_sources.models import LegalSource
+
+    out = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_html_no_marker,
+    ):
+        call_command("sync_official_sources", "--country", "EU", "--slug", EU_SLUG, stdout=out)
+
+    src = LegalSource.objects.get(slug=EU_SLUG)
+    block = _extract_official_sync_block(src.notes)
+    assert block["classification"] == "fetch_failed"
+    assert "missing required content markers" in block["error"]
+
+
+def test_validate_fetch_response_rejects_known_empty_sha256():
+    """Defensive unit test on the validator helper itself: the well-known
+    sha256 of an empty byte string must always be rejected, even if the
+    body somehow has length > 0 (paranoid guard against future regressions)."""
+    from apps.legal_sources.management.commands.sync_official_sources import (
+        EMPTY_SHA256,
+        validate_fetch_response,
+    )
+
+    err = validate_fetch_response(b"non-empty", 200, EMPTY_SHA256)
+    assert err.startswith("fetch_failed: null sha256"), err
+
+
+@pytest.mark.django_db
+def test_eu_fetch_idempotent_replaces_block(tmp_path, settings):
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.legal_sources.models import LegalSource
+
+    out1 = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_eu_html,
+    ):
+        call_command("sync_official_sources", "--country", "EU", "--slug", EU_SLUG, stdout=out1)
+    src = LegalSource.objects.get(slug=EU_SLUG)
+    first = _extract_official_sync_block(src.notes)
+
+    def _fake_eu_html_v2(url, timeout=30):
+        body = (
+            b"<!DOCTYPE html><html><body>"
+            b"<h1>EU 650/2012 v2</h1><p>updated body</p></body></html>"
+        )
+        return (
+            "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32012R0650",
+            200,
+            "text/html",
+            body,
+        )
+
+    out2 = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_eu_html_v2,
+    ):
+        call_command("sync_official_sources", "--country", "EU", "--slug", EU_SLUG, stdout=out2)
+    src.refresh_from_db()
+    assert src.notes.count(NOTES_MARKER_BEGIN) == 1
+    assert src.notes.count(NOTES_MARKER_END) == 1
+    second = _extract_official_sync_block(src.notes)
+    assert first["sha256"] != second["sha256"]
+
+
+@pytest.mark.django_db
+def test_eu_fetch_does_not_activate_ma_or_tn_calculator(tmp_path, settings):
+    """Successfully fetching the EU regulation must not promote MA or TN
+    inheritance calculators out of unavailable_requires_legal_validation."""
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.calculators.enums import CalculationStatus, CaseType
+    from apps.cases.services import run_simulation
+
+    out = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_eu_html,
+    ):
+        call_command("sync_official_sources", "--country", "EU", "--slug", EU_SLUG, stdout=out)
+
+    for jcode in ("MA-NATIONAL", "TN-NATIONAL"):
+        sim = run_simulation(
+            jurisdiction_code=jcode,
+            case_type=CaseType.INTERNATIONAL_INHERITANCE.value,
+            input_data={},
+        )
+        assert sim.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
+
+
+@pytest.mark.django_db
+def test_eu_fetch_failure_does_not_create_legal_layer(tmp_path, settings):
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.compensation.models import (
+        CalculationFormula,
+        CompensationDataset,
+        CompensationTableRow,
+    )
+    from apps.legal_sources.models import LegalReview, LegalSource
+
+    review_before = LegalReview.objects.count()
+    dataset_before = CompensationDataset.objects.count()
+    formula_before = CalculationFormula.objects.count()
+    rows_before = CompensationTableRow.objects.count()
+
+    out = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_failure,
+    ):
+        call_command("sync_official_sources", "--country", "EU", "--slug", EU_SLUG, stdout=out)
+
+    assert LegalReview.objects.count() == review_before
+    assert CompensationDataset.objects.count() == dataset_before
+    assert CalculationFormula.objects.count() == formula_before
+    assert CompensationTableRow.objects.count() == rows_before
+
+    src = LegalSource.objects.get(slug=EU_SLUG)
+    block = _extract_official_sync_block(src.notes)
+    assert block["classification"] == "fetch_failed"
+    assert block["http_status"] is None
+    assert block["sha256"] == ""

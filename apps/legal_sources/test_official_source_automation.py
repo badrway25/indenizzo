@@ -166,7 +166,11 @@ def test_metadata_only_annotates_notes_and_no_legal_layer_writes(tmp_path, setti
     payload = (eu.notes or "").split(NOTES_MARKER_BEGIN, 1)[1].split(NOTES_MARKER_END)[0]
     block = json.loads(payload.strip())
     assert block["registry_slug"] == "eu-regulation-650-2012-successions"
-    assert block["ingest_mode"] == "metadata_only"
+    # Post-iter F-official-source-eu-reg-650-fetch-and-trace the registry
+    # declares ingest_mode=fetch. The --metadata-only CLI flag overrides
+    # the run, which we observe via classification, not via ingest_mode.
+    assert block["ingest_mode"] == "fetch"
+    assert block["classification"] == "metadata_only"
     assert block["source_kind"] == "eu_regulation"
 
 

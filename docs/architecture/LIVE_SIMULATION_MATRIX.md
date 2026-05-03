@@ -1,6 +1,6 @@
 # Live simulation matrix — engine-level run
 
-Generated: `2026-05-03T09:49:34.789019+00:00` (F-product-official-source-automation-and-full-site-functional-upgrade)
+Generated: `2026-05-03T11:59:55.238124+00:00` (F-product-official-source-automation-and-full-site-functional-upgrade)
 
 Matrice di simulazioni eseguita engine-level via `apps.cases.services.run_simulation`. Niente HTTP, niente DB write non previsto: lo script chiama il motore in modalità simulation save (la persistenza Simulation è una scrittura tracciata, non un side-effect su layer legale).
 

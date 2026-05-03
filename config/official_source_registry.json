@@ -48,11 +48,16 @@
       "machine_readable": true,
       "expected_format": "html",
       "can_auto_ingest": true,
-      "auto_ingest_reason": "EUR-Lex pubblica il regolamento in formati ufficiali (HTML/PDF/XML). Metadata-only sync: il regolamento è normativa primaria UE, citato da MA/TN landing. Nessun importo derivato — applicabile come quadro per casi transfrontalieri.",
+      "auto_ingest_reason": "EUR-Lex pubblica il regolamento in HTML/XML/PDF ufficiali. Promosso da metadata_only a fetch nell'iter F-official-source-eu-reg-650-fetch-and-trace dopo verifica che gli endpoint rispondono 200 con body completo (HTML 581 KB, XML 1.2 MB, PDF 957 KB) sotto User-Agent browser-like. Nessun importo derivato — la fonte è quadro normativo per casi transfrontalieri MA/TN. Calculator MA/TN inheritance resta unavailable_requires_legal_validation finché lo Studio non completa il mapping conflitto-leggi.",
       "human_exception_review_required": false,
       "why_human_exception_review_if_any": "",
-      "ingest_mode": "metadata_only",
-      "notes": "EUR-Lex risponde HTTP 202 + body vuoto a User-Agent programmatici (vedi triage iter3 in download_international_legal_sources). Sync metadata-only annota la URL ufficiale + tracking checksum quando disponibile."
+      "ingest_mode": "fetch",
+      "fetch_url_alternatives": [
+        "https://eur-lex.europa.eu/legal-content/FR/TXT/XML/?uri=CELEX:32012R0650",
+        "https://eur-lex.europa.eu/legal-content/FR/TXT/PDF/?uri=CELEX:32012R0650"
+      ],
+      "content_must_contain": ["650/2012"],
+      "notes": "EUR-Lex storicamente rispondeva HTTP 202 + body vuoto a User-Agent programmatici (triage iter3 in download_international_legal_sources). Risolto in questo iter usando User-Agent browser-like sobrio + fallback HTML→XML→PDF + validazione body (rifiuta size=0, sha256 nullo, HTTP 202, HTML solo banner senza marker 650/2012). Nessun calculator MA/TN viene attivato: la fonte è quadro UE, non dataset tabellare."
     },
     {
       "country": "MA",
