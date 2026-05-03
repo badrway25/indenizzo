@@ -1524,3 +1524,381 @@ def test_italy_smoke_unchanged_after_it_crosscheck(italy_smoke_it_crosscheck, tm
     assert sim.estimated_min == Decimal("26268")
     assert sim.estimated_mid == Decimal("27353")
     assert sim.estimated_max == Decimal("28439")
+
+
+# ---------------------------------------------------------------------------
+# 11 — BE Loi 1989 RC Auto fetch (post
+# F-official-source-be-loi-1989-rc-auto-fetch-and-trace)
+# ---------------------------------------------------------------------------
+
+
+BE_LOI_SLUG = "be-loi-1989-11-21-rc-auto"
+
+
+def _fake_fetch_be_loi_html(url, timeout=30):
+    """Synthetic SPF Économie HTML response. Embeds all four FR registry
+    markers verbatim so the raw-bytes marker check passes."""
+    body = (
+        b'<!DOCTYPE html><html lang="fr"><head>'
+        b"<title>Loi du 21 novembre 1989 - SPF Economie</title></head>"
+        b"<body><h1>Loi du 21 novembre 1989 relative \xc3\xa0 l'assurance "
+        b"obligatoire de la responsabilit\xc3\xa9 en mati\xc3\xa8re de "
+        b"v\xc3\xa9hicules automoteurs</h1>"
+        b"<p>21 NOVEMBRE 1989. - Loi relative \xc3\xa0 l'assurance "
+        b"obligatoire de la responsabilit\xc3\xa9 en mati\xc3\xa8re de "
+        b"v\xc3\xa9hicules automoteurs.</p></body></html>"
+    )
+    return (
+        "https://economie.fgov.be/fr/legislation/loi-du-21-novembre-1989",
+        200,
+        "text/html; charset=UTF-8",
+        body,
+    )
+
+
+def _fake_fetch_be_html_no_marker(url, timeout=30):
+    """200 OK + body without any of the four FR markers (e.g. cookie banner)."""
+    body = (
+        b"<!DOCTYPE html><html><head><title>Cookies</title></head>"
+        b"<body><p>This site uses cookies.</p></body></html>"
+    )
+    return (url, 200, "text/html; charset=UTF-8", body)
+
+
+def test_be_loi_registry_entry_is_present_and_valid():
+    """Registry must declare BE Loi 1989 as fetch with FR primary URL,
+    NL fallback and the four French markers."""
+    registry_path = REPO_ROOT / "config" / "official_source_registry.json"
+    payload = json.loads(registry_path.read_text(encoding="utf-8"))
+    entry = next(
+        (e for e in payload["entries"] if e["source_slug"] == BE_LOI_SLUG),
+        None,
+    )
+    assert entry is not None, f"registry missing entry {BE_LOI_SLUG!r}"
+    assert entry["country"] == "BE"
+    assert entry["jurisdiction"] == "BE-NATIONAL"
+    assert entry["case_type"] == "road_accident_bodily_injury"
+    assert entry["source_kind"] == "official_law"
+    assert entry["authority"] == "spf_economie"
+    assert entry["machine_readable"] is True
+    assert entry["expected_format"] == "html"
+    assert entry["can_auto_ingest"] is True
+    assert entry["human_exception_review_required"] is False
+    assert entry["ingest_mode"] == "fetch"
+    assert "/fr/" in entry["official_url"], entry["official_url"]
+    alts = entry.get("fetch_url_alternatives") or []
+    assert any("/nl/" in u for u in alts), alts
+    markers = entry.get("content_must_contain") or []
+    for required in (
+        "21 novembre 1989",
+        "responsabilité",
+        "véhicules automoteurs",
+        "assurance obligatoire",
+    ):
+        assert required in markers, f"missing marker {required!r} in {markers!r}"
+
+
+@pytest.mark.django_db
+def test_be_loi_html_fetch_success_writes_sha256_and_notes(tmp_path, settings):
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.legal_sources.models import LegalSource
+
+    out = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_be_loi_html,
+    ):
+        call_command("sync_official_sources", "--country", "BE", "--slug", BE_LOI_SLUG, stdout=out)
+
+    src = LegalSource.objects.get(slug=BE_LOI_SLUG)
+    block = _extract_official_sync_block(src.notes)
+    assert block["classification"] == "fetch_success"
+    assert block["http_status"] == 200
+    assert block["ingest_mode"] == "fetch"
+    assert block["source_kind"] == "official_law"
+    assert block["authority"] == "spf_economie"
+    assert block["local_path"].endswith(".html")
+    assert block["no_calculator_activation"] is True
+    assert block["error"] == ""
+    assert len(block["sha256"]) == 64
+
+    repo_local = Path(settings.BASE_DIR) / block["local_path"]
+    assert repo_local.exists()
+    body = repo_local.read_bytes()
+    assert b"21 novembre 1989" in body or b"21 NOVEMBRE 1989" in body
+    assert b"automoteurs" in body
+
+
+@pytest.mark.django_db
+def test_be_loi_content_type_html_produces_html_extension(tmp_path, settings):
+    """Content-Type=text/html → local file saved with `.html` extension."""
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.legal_sources.models import LegalSource
+
+    out = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_be_loi_html,
+    ):
+        call_command("sync_official_sources", "--country", "BE", "--slug", BE_LOI_SLUG, stdout=out)
+
+    src = LegalSource.objects.get(slug=BE_LOI_SLUG)
+    block = _extract_official_sync_block(src.notes)
+    assert block["local_path"].endswith(".html"), block["local_path"]
+
+
+@pytest.mark.django_db
+def test_be_loi_marker_missing_produces_fetch_failed(tmp_path, settings):
+    """All candidate URLs return bodies without any required marker →
+    classification fetch_failed (BE entry uses fetch mode, not
+    verify_existing, so no crosscheck_failed label)."""
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.legal_sources.models import LegalSource
+
+    out = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_be_html_no_marker,
+    ):
+        call_command("sync_official_sources", "--country", "BE", "--slug", BE_LOI_SLUG, stdout=out)
+
+    src = LegalSource.objects.get(slug=BE_LOI_SLUG)
+    block = _extract_official_sync_block(src.notes)
+    assert block["classification"] == "fetch_failed"
+    assert block["sha256"] == ""
+    assert block["local_path"] == ""
+    assert "missing required content markers" in block["error"]
+
+
+@pytest.mark.django_db
+def test_be_loi_idempotent_replaces_block(tmp_path, settings):
+    """Re-run BE fetch with a different mock payload → still a single
+    [official_sync] block, sha256 reflects the latest body."""
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.legal_sources.models import LegalSource
+
+    out1 = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_be_loi_html,
+    ):
+        call_command("sync_official_sources", "--country", "BE", "--slug", BE_LOI_SLUG, stdout=out1)
+    src = LegalSource.objects.get(slug=BE_LOI_SLUG)
+    first = _extract_official_sync_block(src.notes)
+
+    def _fake_be_html_v2(url, timeout=30):
+        body = (
+            b"<!DOCTYPE html><html><body>"
+            b"<h1>Loi du 21 novembre 1989 - revision</h1>"
+            b"<p>responsabilit\xc3\xa9, v\xc3\xa9hicules automoteurs, "
+            b"assurance obligatoire, body updated</p>"
+            b"</body></html>"
+        )
+        return (
+            "https://economie.fgov.be/fr/legislation/loi-du-21-novembre-1989",
+            200,
+            "text/html",
+            body,
+        )
+
+    out2 = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_be_html_v2,
+    ):
+        call_command("sync_official_sources", "--country", "BE", "--slug", BE_LOI_SLUG, stdout=out2)
+    src.refresh_from_db()
+    assert src.notes.count(NOTES_MARKER_BEGIN) == 1
+    assert src.notes.count(NOTES_MARKER_END) == 1
+    second = _extract_official_sync_block(src.notes)
+    assert first["sha256"] != second["sha256"]
+
+
+@pytest.mark.django_db
+def test_be_calculator_remains_unavailable_after_fetch(tmp_path, settings):
+    """Fetching the BE Loi 1989 must NOT promote the BE road_accident
+    calculator out of unavailable_requires_legal_validation: there is no
+    approved tabular dataset, only court_indicative_table fonti."""
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.calculators.enums import CalculationStatus, CaseType
+    from apps.cases.services import run_simulation
+
+    out = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_be_loi_html,
+    ):
+        call_command("sync_official_sources", "--country", "BE", "--slug", BE_LOI_SLUG, stdout=out)
+
+    sim = run_simulation(
+        jurisdiction_code="BE-NATIONAL",
+        case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
+        input_data={},
+    )
+    assert sim.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
+    assert sim.estimated_min is None
+    assert sim.estimated_mid is None
+    assert sim.estimated_max is None
+
+
+@pytest.mark.django_db
+def test_be_fetch_failure_does_not_create_legal_layer(tmp_path, settings):
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.compensation.models import (
+        CalculationFormula,
+        CompensationDataset,
+        CompensationTableRow,
+    )
+    from apps.legal_sources.models import LegalReview, LegalSource
+
+    review_before = LegalReview.objects.count()
+    dataset_before = CompensationDataset.objects.count()
+    formula_before = CalculationFormula.objects.count()
+    rows_before = CompensationTableRow.objects.count()
+
+    out = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_failure,
+    ):
+        call_command("sync_official_sources", "--country", "BE", "--slug", BE_LOI_SLUG, stdout=out)
+
+    assert LegalReview.objects.count() == review_before
+    assert CompensationDataset.objects.count() == dataset_before
+    assert CalculationFormula.objects.count() == formula_before
+    assert CompensationTableRow.objects.count() == rows_before
+
+    src = LegalSource.objects.get(slug=BE_LOI_SLUG)
+    block = _extract_official_sync_block(src.notes)
+    assert block["classification"] == "fetch_failed"
+    assert "fetch_failed: ConnectionError" in block["error"]
+    assert block["http_status"] is None
+    assert block["sha256"] == ""
+
+
+@pytest.fixture
+def italy_smoke_be_fetch(db):
+    from datetime import date
+
+    from apps.calculators.enums import CaseType
+    from apps.compensation.models import (
+        CalculationFormula,
+        CompensationDataset,
+        CompensationTableRow,
+        DatasetStatus,
+    )
+    from apps.jurisdictions.models import Country, Currency, Jurisdiction, Language
+    from apps.legal_sources.enums import SourceStatus, SourceType
+    from apps.legal_sources.models import LegalSource
+
+    italy = Country.objects.create(code="IT", code_alpha3="ITA", name="Italia")
+    eur = Currency.objects.create(code="EUR", name="Euro", symbol="€")
+    italian = Language.objects.create(code="it", name="Italiano")
+    juris = Jurisdiction.objects.create(
+        country=italy,
+        code="IT-NATIONAL",
+        name="Italia",
+        legal_system=Jurisdiction.LegalSystem.CIVIL_LAW,
+        default_currency=eur,
+        default_language=italian,
+    )
+    src = LegalSource.objects.create(
+        slug="it-dpr-12-2025-tun-be-fetch",
+        title="D.P.R. 12/2025",
+        country=italy,
+        jurisdiction=juris,
+        language=italian,
+        source_type=SourceType.MINISTRY_DECREE,
+        status=SourceStatus.APPROVED,
+        publication_date=date(2025, 2, 11),
+        effective_date=date(2025, 1, 13),
+    )
+    base_ds = CompensationDataset.objects.create(
+        source=src,
+        jurisdiction=juris,
+        country=italy,
+        case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
+        name="TUN base",
+        version_label="DPR-12-2025",
+        status=DatasetStatus.APPROVED,
+        valid_from=date(2025, 1, 13),
+    )
+    CompensationTableRow.objects.create(
+        dataset=base_ds,
+        row_type="tun_biological_total_amount",
+        age_min=35,
+        age_max=35,
+        disability_min=10,
+        disability_max=10,
+        point_value=Decimal("1"),
+    )
+    moral_ds = CompensationDataset.objects.create(
+        source=src,
+        jurisdiction=juris,
+        country=italy,
+        case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
+        name="TUN moral",
+        version_label="DPR-12-2025-MORAL",
+        status=DatasetStatus.APPROVED,
+        valid_from=date(2025, 1, 13),
+    )
+    for kind, amount in (("min", "26268"), ("mid", "27353"), ("max", "28439")):
+        CompensationTableRow.objects.create(
+            dataset=moral_ds,
+            row_type=f"tun_biological_moral_{kind}_total_amount",
+            age_min=35,
+            age_max=35,
+            disability_min=10,
+            disability_max=10,
+            point_value=Decimal(amount),
+        )
+    CalculationFormula.objects.create(
+        dataset=base_ds,
+        code="italy_art_138_tun_2025_be_fetch_smoke",
+        name="be-fetch-smoke",
+        expression_text="placeholder",
+        source_reference="placeholder",
+        parameters={
+            "engine": "italy_tun_point_value_v1",
+            "requires": ["victim_age", "permanent_disability_percentage"],
+            "row_match": ["victim_age", "permanent_disability_percentage"],
+            "amount_rule": "row_amount_range_direct",
+            "fault_reduction": True,
+            "range_dataset_version_label": "DPR-12-2025-MORAL",
+            "min_row_type": "tun_biological_moral_min_total_amount",
+            "mid_row_type": "tun_biological_moral_mid_total_amount",
+            "max_row_type": "tun_biological_moral_max_total_amount",
+        },
+        status=DatasetStatus.APPROVED,
+    )
+    return {"country": italy}
+
+
+@pytest.mark.django_db
+def test_italy_smoke_unchanged_after_be_fetch(italy_smoke_be_fetch, tmp_path, settings):
+    """Italia 35/10/0 → 26268/27353/28439 EUR resta invariata anche dopo
+    una run di fetch della Loi BE 1989."""
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.calculators.enums import CalculationStatus, CaseType
+    from apps.cases.services import run_simulation
+
+    out = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_be_loi_html,
+    ):
+        call_command("sync_official_sources", "--country", "BE", "--slug", BE_LOI_SLUG, stdout=out)
+
+    sim = run_simulation(
+        jurisdiction_code="IT-NATIONAL",
+        case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
+        input_data={
+            "victim_age": 35,
+            "permanent_disability_percentage": 10,
+            "fault_percentage": 0,
+        },
+    )
+    assert sim.status == CalculationStatus.CALCULATED.value
+    assert sim.estimated_min == Decimal("26268")
+    assert sim.estimated_mid == Decimal("27353")
+    assert sim.estimated_max == Decimal("28439")

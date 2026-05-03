@@ -551,6 +551,97 @@ ulteriore re-fetch deve essere puramente verificatorio.
 
 ---
 
+## 5g. BE Loi 1989 RC Auto — fetch attivo (iter F-official-source-be-loi-1989-rc-auto-fetch-and-trace)
+
+Promosso da `metadata_only` a `fetch` in `config/official_source_registry.json`.
+La Loi du 21 novembre 1989 relative à l'assurance obligatoire de la
+responsabilité en matière de véhicules automoteurs è la cornice normativa
+del modulo BE road accident, ma da sola **non** abilita un calculator:
+le tabelle indennitarie belghe sono giurisprudenziali / private
+(Tableau Indicatif, Schryvers) e restano in scope `human_exception_review`
+finché lo Studio non valida un dataset/engine tabellare.
+
+**URL provati nell'iter (in ordine, con esito reale):**
+
+| # | URL | Stato | Esito |
+|---|-----|-------|-------|
+| 1 | `https://economie.fgov.be/fr/legislation/loi-du-21-novembre-1989` | 200 | **scelto** — HTML 28 155 B con marker `21 NOVEMBRE 1989`, `responsabilité`, `véhicules automoteurs`, `assurance obligatoire` (3 hit ciascuno) |
+| 2 | `https://economie.fgov.be/nl/legislation/wet-van-21-november-1989` | 200 (probe) | fallback registrato — HTML 27 836 B (variante NL) |
+
+La traduzione EN (`/en/legislation/law-21-november-1989`) **non** è
+inclusa nei `fetch_url_alternatives`: i marker richiesti dal registry
+sono in francese, includere l'EN farebbe scattare un falso
+`marker_check_failed`. Resta accessibile per traduzione/consultazione
+ma non è parte del flow di sync ufficiale.
+
+**Snapshot fields:**
+
+| Field | Valore |
+|-------|--------|
+| Slug | `be-loi-1989-11-21-rc-auto` |
+| Source kind | `official_law` |
+| Authority | `spf_economie` |
+| Ingest mode | `fetch` |
+| Official URL | `https://economie.fgov.be/fr/legislation/loi-du-21-novembre-1989` |
+| Final URL | `https://economie.fgov.be/fr/legislation/loi-du-21-novembre-1989` |
+| HTTP status | `200` |
+| Local path | `legal_data/sources/belgium/official_downloaded/be-loi-1989-11-21-rc-auto.html` |
+| Size | 28 155 bytes |
+| sha256 | `f806f105b85fc39871d60cf9be463bfba0747602811e09d1043c7403471d8749` |
+| Content-Type | `text/html; charset=UTF-8` |
+| Classification | `fetch_success` |
+| Fallback attempts | `[]` (primary FR accolto al primo tentativo) |
+| LegalSource status | `needs_review` (NON promosso ad `approved` — la promozione richiede review Studio esplicita) |
+
+**Cosa NON è stato attivato.**
+
+| Layer | Stato post-iter |
+|-------|-----------------|
+| Calculator BE × `road_accident_bodily_injury` | `unavailable_requires_legal_validation` (verificato live + via test mockato) |
+| `CompensationDataset` (BE) | nessuno creato |
+| `CalculationFormula` (BE) | nessuna creata |
+| `CompensationTableRow` (BE) | 0 (totale rimane 36 764 — solo IT TUN 2025) |
+| `LegalReview` (BE) | nessuna creata |
+| Promozione `LegalSource.status` | nessuna (resta `needs_review`) |
+
+**Perché il calculator BE resta unavailable.**
+
+1. **Tableau Indicatif 2020/2024** (`be-tableau-indicatif-2020`,
+   `be-tableau-indicatif-2024`) sono `court_indicative_table`: tabelle
+   suggerite dal collegio Magistrats/Avocats, non normativa primaria
+   binding. Per uso in calcolo serve scelta giuridica esplicita Studio.
+2. **Tableau Indicatif 2024** è inoltre PDF scansionato: lo spike OCR
+   in `legal_data/sources/belgium/tableau_indicatif_2024/ocr_spike/`
+   conferma che l'estrazione automatica richiede QA per riga.
+3. **Schryvers** (`be-tables-schryvers-*`) sono tabelle private (avvocato
+   editoriale): `private_bareme`, `human_exception_review` permanente.
+4. **Engine BE** non esiste ancora (`apps/calculators/engines/`): la
+   funzione `run_simulation` smista BE × road accident a
+   `unavailable_requires_legal_validation` di default.
+5. **Dataset BE** non esiste: `CompensationDataset.objects.filter(country__code='BE')` → 0.
+
+La Loi 1989 da sola dice *che la RC auto è obbligatoria* e fissa il
+quadro responsabilità; il *quanto* indennitario lo determinano i
+referenti giurisprudenziali (TI) e la prassi assicurativa, che lo Studio
+deve validare prima di trasformarli in righe `CompensationTableRow`.
+
+**Stato pipeline ufficiali (post-iter BE):**
+
+| Country | Source slug | Mode | Classification | sha256 | Size | Calculator |
+|---------|-------------|------|----------------|--------|------|------------|
+| IT | `it-dpr-12-2025-tun-danno-biologico` | verify_existing | crosscheck_success | `3ecd8597…` | 2 820 562 B | calculated (35/10/0 = 26268/27353/28439) |
+| MA | `ma-code-famille-moudawana-fr-pdf` | fetch | fetch_success | `41db4ab3…` | 489 071 B | unavailable |
+| TN | `tn-code-statut-personnel-livre-ix-succession` | fetch | fetch_success | `ab807896…` | 36 183 B | unavailable |
+| TN | `tn-code-dip-loi-98-97` | fetch | fetch_success | `d379a070…` | 15 424 B | unavailable |
+| EU | `eu-regulation-650-2012-successions` | fetch | fetch_success | `24732567…` (volatile) | 581 041 B | n/a (quadro) |
+| BE | `be-loi-1989-11-21-rc-auto` | fetch | fetch_success | `f806f105…` | 28 155 B | unavailable |
+
+Sei fonti ufficiali ora con sha256 tracciato. La Loi BE chiude il primo
+strato (cornice normativa primaria) per BE road accident; lo strato
+tabellare resta `human_exception_review`.
+
+---
+
 ## 6. Riferimenti incrociati
 
 - Pacchetto pre-esistente: `download_international_legal_sources` in

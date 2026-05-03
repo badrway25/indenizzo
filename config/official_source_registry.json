@@ -149,17 +149,27 @@
       "jurisdiction": "BE-NATIONAL",
       "case_type": "road_accident_bodily_injury",
       "source_slug": "be-loi-1989-11-21-rc-auto",
-      "title": "Loi du 21 novembre 1989 relative à l'assurance obligatoire RC véhicules",
-      "official_url": "https://economie.fgov.be/en/legislation/law-21-november-1989",
+      "title": "Loi du 21 novembre 1989 relative à l'assurance obligatoire de la responsabilité en matière de véhicules automoteurs",
+      "official_url": "https://economie.fgov.be/fr/legislation/loi-du-21-novembre-1989",
       "source_kind": "official_law",
-      "authority": "spf",
+      "authority": "spf_economie",
       "machine_readable": true,
       "expected_format": "html",
       "can_auto_ingest": true,
-      "auto_ingest_reason": "SPF Économie pubblica la legge in HTML stabile. Metadata-only — calcolatore non attivo.",
+      "auto_ingest_reason": "SPF Économie (FPS Economy) pubblica la legge in HTML stabile a un URL ELI-like in tre lingue ufficiali (FR/NL/DE) + EN traduzione di cortesia. Promosso da metadata_only a fetch nell'iter F-official-source-be-loi-1989-rc-auto-fetch-and-trace dopo verifica che l'endpoint FR risponde 200 con body completo (28 155 B) sotto User-Agent browser-like e contiene tutti i marker dichiarati. Nessun importo derivato — la fonte è quadro normativo per BE road accident, le tabelle giurisprudenziali (Tableau Indicatif) restano `human_exception_review`. Calculator BE road_accident resta `unavailable_requires_legal_validation` finché lo Studio non valida un dataset/engine tabellare.",
       "human_exception_review_required": false,
       "why_human_exception_review_if_any": "",
-      "ingest_mode": "metadata_only"
+      "ingest_mode": "fetch",
+      "fetch_url_alternatives": [
+        "https://economie.fgov.be/nl/legislation/wet-van-21-november-1989"
+      ],
+      "content_must_contain": [
+        "21 novembre 1989",
+        "responsabilité",
+        "véhicules automoteurs",
+        "assurance obligatoire"
+      ],
+      "notes": "L'URL FR è la versione canonicamente citabile dello Studio (lingua di lavoro interna). Il fallback NL serve per resilienza se SPF Économie esegue manutenzione mirata sul nodo FR. La traduzione EN (`/en/legislation/law-21-november-1989`) NON è inclusa nei fallback perché i marker richiesti dal registry sono in francese — usarla come fallback farebbe scattare un falso `marker_check_failed`. Il calculator BE road_accident resta `unavailable_requires_legal_validation`: ci sono tabelle giurisprudenziali indicative (Tableau Indicatif 2020/2024, Schryvers) ma sono `court_indicative_table` / `human_exception_review`, non normativa primaria, alcune in PDF scansionato che richiede OCR (vedi spike `legal_data/sources/belgium/tableau_indicatif_2024/ocr_spike/`)."
     },
     {
       "country": "BE",
