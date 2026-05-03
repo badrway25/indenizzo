@@ -386,3 +386,152 @@ def test_italy_smoke_unchanged_after_ma_fetch(italy_smoke_ma_fetch, tmp_path, se
     assert sim.estimated_min == Decimal("26268")
     assert sim.estimated_mid == Decimal("27353")
     assert sim.estimated_max == Decimal("28439")
+
+
+# ---------------------------------------------------------------------------
+# 7 — TN CSP Livre IX fetch (post F-official-source-tn-csp-livre-ix-fetch-and-trace)
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_tn_csp_fetch_uses_real_registry_in_fetch_mode(tmp_path, settings):
+    """Dopo l'iter TN, il registry committato ha già ingest_mode='fetch'
+    per `tn-code-statut-personnel-livre-ix-succession`. Il command non
+    richiede più override."""
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.legal_sources.models import LegalSource
+
+    out = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_html,
+    ):
+        call_command("sync_official_sources", "--country", "TN", "--slug", TN_SLUG, stdout=out)
+
+    src = LegalSource.objects.get(slug=TN_SLUG)
+    block = _extract_official_sync_block(src.notes)
+    assert block["classification"] == "fetch_success"
+    assert block["http_status"] == 200
+    assert block["ingest_mode"] == "fetch"
+    assert block["local_path"].endswith(".html")
+    assert block["no_calculator_activation"] is True
+
+
+@pytest.mark.django_db
+def test_tn_calculator_remains_unavailable_after_fetch(tmp_path, settings):
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.calculators.enums import CalculationStatus, CaseType
+    from apps.cases.services import run_simulation
+
+    out = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_html,
+    ):
+        call_command("sync_official_sources", "--country", "TN", "--slug", TN_SLUG, stdout=out)
+
+    sim = run_simulation(
+        jurisdiction_code="TN-NATIONAL",
+        case_type=CaseType.INTERNATIONAL_INHERITANCE.value,
+        input_data={},
+    )
+    assert sim.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
+    assert sim.estimated_min is None
+    assert sim.estimated_mid is None
+    assert sim.estimated_max is None
+
+
+@pytest.mark.django_db
+def test_tn_html_extension_classified_as_html(tmp_path, settings):
+    """Il classificatore di estensione, davanti a Content-Type=text/html,
+    salva con `.html` (non `.bin` né `.pdf`) anche se il registry dichiara
+    expected_format=html (registry hint coerente con header)."""
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.legal_sources.models import LegalSource
+
+    out = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_html,
+    ):
+        call_command("sync_official_sources", "--country", "TN", "--slug", TN_SLUG, stdout=out)
+
+    src = LegalSource.objects.get(slug=TN_SLUG)
+    block = _extract_official_sync_block(src.notes)
+    assert block["local_path"].endswith(".html")
+    repo_local = Path(settings.BASE_DIR) / block["local_path"]
+    assert repo_local.exists()
+    assert b"livre IX" in repo_local.read_bytes()
+
+
+@pytest.mark.django_db
+def test_tn_fetch_idempotent_replaces_block(tmp_path, settings):
+    """Re-run con payload diverso → un solo blocco, sha256 diverso."""
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.legal_sources.models import LegalSource
+
+    out1 = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_html,
+    ):
+        call_command("sync_official_sources", "--country", "TN", "--slug", TN_SLUG, stdout=out1)
+    src = LegalSource.objects.get(slug=TN_SLUG)
+    first = _extract_official_sync_block(src.notes)
+
+    def _fake_fetch_html_v2(url, timeout=30):
+        body = b"<html><body><h1>CSP livre IX v2</h1><p>updated</p></body></html>"
+        return (
+            "https://www.jurisitetunisie.com/tunisie/codes/csp/Csp1100.htm",
+            200,
+            "text/html",
+            body,
+        )
+
+    out2 = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_html_v2,
+    ):
+        call_command("sync_official_sources", "--country", "TN", "--slug", TN_SLUG, stdout=out2)
+    src.refresh_from_db()
+    assert src.notes.count(NOTES_MARKER_BEGIN) == 1
+    assert src.notes.count(NOTES_MARKER_END) == 1
+    second = _extract_official_sync_block(src.notes)
+    assert first["sha256"] != second["sha256"]
+
+
+@pytest.mark.django_db
+def test_tn_fetch_failure_does_not_create_legal_layer(tmp_path, settings):
+    settings.MEDIA_ROOT = str(tmp_path / "media")
+    from apps.compensation.models import (
+        CalculationFormula,
+        CompensationDataset,
+        CompensationTableRow,
+    )
+    from apps.legal_sources.models import LegalReview, LegalSource
+
+    review_before = LegalReview.objects.count()
+    dataset_before = CompensationDataset.objects.count()
+    formula_before = CalculationFormula.objects.count()
+    rows_before = CompensationTableRow.objects.count()
+
+    out = StringIO()
+    with patch(
+        "apps.legal_sources.management.commands.sync_official_sources._fetch",
+        side_effect=_fake_fetch_failure,
+    ):
+        call_command("sync_official_sources", "--country", "TN", "--slug", TN_SLUG, stdout=out)
+
+    assert LegalReview.objects.count() == review_before
+    assert CompensationDataset.objects.count() == dataset_before
+    assert CalculationFormula.objects.count() == formula_before
+    assert CompensationTableRow.objects.count() == rows_before
+
+    src = LegalSource.objects.get(slug=TN_SLUG)
+    block = _extract_official_sync_block(src.notes)
+    assert block["classification"] == "fetch_failed"
+    assert block["error"].startswith("fetch_failed: ConnectionError")
+    assert block["http_status"] is None
+    assert block["sha256"] == ""
+    assert block["local_path"] == ""

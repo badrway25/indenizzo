@@ -181,6 +181,79 @@ LegalReview → Dataset → Formula → ApprovedRows.
 
 ---
 
+## 5c. TN CSP Livre IX — fetch attivo (iter F-official-source-tn-csp-livre-ix-fetch-and-trace)
+
+Promosso da `metadata_only` a `fetch` in `config/official_source_registry.json`.
+
+| Field | Valore |
+|-------|--------|
+| Slug | `tn-code-statut-personnel-livre-ix-succession` |
+| Source kind | `official_law` |
+| Authority | `ministry` (mirror via jurisitetunisie.com) |
+| Official URL | `https://www.jurisitetunisie.com/tunisie/codes/csp/Csp1100.htm` |
+| Final URL | `https://www.jurisitetunisie.com/tunisie/codes/csp/Csp1100.htm` |
+| HTTP status | `200` |
+| Local path | `legal_data/sources/tunisia/official_downloaded/tn-code-statut-personnel-livre-ix-succession.html` |
+| Size | 36 183 bytes |
+| sha256 | `ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd` |
+| Content-Type | `text/html` (verified — `<!DOCTYPE html>...<html lang="fr">`) |
+| Classification | `fetch_success` |
+| LegalSource status | `needs_review` (NON promosso ad `approved`) |
+
+**Cosa NON è stato attivato:**
+
+- Nessun `LegalReview` creato.
+- Nessun `CompensationDataset` creato.
+- Nessun `CalculationFormula` creato.
+- Nessun `CompensationTableRow` creato.
+- Calculator TN × `international_inheritance` resta
+  `unavailable_requires_legal_validation` — verificato live via
+  `scripts/live_simulation_matrix.py` e via test
+  `test_tn_calculator_remains_unavailable_after_fetch`.
+- MA Moudawana fetch precedente resta intatto (1 solo blocco
+  `[official_sync] BEGIN`, classification `fetch_success`).
+- Italia 35/10/0 invariato a 26 268 / 27 353 / 28 439 EUR.
+
+**Cosa serve per arrivare a un engine TN inheritance reale:**
+
+1. **Mapping articoli CSP Livre IX** (artt. 85-152 sui rapporti
+   ereditari): identificare deterministicamente coniuge / figli /
+   ascendenti / collaterali e le rispettive quote (asaba, fard,
+   radd). Richiede review giurista madrelingua arabo/francese
+   esperto in diritto musulmano della famiglia tunisino.
+2. **Loi n°98-97 — Code de droit international privé tunisino**:
+   regole di conflitto di leggi per successioni transfrontaliere
+   (art. 53-58 CDIP). La fonte è già nel pacchetto download
+   `legal_data/sources/tunisia/downloaded/tn-code-dip-loi-98-97.html`,
+   ma non è ancora syncata via official registry — candidato per
+   prossima iter.
+3. **Reg. UE 650/2012** (già in registry, metadata-only): per i
+   casi misti TN-EU, applicabile come quadro normativo per la
+   scelta di legge. Non sufficiente da solo per produrre quote.
+4. **Cross-check JORT 1956 originale** (ancora
+   `manual_download_required` perché `pist.tn` è irraggiungibile):
+   serve come fonte primaria oltre al mirror jurisitetunisie.
+   Allo Studio l'attach manuale via Django admin.
+5. **Dataset structured + formula
+   `inheritance_share_calculator_tn`**: solo dopo i 4 step
+   precedenti, e con smoke test deterministici su 5+
+   configurazioni-tipo (coniuge + figli, coniuge + genitori,
+   ascendenti soli, collaterali, riserva di legge), si può
+   esporre il calculator al pubblico.
+
+**Stato pipeline ufficiali per inheritance MA + TN:**
+
+| Country | Source slug | Fetch | sha256 | Calculator |
+|---------|-------------|-------|--------|------------|
+| MA | `ma-code-famille-moudawana-fr-pdf` | ✅ PDF 489 071 B | `41db4ab3…` | unavailable |
+| TN | `tn-code-statut-personnel-livre-ix-succession` | ✅ HTML 36 183 B | `ab807896…` | unavailable |
+| EU | `eu-regulation-650-2012-successions` | metadata_only | — | n/a (quadro) |
+
+Le tre fonti coprono il 70% del materiale normativo richiesto per i
+calcolatori MA + TN. Gli step 1-4 sopra restano `human_exception_review`.
+
+---
+
 ## 6. Riferimenti incrociati
 
 - Pacchetto pre-esistente: `download_international_legal_sources` in

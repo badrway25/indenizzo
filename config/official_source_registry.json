@@ -84,10 +84,11 @@
       "machine_readable": true,
       "expected_format": "html",
       "can_auto_ingest": true,
-      "auto_ingest_reason": "HTML mirror stabile del Codice statuto personale tunisino, articoli successione direttamente referenziabili.",
+      "auto_ingest_reason": "HTML mirror stabile del Codice statuto personale tunisino, articoli successione direttamente referenziabili. Fetch attivo dall'iter F-official-source-tn-csp-livre-ix-fetch-and-trace — calcolatore successioni resta comunque human_exception_review.",
       "human_exception_review_required": false,
       "why_human_exception_review_if_any": "",
-      "ingest_mode": "metadata_only"
+      "ingest_mode": "fetch",
+      "notes": "jurisitetunisie.com è mirror, non server ministeriale tunisino diretto. Per uso degli articoli nel calcolo serve attribuzione Studio + cross-check con JORT 1956 originale (che resta manual_download_required, vedi download_international_legal_sources)."
     },
     {
       "country": "FR",
