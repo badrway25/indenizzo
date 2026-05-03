@@ -122,6 +122,65 @@ nel pipeline auto-ingest senza firma Studio:
 
 ---
 
+## 5b. MA Moudawana — fetch attivo (iter F-official-source-ma-moudawana-fetch-and-trace)
+
+Promosso da `metadata_only` a `fetch` in `config/official_source_registry.json`.
+
+| Field | Valore |
+|-------|--------|
+| Slug | `ma-code-famille-moudawana-fr-pdf` |
+| Source kind | `official_law` |
+| Authority | `ministry` (mirror via legal-tools.org) |
+| Official URL | `https://www.legal-tools.org/doc/0e057b/pdf/` |
+| Final URL | `https://www.legal-tools.org/doc/0e057b/pdf/` |
+| HTTP status | `200` |
+| Local path | `legal_data/sources/morocco/official_downloaded/ma-code-famille-moudawana-fr-pdf.pdf` |
+| Size | 489 071 bytes |
+| sha256 | `41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96` |
+| File magic | `%PDF` (verified) |
+| Classification | `fetch_success` |
+| LegalSource status | `needs_review` (NON promosso ad `approved`) |
+
+**Cosa NON è stato attivato:**
+
+- Nessun `LegalReview` creato.
+- Nessun `CompensationDataset` creato.
+- Nessun `CalculationFormula` creato.
+- Nessun `CompensationTableRow` creato.
+- Calculator MA × `international_inheritance` resta
+  `unavailable_requires_legal_validation` — verificato live via
+  `scripts/live_simulation_matrix.py` e via test
+  `test_ma_calculator_remains_unavailable_after_fetch`.
+- Italia 35/10/0 invariato a 26 268 / 27 353 / 28 439 EUR.
+
+**Cosa serve per arrivare a un engine MA inheritance reale:**
+
+1. **Estrazione tabellare deterministica** del Livre III della
+   Moudawana (articoli successione 321-396). Il PDF non è
+   machine-readable nativo: serve OCR o text-layer extraction +
+   parsing manuale.
+2. **Mapping articoli → quote** (asaba / dhawu al-furud /
+   ʿawl / radd) con tabelle di riferimento per ogni configurazione
+   familiare. Richiede review giurista madrelingua arabo + esperto
+   diritto musulmano della famiglia.
+3. **Conflitti di legge transfrontalieri** — applicabilità del
+   Reg UE 650/2012 ai casi MA-EU, scelta di legge applicabile,
+   competenza giurisdizionale. Richiede `human_exception_review`.
+4. **Dataset structured + formula `inheritance_share_calculator`**
+   approvati. Solo dopo questi 3 step si può rimuovere la
+   classificazione `human_exception_review_required` per il
+   *calcolatore* (la fonte resta auto-syncable).
+5. **Smoke test deterministici** su almeno 5 configurazioni-tipo
+   (coniuge + figli, coniuge + genitori, ecc.) prima di esporre
+   il calculator al pubblico.
+
+In sintesi: il fetch ufficiale è il **primo gradino**, non
+l'ultimo. La fonte è ora tracciabile, hashata e versionabile, ma
+il suo uso in un calcolo richiede ancora la pipeline classica
+LegalReview → Dataset → Formula → ApprovedRows.
+
+---
+
 ## 6. Riferimenti incrociati
 
 - Pacchetto pre-esistente: `download_international_legal_sources` in

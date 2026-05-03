@@ -104,6 +104,8 @@ class SyncResult:
     note_appended: bool = False
     error: str = ""
     skipped_reason: str = ""
+    classification: str = ""
+    fetched_at: str = ""
 
 
 @dataclass
@@ -236,6 +238,7 @@ def build_notes_block(result: SyncResult) -> str:
     body = json.dumps(
         {
             "synced_at": result.synced_at,
+            "fetched_at": result.fetched_at,
             "registry_slug": result.slug,
             "official_url": result.official_url,
             "final_url": result.final_url,
@@ -244,9 +247,12 @@ def build_notes_block(result: SyncResult) -> str:
             "size_bytes": result.size_bytes,
             "local_path": result.local_path,
             "ingest_mode": result.ingest_mode,
+            "classification": result.classification,
             "source_kind": result.source_kind,
             "authority": result.authority,
             "can_auto_ingest": result.can_auto_ingest,
+            "no_calculator_activation": True,
+            "error": result.error,
         },
         ensure_ascii=False,
         indent=2,
@@ -343,6 +349,10 @@ class Command(BaseCommand):
             help="Sincronizza solo l'entry con questo source_slug.",
         )
         parser.add_argument(
+            "--country",
+            help="Filtra entry per ISO country code (es. MA, FR, IT, EU).",
+        )
+        parser.add_argument(
             "--metadata-only",
             action="store_true",
             help="Skip HTTP GET. Annota solo la presenza nel registry + manifest.",
@@ -361,6 +371,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         registry_path = Path(options["registry"]).resolve()
         slug_filter: str | None = options.get("slug")
+        country_filter: str | None = options.get("country")
         metadata_only: bool = bool(options.get("metadata_only"))
         dry_run: bool = bool(options.get("dry_run"))
         include_review: bool = bool(options.get("include_review_required"))
@@ -388,6 +399,8 @@ class Command(BaseCommand):
         candidates = []
         for entry in payload["entries"]:
             if slug_filter and entry["source_slug"] != slug_filter:
+                continue
+            if country_filter and entry["country"].upper() != country_filter.upper():
                 continue
             if not entry["can_auto_ingest"] and not include_review:
                 continue
@@ -460,16 +473,19 @@ class Command(BaseCommand):
 
         # Decision tree:
         # - human_exception_review_required → record but never download
-        # - ingest_mode == "manual_attach" → record but never download
+        # - ingest_mode == "manual_attach"/"human_exception_only" → record only
         # - metadata_only flag → skip HTTP, just write notes
-        # - else → fetch
+        # - ingest_mode == "metadata_only" → skip HTTP, just write notes
+        # - else (ingest_mode == "fetch" or absent and can_auto_ingest=true) → fetch
         if result.human_exception_review_required or result.ingest_mode in {
             "manual_attach",
             "human_exception_only",
         }:
             result.skipped_reason = "human_exception_review or manual_attach"
+            result.classification = "human_exception_only"
         elif metadata_only or result.ingest_mode == "metadata_only":
             result.skipped_reason = "metadata_only"
+            result.classification = "metadata_only"
 
         # Try HTTP only if not skipped.
         payload_bytes: bytes = b""
@@ -482,8 +498,11 @@ class Command(BaseCommand):
                 result.sha256 = compute_bytes_sha256(payload_bytes)
                 result.size_bytes = len(payload_bytes)
                 ext = self._extension_for(content_type, result.official_url, ext)
+                result.fetched_at = datetime.now(UTC).isoformat()
+                result.classification = "fetch_success"
             except requests.RequestException as exc:
                 result.error = f"fetch_failed: {exc.__class__.__name__}: {exc}"
+                result.classification = "fetch_failed"
 
         # Persist file when we have payload.
         if payload_bytes and not dry_run and not result.error:

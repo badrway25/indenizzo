@@ -66,10 +66,10 @@
       "machine_readable": false,
       "expected_format": "pdf",
       "can_auto_ingest": true,
-      "auto_ingest_reason": "PDF accessibile via legal-tools.org (mirror affidabile). Sha256 calcolabile. Metadata-only — calcolatore successioni resta human_exception_review.",
+      "auto_ingest_reason": "PDF accessibile via legal-tools.org (mirror affidabile). Sha256 calcolabile. Fetch attivo dall'iter F-official-source-ma-moudawana-fetch-and-trace — calcolatore successioni resta comunque human_exception_review.",
       "human_exception_review_required": false,
       "why_human_exception_review_if_any": "",
-      "ingest_mode": "metadata_only",
+      "ingest_mode": "fetch",
       "notes": "legal-tools.org è mirror, non server ministeriale ufficiale marocchino. Per uso del PDF nel calcolo serve comunque attribuzione Studio."
     },
     {
