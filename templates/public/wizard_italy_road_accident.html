@@ -19,6 +19,8 @@
     {% blocktranslate %}This wizard is informative. It does not replace a medical-legal report or a lawyer's opinion. It does not collect documents.{% endblocktranslate %}
   </div>
 
+  {% include "partials/_module_status_card.html" with msc_does=_("Produces an indicative compensation range from the approved Tabella Unica Nazionale 2025 (D.P.R. 12/2025) for road-accident bodily injury under Italian law.") msc_does_not=_("It does not collect medical or financial documents, does not constitute legal advice, does not guarantee any outcome, and does not replace a medical-legal report.") msc_next_step=_("Submit to view the indicative range, download the PDF report, then request a legal review from the Studio if you want to act on it.") msc_status_label=_("Calculator available — TUN 2025") msc_status_tone="ok" %}
+
   <form method="post" novalidate class="mt-10 bg-white border border-stone2-200 rounded-3xl shadow-card p-6 sm:p-8 space-y-6">
     {% csrf_token %}
 

@@ -44,6 +44,31 @@
     </div>
   {% endif %}
 
+  {# -------- Calculation basis (premium UX, post-pass-official-source-automation) -------- #}
+  {% if has_estimate %}
+    <div class="mt-8 rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7">
+      <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Calculation basis" %}</p>
+      <h3 class="mt-2 font-serif text-xl text-ink-950">{% translate "How to read this range" %}</h3>
+      <dl class="mt-4 grid sm:grid-cols-3 gap-4 text-sm">
+        <div>
+          <dt class="text-[11px] uppercase tracking-[0.14em] text-ink-800 font-semibold">{% translate "Min" %}</dt>
+          <dd class="mt-1 text-ink-900 leading-relaxed">{% blocktranslate %}Lower bound of the indicative range based on the approved dataset and the conservative interpretation of fault and disability.{% endblocktranslate %}</dd>
+        </div>
+        <div>
+          <dt class="text-[11px] uppercase tracking-[0.14em] text-ink-800 font-semibold">{% translate "Mid" %}</dt>
+          <dd class="mt-1 text-ink-900 leading-relaxed">{% blocktranslate %}Central reference value used as the working anchor in negotiations or judicial reasoning.{% endblocktranslate %}</dd>
+        </div>
+        <div>
+          <dt class="text-[11px] uppercase tracking-[0.14em] text-ink-800 font-semibold">{% translate "Max" %}</dt>
+          <dd class="mt-1 text-ink-900 leading-relaxed">{% blocktranslate %}Upper bound of the indicative range based on the approved dataset and the most favourable interpretation supported by sources.{% endblocktranslate %}</dd>
+        </div>
+      </dl>
+      <p class="mt-4 text-sm text-ink-800 leading-relaxed">
+        {% blocktranslate %}Amounts are derived from validated legal sources cited below. They are indicative: the actual valuation depends on documents, expert reports, applicable law, competent jurisdiction and judicial orientation. This page is not legal advice and does not guarantee any outcome.{% endblocktranslate %}
+      </p>
+    </div>
+  {% endif %}
+
   {# -------- Warnings -------- #}
   {% if warnings %}
     <div class="mt-8">

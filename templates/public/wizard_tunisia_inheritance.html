@@ -19,6 +19,8 @@
     {% blocktranslate %}This module is a scaffold. The Tunisian calculator engine is registered but the legal sources (Code du statut personnel Livre IX, Code des obligations et des contrats, Code de droit international privé) are still under Studio review. The wizard will return "requires legal validation" rather than computed shares.{% endblocktranslate %}
   </div>
 
+  {% include "partials/_module_status_card.html" with msc_does=_("Collects qualitative information about heirs and assets so the Studio can review the case under Tunisian inheritance law and EU Regulation 650/2012.") msc_does_not=_("It does not compute inheritance shares or amounts. The Tunisian engine is in scaffold mode — no automatic calculation is performed.") msc_next_step=_("Submit your inputs — a lawyer reviews the case manually and proposes the next step (applicable law, competent jurisdiction).") msc_status_label=_("Legal sources under review") msc_status_tone="warn" %}
+
   <form method="post" novalidate class="mt-10 bg-white border border-stone2-200 rounded-3xl shadow-card p-6 sm:p-8 space-y-6">
     {% csrf_token %}
     {% include "public/_inheritance_wizard_fields.html" %}
