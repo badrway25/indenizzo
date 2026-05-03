@@ -1,0 +1,9 @@
+area,page_url,language,review_item,current_status,reviewer,status,notes,reviewed_at
+home,/,it,EXAMPLE — Hero copy "Simulazioni indicative" — wording legale,delivered_pass1,Avv. Esempio,approved,EXAMPLE non vincolante: copy autorevole confermato,2026-05-03
+country_landing,/countries/italy/,it,EXAMPLE — Riferimento TUN 2025 corretto,approved_dataset,Avv. Esempio,approved,EXAMPLE non vincolante: dataset gia validato in pass dedicato,2026-05-03
+wizard_italy,/wizard/it/road-accident/,it,EXAMPLE — Banner "Important. This wizard is informative",delivered_pass1,Avv. Esempio,change_requested,EXAMPLE non vincolante: aggiungere riga "non costituisce parere medico-legale" sotto il banner,2026-05-03
+country_landing,/countries/france/,fr,EXAMPLE — Disclaimer "no automatic estimate",delivered_pass1,Avv. Esempio,change_requested,EXAMPLE non vincolante: rendere piu esplicito che la stima sara emessa solo dopo validazione fonti FR,2026-05-03
+disclaimer,/disclaimer/,it,EXAMPLE — Disclaimer completo,needs_studio_validation,Avv. Esempio,rejected,EXAMPLE non vincolante: testo da riscrivere ex novo dallo Studio prima di esporlo a clienti,2026-05-03
+pexels,/countries/morocco/,fr,EXAMPLE — Country image Morocco soggetto coerente,delivered_pass4,Avv. Esempio,change_requested,EXAMPLE non vincolante: foto attuale generica - cercare immagine medina/architettura piu identitaria,2026-05-03
+translations,/ar/,ar,EXAMPLE — Lessico giuridico AR review native speaker,needs_native_review,Avv. Esempio,not_applicable,EXAMPLE non vincolante: la review nativa AR sara fatta in iter dedicato successivo,2026-05-03
+contact,/contact/thank-you/,it,EXAMPLE — Pagina thank-you copy,delivered_pass1,Avv. Esempio,approved,EXAMPLE non vincolante: copy ricevuta confermata,2026-05-03

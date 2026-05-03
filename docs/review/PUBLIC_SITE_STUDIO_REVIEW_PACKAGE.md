@@ -319,6 +319,61 @@ storico, vedi pass2 doc §5).
 
 ---
 
+## 8b. Come importare e validare il feedback Studio
+
+Quando lo Studio rimanda il CSV compilato, **non** sovrascrivere il
+template: salvarlo come copia datata accanto al template, ad esempio:
+
+```
+legal_data/review/public_site_review_checklist_completed_YYYYMMDD.csv
+```
+
+Poi eseguire il validatore:
+
+```powershell
+.venv\Scripts\python.exe scripts\parse_public_site_review_feedback.py `
+    --csv legal_data\review\public_site_review_checklist_completed_YYYYMMDD.csv
+```
+
+Lo script (`scripts/parse_public_site_review_feedback.py`,
+iter F-product-studio-review-feedback-intake) è **read-only**:
+
+- valida l'header esatto e ogni riga (status ammessi; reviewer +
+  reviewed_at richiesti se status ≠ pending; notes richieste se
+  status ∈ {change_requested, rejected}; language ∈
+  {it, fr, en, ar, all});
+- aggrega counts per `status` e per `area`;
+- mappa le righe alle 5 NO-GO (vedi §7) e segnala quelle ancora
+  aperte;
+- produce **`docs/review/PUBLIC_SITE_STUDIO_REVIEW_FEEDBACK_SUMMARY.md`**
+  con executive summary, counts, listati approved /
+  change_requested / rejected / pending, NO-GO aperti, e una sezione
+  "Task tecnici proposti" che è **una proposta — non viene applicata**;
+- exit code 0 se schema OK, 1 se invalido (le violazioni vengono
+  stampate su stderr e ricapitolate nella §10 del summary).
+
+Esempio di CSV già compilato (non vincolante, segnato come
+"EXAMPLE non vincolante" su ogni riga) è committato in:
+
+```
+docs/review/public_site_review_checklist_example_filled.csv
+```
+
+Override del path summary (utile se serve un file di lavoro separato
+per ogni iterazione):
+
+```powershell
+.venv\Scripts\python.exe scripts\parse_public_site_review_feedback.py `
+    --csv legal_data\review\public_site_review_checklist_completed_20260510.csv `
+    --summary docs\review\PUBLIC_SITE_STUDIO_REVIEW_FEEDBACK_SUMMARY_20260510.md
+```
+
+Le proposte tecniche generate dalla §8 del summary vanno **discusse
+con lo Studio e poi scheduledd come iter dedicati**: niente template,
+niente engine, niente dataset toccati come effetto del solo parse.
+
+---
+
 ## 9. QA automatica del package
 
 Script: `scripts/qa_public_site_review_package.py`.

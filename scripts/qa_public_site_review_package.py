@@ -43,6 +43,13 @@ PASS1_TESTS = REPO_ROOT / "apps" / "core" / "test_public_site_qa_polish_pass1.py
 PASS2_TESTS = REPO_ROOT / "apps" / "core" / "test_public_site_qa_polish_pass2.py"
 PEXELS_MANIFEST = REPO_ROOT / "media" / "pexels" / "pexels_manifest.json"
 
+# F-product-studio-review-feedback-intake artefacts.
+FEEDBACK_PARSER = REPO_ROOT / "scripts" / "parse_public_site_review_feedback.py"
+FEEDBACK_TESTS = REPO_ROOT / "apps" / "core" / "test_studio_review_feedback_intake.py"
+EXAMPLE_FILLED_CSV = (
+    REPO_ROOT / "docs" / "review" / "public_site_review_checklist_example_filled.csv"
+)
+
 
 def _check_doc(violations: list[str]) -> None:
     if not DOC_PATH.exists():
@@ -99,6 +106,9 @@ def _check_supporting_files(violations: list[str]) -> None:
         (PASS1_TESTS, "pass1 tests"),
         (PASS2_TESTS, "pass2 tests"),
         (PEXELS_MANIFEST, "Pexels manifest"),
+        (FEEDBACK_PARSER, "feedback parser"),
+        (FEEDBACK_TESTS, "feedback intake tests"),
+        (EXAMPLE_FILLED_CSV, "example filled CSV"),
     ]:
         if not path.exists():
             violations.append(f"missing {label}: {path}")
@@ -119,6 +129,18 @@ def main() -> int:
     print(
         "[qa-review-package] pexels manifest:",
         "OK" if PEXELS_MANIFEST.exists() else "MISSING",
+    )
+    print(
+        "[qa-review-package] feedback parser:",
+        "OK" if FEEDBACK_PARSER.exists() else "MISSING",
+    )
+    print(
+        "[qa-review-package] feedback intake tests:",
+        "OK" if FEEDBACK_TESTS.exists() else "MISSING",
+    )
+    print(
+        "[qa-review-package] example filled CSV:",
+        "OK" if EXAMPLE_FILLED_CSV.exists() else "MISSING",
     )
 
     if violations:
