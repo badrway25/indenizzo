@@ -15,7 +15,7 @@
           extend: {
             colors: {
               ink:    { 950: '#07172f', 900: '#0c2046', 800: '#172e62', 700: '#243f7a' },
-              gold:   { 600: '#9a6b21', 500: '#b88336', 400: '#cba36b' },
+              gold:   { 700: '#6e4d18', 600: '#9a6b21', 500: '#b88336', 400: '#cba36b' },
               sand:   { 50:  '#faf6ef', 100: '#f3ece0' },
               stone2: { 100: '#ecebe7', 200: '#d6d3cc', 500: '#7a786f' },
               ok:     { 600: '#246b3a' }
@@ -41,10 +41,21 @@
       h1, h2, h3 { font-family: 'Cormorant Garamond', Georgia, serif; letter-spacing: -.01em; }
       [dir="rtl"] body { font-family: 'Inter', 'Tajawal', system-ui, sans-serif; }
       /* Focus ring uniforme per accessibilità. */
-      a:focus-visible, button:focus-visible {
+      a:focus-visible, button:focus-visible,
+      input:focus-visible, select:focus-visible, textarea:focus-visible,
+      [role="button"]:focus-visible, summary:focus-visible {
         outline: 2px solid #b88336;
         outline-offset: 3px;
         border-radius: 4px;
+      }
+      /* Honor user "reduce motion" setting. */
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
       }
     </style>
 

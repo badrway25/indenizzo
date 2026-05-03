@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% translate "Countries" %} — {{ SITE_NAME }}{% endblock %}
+{% block title %}{% translate "Countries we cover" %} — {{ SITE_NAME }}{% endblock %}
+
+{% block meta_description %}{% blocktranslate %}MVP coverage map for the Badrane simulator: Italy is operative on TUN 2025; France, Belgium, Morocco and Tunisia are under legal source review. No automatic estimate where validation is incomplete.{% endblocktranslate %}{% endblock %}
 
 {% block content %}
   {% include "partials/_premium_hero_image.html" %}
@@ -18,7 +20,7 @@
         <article class="bg-white border border-stone2-200 rounded-3xl overflow-hidden shadow-card flex flex-col hover:border-gold-400/60 hover:shadow-lg transition">
           {% if country.image %}
             <div class="relative h-40 lg:h-44 overflow-hidden">
-              <img src="{{ country.image.src }}" alt="{{ country.image.alt }}" class="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async">
+              <img src="{{ country.image.src }}" alt="{{ country.image.alt }}" width="800" height="450" class="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async">
               <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-ink-950/55 via-ink-950/15 to-ink-950/0"></div>
               <div class="absolute top-3 right-3">
                 {% if country.has_calculator %}
@@ -32,7 +34,7 @@
                     {% translate "Legal sources under review" %}
                   </span>
                 {% else %}
-                  <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-stone2-100 text-stone2-500 whitespace-nowrap">
+                  <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-stone2-100 text-ink-800 whitespace-nowrap">
                     <span aria-hidden="true">●</span>
                     {% translate "In preparation" %}
                   </span>
@@ -51,12 +53,12 @@
                   {% translate "Available" %}
                 </span>
               {% elif country.scaffold_only %}
-                <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-gold-500/10 text-gold-600 whitespace-nowrap">
+                <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-gold-500/15 text-gold-700 whitespace-nowrap">
                   <span aria-hidden="true">●</span>
                   {% translate "Legal sources under review" %}
                 </span>
               {% else %}
-                <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-stone2-100 text-stone2-500 whitespace-nowrap">
+                <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-stone2-100 text-ink-800 whitespace-nowrap">
                   <span aria-hidden="true">●</span>
                   {% translate "In preparation" %}
                 </span>

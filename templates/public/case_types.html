@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% translate "Case types" %} — {{ SITE_NAME }}{% endblock %}
+{% block title %}{% translate "Case types we cover" %} — {{ SITE_NAME }}{% endblock %}
+
+{% block meta_description %}{% blocktranslate %}Modular taxonomy of case types: each module is activated only when the underlying legal sources for the chosen jurisdiction are catalogued and validated by the Studio.{% endblocktranslate %}{% endblock %}
 
 {% block content %}
   <section class="max-w-5xl mx-auto px-5 lg:px-8 py-16">
@@ -20,8 +22,12 @@
               <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-ok-600/10 text-ok-600 whitespace-nowrap">
                 {% translate "Module ready" %}
               </span>
+            {% elif case.scaffold_only %}
+              <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-gold-500/15 text-gold-700 whitespace-nowrap">
+                {% translate "Legal sources under review" %}
+              </span>
             {% else %}
-              <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-stone2-100 text-stone2-500 whitespace-nowrap">
+              <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-stone2-100 text-ink-800 whitespace-nowrap">
                 {% translate "In preparation" %}
               </span>
             {% endif %}
@@ -30,6 +36,8 @@
           <p class="mt-3 text-sm text-ink-800 leading-relaxed">
             {% if case.available %}
               {% blocktranslate %}A calculator is registered for this case type. Estimates appear only when approved legal sources are available for the chosen jurisdiction.{% endblocktranslate %}
+            {% elif case.scaffold_only %}
+              {% blocktranslate %}A calculator scaffold is registered for this case type. Legal sources are still under Studio review, so the wizard returns "requires legal validation" and never invents amounts or shares.{% endblocktranslate %}
             {% else %}
               {% blocktranslate %}This module is on the roadmap. The Studio will activate it once the underlying legal sources are validated.{% endblocktranslate %}
             {% endif %}

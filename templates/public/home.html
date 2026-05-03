@@ -8,6 +8,7 @@
   <section class="relative isolate overflow-hidden">
     {% if pexels_image %}
       <img src="{{ pexels_image.src }}" alt="{{ pexels_image.alt }}"
+           width="1920" height="1080"
            class="absolute inset-0 w-full h-full object-cover"
            loading="eager" decoding="async" fetchpriority="high">
       {# Overlay scuro per leggibilità testo: gradient ink-950/80 → ink-900/70. #}

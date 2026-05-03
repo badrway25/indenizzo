@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% translate "Start a simulation" %} — {{ SITE_NAME }}{% endblock %}
+{% block title %}{% translate "Start a guided simulation" %} — {{ SITE_NAME }}{% endblock %}
+
+{% block meta_description %}{% blocktranslate %}Pick a country and a case type. Indicative simulations are produced only when validated legal sources are available — otherwise the wizard explicitly returns "requires legal validation".{% endblocktranslate %}{% endblock %}
 
 {% block content %}
 {% include "partials/_premium_hero_image.html" %}
@@ -22,11 +24,11 @@
               {% translate "Module ready" %}
             </span>
           {% elif option.scaffold_only %}
-            <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-gold-500/10 text-gold-600">
+            <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-gold-500/15 text-gold-700">
               {% translate "Legal sources under review" %}
             </span>
           {% else %}
-            <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-stone2-100 text-stone2-500">
+            <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-stone2-100 text-ink-800">
               {% translate "In preparation" %}
             </span>
           {% endif %}

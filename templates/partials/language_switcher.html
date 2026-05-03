@@ -1,7 +1,7 @@
 {% load i18n %}
 {# Language switcher tramite Django `set_language` view. Funziona via POST per #}
 {# rispettare CSRF; il fallback è un <select> nativo, accessibile da tastiera. #}
-<form action="{% url 'set_language' %}" method="post" class="hidden sm:block">
+<form action="{% url 'set_language' %}" method="post" class="block" aria-label="{% translate 'Language switcher' %}">
   {% csrf_token %}
   <input name="next" type="hidden" value="{{ request.path }}">
   <label for="lang-switcher" class="sr-only">{% translate "Choose language" %}</label>
@@ -9,7 +9,7 @@
     id="lang-switcher"
     name="language"
     onchange="this.form.submit()"
-    class="bg-transparent text-sm text-ink-900 border border-stone2-200 rounded-full px-3 py-1.5 focus:border-gold-500"
+    class="bg-transparent text-sm text-ink-900 border border-stone2-200 rounded-full px-3 py-1.5 focus:border-gold-500 min-h-[40px]"
   >
     {% for code, label in AVAILABLE_LANGUAGES %}
       <option value="{{ code }}" {% if code == CURRENT_LANGUAGE %}selected{% endif %}>{{ code|upper }} — {{ label }}</option>

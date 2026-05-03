@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% translate "Methodology" %} — {{ SITE_NAME }}{% endblock %}
+{% block title %}{% translate "Methodology — sources, validation and ranges" %} — {{ SITE_NAME }}{% endblock %}
+
+{% block meta_description %}{% blocktranslate %}How we work: source-of-law catalogue, controlled validation lifecycle (draft → approved), explicit "calculation not available" when no approved source exists, and transparent ranges with assumptions and confidence.{% endblocktranslate %}{% endblock %}
 
 {% block content %}
   {% include "partials/_premium_hero_image.html" %}
