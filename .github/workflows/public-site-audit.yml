@@ -1,0 +1,102 @@
+name: Public site audit
+
+# Iter: F-ci-public-site-audit-workflow.
+#
+# Spin up the Django dev server, run the structural Playwright audit
+# from scripts/run_public_lighthouse_audit.py, and upload the reports.
+# We intentionally use --mode playwright in CI: the Lighthouse CLI is
+# not pinned yet, so we keep the audit fully deterministic. Once the
+# CLI version is pinned (see docs/architecture/PERF_PASS2_LIGHTHOUSE_CI_READY.md),
+# switch the mode flag below.
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: Playwright structural audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      # Safety env: keep CI fully self-contained, never reach external
+      # services, and never use real production secrets.
+      DJANGO_DEBUG: "true"
+      DJANGO_SECRET_KEY: "django-insecure-ci-public-site-audit-dummy-key"
+      DJANGO_ALLOWED_HOSTS: "127.0.0.1,localhost"
+      PEXELS_ENABLED: "false"
+      LEAD_NOTIFICATION_ENABLED: "false"
+      SENTRY_DSN: ""
+      ADMIN_MFA_REQUIRED: "false"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Django system check
+        run: python manage.py check
+
+      - name: Apply migrations (sqlite)
+        run: python manage.py migrate --noinput
+
+      - name: Compile translations
+        run: python manage.py compilemessages -l fr -l ar -l it
+
+      - name: Start Django dev server (background)
+        run: |
+          nohup python manage.py runserver 127.0.0.1:48107 --noreload \
+            > runserver.log 2>&1 &
+          echo $! > runserver.pid
+
+      - name: Wait for /healthz/
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:48107/healthz/ > /dev/null; then
+              echo "server up after $i attempt(s)"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "server did not come up; runserver.log:"
+          cat runserver.log || true
+          exit 1
+
+      - name: Run public-site audit (playwright fallback)
+        run: |
+          python scripts/run_public_lighthouse_audit.py \
+            --base-url http://127.0.0.1:48107 \
+            --mode playwright \
+            --out-dir docs/reports/lighthouse/ci_public_site
+
+      - name: Upload audit artefacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-site-audit
+          path: docs/reports/lighthouse/ci_public_site/
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Stop Django dev server
+        if: always()
+        run: |
+          if [ -f runserver.pid ]; then
+            kill "$(cat runserver.pid)" || true
+          fi

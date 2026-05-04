@@ -74,39 +74,72 @@ Outputs:
 | `1` | At least one required rule failed (a11y / SEO / best-practices below threshold, or a structural fallback failure). |
 | `2` | Configuration error — missing thresholds file, no audited URLs, `--mode lighthouse` with no CLI on PATH, Playwright not installed, etc. |
 
-## 5. CI wiring (forward-looking)
+## 5. CI wiring
 
-The script is intentionally CI-friendly:
+Live at `.github/workflows/public-site-audit.yml` (added in
+F-ci-public-site-audit-workflow). Triggers: `pull_request` and
+`workflow_dispatch`. The job spins up the Django dev server on
+`127.0.0.1:48107`, polls `/healthz/`, runs the audit in
+`--mode playwright`, and uploads the report directory as the
+`public-site-audit` artifact.
+
+### Why `--mode playwright` in CI
+
+We deliberately do **not** rely on the Lighthouse CLI in CI yet:
+
+- The CLI ships a moving target (Chrome version, audit weights) — a
+  minor upgrade can shift scores by ±5 points without any code
+  change, which would gate PRs on noise.
+- We have no pinned Lighthouse version in the repo (no
+  `package.json`).
+- The structural fallback already enforces the regressions we
+  actually want to gate on (missing H1, missing meta, leaking API
+  keys, surfacing Pexels attribution, horizontal overflow on a 375 px
+  viewport, every `<img>` carrying `alt` + `width` / `height`).
+
+### Migrating to `--mode lighthouse`
+
+Once the CLI is pinned (e.g. via a future `package.json` devDep or a
+`tools/install_lighthouse.{sh,ps1}`), bump the workflow to:
 
 ```yaml
-# .github/workflows/perf-audit.yml (sketch)
-- name: Bring up dev server
-  run: |
-    python manage.py runserver 127.0.0.1:48107 --noreload &
-    sleep 4
-
 - name: Run public-funnel audit
   run: |
     python scripts/run_public_lighthouse_audit.py \
       --base-url http://127.0.0.1:48107 \
-      --mode auto \
-      --out-dir docs/reports/lighthouse/ci
-
-- name: Upload audit artefacts
-  uses: actions/upload-artifact@v4
-  with:
-    name: public-funnel-audit
-    path: docs/reports/lighthouse/ci/
+      --mode lighthouse \
+      --out-dir docs/reports/lighthouse/ci_public_site
 ```
 
-Notes:
+The script will exit 2 if the binary disappears — exactly the
+behaviour you want for a CI gate.
+`--fail-on-warning` is the additional lever to also fail on
+performance-score regressions; keep it off until the runner CPU
+profile is stable.
 
-- Set `--mode lighthouse` once the runner has a pinned Lighthouse
-  CLI. The script will then exit 2 if the binary disappears, which
-  is the behaviour you want for a CI gate.
-- `--fail-on-warning` is the lever to also fail on
-  performance-score regressions; keep it off until the CLI version
-  is pinned and the runner CPU is consistent.
+### How to read the artefacts
+
+After the job finishes, download the `public-site-audit` artifact
+(retention: 14 days). It contains:
+
+- `audit.json` — raw audit (the same shape the CLI prints to stdout).
+- `summary.md` — markdown table; paste-friendly into the PR review.
+- `lighthouse/<slug>.{json,html}` — only when `--mode lighthouse` runs.
+
+### Safety env in CI
+
+The workflow sets the following environment variables to keep the
+job fully self-contained:
+
+| Env var | Value | Purpose |
+| --- | --- | --- |
+| `DJANGO_DEBUG` | `true` | Avoids prod-hardening start-up checks. |
+| `DJANGO_SECRET_KEY` | dummy CI value | Required when `DEBUG=True`; never reused. |
+| `DJANGO_ALLOWED_HOSTS` | `127.0.0.1,localhost` | Locks the audit to the in-job server. |
+| `PEXELS_ENABLED` | `false` | Disables the Pexels image flow — no key needed, no external fetch. |
+| `LEAD_NOTIFICATION_ENABLED` | `false` | Stops the contact form trying to email anyone. |
+| `SENTRY_DSN` | empty | No telemetry to external services. |
+| `ADMIN_MFA_REQUIRED` | `false` | Avoids loading the MFA admin guard in CI. |
 
 ## 6. policy: warning vs required
 
