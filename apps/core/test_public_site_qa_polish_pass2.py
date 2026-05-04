@@ -319,7 +319,10 @@ def test_italy_smoke_engine_preserves_pass2_contract(italy_smoke_qa_pass2):
         ("/wizard/tn/inheritance/", "Code du statut personnel"),
         ("/methodology/", "validation lifecycle"),
         ("/contact/", "Tell us about your case"),
-        ("/countries/", "MVP coverage map"),
+        # Pass-5 rewrote the meta description; default IT renders the
+        # Italian translation. We check for the brand token that anchors
+        # the description in any locale.
+        ("/countries/", "Badrane"),
     ],
 )
 def test_meta_description_overridden_pass2(path: str, must_contain: str):

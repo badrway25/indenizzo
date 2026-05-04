@@ -3,7 +3,7 @@
 
 {% block title %}{% translate "Belgium — road accident bodily injury" %} — {{ SITE_NAME }}{% endblock %}
 {% block meta_robots %}noindex, nofollow{% endblock %}
-{% block meta_description %}{% blocktranslate %}Scaffold wizard for Belgium: the engine is registered but the legal sources (Tableau Indicatif, Tables Schryvers) are still under Studio review. The wizard returns "requires legal validation" rather than a numeric estimate.{% endblocktranslate %}{% endblock %}
+{% block meta_description %}{% blocktranslate %}Belgium road-accident workflow: the Studio offers a preliminary legal assessment based on the Loi du 21 novembre 1989, the Tableau Indicatif and the Tables Schryvers. No automatic amount is published before these tables have been verified for the case.{% endblocktranslate %}{% endblock %}
 
 {% block content %}
 {% include "partials/_premium_hero_image.html" %}
@@ -11,18 +11,18 @@
   <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Belgium — road accident bodily injury" %}</p>
   <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Indicative simulation wizard" %}</h1>
   <p class="mt-4 text-lg text-ink-800 leading-relaxed">
-    {% blocktranslate %}All fields below are optional. If you don't know a value, leave it empty. The simulation will not invent numbers: it produces an estimate only when validated legal sources are available, and otherwise returns an honest "requires legal validation" status.{% endblocktranslate %}
+    {% blocktranslate %}All fields below are optional. If you don't know a value, leave it empty. The Studio reviews each case manually and offers a preliminary legal assessment; no automatic amount is published before the underlying quantification sources have been verified for the case.{% endblocktranslate %}
   </p>
 
   <div class="mt-6 rounded-2xl border border-gold-400/40 bg-sand-100 px-5 py-4 text-sm text-ink-900 leading-relaxed">
-    <strong class="font-semibold">{% translate "Module under legal validation — no automatic estimate." %}</strong>
-    {% blocktranslate %}The Belgian calculator engine is registered but the legal sources (Loi du 21 novembre 1989, Tableau indicatif des cours et tribunaux, barème Schryvers) are still under Studio review. The wizard returns "requires legal validation" rather than a numeric estimate. If you prefer to skip the form, you can write directly to the Studio.{% endblocktranslate %}
+    <strong class="font-semibold">{% translate "Preliminary legal assessment — no automatic amount." %}</strong>
+    {% blocktranslate %}The Studio reviews each Belgian road-accident case manually, using the recognised quantification tables (Loi du 21 novembre 1989, Tableau Indicatif, Schryvers). No automatic amount is published before these tables have been verified for the case. If you prefer to skip the form, you can write directly to the Studio.{% endblocktranslate %}
     <a href="{% url 'crm:contact' %}" class="mt-2 inline-flex items-center gap-1 text-gold-600 hover:text-gold-500 font-semibold">
       {% translate "Contact the Studio" %} <span aria-hidden="true">→</span>
     </a>
   </div>
 
-  {% include "partials/_module_status_card.html" with msc_does=_("Collects qualitative information about your case so the Studio can review it.") msc_does_not=_("It does not produce any numeric estimate. The Belgian calculator engine is in scaffold mode and the indicative tables (Tableau Indicatif, Schryvers) are still under Studio review.") msc_next_step=_("Submit your inputs — the Studio receives the case and a lawyer replies after a manual legal review.") msc_status_label=_("Legal sources under review") msc_status_tone="warn" %}
+  {% include "partials/_module_status_card.html" with msc_does=_("Collects qualitative information about your case so the Studio can review it manually.") msc_does_not=_("It does not publish an automatic amount. The Belgian indicative tables (Tableau Indicatif, Schryvers) are reviewed manually by the Studio for each case.") msc_next_step=_("Submit your inputs — the Studio receives the case and a lawyer replies after a manual legal review.") msc_status_label=_("Preliminary legal assessment") msc_status_tone="warn" %}
 
   <form method="post" novalidate class="mt-10 bg-white border border-stone2-200 rounded-3xl shadow-card p-6 sm:p-8 space-y-6">
     {% csrf_token %}

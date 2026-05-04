@@ -132,14 +132,17 @@ def test_case_types_page_lists_taxonomy():
 
 @pytest.mark.django_db
 def test_case_types_page_marks_italy_modules_as_available():
-    """I due placeholder Italia di F4 devono comparire come 'Module ready'.
+    """Italia case types must surface as available. Pass-5 renamed the
+    badge from "Module ready" to "Indicative calculation available".
+    Either still satisfies the contract."""
 
-    Hits /en/ explicitly: con i18n pass1/2 la default IT traduce il
-    badge in 'Modulo pronto'.
-    """
     response = Client().get("/en/case-types/")
     body = response.content.decode("utf-8")
-    assert "Module ready" in body or "module ready" in body.lower()
+    assert (
+        ("Indicative calculation available" in body)
+        or ("Module ready" in body)
+        or ("module ready" in body.lower())
+    )
 
 
 @pytest.mark.django_db
@@ -457,13 +460,14 @@ def test_project_status_marks_france_as_scaffold():
 def test_countries_page_shows_france_as_legal_sources_under_review():
     """Public /countries/ marks FR with the scaffold-only badge.
 
-    Hits /en/ explicitly to assert against English source strings; with i18n
-    pass1, /countries/ default IT now returns the Italian translation.
+    Pass-5 renamed the badge from "Legal sources under review" to
+    "Preliminary legal assessment". Either still satisfies the
+    contract that France is not marked as available.
     """
     response = Client().get("/en/countries/")
     assert response.status_code == 200
     body = response.content.decode("utf-8")
-    assert "Legal sources under review" in body
+    assert ("Preliminary legal assessment" in body) or ("Legal sources under review" in body)
 
 
 @pytest.mark.django_db
@@ -473,7 +477,12 @@ def test_wizard_start_page_offers_france_scaffold_link():
     assert response.status_code == 200
     body = response.content.decode("utf-8")
     assert "/en/wizard/fr/road-accident/" in body
-    assert "Open scaffold wizard" in body or "Legal sources under review" in body
+    assert (
+        ("Submit the case to the Studio" in body)
+        or ("Preliminary legal assessment" in body)
+        or ("Open scaffold wizard" in body)
+        or ("Legal sources under review" in body)
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -501,8 +510,11 @@ def test_countries_page_shows_belgium_as_legal_sources_under_review():
     response = Client().get("/en/countries/")
     assert response.status_code == 200
     body = response.content.decode("utf-8")
-    # Both FR and BE are scaffold-only.
-    assert body.count("Legal sources under review") >= 2
+    # Both FR and BE are scaffold-only. Pass-5 renamed the badge.
+    badge_hits = body.count("Preliminary legal assessment") + body.count(
+        "Legal sources under review"
+    )
+    assert badge_hits >= 2
 
 
 @pytest.mark.django_db
@@ -541,7 +553,11 @@ def test_countries_page_shows_morocco_and_tunisia_as_legal_sources_under_review(
     assert response.status_code == 200
     body = response.content.decode("utf-8")
     # FR, BE, MA, TN all scaffold-only → 4 occurrences of the badge.
-    assert body.count("Legal sources under review") >= 4
+    # Pass-5 renamed the badge.
+    badge_hits = body.count("Preliminary legal assessment") + body.count(
+        "Legal sources under review"
+    )
+    assert badge_hits >= 4
 
 
 @pytest.mark.django_db
@@ -560,5 +576,7 @@ def test_case_types_page_marks_international_inheritance_as_scaffold():
     assert response.status_code == 200
     body = response.content.decode("utf-8")
     assert "international_inheritance" in body
-    # The page should now show "Legal sources under review" for it (not "Module ready").
-    assert "Legal sources under review" in body
+    # The page should mark it as scaffold (not "Module ready" /
+    # "Indicative calculation available"). Pass-5 renamed the badge to
+    # "Preliminary legal assessment".
+    assert ("Preliminary legal assessment" in body) or ("Legal sources under review" in body)

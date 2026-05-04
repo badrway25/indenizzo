@@ -145,7 +145,14 @@ def test_wizard_start_has_italy_cta_validation_cta_and_how_it_works():
     assert response.status_code == 200
     body = response.content.decode("utf-8")
     assert ("Start this simulation" in body) or ("Avvia questa simulazione" in body)
-    assert ("Open validation wizard" in body) or ("Apri la procedura di validazione" in body)
+    # Pass-5 renamed "Open validation wizard" → "Submit the case to the Studio".
+    # Either still satisfies the contract that scaffolds expose a CTA.
+    assert (
+        ("Submit the case to the Studio" in body)
+        or ("Invia il caso allo Studio" in body)
+        or ("Open validation wizard" in body)
+        or ("Apri la procedura di validazione" in body)
+    )
     assert ("How it works" in body) or ("Come funziona" in body)
     # Step 1/2/3 — IT renders "Passo 1/2/3".
     assert ("Step 1" in body) or ("Passo 1" in body)
@@ -183,37 +190,37 @@ def test_wizard_italy_has_tun_2025_and_result_preview():
 
 @pytest.mark.django_db
 @pytest.mark.parametrize(
-    "url_name,en_phrase,it_phrase",
+    "url_name",
     [
-        (
-            "cases:wizard_france_road_accident",
-            "no automatic estimate",
-            "nessuna stima automatica",
-        ),
-        (
-            "cases:wizard_belgium_road_accident",
-            "no automatic estimate",
-            "nessuna stima automatica",
-        ),
-        (
-            "cases:wizard_morocco_inheritance",
-            "no automatic shares",
-            "nessuna quota calcolata automaticamente",
-        ),
-        (
-            "cases:wizard_tunisia_inheritance",
-            "no automatic shares",
-            "nessuna quota calcolata automaticamente",
-        ),
+        "cases:wizard_france_road_accident",
+        "cases:wizard_belgium_road_accident",
+        "cases:wizard_morocco_inheritance",
+        "cases:wizard_tunisia_inheritance",
     ],
 )
-def test_scaffold_wizards_say_no_automatic(url_name, en_phrase, it_phrase):
+def test_scaffold_wizards_say_no_automatic(url_name):
+    """Pass-5 rephrased the "no automatic" disclaimer from
+    "no automatic estimate" / "no automatic shares" to
+    "no automatic amount" / "shares not computed automatically".
+    The contract is that the page communicates it does not publish a
+    number — we accept any of the canonical phrasings."""
+
     response = Client().get(reverse(url_name))
     assert response.status_code == 200
     body = response.content.decode("utf-8")
-    assert (en_phrase in body) or (
-        it_phrase in body
-    ), f"{url_name} missing phrase {en_phrase!r} (or IT equivalent)"
+    candidates = (
+        "no automatic estimate",
+        "no automatic amount",
+        "no automatic shares",
+        "shares not computed automatically",
+        "nessuna stima automatica",
+        "nessun importo automatico",
+        "nessuna quota calcolata automaticamente",
+        "quote non calcolate automaticamente",
+    )
+    assert any(
+        c in body for c in candidates
+    ), f"{url_name}: no recognised 'no automatic' disclaimer in body"
 
 
 # ---------------------------------------------------------------------------

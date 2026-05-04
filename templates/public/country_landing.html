@@ -35,7 +35,7 @@
 {% if is_calculator_available %}
 {% blocktranslate with country=country_name %}Indicative compensation simulation for {{ country }}, based on approved legal sources. The estimate is informative and never a guarantee of outcome.{% endblocktranslate %}
 {% else %}
-{% blocktranslate with country=country_name %}{{ country }} legal sources are under Studio review. No automatic estimate is currently issued; the wizard collects your request for a legal review.{% endblocktranslate %}
+{% blocktranslate with country=country_name %}Preliminary legal assessment for {{ country }}: the Studio reviews each case manually, and no automatic amount is published before the underlying quantification sources have been verified.{% endblocktranslate %}
 {% endif %}
 {% endblock %}
 
@@ -122,7 +122,7 @@
           {% if is_calculator_available %}
             {% blocktranslate with country=country_name %}Studio Legale Badrane provides an indicative compensation simulation for {{ country }} based on approved legal sources. The estimate is informative and never a guarantee of outcome.{% endblocktranslate %}
           {% else %}
-            {% blocktranslate with country=country_name %}Legal sources for {{ country }} are currently under Studio review. The wizard accepts your request and our team replies after a manual legal validation. No automatic estimate is issued until that review is complete.{% endblocktranslate %}
+            {% blocktranslate with country=country_name %}For {{ country }} the Studio offers a preliminary legal assessment: the case is reviewed manually by a lawyer and we reply directly. No automatic amount is published before the underlying quantification sources have been verified for the case.{% endblocktranslate %}
           {% endif %}
         </p>
 
@@ -152,7 +152,7 @@
             </li>
             <li class="flex items-start gap-3">
               <span aria-hidden="true" class="mt-1.5 inline-block w-1.5 h-1.5 rounded-full bg-gold-500"></span>
-              <span class="text-ink-900">{% blocktranslate %}The wizard is in scaffold mode: it returns "requires legal validation" rather than a number.{% endblocktranslate %}</span>
+              <span class="text-ink-900">{% blocktranslate %}The Studio reviews each submission manually and offers a preliminary legal assessment; no automatic amount is published before the underlying quantification sources have been verified.{% endblocktranslate %}</span>
             </li>
           {% elif country_code == "belgium" %}
             <li class="flex items-start gap-3">
@@ -165,7 +165,7 @@
             </li>
             <li class="flex items-start gap-3">
               <span aria-hidden="true" class="mt-1.5 inline-block w-1.5 h-1.5 rounded-full bg-gold-500"></span>
-              <span class="text-ink-900">{% blocktranslate %}The wizard is in scaffold mode and never invents amounts.{% endblocktranslate %}</span>
+              <span class="text-ink-900">{% blocktranslate %}The Studio reviews each case manually; no automatic amount is published before the underlying quantification sources have been verified.{% endblocktranslate %}</span>
             </li>
           {% elif country_code == "morocco" %}
             <li class="flex items-start gap-3">
@@ -220,7 +220,7 @@
             {% if is_calculator_available %}
               {% blocktranslate %}The wizard accepts compatible inputs and returns an indicative range based on the approved dataset.{% endblocktranslate %}
             {% else %}
-              {% blocktranslate %}The wizard collects your request and persists it. The calculator is in scaffold mode: response is "requires legal validation" — no automatic estimate is issued.{% endblocktranslate %}
+              {% blocktranslate %}The workflow forwards your request to the Studio, which reviews each case manually and offers a preliminary legal assessment. No automatic amount is published before the underlying quantification sources have been verified.{% endblocktranslate %}
             {% endif %}
           </p>
 
@@ -233,11 +233,11 @@
                 </a>
               {% elif country_code == "france" %}
                 <a href="{% url wizard_url_name %}" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
-                  {% translate "Open France validation wizard" %} →
+                  {% translate "Submit a France case to the Studio" %} →
                 </a>
               {% elif country_code == "belgium" %}
                 <a href="{% url wizard_url_name %}" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
-                  {% translate "Open Belgium validation wizard" %} →
+                  {% translate "Submit a Belgium case to the Studio" %} →
                 </a>
               {% elif country_code == "morocco" %}
                 <a href="{% url wizard_url_name %}" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">

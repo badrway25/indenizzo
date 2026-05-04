@@ -21,24 +21,24 @@
           <span class="font-serif text-3xl text-ink-950">{{ option.country_code }}</span>
           {% if option.available %}
             <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-ok-600/10 text-ok-600">
-              {% translate "Module ready" %}
+              {% translate "Indicative calculation available" %}
             </span>
           {% elif option.scaffold_only %}
             <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-gold-500/15 text-gold-700">
-              {% translate "Legal sources under review" %}
+              {% translate "Preliminary legal assessment" %}
             </span>
           {% else %}
-            <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-stone2-100 text-ink-800">
-              {% translate "In preparation" %}
+            <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-sand-100 text-ink-900 border border-stone2-200">
+              {% translate "Manual legal review" %}
             </span>
           {% endif %}
         </div>
         <h2 class="mt-3 font-serif text-2xl text-ink-950">{{ option.country_name }} — {{ option.case_label }}</h2>
         <p class="mt-3 text-sm text-ink-800 leading-relaxed">
           {% if option.scaffold_only %}
-            {% blocktranslate %}Bodily injury after a road accident. The wizard accepts inputs but the legal sources are still under Studio review, so the simulation returns "requires legal validation" rather than a numeric estimate.{% endblocktranslate %}
+            {% blocktranslate %}Bodily injury after a road accident. The Studio reviews each submission manually and offers a preliminary legal assessment; no automatic amount is published before the underlying quantification sources have been verified.{% endblocktranslate %}
           {% else %}
-            {% blocktranslate %}Bodily injury after a road accident. The wizard collects optional inputs and persists a simulation. No estimate is produced unless validated legal sources are available.{% endblocktranslate %}
+            {% blocktranslate %}Bodily injury after a road accident. An indicative calculation is published, based on the verified national dataset for the chosen jurisdiction.{% endblocktranslate %}
           {% endif %}
         </p>
 
@@ -50,13 +50,14 @@
             </a>
           {% elif option.scaffold_only %}
             <a href="{{ option.url }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-sand-50 border border-stone2-200 text-ink-900 hover:bg-white font-semibold">
-              {% translate "Open validation wizard" %}
+              {% translate "Submit the case to the Studio" %}
               <span aria-hidden="true">→</span>
             </a>
           {% else %}
-            <span class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-stone2-100 text-stone2-500 font-semibold cursor-not-allowed">
-              {% translate "Coming soon" %}
-            </span>
+            <a href="{% url 'crm:contact' %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-sand-50 border border-stone2-200 text-ink-900 hover:bg-white font-semibold">
+              {% translate "Request a manual legal review" %}
+              <span aria-hidden="true">→</span>
+            </a>
           {% endif %}
         </div>
       </article>

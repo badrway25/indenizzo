@@ -625,13 +625,17 @@ WIZARD_FR_VALID_PAYLOAD = {
 
 @pytest.mark.django_db
 def test_wizard_start_links_to_france_scaffold():
-    """La landing /wizard/ deve esporre il link al wizard FR scaffold."""
-    response = Client().get(reverse("cases:wizard_start"))
+    """La landing /wizard/ deve esporre il link al wizard FR scaffold.
+
+    Pass-5 renamed the FR/BE/MA/TN status badge from "Legal sources
+    under review" to "Preliminary legal assessment". Either still
+    satisfies the contract (the cards are not marked "Module ready").
+    """
+    response = Client().get("/en/wizard/")
     assert response.status_code == 200
     body = response.content.decode("utf-8")
-    assert reverse("cases:wizard_france_road_accident") in body
-    # E deve marcarlo come "Legal sources under review", non "Module ready".
-    assert "Legal sources under review" in body
+    assert "/en/wizard/fr/road-accident/" in body
+    assert ("Preliminary legal assessment" in body) or ("Legal sources under review" in body)
 
 
 @pytest.mark.django_db
@@ -641,8 +645,13 @@ def test_wizard_france_road_accident_get_returns_200():
     body = response.content.decode("utf-8")
     assert 'name="consent_simulation"' in body
     assert 'name="website"' in body
-    # Banner specifico del placeholder FR.
-    assert "Module under legal validation" in body
+    # Pass-5 renamed the banner from "Module under legal validation" to
+    # the premium "Preliminary legal assessment" wording.
+    assert (
+        ("Preliminary legal assessment" in body)
+        or ("Module under legal validation" in body)
+        or ("Valutazione legale preliminare" in body)
+    )
 
 
 @pytest.mark.django_db
@@ -753,7 +762,11 @@ def test_wizard_belgium_road_accident_get_returns_200():
     body = response.content.decode("utf-8")
     assert 'name="consent_simulation"' in body
     assert 'name="website"' in body
-    assert "Module under legal validation" in body
+    assert (
+        ("Preliminary legal assessment" in body)
+        or ("Module under legal validation" in body)
+        or ("Valutazione legale preliminare" in body)
+    )
 
 
 @pytest.mark.django_db
@@ -804,3 +817,156 @@ def test_wizard_belgium_post_no_estimates_in_output(belgium_setup):
     assert output.get("estimated_mid") is None
     assert output.get("estimated_max") is None
     assert sim.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
+
+
+# ---------------------------------------------------------------------------
+# F-ma-tn-international-inheritance-bootstrap — wizards inheritance MA/TN.
+# ---------------------------------------------------------------------------
+
+
+@pytest.fixture
+def morocco_setup(db):
+    morocco = Country.objects.create(code="MA", code_alpha3="MAR", name="Maroc")
+    eur = Currency.objects.filter(code="EUR").first() or Currency.objects.create(
+        code="EUR", name="Euro", symbol="€"
+    )
+    arabic = Language.objects.filter(code="ar").first() or Language.objects.create(
+        code="ar", name="العربية"
+    )
+    juris = Jurisdiction.objects.create(
+        country=morocco,
+        code="MA-NATIONAL",
+        name="Maroc (niveau national)",
+        legal_system=Jurisdiction.LegalSystem.CIVIL_LAW,
+        default_currency=eur,
+        default_language=arabic,
+    )
+    return {"country": morocco, "currency": eur, "language": arabic, "jurisdiction": juris}
+
+
+@pytest.fixture
+def tunisia_setup(db):
+    tunisia = Country.objects.create(code="TN", code_alpha3="TUN", name="Tunisie")
+    eur = Currency.objects.filter(code="EUR").first() or Currency.objects.create(
+        code="EUR", name="Euro", symbol="€"
+    )
+    arabic = Language.objects.filter(code="ar").first() or Language.objects.create(
+        code="ar", name="العربية"
+    )
+    juris = Jurisdiction.objects.create(
+        country=tunisia,
+        code="TN-NATIONAL",
+        name="Tunisie (niveau national)",
+        legal_system=Jurisdiction.LegalSystem.CIVIL_LAW,
+        default_currency=eur,
+        default_language=arabic,
+    )
+    return {"country": tunisia, "currency": eur, "language": arabic, "jurisdiction": juris}
+
+
+WIZARD_INHERITANCE_VALID_PAYLOAD = {
+    "deceased_country": "MA",
+    "habitual_residence_country": "FR",
+    "nationality": "MA",
+    "spouse_exists": "True",
+    "children_count": "2",
+    "consent_simulation": "on",
+    "website": "",
+}
+
+
+@pytest.mark.django_db
+def test_wizard_morocco_inheritance_get_returns_200():
+    response = Client().get(reverse("cases:wizard_morocco_inheritance"))
+    assert response.status_code == 200
+    body = response.content.decode("utf-8")
+    assert 'name="consent_simulation"' in body
+    assert 'name="website"' in body
+    assert (
+        ("International inheritance review" in body)
+        or ("Module under legal validation" in body)
+        or ("Analisi successoria internazionale" in body)
+    )
+
+
+@pytest.mark.django_db
+def test_wizard_tunisia_inheritance_get_returns_200():
+    response = Client().get(reverse("cases:wizard_tunisia_inheritance"))
+    assert response.status_code == 200
+    body = response.content.decode("utf-8")
+    assert 'name="consent_simulation"' in body
+    assert (
+        ("International inheritance review" in body)
+        or ("Module under legal validation" in body)
+        or ("Analisi successoria internazionale" in body)
+    )
+
+
+@pytest.mark.django_db
+def test_wizard_morocco_inheritance_post_creates_simulation_unavailable(morocco_setup):
+    response = Client().post(
+        reverse("cases:wizard_morocco_inheritance"),
+        WIZARD_INHERITANCE_VALID_PAYLOAD,
+    )
+    assert Simulation.objects.count() == 1
+    sim = Simulation.objects.get()
+    assert sim.jurisdiction == morocco_setup["jurisdiction"]
+    assert sim.country == morocco_setup["country"]
+    assert sim.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
+    assert sim.estimated_min is None
+    assert sim.estimated_mid is None
+    assert sim.estimated_max is None
+    assert sim.case_type == CaseType.INTERNATIONAL_INHERITANCE.value
+    assert response.status_code == 302
+
+
+@pytest.mark.django_db
+def test_wizard_tunisia_inheritance_post_creates_simulation_unavailable(tunisia_setup):
+    response = Client().post(
+        reverse("cases:wizard_tunisia_inheritance"),
+        {**WIZARD_INHERITANCE_VALID_PAYLOAD, "deceased_country": "TN", "nationality": "TN"},
+    )
+    assert Simulation.objects.count() == 1
+    sim = Simulation.objects.get()
+    assert sim.jurisdiction == tunisia_setup["jurisdiction"]
+    assert sim.country == tunisia_setup["country"]
+    assert sim.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
+    assert sim.estimated_min is None
+    assert sim.case_type == CaseType.INTERNATIONAL_INHERITANCE.value
+    assert response.status_code == 302
+
+
+@pytest.mark.django_db
+def test_wizard_inheritance_post_persists_input_data_qualitative_only(morocco_setup):
+    Client().post(
+        reverse("cases:wizard_morocco_inheritance"),
+        WIZARD_INHERITANCE_VALID_PAYLOAD,
+    )
+    sim = Simulation.objects.get()
+    # Qualitative context fields persisted, no monetary field.
+    assert sim.input_data["deceased_country"] == "MA"
+    assert sim.input_data["nationality"] == "MA"
+    assert sim.input_data["children_count"] == 2
+    # No monetary keys.
+    for key in ("estimated_min", "amount", "share", "value"):
+        assert key not in sim.input_data
+
+
+@pytest.mark.django_db
+def test_wizard_inheritance_form_rejects_missing_consent():
+    from apps.cases.forms import InternationalInheritanceWizardForm
+
+    payload = {**WIZARD_INHERITANCE_VALID_PAYLOAD}
+    payload.pop("consent_simulation")
+    form = InternationalInheritanceWizardForm(data=payload)
+    assert not form.is_valid()
+    assert "consent_simulation" in form.errors
+
+
+@pytest.mark.django_db
+def test_wizard_start_links_to_morocco_and_tunisia_inheritance():
+    response = Client().get(reverse("cases:wizard_start"))
+    assert response.status_code == 200
+    body = response.content.decode("utf-8")
+    assert reverse("cases:wizard_morocco_inheritance") in body
+    assert reverse("cases:wizard_tunisia_inheritance") in body
