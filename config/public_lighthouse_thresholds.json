@@ -1,0 +1,35 @@
+{
+  "_schema_version": 1,
+  "_iter": "F-product-lighthouse-visual-qa-pass1",
+  "_doc": "Thresholds for the public-funnel Lighthouse / Playwright audit. Required = audit fails the build if the score is below the threshold. Warning = audit logs a warning but does not fail the build (we are not regression-gating perf yet because tooling availability is not guaranteed across machines).",
+  "lighthouse": {
+    "performance": { "min": 0.70, "level": "warning" },
+    "accessibility": { "min": 0.90, "level": "required" },
+    "best-practices": { "min": 0.90, "level": "required" },
+    "seo": { "min": 0.90, "level": "required" }
+  },
+  "fallback_playwright": {
+    "_doc": "When the Lighthouse CLI is not available we fall back to a structural Playwright audit. All structural rules are required: we expect the public funnels to never regress on these.",
+    "rules": {
+      "http_status_200": "required",
+      "title_present": "required",
+      "meta_description_present": "required",
+      "exactly_one_h1": "required",
+      "no_horizontal_overflow_mobile": "required",
+      "all_images_have_alt": "required",
+      "all_images_have_dimensions": "required",
+      "no_pexels_attribution": "required",
+      "no_api_key_leak": "required"
+    }
+  },
+  "audited_urls": [
+    "/",
+    "/countries/",
+    "/countries/italy/",
+    "/wizard/",
+    "/wizard/it/road-accident/",
+    "/wizard/fr/road-accident/",
+    "/contact/",
+    "/methodology/"
+  ]
+}

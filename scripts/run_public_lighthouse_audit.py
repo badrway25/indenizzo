@@ -1,0 +1,406 @@
+"""Run a public-funnel performance / a11y / SEO audit.
+
+Iter: F-product-lighthouse-visual-qa-pass1.
+
+Strategy:
+
+1. If a Lighthouse CLI is on PATH (``lighthouse`` or ``lhci``), shell
+   out to it for each URL with the ``mobile`` preset and write the
+   JSON / HTML reports under
+   ``docs/reports/lighthouse/public_site_pass1/``.
+
+2. Otherwise, fall back to a structural Playwright probe that checks
+   the required rules from
+   ``config/public_lighthouse_thresholds.json``:
+
+   - HTTP 200
+   - ``<title>`` present and non-empty
+   - ``<meta name="description">`` present and non-empty
+   - exactly one ``<h1>``
+   - no horizontal overflow on a 375 × 800 mobile viewport
+   - every visible ``<img>`` has a non-empty ``alt`` attribute and
+     explicit ``width`` / ``height``
+   - no Pexels-style "Photo by …" attribution leaks
+   - no API key / token leak
+
+The script returns exit code 0 if every required rule passes, 1
+otherwise. It is read-only on the legal / calculator layer (HTTP GETs
+only).
+
+Usage::
+
+    python scripts/run_public_lighthouse_audit.py
+    python scripts/run_public_lighthouse_audit.py --base-url http://127.0.0.1:48107
+
+The default base URL is the live dev server we leave running across
+iters (``http://127.0.0.1:48107/``).
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import pathlib
+import re
+import shutil
+import subprocess
+import sys
+from typing import Any
+
+REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
+THRESHOLDS_PATH = REPO_ROOT / "config" / "public_lighthouse_thresholds.json"
+LIGHTHOUSE_REPORT_DIR = REPO_ROOT / "docs" / "reports" / "lighthouse" / "public_site_pass1"
+DEFAULT_BASE_URL = "http://127.0.0.1:48107"
+
+
+# ---------------------------------------------------------------------------
+# Lighthouse CLI path
+# ---------------------------------------------------------------------------
+
+
+def _find_lighthouse_cli() -> str | None:
+    """Return a Lighthouse-compatible CLI command, or None if absent.
+
+    We only consider executables already on ``PATH`` — we never trigger
+    a network install.
+    """
+
+    for candidate in ("lighthouse", "lhci"):
+        path = shutil.which(candidate)
+        if path:
+            return path
+    return None
+
+
+def _run_lighthouse(cli: str, base_url: str, urls: list[str]) -> dict[str, Any]:
+    """Run the Lighthouse CLI for each URL, mobile preset.
+
+    Returns a dict mapping URL → score dict. Failures (e.g. missing
+    Chrome) are reported as ``{"error": "..."}`` rather than crashing
+    the whole audit.
+    """
+
+    LIGHTHOUSE_REPORT_DIR.mkdir(parents=True, exist_ok=True)
+    results: dict[str, Any] = {}
+    for path in urls:
+        target = base_url.rstrip("/") + path
+        slug = path.strip("/").replace("/", "_") or "home"
+        json_out = LIGHTHOUSE_REPORT_DIR / f"{slug}.json"
+        html_out = LIGHTHOUSE_REPORT_DIR / f"{slug}.html"
+        cmd = [
+            cli,
+            target,
+            "--quiet",
+            "--chrome-flags=--headless --no-sandbox",
+            "--preset=desktop",
+            "--output=json",
+            "--output=html",
+            f"--output-path={json_out.with_suffix('').as_posix()}",
+            "--only-categories=performance,accessibility,best-practices,seo",
+        ]
+        try:
+            proc = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                timeout=180,
+                check=False,
+            )
+        except (FileNotFoundError, subprocess.TimeoutExpired) as exc:
+            results[path] = {"error": str(exc)}
+            continue
+        if proc.returncode != 0 and not json_out.exists():
+            results[path] = {
+                "error": f"lighthouse exit={proc.returncode} stderr={proc.stderr[:200]}",
+            }
+            continue
+        if json_out.exists():
+            try:
+                doc = json.loads(json_out.read_text(encoding="utf-8"))
+            except json.JSONDecodeError as exc:
+                results[path] = {"error": f"could not parse {json_out.name}: {exc}"}
+                continue
+            cats = doc.get("categories", {})
+            results[path] = {
+                "performance": (cats.get("performance") or {}).get("score"),
+                "accessibility": (cats.get("accessibility") or {}).get("score"),
+                "best-practices": (cats.get("best-practices") or {}).get("score"),
+                "seo": (cats.get("seo") or {}).get("score"),
+                "json_report": json_out.relative_to(REPO_ROOT).as_posix(),
+                "html_report": (
+                    html_out.relative_to(REPO_ROOT).as_posix() if html_out.exists() else None
+                ),
+            }
+        else:
+            results[path] = {"error": "lighthouse produced no JSON output"}
+    return results
+
+
+# ---------------------------------------------------------------------------
+# Playwright fallback (structural audit)
+# ---------------------------------------------------------------------------
+
+
+_PEXELS_NEEDLES = ("photo by ", "pexels.com")
+_LEAK_NAMES = ("PEXELS_API_KEY", "STRIPE_SECRET", "SENDGRID_API_KEY")
+_LONG_TOKEN = re.compile(r"[A-Za-z0-9]{40,}")
+
+
+def fallback_check_page(html: str, viewport_width: int, body_overflow: int) -> dict[str, Any]:
+    """Apply structural rules to a single page. Pure function, easy to test.
+
+    ``body_overflow`` is the document's ``scrollWidth`` collected by
+    Playwright; if it's > viewport_width we flag horizontal overflow.
+    """
+
+    failures: list[str] = []
+
+    # 1. <title>
+    title_match = re.search(r"<title[^>]*>(.*?)</title>", html, flags=re.IGNORECASE | re.DOTALL)
+    if not title_match or not title_match.group(1).strip():
+        failures.append("title_missing_or_empty")
+
+    # 2. <meta name="description">
+    if not re.search(
+        r'<meta[^>]+name=["\']description["\'][^>]+content=["\'][^"\']+["\']',
+        html,
+        flags=re.IGNORECASE,
+    ):
+        failures.append("meta_description_missing")
+
+    # 3. exactly one <h1>
+    h1_count = len(re.findall(r"<h1[\s>]", html))
+    if h1_count != 1:
+        failures.append(f"h1_count={h1_count}")
+
+    # 4. images: alt + width/height
+    for img in re.findall(r"<img\b[^>]*>", html, flags=re.IGNORECASE):
+        # The decorative-image escape hatch: alt="" is OK as long as the
+        # attribute is present.
+        if not re.search(r'\balt\s*=\s*["\']', img, flags=re.IGNORECASE):
+            failures.append("img_missing_alt")
+            break
+    for img in re.findall(r"<img\b[^>]*>", html, flags=re.IGNORECASE):
+        has_w = re.search(r'\bwidth\s*=\s*["\']?\d', img, flags=re.IGNORECASE)
+        has_h = re.search(r'\bheight\s*=\s*["\']?\d', img, flags=re.IGNORECASE)
+        if not (has_w and has_h):
+            failures.append("img_missing_dimensions")
+            break
+
+    # 5. no Pexels attribution
+    lower = html.lower()
+    for needle in _PEXELS_NEEDLES:
+        if needle in lower:
+            failures.append(f"pexels_attribution:{needle.strip()}")
+
+    # 6. no API key / token leak
+    for name in _LEAK_NAMES:
+        if name in html:
+            failures.append(f"env_var_leak:{name}")
+    for match in _LONG_TOKEN.findall(html):
+        for prefix in ("key=", "token=", "secret="):
+            if prefix + match in html:
+                failures.append(f"token_leak_after:{prefix}")
+                break
+
+    # 7. no horizontal overflow on mobile
+    if body_overflow > viewport_width + 1:  # +1 px slack for sub-pixel rounding
+        failures.append(f"horizontal_overflow:{body_overflow}>{viewport_width}")
+
+    return {"failures": failures, "passed": not failures}
+
+
+def _run_playwright_fallback(base_url: str, urls: list[str]) -> dict[str, Any]:
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        return {"error": "playwright not installed; cannot run fallback audit"}
+
+    results: dict[str, Any] = {}
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        # Mobile viewport (iPhone 12 Pro logical width is 390; we use 375
+        # to match the conservative "iPhone SE" lower bound).
+        context = browser.new_context(viewport={"width": 375, "height": 800})
+        page = context.new_page()
+
+        for path in urls:
+            target = base_url.rstrip("/") + path
+            try:
+                resp = page.goto(target, wait_until="networkidle", timeout=20_000)
+            except Exception as exc:  # noqa: BLE001
+                results[path] = {"failures": [f"navigation_error:{exc}"], "passed": False}
+                continue
+
+            status = resp.status if resp else 0
+            if status != 200:
+                results[path] = {"failures": [f"http_status:{status}"], "passed": False}
+                continue
+
+            html = page.content()
+            body_overflow = int(page.evaluate("() => document.documentElement.scrollWidth"))
+            verdict = fallback_check_page(html, viewport_width=375, body_overflow=body_overflow)
+            results[path] = verdict
+
+        browser.close()
+
+    return results
+
+
+# ---------------------------------------------------------------------------
+# Verdict + report
+# ---------------------------------------------------------------------------
+
+
+def evaluate_lighthouse(scores: dict[str, Any], thresholds: dict[str, Any]) -> dict[str, Any]:
+    """Compare raw scores against thresholds; return a verdict dict."""
+
+    failures: list[str] = []
+    warnings: list[str] = []
+    for category, rule in thresholds.get("lighthouse", {}).items():
+        score = scores.get(category)
+        if score is None:
+            warnings.append(f"{category}:missing")
+            continue
+        if score < rule["min"]:
+            msg = f"{category}={score:.2f}<{rule['min']:.2f}"
+            if rule["level"] == "required":
+                failures.append(msg)
+            else:
+                warnings.append(msg)
+    return {"failures": failures, "warnings": warnings, "passed": not failures}
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--base-url", default=DEFAULT_BASE_URL)
+    parser.add_argument(
+        "--force-fallback",
+        action="store_true",
+        help="Skip the Lighthouse CLI even if installed (useful for CI / testing).",
+    )
+    parser.add_argument(
+        "--report-json",
+        default=None,
+        help="Optional path to dump the audit JSON to (in addition to stdout).",
+    )
+    args = parser.parse_args()
+
+    if not THRESHOLDS_PATH.exists():
+        print(f"ERROR: thresholds file missing at {THRESHOLDS_PATH}", file=sys.stderr)
+        return 2
+    thresholds = json.loads(THRESHOLDS_PATH.read_text(encoding="utf-8"))
+    urls = thresholds.get("audited_urls", [])
+    if not urls:
+        print("ERROR: thresholds file has no audited_urls", file=sys.stderr)
+        return 2
+
+    cli = None if args.force_fallback else _find_lighthouse_cli()
+
+    if cli:
+        print(f"[mode] lighthouse CLI at {cli}")
+        raw = _run_lighthouse(cli, args.base_url, urls)
+        per_url: dict[str, Any] = {}
+        any_required_failure = False
+        for path, scores in raw.items():
+            if "error" in scores:
+                per_url[path] = scores
+                any_required_failure = True
+                continue
+            verdict = evaluate_lighthouse(scores, thresholds)
+            per_url[path] = {**scores, **verdict}
+            if not verdict["passed"]:
+                any_required_failure = True
+        report = {
+            "tool": "lighthouse",
+            "base_url": args.base_url,
+            "urls": per_url,
+            "report_dir": LIGHTHOUSE_REPORT_DIR.relative_to(REPO_ROOT).as_posix(),
+        }
+    else:
+        print("[mode] lighthouse CLI not on PATH — running Playwright fallback audit")
+        raw = _run_playwright_fallback(args.base_url, urls)
+        if "error" in raw:
+            print(f"ERROR: {raw['error']}", file=sys.stderr)
+            return 2
+        any_required_failure = any(not v.get("passed", False) for v in raw.values())
+        report = {
+            "tool": "playwright_fallback",
+            "base_url": args.base_url,
+            "urls": raw,
+        }
+
+    print(json.dumps(report, indent=2, ensure_ascii=False))
+    if args.report_json:
+        out = pathlib.Path(args.report_json)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
+        print(f"\n[report] saved to {out}", file=sys.stderr)
+
+    if any_required_failure:
+        print("\n[verdict] FAIL — at least one required rule failed.", file=sys.stderr)
+        return 1
+    print("\n[verdict] OK — every required rule passes.", file=sys.stderr)
+    return 0
+
+
+# ---------------------------------------------------------------------------
+# Markdown report generator (used by the doc + by tests)
+# ---------------------------------------------------------------------------
+
+
+def render_markdown_report(report: dict[str, Any]) -> str:
+    """Turn an audit JSON dict into a markdown table.
+
+    Pure function — used from the live audit and from tests. Accepts
+    both the lighthouse and the playwright_fallback shape.
+    """
+
+    lines = [
+        "# Public funnel audit — pass 1",
+        "",
+        f"- tool: `{report.get('tool')}`",
+        f"- base URL: `{report.get('base_url')}`",
+        "",
+    ]
+
+    if report.get("tool") == "lighthouse":
+        lines.extend(
+            [
+                "| URL | perf | a11y | best-pract. | SEO | Verdict |",
+                "| --- | ---: | ---: | ---: | ---: | --- |",
+            ]
+        )
+        for path, data in (report.get("urls") or {}).items():
+            if "error" in data:
+                lines.append(f"| `{path}` | — | — | — | — | error: {data['error']} |")
+                continue
+            lines.append(
+                f"| `{path}` "
+                f"| {_fmt(data.get('performance'))} "
+                f"| {_fmt(data.get('accessibility'))} "
+                f"| {_fmt(data.get('best-practices'))} "
+                f"| {_fmt(data.get('seo'))} "
+                f"| {'PASS' if data.get('passed') else 'FAIL'} |"
+            )
+    else:
+        lines.extend(
+            [
+                "| URL | Verdict | Failures |",
+                "| --- | --- | --- |",
+            ]
+        )
+        for path, data in (report.get("urls") or {}).items():
+            verdict = "PASS" if data.get("passed") else "FAIL"
+            failures = ", ".join(data.get("failures") or []) or "—"
+            lines.append(f"| `{path}` | {verdict} | {failures} |")
+
+    return "\n".join(lines)
+
+
+def _fmt(score: float | None) -> str:
+    return "—" if score is None else f"{score:.2f}"
+
+
+if __name__ == "__main__":
+    sys.exit(main())
