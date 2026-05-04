@@ -154,8 +154,8 @@
               {% if src.publication_date %}<span class="px-2 py-0.5 rounded-full bg-stone2-100">{{ src.publication_date }}</span>{% endif %}
             </div>
             {% if src.official_url %}
-              <a href="{{ src.official_url }}" rel="noopener noreferrer" target="_blank" class="mt-3 inline-block text-sm text-gold-600 hover:text-gold-500">
-                {% translate "Open official source" %} ↗
+              <a href="{{ src.official_url }}" rel="noopener noreferrer" target="_blank" aria-label="{% blocktranslate with title=src.title %}Open official source: {{ title }} (opens in a new tab){% endblocktranslate %}" class="mt-3 inline-block text-sm text-gold-600 hover:text-gold-500">
+                {% translate "Open official source" %} <span aria-hidden="true">↗</span>
               </a>
             {% endif %}
           </li>

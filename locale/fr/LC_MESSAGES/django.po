@@ -1363,16 +1363,16 @@ msgid "What happens after you submit"
 msgstr ""
 
 msgid "What happens next"
-msgstr ""
+msgstr "Ce qui se passe ensuite"
 
 msgid "A lawyer of the Studio reads your message manually — no automated reply, no third party."
-msgstr ""
+msgstr "Un avocat du Studio lit votre message manuellement — aucune réponse automatisée, aucun tiers."
 
 msgid "You receive a written reply at the email you provide. Average response: 3–5 working days."
-msgstr ""
+msgstr "Vous recevez une réponse écrite à l’adresse e-mail indiquée. Délai moyen : 3 à 5 jours ouvrés."
 
 msgid "If your case fits our scope, the Studio proposes the next step (consultation, document review, or legal opinion). Sending this form does not create a professional engagement."
-msgstr ""
+msgstr "Si votre dossier entre dans notre champ d’intervention, le Studio propose l’étape suivante (consultation, revue de documents ou avis juridique). L’envoi de ce formulaire ne crée aucun mandat professionnel."
 
 msgid "Your data is processed only to reply to this request and is kept according to the Studio retention policy. See the privacy notice for details."
 msgstr "Vos données sont traitées uniquement pour répondre à cette demande et conservées conformément à la politique de conservation du Studio. Voir l’avis de confidentialité pour plus de détails."
@@ -2044,7 +2044,7 @@ msgid "We compute or report honestly"
 msgstr "Nous calculons ou signalons honnêtement"
 
 msgid "If validated legal sources are available (today: Italy, road accident), the platform returns an indicative min/mid/max range. Otherwise it explicitly returns \"requires legal validation\" — no invented numbers."
-msgstr ""
+msgstr "Si des sources juridiques validées sont disponibles (aujourd’hui : Italie, accident de la route), la plateforme retourne une fourchette indicative min/mid/max. Sinon, elle indique explicitement « validation juridique requise » — aucun chiffre inventé."
 
 msgid "Step 3"
 msgstr "Étape 3"
@@ -2052,10 +2052,8 @@ msgstr "Étape 3"
 msgid "You request a Studio review"
 msgstr "Vous demandez une revue du Studio"
 
-#, fuzzy
-#| msgid "Submitting this form does not create a professional engagement. The Studio remains free to accept or decline the matter."
 msgid "Download the PDF of your simulation and ask the Studio for a manual legal review. The Studio remains free to accept or decline the matter."
-msgstr "L'envoi de ce formulaire ne crée pas de mandat professionnel. Le Cabinet reste libre d'accepter ou de refuser le dossier."
+msgstr "Téléchargez le PDF de votre simulation et demandez au Studio une revue juridique manuelle. Le Studio reste libre d’accepter ou de refuser le dossier."
 
 msgid "Each module is activated only after the underlying legal sources are catalogued and validated by the Studio."
 msgstr "Chaque module est activé uniquement après que les sources juridiques sous-jacentes ont été cataloguées et validées par le Cabinet."

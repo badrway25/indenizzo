@@ -1363,16 +1363,16 @@ msgid "What happens after you submit"
 msgstr ""
 
 msgid "What happens next"
-msgstr ""
+msgstr "ما الذي يحدث بعد ذلك"
 
 msgid "A lawyer of the Studio reads your message manually — no automated reply, no third party."
-msgstr ""
+msgstr "يقرأ محامٍ من المكتب رسالتك يدوياً — لا رد آلي، ولا طرف ثالث."
 
 msgid "You receive a written reply at the email you provide. Average response: 3–5 working days."
-msgstr ""
+msgstr "ستتلقى رداً مكتوباً على البريد الإلكتروني الذي تقدّمه. متوسط مدة الرد: 3 إلى 5 أيام عمل."
 
 msgid "If your case fits our scope, the Studio proposes the next step (consultation, document review, or legal opinion). Sending this form does not create a professional engagement."
-msgstr ""
+msgstr "إذا كان ملفك ضمن نطاق عملنا، يقترح المكتب الخطوة التالية (استشارة، مراجعة مستندات، أو رأي قانوني). إرسال هذا النموذج لا يُنشئ أي تكليف مهني."
 
 msgid "Your data is processed only to reply to this request and is kept according to the Studio retention policy. See the privacy notice for details."
 msgstr "تتم معالجة بياناتك فقط للردّ على هذا الطلب وتُحفظ وفقاً لسياسة الاحتفاظ لدى المكتب. راجع إشعار الخصوصية لمزيد من التفاصيل."
@@ -2044,7 +2044,7 @@ msgid "We compute or report honestly"
 msgstr "نحسب أو نُبلّغ بصدق"
 
 msgid "If validated legal sources are available (today: Italy, road accident), the platform returns an indicative min/mid/max range. Otherwise it explicitly returns \"requires legal validation\" — no invented numbers."
-msgstr ""
+msgstr "إذا توفّرت مصادر قانونية موثّقة (اليوم: إيطاليا، حوادث الطرق)، تُرجع المنصّة نطاقاً إرشادياً للحد الأدنى/المتوسط/الأقصى. وإلا فإنها تُرجع صراحةً «مطلوب التحقق القانوني» — دون أي أرقام مُختلَقة."
 
 msgid "Step 3"
 msgstr "الخطوة 3"
@@ -2052,10 +2052,8 @@ msgstr "الخطوة 3"
 msgid "You request a Studio review"
 msgstr "تطلب مراجعة من المكتب"
 
-#, fuzzy
-#| msgid "Submitting this form does not create a professional engagement. The Studio remains free to accept or decline the matter."
 msgid "Download the PDF of your simulation and ask the Studio for a manual legal review. The Studio remains free to accept or decline the matter."
-msgstr "إرسال هذا النموذج لا يُنشئ تكليفًا مهنيًا. يبقى المكتب حرًا في قبول أو رفض القضية."
+msgstr "نزّل ملف PDF الخاص بمحاكاتك واطلب من المكتب مراجعة قانونية يدوية. يبقى المكتب حراً في قبول الملف أو رفضه."
 
 msgid "Each module is activated only after the underlying legal sources are catalogued and validated by the Studio."
 msgstr "يتم تفعيل كل وحدة فقط بعد فهرسة المصادر القانونية الأساسية والتحقق منها من قبل المكتب."

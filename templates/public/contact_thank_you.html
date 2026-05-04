@@ -27,7 +27,7 @@
     <a href="{% url 'core:home' %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink-950/15 text-ink-950 hover:bg-stone2-100 font-semibold">
       {% translate "Back to homepage" %}
     </a>
-    <a href="{{ PARENT_SITE_URL }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink-950/15 text-ink-950 hover:bg-stone2-100 font-semibold">
+    <a href="{{ PARENT_SITE_URL }}" rel="noopener noreferrer" target="_blank" aria-label="{% translate 'Visit institutional website (opens in a new tab)' %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink-950/15 text-ink-950 hover:bg-stone2-100 font-semibold">
       {% translate "Visit institutional website" %}
       <span aria-hidden="true">↗</span>
     </a>
