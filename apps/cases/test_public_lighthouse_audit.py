@@ -38,7 +38,10 @@ THRESHOLDS_PATH = REPO_ROOT / "config" / "public_lighthouse_thresholds.json"
 
 def test_thresholds_json_is_valid_and_well_formed():
     raw = json.loads(THRESHOLDS_PATH.read_text(encoding="utf-8"))
-    assert raw["_schema_version"] == 1
+    # Schema is forward-compatible: pass-1 only checks the floor (>= 1).
+    # Pass-2 bumped to 2 — that bump is asserted by the pass-2 test
+    # ``test_thresholds_pass2_schema_is_valid``.
+    assert raw["_schema_version"] >= 1
     lh = raw["lighthouse"]
     for key in ("performance", "accessibility", "best-practices", "seo"):
         assert key in lh, f"missing lighthouse threshold: {key}"

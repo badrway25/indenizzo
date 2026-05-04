@@ -1,39 +1,52 @@
 """Run a public-funnel performance / a11y / SEO audit.
 
-Iter: F-product-lighthouse-visual-qa-pass1.
+Iter origin: F-product-lighthouse-visual-qa-pass1.
+Extended in: F-perf-pass2-lighthouse-cli-and-ci-ready.
 
 Strategy:
 
-1. If a Lighthouse CLI is on PATH (``lighthouse`` or ``lhci``), shell
-   out to it for each URL with the ``mobile`` preset and write the
-   JSON / HTML reports under
-   ``docs/reports/lighthouse/public_site_pass1/``.
+1. ``--mode auto`` (default): if a Lighthouse CLI is on PATH
+   (``lighthouse`` or ``lhci``), use it; otherwise fall back to a
+   structural Playwright probe.
 
-2. Otherwise, fall back to a structural Playwright probe that checks
-   the required rules from
-   ``config/public_lighthouse_thresholds.json``:
+2. ``--mode lighthouse``: force the lighthouse path. If the CLI is
+   not on PATH, exit with code ``2`` and a clear error message rather
+   than silently downgrading.
 
-   - HTTP 200
-   - ``<title>`` present and non-empty
-   - ``<meta name="description">`` present and non-empty
-   - exactly one ``<h1>``
-   - no horizontal overflow on a 375 × 800 mobile viewport
-   - every visible ``<img>`` has a non-empty ``alt`` attribute and
-     explicit ``width`` / ``height``
-   - no Pexels-style "Photo by …" attribution leaks
-   - no API key / token leak
+3. ``--mode playwright``: force the structural fallback even if the
+   CLI is available (useful in CI where determinism matters more
+   than full perf metrics).
 
-The script returns exit code 0 if every required rule passes, 1
-otherwise. It is read-only on the legal / calculator layer (HTTP GETs
-only).
+The structural fallback enforces the rules from
+``config/public_lighthouse_thresholds.json`` (HTTP 200, ``<title>``,
+``<meta name="description">``, single ``<h1>``, no horizontal overflow
+on a 375 × 800 mobile viewport, every ``<img>`` carries ``alt`` and
+``width`` / ``height``, no Pexels-style "Photo by …" caption, no
+API-key / token leak).
 
-Usage::
+Output:
 
-    python scripts/run_public_lighthouse_audit.py
-    python scripts/run_public_lighthouse_audit.py --base-url http://127.0.0.1:48107
+- ``<out-dir>/audit.json`` — raw audit (always written).
+- ``<out-dir>/summary.md`` — markdown table (always written).
+- ``<out-dir>/lighthouse/<slug>.{json,html}`` — per-URL lighthouse
+  reports, only when the lighthouse path runs.
 
-The default base URL is the live dev server we leave running across
-iters (``http://127.0.0.1:48107/``).
+Default ``--out-dir`` is
+``docs/reports/lighthouse/public_site_pass1`` to keep backward
+compatibility with the pass-1 paths; pass-2 callers should specify
+``--out-dir docs/reports/lighthouse/public_site_pass2``.
+
+Exit codes:
+
+- ``0`` — every required rule passes.
+- ``1`` — at least one required rule failed (a11y/SEO/best-practices
+  below threshold, or a structural fallback failure).
+- ``2`` — configuration error (missing thresholds file, missing
+  audited URLs, ``--mode lighthouse`` with no CLI on PATH, Playwright
+  not installed).
+
+The script is read-only on the legal / calculator layer (HTTP GETs
+only) and never installs anything from the network.
 """
 
 from __future__ import annotations
@@ -49,7 +62,7 @@ from typing import Any
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
 THRESHOLDS_PATH = REPO_ROOT / "config" / "public_lighthouse_thresholds.json"
-LIGHTHOUSE_REPORT_DIR = REPO_ROOT / "docs" / "reports" / "lighthouse" / "public_site_pass1"
+DEFAULT_OUT_DIR = REPO_ROOT / "docs" / "reports" / "lighthouse" / "public_site_pass1"
 DEFAULT_BASE_URL = "http://127.0.0.1:48107"
 
 
@@ -59,11 +72,7 @@ DEFAULT_BASE_URL = "http://127.0.0.1:48107"
 
 
 def _find_lighthouse_cli() -> str | None:
-    """Return a Lighthouse-compatible CLI command, or None if absent.
-
-    We only consider executables already on ``PATH`` — we never trigger
-    a network install.
-    """
+    """Return a Lighthouse-compatible CLI command, or None if absent."""
 
     for candidate in ("lighthouse", "lhci"):
         path = shutil.which(candidate)
@@ -72,21 +81,24 @@ def _find_lighthouse_cli() -> str | None:
     return None
 
 
-def _run_lighthouse(cli: str, base_url: str, urls: list[str]) -> dict[str, Any]:
-    """Run the Lighthouse CLI for each URL, mobile preset.
+def _run_lighthouse(
+    cli: str, base_url: str, urls: list[str], out_dir: pathlib.Path
+) -> dict[str, Any]:
+    """Run the Lighthouse CLI for each URL.
 
     Returns a dict mapping URL → score dict. Failures (e.g. missing
     Chrome) are reported as ``{"error": "..."}`` rather than crashing
     the whole audit.
     """
 
-    LIGHTHOUSE_REPORT_DIR.mkdir(parents=True, exist_ok=True)
+    lh_dir = out_dir / "lighthouse"
+    lh_dir.mkdir(parents=True, exist_ok=True)
     results: dict[str, Any] = {}
     for path in urls:
         target = base_url.rstrip("/") + path
         slug = path.strip("/").replace("/", "_") or "home"
-        json_out = LIGHTHOUSE_REPORT_DIR / f"{slug}.json"
-        html_out = LIGHTHOUSE_REPORT_DIR / f"{slug}.html"
+        json_out = lh_dir / f"{slug}.json"
+        html_out = lh_dir / f"{slug}.html"
         cmd = [
             cli,
             target,
@@ -258,94 +270,25 @@ def evaluate_lighthouse(scores: dict[str, Any], thresholds: dict[str, Any]) -> d
     failures: list[str] = []
     warnings: list[str] = []
     for category, rule in thresholds.get("lighthouse", {}).items():
+        if category.startswith("_"):
+            continue  # _doc keys etc.
+        if not isinstance(rule, dict):
+            continue
         score = scores.get(category)
         if score is None:
             warnings.append(f"{category}:missing")
             continue
         if score < rule["min"]:
             msg = f"{category}={score:.2f}<{rule['min']:.2f}"
-            if rule["level"] == "required":
+            if rule.get("level") == "required":
                 failures.append(msg)
             else:
                 warnings.append(msg)
     return {"failures": failures, "warnings": warnings, "passed": not failures}
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--base-url", default=DEFAULT_BASE_URL)
-    parser.add_argument(
-        "--force-fallback",
-        action="store_true",
-        help="Skip the Lighthouse CLI even if installed (useful for CI / testing).",
-    )
-    parser.add_argument(
-        "--report-json",
-        default=None,
-        help="Optional path to dump the audit JSON to (in addition to stdout).",
-    )
-    args = parser.parse_args()
-
-    if not THRESHOLDS_PATH.exists():
-        print(f"ERROR: thresholds file missing at {THRESHOLDS_PATH}", file=sys.stderr)
-        return 2
-    thresholds = json.loads(THRESHOLDS_PATH.read_text(encoding="utf-8"))
-    urls = thresholds.get("audited_urls", [])
-    if not urls:
-        print("ERROR: thresholds file has no audited_urls", file=sys.stderr)
-        return 2
-
-    cli = None if args.force_fallback else _find_lighthouse_cli()
-
-    if cli:
-        print(f"[mode] lighthouse CLI at {cli}")
-        raw = _run_lighthouse(cli, args.base_url, urls)
-        per_url: dict[str, Any] = {}
-        any_required_failure = False
-        for path, scores in raw.items():
-            if "error" in scores:
-                per_url[path] = scores
-                any_required_failure = True
-                continue
-            verdict = evaluate_lighthouse(scores, thresholds)
-            per_url[path] = {**scores, **verdict}
-            if not verdict["passed"]:
-                any_required_failure = True
-        report = {
-            "tool": "lighthouse",
-            "base_url": args.base_url,
-            "urls": per_url,
-            "report_dir": LIGHTHOUSE_REPORT_DIR.relative_to(REPO_ROOT).as_posix(),
-        }
-    else:
-        print("[mode] lighthouse CLI not on PATH — running Playwright fallback audit")
-        raw = _run_playwright_fallback(args.base_url, urls)
-        if "error" in raw:
-            print(f"ERROR: {raw['error']}", file=sys.stderr)
-            return 2
-        any_required_failure = any(not v.get("passed", False) for v in raw.values())
-        report = {
-            "tool": "playwright_fallback",
-            "base_url": args.base_url,
-            "urls": raw,
-        }
-
-    print(json.dumps(report, indent=2, ensure_ascii=False))
-    if args.report_json:
-        out = pathlib.Path(args.report_json)
-        out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
-        print(f"\n[report] saved to {out}", file=sys.stderr)
-
-    if any_required_failure:
-        print("\n[verdict] FAIL — at least one required rule failed.", file=sys.stderr)
-        return 1
-    print("\n[verdict] OK — every required rule passes.", file=sys.stderr)
-    return 0
-
-
 # ---------------------------------------------------------------------------
-# Markdown report generator (used by the doc + by tests)
+# Markdown report generator (used by the live run + by tests)
 # ---------------------------------------------------------------------------
 
 
@@ -395,11 +338,185 @@ def render_markdown_report(report: dict[str, Any]) -> str:
             failures = ", ".join(data.get("failures") or []) or "—"
             lines.append(f"| `{path}` | {verdict} | {failures} |")
 
+    if any(
+        (data.get("warnings"))
+        for data in (report.get("urls") or {}).values()
+        if isinstance(data, dict)
+    ):
+        lines.append("")
+        lines.append("## Warnings (informational, do not gate the audit)")
+        lines.append("")
+        for path, data in (report.get("urls") or {}).items():
+            if not isinstance(data, dict):
+                continue
+            warnings = data.get("warnings") or []
+            if warnings:
+                lines.append(f"- `{path}`: {', '.join(warnings)}")
+
     return "\n".join(lines)
 
 
 def _fmt(score: float | None) -> str:
     return "—" if score is None else f"{score:.2f}"
+
+
+def _rel(path: pathlib.Path) -> str:
+    """Best-effort relative-to-repo posix string; absolute fallback."""
+
+    try:
+        return path.relative_to(REPO_ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--base-url", default=DEFAULT_BASE_URL)
+    parser.add_argument(
+        "--out-dir",
+        default=str(DEFAULT_OUT_DIR),
+        help=(
+            "Directory where audit.json + summary.md (and per-URL "
+            "lighthouse reports) are written."
+        ),
+    )
+    parser.add_argument(
+        "--mode",
+        choices=("auto", "lighthouse", "playwright"),
+        default="auto",
+        help=(
+            "auto: lighthouse if available, else playwright fallback. "
+            "lighthouse: require lighthouse on PATH (exit 2 otherwise). "
+            "playwright: force the structural fallback."
+        ),
+    )
+    parser.add_argument(
+        "--fail-on-warning",
+        action="store_true",
+        help=(
+            "Promote warning-level threshold violations to failures. "
+            "Off by default — performance scores are too host-dependent "
+            "to gate CI on until the Lighthouse CLI version is pinned."
+        ),
+    )
+    parser.add_argument(
+        "--force-fallback",
+        action="store_true",
+        help="Deprecated alias for --mode playwright. Kept for pass-1 compatibility.",
+    )
+    parser.add_argument(
+        "--report-json",
+        default=None,
+        help=(
+            "Deprecated. Use --out-dir; this flag still works and writes a "
+            "second copy of audit.json at the requested path."
+        ),
+    )
+    args = parser.parse_args(argv)
+
+    if not THRESHOLDS_PATH.exists():
+        print(f"ERROR: thresholds file missing at {THRESHOLDS_PATH}", file=sys.stderr)
+        return 2
+    thresholds = json.loads(THRESHOLDS_PATH.read_text(encoding="utf-8"))
+    urls = thresholds.get("audited_urls", [])
+    if not urls:
+        print("ERROR: thresholds file has no audited_urls", file=sys.stderr)
+        return 2
+
+    out_dir = pathlib.Path(args.out_dir)
+    if not out_dir.is_absolute():
+        out_dir = (REPO_ROOT / out_dir).resolve()
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    # Resolve mode.
+    mode = "playwright" if args.force_fallback else args.mode
+    cli: str | None = None
+    if mode in {"auto", "lighthouse"}:
+        cli = _find_lighthouse_cli()
+    if mode == "lighthouse" and cli is None:
+        print(
+            "ERROR: --mode lighthouse requires a 'lighthouse' or 'lhci' binary on PATH; "
+            "none was found. Install one or use --mode auto / playwright.",
+            file=sys.stderr,
+        )
+        return 2
+
+    if cli and mode != "playwright":
+        print(f"[mode] lighthouse CLI at {cli}", file=sys.stderr)
+        raw = _run_lighthouse(cli, args.base_url, urls, out_dir)
+        per_url: dict[str, Any] = {}
+        any_required_failure = False
+        any_warning = False
+        for path, scores in raw.items():
+            if "error" in scores:
+                per_url[path] = scores
+                any_required_failure = True
+                continue
+            verdict = evaluate_lighthouse(scores, thresholds)
+            per_url[path] = {**scores, **verdict}
+            if not verdict["passed"]:
+                any_required_failure = True
+            if verdict.get("warnings"):
+                any_warning = True
+        report = {
+            "tool": "lighthouse",
+            "base_url": args.base_url,
+            "urls": per_url,
+            "report_dir": (out_dir / "lighthouse").relative_to(REPO_ROOT).as_posix(),
+        }
+    else:
+        if mode == "auto":
+            print(
+                "[mode] lighthouse CLI not on PATH — running Playwright fallback audit",
+                file=sys.stderr,
+            )
+        else:
+            print("[mode] Playwright fallback audit (forced)", file=sys.stderr)
+        raw = _run_playwright_fallback(args.base_url, urls)
+        if "error" in raw:
+            print(f"ERROR: {raw['error']}", file=sys.stderr)
+            return 2
+        any_required_failure = any(not v.get("passed", False) for v in raw.values())
+        any_warning = False
+        report = {
+            "tool": "playwright_fallback",
+            "base_url": args.base_url,
+            "urls": raw,
+        }
+
+    # Persist audit.json + summary.md (always).
+    audit_json_path = out_dir / "audit.json"
+    summary_md_path = out_dir / "summary.md"
+    audit_json_path.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
+    summary_md_path.write_text(render_markdown_report(report), encoding="utf-8")
+    print(f"[report] {_rel(audit_json_path)}", file=sys.stderr)
+    print(f"[summary] {_rel(summary_md_path)}", file=sys.stderr)
+
+    # Backward compat: legacy --report-json copy.
+    if args.report_json:
+        legacy = pathlib.Path(args.report_json)
+        legacy.parent.mkdir(parents=True, exist_ok=True)
+        legacy.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
+        print(f"[legacy-report] {legacy}", file=sys.stderr)
+
+    print(json.dumps(report, indent=2, ensure_ascii=False))
+
+    if any_required_failure:
+        print("\n[verdict] FAIL — at least one required rule failed.", file=sys.stderr)
+        return 1
+    if any_warning and args.fail_on_warning:
+        print(
+            "\n[verdict] FAIL (--fail-on-warning) — required rules pass but warnings present.",
+            file=sys.stderr,
+        )
+        return 1
+    print("\n[verdict] OK — every required rule passes.", file=sys.stderr)
+    return 0
 
 
 if __name__ == "__main__":

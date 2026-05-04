@@ -1,15 +1,16 @@
 {
-  "_schema_version": 1,
-  "_iter": "F-product-lighthouse-visual-qa-pass1",
-  "_doc": "Thresholds for the public-funnel Lighthouse / Playwright audit. Required = audit fails the build if the score is below the threshold. Warning = audit logs a warning but does not fail the build (we are not regression-gating perf yet because tooling availability is not guaranteed across machines).",
+  "_schema_version": 2,
+  "_iter": "F-perf-pass2-lighthouse-cli-and-ci-ready",
+  "_doc": "Thresholds for the public-funnel audit. Two-tier policy: 'required' fails the audit and is meant to be CI-gating; 'warning' is logged but never gates the build until the underlying tooling is pinned to a specific version. Structural fallback rules are always required.",
   "lighthouse": {
+    "_doc": "Lighthouse CLI scores (0.0–1.0). Active only when a 'lighthouse' or 'lhci' binary is on PATH. Until the CLI version is pinned, performance stays warning-only — measurements depend too much on the host CPU / browser version to gate CI on them. Accessibility, SEO and best-practices are deterministic enough to gate.",
     "performance": { "min": 0.70, "level": "warning" },
     "accessibility": { "min": 0.90, "level": "required" },
     "best-practices": { "min": 0.90, "level": "required" },
     "seo": { "min": 0.90, "level": "required" }
   },
   "fallback_playwright": {
-    "_doc": "When the Lighthouse CLI is not available we fall back to a structural Playwright audit. All structural rules are required: we expect the public funnels to never regress on these.",
+    "_doc": "When the Lighthouse CLI is not available we fall back to a structural Playwright audit. All structural rules are required: they encode regressions we never want to ship (missing H1, missing meta, leaking API keys, surfacing Pexels attribution).",
     "rules": {
       "http_status_200": "required",
       "title_present": "required",
