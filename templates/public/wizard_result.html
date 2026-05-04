@@ -41,11 +41,38 @@
       <p class="mt-3 text-xs text-stone2-500">
         {% translate "Internal status code" %}: <span class="font-mono">{{ simulation.status }}</span>
       </p>
+      <a href="{{ contact_url }}" class="mt-5 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
+        {% translate "Request a Studio review of this case" %}
+        <span aria-hidden="true">→</span>
+      </a>
     </div>
   {% endif %}
 
-  {# -------- Calculation basis (premium UX, post-pass-official-source-automation) -------- #}
+  {# -------- What this means (plain language) -------- #}
   {% if has_estimate %}
+    <div class="mt-8 rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7">
+      <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "What this means" %}</p>
+      <h3 class="mt-2 font-serif text-xl text-ink-950">{% translate "A bargaining anchor, not a guaranteed payout" %}</h3>
+      <p class="mt-3 text-sm text-ink-800 leading-relaxed">
+        {% blocktranslate %}The min / mid / max values are the indicative range a Studio lawyer would use as a starting point in negotiation or judicial reasoning. They reflect the validated legal sources cited below and the inputs you provided. They are not a promise of recovery, a quote, or a verdict.{% endblocktranslate %}
+      </p>
+      <p class="mt-2 text-sm text-ink-800 leading-relaxed">
+        {% blocktranslate %}The actual amount finally awarded depends on documents, expert reports, the responsibility split, the competent jurisdiction, and the judicial orientation of the deciding court — none of which the platform sees today.{% endblocktranslate %}
+      </p>
+    </div>
+
+    {# -------- Next steps -------- #}
+    <div class="mt-8 rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7">
+      <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Next steps" %}</p>
+      <h3 class="mt-2 font-serif text-xl text-ink-950">{% translate "What you can do with this result" %}</h3>
+      <ol class="mt-4 space-y-3 text-sm text-ink-900 leading-relaxed list-decimal list-inside">
+        <li>{% blocktranslate %}Download the PDF of this simulation. It carries the same range, sources and disclaimer, in a format you can save or share.{% endblocktranslate %}</li>
+        <li>{% blocktranslate %}Request a legal review from the Studio. A lawyer reads the case manually and replies on whether and how the firm can help.{% endblocktranslate %}</li>
+        <li>{% blocktranslate %}Keep the simulation ID below — the Studio uses it to retrieve the exact inputs and sources of this run.{% endblocktranslate %}</li>
+      </ol>
+    </div>
+
+    {# -------- Calculation basis (premium UX, post-pass-official-source-automation) -------- #}
     <div class="mt-8 rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7">
       <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Calculation basis" %}</p>
       <h3 class="mt-2 font-serif text-xl text-ink-950">{% translate "How to read this range" %}</h3>

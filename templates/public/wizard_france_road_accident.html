@@ -15,8 +15,11 @@
   </p>
 
   <div class="mt-6 rounded-2xl border border-gold-400/40 bg-sand-100 px-5 py-4 text-sm text-ink-900 leading-relaxed">
-    <strong class="font-semibold">{% translate "Module under legal validation" %}.</strong>
-    {% blocktranslate %}This module is a scaffold. The French calculator engine is registered but the legal sources (Loi Badinter, Référentiel indicatif, barème de capitalisation) are still under Studio review. The wizard will return "requires legal validation" rather than a numeric estimate.{% endblocktranslate %}
+    <strong class="font-semibold">{% translate "Module under legal validation — no automatic estimate." %}</strong>
+    {% blocktranslate %}The French calculator engine is registered but the legal sources (Loi Badinter, Référentiel indicatif, barème de capitalisation) are still under Studio review. The wizard returns "requires legal validation" rather than a numeric estimate. If you prefer to skip the form, you can write directly to the Studio.{% endblocktranslate %}
+    <a href="{% url 'crm:contact' %}" class="mt-2 inline-flex items-center gap-1 text-gold-600 hover:text-gold-500 font-semibold">
+      {% translate "Contact the Studio" %} <span aria-hidden="true">→</span>
+    </a>
   </div>
 
   {% include "partials/_module_status_card.html" with msc_does=_("Collects qualitative information about your case so the Studio can review it.") msc_does_not=_("It does not produce any numeric estimate. The French calculator engine is in scaffold mode and the underlying sources are still under Studio review.") msc_next_step=_("Submit your inputs — the Studio receives the case and a lawyer replies after a manual legal review.") msc_status_label=_("Legal sources under review") msc_status_tone="warn" %}
@@ -120,7 +123,7 @@
         {% blocktranslate %}Submitting this form does not create a professional engagement.{% endblocktranslate %}
       </p>
       <button type="submit" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
-        {% translate "Run simulation" %}
+        {% translate "Submit for legal review" %}
         <span aria-hidden="true">→</span>
       </button>
     </div>

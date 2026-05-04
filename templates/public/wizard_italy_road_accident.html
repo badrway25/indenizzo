@@ -21,6 +21,26 @@
 
   {% include "partials/_module_status_card.html" with msc_does=_("Produces an indicative compensation range from the approved Tabella Unica Nazionale 2025 (D.P.R. 12/2025) for road-accident bodily injury under Italian law.") msc_does_not=_("It does not collect medical or financial documents, does not constitute legal advice, does not guarantee any outcome, and does not replace a medical-legal report.") msc_next_step=_("Submit to view the indicative range, download the PDF report, then request a legal review from the Studio if you want to act on it.") msc_status_label=_("Calculator available — TUN 2025") msc_status_tone="ok" %}
 
+  <aside aria-label="{% translate 'Result preview' %}" class="mt-6 rounded-3xl border border-stone2-200 bg-white shadow-card p-5 sm:p-6">
+    <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "After you submit" %}</p>
+    <h2 class="mt-2 font-serif text-xl text-ink-950">{% translate "You will see an indicative min / mid / max range" %}</h2>
+    <ul class="mt-4 grid sm:grid-cols-3 gap-3 text-sm text-ink-900 leading-relaxed">
+      <li class="rounded-2xl bg-sand-100 p-4">
+        <span class="text-[11px] uppercase tracking-[0.12em] text-stone2-500">{% translate "Min" %}</span>
+        <p class="mt-1">{% blocktranslate %}Conservative reading of the TUN 2025 cell for your inputs.{% endblocktranslate %}</p>
+      </li>
+      <li class="rounded-2xl bg-sand-100 p-4">
+        <span class="text-[11px] uppercase tracking-[0.12em] text-stone2-500">{% translate "Mid" %}</span>
+        <p class="mt-1">{% blocktranslate %}Central anchor used as a working reference in negotiation or judicial reasoning.{% endblocktranslate %}</p>
+      </li>
+      <li class="rounded-2xl bg-sand-100 p-4">
+        <span class="text-[11px] uppercase tracking-[0.12em] text-stone2-500">{% translate "Max" %}</span>
+        <p class="mt-1">{% blocktranslate %}Most favourable reading still supported by the same TUN 2025 cell.{% endblocktranslate %}</p>
+      </li>
+    </ul>
+    <p class="mt-4 text-xs text-stone2-500 leading-relaxed">{% blocktranslate %}The range is indicative, not a guaranteed payout. The actual valuation depends on documents, expert reports, applicable law and judicial orientation.{% endblocktranslate %}</p>
+  </aside>
+
   <form method="post" novalidate class="mt-10 bg-white border border-stone2-200 rounded-3xl shadow-card p-6 sm:p-8 space-y-6">
     {% csrf_token %}
 

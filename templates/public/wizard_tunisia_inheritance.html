@@ -15,8 +15,11 @@
   </p>
 
   <div class="mt-6 rounded-2xl border border-gold-400/40 bg-sand-100 px-5 py-4 text-sm text-ink-900 leading-relaxed">
-    <strong class="font-semibold">{% translate "Module under legal validation" %}.</strong>
-    {% blocktranslate %}This module is a scaffold. The Tunisian calculator engine is registered but the legal sources (Code du statut personnel Livre IX, Code des obligations et des contrats, Code de droit international privé) are still under Studio review. The wizard will return "requires legal validation" rather than computed shares.{% endblocktranslate %}
+    <strong class="font-semibold">{% translate "Module under legal validation — no automatic shares computed." %}</strong>
+    {% blocktranslate %}The Tunisian calculator engine is registered but the legal sources (Code du statut personnel Livre IX, Code des obligations et des contrats, Code de droit international privé) are still under Studio review. The wizard returns "requires legal validation" rather than computed shares. If you prefer to skip the form, you can write directly to the Studio.{% endblocktranslate %}
+    <a href="{% url 'crm:contact' %}" class="mt-2 inline-flex items-center gap-1 text-gold-600 hover:text-gold-500 font-semibold">
+      {% translate "Contact the Studio" %} <span aria-hidden="true">→</span>
+    </a>
   </div>
 
   {% include "partials/_module_status_card.html" with msc_does=_("Collects qualitative information about heirs and assets so the Studio can review the case under Tunisian inheritance law and EU Regulation 650/2012.") msc_does_not=_("It does not compute inheritance shares or amounts. The Tunisian engine is in scaffold mode — no automatic calculation is performed.") msc_next_step=_("Submit your inputs — a lawyer reviews the case manually and proposes the next step (applicable law, competent jurisdiction).") msc_status_label=_("Legal sources under review") msc_status_tone="warn" %}
