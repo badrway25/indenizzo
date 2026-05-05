@@ -53,6 +53,16 @@ SUPPORTED_ENGINES: frozenset[str] = frozenset(
         # See ``apps/calculators/engines/france.py`` and
         # ``docs/architecture/FRANCE_ENGINE_INACTIVE_FIXTURE_ONLY.md``.
         "france_road_accident_v1",
+        # Belgium: scaffolded engine for road accident bodily injury, fed
+        # by the Tableau Indicatif 2020 candidate dataset once Studio
+        # promotes it to APPROVED. Until then the engine returns
+        # ``unavailable`` on the public path. Three amount rules are wired
+        # for the engine's three pass-1 perimeters: souffrances endurées,
+        # indemnité forfaitaire, prejudice de décès / affection. Vehicule
+        # de remplacement is intentionally out of pass-1.
+        # See ``apps/calculators/engines/belgium.py`` and
+        # ``docs/architecture/BELGIUM_ENGINE_INACTIVE_FIXTURE_ONLY.md``.
+        "belgium_road_accident_v1",
     }
 )
 SUPPORTED_AMOUNT_RULES: frozenset[str] = frozenset(
@@ -80,6 +90,25 @@ SUPPORTED_AMOUNT_RULES: frozenset[str] = frozenset(
         # equal min=mid=max but the range support is wired upfront).
         # See ``_rule_france_dfp_point_value_direct``.
         "france_dfp_point_value_direct",
+        # Belgium Tableau Indicatif 2020 — souffrances endurées per
+        # (age band × severity scale 1/7..7/7). Reads ONE row with the
+        # range stored in ``row.extra.amount_min/mid/max``. Returns the
+        # range verbatim with optional fault-reduction applied uniformly.
+        # See ``_rule_belgium_souffrances_age_severity_direct``.
+        "belgium_souffrances_age_severity_direct",
+        # Belgium Tableau Indicatif 2020 — indemnité forfaitaire per age
+        # (annual amount). Reads ONE row with ``row.extra.annual_amount``.
+        # Optional ``incapacity_percentage`` input scales the annual
+        # amount linearly (annual × incapacity / 100). The scalar is
+        # broadcast across (min, mid, max). See
+        # ``_rule_belgium_forfait_age_annual_direct``.
+        "belgium_forfait_age_annual_direct",
+        # Belgium Tableau Indicatif 2020 — prejudice de décès / affection
+        # per relation_code. Reads ONE row keyed by ``relation_code`` with
+        # the range stored in ``row.extra.amount_min/mid/max``. Returns
+        # the range verbatim with optional fault-reduction applied
+        # uniformly. See ``_rule_belgium_deces_affection_relation_direct``.
+        "belgium_deces_affection_relation_direct",
     }
 )
 
@@ -90,8 +119,16 @@ RANGE_AMOUNT_RULES: frozenset[str] = frozenset({"row_amount_range_direct"})
 # Subset of SUPPORTED_AMOUNT_RULES that operate on **one** row but emit a
 # (min, mid, max) triple — typically because the row carries a range under
 # its ``extra`` JSON, not because the dataset is split into three row_types.
-# Used by France DFP today; can host future single-row range rules.
-SINGLE_ROW_RANGE_AMOUNT_RULES: frozenset[str] = frozenset({"france_dfp_point_value_direct"})
+# Used by France DFP and the three Belgium pass-1 rules; can host future
+# single-row range rules.
+SINGLE_ROW_RANGE_AMOUNT_RULES: frozenset[str] = frozenset(
+    {
+        "france_dfp_point_value_direct",
+        "belgium_souffrances_age_severity_direct",
+        "belgium_forfait_age_annual_direct",
+        "belgium_deces_affection_relation_direct",
+    }
+)
 
 
 def is_range_rule(rule: str) -> bool:
@@ -352,6 +389,22 @@ def _row_matches(
             return False
         if row.disability_max is not None and disability > row.disability_max:
             return False
+    # Belgium Tableau Indicatif 2020 keys (case-sensitive equality on
+    # ``row.extra``). Used by the three pass-1 BE rules; the FR/IT
+    # engines never declare these fields in their ``row_match`` and are
+    # therefore unaffected.
+    if "severity_scale" in fields:
+        wanted = (input_data.get("severity_scale") or "").strip()
+        if not wanted:
+            return False
+        if str((row.extra or {}).get("severity_code") or "").strip() != wanted:
+            return False
+    if "relation_code" in fields:
+        wanted = (input_data.get("relation_code") or "").strip()
+        if not wanted:
+            return False
+        if str((row.extra or {}).get("relation_code") or "").strip() != wanted:
+            return False
     return True
 
 
@@ -526,6 +579,24 @@ def apply_amount_single_row_range_rule(
             input_data=input_data,
             fault_reduction_enabled=fault_reduction_enabled,
         )
+    if rule == "belgium_souffrances_age_severity_direct":
+        return _rule_belgium_souffrances_age_severity_direct(
+            row=row,
+            input_data=input_data,
+            fault_reduction_enabled=fault_reduction_enabled,
+        )
+    if rule == "belgium_forfait_age_annual_direct":
+        return _rule_belgium_forfait_age_annual_direct(
+            row=row,
+            input_data=input_data,
+            fault_reduction_enabled=fault_reduction_enabled,
+        )
+    if rule == "belgium_deces_affection_relation_direct":
+        return _rule_belgium_deces_affection_relation_direct(
+            row=row,
+            input_data=input_data,
+            fault_reduction_enabled=fault_reduction_enabled,
+        )
     raise ValueError(f"Unsupported single-row range amount_rule: {rule!r}")
 
 
@@ -593,6 +664,140 @@ def _rule_france_dfp_point_value_direct(
         mid_amount=amount_mid,
         max_amount=amount_max,
     )
+
+
+def _rule_belgium_souffrances_age_severity_direct(
+    *,
+    row: CompensationTableRow,
+    input_data: dict[str, Any],
+    fault_reduction_enabled: bool,
+) -> RangeAmounts:
+    """Belgium souffrances endurées single-row range rule.
+
+    The matched row is keyed by (age band × severity scale 1/7..7/7) and
+    carries the (min, mid, max) amount triple under
+    ``row.extra.amount_min/amount_mid/amount_max``. When the upstream CSV
+    publishes a single value (today the Tableau Indicatif 2020 emits
+    equal min/mid/max) all three collapse to that value; the range
+    support is wired upfront so future per-cell fourchettes can flow
+    through unchanged.
+
+    Falls back to ``row.point_value`` duplicated across the triple when
+    ``extra`` is missing — defensive default that yields zero rather
+    than crashing on a malformed row.
+
+    Fault reduction applied uniformly when the formula declares
+    ``fault_reduction=true`` and a valid ``fault_percentage`` is in
+    the input.
+    """
+    extra = row.extra or {}
+    fallback = row.point_value or Decimal(0)
+    a_min = _to_decimal_or_none(extra.get("amount_min"))
+    a_mid = _to_decimal_or_none(extra.get("amount_mid"))
+    a_max = _to_decimal_or_none(extra.get("amount_max"))
+    if a_min is None:
+        a_min = fallback
+    if a_mid is None:
+        a_mid = fallback
+    if a_max is None:
+        a_max = fallback
+
+    if fault_reduction_enabled:
+        fault = _to_decimal_or_none(input_data.get("fault_percentage"))
+        if fault is not None and Decimal(0) <= fault <= Decimal(100):
+            factor = (Decimal(100) - fault) / Decimal(100)
+            a_min = a_min * factor
+            a_mid = a_mid * factor
+            a_max = a_max * factor
+
+    return RangeAmounts(min_amount=a_min, mid_amount=a_mid, max_amount=a_max)
+
+
+def _rule_belgium_forfait_age_annual_direct(
+    *,
+    row: CompensationTableRow,
+    input_data: dict[str, Any],
+    fault_reduction_enabled: bool,
+) -> RangeAmounts:
+    """Belgium indemnité forfaitaire single-row scalar rule.
+
+    The matched row is keyed by an age band and carries the annual
+    amount under ``row.extra.annual_amount`` (fallback ``row.point_value``).
+    The optional ``incapacity_percentage`` input scales the annual
+    amount linearly:
+
+        amount = annual_amount × incapacity_percentage / 100
+
+    When ``incapacity_percentage`` is missing or zero the rule returns
+    the annual amount as-is (interpreted as the 100% reference).
+
+    The scalar is broadcast across (min, mid, max) — the Tableau
+    Indicatif 2020 publishes one value per age, no per-cell fourchette.
+    Fault reduction applies on top, uniformly.
+    """
+    extra = row.extra or {}
+    annual = _to_decimal_or_none(extra.get("annual_amount"))
+    if annual is None:
+        annual = row.point_value or Decimal(0)
+
+    incapacity = _to_decimal_or_none(input_data.get("incapacity_percentage"))
+    if incapacity is not None and Decimal(0) < incapacity <= Decimal(100):
+        scaled = annual * incapacity / Decimal(100)
+    elif incapacity is not None and incapacity > Decimal(100):
+        # Out-of-range incapacity → caller is the gating logic; the rule
+        # itself returns zero rather than a runaway figure.
+        scaled = Decimal(0)
+    else:
+        # No incapacity provided (or zero) → return the annual reference.
+        scaled = annual
+
+    if fault_reduction_enabled:
+        fault = _to_decimal_or_none(input_data.get("fault_percentage"))
+        if fault is not None and Decimal(0) <= fault <= Decimal(100):
+            factor = (Decimal(100) - fault) / Decimal(100)
+            scaled = scaled * factor
+
+    return RangeAmounts(min_amount=scaled, mid_amount=scaled, max_amount=scaled)
+
+
+def _rule_belgium_deces_affection_relation_direct(
+    *,
+    row: CompensationTableRow,
+    input_data: dict[str, Any],
+    fault_reduction_enabled: bool,
+) -> RangeAmounts:
+    """Belgium prejudice de décès / affection single-row range rule.
+
+    The matched row is keyed by ``relation_code`` (e.g. spouse, parent,
+    child) and carries the (min, mid, max) amount triple under
+    ``row.extra.amount_min/amount_mid/amount_max``. Falls back to
+    ``row.point_value`` duplicated across the triple when ``extra`` is
+    missing.
+
+    Fault reduction applied uniformly when the formula declares
+    ``fault_reduction=true``.
+    """
+    extra = row.extra or {}
+    fallback = row.point_value or Decimal(0)
+    a_min = _to_decimal_or_none(extra.get("amount_min"))
+    a_mid = _to_decimal_or_none(extra.get("amount_mid"))
+    a_max = _to_decimal_or_none(extra.get("amount_max"))
+    if a_min is None:
+        a_min = fallback
+    if a_mid is None:
+        a_mid = fallback
+    if a_max is None:
+        a_max = fallback
+
+    if fault_reduction_enabled:
+        fault = _to_decimal_or_none(input_data.get("fault_percentage"))
+        if fault is not None and Decimal(0) <= fault <= Decimal(100):
+            factor = (Decimal(100) - fault) / Decimal(100)
+            a_min = a_min * factor
+            a_mid = a_mid * factor
+            a_max = a_max * factor
+
+    return RangeAmounts(min_amount=a_min, mid_amount=a_mid, max_amount=a_max)
 
 
 def _rule_row_amount_direct(
