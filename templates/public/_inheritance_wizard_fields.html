@@ -1,0 +1,143 @@
+{% load i18n %}
+
+{# Honeypot anti-bot — invisible to real users #}
+<div aria-hidden="true" style="position:absolute; left:-9999px; top:-9999px;">
+  <label for="id_website">{% translate "Website (do not fill)" %}</label>
+  {{ form.website }}
+</div>
+
+{% if form.non_field_errors %}
+  <div class="rounded-xl border border-red-300 bg-red-50 p-3 text-sm text-red-800">
+    {{ form.non_field_errors }}
+  </div>
+{% endif %}
+
+{# ----------------------------------------------------------------------- #}
+{# About the deceased                                                      #}
+{# ----------------------------------------------------------------------- #}
+<fieldset class="space-y-5">
+  <legend class="font-serif text-xl text-ink-950">{% translate "About the deceased" %}</legend>
+  <p class="text-sm text-stone2-500 leading-relaxed">
+    {% blocktranslate %}Provide what you can. Every field is optional and helps the Studio identify the applicable law before any review.{% endblocktranslate %}
+  </p>
+  <div class="grid sm:grid-cols-2 gap-5">
+    <div>
+      <label for="{{ form.deceased_country_of_last_residence.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.deceased_country_of_last_residence.label }}</label>
+      {{ form.deceased_country_of_last_residence }}
+      {% if form.deceased_country_of_last_residence.help_text %}<p class="mt-1 text-xs text-stone2-500">{{ form.deceased_country_of_last_residence.help_text }}</p>{% endif %}
+      {% for err in form.deceased_country_of_last_residence.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
+    </div>
+    <div>
+      <label for="{{ form.nationality.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.nationality.label }}</label>
+      {{ form.nationality }}
+      {% if form.nationality.help_text %}<p class="mt-1 text-xs text-stone2-500">{{ form.nationality.help_text }}</p>{% endif %}
+    </div>
+    <div class="sm:col-span-2">
+      <label for="{{ form.has_will.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.has_will.label }}</label>
+      {{ form.has_will }}
+    </div>
+  </div>
+</fieldset>
+
+{# ----------------------------------------------------------------------- #}
+{# Family situation                                                        #}
+{# ----------------------------------------------------------------------- #}
+<fieldset class="space-y-5 pt-3 border-t border-stone2-100">
+  <legend class="font-serif text-xl text-ink-950">{% translate "Family situation" %}</legend>
+  <p class="text-sm text-stone2-500 leading-relaxed">
+    {% blocktranslate %}Indicate the heirs the Studio should account for. Sons and daughters are listed separately because Moroccan and Tunisian inheritance frameworks treat them under distinct allocation rules.{% endblocktranslate %}
+  </p>
+
+  {# Boolean heirs as checkbox cards (mobile- and RTL-safe).               #}
+  <div class="grid sm:grid-cols-3 gap-3">
+    <label class="flex items-start gap-3 rounded-xl border border-stone2-200 bg-sand-50 px-4 py-3 cursor-pointer hover:border-gold-500 transition">
+      <input type="checkbox" name="{{ form.spouse_present.html_name }}" id="{{ form.spouse_present.id_for_label }}" {% if form.spouse_present.value %}checked{% endif %}
+        class="mt-1 w-4 h-4 rounded border-stone2-200 text-ink-950 focus:ring-gold-500">
+      <span class="text-sm">
+        <span class="block font-medium text-ink-900">{{ form.spouse_present.label }}</span>
+        {% if form.spouse_present.help_text %}<span class="block mt-1 text-xs text-stone2-500">{{ form.spouse_present.help_text }}</span>{% endif %}
+      </span>
+    </label>
+    <label class="flex items-start gap-3 rounded-xl border border-stone2-200 bg-sand-50 px-4 py-3 cursor-pointer hover:border-gold-500 transition">
+      <input type="checkbox" name="{{ form.father_present.html_name }}" id="{{ form.father_present.id_for_label }}" {% if form.father_present.value %}checked{% endif %}
+        class="mt-1 w-4 h-4 rounded border-stone2-200 text-ink-950 focus:ring-gold-500">
+      <span class="text-sm">
+        <span class="block font-medium text-ink-900">{{ form.father_present.label }}</span>
+        {% if form.father_present.help_text %}<span class="block mt-1 text-xs text-stone2-500">{{ form.father_present.help_text }}</span>{% endif %}
+      </span>
+    </label>
+    <label class="flex items-start gap-3 rounded-xl border border-stone2-200 bg-sand-50 px-4 py-3 cursor-pointer hover:border-gold-500 transition">
+      <input type="checkbox" name="{{ form.mother_present.html_name }}" id="{{ form.mother_present.id_for_label }}" {% if form.mother_present.value %}checked{% endif %}
+        class="mt-1 w-4 h-4 rounded border-stone2-200 text-ink-950 focus:ring-gold-500">
+      <span class="text-sm">
+        <span class="block font-medium text-ink-900">{{ form.mother_present.label }}</span>
+        {% if form.mother_present.help_text %}<span class="block mt-1 text-xs text-stone2-500">{{ form.mother_present.help_text }}</span>{% endif %}
+      </span>
+    </label>
+  </div>
+
+  {# Counted heirs: sons / daughters / siblings.                           #}
+  <div class="grid sm:grid-cols-3 gap-5">
+    <div>
+      <label for="{{ form.sons_count.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.sons_count.label }}</label>
+      {{ form.sons_count }}
+      {% for err in form.sons_count.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
+    </div>
+    <div>
+      <label for="{{ form.daughters_count.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.daughters_count.label }}</label>
+      {{ form.daughters_count }}
+      {% for err in form.daughters_count.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
+    </div>
+    <div>
+      <label for="{{ form.siblings_count.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.siblings_count.label }}</label>
+      {{ form.siblings_count }}
+      {% if form.siblings_count.help_text %}<p class="mt-1 text-xs text-stone2-500">{{ form.siblings_count.help_text }}</p>{% endif %}
+      {% for err in form.siblings_count.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
+    </div>
+  </div>
+</fieldset>
+
+{# ----------------------------------------------------------------------- #}
+{# Patrimony and context                                                   #}
+{# ----------------------------------------------------------------------- #}
+<fieldset class="space-y-5 pt-3 border-t border-stone2-100">
+  <legend class="font-serif text-xl text-ink-950">{% translate "Patrimony and context" %}</legend>
+  <div>
+    <label for="{{ form.estate_value.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.estate_value.label }}</label>
+    {{ form.estate_value }}
+    {% if form.estate_value.help_text %}<p class="mt-1 text-xs text-stone2-500">{{ form.estate_value.help_text }}</p>{% endif %}
+    {% for err in form.estate_value.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
+  </div>
+  <div>
+    <label for="{{ form.assets_countries.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.assets_countries.label }}</label>
+    {{ form.assets_countries }}
+    {% if form.assets_countries.help_text %}<p class="mt-1 text-xs text-stone2-500">{{ form.assets_countries.help_text }}</p>{% endif %}
+  </div>
+  <div>
+    <label for="{{ form.message.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.message.label }}</label>
+    {{ form.message }}
+    {% if form.message.help_text %}<p class="mt-1 text-xs text-stone2-500">{{ form.message.help_text }}</p>{% endif %}
+  </div>
+</fieldset>
+
+{# ----------------------------------------------------------------------- #}
+{# Consent + submit                                                        #}
+{# ----------------------------------------------------------------------- #}
+<div class="rounded-xl bg-sand-100 border border-stone2-200 p-4 flex items-start gap-3">
+  <input type="checkbox" name="{{ form.consent_simulation.html_name }}" id="{{ form.consent_simulation.id_for_label }}" {% if form.consent_simulation.value %}checked{% endif %} required
+    class="mt-1 w-5 h-5 rounded border-stone2-200 text-ink-950 focus:ring-gold-500">
+  <label for="{{ form.consent_simulation.id_for_label }}" class="text-sm text-ink-800 leading-relaxed">
+    {% blocktranslate %}I have read the <a href="/privacy/" class="underline">privacy notice</a> and consent to processing the data above for the sole purpose of producing an indicative simulation.{% endblocktranslate %}
+  </label>
+</div>
+{% for err in form.consent_simulation.errors %}<p class="text-xs text-red-700">{{ err }}</p>{% endfor %}
+
+<div class="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between pt-2">
+  <p class="text-xs text-stone2-500 leading-relaxed">
+    {% blocktranslate %}Submitting this form does not create a professional engagement. No documents are collected.{% endblocktranslate %}
+  </p>
+  <button type="submit" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
+    {% translate "Submit the case to the Studio" %}
+    <span aria-hidden="true">→</span>
+  </button>
+</div>

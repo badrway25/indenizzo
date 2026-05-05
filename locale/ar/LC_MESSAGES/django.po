@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-05 11:36+0200\n"
+"POT-Creation-Date: 2026-05-05 19:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -266,13 +265,13 @@ msgstr "الخطأ الذاتي المقدّر (%)"
 msgid "0% if you believe you bear no responsibility."
 msgstr "0٪ إذا كنت تعتقد أنك لا تتحمّل أي مسؤولية."
 
-#: .\apps\cases\forms.py:127 .\apps\cases\forms.py:307
+#: .\apps\cases\forms.py:127 .\apps\cases\forms.py:334
 msgid ""
 "I consent to processing the data above for the sole purpose of producing an "
 "indicative simulation."
 msgstr "أوافق على معالجة البيانات أعلاه لغرض وحيد هو إنتاج محاكاة إرشادية."
 
-#: .\apps\cases\forms.py:132 .\apps\cases\forms.py:312
+#: .\apps\cases\forms.py:132 .\apps\cases\forms.py:339
 msgid "You must accept the simulation consent to run a simulation."
 msgstr "يجب الموافقة على إذن المحاكاة لتشغيل المحاكاة."
 
@@ -281,7 +280,7 @@ msgid "The accident date cannot be in the future."
 msgstr "لا يمكن أن يكون تاريخ الحادث في المستقبل."
 
 #: .\apps\cases\forms.py:254
-msgid "Country of the deceased's last domicile"
+msgid "Country of the deceased's last residence"
 msgstr "بلد آخر إقامة للمتوفى"
 
 #: .\apps\cases\forms.py:257
@@ -289,50 +288,80 @@ msgid "ISO 3166-1 alpha-2 code, e.g. MA, TN, IT, FR, BE."
 msgstr "رمز ISO 3166-1 alpha-2، مثل MA, TN, IT, FR, BE."
 
 #: .\apps\cases\forms.py:260
-msgid "Habitual residence country at death"
-msgstr "بلد الإقامة المعتادة عند الوفاة"
-
-#: .\apps\cases\forms.py:263
-msgid "If different from the country of last domicile."
-msgstr "إذا كان مختلفًا عن بلد آخر إقامة."
-
-#: .\apps\cases\forms.py:266
 msgid "Nationality of the deceased"
 msgstr "جنسية المتوفى"
 
-#: .\apps\cases\forms.py:269
+#: .\apps\cases\forms.py:263
 msgid "ISO 3166-1 alpha-2 code."
 msgstr "رمز ISO 3166-1 alpha-2."
 
-#: .\apps\cases\forms.py:272
+#: .\apps\cases\forms.py:266
 msgid "Did the deceased leave a will?"
 msgstr "هل ترك المتوفى وصية؟"
 
-#: .\apps\cases\forms.py:276
-msgid "Surviving spouse?"
-msgstr "هل يوجد زوج/زوجة على قيد الحياة؟"
+#: .\apps\cases\forms.py:272
+msgid "Surviving spouse"
+msgstr "زوج/زوجة على قيد الحياة"
 
-#: .\apps\cases\forms.py:280
-msgid "Number of surviving children"
-msgstr "عدد الأبناء الأحياء"
+#: .\apps\cases\forms.py:274
+msgid "Tick if the deceased is survived by a spouse."
+msgstr "ضع علامة إذا كان المتوفى قد ترك زوجًا أو زوجة."
 
-#: .\apps\cases\forms.py:286
-msgid "Number of surviving parents (0, 1, or 2)"
-msgstr "عدد الوالدين الأحياء (0 أو 1 أو 2)"
+#: .\apps\cases\forms.py:277
+msgid "Number of surviving sons"
+msgstr "عدد الأبناء الذكور على قيد الحياة"
 
-#: .\apps\cases\forms.py:292
+#: .\apps\cases\forms.py:283
+msgid "Number of surviving daughters"
+msgstr "عدد البنات على قيد الحياة"
+
+#: .\apps\cases\forms.py:289
+msgid "Father alive"
+msgstr "الأب على قيد الحياة"
+
+#: .\apps\cases\forms.py:291
+msgid "Tick if the deceased's father is alive."
+msgstr "ضع علامة إذا كان والد المتوفى على قيد الحياة."
+
+#: .\apps\cases\forms.py:294
+msgid "Mother alive"
+msgstr "الأم على قيد الحياة"
+
+#: .\apps\cases\forms.py:296
+msgid "Tick if the deceased's mother is alive."
+msgstr "ضع علامة إذا كانت والدة المتوفى على قيد الحياة."
+
+#: .\apps\cases\forms.py:299
+msgid "Number of surviving siblings"
+msgstr "عدد الإخوة والأخوات على قيد الحياة"
+
+#: .\apps\cases\forms.py:303
+msgid "Optional. Brothers and sisters of the deceased."
+msgstr "اختياري. إخوة وأخوات المتوفى."
+
+#: .\apps\cases\forms.py:308
+msgid "Estimated estate value (EUR)"
+msgstr "القيمة التقديرية للتركة (يورو)"
+
+#: .\apps\cases\forms.py:314
+msgid ""
+"Optional. Used only to render indicative shares; the Studio verifies the "
+"actual estate before any final figure."
+msgstr "اختياري. يُستخدم فقط لجعل الأنصبة إرشادية؛ يتحقق المكتب من التركة الفعلية قبل أي رقم نهائي."
+
+#: .\apps\cases\forms.py:319
 msgid "Countries where assets are located"
 msgstr "البلدان التي توجد فيها الأصول"
 
-#: .\apps\cases\forms.py:295
+#: .\apps\cases\forms.py:322
 msgid "Comma-separated ISO codes, e.g. 'MA, FR, IT'."
 msgstr "رموز ISO مفصولة بفواصل، مثل 'MA, FR, IT'."
 
-#: .\apps\cases\forms.py:298
+#: .\apps\cases\forms.py:325
 msgid "Additional context"
 msgstr "سياق إضافي"
 
-#: .\apps\cases\forms.py:302
+#: .\apps\cases\forms.py:329
 msgid "Anything you think is relevant. No documents needed."
 msgstr "أي معلومة تراها ذات صلة. لا حاجة إلى مستندات."
 
@@ -1176,6 +1205,7 @@ msgid ""
 msgstr ""
 
 #: .\apps\core\public_status.py:111 .\apps\core\public_status.py:136
+#: .\templates\public\_inheritance_wizard_fields.html:140
 msgid "Submit the case to the Studio"
 msgstr "أرسل الملف إلى المكتب"
 
@@ -1204,15 +1234,18 @@ msgstr ""
 
 #: .\apps\core\public_status.py:131
 msgid ""
-"The Studio reviews the case manually under the applicable family-law "
-"regime and EU Regulation 650/2012. Inheritance shares are not "
-"computed automatically without an applicable-law mapping for the case."
-msgstr "يدرس المكتب القضية يدوياً وفق نظام قانون الأسرة المعمول به ولائحة الاتحاد الأوروبي 650/2012. لا تُحسب الأنصبة الإرثية تلقائياً دون تحديد القانون المطبق على القضية."
+"The Studio reviews the case manually under the applicable family-law regime "
+"and EU Regulation 650/2012. Inheritance shares are not computed "
+"automatically without an applicable-law mapping for the case."
+msgstr ""
+"يدرس المكتب القضية يدوياً وفق نظام قانون الأسرة المعمول به ولائحة الاتحاد "
+"الأوروبي 650/2012. لا تُحسب الأنصبة الإرثية تلقائياً دون تحديد القانون المطبق "
+"على القضية."
 
 #: .\apps\core\public_status.py:139
 msgid ""
-"Inheritance shares are not computed automatically without an "
-"applicable-law mapping for the case."
+"Inheritance shares are not computed automatically without an applicable-law "
+"mapping for the case."
 msgstr "لا تُحسب الأنصبة الإرثية تلقائياً دون تحديد القانون المطبق على القضية."
 
 #: .\apps\core\public_status.py:148
@@ -1794,8 +1827,6 @@ msgstr "تخطّي إلى المحتوى"
 #: .\templates\partials\_module_status_card.html:20
 #: .\templates\partials\_module_status_card.html:22
 #: .\templates\partials\_module_status_card.html:38
-#, fuzzy
-#| msgid "Module ready"
 msgid "Module status"
 msgstr "الوحدة جاهزة"
 
@@ -1947,19 +1978,32 @@ msgstr "تطبيق"
 msgid "Website (do not fill)"
 msgstr "موقع الويب (لا تملأ)"
 
-#: .\templates\public\_inheritance_wizard_fields.html:16
+#: .\templates\public\_inheritance_wizard_fields.html:19
 msgid "About the deceased"
 msgstr "حول المتوفى"
 
-#: .\templates\public\_inheritance_wizard_fields.html:42
-msgid "Heirs"
-msgstr ""
+#: .\templates\public\_inheritance_wizard_fields.html:21
+msgid ""
+"Provide what you can. Every field is optional and helps the Studio identify "
+"the applicable law before any review."
+msgstr "قدّم ما تستطيع. كل حقل اختياري ويساعد المكتب على تحديد القانون المطبّق قبل أي مراجعة."
 
-#: .\templates\public\_inheritance_wizard_fields.html:60
-msgid "Assets and context"
-msgstr "الأصول والسياق"
+#: .\templates\public\_inheritance_wizard_fields.html:46
+msgid "Family situation"
+msgstr "الوضع العائلي"
 
-#: .\templates\public\_inheritance_wizard_fields.html:77
+#: .\templates\public\_inheritance_wizard_fields.html:48
+msgid ""
+"Indicate the heirs the Studio should account for. Sons and daughters are "
+"listed separately because Moroccan and Tunisian inheritance frameworks treat "
+"them under distinct allocation rules."
+msgstr "حدّد الورثة الذين يجب على المكتب أخذهم في الاعتبار. تُذكر الأبناء والبنات بشكل منفصل لأن الأنظمة الإرثية المغربية والتونسية تعاملها وفق قواعد توزيع مختلفة."
+
+#: .\templates\public\_inheritance_wizard_fields.html:104
+msgid "Patrimony and context"
+msgstr "التركة والسياق"
+
+#: .\templates\public\_inheritance_wizard_fields.html:130
 #: .\templates\public\wizard_belgium_road_accident.html:108
 #: .\templates\public\wizard_france_road_accident.html:108
 #: .\templates\public\wizard_italy_road_accident.html:133
@@ -1971,28 +2015,17 @@ msgstr ""
 "لقد قرأت <a href=\"/privacy/\" class=\"underline\">إشعار الخصوصية</a> وأوافق "
 "على معالجة البيانات أعلاه لغرض إنتاج محاكاة إرشادية فقط."
 
-#: .\templates\public\_inheritance_wizard_fields.html:84
+#: .\templates\public\_inheritance_wizard_fields.html:137
 msgid ""
 "Submitting this form does not create a professional engagement. No documents "
 "are collected."
 msgstr "إرسال هذا النموذج لا يُنشئ تكليفًا مهنيًا. لا تُجمع أي مستندات."
 
-#: .\templates\public\_inheritance_wizard_fields.html:87
-#: .\templates\public\wizard_italy_road_accident.html:143
-msgid "Run simulation"
-msgstr "تشغيل المحاكاة"
-
 #: .\templates\public\case_types.html:4
-#, fuzzy
-#| msgid "Countries we cover"
 msgid "Case types we cover"
 msgstr "البلدان التي نغطّيها"
 
 #: .\templates\public\case_types.html:6
-#, fuzzy
-#| msgid ""
-#| "Each module is activated only after the underlying legal sources are "
-#| "catalogued and validated by the Studio."
 msgid ""
 "Modular taxonomy of case types: each module is activated only when the "
 "underlying legal sources for the chosen jurisdiction are catalogued and "
@@ -2175,8 +2208,6 @@ msgid "Back to homepage"
 msgstr "العودة إلى الرئيسية"
 
 #: .\templates\public\contact_thank_you.html:30
-#, fuzzy
-#| msgid "Visit institutional website"
 msgid "Visit institutional website (opens in a new tab)"
 msgstr "زيارة الموقع المؤسسي"
 
@@ -2875,7 +2906,9 @@ msgstr ""
 msgid ""
 "Recognised quantification tables: Loi du 21 novembre 1989, Tableau "
 "Indicatif, Tables Schryvers."
-msgstr "جداول التقدير المعتمدة: Loi du 21 novembre 1989, Tableau Indicatif, Tables Schryvers."
+msgstr ""
+"جداول التقدير المعتمدة: Loi du 21 novembre 1989, Tableau Indicatif, Tables "
+"Schryvers."
 
 #: .\templates\public\wizard_belgium_road_accident.html:37
 #: .\templates\public\wizard_france_road_accident.html:37
@@ -2928,9 +2961,10 @@ msgstr ""
 
 #: .\templates\public\wizard_france_road_accident.html:17
 msgid ""
-"Recognised quantification sources: Loi Badinter, Référentiel Mornet, "
-"Gazette du Palais."
-msgstr "مصادر التقدير المعتمدة: Loi Badinter, Référentiel Mornet, Gazette du Palais."
+"Recognised quantification sources: Loi Badinter, Référentiel Mornet, Gazette "
+"du Palais."
+msgstr ""
+"مصادر التقدير المعتمدة: Loi Badinter, Référentiel Mornet, Gazette du Palais."
 
 #: .\templates\public\wizard_italy_road_accident.html:4
 #: .\templates\public\wizard_italy_road_accident.html:11
@@ -2938,11 +2972,6 @@ msgid "Italy — road accident bodily injury"
 msgstr "إيطاليا — أضرار جسدية من حادث طريق"
 
 #: .\templates\public\wizard_italy_road_accident.html:6
-#, fuzzy
-#| msgid ""
-#| "Indicative compensation simulation for %(country)s, based on approved "
-#| "legal sources. The estimate is informative and never a guarantee of "
-#| "outcome."
 msgid ""
 "Indicative simulation wizard for road-accident bodily injury in Italy, based "
 "on the approved TUN 2025 dataset (D.P.R. 12/2025). The result is informative "
@@ -3043,12 +3072,6 @@ msgid "Most favourable reading still supported by the same TUN 2025 cell."
 msgstr "القراءة الأكثر ملاءمة التي ما تزال تدعمها الخلية ذاتها من TUN 2025."
 
 #: .\templates\public\wizard_italy_road_accident.html:41
-#, fuzzy
-#| msgid ""
-#| "A simulation is not legal advice, is not a medico-legal opinion and is "
-#| "not a guarantee of outcome. The actual evaluation of a case depends on "
-#| "documents, expert reports, liability assessment, applicable law, "
-#| "competent jurisdiction, case law and insurance practice."
 msgid ""
 "The range is indicative, not a guaranteed payout. The actual valuation "
 "depends on documents, expert reports, applicable law and judicial "
@@ -3057,6 +3080,10 @@ msgstr ""
 "المحاكاة ليست رأيًا قانونيًا ولا رأيًا طبيًا قانونيًا ولا ضمانًا للنتيجة. يعتمد "
 "التقييم الفعلي للقضية على المستندات والخبرات وتقدير المسؤولية والقانون "
 "الواجب التطبيق والاختصاص القضائي والاجتهاد القضائي والممارسات التأمينية."
+
+#: .\templates\public\wizard_italy_road_accident.html:143
+msgid "Run simulation"
+msgstr "تشغيل المحاكاة"
 
 #: .\templates\public\wizard_morocco_inheritance.html:4
 #: .\templates\public\wizard_morocco_inheritance.html:11
@@ -3087,9 +3114,11 @@ msgstr ""
 
 #: .\templates\public\wizard_morocco_inheritance.html:17
 msgid ""
-"Applicable framework: Moudawana (Code de la famille), Code des droits "
-"réels, EU Regulation 650/2012."
-msgstr "الإطار المطبق: المدوّنة (Code de la famille)، Code des droits réels، لائحة الاتحاد الأوروبي 650/2012."
+"Applicable framework: Moudawana (Code de la famille), Code des droits réels, "
+"EU Regulation 650/2012."
+msgstr ""
+"الإطار المطبق: المدوّنة (Code de la famille)، Code des droits réels، لائحة "
+"الاتحاد الأوروبي 650/2012."
 
 #: .\templates\public\wizard_morocco_inheritance.html:25
 msgid ""
@@ -3214,13 +3243,6 @@ msgid ""
 msgstr ""
 
 #: .\templates\public\wizard_result.html:86
-#, fuzzy
-#| msgid ""
-#| "This page is informative. Any simulation provided by the platform is "
-#| "indicative and does not constitute legal, medical-legal advice nor a "
-#| "guarantee of outcome. The actual valuation depends on documents, expert "
-#| "reports, liability, applicable law, competent jurisdiction, judicial "
-#| "orientations and insurance practice."
 msgid ""
 "Amounts are derived from validated legal sources cited below. They are "
 "indicative: the actual valuation depends on documents, expert reports, "
@@ -3285,12 +3307,6 @@ msgid "Start a guided simulation"
 msgstr "ابدأ محاكاة موجهة"
 
 #: .\templates\public\wizard_start.html:6
-#, fuzzy
-#| msgid ""
-#| "Pick the country and the case type that best fits your situation. The "
-#| "simulation is indicative: it will only produce an estimate when validated "
-#| "legal sources are available — otherwise it returns a clear \"requires "
-#| "legal validation\" status."
 msgid ""
 "Pick a country and a case type. Indicative simulations are produced only "
 "when validated legal sources are available — otherwise the wizard explicitly "
@@ -3404,9 +3420,11 @@ msgstr ""
 
 #: .\templates\public\wizard_tunisia_inheritance.html:17
 msgid ""
-"Applicable framework: Code du statut personnel (Loi 98-97), Code de "
-"droit international privé, EU Regulation 650/2012."
-msgstr "الإطار المطبق: مجلة الأحوال الشخصية (Loi 98-97)، Code de droit international privé، لائحة الاتحاد الأوروبي 650/2012."
+"Applicable framework: Code du statut personnel (Loi 98-97), Code de droit "
+"international privé, EU Regulation 650/2012."
+msgstr ""
+"الإطار المطبق: مجلة الأحوال الشخصية (Loi 98-97)، Code de droit international "
+"privé، لائحة الاتحاد الأوروبي 650/2012."
 
 #: .\templates\public\wizard_tunisia_inheritance.html:25
 msgid ""
@@ -3418,6 +3436,15 @@ msgstr ""
 "المحاكاة إرشادية ولا تشكّل رأيًا قانونيًا ولا ضمانًا للنتيجة. تخضع المواريث في "
 "تونس لمجلة الأحوال الشخصية، الكتاب التاسع: يتطلّب الحساب الدقيق مراجعة المكتب "
 "لسياق القضية الفعلي."
+
+#~ msgid "Habitual residence country at death"
+#~ msgstr "بلد الإقامة المعتادة عند الوفاة"
+
+#~ msgid "If different from the country of last domicile."
+#~ msgstr "إذا كان مختلفًا عن بلد آخر إقامة."
+
+#~ msgid "Number of surviving parents (0, 1, or 2)"
+#~ msgstr "عدد الوالدين الأحياء (0 أو 1 أو 2)"
 
 #~ msgid "Preliminary legal assessment — no automatic amount."
 #~ msgstr "تقييم قانوني أولي — لا يُعرض أي مبلغ آلي."

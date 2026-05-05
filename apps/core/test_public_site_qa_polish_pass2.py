@@ -311,7 +311,10 @@ def test_italy_smoke_engine_preserves_pass2_contract(italy_smoke_qa_pass2):
 @pytest.mark.parametrize(
     "path,must_contain",
     [
-        ("/wizard/", "Pick a country"),
+        # Default IT locale now renders the Italian description after
+        # F-inheritance-wizard-input-completeness-visual-pass1 cleared
+        # stale fuzzy headers; check for a locale-stable token.
+        ("/wizard/", "simul"),
         ("/wizard/it/road-accident/", "TUN 2025"),
         ("/wizard/fr/road-accident/", "Loi Badinter"),
         ("/wizard/be/road-accident/", "Tableau Indicatif"),

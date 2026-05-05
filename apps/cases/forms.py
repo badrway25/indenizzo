@@ -233,9 +233,157 @@ class BelgiumRoadAccidentWizardForm(ItalyRoadAccidentWizardForm):
         return value or "BE"
 
 
+class InternationalInheritanceWizardForm(forms.Form):
+    """
+    Form scaffold per le successioni internazionali (MA, TN).
+
+    REGOLA D'ORO: nessun calcolo qui. Il form raccoglie SOLO contesto
+    qualitativo per il triage del caso. Il calculator pubblico
+    restituisce ``unavailable_requires_legal_validation`` finché lo
+    Studio non avrà promosso fonti/dataset/formula a ``approved``. Le
+    quote ereditarie reali (faraïd) richiederanno un engine specifico
+    futuro.
+
+    GDPR: trattiamo dati sensibili (parentela, decesso, beni). Il
+    consenso `simulation_processing` è obbligatorio. Nessun documento
+    viene caricato in questa fase. Tutti i campi sono opzionali tranne
+    il consenso.
+    """
+
+    deceased_country_of_last_residence = forms.CharField(
+        label=_("Country of the deceased's last residence"),
+        required=False,
+        max_length=2,
+        help_text=_("ISO 3166-1 alpha-2 code, e.g. MA, TN, IT, FR, BE."),
+    )
+    nationality = forms.CharField(
+        label=_("Nationality of the deceased"),
+        required=False,
+        max_length=2,
+        help_text=_("ISO 3166-1 alpha-2 code."),
+    )
+    has_will = forms.NullBooleanField(
+        label=_("Did the deceased leave a will?"),
+        required=False,
+    )
+
+    # --- Family situation ------------------------------------------------
+    spouse_present = forms.BooleanField(
+        label=_("Surviving spouse"),
+        required=False,
+        help_text=_("Tick if the deceased is survived by a spouse."),
+    )
+    sons_count = forms.IntegerField(
+        label=_("Number of surviving sons"),
+        required=False,
+        min_value=0,
+        max_value=30,
+    )
+    daughters_count = forms.IntegerField(
+        label=_("Number of surviving daughters"),
+        required=False,
+        min_value=0,
+        max_value=30,
+    )
+    father_present = forms.BooleanField(
+        label=_("Father alive"),
+        required=False,
+        help_text=_("Tick if the deceased's father is alive."),
+    )
+    mother_present = forms.BooleanField(
+        label=_("Mother alive"),
+        required=False,
+        help_text=_("Tick if the deceased's mother is alive."),
+    )
+    siblings_count = forms.IntegerField(
+        label=_("Number of surviving siblings"),
+        required=False,
+        min_value=0,
+        max_value=30,
+        help_text=_("Optional. Brothers and sisters of the deceased."),
+    )
+
+    # --- Patrimony --------------------------------------------------------
+    estate_value = forms.DecimalField(
+        label=_("Estimated estate value (EUR)"),
+        required=False,
+        min_value=0,
+        max_digits=14,
+        decimal_places=2,
+        help_text=_(
+            "Optional. Used only to render indicative shares; the Studio "
+            "verifies the actual estate before any final figure."
+        ),
+    )
+    assets_countries = forms.CharField(
+        label=_("Countries where assets are located"),
+        required=False,
+        max_length=120,
+        help_text=_("Comma-separated ISO codes, e.g. 'MA, FR, IT'."),
+    )
+    message = forms.CharField(
+        label=_("Additional context"),
+        required=False,
+        max_length=2000,
+        widget=forms.Textarea(attrs={"rows": 3}),
+        help_text=_("Anything you think is relevant. No documents needed."),
+    )
+
+    consent_simulation = forms.BooleanField(
+        label=_(
+            "I consent to processing the data above for the sole purpose of "
+            "producing an indicative simulation."
+        ),
+        required=True,
+        error_messages={
+            "required": _("You must accept the simulation consent to run a simulation."),
+        },
+    )
+
+    website = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(),
+        max_length=255,
+    )
+
+    @property
+    def is_likely_bot(self) -> bool:
+        return bool(self.data.get("website"))
+
+    def to_input_data(self) -> dict[str, Any]:
+        cleaned = self.cleaned_data
+        deceased_country = (
+            cleaned.get("deceased_country_of_last_residence") or ""
+        ).upper().strip() or None
+        sons = int(cleaned.get("sons_count") or 0)
+        daughters = int(cleaned.get("daughters_count") or 0)
+        siblings = int(cleaned.get("siblings_count") or 0)
+        spouse = 1 if cleaned.get("spouse_present") else 0
+        father = 1 if cleaned.get("father_present") else 0
+        mother = 1 if cleaned.get("mother_present") else 0
+        estate_value = cleaned.get("estate_value")
+        return {
+            "deceased_country_of_last_residence": deceased_country,
+            "nationality": (cleaned.get("nationality") or "").upper().strip() or None,
+            "has_will": cleaned.get("has_will"),
+            "heirs": {
+                "spouse": spouse,
+                "sons": sons,
+                "daughters": daughters,
+                "father": father,
+                "mother": mother,
+                "siblings": siblings,
+            },
+            "estate_value": str(estate_value) if estate_value is not None else None,
+            "assets_countries": (cleaned.get("assets_countries") or "").upper().strip() or None,
+            "message": (cleaned.get("message") or "").strip() or None,
+        }
+
+
 __all__ = [
     "ItalyRoadAccidentWizardForm",
     "FranceRoadAccidentWizardForm",
     "BelgiumRoadAccidentWizardForm",
+    "InternationalInheritanceWizardForm",
     "ACCIDENT_COUNTRY_DEFAULT",
 ]

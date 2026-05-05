@@ -865,11 +865,11 @@ def tunisia_setup(db):
 
 
 WIZARD_INHERITANCE_VALID_PAYLOAD = {
-    "deceased_country": "MA",
-    "habitual_residence_country": "FR",
+    "deceased_country_of_last_residence": "MA",
     "nationality": "MA",
-    "spouse_exists": "True",
-    "children_count": "2",
+    "spouse_present": "on",
+    "sons_count": "1",
+    "daughters_count": "1",
     "consent_simulation": "on",
     "website": "",
 }
@@ -924,7 +924,11 @@ def test_wizard_morocco_inheritance_post_creates_simulation_unavailable(morocco_
 def test_wizard_tunisia_inheritance_post_creates_simulation_unavailable(tunisia_setup):
     response = Client().post(
         reverse("cases:wizard_tunisia_inheritance"),
-        {**WIZARD_INHERITANCE_VALID_PAYLOAD, "deceased_country": "TN", "nationality": "TN"},
+        {
+            **WIZARD_INHERITANCE_VALID_PAYLOAD,
+            "deceased_country_of_last_residence": "TN",
+            "nationality": "TN",
+        },
     )
     assert Simulation.objects.count() == 1
     sim = Simulation.objects.get()
@@ -943,12 +947,16 @@ def test_wizard_inheritance_post_persists_input_data_qualitative_only(morocco_se
         WIZARD_INHERITANCE_VALID_PAYLOAD,
     )
     sim = Simulation.objects.get()
-    # Qualitative context fields persisted, no monetary field.
-    assert sim.input_data["deceased_country"] == "MA"
+    # Qualitative context fields persisted under the new heirs structure.
+    assert sim.input_data["deceased_country_of_last_residence"] == "MA"
     assert sim.input_data["nationality"] == "MA"
-    assert sim.input_data["children_count"] == 2
-    # No monetary keys.
-    for key in ("estimated_min", "amount", "share", "value"):
+    heirs = sim.input_data["heirs"]
+    assert heirs["spouse"] == 1
+    assert heirs["sons"] == 1
+    assert heirs["daughters"] == 1
+    # No monetary keys other than the optional estate_value (None here).
+    assert sim.input_data["estate_value"] is None
+    for key in ("estimated_min", "amount", "share"):
         assert key not in sim.input_data
 
 
