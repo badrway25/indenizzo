@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-04 21:27+0200\n"
+"POT-Creation-Date: 2026-05-05 11:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1155,13 +1155,11 @@ msgstr ""
 msgid "Run an indicative simulation"
 msgstr "Avvia una simulazione indicativa"
 
-#: .\apps\core\public_status.py:89 .\templates\public\wizard_result.html:42
+#: .\apps\core\public_status.py:89
 msgid "Request a Studio review of this case"
 msgstr "Richiedi allo Studio la revisione di questo caso"
 
 #: .\apps\core\public_status.py:97
-#: .\templates\public\wizard_belgium_road_accident.html:25
-#: .\templates\public\wizard_france_road_accident.html:25
 msgid "Preliminary legal assessment"
 msgstr "Valutazione legale preliminare"
 
@@ -1198,8 +1196,6 @@ msgid ""
 msgstr ""
 
 #: .\apps\core\public_status.py:123
-#: .\templates\public\wizard_morocco_inheritance.html:25
-#: .\templates\public\wizard_tunisia_inheritance.html:25
 msgid "International inheritance review"
 msgstr "Analisi successoria internazionale"
 
@@ -1207,20 +1203,23 @@ msgstr "Analisi successoria internazionale"
 msgid ""
 "The Studio reviews each inheritance case manually; inheritance shares are "
 "not computed automatically without an applicable-law mapping for the case."
-msgstr "Lo Studio esamina manualmente ogni caso successorio; le quote ereditarie non sono calcolate automaticamente senza una mappatura della legge applicabile al caso."
+msgstr ""
+"Lo Studio esamina manualmente ogni caso successorio; le quote ereditarie non "
+"sono calcolate automaticamente senza una mappatura della legge applicabile "
+"al caso."
 
 #: .\apps\core\public_status.py:131
 msgid ""
-"The Studio reviews the case manually under the applicable family-law regime "
-"and EU Regulation 650/2012. Inheritance shares are not computed "
-"automatically without an applicable-law mapping for the case."
-msgstr ""
+"The Studio reviews the case manually under the applicable family-law "
+"regime and EU Regulation 650/2012. Inheritance shares are not "
+"computed automatically without an applicable-law mapping for the case."
+msgstr "Lo Studio esamina il caso manualmente in base al regime di diritto di famiglia applicabile e al Reg. UE 650/2012. Le quote successorie non vengono calcolate automaticamente senza una mappatura della legge applicabile al caso."
 
 #: .\apps\core\public_status.py:139
 msgid ""
-"Inheritance shares are not computed automatically without an applicable-law "
-"mapping for the case."
-msgstr ""
+"Inheritance shares are not computed automatically without an "
+"applicable-law mapping for the case."
+msgstr "Le quote successorie non vengono calcolate automaticamente senza una mappatura della legge applicabile al caso."
 
 #: .\apps\core\public_status.py:148
 msgid "Manual legal review"
@@ -1239,13 +1238,13 @@ msgid ""
 "A lawyer of the Studio reviews the case directly, on the basis of the legal "
 "sources of the relevant jurisdiction. No automatic amount is published until "
 "the underlying quantification dataset has been verified."
-msgstr "Un avvocato dello Studio esamina direttamente il caso, sulla base delle fonti normative della giurisdizione rilevante. Nessun importo automatico viene pubblicato prima che il dataset di quantificazione sia stato verificato."
+msgstr ""
+"Un avvocato dello Studio esamina direttamente il caso, sulla base delle "
+"fonti normative della giurisdizione rilevante. Nessun importo automatico "
+"viene pubblicato prima che il dataset di quantificazione sia stato "
+"verificato."
 
 #: .\apps\core\public_status.py:162 .\templates\public\contact.html:11
-#: .\templates\public\wizard_belgium_road_accident.html:21
-#: .\templates\public\wizard_france_road_accident.html:21
-#: .\templates\public\wizard_morocco_inheritance.html:21
-#: .\templates\public\wizard_tunisia_inheritance.html:21
 msgid "Contact the Studio"
 msgstr "Contatta lo Studio"
 
@@ -1253,7 +1252,9 @@ msgstr "Contatta lo Studio"
 msgid ""
 "No automatic amount is published until the underlying quantification dataset "
 "has been verified for this country."
-msgstr "Nessun importo automatico viene pubblicato prima che il dataset di quantificazione sia stato verificato per questo paese."
+msgstr ""
+"Nessun importo automatico viene pubblicato prima che il dataset di "
+"quantificazione sia stato verificato per questo paese."
 
 #: .\apps\core\views.py:292 .\templates\public\country_landing.html:32
 #, python-format
@@ -1821,6 +1822,12 @@ msgstr ""
 msgid "Next step"
 msgstr ""
 
+#: .\templates\partials\_public_status_panel.html:29
+#: .\templates\partials\_public_status_panel.html:31
+#, fuzzy
+msgid "Public status"
+msgstr "Status pubblico"
+
 #: .\templates\partials\cookie_consent_banner.html:13
 msgid "Cookie notice"
 msgstr "Informativa cookie"
@@ -1849,12 +1856,12 @@ msgstr "OK"
 #: .\templates\partials\cta_consultation.html:11
 #: .\templates\public\countries.html:102
 #: .\templates\public\country_landing.html:256 .\templates\public\home.html:40
-#: .\templates\public\wizard_result.html:186
+#: .\templates\public\wizard_result.html:181
 msgid "Request legal review"
 msgstr "Richiedi una valutazione legale"
 
 #: .\templates\partials\disclaimer_banner.html:2
-#: .\templates\public\wizard_result.html:166
+#: .\templates\public\wizard_result.html:161
 msgid "Legal disclaimer"
 msgstr "Avvertenze legali"
 
@@ -1946,8 +1953,8 @@ msgstr "Conferma"
 
 #: .\templates\public\_inheritance_wizard_fields.html:5
 #: .\templates\public\contact.html:32
-#: .\templates\public\wizard_belgium_road_accident.html:32
-#: .\templates\public\wizard_france_road_accident.html:32
+#: .\templates\public\wizard_belgium_road_accident.html:24
+#: .\templates\public\wizard_france_road_accident.html:24
 #: .\templates\public\wizard_italy_road_accident.html:49
 msgid "Website (do not fill)"
 msgstr "Sito web (non compilare)"
@@ -1965,8 +1972,8 @@ msgid "Assets and context"
 msgstr "Beni e contesto"
 
 #: .\templates\public\_inheritance_wizard_fields.html:77
-#: .\templates\public\wizard_belgium_road_accident.html:116
-#: .\templates\public\wizard_france_road_accident.html:116
+#: .\templates\public\wizard_belgium_road_accident.html:108
+#: .\templates\public\wizard_france_road_accident.html:108
 #: .\templates\public\wizard_italy_road_accident.html:133
 msgid ""
 "I have read the <a href=\"/privacy/\" class=\"underline\">privacy notice</a> "
@@ -2119,8 +2126,8 @@ msgstr ""
 "scopo di rispondere a questa richiesta."
 
 #: .\templates\public\contact.html:115
-#: .\templates\public\wizard_belgium_road_accident.html:123
-#: .\templates\public\wizard_france_road_accident.html:123
+#: .\templates\public\wizard_belgium_road_accident.html:115
+#: .\templates\public\wizard_france_road_accident.html:115
 #: .\templates\public\wizard_italy_road_accident.html:140
 msgid "Submitting this form does not create a professional engagement."
 msgstr ""
@@ -2880,6 +2887,7 @@ msgstr ""
 
 #: .\templates\public\wizard_belgium_road_accident.html:4
 #: .\templates\public\wizard_belgium_road_accident.html:11
+#: .\templates\public\wizard_belgium_road_accident.html:17
 msgid "Belgium — road accident bodily injury"
 msgstr "Belgio — danno biologico da incidente stradale"
 
@@ -2916,75 +2924,37 @@ msgstr ""
 "legale preliminare; nessun importo automatico viene pubblicato prima che le "
 "fonti di quantificazione siano verificate per il caso."
 
-#: .\templates\public\wizard_belgium_road_accident.html:18
-#: .\templates\public\wizard_france_road_accident.html:18
-msgid "Preliminary legal assessment — no automatic amount."
-msgstr "Valutazione legale preliminare — nessun importo automatico."
-
-#: .\templates\public\wizard_belgium_road_accident.html:19
+#: .\templates\public\wizard_belgium_road_accident.html:17
 msgid ""
-"The Studio reviews each Belgian road-accident case manually, using the "
-"recognised quantification tables (Loi du 21 novembre 1989, Tableau "
-"Indicatif, Schryvers). No automatic amount is published before these tables "
-"have been verified for the case. If you prefer to skip the form, you can "
-"write directly to the Studio."
-msgstr ""
-"Lo Studio esamina manualmente ogni caso belga di incidente stradale, "
-"utilizzando le tabelle di quantificazione riconosciute (Loi du 21 novembre "
-"1989, Tableau Indicatif, Schryvers). Nessun importo automatico viene "
-"pubblicato prima che tali tabelle siano verificate per il caso. Se "
-"preferisci saltare il modulo, puoi scrivere direttamente allo Studio."
+"Recognised quantification tables: Loi du 21 novembre 1989, Tableau "
+"Indicatif, Tables Schryvers."
+msgstr "Tabelle di quantificazione riconosciute: Loi du 21 novembre 1989, Tableau Indicatif, Tables Schryvers."
 
-#: .\templates\public\wizard_belgium_road_accident.html:25
-#: .\templates\public\wizard_france_road_accident.html:25
-msgid ""
-"Collects qualitative information about your case so the Studio can review it "
-"manually."
-msgstr ""
-"Raccoglie informazioni qualitative sul tuo caso affinché lo Studio possa "
-"esaminarlo manualmente."
-
-#: .\templates\public\wizard_belgium_road_accident.html:25
-msgid ""
-"It does not publish an automatic amount. The Belgian indicative tables "
-"(Tableau Indicatif, Schryvers) are reviewed manually by the Studio for each "
-"case."
-msgstr ""
-"Non pubblica alcun importo automatico. Le tabelle indicative belghe (Tableau "
-"Indicatif, Schryvers) sono esaminate manualmente dallo Studio per ogni caso."
-
-#: .\templates\public\wizard_belgium_road_accident.html:25
-#: .\templates\public\wizard_france_road_accident.html:25
-msgid ""
-"Submit your inputs — the Studio receives the case and a lawyer replies after "
-"a manual legal review."
-msgstr ""
-
-#: .\templates\public\wizard_belgium_road_accident.html:45
-#: .\templates\public\wizard_france_road_accident.html:45
+#: .\templates\public\wizard_belgium_road_accident.html:37
+#: .\templates\public\wizard_france_road_accident.html:37
 #: .\templates\public\wizard_italy_road_accident.html:62
 msgid "About the accident"
 msgstr "Informazioni sull'incidente"
 
-#: .\templates\public\wizard_belgium_road_accident.html:64
-#: .\templates\public\wizard_france_road_accident.html:64
+#: .\templates\public\wizard_belgium_road_accident.html:56
+#: .\templates\public\wizard_france_road_accident.html:56
 #: .\templates\public\wizard_italy_road_accident.html:81
 msgid "Injury and disability"
 msgstr "Lesione e invalidità"
 
-#: .\templates\public\wizard_belgium_road_accident.html:87
-#: .\templates\public\wizard_france_road_accident.html:87
+#: .\templates\public\wizard_belgium_road_accident.html:79
+#: .\templates\public\wizard_france_road_accident.html:79
 #: .\templates\public\wizard_italy_road_accident.html:104
 msgid "Documented economic impact"
 msgstr "Impatto economico documentato"
 
-#: .\templates\public\wizard_belgium_road_accident.html:126
-#: .\templates\public\wizard_france_road_accident.html:126
+#: .\templates\public\wizard_belgium_road_accident.html:118
+#: .\templates\public\wizard_france_road_accident.html:118
 msgid "Submit for legal review"
 msgstr "Invia per revisione legale"
 
-#: .\templates\public\wizard_belgium_road_accident.html:133
-#: .\templates\public\wizard_france_road_accident.html:133
+#: .\templates\public\wizard_belgium_road_accident.html:125
+#: .\templates\public\wizard_france_road_accident.html:125
 #: .\templates\public\wizard_italy_road_accident.html:150
 msgid ""
 "The simulation is indicative and does not constitute legal advice, medical-"
@@ -2995,6 +2965,7 @@ msgstr ""
 
 #: .\templates\public\wizard_france_road_accident.html:4
 #: .\templates\public\wizard_france_road_accident.html:11
+#: .\templates\public\wizard_france_road_accident.html:17
 msgid "France — road accident bodily injury"
 msgstr "Francia — danno biologico da incidente stradale"
 
@@ -3010,29 +2981,11 @@ msgstr ""
 "capitalizzazione della Gazette du Palais. Nessun importo automatico viene "
 "pubblicato prima che tali fonti siano verificate per il caso."
 
-#: .\templates\public\wizard_france_road_accident.html:19
+#: .\templates\public\wizard_france_road_accident.html:17
 msgid ""
-"The Studio reviews each French road-accident case manually, using the "
-"recognised quantification sources (Loi Badinter, Référentiel Mornet, Gazette "
-"du Palais). No automatic amount is published before these sources have been "
-"verified for the case. If you prefer to skip the form, you can write "
-"directly to the Studio."
-msgstr ""
-"Lo Studio esamina manualmente ogni caso francese di incidente stradale, "
-"utilizzando le fonti di quantificazione riconosciute (Loi Badinter, "
-"Référentiel Mornet, Gazette du Palais). Nessun importo automatico viene "
-"pubblicato prima che tali fonti siano verificate per il caso. Se preferisci "
-"saltare il modulo, puoi scrivere direttamente allo Studio."
-
-#: .\templates\public\wizard_france_road_accident.html:25
-msgid ""
-"It does not publish an automatic amount. The French quantification sources "
-"(Loi Badinter, Référentiel Mornet, Gazette du Palais) are reviewed manually "
-"by the Studio for each case."
-msgstr ""
-"Non pubblica alcun importo automatico. Le fonti di quantificazione francesi "
-"(Loi Badinter, Référentiel Mornet, Gazette du Palais) sono esaminate "
-"manualmente dallo Studio per ogni caso."
+"Recognised quantification sources: Loi Badinter, Référentiel Mornet, "
+"Gazette du Palais."
+msgstr "Fonti di quantificazione riconosciute: Loi Badinter, Référentiel Mornet, Gazette du Palais."
 
 #: .\templates\public\wizard_italy_road_accident.html:4
 #: .\templates\public\wizard_italy_road_accident.html:11
@@ -3115,7 +3068,7 @@ msgstr "Vedrai un range indicativo min / mid / max"
 
 #: .\templates\public\wizard_italy_road_accident.html:29
 #: .\templates\public\wizard_result.html:19
-#: .\templates\public\wizard_result.html:78
+#: .\templates\public\wizard_result.html:73
 msgid "Min"
 msgstr "Min"
 
@@ -3125,7 +3078,7 @@ msgstr "Lettura prudenziale della cella TUN 2025 per i tuoi dati."
 
 #: .\templates\public\wizard_italy_road_accident.html:33
 #: .\templates\public\wizard_result.html:23
-#: .\templates\public\wizard_result.html:82
+#: .\templates\public\wizard_result.html:77
 msgid "Mid"
 msgstr "Centrale"
 
@@ -3139,7 +3092,7 @@ msgstr ""
 
 #: .\templates\public\wizard_italy_road_accident.html:37
 #: .\templates\public\wizard_result.html:27
-#: .\templates\public\wizard_result.html:86
+#: .\templates\public\wizard_result.html:81
 msgid "Max"
 msgstr "Max"
 
@@ -3166,6 +3119,7 @@ msgstr ""
 
 #: .\templates\public\wizard_morocco_inheritance.html:4
 #: .\templates\public\wizard_morocco_inheritance.html:11
+#: .\templates\public\wizard_morocco_inheritance.html:17
 msgid "Morocco — international inheritance"
 msgstr "Marocco — successione internazionale"
 
@@ -3192,50 +3146,13 @@ msgstr ""
 "caso successorio; le quote ereditarie non sono calcolate automaticamente "
 "senza una mappatura della legge applicabile al caso."
 
-#: .\templates\public\wizard_morocco_inheritance.html:18
-#: .\templates\public\wizard_tunisia_inheritance.html:18
-msgid "International inheritance review — shares not computed automatically."
-msgstr ""
-"Analisi successoria internazionale — quote non calcolate automaticamente."
-
-#: .\templates\public\wizard_morocco_inheritance.html:19
+#: .\templates\public\wizard_morocco_inheritance.html:17
 msgid ""
-"The Studio reviews each Moroccan inheritance case manually, on the basis of "
-"the Moudawana (Code de la famille), the Code des droits réels and EU "
-"Regulation 650/2012. Inheritance shares are not computed automatically "
-"without an applicable-law mapping for the case. If you prefer to skip the "
-"form, you can write directly to the Studio."
-msgstr ""
-"Lo Studio esamina manualmente ogni caso successorio marocchino, sulla base "
-"della Moudawana (Code de la famille), del Code des droits réels e del "
-"Regolamento UE 650/2012. Le quote ereditarie non sono calcolate "
-"automaticamente senza una mappatura della legge applicabile al caso. Se "
-"preferisci saltare il modulo, puoi scrivere direttamente allo Studio."
+"Applicable framework: Moudawana (Code de la famille), Code des droits "
+"réels, EU Regulation 650/2012."
+msgstr "Quadro applicabile: Moudawana (Code de la famille), Code des droits réels, Reg. UE 650/2012."
 
 #: .\templates\public\wizard_morocco_inheritance.html:25
-msgid ""
-"Collects qualitative information about heirs and assets so the Studio can "
-"review the case under Moroccan inheritance law and EU Regulation 650/2012."
-msgstr ""
-
-#: .\templates\public\wizard_morocco_inheritance.html:25
-msgid ""
-"It does not compute inheritance shares automatically. The Studio reviews the "
-"case under the Moudawana (Code de la famille) and EU Regulation 650/2012 "
-"manually."
-msgstr ""
-"Non calcola automaticamente le quote ereditarie. Lo Studio esamina "
-"manualmente il caso secondo la Moudawana (Code de la famille) e il "
-"Regolamento UE 650/2012."
-
-#: .\templates\public\wizard_morocco_inheritance.html:25
-#: .\templates\public\wizard_tunisia_inheritance.html:25
-msgid ""
-"Submit your inputs — a lawyer reviews the case manually and proposes the "
-"next step (applicable law, competent jurisdiction)."
-msgstr ""
-
-#: .\templates\public\wizard_morocco_inheritance.html:33
 msgid ""
 "The simulation is indicative and does not constitute legal advice or "
 "guarantee of outcome. Inheritance matters in Morocco follow the Moudawana "
@@ -3264,7 +3181,7 @@ msgstr "Risultato preliminare"
 msgid "Indicative range"
 msgstr "Intervallo indicativo"
 
-#: .\templates\public\wizard_result.html:36
+#: .\templates\public\wizard_result.html:35
 msgid ""
 "Your case has been received — the Studio will reply with a preliminary legal "
 "assessment."
@@ -3272,27 +3189,15 @@ msgstr ""
 "Il tuo caso è stato ricevuto — lo Studio risponderà con una valutazione "
 "legale preliminare."
 
-#: .\templates\public\wizard_result.html:39
-msgid ""
-"For this jurisdiction and case type, a lawyer of the Studio reviews each "
-"submission manually rather than publishing an automatic amount. We will "
-"reply directly with the next step (applicable law, competent jurisdiction, "
-"documents to gather)."
-msgstr ""
-"Per questa giurisdizione e questo tipo di caso, un avvocato dello Studio "
-"esamina manualmente ogni richiesta invece di pubblicare un importo "
-"automatico. Risponderemo direttamente con il passo successivo (legge "
-"applicabile, giurisdizione competente, documenti da raccogliere)."
-
-#: .\templates\public\wizard_result.html:51
+#: .\templates\public\wizard_result.html:46
 msgid "What this means"
 msgstr "Cosa significa"
 
-#: .\templates\public\wizard_result.html:52
+#: .\templates\public\wizard_result.html:47
 msgid "A bargaining anchor, not a guaranteed payout"
 msgstr "Un’ancora di trattativa, non un risarcimento garantito"
 
-#: .\templates\public\wizard_result.html:54
+#: .\templates\public\wizard_result.html:49
 msgid ""
 "The min / mid / max values are the indicative range a Studio lawyer would "
 "use as a starting point in negotiation or judicial reasoning. They reflect "
@@ -3304,7 +3209,7 @@ msgstr ""
 "Riflettono le fonti validate citate sotto e i dati inseriti. Non sono una "
 "promessa di risarcimento, un preventivo o una sentenza."
 
-#: .\templates\public\wizard_result.html:57
+#: .\templates\public\wizard_result.html:52
 msgid ""
 "The actual amount finally awarded depends on documents, expert reports, the "
 "responsibility split, the competent jurisdiction, and the judicial "
@@ -3314,15 +3219,15 @@ msgstr ""
 "ripartizione delle responsabilità, giurisdizione competente e orientamento "
 "del giudice deciders — elementi che la piattaforma oggi non vede."
 
-#: .\templates\public\wizard_result.html:63
+#: .\templates\public\wizard_result.html:58
 msgid "Next steps"
 msgstr "Prossimi passi"
 
-#: .\templates\public\wizard_result.html:64
+#: .\templates\public\wizard_result.html:59
 msgid "What you can do with this result"
 msgstr "Cosa puoi fare con questo risultato"
 
-#: .\templates\public\wizard_result.html:66
+#: .\templates\public\wizard_result.html:61
 msgid ""
 "Download the PDF of this simulation. It carries the same range, sources and "
 "disclaimer, in a format you can save or share."
@@ -3330,7 +3235,7 @@ msgstr ""
 "Scarica il PDF di questa simulazione. Riporta lo stesso range, le stesse "
 "fonti e lo stesso disclaimer, in un formato salvabile o condivisibile."
 
-#: .\templates\public\wizard_result.html:67
+#: .\templates\public\wizard_result.html:62
 msgid ""
 "Request a legal review from the Studio. A lawyer reads the case manually and "
 "replies on whether and how the firm can help."
@@ -3338,7 +3243,7 @@ msgstr ""
 "Richiedi una revisione legale allo Studio. Un avvocato legge il caso "
 "manualmente e risponde su se e come può aiutarti."
 
-#: .\templates\public\wizard_result.html:68
+#: .\templates\public\wizard_result.html:63
 msgid ""
 "Keep the simulation ID below — the Studio uses it to retrieve the exact "
 "inputs and sources of this run."
@@ -3346,33 +3251,33 @@ msgstr ""
 "Conserva l’ID simulazione qui sotto — lo Studio lo usa per recuperare gli "
 "stessi input e fonti di questa esecuzione."
 
-#: .\templates\public\wizard_result.html:74
+#: .\templates\public\wizard_result.html:69
 msgid "Calculation basis"
 msgstr ""
 
-#: .\templates\public\wizard_result.html:75
+#: .\templates\public\wizard_result.html:70
 msgid "How to read this range"
 msgstr ""
 
-#: .\templates\public\wizard_result.html:79
+#: .\templates\public\wizard_result.html:74
 msgid ""
 "Lower bound of the indicative range based on the approved dataset and the "
 "conservative interpretation of fault and disability."
 msgstr ""
 
-#: .\templates\public\wizard_result.html:83
+#: .\templates\public\wizard_result.html:78
 msgid ""
 "Central reference value used as the working anchor in negotiations or "
 "judicial reasoning."
 msgstr ""
 
-#: .\templates\public\wizard_result.html:87
+#: .\templates\public\wizard_result.html:82
 msgid ""
 "Upper bound of the indicative range based on the approved dataset and the "
 "most favourable interpretation supported by sources."
 msgstr ""
 
-#: .\templates\public\wizard_result.html:91
+#: .\templates\public\wizard_result.html:86
 #, fuzzy
 #| msgid ""
 #| "This page is informative. Any simulation provided by the platform is "
@@ -3392,32 +3297,32 @@ msgstr ""
 "responsabilità, legge applicabile, giurisdizione competente, orientamenti "
 "giudiziari e prassi assicurative."
 
-#: .\templates\public\wizard_result.html:99
+#: .\templates\public\wizard_result.html:94
 msgid "Warnings"
 msgstr "Avvertenze"
 
-#: .\templates\public\wizard_result.html:114
+#: .\templates\public\wizard_result.html:109
 msgid "Missing documents"
 msgstr "Documenti mancanti"
 
-#: .\templates\public\wizard_result.html:129
+#: .\templates\public\wizard_result.html:124
 msgid "Assumptions"
 msgstr "Ipotesi"
 
-#: .\templates\public\wizard_result.html:141
+#: .\templates\public\wizard_result.html:136
 msgid "Cited legal sources"
 msgstr "Fonti legali citate"
 
-#: .\templates\public\wizard_result.html:154
+#: .\templates\public\wizard_result.html:149
 #, python-format
 msgid "Open official source: %(title)s (opens in a new tab)"
 msgstr ""
 
-#: .\templates\public\wizard_result.html:155
+#: .\templates\public\wizard_result.html:150
 msgid "Open official source"
 msgstr "Apri fonte ufficiale"
 
-#: .\templates\public\wizard_result.html:168
+#: .\templates\public\wizard_result.html:163
 msgid ""
 "This simulation is indicative and does not constitute legal advice or "
 "guarantee of outcome."
@@ -3425,19 +3330,19 @@ msgstr ""
 "Questa simulazione è indicativa e non costituisce parere legale né garanzia "
 "di risultato."
 
-#: .\templates\public\wizard_result.html:175
+#: .\templates\public\wizard_result.html:170
 msgid "Simulation ID"
 msgstr "ID simulazione"
 
-#: .\templates\public\wizard_result.html:179
+#: .\templates\public\wizard_result.html:174
 msgid "Created at"
 msgstr "Creato il"
 
-#: .\templates\public\wizard_result.html:190
+#: .\templates\public\wizard_result.html:185
 msgid "Download PDF report"
 msgstr "Scarica report PDF"
 
-#: .\templates\public\wizard_result.html:194
+#: .\templates\public\wizard_result.html:189
 msgid "Back to methodology"
 msgstr "Torna alla metodologia"
 
@@ -3552,6 +3457,7 @@ msgstr ""
 
 #: .\templates\public\wizard_tunisia_inheritance.html:4
 #: .\templates\public\wizard_tunisia_inheritance.html:11
+#: .\templates\public\wizard_tunisia_inheritance.html:17
 msgid "Tunisia — international inheritance"
 msgstr "Tunisia — successione internazionale"
 
@@ -3567,37 +3473,13 @@ msgstr ""
 "manualmente ogni caso; le quote ereditarie non sono calcolate "
 "automaticamente senza una mappatura della legge applicabile al caso."
 
-#: .\templates\public\wizard_tunisia_inheritance.html:19
+#: .\templates\public\wizard_tunisia_inheritance.html:17
 msgid ""
-"The Studio reviews each Tunisian inheritance case manually, on the basis of "
-"the Code du statut personnel (Loi 98-97), the Code de droit international "
-"privé and EU Regulation 650/2012. Inheritance shares are not computed "
-"automatically without an applicable-law mapping for the case. If you prefer "
-"to skip the form, you can write directly to the Studio."
-msgstr ""
-"Lo Studio esamina manualmente ogni caso successorio tunisino, sulla base del "
-"Code du statut personnel (Loi 98-97), del Code de droit international privé "
-"e del Regolamento UE 650/2012. Le quote ereditarie non sono calcolate "
-"automaticamente senza una mappatura della legge applicabile al caso. Se "
-"preferisci saltare il modulo, puoi scrivere direttamente allo Studio."
+"Applicable framework: Code du statut personnel (Loi 98-97), Code de "
+"droit international privé, EU Regulation 650/2012."
+msgstr "Quadro applicabile: Code du statut personnel (Loi 98-97), Code de droit international privé, Reg. UE 650/2012."
 
 #: .\templates\public\wizard_tunisia_inheritance.html:25
-msgid ""
-"Collects qualitative information about heirs and assets so the Studio can "
-"review the case under Tunisian inheritance law and EU Regulation 650/2012."
-msgstr ""
-
-#: .\templates\public\wizard_tunisia_inheritance.html:25
-msgid ""
-"It does not compute inheritance shares automatically. The Studio reviews the "
-"case under the Code du statut personnel (Loi 98-97) and EU Regulation "
-"650/2012 manually."
-msgstr ""
-"Non calcola automaticamente le quote ereditarie. Lo Studio esamina "
-"manualmente il caso secondo il Code du statut personnel (Loi 98-97) e il "
-"Regolamento UE 650/2012."
-
-#: .\templates\public\wizard_tunisia_inheritance.html:33
 msgid ""
 "The simulation is indicative and does not constitute legal advice or "
 "guarantee of outcome. Inheritance matters in Tunisia follow the Code du "
@@ -3608,3 +3490,110 @@ msgstr ""
 "risultato. Le successioni in Tunisia seguono il Code du statut personnel, "
 "Libro IX: un calcolo preciso richiede la revisione dello Studio del contesto "
 "effettivo del caso."
+
+#~ msgid "Preliminary legal assessment — no automatic amount."
+#~ msgstr "Valutazione legale preliminare — nessun importo automatico."
+
+#~ msgid ""
+#~ "The Studio reviews each Belgian road-accident case manually, using the "
+#~ "recognised quantification tables (Loi du 21 novembre 1989, Tableau "
+#~ "Indicatif, Schryvers). No automatic amount is published before these "
+#~ "tables have been verified for the case. If you prefer to skip the form, "
+#~ "you can write directly to the Studio."
+#~ msgstr ""
+#~ "Lo Studio esamina manualmente ogni caso belga di incidente stradale, "
+#~ "utilizzando le tabelle di quantificazione riconosciute (Loi du 21 "
+#~ "novembre 1989, Tableau Indicatif, Schryvers). Nessun importo automatico "
+#~ "viene pubblicato prima che tali tabelle siano verificate per il caso. Se "
+#~ "preferisci saltare il modulo, puoi scrivere direttamente allo Studio."
+
+#~ msgid ""
+#~ "Collects qualitative information about your case so the Studio can review "
+#~ "it manually."
+#~ msgstr ""
+#~ "Raccoglie informazioni qualitative sul tuo caso affinché lo Studio possa "
+#~ "esaminarlo manualmente."
+
+#~ msgid ""
+#~ "It does not publish an automatic amount. The Belgian indicative tables "
+#~ "(Tableau Indicatif, Schryvers) are reviewed manually by the Studio for "
+#~ "each case."
+#~ msgstr ""
+#~ "Non pubblica alcun importo automatico. Le tabelle indicative belghe "
+#~ "(Tableau Indicatif, Schryvers) sono esaminate manualmente dallo Studio "
+#~ "per ogni caso."
+
+#~ msgid ""
+#~ "The Studio reviews each French road-accident case manually, using the "
+#~ "recognised quantification sources (Loi Badinter, Référentiel Mornet, "
+#~ "Gazette du Palais). No automatic amount is published before these sources "
+#~ "have been verified for the case. If you prefer to skip the form, you can "
+#~ "write directly to the Studio."
+#~ msgstr ""
+#~ "Lo Studio esamina manualmente ogni caso francese di incidente stradale, "
+#~ "utilizzando le fonti di quantificazione riconosciute (Loi Badinter, "
+#~ "Référentiel Mornet, Gazette du Palais). Nessun importo automatico viene "
+#~ "pubblicato prima che tali fonti siano verificate per il caso. Se "
+#~ "preferisci saltare il modulo, puoi scrivere direttamente allo Studio."
+
+#~ msgid ""
+#~ "International inheritance review — shares not computed automatically."
+#~ msgstr ""
+#~ "Analisi successoria internazionale — quote non calcolate automaticamente."
+
+#~ msgid ""
+#~ "The Studio reviews each Moroccan inheritance case manually, on the basis "
+#~ "of the Moudawana (Code de la famille), the Code des droits réels and EU "
+#~ "Regulation 650/2012. Inheritance shares are not computed automatically "
+#~ "without an applicable-law mapping for the case. If you prefer to skip the "
+#~ "form, you can write directly to the Studio."
+#~ msgstr ""
+#~ "Lo Studio esamina manualmente ogni caso successorio marocchino, sulla "
+#~ "base della Moudawana (Code de la famille), del Code des droits réels e "
+#~ "del Regolamento UE 650/2012. Le quote ereditarie non sono calcolate "
+#~ "automaticamente senza una mappatura della legge applicabile al caso. Se "
+#~ "preferisci saltare il modulo, puoi scrivere direttamente allo Studio."
+
+#~ msgid ""
+#~ "It does not compute inheritance shares automatically. The Studio reviews "
+#~ "the case under the Moudawana (Code de la famille) and EU Regulation "
+#~ "650/2012 manually."
+#~ msgstr ""
+#~ "Non calcola automaticamente le quote ereditarie. Lo Studio esamina "
+#~ "manualmente il caso secondo la Moudawana (Code de la famille) e il "
+#~ "Regolamento UE 650/2012."
+
+#~ msgid ""
+#~ "For this jurisdiction and case type, a lawyer of the Studio reviews each "
+#~ "submission manually rather than publishing an automatic amount. We will "
+#~ "reply directly with the next step (applicable law, competent "
+#~ "jurisdiction, documents to gather)."
+#~ msgstr ""
+#~ "Per questa giurisdizione e questo tipo di caso, un avvocato dello Studio "
+#~ "esamina manualmente ogni richiesta invece di pubblicare un importo "
+#~ "automatico. Risponderemo direttamente con il passo successivo (legge "
+#~ "applicabile, giurisdizione competente, documenti da raccogliere)."
+
+#~ msgid ""
+#~ "The Studio reviews each Tunisian inheritance case manually, on the basis "
+#~ "of the Code du statut personnel (Loi 98-97), the Code de droit "
+#~ "international privé and EU Regulation 650/2012. Inheritance shares are "
+#~ "not computed automatically without an applicable-law mapping for the "
+#~ "case. If you prefer to skip the form, you can write directly to the "
+#~ "Studio."
+#~ msgstr ""
+#~ "Lo Studio esamina manualmente ogni caso successorio tunisino, sulla base "
+#~ "del Code du statut personnel (Loi 98-97), del Code de droit international "
+#~ "privé e del Regolamento UE 650/2012. Le quote ereditarie non sono "
+#~ "calcolate automaticamente senza una mappatura della legge applicabile al "
+#~ "caso. Se preferisci saltare il modulo, puoi scrivere direttamente allo "
+#~ "Studio."
+
+#~ msgid ""
+#~ "It does not compute inheritance shares automatically. The Studio reviews "
+#~ "the case under the Code du statut personnel (Loi 98-97) and EU Regulation "
+#~ "650/2012 manually."
+#~ msgstr ""
+#~ "Non calcola automaticamente le quote ereditarie. Lo Studio esamina "
+#~ "manualmente il caso secondo il Code du statut personnel (Loi 98-97) e il "
+#~ "Regolamento UE 650/2012."

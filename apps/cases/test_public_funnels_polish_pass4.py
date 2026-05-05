@@ -324,10 +324,16 @@ def test_ar_result_unavailable_translates_contact_cta(italy_calculator_fixture):
     assert response.status_code == 200
     body = response.content.decode("utf-8")
     visible = _visible_text(body)
-    assert "اطلب من المكتب مراجعة هذا الملف" in visible, "AR contact CTA missing"
+    # Pass-7 wires the CTA through ``public_status.primary_cta_label``.
+    # For FR (LEGAL_ASSESSMENT) the AR translation is "أرسل الملف
+    # إلى المكتب". The legacy AR phrasing is also accepted.
+    assert ("أرسل الملف إلى المكتب" in visible) or (
+        "اطلب من المكتب مراجعة هذا الملف" in visible
+    ), "AR contact CTA missing"
     assert (
         "Request a Studio review of this case" not in visible
     ), "EN CTA leaked on AR unavailable result"
+    assert "Submit the case to the Studio" not in visible, "EN CTA leaked on AR unavailable result"
     # No leaked monetary amounts on the unavailable card.
     assert "26268" not in body
     assert "27353" not in body

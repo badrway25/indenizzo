@@ -1,0 +1,74 @@
+{% load i18n %}
+{% comment %}
+  Public status panel — F-product-status-banner-partial-pass7.
+
+  Single source of truth for the FR/BE/MA/TN wizard banners and for the
+  "unavailable" card on the result page. Reads everything from the
+  ``public_status`` PublicStatus object exposed by
+  ``apps.core.public_status.get_country_public_status``.
+
+  Variables:
+    public_status            — required. The PublicStatus dataclass.
+    country_name             — optional. Long country label shown above the title.
+    legal_basis              — optional. Country-specific framework (e.g.
+                               "Loi Badinter, Référentiel Mornet, Gazette du
+                               Palais"). Free-form, already translated.
+    show_no_amounts_message  — bool, default False. When True, render the
+                               ``no_amounts_message`` line beneath the
+                               description.
+    variant                  — "wizard" (form-page banner) or "landing"
+                               (result-page card). Default "wizard".
+    contact_url              — optional override for the CTA href (default:
+                               crm:contact).
+
+  No technical wording is allowed: the partial only reads from
+  ``public_status``; banned tokens never appear here.
+{% endcomment %}
+{% if public_status %}
+  {% if variant == "landing" %}
+    <aside class="rounded-3xl border border-stone2-200 bg-sand-100 px-6 py-6 lg:p-7" aria-label="{% translate 'Public status' %}">
+  {% else %}
+    <aside class="mt-6 rounded-3xl border border-gold-400/40 bg-sand-100 px-6 py-6 text-sm text-ink-900 leading-relaxed" aria-label="{% translate 'Public status' %}">
+  {% endif %}
+
+    <div class="flex items-center gap-3">
+      {% if public_status.badge_variant == "ok" %}
+        <span class="inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.18em] font-semibold px-3 py-1.5 rounded-full bg-ok-600/10 text-ok-600">
+          <span aria-hidden="true">●</span>{{ public_status.badge_label }}
+        </span>
+      {% elif public_status.badge_variant == "gold" %}
+        <span class="inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.18em] font-semibold px-3 py-1.5 rounded-full bg-gold-500/15 text-gold-700">
+          <span aria-hidden="true">●</span>{{ public_status.badge_label }}
+        </span>
+      {% else %}
+        <span class="inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.18em] font-semibold px-3 py-1.5 rounded-full bg-stone2-100 text-ink-800">
+          <span aria-hidden="true">●</span>{{ public_status.badge_label }}
+        </span>
+      {% endif %}
+      {% if country_name %}
+        <span class="text-[11px] uppercase tracking-[0.22em] text-stone2-500 font-semibold">{{ country_name }}</span>
+      {% endif %}
+    </div>
+
+    <p class="mt-3 text-sm text-ink-900 leading-relaxed">
+      {{ public_status.long_description }}
+    </p>
+
+    {% if legal_basis %}
+      <p class="mt-2 text-xs text-stone2-500 leading-relaxed">
+        {{ legal_basis }}
+      </p>
+    {% endif %}
+
+    {% if show_no_amounts_message and public_status.no_amounts_message %}
+      <p class="mt-3 text-sm text-ink-800 leading-relaxed">
+        {{ public_status.no_amounts_message }}
+      </p>
+    {% endif %}
+
+    <a href="{% if contact_url %}{{ contact_url }}{% else %}{% url 'crm:contact' %}{% endif %}"
+       class="mt-4 inline-flex items-center gap-1 text-gold-600 hover:text-gold-500 font-semibold">
+      {{ public_status.primary_cta_label }} <span aria-hidden="true">→</span>
+    </a>
+  </aside>
+{% endif %}

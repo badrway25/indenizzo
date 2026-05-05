@@ -144,7 +144,16 @@ def test_wizard_start_has_italy_cta_validation_cta_and_how_it_works():
     response = Client().get(reverse("cases:wizard_start"))
     assert response.status_code == 200
     body = response.content.decode("utf-8")
-    assert ("Start this simulation" in body) or ("Avvia questa simulazione" in body)
+    # Pass-6 centralised the IT primary CTA in apps/core/public_status.py
+    # — the rendered text is now "Run an indicative simulation" /
+    # "Avvia una simulazione indicativa". Old wording is kept as a
+    # fallback for forward compatibility.
+    assert (
+        ("Run an indicative simulation" in body)
+        or ("Avvia una simulazione indicativa" in body)
+        or ("Start this simulation" in body)
+        or ("Avvia questa simulazione" in body)
+    )
     # Pass-5 renamed "Open validation wizard" → "Submit the case to the Studio".
     # Either still satisfies the contract that scaffolds expose a CTA.
     assert (
@@ -213,10 +222,15 @@ def test_scaffold_wizards_say_no_automatic(url_name):
         "no automatic amount",
         "no automatic shares",
         "shares not computed automatically",
+        # Pass-7 panel wording: long_description / no_amounts_message
+        # surface "Inheritance shares are not computed automatically".
+        "Inheritance shares are not computed automatically",
+        "shares are not computed automatically",
         "nessuna stima automatica",
         "nessun importo automatico",
         "nessuna quota calcolata automaticamente",
         "quote non calcolate automaticamente",
+        "non vengono calcolate automaticamente",
     )
     assert any(
         c in body for c in candidates
@@ -303,9 +317,17 @@ def test_unavailable_result_has_contact_cta_and_no_amounts(italy_calculator_fixt
     )
     assert response.status_code == 200
     body = response.content.decode("utf-8")
-    # Contact CTA inside the unavailable flow (EN-or-IT).
-    assert ("Request a Studio review of this case" in body) or (
-        "Richiedi allo Studio la revisione di questo caso" in body
+    # Contact CTA inside the unavailable flow. Pass-7 routes the CTA
+    # label through ``public_status.primary_cta_label`` — for FR
+    # (LEGAL_ASSESSMENT) that is "Submit the case to the Studio" /
+    # "Invia il caso allo Studio". The legacy "Request a Studio review
+    # of this case" / "Richiedi allo Studio la revisione di questo
+    # caso" wording is also accepted as a fallback.
+    assert (
+        ("Submit the case to the Studio" in body)
+        or ("Invia il caso allo Studio" in body)
+        or ("Request a Studio review of this case" in body)
+        or ("Richiedi allo Studio la revisione di questo caso" in body)
     )
     # No leaked amounts. The page should not mention "EUR" anywhere near a
     # number; we approximate by checking absence of the IT contract digits.

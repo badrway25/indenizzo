@@ -30,18 +30,13 @@
       </dl>
     </div>
   {% else %}
-    <div class="mt-8 rounded-3xl border border-stone2-200 bg-sand-100 p-6">
-      <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">{{ status_public_label }}</p>
-      <h2 class="mt-2 font-serif text-2xl text-ink-950">
+    <div class="mt-8">
+      <h2 class="font-serif text-2xl text-ink-950">
         {% blocktranslate %}Your case has been received — the Studio will reply with a preliminary legal assessment.{% endblocktranslate %}
       </h2>
-      <p class="mt-3 text-sm text-ink-800 leading-relaxed">
-        {% blocktranslate %}For this jurisdiction and case type, a lawyer of the Studio reviews each submission manually rather than publishing an automatic amount. We will reply directly with the next step (applicable law, competent jurisdiction, documents to gather).{% endblocktranslate %}
-      </p>
-      <a href="{{ contact_url }}" class="mt-5 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
-        {% translate "Request a Studio review of this case" %}
-        <span aria-hidden="true">→</span>
-      </a>
+      <div class="mt-4">
+        {% include "partials/_public_status_panel.html" with public_status=public_status show_no_amounts_message=True variant="landing" contact_url=contact_url %}
+      </div>
     </div>
   {% endif %}
 

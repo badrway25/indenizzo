@@ -14,15 +14,7 @@
     {% blocktranslate %}All fields below are optional. If you don't know a value, leave it empty. The Studio reviews each case manually and offers a preliminary legal assessment; no automatic amount is published before the underlying quantification sources have been verified for the case.{% endblocktranslate %}
   </p>
 
-  <div class="mt-6 rounded-2xl border border-gold-400/40 bg-sand-100 px-5 py-4 text-sm text-ink-900 leading-relaxed">
-    <strong class="font-semibold">{% translate "Preliminary legal assessment — no automatic amount." %}</strong>
-    {% blocktranslate %}The Studio reviews each French road-accident case manually, using the recognised quantification sources (Loi Badinter, Référentiel Mornet, Gazette du Palais). No automatic amount is published before these sources have been verified for the case. If you prefer to skip the form, you can write directly to the Studio.{% endblocktranslate %}
-    <a href="{% url 'crm:contact' %}" class="mt-2 inline-flex items-center gap-1 text-gold-600 hover:text-gold-500 font-semibold">
-      {% translate "Contact the Studio" %} <span aria-hidden="true">→</span>
-    </a>
-  </div>
-
-  {% include "partials/_module_status_card.html" with msc_does=_("Collects qualitative information about your case so the Studio can review it manually.") msc_does_not=_("It does not publish an automatic amount. The French quantification sources (Loi Badinter, Référentiel Mornet, Gazette du Palais) are reviewed manually by the Studio for each case.") msc_next_step=_("Submit your inputs — the Studio receives the case and a lawyer replies after a manual legal review.") msc_status_label=_("Preliminary legal assessment") msc_status_tone="warn" %}
+  {% include "partials/_public_status_panel.html" with public_status=public_status country_name=_("France — road accident bodily injury") legal_basis=_("Recognised quantification sources: Loi Badinter, Référentiel Mornet, Gazette du Palais.") show_no_amounts_message=True variant="wizard" %}
 
   <form method="post" novalidate class="mt-10 bg-white border border-stone2-200 rounded-3xl shadow-card p-6 sm:p-8 space-y-6">
     {% csrf_token %}
