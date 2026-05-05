@@ -63,6 +63,17 @@ SUPPORTED_ENGINES: frozenset[str] = frozenset(
         # See ``apps/calculators/engines/belgium.py`` and
         # ``docs/architecture/BELGIUM_ENGINE_INACTIVE_FIXTURE_ONLY.md``.
         "belgium_road_accident_v1",
+        # Morocco inheritance: scaffolded engine for international
+        # inheritance with Moroccan elements (Moudawana Livre III faraïd
+        # framework). Until Studio approves the source/dataset/formula
+        # the engine returns ``unavailable`` on the public path. Pass-1
+        # wires a single amount rule
+        # (``morocco_inheritance_fixed_share_direct``) that reads the
+        # share spec from the formula's parameters; the rule is fixture-
+        # only and intentionally not a complete legal codification.
+        # See ``apps/calculators/engines/morocco.py`` and
+        # ``docs/architecture/MOROCCO_INHERITANCE_ENGINE_INACTIVE_FIXTURE_ONLY.md``.
+        "morocco_inheritance_v1",
     }
 )
 SUPPORTED_AMOUNT_RULES: frozenset[str] = frozenset(
@@ -109,6 +120,20 @@ SUPPORTED_AMOUNT_RULES: frozenset[str] = frozenset(
         # the range verbatim with optional fault-reduction applied
         # uniformly. See ``_rule_belgium_deces_affection_relation_direct``.
         "belgium_deces_affection_relation_direct",
+        # Morocco inheritance fixed-share rule (fixture-only). Reads the
+        # share specification from ``formula.parameters["shares"]`` (a
+        # mapping ``heir_class → "p/q"`` for fixed fractions, or
+        # ``"remainder_2_to_1"`` for the residual quote between sons /
+        # daughters under the classic 2:1 ratio). Computes per-heir
+        # rational allocations from the heirs structure provided in
+        # ``input_data["heirs"]`` and, when ``estate_value`` is supplied,
+        # converts each share into a Decimal amount. This rule does NOT
+        # belong to the scalar / range / single-row-range families: it
+        # consumes the formula directly and emits a structured
+        # ``InheritanceShareResult`` from
+        # :func:`apply_amount_inheritance_share_rule`.
+        # See ``_rule_morocco_inheritance_fixed_share_direct``.
+        "morocco_inheritance_fixed_share_direct",
     }
 )
 
@@ -142,6 +167,20 @@ def is_single_row_range_rule(rule: str) -> bool:
     ``row.extra.amount_min/mid/max`` or by collapsing to a single value
     duplicated across min/mid/max."""
     return rule in SINGLE_ROW_RANGE_AMOUNT_RULES
+
+
+# Subset of SUPPORTED_AMOUNT_RULES that operate on a structured input
+# (e.g. an ``heirs`` mapping) rather than a single matched row. These
+# rules read their share specification directly from
+# ``formula.parameters`` and emit a per-heir-class allocation map.
+INHERITANCE_SHARE_AMOUNT_RULES: frozenset[str] = frozenset(
+    {"morocco_inheritance_fixed_share_direct"}
+)
+
+
+def is_inheritance_share_rule(rule: str) -> bool:
+    """Return True iff ``rule`` belongs to the inheritance-share family."""
+    return rule in INHERITANCE_SHARE_AMOUNT_RULES
 
 
 # ---------------------------------------------------------------------------
@@ -664,6 +703,247 @@ def _rule_france_dfp_point_value_direct(
         mid_amount=amount_mid,
         max_amount=amount_max,
     )
+
+
+@dataclass(frozen=True)
+class InheritanceAllocation:
+    """One heir-class allocation in an inheritance share computation.
+
+    The fraction is exposed verbatim (``share_numerator`` /
+    ``share_denominator``) so callers can render "1/8" without
+    reconstructing it from a Decimal. ``amount`` is ``None`` when the
+    caller did not provide ``estate_value`` — the fraction is still
+    meaningful, the absolute amount simply cannot be computed.
+    """
+
+    heir_class: str
+    label: str
+    share_numerator: int
+    share_denominator: int
+    amount: Decimal | None
+    head_count: int
+
+
+@dataclass(frozen=True)
+class InheritanceShareResult:
+    """Result of an inheritance-share rule.
+
+    ``estate_total`` is the parsed ``estate_value`` when provided; it
+    is ``None`` when the input did not include one (the rule still
+    succeeds but emits fractions only).
+
+    ``residual`` is the unallocated fraction of the estate. Always
+    non-negative; the engine can surface it as a warning or as an
+    additional breakdown line.
+    """
+
+    estate_total: Decimal | None
+    allocations: tuple[InheritanceAllocation, ...]
+    residual_numerator: int
+    residual_denominator: int
+
+
+def apply_amount_inheritance_share_rule(
+    rule: str,
+    *,
+    formula_params: dict[str, Any],
+    input_data: dict[str, Any],
+) -> InheritanceShareResult:
+    """Inheritance-share dispatcher.
+
+    Parallel to :func:`apply_amount_rule` /
+    :func:`apply_amount_range_rule` /
+    :func:`apply_amount_single_row_range_rule`, but for rules that
+    consume the formula's ``parameters["shares"]`` directly rather than
+    a matched table row.
+
+    Caller must have verified ``rule in INHERITANCE_SHARE_AMOUNT_RULES``
+    via :func:`is_inheritance_share_rule`. Unknown rules raise
+    ``ValueError``.
+    """
+    if rule == "morocco_inheritance_fixed_share_direct":
+        return _rule_morocco_inheritance_fixed_share_direct(
+            formula_params=formula_params,
+            input_data=input_data,
+        )
+    raise ValueError(f"Unsupported inheritance-share amount_rule: {rule!r}")
+
+
+def _rule_morocco_inheritance_fixed_share_direct(
+    *,
+    formula_params: dict[str, Any],
+    input_data: dict[str, Any],
+) -> InheritanceShareResult:
+    """Morocco inheritance fixed-share rule (fixture-only).
+
+    Computes per-heir-class allocations from a synthetic share spec.
+    The shape of ``formula_params["shares"]`` is::
+
+        {
+            "spouse":          "1/8",          # fixed fraction
+            "father":          "1/6",          # fixed fraction
+            "mother":          "1/6",          # fixed fraction
+            "sons_group":      "remainder_2_to_1",
+            "daughters_group": "remainder_2_to_1",
+        }
+
+    Fixed-fraction entries are applied first; the residual fraction of
+    the estate is then split between ``sons_group`` and
+    ``daughters_group`` in the classic 2:1 ratio (2 parts per son, 1
+    part per daughter). Only heir classes whose ``input_data["heirs"]``
+    count is > 0 receive an allocation.
+
+    Notes & limits:
+
+    - This is **not** a complete codification of Moudawana Livre III.
+      Real ``faraïd`` involve hajb (exclusion), 'awl (proportional
+      reduction when fixed shares exceed unity), radd (return of the
+      residual to non-residuary heirs) and a far richer family-status
+      taxonomy than the spec above. Activation requires legal review
+      and a much wider mapping.
+    - The rule expects integer counts (``int`` or castable). Strings
+      that don't parse become 0.
+    - Fractions are computed exactly (Python ``fractions.Fraction``)
+      so 1/3 of an estate stays 1/3 — no decimal drift between sons
+      and daughters.
+
+    Output: ``InheritanceShareResult`` with one ``InheritanceAllocation``
+    per heir class that received a positive allocation, plus the
+    residual fraction (typically zero when the spec covers all classes).
+    """
+    from fractions import Fraction
+
+    shares_spec = formula_params.get("shares") or {}
+    heirs_raw = input_data.get("heirs") or {}
+    estate = _to_decimal_or_none(input_data.get("estate_value"))
+
+    def _count(name: str) -> int:
+        v = heirs_raw.get(name)
+        try:
+            n = int(v) if v not in (None, "") else 0
+        except (TypeError, ValueError):
+            return 0
+        return max(n, 0)
+
+    # Step 1: fixed-fraction shares. Order is preserved from the spec
+    # for stable breakdown rendering.
+    used = Fraction(0)
+    fixed_allocations: list[tuple[str, Fraction, int]] = []
+    remainder_classes: list[str] = []
+    for heir_class, spec in shares_spec.items():
+        if not isinstance(spec, str):
+            continue
+        spec_clean = spec.strip()
+        if spec_clean == "remainder_2_to_1":
+            remainder_classes.append(heir_class)
+            continue
+        if "/" not in spec_clean:
+            continue
+        try:
+            num_str, den_str = spec_clean.split("/", 1)
+            frac = Fraction(int(num_str), int(den_str))
+        except (ValueError, ZeroDivisionError):
+            continue
+        count = _count(heir_class)
+        if count <= 0:
+            continue
+        fixed_allocations.append((heir_class, frac, count))
+        used += frac
+
+    # Step 2: distribute residual between sons / daughters under the
+    # 2:1 ratio. The hand-coded class names mirror the spec keys.
+    residual = Fraction(1) - used
+    if residual < 0:
+        # Over-allocation: refuse to split a negative residual. The
+        # engine surfaces this via the residual fraction; allocations
+        # stay as the fixed fractions sum (which the engine flags).
+        residual = Fraction(0)
+
+    sons_count = _count("sons")
+    daughters_count = _count("daughters")
+    sons_in_remainder = "sons_group" in remainder_classes and sons_count > 0
+    daughters_in_remainder = "daughters_group" in remainder_classes and daughters_count > 0
+    total_parts = (2 * sons_count if sons_in_remainder else 0) + (
+        daughters_count if daughters_in_remainder else 0
+    )
+
+    sons_share = Fraction(0)
+    daughters_share = Fraction(0)
+    if total_parts > 0 and residual > 0:
+        per_part = residual / total_parts
+        if sons_in_remainder:
+            sons_share = per_part * 2 * sons_count
+        if daughters_in_remainder:
+            daughters_share = per_part * 1 * daughters_count
+
+    allocations: list[InheritanceAllocation] = []
+
+    def _to_amount(frac: Fraction) -> Decimal | None:
+        if estate is None:
+            return None
+        # Fraction × Decimal: convert via numerator / denominator to
+        # preserve precision; then quantize as the caller's estate
+        # precision dictates.
+        return estate * Decimal(frac.numerator) / Decimal(frac.denominator)
+
+    for heir_class, frac, count in fixed_allocations:
+        allocations.append(
+            InheritanceAllocation(
+                heir_class=heir_class,
+                label=_inheritance_label(heir_class),
+                share_numerator=frac.numerator,
+                share_denominator=frac.denominator,
+                amount=_to_amount(frac),
+                head_count=count,
+            )
+        )
+    if sons_in_remainder and sons_share > 0:
+        allocations.append(
+            InheritanceAllocation(
+                heir_class="sons_group",
+                label=_inheritance_label("sons_group"),
+                share_numerator=sons_share.numerator,
+                share_denominator=sons_share.denominator,
+                amount=_to_amount(sons_share),
+                head_count=sons_count,
+            )
+        )
+    if daughters_in_remainder and daughters_share > 0:
+        allocations.append(
+            InheritanceAllocation(
+                heir_class="daughters_group",
+                label=_inheritance_label("daughters_group"),
+                share_numerator=daughters_share.numerator,
+                share_denominator=daughters_share.denominator,
+                amount=_to_amount(daughters_share),
+                head_count=daughters_count,
+            )
+        )
+
+    final_used = used + sons_share + daughters_share
+    final_residual = Fraction(1) - final_used
+    if final_residual < 0:
+        final_residual = Fraction(0)
+
+    return InheritanceShareResult(
+        estate_total=estate,
+        allocations=tuple(allocations),
+        residual_numerator=final_residual.numerator,
+        residual_denominator=final_residual.denominator,
+    )
+
+
+_INHERITANCE_LABELS: dict[str, str] = {
+    "spouse": "Surviving spouse",
+    "father": "Father",
+    "mother": "Mother",
+    "sons_group": "Sons (collective)",
+    "daughters_group": "Daughters (collective)",
+}
+
+
+def _inheritance_label(heir_class: str) -> str:
+    return _INHERITANCE_LABELS.get(heir_class, heir_class.replace("_", " ").title())
 
 
 def _rule_belgium_souffrances_age_severity_direct(
