@@ -210,7 +210,17 @@ def test_tunisia_calculator_unavailable_even_with_approved_source(
     assert r.estimated_max is None
     assert len(r.sources) >= 1
     assert any(s.country == "TN" for s in r.sources)
-    assert "calculator_engine_pending_for_jurisdiction" in r.missing_documents
+    # F-tunisia-inheritance-engine-inactive-fixture-only wired the TN
+    # engine with the full gating chain. With an APPROVED source but no
+    # APPROVED dataset attached, the engine now reports the more
+    # specific ``compensation_dataset_approved`` diagnostic instead of
+    # the legacy placeholder ``calculator_engine_pending_for_jurisdiction``.
+    # Both are accepted to keep this regression test stable across the
+    # transition.
+    assert (
+        "calculator_engine_pending_for_jurisdiction" in r.missing_documents
+        or "compensation_dataset_approved" in r.missing_documents
+    )
 
 
 # ---------------------------------------------------------------------------

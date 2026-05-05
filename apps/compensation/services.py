@@ -74,6 +74,17 @@ SUPPORTED_ENGINES: frozenset[str] = frozenset(
         # See ``apps/calculators/engines/morocco.py`` and
         # ``docs/architecture/MOROCCO_INHERITANCE_ENGINE_INACTIVE_FIXTURE_ONLY.md``.
         "morocco_inheritance_v1",
+        # Tunisia inheritance: scaffolded engine for international
+        # inheritance with Tunisian elements (Code du statut personnel
+        # Livre IX + Loi n° 98-97 framework). Until Studio approves the
+        # source/dataset/formula the engine returns ``unavailable`` on
+        # the public path. Pass-1 wires a single amount rule
+        # (``tunisia_inheritance_fixed_share_direct``) that mirrors the
+        # MA dispatch family — same shape, same rational arithmetic,
+        # different country activation gate.
+        # See ``apps/calculators/engines/tunisia.py`` and
+        # ``docs/architecture/TUNISIA_INHERITANCE_ENGINE_INACTIVE_FIXTURE_ONLY.md``.
+        "tunisia_inheritance_v1",
     }
 )
 SUPPORTED_AMOUNT_RULES: frozenset[str] = frozenset(
@@ -134,6 +145,19 @@ SUPPORTED_AMOUNT_RULES: frozenset[str] = frozenset(
         # :func:`apply_amount_inheritance_share_rule`.
         # See ``_rule_morocco_inheritance_fixed_share_direct``.
         "morocco_inheritance_fixed_share_direct",
+        # Tunisia inheritance fixed-share rule (fixture-only). Twin of
+        # the MA rule: same ``parameters["shares"]`` shape (``heir_class
+        # → "p/q"`` for fixed fractions, ``"remainder_2_to_1"`` for the
+        # residual quote between sons / daughters), same exact rational
+        # arithmetic via ``fractions.Fraction``. Distinct entry point
+        # so the country activation gate stays per-jurisdiction:
+        # promoting the Moroccan source does not silently activate
+        # Tunisia and vice versa. Reads ``input_data["heirs"]`` and the
+        # optional ``estate_value``. Detects an invalid share spec
+        # (negative residual when the fixed shares overshoot unity) and
+        # surfaces it via the engine's gating chain.
+        # See ``_rule_tunisia_inheritance_fixed_share_direct``.
+        "tunisia_inheritance_fixed_share_direct",
     }
 )
 
@@ -174,7 +198,10 @@ def is_single_row_range_rule(rule: str) -> bool:
 # rules read their share specification directly from
 # ``formula.parameters`` and emit a per-heir-class allocation map.
 INHERITANCE_SHARE_AMOUNT_RULES: frozenset[str] = frozenset(
-    {"morocco_inheritance_fixed_share_direct"}
+    {
+        "morocco_inheritance_fixed_share_direct",
+        "tunisia_inheritance_fixed_share_direct",
+    }
 )
 
 
@@ -766,7 +793,22 @@ def apply_amount_inheritance_share_rule(
             formula_params=formula_params,
             input_data=input_data,
         )
+    if rule == "tunisia_inheritance_fixed_share_direct":
+        return _rule_tunisia_inheritance_fixed_share_direct(
+            formula_params=formula_params,
+            input_data=input_data,
+        )
     raise ValueError(f"Unsupported inheritance-share amount_rule: {rule!r}")
+
+
+class InvalidInheritanceShareSpec(ValueError):
+    """Raised when a share spec is structurally invalid.
+
+    Used today by the Tunisia rule when the sum of fixed-fraction shares
+    exceeds 1, producing a negative residual the rule cannot honour. The
+    engine catches this and routes to ``UNAVAILABLE`` so the formula's
+    misconfiguration never leaks into a public estimate.
+    """
 
 
 def _rule_morocco_inheritance_fixed_share_direct(
@@ -884,6 +926,167 @@ def _rule_morocco_inheritance_fixed_share_direct(
         # Fraction × Decimal: convert via numerator / denominator to
         # preserve precision; then quantize as the caller's estate
         # precision dictates.
+        return estate * Decimal(frac.numerator) / Decimal(frac.denominator)
+
+    for heir_class, frac, count in fixed_allocations:
+        allocations.append(
+            InheritanceAllocation(
+                heir_class=heir_class,
+                label=_inheritance_label(heir_class),
+                share_numerator=frac.numerator,
+                share_denominator=frac.denominator,
+                amount=_to_amount(frac),
+                head_count=count,
+            )
+        )
+    if sons_in_remainder and sons_share > 0:
+        allocations.append(
+            InheritanceAllocation(
+                heir_class="sons_group",
+                label=_inheritance_label("sons_group"),
+                share_numerator=sons_share.numerator,
+                share_denominator=sons_share.denominator,
+                amount=_to_amount(sons_share),
+                head_count=sons_count,
+            )
+        )
+    if daughters_in_remainder and daughters_share > 0:
+        allocations.append(
+            InheritanceAllocation(
+                heir_class="daughters_group",
+                label=_inheritance_label("daughters_group"),
+                share_numerator=daughters_share.numerator,
+                share_denominator=daughters_share.denominator,
+                amount=_to_amount(daughters_share),
+                head_count=daughters_count,
+            )
+        )
+
+    final_used = used + sons_share + daughters_share
+    final_residual = Fraction(1) - final_used
+    if final_residual < 0:
+        final_residual = Fraction(0)
+
+    return InheritanceShareResult(
+        estate_total=estate,
+        allocations=tuple(allocations),
+        residual_numerator=final_residual.numerator,
+        residual_denominator=final_residual.denominator,
+    )
+
+
+def _rule_tunisia_inheritance_fixed_share_direct(
+    *,
+    formula_params: dict[str, Any],
+    input_data: dict[str, Any],
+) -> InheritanceShareResult:
+    """Tunisia inheritance fixed-share rule (fixture-only).
+
+    Twin of :func:`_rule_morocco_inheritance_fixed_share_direct`. The
+    spec shape is identical: ``formula_params["shares"]`` maps each
+    heir class either to a literal fraction ``"p/q"`` or to the marker
+    ``"remainder_2_to_1"`` for the residual sons/daughters split.
+
+    Two deliberate differences from the MA rule:
+
+    1. **Strict over-allocation handling.** When the sum of fixed-
+       fraction shares exceeds unity, this rule raises
+       :class:`InvalidInheritanceShareSpec` instead of clamping the
+       residual to zero. The TN engine catches the exception and
+       routes to ``UNAVAILABLE`` with a ``shares_spec_invalid``
+       diagnostic. Real Tunisian inheritance under the Code du statut
+       personnel applies 'awl (proportional reduction) in this case;
+       fixture-only tests must not silently mask the problem.
+    2. **No residual heirs ⇒ residual stays explicit.** When fixed
+       shares allocate < 1 and no class is wired to ``remainder_2_to_1``
+       (or the residual classes have zero head_count), the residual is
+       reported verbatim in the result rather than being absorbed
+       silently. Real ``radd`` mechanics belong to the Studio mapping
+       iter, not this scaffold.
+
+    Notes & limits (same as MA):
+
+    - Not a complete codification of Code du statut personnel, Livre IX.
+    - Integer counts only; non-numeric heir entries become 0.
+    - Exact rational arithmetic via ``fractions.Fraction``.
+    """
+    from fractions import Fraction
+
+    shares_spec = formula_params.get("shares") or {}
+    heirs_raw = input_data.get("heirs") or {}
+    estate = _to_decimal_or_none(input_data.get("estate_value"))
+
+    def _count(name: str) -> int:
+        v = heirs_raw.get(name)
+        try:
+            n = int(v) if v not in (None, "") else 0
+        except (TypeError, ValueError):
+            return 0
+        return max(n, 0)
+
+    # Step 1: parse the fixed-fraction part of the spec. Note: parsing
+    # uses the full spec (not just classes with head_count > 0) so an
+    # over-allocation in the spec itself is detected even when some
+    # heirs are absent from the case.
+    used = Fraction(0)
+    fixed_allocations: list[tuple[str, Fraction, int]] = []
+    remainder_classes: list[str] = []
+    spec_total = Fraction(0)
+    for heir_class, spec in shares_spec.items():
+        if not isinstance(spec, str):
+            continue
+        spec_clean = spec.strip()
+        if spec_clean == "remainder_2_to_1":
+            remainder_classes.append(heir_class)
+            continue
+        if "/" not in spec_clean:
+            continue
+        try:
+            num_str, den_str = spec_clean.split("/", 1)
+            frac = Fraction(int(num_str), int(den_str))
+        except (ValueError, ZeroDivisionError):
+            continue
+        spec_total += frac
+        count = _count(heir_class)
+        if count <= 0:
+            continue
+        fixed_allocations.append((heir_class, frac, count))
+        used += frac
+
+    # Strict guard: the SPEC must not declare fixed fractions whose sum
+    # exceeds 1. This is the structural invariant; do not mask it.
+    if spec_total > 1:
+        raise InvalidInheritanceShareSpec(
+            "Sum of fixed-fraction shares exceeds 1 "
+            f"({spec_total.numerator}/{spec_total.denominator}). "
+            "Tunisia rule does not auto-apply 'awl; the share spec "
+            "must be corrected by Studio before activation."
+        )
+
+    # Step 2: residual split between sons/daughters under 2:1.
+    residual = Fraction(1) - used
+    sons_count = _count("sons")
+    daughters_count = _count("daughters")
+    sons_in_remainder = "sons_group" in remainder_classes and sons_count > 0
+    daughters_in_remainder = "daughters_group" in remainder_classes and daughters_count > 0
+    total_parts = (2 * sons_count if sons_in_remainder else 0) + (
+        daughters_count if daughters_in_remainder else 0
+    )
+
+    sons_share = Fraction(0)
+    daughters_share = Fraction(0)
+    if total_parts > 0 and residual > 0:
+        per_part = residual / total_parts
+        if sons_in_remainder:
+            sons_share = per_part * 2 * sons_count
+        if daughters_in_remainder:
+            daughters_share = per_part * 1 * daughters_count
+
+    allocations: list[InheritanceAllocation] = []
+
+    def _to_amount(frac: Fraction) -> Decimal | None:
+        if estate is None:
+            return None
         return estate * Decimal(frac.numerator) / Decimal(frac.denominator)
 
     for heir_class, frac, count in fixed_allocations:
