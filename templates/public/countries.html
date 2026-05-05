@@ -23,20 +23,21 @@
               <img src="{{ country.image.src }}" alt="{{ country.image.alt }}" width="800" height="450" class="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async">
               <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-ink-950/55 via-ink-950/15 to-ink-950/0"></div>
               <div class="absolute top-3 right-3">
-                {% if country.has_calculator %}
+                {# Badge wording / variant centralised in apps/core/public_status.py #}
+                {% if country.public_status.badge_variant == "ok" %}
                   <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-ok-600 text-sand-50 whitespace-nowrap">
                     <span aria-hidden="true">●</span>
-                    {% translate "Available" %}
+                    {{ country.public_status.badge_label }}
                   </span>
-                {% elif country.scaffold_only %}
+                {% elif country.public_status.badge_variant == "gold" %}
                   <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-gold-500 text-ink-950 whitespace-nowrap">
                     <span aria-hidden="true">●</span>
-                    {% translate "Preliminary legal assessment" %}
+                    {{ country.public_status.badge_label }}
                   </span>
                 {% else %}
                   <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-sand-100 text-ink-900 border border-stone2-200 whitespace-nowrap">
                     <span aria-hidden="true">●</span>
-                    {% translate "Manual legal review" %}
+                    {{ country.public_status.badge_label }}
                   </span>
                 {% endif %}
               </div>
@@ -47,20 +48,20 @@
           {% else %}
             <div class="flex items-center justify-between gap-3 p-6 lg:p-7 pb-0">
               <span class="font-serif text-3xl text-ink-950 leading-none">{{ country.code }}</span>
-              {% if country.has_calculator %}
+              {% if country.public_status.badge_variant == "ok" %}
                 <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-ok-600/10 text-ok-600 whitespace-nowrap">
                   <span aria-hidden="true">●</span>
-                  {% translate "Available" %}
+                  {{ country.public_status.badge_label }}
                 </span>
-              {% elif country.scaffold_only %}
+              {% elif country.public_status.badge_variant == "gold" %}
                 <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-gold-500/15 text-gold-700 whitespace-nowrap">
                   <span aria-hidden="true">●</span>
-                  {% translate "Preliminary legal assessment" %}
+                  {{ country.public_status.badge_label }}
                 </span>
               {% else %}
                 <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-sand-100 text-ink-900 border border-stone2-200 whitespace-nowrap">
                   <span aria-hidden="true">●</span>
-                  {% translate "Manual legal review" %}
+                  {{ country.public_status.badge_label }}
                 </span>
               {% endif %}
             </div>
@@ -68,13 +69,7 @@
           <div class="p-6 lg:p-7 flex flex-col flex-1">
             <p class="text-ink-900 font-serif text-2xl leading-tight">{% translate country.name_key %}</p>
             <p class="mt-3 text-sm text-stone2-500 leading-relaxed flex-1">
-              {% if country.has_calculator %}
-                {% blocktranslate %}An indicative calculation is available, based on the verified national dataset for this country. The Studio remains available to review the case and discuss the next step.{% endblocktranslate %}
-              {% elif country.scaffold_only %}
-                {% blocktranslate %}The Studio offers a preliminary legal assessment for this country: each case is reviewed manually and no automatic amount is published before the underlying quantification sources have been verified.{% endblocktranslate %}
-              {% else %}
-                {% blocktranslate %}The Studio offers a manual legal review for this country on request, while the national quantification dataset is being verified by our team.{% endblocktranslate %}
-              {% endif %}
+              {{ country.public_status.short_description }}
             </p>
             <div class="mt-6 pt-5 border-t border-stone2-100">
               {% if country.code == "IT" %}

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-04 21:00+0200\n"
+"POT-Creation-Date: 2026-05-04 21:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1130,74 +1130,132 @@ msgstr "المغرب"
 msgid "Tunisia"
 msgstr "تونس"
 
-#: .\apps\core\public_status.py:35 .\templates\public\case_types.html:23
-#: .\templates\public\wizard_start.html:24
+#: .\apps\core\public_status.py:77
 msgid "Indicative calculation available"
 msgstr "حساب إرشادي متاح"
 
-#: .\apps\core\public_status.py:37
+#: .\apps\core\public_status.py:80
+msgid ""
+"An indicative calculation is available, based on the verified national "
+"dataset for the chosen jurisdiction."
+msgstr ""
+"يتوفّر حساب إرشادي يستند إلى مجموعة البيانات الوطنية الموثّقة للاختصاص المختار."
+
+#: .\apps\core\public_status.py:84
 msgid ""
 "Indicative simulation based on the verified national dataset. The Studio "
 "remains available to review the case and discuss the next step."
 msgstr ""
 
-#: .\apps\core\public_status.py:41
-#, fuzzy
-#| msgid "Indicative simulation"
+#: .\apps\core\public_status.py:88
 msgid "Run an indicative simulation"
-msgstr "محاكاة إرشادية"
+msgstr "تشغيل محاكاة إرشادية"
 
-#: .\apps\core\public_status.py:48 .\templates\public\case_types.html:27
-#: .\templates\public\countries.html:34 .\templates\public\countries.html:58
+#: .\apps\core\public_status.py:89 .\templates\public\wizard_result.html:42
+msgid "Request a Studio review of this case"
+msgstr "اطلب من المكتب مراجعة هذا الملف"
+
+#: .\apps\core\public_status.py:97
 #: .\templates\public\wizard_belgium_road_accident.html:25
 #: .\templates\public\wizard_france_road_accident.html:25
-#: .\templates\public\wizard_start.html:28
 msgid "Preliminary legal assessment"
 msgstr "تقييم قانوني أولي"
 
-#: .\apps\core\public_status.py:50
+#: .\apps\core\public_status.py:100
+msgid ""
+"The Studio offers a preliminary legal assessment for this country: each case "
+"is reviewed manually and no automatic amount is published before the "
+"underlying quantification sources have been verified."
+msgstr ""
+"يقدّم المكتب لهذا البلد تقييماً قانونياً أولياً: تتم مراجعة كل ملف يدوياً ولا "
+"يُنشر أي مبلغ آلي قبل التحقق من مصادر التقدير المعنيّة."
+
+#: .\apps\core\public_status.py:106
 msgid ""
 "The Studio reviews the case manually, on the basis of the verified "
 "quantification sources for the relevant jurisdiction. No automatic amount is "
 "published before the case has been examined by a lawyer."
 msgstr ""
 
-#: .\apps\core\public_status.py:55 .\apps\core\public_status.py:72
-#: .\templates\public\wizard_start.html:53
+#: .\apps\core\public_status.py:111 .\apps\core\public_status.py:136
 msgid "Submit the case to the Studio"
 msgstr "أرسل الملف إلى المكتب"
 
-#: .\apps\core\public_status.py:57
+#: .\apps\core\public_status.py:112 .\apps\core\public_status.py:137
+#: .\apps\core\public_status.py:161
+msgid "Request a manual legal review"
+msgstr "اطلب مراجعة قانونية يدوية"
+
+#: .\apps\core\public_status.py:114
 msgid ""
 "No automatic amount is shown before the quantification sources have been "
 "verified for the case."
 msgstr ""
 
-#: .\apps\core\public_status.py:65
+#: .\apps\core\public_status.py:123
 #: .\templates\public\wizard_morocco_inheritance.html:25
 #: .\templates\public\wizard_tunisia_inheritance.html:25
 msgid "International inheritance review"
 msgstr "تحليل ميراث دولي"
 
-#: .\apps\core\public_status.py:67
+#: .\apps\core\public_status.py:126
+msgid ""
+"The Studio reviews each inheritance case manually; inheritance shares are "
+"not computed automatically without an applicable-law mapping for the case."
+msgstr "يفحص المكتب كل ملف ميراث يدوياً؛ ولا تُحسب الأنصبة الإرثية تلقائياً دون تحديد القانون الواجب التطبيق على الملف."
+
+#: .\apps\core\public_status.py:131
 msgid ""
 "The Studio reviews the case manually under the applicable family-law regime "
 "and EU Regulation 650/2012. Inheritance shares are not computed "
 "automatically without an applicable-law mapping for the case."
 msgstr ""
 
-#: .\apps\core\public_status.py:74
+#: .\apps\core\public_status.py:139
 msgid ""
 "Inheritance shares are not computed automatically without an applicable-law "
 "mapping for the case."
 msgstr ""
 
-#: .\apps\core\views.py:274 .\templates\public\country_landing.html:32
+#: .\apps\core\public_status.py:148
+msgid "Manual legal review"
+msgstr "مراجعة قانونية يدوية"
+
+#: .\apps\core\public_status.py:151
+msgid ""
+"The Studio offers a manual legal review for this country on request, while "
+"the national quantification dataset is being verified by our team."
+msgstr ""
+"يقدّم المكتب لهذا البلد مراجعة قانونية يدوية عند الطلب، ريثما يستكمل فريقنا "
+"التحقق من مجموعة بيانات التقدير الوطنية."
+
+#: .\apps\core\public_status.py:156
+msgid ""
+"A lawyer of the Studio reviews the case directly, on the basis of the legal "
+"sources of the relevant jurisdiction. No automatic amount is published until "
+"the underlying quantification dataset has been verified."
+msgstr "يفحص محامٍ من المكتب الملف مباشرةً استناداً إلى المصادر القانونية للاختصاص المعني. ولا يُنشر أي مبلغ آلي قبل التحقق من مجموعة بيانات التقدير المعنيّة."
+
+#: .\apps\core\public_status.py:162 .\templates\public\contact.html:11
+#: .\templates\public\wizard_belgium_road_accident.html:21
+#: .\templates\public\wizard_france_road_accident.html:21
+#: .\templates\public\wizard_morocco_inheritance.html:21
+#: .\templates\public\wizard_tunisia_inheritance.html:21
+msgid "Contact the Studio"
+msgstr "تواصل مع المكتب"
+
+#: .\apps\core\public_status.py:164
+msgid ""
+"No automatic amount is published until the underlying quantification dataset "
+"has been verified for this country."
+msgstr "لا يُنشر أي مبلغ آلي قبل التحقق من مجموعة بيانات التقدير لهذا البلد."
+
+#: .\apps\core\views.py:292 .\templates\public\country_landing.html:32
 #, python-format
 msgid "%(country)s — coverage and legal sources"
 msgstr "%(country)s — التغطية والمصادر القانونية"
 
-#: .\apps\core\views.py:277 .\templates\public\country_landing.html:36
+#: .\apps\core\views.py:295 .\templates\public\country_landing.html:36
 #, python-format
 msgid ""
 "Indicative compensation simulation for %(country)s, based on approved legal "
@@ -1206,7 +1264,7 @@ msgstr ""
 "محاكاة تعويض إرشادية لـ %(country)s، استنادًا إلى مصادر قانونية معتمدة. "
 "التقدير ذو طابع إعلامي ولا يضمن أي نتيجة."
 
-#: .\apps\core\views.py:283
+#: .\apps\core\views.py:301
 #, python-format
 msgid ""
 "%(country)s legal sources are under Studio review. No automatic estimate is "
@@ -1783,7 +1841,7 @@ msgstr "موافق"
 
 #: .\templates\partials\cta_consultation.html:6
 #: .\templates\partials\cta_consultation.html:11
-#: .\templates\public\countries.html:107
+#: .\templates\public\countries.html:102
 #: .\templates\public\country_landing.html:256 .\templates\public\home.html:40
 #: .\templates\public\wizard_result.html:186
 msgid "Request legal review"
@@ -1955,41 +2013,12 @@ msgstr ""
 "ننفّذ الوحدات بعمق، واحدة في كل مرة. يتم تفعيل كل نوع قضية فقط بعد فهرسة "
 "المصادر القانونية ذات الصلة والتحقق منها لاختصاص قضائي مختار."
 
-#: .\templates\public\case_types.html:31 .\templates\public\countries.html:39
-#: .\templates\public\countries.html:63 .\templates\public\wizard_start.html:32
-msgid "Manual legal review"
-msgstr "مراجعة قانونية يدوية"
-
-#: .\templates\public\case_types.html:38
-msgid ""
-"An indicative calculation is available, based on the verified national "
-"dataset for the chosen jurisdiction."
-msgstr ""
-"يتوفّر حساب إرشادي يستند إلى مجموعة البيانات الوطنية الموثّقة للاختصاص المختار."
-
-#: .\templates\public\case_types.html:40
-msgid ""
-"The Studio offers a preliminary legal assessment for this case type: each "
-"submission is reviewed manually and no automatic amount or share is "
-"published before the underlying quantification sources have been verified."
-msgstr ""
-"يقدّم المكتب لهذا النوع من الملفات تقييماً قانونياً أولياً: تتم مراجعة كل طلب "
-"يدوياً ولا يُنشر أي مبلغ أو حصّة آلية قبل التحقق من مصادر التقدير المعنيّة."
-
-#: .\templates\public\case_types.html:42
-msgid ""
-"The Studio offers a manual legal review on request for this case type, while "
-"the relevant national quantification dataset is being verified by our team."
-msgstr ""
-"يقدّم المكتب لهذا النوع من الملفات مراجعة قانونية يدوية عند الطلب، ريثما "
-"يستكمل فريقنا التحقق من مجموعة بيانات التقدير الوطنية المعنيّة."
-
-#: .\templates\public\case_types.html:50
-#: .\templates\public\wizard_start.html:90
+#: .\templates\public\case_types.html:44
+#: .\templates\public\wizard_start.html:86
 msgid "Coming next"
 msgstr "قريبًا"
 
-#: .\templates\public\case_types.html:52
+#: .\templates\public\case_types.html:46
 msgid ""
 "Additional case types on the Studio roadmap include catastrophic damage, "
 "loss of chance, defamation, school/professional damage and ruined holiday "
@@ -2009,14 +2038,6 @@ msgid ""
 "manually before deciding whether and how it can help. Submitting this form "
 "does not create a professional engagement."
 msgstr ""
-
-#: .\templates\public\contact.html:11
-#: .\templates\public\wizard_belgium_road_accident.html:21
-#: .\templates\public\wizard_france_road_accident.html:21
-#: .\templates\public\wizard_morocco_inheritance.html:21
-#: .\templates\public\wizard_tunisia_inheritance.html:21
-msgid "Contact the Studio"
-msgstr "تواصل مع المكتب"
 
 #: .\templates\public\contact.html:14
 msgid ""
@@ -2187,51 +2208,21 @@ msgstr ""
 "تحصل كل دولة أولاً على تقييم قانوني أولي من المكتب؛ ولا يُنشر حساب إرشادي إلا "
 "بعد التحقق من الجداول الوطنية المعنية."
 
-#: .\templates\public\countries.html:29 .\templates\public\countries.html:53
-msgid "Available"
-msgstr "متاح"
-
-#: .\templates\public\countries.html:72
-msgid ""
-"An indicative calculation is available, based on the verified national "
-"dataset for this country. The Studio remains available to review the case "
-"and discuss the next step."
-msgstr ""
-"يتوفّر حساب إرشادي يستند إلى مجموعة البيانات الوطنية الموثّقة لهذا البلد. "
-"ويبقى المكتب جاهزاً لفحص الملف ومقترح الخطوة التالية."
-
-#: .\templates\public\countries.html:74
-msgid ""
-"The Studio offers a preliminary legal assessment for this country: each case "
-"is reviewed manually and no automatic amount is published before the "
-"underlying quantification sources have been verified."
-msgstr ""
-"يقدّم المكتب لهذا البلد تقييماً قانونياً أولياً: تتم مراجعة كل ملف يدوياً ولا "
-"يُنشر أي مبلغ آلي قبل التحقق من مصادر التقدير المعنيّة."
-
-#: .\templates\public\countries.html:76
-msgid ""
-"The Studio offers a manual legal review for this country on request, while "
-"the national quantification dataset is being verified by our team."
-msgstr ""
-"يقدّم المكتب لهذا البلد مراجعة قانونية يدوية عند الطلب، ريثما يستكمل فريقنا "
-"التحقق من مجموعة بيانات التقدير الوطنية."
-
-#: .\templates\public\countries.html:81 .\templates\public\countries.html:83
-#: .\templates\public\countries.html:85 .\templates\public\countries.html:87
-#: .\templates\public\countries.html:89
+#: .\templates\public\countries.html:76 .\templates\public\countries.html:78
+#: .\templates\public\countries.html:80 .\templates\public\countries.html:82
+#: .\templates\public\countries.html:84
 msgid "Open country page"
 msgstr "افتح صفحة البلد"
 
-#: .\templates\public\countries.html:100
+#: .\templates\public\countries.html:95
 msgid "Need a direct review?"
 msgstr "هل تحتاج إلى مراجعة مباشرة؟"
 
-#: .\templates\public\countries.html:101
+#: .\templates\public\countries.html:96
 msgid "Request a legal review on a complex case"
 msgstr "اطلب مراجعة قانونية لقضية معقدة"
 
-#: .\templates\public\countries.html:103
+#: .\templates\public\countries.html:98
 msgid ""
 "If your case spans multiple jurisdictions, includes foreign assets, or the "
 "country shows a \"Preliminary legal assessment\" badge, the Studio reviews "
@@ -2241,7 +2232,7 @@ msgstr ""
 "البلد وسم «تقييم قانوني أولي»، يتولّى المكتب فحص الملف مباشرةً ويقترح الخطوة "
 "التالية."
 
-#: .\templates\public\countries.html:112
+#: .\templates\public\countries.html:107
 msgid ""
 "Future jurisdictions on the roadmap include Spain, Germany, Canada, Romania, "
 "Algeria and Egypt."
@@ -3221,11 +3212,10 @@ msgid ""
 "submission manually rather than publishing an automatic amount. We will "
 "reply directly with the next step (applicable law, competent jurisdiction, "
 "documents to gather)."
-msgstr "في هذا الاختصاص وهذا النوع من الملفات، يفحص محامٍ من المكتب كل طلب يدوياً بدلاً من نشر مبلغ آلي. سنردّ مباشرةً بالخطوة التالية (القانون الواجب التطبيق، الاختصاص المختص، الوثائق المطلوبة)."
-
-#: .\templates\public\wizard_result.html:42
-msgid "Request a Studio review of this case"
-msgstr "اطلب من المكتب مراجعة هذا الملف"
+msgstr ""
+"في هذا الاختصاص وهذا النوع من الملفات، يفحص محامٍ من المكتب كل طلب يدوياً بدلاً "
+"من نشر مبلغ آلي. سنردّ مباشرةً بالخطوة التالية (القانون الواجب التطبيق، "
+"الاختصاص المختص، الوثائق المطلوبة)."
 
 #: .\templates\public\wizard_result.html:51
 msgid "What this means"
@@ -3413,48 +3403,23 @@ msgstr ""
 "إذا كانت المصادر القانونية المعتمدة متاحة — وإلا فإنها تُرجع حالة واضحة "
 "\"بحاجة إلى تحقق قانوني\"."
 
-#: .\templates\public\wizard_start.html:39
-msgid ""
-"Bodily injury after a road accident. The Studio reviews each submission "
-"manually and offers a preliminary legal assessment; no automatic amount is "
-"published before the underlying quantification sources have been verified."
-msgstr ""
-"إصابة جسدية بعد حادث طرق. يفحص المكتب كل طلب يدوياً ويقدّم تقييماً قانونياً "
-"أولياً؛ ولا يُنشر أي مبلغ آلي قبل التحقق من مصادر التقدير المعنيّة."
-
-#: .\templates\public\wizard_start.html:41
-msgid ""
-"Bodily injury after a road accident. An indicative calculation is published, "
-"based on the verified national dataset for the chosen jurisdiction."
-msgstr ""
-"إصابة جسدية بعد حادث طرق. يُنشر حساب إرشادي يستند إلى مجموعة البيانات الوطنية "
-"الموثّقة للاختصاص المختار."
-
-#: .\templates\public\wizard_start.html:48
-msgid "Start this simulation"
-msgstr "ابدأ هذه المحاكاة"
-
-#: .\templates\public\wizard_start.html:58
-msgid "Request a manual legal review"
-msgstr "اطلب مراجعة قانونية يدوية"
-
-#: .\templates\public\wizard_start.html:68
+#: .\templates\public\wizard_start.html:64
 msgid "How it works"
 msgstr "كيف يعمل"
 
-#: .\templates\public\wizard_start.html:69
+#: .\templates\public\wizard_start.html:65
 msgid "From your inputs to a Studio review"
 msgstr "من إدخالاتك إلى مراجعة المكتب"
 
-#: .\templates\public\wizard_start.html:72
+#: .\templates\public\wizard_start.html:68
 msgid "Step 1"
 msgstr "الخطوة 1"
 
-#: .\templates\public\wizard_start.html:73
+#: .\templates\public\wizard_start.html:69
 msgid "You fill the wizard"
 msgstr "تقوم بملء النموذج"
 
-#: .\templates\public\wizard_start.html:74
+#: .\templates\public\wizard_start.html:70
 msgid ""
 "Tell us about the case in your own words. All fields are optional. We never "
 "ask for documents at this stage."
@@ -3462,15 +3427,15 @@ msgstr ""
 "أخبرنا عن قضيتك بكلماتك. جميع الحقول اختيارية. لا نطلب أي مستندات في هذه "
 "المرحلة."
 
-#: .\templates\public\wizard_start.html:77
+#: .\templates\public\wizard_start.html:73
 msgid "Step 2"
 msgstr "الخطوة 2"
 
-#: .\templates\public\wizard_start.html:78
+#: .\templates\public\wizard_start.html:74
 msgid "We compute or report honestly"
 msgstr "نحسب أو نُبلّغ بصدق"
 
-#: .\templates\public\wizard_start.html:79
+#: .\templates\public\wizard_start.html:75
 msgid ""
 "If validated legal sources are available (today: Italy, road accident), the "
 "platform returns an indicative min/mid/max range. Otherwise it explicitly "
@@ -3480,15 +3445,15 @@ msgstr ""
 "نطاقاً إرشادياً للحد الأدنى/المتوسط/الأقصى. وإلا فإنها تُرجع صراحةً «مطلوب "
 "التحقق القانوني» — دون أي أرقام مُختلَقة."
 
-#: .\templates\public\wizard_start.html:82
+#: .\templates\public\wizard_start.html:78
 msgid "Step 3"
 msgstr "الخطوة 3"
 
-#: .\templates\public\wizard_start.html:83
+#: .\templates\public\wizard_start.html:79
 msgid "You request a Studio review"
 msgstr "تطلب مراجعة من المكتب"
 
-#: .\templates\public\wizard_start.html:84
+#: .\templates\public\wizard_start.html:80
 msgid ""
 "Download the PDF of your simulation and ask the Studio for a manual legal "
 "review. The Studio remains free to accept or decline the matter."
@@ -3496,7 +3461,7 @@ msgstr ""
 "نزّل ملف PDF الخاص بمحاكاتك واطلب من المكتب مراجعة قانونية يدوية. يبقى المكتب "
 "حراً في قبول الملف أو رفضه."
 
-#: .\templates\public\wizard_start.html:101
+#: .\templates\public\wizard_start.html:97
 msgid ""
 "Each module is activated only after the underlying legal sources are "
 "catalogued and validated by the Studio."
@@ -3504,7 +3469,7 @@ msgstr ""
 "يتم تفعيل كل وحدة فقط بعد فهرسة المصادر القانونية الأساسية والتحقق منها من "
 "قبل المكتب."
 
-#: .\templates\public\wizard_start.html:106
+#: .\templates\public\wizard_start.html:102
 msgid ""
 "A simulation is not legal advice. It is an informative starting point. The "
 "Studio remains free to accept or decline a matter."

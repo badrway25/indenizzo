@@ -17,6 +17,18 @@ from django.views.decorators.http import require_GET
 
 from apps.calculators.enums import CaseType
 from apps.calculators.registry import list_available_calculators
+from apps.core.public_status import get_country_public_status
+
+# Default case type used when surfacing a country's public status on
+# pages that are not case-type-specific (e.g. /countries/).  IT/FR/BE
+# map to road accident, MA/TN map to international inheritance.
+_COUNTRY_DEFAULT_CASE_TYPE = {
+    "IT": CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
+    "FR": CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
+    "BE": CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
+    "MA": CaseType.INTERNATIONAL_INHERITANCE.value,
+    "TN": CaseType.INTERNATIONAL_INHERITANCE.value,
+}
 
 # Paesi MVP esposti pubblicamente. Lista statica, NON è dato legale —
 # è la mappa "questi paesi sono all'orizzonte del prodotto".
@@ -249,6 +261,12 @@ def _render_country_landing(request, country_code: str, view_name: str):
     )
 
     ctx = _country_landing_context(country_code)
+    # Inject the centralised public status — templates render the badge,
+    # description and CTA from here so we never duplicate the wording.
+    ctx["public_status"] = get_country_public_status(
+        ctx.get("country_iso"),
+        ctx.get("case_type_key"),
+    )
     canonical = build_canonical_url(request)
     ctx["canonical_url"] = canonical
     ctx["hreflang_alternates"] = build_hreflang_alternates(request, view_name)
@@ -393,6 +411,10 @@ def countries(request):
                 "has_calculator": registered and not is_scaffold,
                 "scaffold_only": registered and is_scaffold,
                 "image": country_image,
+                "public_status": get_country_public_status(
+                    country["code"],
+                    _COUNTRY_DEFAULT_CASE_TYPE.get(country["code"]),
+                ),
             }
         )
     return render(
@@ -427,12 +449,22 @@ def case_types(request):
         all_scaffold = registered and all(
             (j, case_type.value) in SCAFFOLD_ONLY_PAIRS_FOR_CT for j in jurisdictions
         )
+        # Pick a representative country whose status best reflects
+        # the case-type readiness: prefer the most-available
+        # jurisdiction so a case type that is live in IT but scaffold
+        # in FR/BE still reads as "Indicative calculation available".
+        non_scaffold = [
+            j for j in jurisdictions if (j, case_type.value) not in SCAFFOLD_ONLY_PAIRS_FOR_CT
+        ]
+        rep_jurisdiction = (non_scaffold or jurisdictions or [""])[0]
+        rep_country = rep_jurisdiction.split("-", 1)[0] if rep_jurisdiction else ""
         case_types_view.append(
             {
                 "code": case_type.value,
                 "label": case_type.label,
                 "available": registered and not all_scaffold,
                 "scaffold_only": all_scaffold,
+                "public_status": get_country_public_status(rep_country, case_type.value),
             }
         )
     return render(

@@ -35,6 +35,7 @@ from apps.calculators.enums import CaseType
 from apps.calculators.registry import list_available_calculators
 from apps.compliance.models import ConsentPurpose
 from apps.compliance.services import record_consent
+from apps.core.public_status import get_country_public_status
 from apps.core.rate_limit import public_post_rate_limit
 
 from .forms import (
@@ -142,6 +143,22 @@ def wizard_start(request):
     upcoming = [
         {"country_code": "IT", "case_label": CaseType.INHERITANCE_BASIC.label},
     ]
+    # Inject the centralised public status into every option. Templates
+    # render the badge / description / CTA from here so the wording is
+    # never duplicated.
+    _option_case_type = {
+        "IT": CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
+        "FR": CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
+        "BE": CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
+        "MA": CaseType.INTERNATIONAL_INHERITANCE.value,
+        "TN": CaseType.INTERNATIONAL_INHERITANCE.value,
+    }
+    for option in options:
+        option["public_status"] = get_country_public_status(
+            option["country_code"],
+            _option_case_type.get(option["country_code"]),
+        )
+
     from apps.core.views import _pexels_hero
 
     return render(
@@ -232,6 +249,17 @@ def wizard_result(request, public_id: uuid.UUID):
     locale = (translation.get_language() or simulation.locale or "it").split("-", 1)[0]
     status_public_label = get_public_status_label(simulation.status, language=locale)
 
+    # Wire the centralised public status: the unavailable card on the
+    # result page renders its CTA / disclaimer from this object so the
+    # wording stays in sync with the rest of the site.
+    case_type_value = getattr(simulation, "case_type", None) or ""
+    country_code = ""
+    if simulation.country_id:
+        country_code = simulation.country.code
+    elif simulation.jurisdiction_id:
+        country_code = simulation.jurisdiction.code.split("-", 1)[0]
+    public_status = get_country_public_status(country_code, case_type_value)
+
     return render(
         request,
         "public/wizard_result.html",
@@ -245,6 +273,7 @@ def wizard_result(request, public_id: uuid.UUID):
             "contact_url": contact_url,
             "has_estimate": has_estimate,
             "status_public_label": status_public_label,
+            "public_status": public_status,
         },
     )
 
@@ -325,6 +354,7 @@ def wizard_france_road_accident(request):
             "form": form,
             "jurisdiction_code": FRANCE_ROAD_ACCIDENT_JURISDICTION,
             "case_type": FRANCE_ROAD_ACCIDENT_CASE_TYPE,
+            "public_status": get_country_public_status("FR", FRANCE_ROAD_ACCIDENT_CASE_TYPE),
             "pexels_image": _pexels_hero(
                 request, "wizard_france_road_accident_hero", country_code="FR"
             ),
@@ -395,6 +425,7 @@ def wizard_belgium_road_accident(request):
             "form": form,
             "jurisdiction_code": BELGIUM_ROAD_ACCIDENT_JURISDICTION,
             "case_type": BELGIUM_ROAD_ACCIDENT_CASE_TYPE,
+            "public_status": get_country_public_status("BE", BELGIUM_ROAD_ACCIDENT_CASE_TYPE),
             "pexels_image": _pexels_hero(
                 request, "wizard_belgium_road_accident_hero", country_code="BE"
             ),
@@ -482,6 +513,8 @@ def _wizard_inheritance_view(
 
     from apps.core.views import _pexels_hero
 
+    # ``MA-NATIONAL`` / ``TN-NATIONAL`` → ``MA`` / ``TN`` for the helper.
+    country_code = jurisdiction_code.split("-", 1)[0]
     return render(
         request,
         template_name,
@@ -489,6 +522,9 @@ def _wizard_inheritance_view(
             "form": form,
             "jurisdiction_code": jurisdiction_code,
             "case_type": INTERNATIONAL_INHERITANCE_CASE_TYPE,
+            "public_status": get_country_public_status(
+                country_code, INTERNATIONAL_INHERITANCE_CASE_TYPE
+            ),
             "pexels_image": (
                 _pexels_hero(request, pexels_purpose, country_code=pexels_country)
                 if pexels_purpose
