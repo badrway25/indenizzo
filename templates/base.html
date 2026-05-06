@@ -8,40 +8,13 @@
     <meta name="robots" content="{% block meta_robots %}index, follow{% endblock %}">
 
     {% comment %}
-      Local premium stylesheet — covers every utility used across the
-      templates so the site renders styled even when the CDN is
-      unreachable (offline sandbox, restricted networks). The CDN
-      below is kept as enrichment for utilities not covered locally.
+      Local premium stylesheet — sole CSS source. The Tailwind CDN
+      runtime is no longer loaded (F-frontend-remove-tailwind-cdn-runtime-pass2);
+      every utility used across the templates is hand-defined in
+      static/css/site.css and the design tokens live as CSS custom
+      properties.
     {% endcomment %}
     <link rel="stylesheet" href="{% static 'css/site.css' %}">
-
-    {% comment %}
-      Tailwind via CDN: enrichment only. The local CSS above already
-      carries every layout-critical utility.
-    {% endcomment %}
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              ink:    { 950: '#07172f', 900: '#0c2046', 800: '#172e62', 700: '#243f7a' },
-              gold:   { 700: '#6e4d18', 600: '#9a6b21', 500: '#b88336', 400: '#cba36b' },
-              sand:   { 50:  '#faf6ef', 100: '#f3ece0' },
-              stone2: { 100: '#ecebe7', 200: '#d6d3cc', 500: '#7a786f' },
-              ok:     { 600: '#246b3a' }
-            },
-            fontFamily: {
-              serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-              sans: ['"Inter"', 'system-ui', 'sans-serif']
-            },
-            boxShadow: {
-              card: '0 12px 40px rgba(7, 23, 47, .08)'
-            }
-          }
-        }
-      }
-    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">

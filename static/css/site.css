@@ -419,3 +419,220 @@ button[id="cookie-consent-accept"] {
 /* RTL nudges for premium feel without manual mirroring. */
 [dir="rtl"] .text-left { text-align: right; }
 [dir="rtl"] .text-right { text-align: left; }
+
+/* =========================================================================
+   Pass-2 additions — F-frontend-remove-tailwind-cdn-runtime-pass2.
+   These rules close the gaps surfaced by audit_local_css_coverage.py
+   when the Tailwind CDN runtime is removed and the local stylesheet
+   becomes the sole CSS source.
+   ========================================================================= */
+
+/* ----- arbitrary tracking values (used by uppercase eyebrows) ----- */
+.tracking-\[0\.10em\] { letter-spacing: 0.10em; }
+.tracking-\[0\.16em\] { letter-spacing: 0.16em; }
+.tracking-\[0\.20em\] { letter-spacing: 0.20em; }
+.tracking-\[0\.24em\] { letter-spacing: 0.24em; }
+
+/* ----- fractional spacing (Tailwind's `.5` rung) ----- */
+.gap-1\.5 { gap: 0.375rem; }
+.gap-2\.5 { gap: 0.625rem; }
+.mt-1\.5 { margin-top: 0.375rem; }
+.mt-2\.5 { margin-top: 0.625rem; }
+.mt-3\.5 { margin-top: 0.875rem; }
+.mt-9 { margin-top: 2.25rem; }
+.mt-14 { margin-top: 3.5rem; }
+.mb-1\.5 { margin-bottom: 0.375rem; }
+.px-1\.5 { padding-left: 0.375rem; padding-right: 0.375rem; }
+.px-2\.5 { padding-left: 0.625rem; padding-right: 0.625rem; }
+.px-7 { padding-left: 1.75rem; padding-right: 1.75rem; }
+.py-0\.5 { padding-top: 0.125rem; padding-bottom: 0.125rem; }
+.py-3\.5 { padding-top: 0.875rem; padding-bottom: 0.875rem; }
+.py-5 { padding-top: 1.25rem; padding-bottom: 1.25rem; }
+.py-9 { padding-top: 2.25rem; padding-bottom: 2.25rem; }
+.py-14 { padding-top: 3.5rem; padding-bottom: 3.5rem; }
+.py-24 { padding-top: 6rem; padding-bottom: 6rem; }
+.pt-5 { padding-top: 1.25rem; }
+.pb-0 { padding-bottom: 0; }
+.pb-14 { padding-bottom: 3.5rem; }
+
+/* ----- additional sizing rungs ----- */
+.w-2 { width: 0.5rem; }
+.h-2 { height: 0.5rem; }
+.w-9 { width: 2.25rem; }
+.h-9 { height: 2.25rem; }
+.w-14 { width: 3.5rem; }
+.h-14 { height: 3.5rem; }
+.h-20 { height: 5rem; }
+.h-40 { height: 10rem; }
+.h-44 { height: 11rem; }
+.h-52 { height: 13rem; }
+.h-56 { height: 14rem; }
+.h-64 { height: 16rem; }
+.h-72 { height: 18rem; }
+.h-80 { height: 20rem; }
+.h-full { height: 100%; }
+.min-h-10 { min-height: 2.5rem; }
+.min-h-\[40px\] { min-height: 40px; }
+.max-w-md { max-width: 28rem; }
+.max-w-xl { max-width: 36rem; }
+.max-w-2xl { max-width: 42rem; }
+.max-w-none { max-width: none; }
+
+/* ----- typography rungs ----- */
+.text-\[10px\] { font-size: 10px; line-height: 14px; }
+.text-\[12px\] { font-size: 12px; line-height: 16px; }
+.text-6xl { font-size: 3.75rem; line-height: 1; }
+.leading-none { line-height: 1; }
+.leading-snug { line-height: 1.375; }
+.leading-\[1\.05\] { line-height: 1.05; }
+
+/* ----- palette overlays (Tailwind's `<color>/<alpha>` syntax) ----- */
+.bg-sand-50\/95 { background-color: rgba(250, 246, 239, 0.95); }
+.bg-gold-500\/10 { background-color: rgba(184, 131, 54, 0.10); }
+.bg-gold-500\/15 { background-color: rgba(184, 131, 54, 0.15); }
+.bg-ok-600\/5 { background-color: rgba(36, 107, 58, 0.05); }
+.bg-ok-600\/10 { background-color: rgba(36, 107, 58, 0.10); }
+.border-gold-400\/40 { border-color: rgba(203, 163, 107, 0.40); }
+.border-gold-500\/40 { border-color: rgba(184, 131, 54, 0.40); }
+.border-ink-700\/40 { border-color: rgba(36, 63, 122, 0.40); }
+.border-ink-950\/15 { border-color: rgba(7, 23, 47, 0.15); }
+.border-ok-600\/30 { border-color: rgba(36, 107, 58, 0.30); }
+.border-sand-50\/30 { border-color: rgba(250, 246, 239, 0.30); }
+.border-sand-50\/40 { border-color: rgba(250, 246, 239, 0.40); }
+.text-sand-50\/70 { color: rgba(250, 246, 239, 0.70); }
+.text-sand-50\/80 { color: rgba(250, 246, 239, 0.80); }
+.text-sand-50\/90 { color: rgba(250, 246, 239, 0.90); }
+.text-sand-100\/80 { color: rgba(243, 236, 224, 0.80); }
+
+/* ----- responsive sm: ≥640 px additions ----- */
+@media (min-width: 640px) {
+  .sm\:gap-2 { gap: 0.5rem; }
+  .sm\:gap-3 { gap: 0.75rem; }
+  .sm\:items-end { align-items: flex-end; }
+  .sm\:p-5 { padding: 1.25rem; }
+  .sm\:p-6 { padding: 1.5rem; }
+  .sm\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .sm\:py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+  .sm\:py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+  .sm\:py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+  .sm\:py-20 { padding-top: 5rem; padding-bottom: 5rem; }
+  .sm\:py-28 { padding-top: 7rem; padding-bottom: 7rem; }
+  .sm\:h-64 { height: 16rem; }
+  .sm\:h-72 { height: 18rem; }
+  .sm\:text-2xl { font-size: 1.5rem; line-height: 2rem; }
+  .sm\:text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+  .sm\:text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+  .sm\:text-5xl { font-size: 3rem; line-height: 1; }
+}
+
+/* ----- responsive lg: ≥1024 px additions ----- */
+@media (min-width: 1024px) {
+  .lg\:flex-row { flex-direction: row; }
+  .lg\:inline-flex { display: inline-flex; }
+  .lg\:items-center { align-items: center; }
+  .lg\:items-start { align-items: flex-start; }
+  .lg\:items-end { align-items: flex-end; }
+  .lg\:justify-between { justify-content: space-between; }
+  .lg\:justify-end { justify-content: flex-end; }
+  .lg\:sticky { position: sticky; }
+  .lg\:top-6 { top: 1.5rem; }
+  .lg\:gap-12 { gap: 3rem; }
+  .lg\:px-10 { padding-left: 2.5rem; padding-right: 2.5rem; }
+  .lg\:py-10 { padding-top: 2.5rem; padding-bottom: 2.5rem; }
+  .lg\:py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+  .lg\:py-20 { padding-top: 5rem; padding-bottom: 5rem; }
+  .lg\:py-24 { padding-top: 6rem; padding-bottom: 6rem; }
+  .lg\:py-36 { padding-top: 9rem; padding-bottom: 9rem; }
+  .lg\:h-44 { height: 11rem; }
+  .lg\:h-80 { height: 20rem; }
+  .lg\:text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+  .lg\:text-2xl { font-size: 1.5rem; line-height: 2rem; }
+  .lg\:text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+  .lg\:text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+  .lg\:text-5xl { font-size: 3rem; line-height: 1; }
+  .lg\:text-6xl { font-size: 3.75rem; line-height: 1; }
+  .lg\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .lg\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .lg\:grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+  .lg\:col-span-2 { grid-column: span 2 / span 2; }
+  .lg\:col-span-5 { grid-column: span 5 / span 5; }
+  .lg\:col-span-7 { grid-column: span 7 / span 7; }
+  .lg\:p-7 { padding: 1.75rem; }
+  .lg\:p-8 { padding: 2rem; }
+}
+
+/* ----- additional gradient endpoints + tints ----- */
+.from-sand-50 { --tw-gradient-from: var(--sand-50); }
+.from-sand-100 { --tw-gradient-from: var(--sand-100); }
+.from-gold-500 { --tw-gradient-from: var(--gold-500); }
+.to-sand-50 { --tw-gradient-to: var(--sand-50); }
+.to-sand-100 { --tw-gradient-to: var(--sand-100); }
+.to-transparent { --tw-gradient-to: transparent; }
+.from-transparent { --tw-gradient-from: transparent; }
+
+/* ----- additional spacing utility (sm/lg patches) ----- */
+.gap-12 { gap: 3rem; }
+.mt-24 { margin-top: 6rem; }
+.mt-32 { margin-top: 8rem; }
+.text-justify { text-align: justify; }
+.tabular-nums { font-variant-numeric: tabular-nums; }
+
+/* ----- prose / typography helpers (used in long-form content) ----- */
+.prose p { margin-bottom: 1rem; }
+.prose ul, .prose ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+.prose li { margin-bottom: 0.25rem; }
+.prose h2 { margin-top: 2rem; margin-bottom: 0.75rem; font-size: 1.5rem; }
+.prose h3 { margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 1.25rem; }
+.prose-lg { font-size: 1.125rem; line-height: 1.7; }
+.prose-lg p { margin-bottom: 1.25rem; }
+.prose-lg h2 { font-size: 1.75rem; }
+.prose-lg h3 { font-size: 1.375rem; }
+
+/* ----- pass-2 follow-up: extra hover / gradient / spacing rungs ----- */
+.space-y-1 > * + * { margin-top: 0.25rem; }
+.ms-2 { margin-inline-start: 0.5rem; }
+.ms-auto { margin-inline-start: auto; }
+.inset-x-0 { left: 0; right: 0; }
+.left-4 { left: 1rem; }
+.overflow-x-auto { overflow-x: auto; }
+.whitespace-pre-line { white-space: pre-line; }
+
+/* hover variants used on header links / buttons */
+.hover\:text-gold-600:hover { color: var(--gold-600); }
+.hover\:text-gold-400:hover { color: var(--gold-400); }
+.hover\:text-ink-800:hover { color: var(--ink-800); }
+.hover\:bg-gold-400:hover { background-color: var(--gold-400); }
+.hover\:bg-white:hover { background-color: #fff; }
+.hover\:bg-sand-50\/10:hover { background-color: rgba(250, 246, 239, 0.10); }
+.hover\:border-gold-400\/60:hover { border-color: rgba(203, 163, 107, 0.60); }
+.hover\:shadow-card:hover { box-shadow: var(--shadow-card); }
+.hover\:shadow-lg:hover { box-shadow: 0 10px 15px rgba(0, 0, 0, 0.10), 0 4px 6px rgba(0, 0, 0, 0.05); }
+
+/* hover-from-group helper */
+.group:hover .group-hover\:text-gold-600 { color: var(--gold-600); }
+
+/* extra gradient stops with alpha (used on hero overlays) */
+.to-ink-950\/0 { --tw-gradient-to: rgba(7, 23, 47, 0); }
+.from-ink-950\/30 { --tw-gradient-from: rgba(7, 23, 47, 0.30); }
+.from-ink-950\/55 { --tw-gradient-from: rgba(7, 23, 47, 0.55); }
+.from-ink-950\/85 { --tw-gradient-from: rgba(7, 23, 47, 0.85); }
+.to-ink-800 { --tw-gradient-to: var(--ink-800); }
+.to-ink-900\/65 { --tw-gradient-to: rgba(12, 32, 70, 0.65); }
+.via-ink-950\/0 { --tw-gradient-to: rgba(7, 23, 47, 0); }
+.via-ink-950\/15 { --tw-gradient-to: rgba(7, 23, 47, 0.15); }
+.via-ink-950\/75 { --tw-gradient-to: rgba(7, 23, 47, 0.75); }
+
+/* md: ≥768 px helper used by header */
+@media (min-width: 768px) {
+  .md\:inline-flex { display: inline-flex; }
+}
+
+/* ----- print-friendly tweaks (PDF generator may snapshot CSS) ----- */
+@media print {
+  body { background: #fff; }
+  .shadow-card, .shadow, .shadow-sm { box-shadow: none; }
+  a { color: var(--ink-900); text-decoration: underline; }
+  .bg-ink-950, .bg-ink-900 { background: #fff !important; color: var(--ink-950) !important; }
+}

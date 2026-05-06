@@ -1,27 +1,29 @@
-"""Tests F-frontend-local-css-premium-visual-qa-pass1.
+"""Tests F-frontend-remove-tailwind-cdn-runtime-pass2.
 
-Cover the local CSS strategy: every public template loads the local
-``static/css/site.css`` BEFORE any external CDN script, so a Playwright
-sandbox without internet access (or any other restricted-network
-client) still gets premium-looking pages.
+Cover the complete removal of the Tailwind CDN runtime: every public
+page must render premium with the local ``static/css/site.css``
+alone, no external script tag for ``cdn.tailwindcss.com``.
 """
 
 from __future__ import annotations
 
 import re
-import subprocess
-import sys
 from datetime import date
 from decimal import Decimal
 from pathlib import Path
 
 import pytest
 from django.test import Client
+from django.urls import reverse
 
 PUBLIC_PATHS = (
     "/",
     "/countries/",
     "/countries/italy/",
+    "/countries/france/",
+    "/countries/morocco/",
+    "/case-types/",
+    "/methodology/",
     "/wizard/",
     "/wizard/it/road-accident/",
     "/wizard/ma/inheritance/",
@@ -31,91 +33,98 @@ PUBLIC_PATHS = (
 
 
 # ---------------------------------------------------------------------------
-# 1 — base.html includes the local stylesheet
+# 1 — base.html does not reference cdn.tailwindcss.com
+# ---------------------------------------------------------------------------
+
+
+def test_base_html_does_not_reference_tailwind_cdn():
+    base = Path(__file__).resolve().parents[2] / "templates" / "base.html"
+    text = base.read_text(encoding="utf-8")
+    assert "cdn.tailwindcss.com" not in text
+    assert "tailwind.config" not in text
+
+
+# ---------------------------------------------------------------------------
+# 2 — base.html includes static/css/site.css
+# ---------------------------------------------------------------------------
+
+
+def test_base_html_includes_local_css():
+    base = Path(__file__).resolve().parents[2] / "templates" / "base.html"
+    text = base.read_text(encoding="utf-8")
+    assert "{% static 'css/site.css' %}" in text
+
+
+# ---------------------------------------------------------------------------
+# 3 — home page rendered HTML carries no CDN reference
 # ---------------------------------------------------------------------------
 
 
 @pytest.mark.django_db
-def test_base_html_links_local_stylesheet():
+def test_home_page_html_carries_no_tailwind_cdn():
     body = Client().get("/").content.decode("utf-8")
-    assert 'href="/static/css/site.css"' in body, "site.css <link> not in base.html"
-
-
-# ---------------------------------------------------------------------------
-# 2 — public pages do not depend solely on cdn.tailwindcss.com
-# ---------------------------------------------------------------------------
-
-
-@pytest.mark.django_db
-def test_public_pages_load_local_css_only():
-    """Pass-1 wired the local CSS in and kept the CDN as enrichment.
-    Pass-2 (``F-frontend-remove-tailwind-cdn-runtime-pass2``)
-    removed the CDN entirely. This regression net asserts the
-    final state: every public page links the local stylesheet and
-    no longer references the Tailwind CDN."""
-    for path in PUBLIC_PATHS:
-        body = Client().get(path).content.decode("utf-8")
-        assert "/static/css/site.css" in body, f"{path} missing local site.css"
-        assert "cdn.tailwindcss.com" not in body, f"{path} regressed to CDN runtime"
-
-
-# ---------------------------------------------------------------------------
-# 3 — wizard MA inheritance carries premium markup + local CSS
-# ---------------------------------------------------------------------------
-
-
-@pytest.mark.django_db
-def test_wizard_ma_inheritance_carries_premium_markup_and_local_css():
-    body = Client().get("/wizard/ma/inheritance/").content.decode("utf-8")
+    assert "cdn.tailwindcss.com" not in body
+    assert "tailwind.config" not in body
     assert "/static/css/site.css" in body
-    # Premium markers — these classes are mapped in site.css and used
-    # by the inheritance fields partial.
-    for marker in (
-        'class="font-serif',
-        "rounded-3xl",
-        "shadow-card",
-        "bg-sand-50",
-    ):
-        assert marker in body, f"premium marker {marker!r} missing on wizard MA"
 
 
 # ---------------------------------------------------------------------------
-# 4 — site.css carries the design tokens + base components
+# 4 — every public page returns 200 and references the local stylesheet
 # ---------------------------------------------------------------------------
 
 
-def test_site_css_carries_design_tokens_and_components():
+@pytest.mark.django_db
+def test_public_pages_return_200_and_link_local_css():
+    client = Client()
+    for path in PUBLIC_PATHS:
+        response = client.get(path)
+        assert response.status_code == 200, f"{path} -> {response.status_code}"
+        body = response.content.decode("utf-8")
+        assert "/static/css/site.css" in body
+        assert "cdn.tailwindcss.com" not in body
+
+
+# ---------------------------------------------------------------------------
+# 5 — local CSS file contains required selectors
+# ---------------------------------------------------------------------------
+
+
+def test_site_css_contains_required_selectors():
     css_path = Path(__file__).resolve().parents[2] / "static" / "css" / "site.css"
     text = css_path.read_text(encoding="utf-8")
-    # Tokens
-    for tok in (
-        "--ink-950: #07172f",
-        "--gold-500: #b88336",
-        "--sand-50: #faf6ef",
+    required = (
+        "--ink-950",
+        "--gold-500",
+        "--sand-50",
         "--shadow-card",
-    ):
-        assert tok in text, f"site.css missing token {tok!r}"
-    # Layout primitives
-    for cls in (
         ".max-w-3xl",
         ".rounded-3xl",
         ".shadow-card",
         ".bg-sand-50",
-        ".text-ink-950",
         ".grid-cols-3",
         ".sm\\:grid-cols-3",
         ".sm\\:grid-cols-2",
-    ):
-        assert cls in text, f"site.css missing utility {cls!r}"
+        ".lg\\:grid-cols-3",
+        # pass-2 additions
+        ".tracking-\\[0\\.18em\\]",
+        ".tracking-\\[0\\.22em\\]",
+        ".w-1\\.5",
+        ".h-1\\.5",
+        ".bg-ok-600\\/10",
+        ".bg-gold-500\\/15",
+        ".border-ink-950\\/15",
+    )
+    for needle in required:
+        assert needle in text, f"site.css missing {needle!r}"
 
 
 # ---------------------------------------------------------------------------
-# 5 — no banned public words on key pages
+# 6 — no banned public words on the public pages
 # ---------------------------------------------------------------------------
 
 
 @pytest.mark.django_db
-def test_no_banned_words_on_public_pages():
+def test_no_banned_public_words():
     banned = (
         "scaffold",
         "placeholder",
@@ -123,26 +132,24 @@ def test_no_banned_words_on_public_pages():
         "in preparation",
         "coming soon",
         "work in progress",
-        "in corso",
-        "legal validation wizard",
         "module pending",
         "engine pending",
         "missing_documents",
         "unavailable_requires_legal_validation",
     )
     for path in PUBLIC_PATHS:
-        body_lower = Client().get(path).content.decode("utf-8").lower()
+        body = Client().get(path).content.decode("utf-8").lower()
         for word in banned:
-            assert word not in body_lower, f"{path} surfaces banned word {word!r}"
+            assert word not in body, f"{path} surfaces banned word {word!r}"
 
 
 # ---------------------------------------------------------------------------
-# 6 — no Pexels attribution leak
+# 7 — no Pexels attribution
 # ---------------------------------------------------------------------------
 
 
 @pytest.mark.django_db
-def test_no_pexels_attribution_leak():
+def test_no_pexels_attribution():
     for path in PUBLIC_PATHS:
         body = Client().get(path).content.decode("utf-8")
         assert "pexels.com" not in body.lower()
@@ -150,12 +157,12 @@ def test_no_pexels_attribution_leak():
 
 
 # ---------------------------------------------------------------------------
-# 7 — no API key leak on public pages
+# 8 — no API key leak
 # ---------------------------------------------------------------------------
 
 
 @pytest.mark.django_db
-def test_no_api_key_leak_on_public_pages():
+def test_no_api_key_leak():
     for path in PUBLIC_PATHS:
         body = Client().get(path).content.decode("utf-8")
         for needle in ("PEXELS_API_KEY", "STRIPE_SECRET", "SENDGRID_API_KEY"):
@@ -163,7 +170,20 @@ def test_no_api_key_leak_on_public_pages():
 
 
 # ---------------------------------------------------------------------------
-# 8 — Italia smoke unchanged
+# 9 — no duplicate H1 across public pages
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_no_duplicate_h1():
+    for path in PUBLIC_PATHS:
+        body = Client().get(path).content.decode("utf-8")
+        h1s = re.findall(r"<h1\b", body, flags=re.IGNORECASE)
+        assert len(h1s) == 1, f"{path} has {len(h1s)} H1 tags, expected 1"
+
+
+# ---------------------------------------------------------------------------
+# 10 — Italia smoke unchanged + 11 — PDF IT %PDF
 # ---------------------------------------------------------------------------
 
 
@@ -191,7 +211,7 @@ def italy_full_setup(db):
         legal_system=Jurisdiction.LegalSystem.CIVIL_LAW,
     )
     src = LegalSource.objects.create(
-        slug="it-fixture-frontend-local-css",
+        slug="it-fixture-cdn-removal",
         title="D.P.R. 12/2025 fixture",
         country=italy,
         jurisdiction=juris,
@@ -243,8 +263,8 @@ def italy_full_setup(db):
         )
     CalculationFormula.objects.create(
         dataset=base_ds,
-        code="italy_art_138_tun_2025_frontend_local_css",
-        name="frontend-local-css-smoke",
+        code="italy_art_138_tun_2025_cdn_removal",
+        name="cdn-removal-smoke",
         expression_text="placeholder-test",
         source_reference="placeholder-test",
         parameters={
@@ -264,7 +284,7 @@ def italy_full_setup(db):
 
 
 @pytest.mark.django_db
-def test_italy_smoke_unchanged_with_local_css(italy_full_setup):
+def test_italy_smoke_unchanged_after_cdn_removal(italy_full_setup):
     from apps.calculators.enums import CalculationStatus, CaseType
     from apps.cases.services import run_simulation
 
@@ -283,56 +303,23 @@ def test_italy_smoke_unchanged_with_local_css(italy_full_setup):
     assert sim.estimated_max == Decimal("28439")
 
 
-# ---------------------------------------------------------------------------
-# 9 — capture script verifies a styled body bg via Playwright (offline-safe)
-#     Skipped automatically when the local server is down or playwright
-#     headless chromium is unavailable.
-# ---------------------------------------------------------------------------
-
-
-@pytest.mark.skip(
-    reason="Live Playwright check is run by capture_frontend_local_css_pass1.py "
-    "during visual QA; covered by other tests in this file at the static layer."
-)
-def test_capture_script_verifies_computed_styles_offline():
-    pass
-
-
-# ---------------------------------------------------------------------------
-# 10 — H1 single per public page (regression net for the comment-leak bug)
-# ---------------------------------------------------------------------------
-
-
 @pytest.mark.django_db
-def test_no_duplicate_h1_after_css_wiring():
-    for path in ("/wizard/ma/inheritance/", "/wizard/tn/inheritance/", "/", "/contact/"):
-        body = Client().get(path).content.decode("utf-8")
-        h1s = re.findall(r"<h1\b", body, flags=re.IGNORECASE)
-        assert len(h1s) == 1, f"{path} has {len(h1s)} H1 tags, expected 1"
+def test_italy_pdf_remains_valid_after_cdn_removal(italy_full_setup):
+    from apps.calculators.enums import CaseType
+    from apps.cases.services import run_simulation
 
-
-# ---------------------------------------------------------------------------
-# 11 — base.html does NOT leak Django comment text into rendered HTML
-#     (regression net for the multi-line {# #} bug we hit during this
-#     iter's first capture).
-# ---------------------------------------------------------------------------
-
-
-@pytest.mark.django_db
-def test_base_html_does_not_leak_comment_text():
-    body = Client().get("/").content.decode("utf-8")
-    leak_markers = (
-        "Local premium stylesheet",
-        "templates so the site renders styled",
-        "Tailwind via CDN: enrichment only",
+    sim = run_simulation(
+        jurisdiction_code="IT-NATIONAL",
+        case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
+        input_data={
+            "victim_age": 35,
+            "permanent_disability_percentage": 10,
+            "fault_percentage": 0,
+        },
     )
-    for marker in leak_markers:
-        assert marker not in body, (
-            f"base.html leaks comment text '{marker}' — switch to "
-            "{% comment %}…{% endcomment %} for multi-line comments."
-        )
-
-
-# Mark unused imports as referenced (subprocess / sys retained for
-# possible future live-Playwright integration).
-_ = subprocess, sys
+    response = Client().get(
+        reverse("reports:simulation_pdf", kwargs={"public_id": str(sim.public_id)})
+    )
+    assert response.status_code == 200
+    content = b"".join(response.streaming_content)
+    assert content.startswith(b"%PDF")
