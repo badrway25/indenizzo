@@ -52,6 +52,7 @@ from typing import Any
 
 from apps.legal_sources.models import LegalSource
 
+from .. import diagnostics as _diag
 from ..enums import CalculationStatus, CaseType, ConfidenceLevel
 from ..registry import register_calculator
 from ..schemas import BreakdownItem, CalculationResult, SourceRef
@@ -75,11 +76,8 @@ class _ItalyPlaceholderCalculator(BaseCalculator):
         return self._build_result(
             status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
             sources=[SourceRef.from_legal_source(s) for s in sources],
-            warnings=[
-                "Calculator engine not yet implemented for this case type. "
-                "Approved legal sources are present but compute logic is "
-                "pending validation in a later phase."
-            ],
+            warnings=[_diag.diagnostic_to_internal_warning(_diag.CALCULATOR_ENGINE_PENDING)],
+            missing_documents=[_diag.CALCULATOR_ENGINE_PENDING],
         )
 
 
@@ -129,12 +127,9 @@ class ItalyRoadAccidentBodilyInjuryCalculator(_ItalyPlaceholderCalculator):
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
                 warnings=[
-                    "Approved legal sources are present, but no approved "
-                    "compensation dataset is linked to them for this case "
-                    "type. The tabular extraction must be validated by a "
-                    "legal reviewer before any estimate can be produced."
+                    _diag.diagnostic_to_internal_warning(_diag.COMPENSATION_DATASET_NOT_APPROVED)
                 ],
-                missing_documents=["compensation_dataset_approved"],
+                missing_documents=[_diag.COMPENSATION_DATASET_NOT_APPROVED],
             )
 
         # --- gate 3 + 4: formula approved con engine/rule riconosciuti
@@ -206,22 +201,18 @@ class ItalyRoadAccidentBodilyInjuryCalculator(_ItalyPlaceholderCalculator):
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
                 warnings=[
-                    "No table row matches the provided input within the "
-                    "approved compensation dataset. The dataset may not "
-                    "yet cover this combination of age and disability."
+                    _diag.diagnostic_to_internal_warning(_diag.COMPENSATION_ROW_MATCH_MISSING)
                 ],
-                missing_documents=["compensation_row_match"],
+                missing_documents=[_diag.COMPENSATION_ROW_MATCH_MISSING],
             )
         if match.kind == RowMatchKind.MULTIPLE:
             return self._build_result(
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
                 warnings=[
-                    f"Multiple ({match.candidates}) table rows match the "
-                    "provided input. Disambiguation requires legal review: "
-                    "the calculator refuses to pick one arbitrarily."
+                    _diag.diagnostic_to_internal_warning(_diag.COMPENSATION_ROW_DISAMBIGUATION)
                 ],
-                missing_documents=["compensation_row_disambiguation"],
+                missing_documents=[_diag.COMPENSATION_ROW_DISAMBIGUATION],
             )
 
         # --- step 10: calcolo vero (single-row rule) -------------------
@@ -255,20 +246,17 @@ class ItalyRoadAccidentBodilyInjuryCalculator(_ItalyPlaceholderCalculator):
         if fault_reduction_enabled and _has_value(input_data, "fault_percentage"):
             assumptions.append("Fault reduction applied as declared by the formula.")
 
-        warnings_out: list[str] = [
-            "Estimated min/mid/max coincide because no approved "
-            "personalisation range is configured for this engine yet."
-        ]
+        warnings_out: list[str] = [_diag.diagnostic_to_public_warning(_diag.ITALY_RANGE_COLLAPSED)]
 
         # Avvisi informativi su voci di danno non incluse nel calcolo
         # (la formula approvata non le considera; non sommiamo a caso).
         for field in ("medical_expenses", "lost_income"):
             if _has_value(input_data, field):
                 warnings_out.append(
-                    f"Reported '{field}' is not included in the automatic "
-                    "calculation: the approved formula does not aggregate "
-                    "it. Verify with legal review for case-specific "
-                    "evaluation."
+                    _diag.diagnostic_to_public_warning(
+                        _diag.ITALY_FIELD_NOT_AGGREGATED,
+                        context={"field": field},
+                    )
                 )
 
         return self._build_result(
@@ -314,11 +302,9 @@ class ItalyRoadAccidentBodilyInjuryCalculator(_ItalyPlaceholderCalculator):
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
                 warnings=[
-                    "Approved formula declares a range amount_rule but its "
-                    "parameters are incomplete (missing range_dataset_"
-                    "version_label or one of min/mid/max_row_type)."
+                    _diag.diagnostic_to_internal_warning(_diag.FORMULA_RANGE_PARAMETERS_INCOMPLETE)
                 ],
-                missing_documents=["formula_range_parameters_incomplete"],
+                missing_documents=[_diag.FORMULA_RANGE_PARAMETERS_INCOMPLETE],
             )
 
         # Lookup del dataset secondario APPROVED. Se è DRAFT (caso moral
@@ -333,12 +319,8 @@ class ItalyRoadAccidentBodilyInjuryCalculator(_ItalyPlaceholderCalculator):
             return self._build_result(
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
-                warnings=[
-                    f"Range dataset '{version_label}' is not APPROVED yet. "
-                    "The calculator refuses to read draft data into the "
-                    "public estimate."
-                ],
-                missing_documents=["range_dataset_approved"],
+                warnings=[_diag.diagnostic_to_internal_warning(_diag.RANGE_DATASET_NOT_APPROVED)],
+                missing_documents=[_diag.RANGE_DATASET_NOT_APPROVED],
             )
 
         # Match unico riga per ciascun row_type del range.
@@ -355,20 +337,18 @@ class ItalyRoadAccidentBodilyInjuryCalculator(_ItalyPlaceholderCalculator):
                     status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                     sources=source_refs,
                     warnings=[
-                        f"No table row of type '{rt}' matches the input in "
-                        f"the approved range dataset '{version_label}'."
+                        _diag.diagnostic_to_internal_warning(_diag.COMPENSATION_ROW_MATCH_MISSING)
                     ],
-                    missing_documents=["compensation_row_match"],
+                    missing_documents=[_diag.COMPENSATION_ROW_MATCH_MISSING],
                 )
             if m.kind == _RowMatchKind.MULTIPLE:
                 return self._build_result(
                     status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                     sources=source_refs,
                     warnings=[
-                        f"Multiple ({m.candidates}) rows of type '{rt}' match "
-                        "the input. Disambiguation requires legal review."
+                        _diag.diagnostic_to_internal_warning(_diag.COMPENSATION_ROW_DISAMBIGUATION)
                     ],
-                    missing_documents=["compensation_row_disambiguation"],
+                    missing_documents=[_diag.COMPENSATION_ROW_DISAMBIGUATION],
                 )
             matches[kind] = m.row
 
@@ -385,12 +365,9 @@ class ItalyRoadAccidentBodilyInjuryCalculator(_ItalyPlaceholderCalculator):
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
                 warnings=[
-                    "Range amounts violate monotonicity (expected min <= mid "
-                    f"<= max, got {amounts.min_amount}/{amounts.mid_amount}/"
-                    f"{amounts.max_amount}). The calculator refuses to "
-                    "publish a non-monotone range."
+                    _diag.diagnostic_to_internal_warning(_diag.COMPENSATION_RANGE_INCONSISTENT)
                 ],
-                missing_documents=["compensation_range_inconsistent"],
+                missing_documents=[_diag.COMPENSATION_RANGE_INCONSISTENT],
             )
 
         breakdown = [
@@ -421,10 +398,10 @@ class ItalyRoadAccidentBodilyInjuryCalculator(_ItalyPlaceholderCalculator):
         for field in ("medical_expenses", "lost_income"):
             if _has_value(input_data, field):
                 warnings_out.append(
-                    f"Reported '{field}' is not included in the automatic "
-                    "calculation: the approved formula does not aggregate "
-                    "it. Verify with legal review for case-specific "
-                    "evaluation."
+                    _diag.diagnostic_to_public_warning(
+                        _diag.ITALY_FIELD_NOT_AGGREGATED,
+                        context={"field": field},
+                    )
                 )
         return self._build_result(
             status=CalculationStatus.CALCULATED.value,
@@ -455,34 +432,23 @@ class ItalyRoadAccidentBodilyInjuryCalculator(_ItalyPlaceholderCalculator):
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
                 warnings=[
-                    "Approved compensation dataset is present, but no "
-                    "approved calculation formula is linked to it. The "
-                    "formula must be validated by a legal reviewer "
-                    "before any estimate can be produced."
+                    _diag.diagnostic_to_internal_warning(_diag.CALCULATION_FORMULA_NOT_APPROVED)
                 ],
-                missing_documents=["calculation_formula_approved"],
+                missing_documents=[_diag.CALCULATION_FORMULA_NOT_APPROVED],
             )
         if status == FormulaResolutionStatus.ENGINE_UNKNOWN:
             return self._build_result(
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
-                warnings=[
-                    "An approved formula exists but its `engine` is not "
-                    "registered in the calculator's supported list. The "
-                    "calculator refuses to execute unknown engines."
-                ],
-                missing_documents=["formula_engine_unknown"],
+                warnings=[_diag.diagnostic_to_internal_warning(_diag.FORMULA_ENGINE_UNKNOWN)],
+                missing_documents=[_diag.FORMULA_ENGINE_UNKNOWN],
             )
         # AMOUNT_RULE_UNKNOWN
         return self._build_result(
             status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
             sources=source_refs,
-            warnings=[
-                "An approved formula exists with a recognised engine, but "
-                "its `amount_rule` is not registered in the calculator's "
-                "supported list."
-            ],
-            missing_documents=["formula_amount_rule_unknown"],
+            warnings=[_diag.diagnostic_to_internal_warning(_diag.FORMULA_AMOUNT_RULE_UNKNOWN)],
+            missing_documents=[_diag.FORMULA_AMOUNT_RULE_UNKNOWN],
         )
 
 

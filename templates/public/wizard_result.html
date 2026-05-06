@@ -126,6 +126,20 @@
     </div>
   {% endif %}
 
+  {% if has_estimate and public_warnings %}
+    <div class="mt-8 rounded-3xl border border-stone2-200 bg-sand-100 p-6 lg:p-7">
+      <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Notes on this estimate" %}</p>
+      <ul class="mt-3 space-y-2">
+        {% for w in public_warnings %}
+          <li class="flex gap-3 text-sm text-ink-800 leading-relaxed">
+            <span aria-hidden="true" class="mt-1 inline-block w-1.5 h-1.5 rounded-full bg-gold-500"></span>
+            <span>{{ w }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
   {# -------- Sources -------- #}
   {% if sources %}
     <div class="mt-8">

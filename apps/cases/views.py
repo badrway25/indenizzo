@@ -234,8 +234,15 @@ def wizard_result(request, public_id: uuid.UUID):
     warnings = output.get("warnings") or []
     missing_documents = output.get("missing_documents") or []
     assumptions = output.get("assumptions") or []
-    _ = warnings, missing_documents  # consumed by audit log / DB only
+    _ = missing_documents  # consumed by audit log / DB only
     legal_disclaimer = output.get("legal_disclaimer") or ""
+
+    # On the calculated path the engine emits public-safe warnings (e.g.
+    # "min/max coincide", "<field> not aggregated") sourced from the
+    # diagnostics layer. We render them only when an estimate is
+    # produced; on the no-estimate path the curated PublicResultMessage
+    # already carries every user-facing copy.
+    public_warnings: list[str] = list(warnings) if warnings else []
 
     # Costruzione URL CTA verso il lead form già in F6.
     contact_url = reverse("crm:contact") + f"?sim={simulation.public_id}"
@@ -286,6 +293,7 @@ def wizard_result(request, public_id: uuid.UUID):
             "legal_disclaimer": legal_disclaimer,
             "contact_url": contact_url,
             "has_estimate": has_estimate,
+            "public_warnings": public_warnings,
             "status_public_label": status_public_label,
             "public_status": public_status,
             "public_message": public_message,

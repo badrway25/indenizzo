@@ -1223,7 +1223,13 @@ def test_medical_expenses_does_not_affect_amount_but_emits_warning(
         }
     )
     assert result.estimated_mid == Decimal("10.0000")  # immutato
-    assert any("medical_expenses" in w for w in result.warnings)
+    # The warning text has been migrated to the diagnostics layer and
+    # uses a friendly localised label for the field rather than the raw
+    # slug. Accept either form across all four locales.
+    assert any(
+        "medical_expenses" in w or "medical expenses" in w or "spese mediche" in w
+        for w in result.warnings
+    )
 
 
 # --- gating temporale dataset --------------------------------------------

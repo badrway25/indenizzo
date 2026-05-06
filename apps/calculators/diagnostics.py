@@ -59,6 +59,18 @@ INPUT_ESTATE_VALUE_INVALID = "input_estate_value_invalid"
 INPUT_NEGATIVE_ESTATE = "input_negative_estate"
 INPUT_NO_HEIR_ALLOCATION = "input_no_heir_allocation"
 
+# ---------------------------------------------------------------------------
+# Public-safe codes — warnings rendered on the public result page / PDF.
+# Italy calculated path uses these to surface its calculated-side
+# warnings in IT/FR/AR rather than the historical inline English
+# strings.
+# ---------------------------------------------------------------------------
+
+ITALY_RANGE_COLLAPSED = "italy_range_collapsed"
+ITALY_FIELD_NOT_AGGREGATED = "italy_field_not_aggregated"
+ITALY_FAULT_REDUCTION_APPLIED = "italy_fault_reduction_applied"
+ITALY_FAULT_REDUCTION_APPLIED_UNIFORM = "italy_fault_reduction_applied_uniform"
+
 
 @dataclass(frozen=True)
 class _DiagnosticSpec:
@@ -232,6 +244,45 @@ _REGISTRY: dict[str, _DiagnosticSpec] = {
             "the formula (spouse, father, mother, sons, daughters)."
         ),
     ),
+    ITALY_RANGE_COLLAPSED: _DiagnosticSpec(
+        code=ITALY_RANGE_COLLAPSED,
+        message=_(
+            "The estimated min, central and max values coincide because the "
+            "approved formula does not yet configure a personalisation "
+            "range for this case. The figure is the canonical TUN amount "
+            "for the matched age and disability."
+        ),
+        public_safe=True,
+    ),
+    ITALY_FIELD_NOT_AGGREGATED: _DiagnosticSpec(
+        code=ITALY_FIELD_NOT_AGGREGATED,
+        # The field name is interpolated by the engine via ``context``.
+        message=_(
+            "The reported {field} is not included in the automatic "
+            "estimate: the approved formula does not aggregate this "
+            "voice. The Studio reviews it case-by-case."
+        ),
+        public_safe=True,
+    ),
+    ITALY_FAULT_REDUCTION_APPLIED: _DiagnosticSpec(
+        code=ITALY_FAULT_REDUCTION_APPLIED,
+        message=_("A fault reduction was applied as declared by the approved " "formula."),
+        public_safe=True,
+    ),
+    ITALY_FAULT_REDUCTION_APPLIED_UNIFORM: _DiagnosticSpec(
+        code=ITALY_FAULT_REDUCTION_APPLIED_UNIFORM,
+        message=_("A fault reduction was applied uniformly to the min, central " "and max values."),
+        public_safe=True,
+    ),
+}
+
+
+# Human-friendly labels for the dynamic context fields used by
+# :data:`ITALY_FIELD_NOT_AGGREGATED`. Translated lazily so audit logs
+# / FR / AR locales render the right name.
+_ITALY_FIELD_LABELS = {
+    "medical_expenses": _("documented medical expenses"),
+    "lost_income": _("lost income"),
 }
 
 
@@ -250,9 +301,10 @@ def diagnostic_message(
 
     ``language`` activates the Django translation if given; ``None``
     keeps the current request's locale (or the project default if no
-    request is active). ``context`` is reserved for future field
-    interpolation (e.g. ``{rule!r}``); today the messages are
-    parameter-free so the dict is accepted but ignored.
+    request is active). ``context`` is interpolated into ``{name}``
+    placeholders inside the message — used today by
+    :data:`ITALY_FIELD_NOT_AGGREGATED`. Unknown keys silently render
+    their literal placeholder (no KeyError) so diagnostics never raise.
     """
     spec = _REGISTRY.get(code)
     if spec is None:
@@ -261,13 +313,45 @@ def diagnostic_message(
         # missing entry.
         return code
 
-    if language is None:
-        return str(spec.message)
+    rendered = _render(spec.message, language=language)
+    if context:
+        rendered = _safe_format(rendered, _localised_context(context, language=language))
+    return rendered
 
+
+def _render(message: Any, *, language: str | None) -> str:
+    if language is None:
+        return str(message)
     from django.utils import translation
 
     with translation.override(language):
-        return str(spec.message)
+        return str(message)
+
+
+def _localised_context(context: dict[str, Any], *, language: str | None) -> dict[str, Any]:
+    """Translate known field labels in ``context`` to the active locale.
+
+    Only interpolation values that are project-known field slugs are
+    swapped for their localised label; unknown values pass through
+    untouched.
+    """
+    out = dict(context)
+    if "field" in out:
+        label = _ITALY_FIELD_LABELS.get(out["field"])
+        if label is not None:
+            out["field"] = _render(label, language=language)
+    return out
+
+
+def _safe_format(template: str, mapping: dict[str, Any]) -> str:
+    class _SafeDict(dict):
+        def __missing__(self, key):  # pragma: no cover - defensive
+            return "{" + key + "}"
+
+    try:
+        return template.format_map(_SafeDict(mapping))
+    except (IndexError, ValueError):  # pragma: no cover - defensive
+        return template
 
 
 def diagnostic_public_safe(code: str) -> bool:
@@ -300,12 +384,38 @@ def diagnostic_to_internal_warning(
     return diagnostic_message(code, context=context)
 
 
+def diagnostic_to_public_warning(
+    code: str,
+    *,
+    language: str | None = None,
+    context: dict[str, Any] | None = None,
+) -> str:
+    """Return a localised, public-safe warning string for ``code``.
+
+    Raises :class:`ValueError` if the code is not flagged
+    ``public_safe=True`` — engines that want to surface a public
+    warning must use a code that has been vetted for end-user
+    rendering.
+    """
+    if not diagnostic_public_safe(code):
+        raise ValueError(
+            f"diagnostic code {code!r} is not flagged public_safe — refusing "
+            "to surface it on a public surface."
+        )
+    return diagnostic_message(code, language=language, context=context)
+
+
 def known_diagnostic_codes() -> tuple[str, ...]:
     """Return the registered codes — handy for tests / audit reports."""
     return tuple(sorted(_REGISTRY))
 
 
 __all__ = [
+    "ITALY_RANGE_COLLAPSED",
+    "ITALY_FIELD_NOT_AGGREGATED",
+    "ITALY_FAULT_REDUCTION_APPLIED",
+    "ITALY_FAULT_REDUCTION_APPLIED_UNIFORM",
+    "diagnostic_to_public_warning",
     "LEGAL_SOURCES_NOT_APPROVED",
     "COMPENSATION_DATASET_NOT_APPROVED",
     "RANGE_DATASET_NOT_APPROVED",
