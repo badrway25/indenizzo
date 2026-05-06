@@ -685,14 +685,18 @@ class Command(BaseCommand):
         # Persist file when we have payload.
         if payload_bytes and not dry_run and not result.error:
             folder = COUNTRY_FOLDER_BY_CODE.get(result.country.upper(), result.country.lower())
-            base_dir = (
-                Path(settings.BASE_DIR) / "legal_data" / "sources" / folder / "official_downloaded"
-            )
+            base_dir = Path(settings.LEGAL_DATA_ROOT) / "sources" / folder / "official_downloaded"
             try:
                 base_dir.mkdir(parents=True, exist_ok=True)
                 local_path = base_dir / f"{result.slug}.{ext}"
                 local_path.write_bytes(payload_bytes)
-                result.local_path = str(local_path.relative_to(Path(settings.BASE_DIR)))
+                try:
+                    result.local_path = str(local_path.relative_to(Path(settings.BASE_DIR)))
+                except ValueError:
+                    # LEGAL_DATA_ROOT was overridden outside BASE_DIR
+                    # (typically pytest tmp_path). Record the absolute
+                    # path verbatim.
+                    result.local_path = str(local_path)
             except OSError as exc:
                 result.error = f"write_failed: {exc.__class__.__name__}: {exc}"
 
@@ -791,9 +795,7 @@ class Command(BaseCommand):
 
         for country_code, results in per_country.items():
             folder = COUNTRY_FOLDER_BY_CODE.get(country_code.upper(), country_code.lower())
-            base_dir = (
-                Path(settings.BASE_DIR) / "legal_data" / "sources" / folder / "official_downloaded"
-            )
+            base_dir = Path(settings.LEGAL_DATA_ROOT) / "sources" / folder / "official_downloaded"
             base_dir.mkdir(parents=True, exist_ok=True)
             manifest_path = base_dir / "official_sync_manifest.json"
             manifest = {

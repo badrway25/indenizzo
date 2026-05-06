@@ -215,6 +215,16 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+# Root for the project's legal-data tree. Every official-source
+# fetch / attach / extraction command must derive its on-disk
+# location from this setting (never from ``BASE_DIR`` directly), so
+# pytest can redirect it to a per-test ``tmp_path`` and never
+# clobber the real Moudawana / Badinter / DPR / Loi-1989 / EU-650
+# downloads on disk.
+#
+# Source-of-truth iter: F-legal-data-test-fixture-isolation-pass1.
+LEGAL_DATA_ROOT = BASE_DIR / "legal_data"
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
@@ -385,6 +395,31 @@ CELERY_TIMEZONE = TIME_ZONE
 # Lead notification: dispatch async opt-in. Default False = comportamento
 # del pass 2 (sincrono in-request).
 LEAD_NOTIFICATION_ASYNC_ENABLED = env.bool("LEAD_NOTIFICATION_ASYNC_ENABLED", default=False)
+
+
+# ---------------------------------------------------------------------------
+# Pexels image integration (F-product-pexels-image-integration)
+#
+# Sorgente immagini professionali per le country landing e la home.
+# Tutto è opt-in: senza `PEXELS_API_KEY` impostato, il sito serve
+# il fallback statico (SVG OG + nessuna hero photo). Niente chiamata
+# Pexels viene fatta dal browser; la API key resta server-side e
+# viene letta SOLO da env. Il modulo `apps.core.pexels` ha un
+# guard hardcoded che rifiuta di operare se la key è vuota.
+#
+# `PEXELS_ENABLED` permette di disattivare il flusso anche con la
+# key configurata (utile in test/staging per non chiamare il
+# rate-limited endpoint reale).
+# ---------------------------------------------------------------------------
+PEXELS_API_KEY = env("PEXELS_API_KEY", default="")
+PEXELS_ENABLED = env.bool("PEXELS_ENABLED", default=False)
+PEXELS_API_BASE_URL = env(
+    "PEXELS_API_BASE_URL",
+    default="https://api.pexels.com/v1",
+)
+PEXELS_CACHE_DAYS = env.int("PEXELS_CACHE_DAYS", default=30)
+PEXELS_DEFAULT_ORIENTATION = env("PEXELS_DEFAULT_ORIENTATION", default="landscape")
+PEXELS_DEFAULT_PER_PAGE = env.int("PEXELS_DEFAULT_PER_PAGE", default=10)
 
 
 # ---------------------------------------------------------------------------

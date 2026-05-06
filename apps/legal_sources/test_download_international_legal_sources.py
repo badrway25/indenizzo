@@ -34,10 +34,18 @@ from apps.legal_sources.models import LegalSource, LegalSourceAttachment
 
 @pytest.fixture
 def tmp_legal_data(tmp_path, monkeypatch):
-    """Redirect legal_data/ writes into a tmp folder so tests don't pollute repo."""
+    """Redirect legal_data/ writes into a tmp folder so tests don't pollute repo.
+
+    The repo-level ``conftest._isolate_legal_data_root`` autouse fixture
+    already redirects ``settings.LEGAL_DATA_ROOT`` into a different
+    tmp_path. We re-align both settings here so that this test file's
+    ``Path(settings.BASE_DIR) / 'legal_data' / ...`` assertions and the
+    command's write path agree.
+    """
     fake_base = tmp_path / "fake_repo"
     fake_base.mkdir()
     monkeypatch.setattr(settings, "BASE_DIR", fake_base)
+    monkeypatch.setattr(settings, "LEGAL_DATA_ROOT", str(fake_base / "legal_data"))
     yield fake_base
     if fake_base.exists():
         shutil.rmtree(fake_base, ignore_errors=True)

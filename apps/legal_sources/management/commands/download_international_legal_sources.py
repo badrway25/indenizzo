@@ -619,7 +619,7 @@ class Command(BaseCommand):
     def _handle_country(self, code: str) -> None:
         package = PACKAGES[code]
         folder_name = COUNTRY_FOLDER_BY_CODE[code]
-        base_dir = Path(settings.BASE_DIR) / "legal_data" / "sources" / folder_name / "downloaded"
+        base_dir = Path(settings.LEGAL_DATA_ROOT) / "sources" / folder_name / "downloaded"
         base_dir.mkdir(parents=True, exist_ok=True)
 
         self.stdout.write(f"\n=== Country {code}: {len(package)} item(s) ===")
@@ -729,7 +729,11 @@ class Command(BaseCommand):
             entry.classification = _classify_entry(entry, ext=ext, hint=hint)
             return entry
 
-        entry.local_path = str(local_path.relative_to(Path(settings.BASE_DIR)))
+        try:
+            entry.local_path = str(local_path.relative_to(Path(settings.BASE_DIR)))
+        except ValueError:
+            # LEGAL_DATA_ROOT overridden outside BASE_DIR (pytest tmp_path).
+            entry.local_path = str(local_path)
         entry.sha256 = compute_bytes_sha256(fetched.payload)
         entry.size_bytes = len(fetched.payload)
         entry.downloaded_at = datetime.now(UTC).isoformat()

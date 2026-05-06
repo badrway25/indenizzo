@@ -235,11 +235,15 @@ class Command(BaseCommand):
         # Copy file into the per-country manual_attached folder.
         ext = file_path.suffix.lstrip(".") or "bin"
         folder = COUNTRY_FOLDER_BY_CODE.get(result.country.upper(), result.country.lower())
-        base_dir = Path(settings.BASE_DIR) / "legal_data" / "sources" / folder / "manual_attached"
+        base_dir = Path(settings.LEGAL_DATA_ROOT) / "sources" / folder / "manual_attached"
         base_dir.mkdir(parents=True, exist_ok=True)
         dest = base_dir / f"{slug}.{ext}"
         shutil.copyfile(file_path, dest)
-        result.local_path = str(dest.relative_to(Path(settings.BASE_DIR)))
+        try:
+            result.local_path = str(dest.relative_to(Path(settings.BASE_DIR)))
+        except ValueError:
+            # LEGAL_DATA_ROOT overridden outside BASE_DIR (pytest tmp_path).
+            result.local_path = str(dest)
         result.classification = "manual_attach_success"
 
         # Annotate LegalSource (creates a NEEDS_REVIEW row if none exists).
