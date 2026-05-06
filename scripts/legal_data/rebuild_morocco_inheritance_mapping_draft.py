@@ -1,5 +1,10 @@
 """F-morocco-moudawana-real-pdf-remap-pass2 — one-shot rebuilder.
 
+Iter origin: F-morocco-moudawana-real-pdf-remap-pass2.
+Refined in: F-morocco-moudawana-mapping-refinement-pass3 (split
+article 346 mother case, add ``unsupported_mechanisms`` section,
+add ``activation_blockers`` per rule).
+
 Read the freshly-extracted Moudawana articles JSON and emit a
 mapping draft anchored on the real PDF's sha256, with every rule
 carrying an ``extracted_text_snippet`` lifted verbatim from the
@@ -55,7 +60,12 @@ def main() -> int:
 
     mapping = {
         "schema_version": "1.0",
-        "iter": "F-morocco-moudawana-real-pdf-remap-pass2",
+        "iter": "F-morocco-moudawana-mapping-refinement-pass3",
+        "iter_lineage": [
+            "F-morocco-moudawana-livre-iii-mapping-draft-pass1 (placeholder PDF — superseded)",
+            "F-morocco-moudawana-real-pdf-remap-pass2 (real PDF, 8 rules)",
+            "F-morocco-moudawana-mapping-refinement-pass3 (split 346, unsupported_mechanisms, activation_blockers)",
+        ],
         "country": "MA",
         "case_type": "international_inheritance",
         "source_slug": "ma-code-famille-moudawana-fr-pdf",
@@ -86,6 +96,9 @@ def main() -> int:
                 "extracted_text_snippet": _snippet(articles, "342"),
                 "confidence": "medium",
                 "needs_manual_review": True,
+                "activation_blockers": [
+                    "article 342 lists four other 1/2 cases (single daughter, single granddaughter, single full sister, single consanguine sister) — this rule isolates only the husband case",
+                ],
                 "comment": (
                     "Article 342 (1): l'epoux a droit a 1/2 si l'epouse n'a "
                     "laisse aucune descendance a vocation successorale "
@@ -102,6 +115,7 @@ def main() -> int:
                 "extracted_text_snippet": _snippet(articles, "343"),
                 "confidence": "medium",
                 "needs_manual_review": True,
+                "activation_blockers": [],
                 "comment": (
                     "Article 343 (1): l'epoux concourant avec une descendance "
                     "de l'epouse a vocation successorale prend 1/4."
@@ -115,6 +129,7 @@ def main() -> int:
                 "extracted_text_snippet": _snippet(articles, "343"),
                 "confidence": "medium",
                 "needs_manual_review": True,
+                "activation_blockers": [],
                 "comment": (
                     "Article 343 (2): l'epouse en l'absence de descendance "
                     "de l'epoux a vocation successorale prend 1/4."
@@ -128,6 +143,7 @@ def main() -> int:
                 "extracted_text_snippet": _snippet(articles, "344"),
                 "confidence": "high",
                 "needs_manual_review": True,
+                "activation_blockers": [],
                 "comment": (
                     "Article 344: l'epouse prend 1/8 lorsque l'epoux laisse "
                     "une descendance a vocation successorale. Article text "
@@ -142,6 +158,7 @@ def main() -> int:
                 "extracted_text_snippet": _snippet(articles, "345"),
                 "confidence": "high",
                 "needs_manual_review": True,
+                "activation_blockers": [],
                 "comment": (
                     "Article 345 (1): deux filles ou plus du de cujus, en "
                     "l'absence de fils, partagent collectivement 2/3."
@@ -150,17 +167,56 @@ def main() -> int:
             {
                 "rule_id": "ma-inh-mother-no-descendants-no-multi-siblings",
                 "article_references": ["346"],
-                "scenario": {"mother": 1, "sons": 0, "daughters": 0},
+                "scenario": {
+                    "mother": 1,
+                    "sons": 0,
+                    "daughters": 0,
+                    "siblings": "<=1",
+                },
                 "share_spec": {"mother": "1/3"},
                 "extracted_text_snippet": _snippet(articles, "346"),
                 "confidence": "medium",
                 "needs_manual_review": True,
+                "activation_blockers": [
+                    "wizard already captures siblings_count → input_data.heirs.siblings",
+                    "engine must read heirs.siblings to gate this rule",
+                    "Studio review must confirm the precise threshold (the article uses 'deux ou plus' = >=2)",
+                ],
                 "comment": (
                     "Article 346 (1): la mere prend 1/3 si le de cujus ne "
                     "laisse pas de descendants a vocation successorale ni "
                     "deux ou plus de freres et soeurs (meme evinces par "
-                    "hajb). The wizard does not yet capture sibling counts; "
-                    "this rule cannot be activated until it does."
+                    "hajb). The wizard already captures siblings_count via "
+                    "the inheritance form; the engine still needs to gate "
+                    "this rule on heirs.siblings <= 1 before activation."
+                ),
+            },
+            {
+                "rule_id": "ma-inh-mother-no-descendants-multi-siblings-blocked",
+                "article_references": ["346", "347"],
+                "scenario": {
+                    "mother": 1,
+                    "sons": 0,
+                    "daughters": 0,
+                    "siblings": ">=2",
+                },
+                "share_spec": None,
+                "extracted_text_snippet": _snippet(articles, "346"),
+                "confidence": "medium",
+                "needs_manual_review": True,
+                "activation_blockers": [
+                    "rule is BLOCKED: when 2+ siblings exist without descendants, the mother's share is reduced (classical 'hajb noqsan' = reduction by exclusion). The exact reduced fraction depends on doctrinal interpretation of articles 346-347 + the asaba/Ta'sib mechanics in articles 348-356. This pass refuses to assign a numeric share until a Studio reviewer signs off.",
+                    "blocked_by_unsupported_mechanism: hajb_noqsan",
+                ],
+                "blocked": True,
+                "comment": (
+                    "Companion to ma-inh-mother-no-descendants-no-multi-"
+                    "siblings: when the de cujus leaves no descendants but "
+                    "two or more siblings (even when those siblings are "
+                    "themselves excluded by hajb), article 346 explicitly "
+                    "carves out the 1/3 mother case. The reduced share "
+                    "owed to the mother in that scenario is doctrinal "
+                    "(hajb noqsan) and outside this draft's scope."
                 ),
             },
             {
@@ -171,6 +227,9 @@ def main() -> int:
                 "extracted_text_snippet": _snippet(articles, "347"),
                 "confidence": "high",
                 "needs_manual_review": True,
+                "activation_blockers": [
+                    "father's residual asaba claim on the remainder (when only female descendants exist) is NOT modelled here — articles 348-356",
+                ],
                 "comment": (
                     "Article 347 (1): le pere en presence d'enfant ou "
                     "d'enfant de fils du de cujus (homme ou femme) prend 1/6."
@@ -184,6 +243,7 @@ def main() -> int:
                 "extracted_text_snippet": _snippet(articles, "347"),
                 "confidence": "high",
                 "needs_manual_review": True,
+                "activation_blockers": [],
                 "comment": (
                     "Article 347 (2): la mere en presence d'enfant ou "
                     "d'enfant de fils du de cujus prend 1/6."
@@ -207,33 +267,107 @@ def main() -> int:
             "fixture_only": True,
             "public_db_activation": False,
         },
-        "non_modelled_concepts": [
-            "hajb (exclusion by closer-degree heir) — see articles 332-335",
-            "'awl (proportional reduction when shares exceed unity) — article 364",
-            "radd (devolution of residue) — articles 374-378",
-            "ta'sib / asaba ordering across degrees — articles 339, 348-356",
-            "kalala (siblings inheritance specifics) — articles 348, 351",
-            "EU 650/2012 applicable-law decision (skeleton iter, separate)",
+        "wizard_inputs": {
+            "captured": [
+                {
+                    "form_field": "spouse_present",
+                    "input_data_path": "heirs.spouse",
+                    "type": "boolean (0|1)",
+                },
+                {
+                    "form_field": "sons_count",
+                    "input_data_path": "heirs.sons",
+                    "type": "integer (0..30)",
+                },
+                {
+                    "form_field": "daughters_count",
+                    "input_data_path": "heirs.daughters",
+                    "type": "integer (0..30)",
+                },
+                {
+                    "form_field": "father_present",
+                    "input_data_path": "heirs.father",
+                    "type": "boolean (0|1)",
+                },
+                {
+                    "form_field": "mother_present",
+                    "input_data_path": "heirs.mother",
+                    "type": "boolean (0|1)",
+                },
+                {
+                    "form_field": "siblings_count",
+                    "input_data_path": "heirs.siblings",
+                    "type": "integer (0..30)",
+                },
+            ],
+            "missing_for_full_faraid": [
+                "husband_vs_wife distinction (current 'spouse_present' boolean is gender-neutral; mapping rules use husband/wife separately for articles 342-344)",
+                "sibling sub-typing (full / consanguine / uterine) — articles 348-351",
+                "grandchildren (son's daughters, son's sons) — article 345 (2)",
+                "agnatic ascendants (paternal grandfather, paternal grandmother) — article 339",
+            ],
+        },
+        "unsupported_mechanisms": [
+            {
+                "name": "hajb",
+                "label_en": "Exclusion of an heir by a closer-degree heir",
+                "article_references": ["332", "333", "334", "335"],
+                "blocked_rules": ["ma-inh-mother-no-descendants-multi-siblings-blocked"],
+                "comment": "Two flavours: hajb hirman (total exclusion) and hajb noqsan (partial reduction). The mother-with-multi-siblings rule depends on hajb noqsan.",
+            },
+            {
+                "name": "'awl",
+                "label_en": "Proportional reduction when fixed shares exceed unity",
+                "article_references": ["364"],
+                "blocked_rules": [],
+                "comment": "Required whenever the sum of Fardh shares > 1 (e.g. husband 1/2 + 2 sisters 2/3 = 7/6). The current engine has no awl pass.",
+            },
+            {
+                "name": "radd",
+                "label_en": "Devolution of the residue when no asaba is present",
+                "article_references": ["374", "375", "376", "377", "378"],
+                "blocked_rules": [],
+                "comment": "Without an asaba heir, the residue is redistributed pro rata among the Fardh heirs (excluding the spouse).",
+            },
+            {
+                "name": "ta'sib / asaba ordering",
+                "label_en": "Residuary heir ordering across degrees",
+                "article_references": [
+                    "339",
+                    "348",
+                    "349",
+                    "350",
+                    "351",
+                    "352",
+                    "353",
+                    "354",
+                    "355",
+                    "356",
+                ],
+                "blocked_rules": [],
+                "comment": "The current engine uses a sons:daughters 2:1 fixed-residue rule that is correct only for the simple parental-line case. Full asaba ordering involves agnatic/cognatic relatives across multiple degrees.",
+            },
+            {
+                "name": "kalala",
+                "label_en": "Siblings-only inheritance (no descendants, no ascendants)",
+                "article_references": ["348", "351"],
+                "blocked_rules": [],
+                "comment": "Distinct doctrinal regime when the de cujus leaves only siblings.",
+            },
+            {
+                "name": "applicable_law_decision",
+                "label_en": "EU 650/2012 applicable-law selection",
+                "article_references": [],
+                "blocked_rules": [],
+                "comment": "Whether Moroccan substantive law applies in a cross-border case is decided by Reg. 650/2012; tracked separately by the applicable-law skeleton engine.",
+            },
         ],
         "blockers_before_activation": [
-            (
-                "every rule's confidence must be re-checked by a Studio "
-                "reviewer reading the extracted_text_snippet alongside the "
-                "full article in the source PDF"
-            ),
-            (
-                "hajb / 'awl / radd / asaba ordering must be modelled before "
-                "the engine output can claim completeness"
-            ),
-            (
-                "the wizard must capture sibling counts before mother-1/3 "
-                "(article 346) can be activated"
-            ),
-            (
-                "EU 650/2012 applicable-law decision must be wired before "
-                "the public funnel can output a Moroccan-law allocation for "
-                "cross-border cases"
-            ),
+            "every rule's confidence must be re-checked by a Studio reviewer reading the extracted_text_snippet alongside the full article in the source PDF",
+            "the engine must read heirs.siblings (already captured by the wizard) and gate ma-inh-mother-no-descendants-no-multi-siblings on siblings <= 1 before activation",
+            "the engine must distinguish husband vs wife (currently both fold into 'spouse'); rules ma-inh-husband-* and ma-inh-wife-* are intentionally redundant on the spouse axis until that split lands",
+            "every entry in unsupported_mechanisms must either be modelled or have an explicit blocked_rules list of cases the engine refuses to compute",
+            "EU 650/2012 applicable-law decision must be wired before the public funnel can output a Moroccan-law allocation for cross-border cases",
         ],
     }
 

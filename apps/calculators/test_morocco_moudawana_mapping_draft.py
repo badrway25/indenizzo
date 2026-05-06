@@ -187,6 +187,122 @@ def test_extraction_artifact_is_not_a_stub():
     )
 
 
+def test_pass3_article_346_is_split_into_two_rules(mapping_payload):
+    """Pass3 invariant: article 346 (mother takes 1/3) must surface
+    as TWO rules — the activatable one (no descendants, ≤1 sibling)
+    and the explicitly blocked one (no descendants, ≥2 siblings).
+    The blocked rule documents that the doctrinal hajb-noqsan
+    reduction is not yet modelled."""
+    rules_by_id = {r["rule_id"]: r for r in mapping_payload["rules"]}
+    activatable = rules_by_id.get("ma-inh-mother-no-descendants-no-multi-siblings")
+    blocked = rules_by_id.get("ma-inh-mother-no-descendants-multi-siblings-blocked")
+    assert activatable is not None, "missing the activatable mother-1/3 rule"
+    assert blocked is not None, "missing the blocked mother-multi-siblings rule"
+    # The activatable rule must require the wizard's siblings count.
+    assert activatable["scenario"].get("siblings") in ("<=1", 0, "0", None) or (
+        "siblings" in activatable["scenario"]
+    ), "activatable rule must reference the siblings input"
+    assert activatable["share_spec"] == {"mother": "1/3"}
+    # The blocked rule MUST NOT carry a numeric share.
+    assert blocked.get("blocked") is True
+    assert blocked.get("share_spec") in (
+        None,
+        {},
+    ), f"blocked rule must have no share_spec, got {blocked.get('share_spec')!r}"
+    # Both rules must cite article 346 verbatim from extraction.
+    assert "346" in activatable["article_references"]
+    assert "346" in blocked["article_references"]
+
+
+def test_pass3_unsupported_mechanisms_are_explicit(mapping_payload):
+    """Pass3 invariant: the mapping must list each unsupported
+    Moudawana mechanism explicitly with article references and
+    blocked_rules, so the reviewer / engine cannot silently rely on
+    a missing concept."""
+    mechs = mapping_payload.get("unsupported_mechanisms")
+    assert isinstance(mechs, list) and mechs, "mapping must declare unsupported_mechanisms"
+    names = {m["name"] for m in mechs}
+    required_names = {
+        "hajb",
+        "'awl",
+        "radd",
+        "ta'sib / asaba ordering",
+        "kalala",
+        "applicable_law_decision",
+    }
+    missing = required_names - names
+    assert not missing, f"unsupported_mechanisms missing required names: {missing}"
+    for m in mechs:
+        assert "article_references" in m, m
+        assert "blocked_rules" in m, m
+        assert "comment" in m, m
+    # The hajb mechanism must declare the blocked mother-multi-siblings rule.
+    hajb = next(m for m in mechs if m["name"] == "hajb")
+    assert "ma-inh-mother-no-descendants-multi-siblings-blocked" in hajb["blocked_rules"]
+
+
+def test_pass3_every_rule_has_activation_blockers_list(mapping_payload):
+    """Pass3 invariant: every rule must carry an
+    ``activation_blockers`` list (possibly empty). This makes the
+    activation status of each rule machine-readable."""
+    for rule in mapping_payload["rules"]:
+        assert (
+            "activation_blockers" in rule
+        ), f"rule {rule.get('rule_id')!r} missing activation_blockers"
+        assert isinstance(
+            rule["activation_blockers"], list
+        ), f"rule {rule.get('rule_id')!r} activation_blockers must be a list"
+        if rule.get("blocked"):
+            assert rule[
+                "activation_blockers"
+            ], f"blocked rule {rule.get('rule_id')!r} must list reasons"
+
+
+def test_pass3_wizard_inputs_describe_siblings():
+    """The wizard form already captures ``siblings_count``. The
+    mapping's wizard_inputs section must document this so the
+    engine knows the field is available before activating
+    article-346 rules."""
+    payload = json.loads(MAPPING_JSON.read_text(encoding="utf-8"))
+    wizard = payload.get("wizard_inputs")
+    assert wizard, "mapping must declare wizard_inputs"
+    captured_paths = {c["input_data_path"] for c in wizard.get("captured", [])}
+    assert (
+        "heirs.siblings" in captured_paths
+    ), f"wizard_inputs must document heirs.siblings; got {captured_paths}"
+
+
+@pytest.mark.django_db
+def test_pass3_wizard_form_serializes_siblings_into_heirs():
+    """End-to-end: the inheritance wizard form, when given a non-zero
+    ``siblings_count``, serialises it into ``input_data.heirs.siblings``.
+    This is the concrete contract the mapping's article-346 rule
+    relies on."""
+    from apps.cases.forms import InternationalInheritanceWizardForm
+
+    form = InternationalInheritanceWizardForm(
+        data={
+            "deceased_country_of_last_residence": "MA",
+            "nationality": "MA",
+            "spouse_present": "",
+            "sons_count": "0",
+            "daughters_count": "0",
+            "father_present": "",
+            "mother_present": "on",
+            "siblings_count": "3",
+            "estate_value": "100000",
+            "consent_simulation": "on",
+            "website": "",
+        }
+    )
+    assert form.is_valid(), form.errors
+    payload = form.to_input_data()
+    assert payload["heirs"]["siblings"] == 3
+    assert payload["heirs"]["mother"] == 1
+    assert payload["heirs"]["sons"] == 0
+    assert payload["heirs"]["daughters"] == 0
+
+
 def test_every_rule_has_article_references(mapping_payload):
     for rule in mapping_payload["rules"]:
         refs = rule.get("article_references")
