@@ -195,7 +195,27 @@ class TunisiaInternationalInheritanceCalculator(_TunisiaPlaceholderCalculator):
                 warnings=[estate_warning],
             )
 
-        # --- gate 9: dispatch della rule inheritance-share, intercetta
+        # --- gate 9a: applicable-law decision skeleton (fixture-only).
+        # Twin of the Morocco gate: even with an APPROVED stack, the
+        # engine refuses to compute when the decision flags manual
+        # review, insufficient context, low confidence or a missing
+        # preliminary law country.
+        block = _gate_inheritance_engine_on_applicable_law(input_data)
+        if block is not None:
+            return self._build_result(
+                status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
+                sources=source_refs,
+                warnings=[
+                    "Applicable-law context requires Studio review before "
+                    "any inheritance shares can be produced. The engine "
+                    "refuses to compute on the fixture-only path until a "
+                    "legal reviewer reads the family / cross-border "
+                    "elements of the case."
+                ],
+                missing_documents=[block],
+            )
+
+        # --- gate 9b: dispatch della rule inheritance-share, intercetta
         #            spec strutturalmente invalida
         try:
             share_result = apply_amount_inheritance_share_rule(
@@ -373,6 +393,38 @@ def _validate_estate_value(input_data: dict[str, Any]) -> str | None:
     if value < Decimal(0):
         return "estate_value must be non-negative."
     return None
+
+
+def _gate_inheritance_engine_on_applicable_law(input_data: dict[str, Any]) -> str | None:
+    """Twin of the Morocco gate: route the engine to UNAVAILABLE when
+    the pre-attached applicable-law decision blocks the share-engine
+    path. See ``apps/calculators/engines/morocco.py`` for the full
+    rationale.
+    """
+    from apps.calculators.inheritance_applicable_law import (
+        ApplicableLawDecision,
+        can_run_inheritance_share_engine,
+        inheritance_engine_block_reason,
+    )
+
+    raw = input_data.get("applicable_law_decision")
+    decision: ApplicableLawDecision | None = None
+    if isinstance(raw, dict):
+        try:
+            decision = ApplicableLawDecision(
+                decision_key=raw.get("decision_key", ""),
+                preliminary_law_country=raw.get("preliminary_law_country"),
+                confidence=raw.get("confidence", "low"),
+                requires_manual_review=bool(raw.get("requires_manual_review")),
+                reasons=tuple(raw.get("reasons") or ()),
+                warnings=tuple(raw.get("warnings") or ()),
+                applied_rules=tuple(raw.get("applied_rules") or ()),
+            )
+        except (TypeError, ValueError):
+            decision = None
+    if can_run_inheritance_share_engine(decision):
+        return None
+    return inheritance_engine_block_reason(decision)
 
 
 # --- registrazioni al momento dell'import ----------------------------------

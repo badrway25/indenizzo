@@ -287,6 +287,71 @@ def evaluate_inheritance_applicable_law(
     )
 
 
+# ---------------------------------------------------------------------------
+# Engine integration gate (fixture-only)
+# ---------------------------------------------------------------------------
+
+
+# Internal diagnostic slugs the engine uses when the gate blocks. They
+# stay under ``output_data["internal"]`` and never reach the public
+# template (the result page only renders the curated public message).
+BLOCK_REASON_NO_DECISION = "applicable_law_decision_missing"
+BLOCK_REASON_INSUFFICIENT_CONTEXT = "applicable_law_insufficient_context"
+BLOCK_REASON_MANUAL_REVIEW_REQUIRED = "applicable_law_manual_review_required"
+BLOCK_REASON_LOW_CONFIDENCE = "applicable_law_low_confidence"
+BLOCK_REASON_MISSING_LAW_COUNTRY = "applicable_law_missing_law_country"
+
+
+def can_run_inheritance_share_engine(decision: ApplicableLawDecision | None) -> bool:
+    """Gate that decides whether an inheritance-share engine may run.
+
+    Strictly fixture-only: the engine is allowed to compute shares
+    only when the applicable-law decision is the simplest possible
+    "habitual residence default" with medium-or-better confidence and
+    no manual-review flag. Any other shape (insufficient context,
+    professio juris candidate, cross-border fragmentation, nationality
+    mismatch, low confidence) blocks the engine.
+
+    Returns ``False`` for ``None`` so callers that don't yet attach a
+    decision get the safest default. The wider system never exposes a
+    public quote when this returns ``False``; the engine surfaces an
+    internal diagnostic via :func:`inheritance_engine_block_reason`
+    that lives only in ``Simulation.output_data["internal"]``.
+    """
+    if decision is None:
+        return False
+    if decision.decision_key != DECISION_HABITUAL_RESIDENCE:
+        return False
+    if decision.requires_manual_review:
+        return False
+    if not decision.preliminary_law_country:
+        return False
+    if decision.confidence not in (CONFIDENCE_MEDIUM, CONFIDENCE_HIGH):
+        return False
+    return True
+
+
+def inheritance_engine_block_reason(decision: ApplicableLawDecision | None) -> str:
+    """Pick a stable internal slug describing why the gate blocks.
+
+    The slug is intended for ``Simulation.output_data["internal"]`` and
+    Studio audit logs only. The public result page renders the curated
+    :class:`apps.cases.public_result_messages.PublicResultMessage`,
+    never these slugs.
+    """
+    if decision is None:
+        return BLOCK_REASON_NO_DECISION
+    if decision.decision_key == DECISION_INSUFFICIENT_CONTEXT:
+        return BLOCK_REASON_INSUFFICIENT_CONTEXT
+    if decision.requires_manual_review:
+        return BLOCK_REASON_MANUAL_REVIEW_REQUIRED
+    if not decision.preliminary_law_country:
+        return BLOCK_REASON_MISSING_LAW_COUNTRY
+    if decision.confidence not in (CONFIDENCE_MEDIUM, CONFIDENCE_HIGH):
+        return BLOCK_REASON_LOW_CONFIDENCE
+    return ""
+
+
 __all__ = [
     "ApplicableLawInput",
     "ApplicableLawDecision",
@@ -297,7 +362,14 @@ __all__ = [
     "CONFIDENCE_LOW",
     "CONFIDENCE_MEDIUM",
     "CONFIDENCE_HIGH",
+    "BLOCK_REASON_NO_DECISION",
+    "BLOCK_REASON_INSUFFICIENT_CONTEXT",
+    "BLOCK_REASON_MANUAL_REVIEW_REQUIRED",
+    "BLOCK_REASON_LOW_CONFIDENCE",
+    "BLOCK_REASON_MISSING_LAW_COUNTRY",
     "build_applicable_law_input_from_payload",
+    "can_run_inheritance_share_engine",
     "evaluate_inheritance_applicable_law",
+    "inheritance_engine_block_reason",
     "normalise_assets_countries",
 ]

@@ -150,6 +150,7 @@ def test_tn_inheritance_happy_path_with_estate(tn_jurisdiction):
         jurisdiction_code="TN-NATIONAL",
         case_type=CaseType.INTERNATIONAL_INHERITANCE.value,
         input_data={
+            "deceased_country_of_last_residence": "TN",
             "heirs": {"spouse": 1, "mother": 1, "sons": 1, "daughters": 1},
             "estate_value": str(SYNTH_ESTATE),
         },
@@ -204,7 +205,10 @@ def test_tn_inheritance_shares_only_without_estate(tn_jurisdiction):
     sim = run_simulation(
         jurisdiction_code="TN-NATIONAL",
         case_type=CaseType.INTERNATIONAL_INHERITANCE.value,
-        input_data={"heirs": {"spouse": 1, "mother": 1, "sons": 2, "daughters": 1}},
+        input_data={
+            "deceased_country_of_last_residence": "TN",
+            "heirs": {"spouse": 1, "mother": 1, "sons": 2, "daughters": 1},
+        },
     )
     assert sim.status == CalculationStatus.CALCULATED.value
     assert sim.estimated_min is None
@@ -368,7 +372,10 @@ def test_tn_engine_unavailable_when_share_spec_invalid(tn_jurisdiction):
     sim = run_simulation(
         jurisdiction_code="TN-NATIONAL",
         case_type=CaseType.INTERNATIONAL_INHERITANCE.value,
-        input_data={"heirs": {"spouse": 1, "mother": 1}},
+        input_data={
+            "deceased_country_of_last_residence": "TN",
+            "heirs": {"spouse": 1, "mother": 1},
+        },
     )
     assert sim.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
     assert "shares_spec_invalid" in (sim.output_data or {}).get("missing_documents", [])
@@ -396,6 +403,7 @@ def test_tn_inheritance_no_residual_heirs_residual_explicit(tn_jurisdiction):
         jurisdiction_code="TN-NATIONAL",
         case_type=CaseType.INTERNATIONAL_INHERITANCE.value,
         input_data={
+            "deceased_country_of_last_residence": "TN",
             "heirs": {"spouse": 1, "mother": 1, "sons": 0, "daughters": 0},
             "estate_value": str(SYNTH_ESTATE),
         },

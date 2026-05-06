@@ -87,6 +87,14 @@ def run_simulation(
     simulation.user_agent = meta.user_agent
     simulation.source_path = meta.path
 
+    # For inheritance case types, evaluate the applicable-law decision
+    # BEFORE the calculator compute so the engine can read it from
+    # ``payload["applicable_law_decision"]`` and gate accordingly. The
+    # full decision payload is also stashed under
+    # ``output_data["internal"]["applicable_law_decision"]`` after the
+    # compute for audit / Studio review.
+    _preattach_applicable_law_decision_to_payload(payload, case_type=case_type)
+
     # Calcolo.
     calc_cls = get_calculator(jurisdiction_code, case_type)
     result = _compute_or_unavailable(
@@ -252,6 +260,27 @@ def _apply_result_to_simulation(simulation: Simulation, result: CalculationResul
 _INHERITANCE_CASE_TYPES = {"international_inheritance", "inheritance"}
 
 
+def _preattach_applicable_law_decision_to_payload(
+    payload: dict[str, Any],
+    *,
+    case_type: str,
+) -> None:
+    """Evaluate the applicable-law decision and inject it into payload
+    so the inheritance engine can gate on it during compute.
+
+    Mutates ``payload`` in place. Skip the work for non-inheritance
+    case types so other simulations keep their input shape.
+    """
+    if (case_type or "").lower() not in _INHERITANCE_CASE_TYPES:
+        return
+    from apps.calculators.inheritance_applicable_law import (
+        evaluate_inheritance_applicable_law,
+    )
+
+    decision = evaluate_inheritance_applicable_law(payload)
+    payload["applicable_law_decision"] = decision.to_dict()
+
+
 def _attach_applicable_law_decision(
     simulation: Simulation,
     *,
@@ -266,18 +295,26 @@ def _attach_applicable_law_decision(
     template explicitly does not iterate the ``internal`` key).
 
     Skip the enrichment for non-inheritance case types so road-accident
-    simulations keep their unchanged ``output_data`` shape.
+    simulations keep their unchanged ``output_data`` shape. Reuses the
+    decision pre-attached to ``payload`` by
+    :func:`_preattach_applicable_law_decision_to_payload`; falls back
+    to a fresh evaluation if the pre-attach did not run for any
+    reason.
     """
     if (case_type or "").lower() not in _INHERITANCE_CASE_TYPES:
         return
-    from apps.calculators.inheritance_applicable_law import (
-        evaluate_inheritance_applicable_law,
-    )
 
-    decision = evaluate_inheritance_applicable_law(payload)
+    decision_dict = payload.get("applicable_law_decision")
+    if not isinstance(decision_dict, dict):
+        from apps.calculators.inheritance_applicable_law import (
+            evaluate_inheritance_applicable_law,
+        )
+
+        decision_dict = evaluate_inheritance_applicable_law(payload).to_dict()
+
     output = dict(simulation.output_data or {})
     internal = dict(output.get("internal") or {})
-    internal["applicable_law_decision"] = decision.to_dict()
+    internal["applicable_law_decision"] = decision_dict
     output["internal"] = internal
     simulation.output_data = output
 

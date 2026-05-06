@@ -145,6 +145,7 @@ def test_ma_inheritance_happy_path_with_estate(ma_jurisdiction):
         jurisdiction_code="MA-NATIONAL",
         case_type=CaseType.INTERNATIONAL_INHERITANCE.value,
         input_data={
+            "deceased_country_of_last_residence": "MA",
             "heirs": {"spouse": 1, "sons": 1, "daughters": 1},
             "estate_value": str(SYNTH_ESTATE),
         },
@@ -192,7 +193,10 @@ def test_ma_inheritance_shares_only_without_estate(ma_jurisdiction):
     sim = run_simulation(
         jurisdiction_code="MA-NATIONAL",
         case_type=CaseType.INTERNATIONAL_INHERITANCE.value,
-        input_data={"heirs": {"spouse": 1, "sons": 2, "daughters": 1}},
+        input_data={
+            "deceased_country_of_last_residence": "MA",
+            "heirs": {"spouse": 1, "sons": 2, "daughters": 1},
+        },
     )
     assert sim.status == CalculationStatus.CALCULATED.value
     assert sim.estimated_min is None
@@ -522,6 +526,7 @@ def test_ma_inheritance_daughters_only_edge_case(ma_jurisdiction):
         jurisdiction_code="MA-NATIONAL",
         case_type=CaseType.INTERNATIONAL_INHERITANCE.value,
         input_data={
+            "deceased_country_of_last_residence": "MA",
             "heirs": {"spouse": 1, "sons": 0, "daughters": 2},
             "estate_value": "240000",
         },
