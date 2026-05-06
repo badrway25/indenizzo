@@ -228,9 +228,13 @@ def wizard_result(request, public_id: uuid.UUID):
 
     sources = simulation.sources_snapshot or []
     output = simulation.output_data or {}
+    # Keep the raw arrays accessible for audit / debug only — never
+    # surface them on the public result template. The localised
+    # ``PublicResultMessage`` carries the user-facing copy.
     warnings = output.get("warnings") or []
     missing_documents = output.get("missing_documents") or []
     assumptions = output.get("assumptions") or []
+    _ = warnings, missing_documents  # consumed by audit log / DB only
     legal_disclaimer = output.get("legal_disclaimer") or ""
 
     # Costruzione URL CTA verso il lead form già in F6.
@@ -260,20 +264,31 @@ def wizard_result(request, public_id: uuid.UUID):
         country_code = simulation.jurisdiction.code.split("-", 1)[0]
     public_status = get_country_public_status(country_code, case_type_value)
 
+    # Build the public-facing copy block for the no-estimate path. The
+    # helper never inspects the engine's diagnostics; it picks a
+    # curated, pre-translated message from the country/case-type
+    # mapping.
+    from apps.cases.public_result_messages import build_public_result_message
+
+    public_message = build_public_result_message(
+        status=simulation.status,
+        country_code=country_code,
+        case_type=case_type_value,
+    )
+
     return render(
         request,
         "public/wizard_result.html",
         {
             "simulation": simulation,
             "sources": sources,
-            "warnings": warnings,
-            "missing_documents": missing_documents,
             "assumptions": assumptions,
             "legal_disclaimer": legal_disclaimer,
             "contact_url": contact_url,
             "has_estimate": has_estimate,
             "status_public_label": status_public_label,
             "public_status": public_status,
+            "public_message": public_message,
         },
     )
 

@@ -349,7 +349,10 @@ def test_contact_has_next_steps_privacy_and_return_paths():
     # Existing aside (pre-pass3) — EN or IT (the existing IT translation
     # covers it; either way the aside renders).
     assert (
-        ("What happens next" in body) or ("Cosa succede dopo" in body) or ("Cosa succederà" in body)
+        ("What happens next" in body)
+        or ("Cosa succede dopo" in body)
+        or ("Cosa succederà" in body)
+        or ("Cosa succede ora" in body)
     )
     # New return-paths nav (EN-or-IT).
     assert ("Useful pages" in body) or ("Pagine utili" in body)
