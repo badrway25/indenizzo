@@ -4,42 +4,42 @@
     {
       "label": "fr_road_accident_unavailable",
       "wizard_url": "http://127.0.0.1:48107/wizard/fr/road-accident/",
-      "result_url": "http://127.0.0.1:48107/wizard/result/e4b7ae17-e6f8-4974-b5e5-8d8bba36357c/",
+      "result_url": "http://127.0.0.1:48107/wizard/result/7afc7568-0533-4ddd-be55-64670c0bbd4a/",
       "passed": true,
       "leaks": []
     },
     {
       "label": "be_road_accident_unavailable",
       "wizard_url": "http://127.0.0.1:48107/wizard/be/road-accident/",
-      "result_url": "http://127.0.0.1:48107/wizard/result/ff3239f4-2fd2-4179-be72-1597200b8e11/",
+      "result_url": "http://127.0.0.1:48107/wizard/result/bd139335-c73b-46ec-82cc-49e411eadd97/",
       "passed": true,
       "leaks": []
     },
     {
       "label": "ma_inheritance_unavailable",
       "wizard_url": "http://127.0.0.1:48107/wizard/ma/inheritance/",
-      "result_url": "http://127.0.0.1:48107/wizard/result/f7537e64-a7b6-49d8-884a-9a106cf36be4/",
+      "result_url": "http://127.0.0.1:48107/wizard/result/a65b1f96-f4ef-4e99-a3bb-3f910a615ca5/",
       "passed": true,
       "leaks": []
     },
     {
       "label": "tn_inheritance_unavailable",
       "wizard_url": "http://127.0.0.1:48107/wizard/tn/inheritance/",
-      "result_url": "http://127.0.0.1:48107/wizard/result/c31dfb6c-666f-4d92-b240-c0f40e94e586/",
+      "result_url": "http://127.0.0.1:48107/wizard/result/78414df6-0544-4cf9-b33e-832794062ee3/",
       "passed": true,
       "leaks": []
     },
     {
       "label": "fr_road_accident_unavailable_FR",
       "wizard_url": "http://127.0.0.1:48107/fr/wizard/fr/road-accident/",
-      "result_url": "http://127.0.0.1:48107/fr/wizard/result/9e652387-e940-432f-b8b2-d7fbf36f972a/",
+      "result_url": "http://127.0.0.1:48107/fr/wizard/result/bdd787cc-7f27-4938-8692-bde7301bd85c/",
       "passed": true,
       "leaks": []
     },
     {
       "label": "ma_inheritance_unavailable_AR",
       "wizard_url": "http://127.0.0.1:48107/ar/wizard/ma/inheritance/",
-      "result_url": "http://127.0.0.1:48107/ar/wizard/result/d836af4e-5c0f-45cd-b881-cdd44d44bd67/",
+      "result_url": "http://127.0.0.1:48107/ar/wizard/result/75eebcb8-2630-44e6-9c1e-22a725f1124b/",
       "passed": true,
       "leaks": []
     }

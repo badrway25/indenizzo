@@ -1,0 +1,1394 @@
+{
+  "base_url": "http://127.0.0.1:48107",
+  "pages": [
+    {
+      "locale": "it",
+      "path": "/",
+      "url": "http://127.0.0.1:48107/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "it",
+      "path": "/countries/",
+      "url": "http://127.0.0.1:48107/countries/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "it",
+      "path": "/countries/italy/",
+      "url": "http://127.0.0.1:48107/countries/italy/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "it",
+      "path": "/countries/france/",
+      "url": "http://127.0.0.1:48107/countries/france/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "it",
+      "path": "/countries/belgium/",
+      "url": "http://127.0.0.1:48107/countries/belgium/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "it",
+      "path": "/countries/morocco/",
+      "url": "http://127.0.0.1:48107/countries/morocco/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "it",
+      "path": "/countries/tunisia/",
+      "url": "http://127.0.0.1:48107/countries/tunisia/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "it",
+      "path": "/case-types/",
+      "url": "http://127.0.0.1:48107/case-types/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "it",
+      "path": "/methodology/",
+      "url": "http://127.0.0.1:48107/methodology/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "it",
+      "path": "/wizard/",
+      "url": "http://127.0.0.1:48107/wizard/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "it",
+      "path": "/wizard/it/road-accident/",
+      "url": "http://127.0.0.1:48107/wizard/it/road-accident/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "it",
+      "path": "/wizard/fr/road-accident/",
+      "url": "http://127.0.0.1:48107/wizard/fr/road-accident/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "it",
+      "path": "/wizard/be/road-accident/",
+      "url": "http://127.0.0.1:48107/wizard/be/road-accident/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "it",
+      "path": "/wizard/ma/inheritance/",
+      "url": "http://127.0.0.1:48107/wizard/ma/inheritance/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "it",
+      "path": "/wizard/tn/inheritance/",
+      "url": "http://127.0.0.1:48107/wizard/tn/inheritance/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "it",
+      "path": "/contact/",
+      "url": "http://127.0.0.1:48107/contact/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "it",
+      "path": "/contact/thank-you/",
+      "url": "http://127.0.0.1:48107/contact/thank-you/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "it",
+      "path": "/privacy/",
+      "url": "http://127.0.0.1:48107/privacy/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "it",
+      "path": "/disclaimer/",
+      "url": "http://127.0.0.1:48107/disclaimer/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "it",
+      "path": "/sitemap.xml",
+      "url": "http://127.0.0.1:48107/sitemap.xml",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "it",
+      "path": "/healthz/",
+      "url": "http://127.0.0.1:48107/healthz/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "fr",
+      "path": "/",
+      "url": "http://127.0.0.1:48107/fr/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "fr",
+      "path": "/countries/",
+      "url": "http://127.0.0.1:48107/fr/countries/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "fr",
+      "path": "/countries/italy/",
+      "url": "http://127.0.0.1:48107/fr/countries/italy/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "fr",
+      "path": "/countries/france/",
+      "url": "http://127.0.0.1:48107/fr/countries/france/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "fr",
+      "path": "/countries/belgium/",
+      "url": "http://127.0.0.1:48107/fr/countries/belgium/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "fr",
+      "path": "/countries/morocco/",
+      "url": "http://127.0.0.1:48107/fr/countries/morocco/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "fr",
+      "path": "/countries/tunisia/",
+      "url": "http://127.0.0.1:48107/fr/countries/tunisia/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "fr",
+      "path": "/case-types/",
+      "url": "http://127.0.0.1:48107/fr/case-types/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "fr",
+      "path": "/methodology/",
+      "url": "http://127.0.0.1:48107/fr/methodology/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "fr",
+      "path": "/wizard/",
+      "url": "http://127.0.0.1:48107/fr/wizard/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "fr",
+      "path": "/wizard/it/road-accident/",
+      "url": "http://127.0.0.1:48107/fr/wizard/it/road-accident/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "fr",
+      "path": "/wizard/fr/road-accident/",
+      "url": "http://127.0.0.1:48107/fr/wizard/fr/road-accident/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "fr",
+      "path": "/wizard/be/road-accident/",
+      "url": "http://127.0.0.1:48107/fr/wizard/be/road-accident/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "fr",
+      "path": "/wizard/ma/inheritance/",
+      "url": "http://127.0.0.1:48107/fr/wizard/ma/inheritance/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "fr",
+      "path": "/wizard/tn/inheritance/",
+      "url": "http://127.0.0.1:48107/fr/wizard/tn/inheritance/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "fr",
+      "path": "/contact/",
+      "url": "http://127.0.0.1:48107/fr/contact/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "fr",
+      "path": "/contact/thank-you/",
+      "url": "http://127.0.0.1:48107/fr/contact/thank-you/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "fr",
+      "path": "/privacy/",
+      "url": "http://127.0.0.1:48107/fr/privacy/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "fr",
+      "path": "/disclaimer/",
+      "url": "http://127.0.0.1:48107/fr/disclaimer/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "ar",
+      "path": "/",
+      "url": "http://127.0.0.1:48107/ar/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "ar",
+      "path": "/countries/",
+      "url": "http://127.0.0.1:48107/ar/countries/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "ar",
+      "path": "/countries/italy/",
+      "url": "http://127.0.0.1:48107/ar/countries/italy/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "ar",
+      "path": "/countries/france/",
+      "url": "http://127.0.0.1:48107/ar/countries/france/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "ar",
+      "path": "/countries/belgium/",
+      "url": "http://127.0.0.1:48107/ar/countries/belgium/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "ar",
+      "path": "/countries/morocco/",
+      "url": "http://127.0.0.1:48107/ar/countries/morocco/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "ar",
+      "path": "/countries/tunisia/",
+      "url": "http://127.0.0.1:48107/ar/countries/tunisia/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "ar",
+      "path": "/case-types/",
+      "url": "http://127.0.0.1:48107/ar/case-types/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "ar",
+      "path": "/methodology/",
+      "url": "http://127.0.0.1:48107/ar/methodology/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "ar",
+      "path": "/wizard/",
+      "url": "http://127.0.0.1:48107/ar/wizard/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "ar",
+      "path": "/wizard/it/road-accident/",
+      "url": "http://127.0.0.1:48107/ar/wizard/it/road-accident/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "ar",
+      "path": "/wizard/fr/road-accident/",
+      "url": "http://127.0.0.1:48107/ar/wizard/fr/road-accident/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "ar",
+      "path": "/wizard/be/road-accident/",
+      "url": "http://127.0.0.1:48107/ar/wizard/be/road-accident/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "ar",
+      "path": "/wizard/ma/inheritance/",
+      "url": "http://127.0.0.1:48107/ar/wizard/ma/inheritance/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "ar",
+      "path": "/wizard/tn/inheritance/",
+      "url": "http://127.0.0.1:48107/ar/wizard/tn/inheritance/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "ar",
+      "path": "/contact/",
+      "url": "http://127.0.0.1:48107/ar/contact/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "ar",
+      "path": "/contact/thank-you/",
+      "url": "http://127.0.0.1:48107/ar/contact/thank-you/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "ar",
+      "path": "/privacy/",
+      "url": "http://127.0.0.1:48107/ar/privacy/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "ar",
+      "path": "/disclaimer/",
+      "url": "http://127.0.0.1:48107/ar/disclaimer/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "en",
+      "path": "/",
+      "url": "http://127.0.0.1:48107/en/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "en",
+      "path": "/countries/",
+      "url": "http://127.0.0.1:48107/en/countries/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "en",
+      "path": "/countries/italy/",
+      "url": "http://127.0.0.1:48107/en/countries/italy/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "en",
+      "path": "/countries/france/",
+      "url": "http://127.0.0.1:48107/en/countries/france/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "en",
+      "path": "/countries/belgium/",
+      "url": "http://127.0.0.1:48107/en/countries/belgium/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "en",
+      "path": "/countries/morocco/",
+      "url": "http://127.0.0.1:48107/en/countries/morocco/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "en",
+      "path": "/countries/tunisia/",
+      "url": "http://127.0.0.1:48107/en/countries/tunisia/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "en",
+      "path": "/case-types/",
+      "url": "http://127.0.0.1:48107/en/case-types/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "en",
+      "path": "/methodology/",
+      "url": "http://127.0.0.1:48107/en/methodology/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "en",
+      "path": "/wizard/",
+      "url": "http://127.0.0.1:48107/en/wizard/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "en",
+      "path": "/wizard/it/road-accident/",
+      "url": "http://127.0.0.1:48107/en/wizard/it/road-accident/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "en",
+      "path": "/wizard/fr/road-accident/",
+      "url": "http://127.0.0.1:48107/en/wizard/fr/road-accident/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "en",
+      "path": "/wizard/be/road-accident/",
+      "url": "http://127.0.0.1:48107/en/wizard/be/road-accident/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "en",
+      "path": "/wizard/ma/inheritance/",
+      "url": "http://127.0.0.1:48107/en/wizard/ma/inheritance/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "en",
+      "path": "/wizard/tn/inheritance/",
+      "url": "http://127.0.0.1:48107/en/wizard/tn/inheritance/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "en",
+      "path": "/contact/",
+      "url": "http://127.0.0.1:48107/en/contact/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "en",
+      "path": "/contact/thank-you/",
+      "url": "http://127.0.0.1:48107/en/contact/thank-you/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "en",
+      "path": "/privacy/",
+      "url": "http://127.0.0.1:48107/en/privacy/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    },
+    {
+      "locale": "en",
+      "path": "/disclaimer/",
+      "url": "http://127.0.0.1:48107/en/disclaimer/",
+      "status": 200,
+      "issues": {
+        "http": [],
+        "css_local": [],
+        "tailwind_cdn": [],
+        "banned_words": [],
+        "en_fallback": [],
+        "h1": [],
+        "meta": [],
+        "pexels": [],
+        "api_key_leak": []
+      }
+    }
+  ],
+  "pages_probed": 78,
+  "pages_with_issues": 0,
+  "it_baseline": {
+    "label": "it_baseline",
+    "result_url": "http://127.0.0.1:48107/wizard/result/f2fdd850-8bbd-4ef5-8c83-79c4612d7420/",
+    "amounts_present": true,
+    "expected_amounts": [
+      "26268",
+      "27353",
+      "28439"
+    ],
+    "public_status_calculated": true,
+    "pdf_status": 200,
+    "pdf_first4": "%PDF",
+    "passed": true
+  },
+  "unavailable": [
+    {
+      "label": "fr_road_accident",
+      "result_url": "http://127.0.0.1:48107/wizard/result/3fb25c1d-1b6b-41ec-8c40-8010134a98be/",
+      "leaks": [],
+      "public_status_unavailable": true,
+      "has_amounts": false,
+      "passed": true
+    },
+    {
+      "label": "be_road_accident",
+      "result_url": "http://127.0.0.1:48107/wizard/result/df18c428-c671-4b27-8e28-c2d898580e51/",
+      "leaks": [],
+      "public_status_unavailable": true,
+      "has_amounts": false,
+      "passed": true
+    },
+    {
+      "label": "ma_inheritance",
+      "result_url": "http://127.0.0.1:48107/wizard/result/8b41f8a0-b6f2-45a3-9e94-da4012571d19/",
+      "leaks": [],
+      "public_status_unavailable": true,
+      "has_amounts": false,
+      "passed": true
+    },
+    {
+      "label": "tn_inheritance",
+      "result_url": "http://127.0.0.1:48107/wizard/result/015b683f-ee26-49c1-aadf-b00feda3779c/",
+      "leaks": [],
+      "public_status_unavailable": true,
+      "has_amounts": false,
+      "passed": true
+    }
+  ],
+  "counts_before": {
+    "legal_sources": 25,
+    "datasets": 5,
+    "formulas": 1,
+    "rows": 41309
+  },
+  "counts_after": {
+    "legal_sources": 25,
+    "datasets": 5,
+    "formulas": 1,
+    "rows": 41309
+  },
+  "verdict": "ok"
+}
