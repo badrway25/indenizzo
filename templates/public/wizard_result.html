@@ -44,6 +44,11 @@
         <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{{ public_message.public_title }}</p>
         <h3 class="mt-2 font-serif text-xl text-ink-950">{% translate "What happens next" %}</h3>
         <p class="mt-3 text-sm text-ink-800 leading-relaxed">{{ public_message.public_explanation }}</p>
+        {% if public_message.applicable_law_hint %}
+          <p class="mt-3 rounded-2xl bg-sand-100 border border-stone2-200 px-4 py-3 text-sm text-ink-900 leading-relaxed">
+            {{ public_message.applicable_law_hint }}
+          </p>
+        {% endif %}
         {% if public_message.public_next_steps %}
           <ol class="mt-4 space-y-3 text-sm text-ink-900 leading-relaxed list-decimal list-inside">
             {% for step in public_message.public_next_steps %}

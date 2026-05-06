@@ -100,6 +100,7 @@ def run_simulation(
     )
 
     _apply_result_to_simulation(simulation, result)
+    _attach_applicable_law_decision(simulation, case_type=case_type, payload=payload)
     simulation.save()
 
     # Audit interno (semantico).
@@ -246,6 +247,39 @@ def _apply_result_to_simulation(simulation: Simulation, result: CalculationResul
     simulation.estimated_min = _to_decimal(result.estimated_min)
     simulation.estimated_mid = _to_decimal(result.estimated_mid)
     simulation.estimated_max = _to_decimal(result.estimated_max)
+
+
+_INHERITANCE_CASE_TYPES = {"international_inheritance", "inheritance"}
+
+
+def _attach_applicable_law_decision(
+    simulation: Simulation,
+    *,
+    case_type: str,
+    payload: dict[str, Any],
+) -> None:
+    """Stash the applicable-law decision under ``output_data["internal"]``.
+
+    Pure metadata: the decision is computed from wizard input only,
+    never claims a final legal conclusion, and never reaches the
+    public template (the result page reads ``output_data`` but the
+    template explicitly does not iterate the ``internal`` key).
+
+    Skip the enrichment for non-inheritance case types so road-accident
+    simulations keep their unchanged ``output_data`` shape.
+    """
+    if (case_type or "").lower() not in _INHERITANCE_CASE_TYPES:
+        return
+    from apps.calculators.inheritance_applicable_law import (
+        evaluate_inheritance_applicable_law,
+    )
+
+    decision = evaluate_inheritance_applicable_law(payload)
+    output = dict(simulation.output_data or {})
+    internal = dict(output.get("internal") or {})
+    internal["applicable_law_decision"] = decision.to_dict()
+    output["internal"] = internal
+    simulation.output_data = output
 
 
 def _to_decimal(value) -> Decimal | None:

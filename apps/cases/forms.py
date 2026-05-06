@@ -351,10 +351,13 @@ class InternationalInheritanceWizardForm(forms.Form):
         return bool(self.data.get("website"))
 
     def to_input_data(self) -> dict[str, Any]:
+        from apps.calculators.inheritance_applicable_law import normalise_assets_countries
+
         cleaned = self.cleaned_data
         deceased_country = (
             cleaned.get("deceased_country_of_last_residence") or ""
         ).upper().strip() or None
+        nationality = (cleaned.get("nationality") or "").upper().strip() or None
         sons = int(cleaned.get("sons_count") or 0)
         daughters = int(cleaned.get("daughters_count") or 0)
         siblings = int(cleaned.get("siblings_count") or 0)
@@ -362,9 +365,11 @@ class InternationalInheritanceWizardForm(forms.Form):
         father = 1 if cleaned.get("father_present") else 0
         mother = 1 if cleaned.get("mother_present") else 0
         estate_value = cleaned.get("estate_value")
+        assets_raw = cleaned.get("assets_countries") or None
+        assets_normalised = list(normalise_assets_countries(assets_raw))
         return {
             "deceased_country_of_last_residence": deceased_country,
-            "nationality": (cleaned.get("nationality") or "").upper().strip() or None,
+            "nationality": nationality,
             "has_will": cleaned.get("has_will"),
             "heirs": {
                 "spouse": spouse,
@@ -375,8 +380,18 @@ class InternationalInheritanceWizardForm(forms.Form):
                 "siblings": siblings,
             },
             "estate_value": str(estate_value) if estate_value is not None else None,
-            "assets_countries": (cleaned.get("assets_countries") or "").upper().strip() or None,
+            "assets_countries": (assets_raw or "").upper().strip() or None,
             "message": (cleaned.get("message") or "").strip() or None,
+            # Structured context for the applicable-law decision skeleton.
+            # The downstream service stashes the resulting decision under
+            # ``Simulation.output_data["internal"]["applicable_law_decision"]``;
+            # the public template never reads it.
+            "applicable_law_context": {
+                "deceased_country_of_last_residence": deceased_country,
+                "nationality": nationality,
+                "has_will": cleaned.get("has_will"),
+                "assets_countries": assets_normalised,
+            },
         }
 
 

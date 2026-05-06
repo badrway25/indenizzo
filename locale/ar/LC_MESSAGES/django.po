@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-05 19:59+0200\n"
+"POT-Creation-Date: 2026-05-06 08:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -514,58 +514,64 @@ msgstr ""
 msgid "simulation events"
 msgstr ""
 
-#: .\apps\cases\public_result_messages.py:53
-#: .\apps\cases\public_result_messages.py:121 .\apps\core\public_status.py:97
+#: .\apps\cases\public_result_messages.py:57
+#: .\apps\cases\public_result_messages.py:124 .\apps\core\public_status.py:97
 msgid "Preliminary legal assessment"
 msgstr "تقييم قانوني أولي"
 
-#: .\apps\cases\public_result_messages.py:55
-#: .\apps\cases\public_result_messages.py:123
+#: .\apps\cases\public_result_messages.py:59
+#: .\apps\cases\public_result_messages.py:126
 msgid ""
 "Your case has been received for a preliminary legal assessment by the Studio."
 msgstr "تم استلام ملفك لإجراء تقييم قانوني أولي من قبل المكتب."
 
-#: .\apps\cases\public_result_messages.py:59
+#: .\apps\cases\public_result_messages.py:62
 msgid ""
 "A Studio lawyer reviews the facts and the applicable source material before "
 "any indicative amount is shown. The platform publishes amounts only when "
 "validated quantification sources are wired for the jurisdiction; for cross-"
 "border road accident cases the Studio prefers a manual reading of the case "
 "before any estimate is produced."
-msgstr "يراجع محامٍ من المكتب الوقائع والمصادر القابلة للتطبيق قبل عرض أي مبلغ إرشادي. تنشر المنصة المبالغ فقط عند توفّر مصادر تقدير معتمدة للاختصاص المعني؛ في قضايا حوادث المرور العابرة للحدود يفضّل المكتب قراءة يدوية للملف قبل إصدار أي تقدير."
+msgstr ""
+"يراجع محامٍ من المكتب الوقائع والمصادر القابلة للتطبيق قبل عرض أي مبلغ "
+"إرشادي. تنشر المنصة المبالغ فقط عند توفّر مصادر تقدير معتمدة للاختصاص المعني؛ "
+"في قضايا حوادث المرور العابرة للحدود يفضّل المكتب قراءة يدوية للملف قبل إصدار "
+"أي تقدير."
 
-#: .\apps\cases\public_result_messages.py:68
-#: .\apps\cases\public_result_messages.py:134
+#: .\apps\cases\public_result_messages.py:70
+#: .\apps\cases\public_result_messages.py:135
 msgid ""
 "A lawyer reads the case manually and replies on whether and how the firm can "
 "help."
 msgstr "يقرأ المحامي الملف يدويًا ويجيب حول إمكانية المكتب التدخل والكيفية."
 
 #: .\apps\cases\public_result_messages.py:72
-#: .\apps\cases\public_result_messages.py:107
-#: .\apps\cases\public_result_messages.py:138
+#: .\apps\cases\public_result_messages.py:106
+#: .\apps\cases\public_result_messages.py:137
 msgid ""
 "Keep the simulation reference below — the Studio uses it to retrieve the "
 "exact inputs of this run."
-msgstr "احتفظ بمرجع المحاكاة أدناه — يستخدمه المكتب لاسترجاع المدخلات الدقيقة لهذه العملية."
+msgstr ""
+"احتفظ بمرجع المحاكاة أدناه — يستخدمه المكتب لاسترجاع المدخلات الدقيقة لهذه "
+"العملية."
 
 #: .\apps\cases\public_result_messages.py:76
-#: .\apps\cases\public_result_messages.py:111
+#: .\apps\cases\public_result_messages.py:110
 msgid ""
 "You can download a PDF of the submission for your records or to share with "
 "another professional."
 msgstr "يمكنك تنزيل ملف PDF للطلب لحفظه أو مشاركته مع مهني آخر."
 
 #: .\apps\cases\public_result_messages.py:80
-#: .\apps\cases\public_result_messages.py:115
-#: .\apps\cases\public_result_messages.py:142
+#: .\apps\cases\public_result_messages.py:114
+#: .\apps\cases\public_result_messages.py:141
 msgid "Request the Studio review"
 msgstr "اطلب مراجعة قانونية من المكتب"
 
 #: .\apps\cases\public_result_messages.py:81
-#: .\apps\cases\public_result_messages.py:116
-#: .\apps\cases\public_result_messages.py:143
-#: .\apps\cases\public_result_messages.py:168
+#: .\apps\cases\public_result_messages.py:115
+#: .\apps\cases\public_result_messages.py:142
+#: .\apps\cases\public_result_messages.py:161
 #: .\templates\public\contact.html:126
 #: .\templates\public\contact_thank_you.html:24
 msgid "Back to the wizard"
@@ -581,53 +587,70 @@ msgid ""
 "Studio."
 msgstr "تم استلام ملف الميراث الخاص بك لمراجعة قانونية يدوية من قبل المكتب."
 
-#: .\apps\cases\public_result_messages.py:92
+#: .\apps\cases\public_result_messages.py:91
 msgid ""
 "A Studio lawyer examines the family structure, the applicable law and the "
 "cross-border elements before any inheritance shares are produced. The "
 "Moroccan and Tunisian frameworks (Moudawana / Code du statut personnel) "
 "interact with EU Regulation 650/2012 on a case-by-case basis: the platform "
 "does not publish automatic shares without that manual reading."
-msgstr "يدرس محامي المكتب الوضع العائلي والقانون المطبّق والعناصر العابرة للحدود قبل إنتاج أي أنصبة إرثية. تتفاعل الأنظمة المغربية والتونسية (المدوّنة / مجلة الأحوال الشخصية) مع لائحة الاتحاد الأوروبي 650/2012 حالة بحالة: لا تنشر المنصة أي أنصبة تلقائية دون هذه القراءة اليدوية."
+msgstr ""
+"يدرس محامي المكتب الوضع العائلي والقانون المطبّق والعناصر العابرة للحدود قبل "
+"إنتاج أي أنصبة إرثية. تتفاعل الأنظمة المغربية والتونسية (المدوّنة / مجلة "
+"الأحوال الشخصية) مع لائحة الاتحاد الأوروبي 650/2012 حالة بحالة: لا تنشر "
+"المنصة أي أنصبة تلقائية دون هذه القراءة اليدوية."
 
-#: .\apps\cases\public_result_messages.py:102
+#: .\apps\cases\public_result_messages.py:101
 msgid ""
 "A lawyer reads the family situation and the patrimony context you entered, "
 "and identifies the law applicable to the succession."
-msgstr "يطّلع المحامي على الوضع العائلي والسياق المالي الذي أدخلتَه، ويحدّد القانون المطبّق على الإرث."
+msgstr ""
+"يطّلع المحامي على الوضع العائلي والسياق المالي الذي أدخلتَه، ويحدّد القانون "
+"المطبّق على الإرث."
 
-#: .\apps\cases\public_result_messages.py:127
+#: .\apps\cases\public_result_messages.py:117
+msgid ""
+"The Studio will review the applicable law and cross-border elements before "
+"any shares are calculated."
+msgstr "سيراجع المكتب القانون المطبّق والعناصر العابرة للحدود قبل حساب أي أنصبة إرثية."
+
+#: .\apps\cases\public_result_messages.py:129
 msgid ""
 "A Studio lawyer reviews the case before any indicative amount is published. "
 "The platform produces estimates only when validated quantification sources "
 "are wired for the jurisdiction and the case type."
-msgstr "يراجع محامي المكتب الملف قبل نشر أي مبلغ إرشادي. تنتج المنصة التقديرات فقط عند توفّر مصادر تقدير معتمدة للاختصاص ونوع القضية."
+msgstr ""
+"يراجع محامي المكتب الملف قبل نشر أي مبلغ إرشادي. تنتج المنصة التقديرات فقط "
+"عند توفّر مصادر تقدير معتمدة للاختصاص ونوع القضية."
 
-#: .\apps\cases\public_result_messages.py:148
+#: .\apps\cases\public_result_messages.py:147
 msgid "More information needed"
 msgstr "يلزم المزيد من المعلومات"
 
-#: .\apps\cases\public_result_messages.py:150
+#: .\apps\cases\public_result_messages.py:148
 msgid "The Studio needs a little more context before it can review your case."
 msgstr ""
 
-#: .\apps\cases\public_result_messages.py:154
+#: .\apps\cases\public_result_messages.py:150
 msgid ""
 "Some of the inputs were not enough to identify the applicable law or the "
 "family structure. You can submit the case to the Studio with the context you "
 "have today — a lawyer will reply with the additional questions needed for a "
 "complete review."
-msgstr "بعض المدخلات لم تكن كافية لتحديد القانون المطبّق أو الوضع العائلي. يمكنك إرسال الملف إلى المكتب بالسياق المتوفر لديك اليوم — سيرد المحامي بالأسئلة الإضافية اللازمة لإجراء مراجعة كاملة."
+msgstr ""
+"بعض المدخلات لم تكن كافية لتحديد القانون المطبّق أو الوضع العائلي. يمكنك "
+"إرسال الملف إلى المكتب بالسياق المتوفر لديك اليوم — سيرد المحامي بالأسئلة "
+"الإضافية اللازمة لإجراء مراجعة كاملة."
 
-#: .\apps\cases\public_result_messages.py:161
+#: .\apps\cases\public_result_messages.py:157
 msgid "Submit the case to the Studio with what you know today."
 msgstr "أرسل الملف إلى المكتب بما تعرفه اليوم."
 
-#: .\apps\cases\public_result_messages.py:163
+#: .\apps\cases\public_result_messages.py:158
 msgid "A lawyer replies with the additional context the case needs."
 msgstr ""
 
-#: .\apps\cases\public_result_messages.py:167 .\apps\core\public_status.py:111
+#: .\apps\cases\public_result_messages.py:160 .\apps\core\public_status.py:111
 #: .\apps\core\public_status.py:136
 #: .\templates\public\_inheritance_wizard_fields.html:140
 msgid "Submit the case to the Studio"
@@ -1983,12 +2006,12 @@ msgstr "موافق"
 #: .\templates\partials\cta_consultation.html:11
 #: .\templates\public\countries.html:102
 #: .\templates\public\country_landing.html:256 .\templates\public\home.html:40
-#: .\templates\public\wizard_result.html:174
+#: .\templates\public\wizard_result.html:179
 msgid "Request legal review"
 msgstr "اطلب مراجعة قانونية"
 
 #: .\templates\partials\disclaimer_banner.html:2
-#: .\templates\public\wizard_result.html:154
+#: .\templates\public\wizard_result.html:159
 msgid "Legal disclaimer"
 msgstr "إخلاء المسؤولية القانوني"
 
@@ -3148,7 +3171,7 @@ msgstr "ستشاهد نطاقاً إرشادياً الحد الأدنى / ال�
 
 #: .\templates\public\wizard_italy_road_accident.html:29
 #: .\templates\public\wizard_result.html:19
-#: .\templates\public\wizard_result.html:89
+#: .\templates\public\wizard_result.html:94
 msgid "Min"
 msgstr "أدنى"
 
@@ -3158,7 +3181,7 @@ msgstr "قراءة محافظة لخلية TUN 2025 وفق إدخالاتك."
 
 #: .\templates\public\wizard_italy_road_accident.html:33
 #: .\templates\public\wizard_result.html:23
-#: .\templates\public\wizard_result.html:93
+#: .\templates\public\wizard_result.html:98
 msgid "Mid"
 msgstr "وسطي"
 
@@ -3170,7 +3193,7 @@ msgstr "المرجع المركزي المُستخدم كنقطة عمل في ا
 
 #: .\templates\public\wizard_italy_road_accident.html:37
 #: .\templates\public\wizard_result.html:27
-#: .\templates\public\wizard_result.html:97
+#: .\templates\public\wizard_result.html:102
 msgid "Max"
 msgstr "أقصى"
 
@@ -3255,15 +3278,15 @@ msgstr "نتيجة أولية"
 msgid "Indicative range"
 msgstr "نطاق إرشادي"
 
-#: .\templates\public\wizard_result.html:62
+#: .\templates\public\wizard_result.html:67
 msgid "What this means"
 msgstr "ماذا يعني هذا"
 
-#: .\templates\public\wizard_result.html:63
+#: .\templates\public\wizard_result.html:68
 msgid "A bargaining anchor, not a guaranteed payout"
 msgstr "نقطة ارتكاز للتفاوض وليس تعويضاً مضموناً"
 
-#: .\templates\public\wizard_result.html:65
+#: .\templates\public\wizard_result.html:70
 msgid ""
 "The min / mid / max values are the indicative range a Studio lawyer would "
 "use as a starting point in negotiation or judicial reasoning. They reflect "
@@ -3275,7 +3298,7 @@ msgstr ""
 "المذكورة أدناه والإدخالات التي قدّمتها. وهي ليست وعداً بالتعويض ولا عرض أسعار "
 "ولا حكماً قضائياً."
 
-#: .\templates\public\wizard_result.html:68
+#: .\templates\public\wizard_result.html:73
 msgid ""
 "The actual amount finally awarded depends on documents, expert reports, the "
 "responsibility split, the competent jurisdiction, and the judicial "
@@ -3285,15 +3308,15 @@ msgstr ""
 "المسؤولية، والولاية القضائية المختصة، والتوجه القضائي للمحكمة الناظرة — وهي "
 "أمور لا ترى المنصة حالياً."
 
-#: .\templates\public\wizard_result.html:74
+#: .\templates\public\wizard_result.html:79
 msgid "Next steps"
 msgstr "الخطوات التالية"
 
-#: .\templates\public\wizard_result.html:75
+#: .\templates\public\wizard_result.html:80
 msgid "What you can do with this result"
 msgstr "ماذا يمكنك أن تفعل بهذه النتيجة"
 
-#: .\templates\public\wizard_result.html:77
+#: .\templates\public\wizard_result.html:82
 msgid ""
 "Download the PDF of this simulation. It carries the same range, sources and "
 "disclaimer, in a format you can save or share."
@@ -3301,7 +3324,7 @@ msgstr ""
 "نزّل ملف PDF لهذه المحاكاة. يتضمّن النطاق ذاته والمصادر نفسها والإخلاء ذاته، "
 "بصيغة يمكنك حفظها أو مشاركتها."
 
-#: .\templates\public\wizard_result.html:78
+#: .\templates\public\wizard_result.html:83
 msgid ""
 "Request a legal review from the Studio. A lawyer reads the case manually and "
 "replies on whether and how the firm can help."
@@ -3309,7 +3332,7 @@ msgstr ""
 "اطلب مراجعة قانونية من المكتب. يقرأ المحامي الملف يدوياً ويُجيب عن إمكانية "
 "المساعدة وكيفيتها."
 
-#: .\templates\public\wizard_result.html:79
+#: .\templates\public\wizard_result.html:84
 msgid ""
 "Keep the simulation ID below — the Studio uses it to retrieve the exact "
 "inputs and sources of this run."
@@ -3317,33 +3340,33 @@ msgstr ""
 "احتفظ بمعرّف المحاكاة أدناه — يستخدمه المكتب لاسترجاع الإدخالات والمصادر "
 "ذاتها لهذه التنفيذة."
 
-#: .\templates\public\wizard_result.html:85
+#: .\templates\public\wizard_result.html:90
 msgid "Calculation basis"
 msgstr ""
 
-#: .\templates\public\wizard_result.html:86
+#: .\templates\public\wizard_result.html:91
 msgid "How to read this range"
 msgstr ""
 
-#: .\templates\public\wizard_result.html:90
+#: .\templates\public\wizard_result.html:95
 msgid ""
 "Lower bound of the indicative range based on the approved dataset and the "
 "conservative interpretation of fault and disability."
 msgstr ""
 
-#: .\templates\public\wizard_result.html:94
+#: .\templates\public\wizard_result.html:99
 msgid ""
 "Central reference value used as the working anchor in negotiations or "
 "judicial reasoning."
 msgstr ""
 
-#: .\templates\public\wizard_result.html:98
+#: .\templates\public\wizard_result.html:103
 msgid ""
 "Upper bound of the indicative range based on the approved dataset and the "
 "most favourable interpretation supported by sources."
 msgstr ""
 
-#: .\templates\public\wizard_result.html:102
+#: .\templates\public\wizard_result.html:107
 msgid ""
 "Amounts are derived from validated legal sources cited below. They are "
 "indicative: the actual valuation depends on documents, expert reports, "
@@ -3355,42 +3378,42 @@ msgstr ""
 "والخبرات والمسؤولية والقانون الواجب التطبيق والاختصاص القضائي والتوجهات "
 "القضائية والممارسات التأمينية."
 
-#: .\templates\public\wizard_result.html:117
+#: .\templates\public\wizard_result.html:122
 msgid "Assumptions"
 msgstr "الافتراضات"
 
-#: .\templates\public\wizard_result.html:129
+#: .\templates\public\wizard_result.html:134
 msgid "Cited legal sources"
 msgstr "المصادر القانونية المُستشهد بها"
 
-#: .\templates\public\wizard_result.html:142
+#: .\templates\public\wizard_result.html:147
 #, python-format
 msgid "Open official source: %(title)s (opens in a new tab)"
 msgstr ""
 
-#: .\templates\public\wizard_result.html:143
+#: .\templates\public\wizard_result.html:148
 msgid "Open official source"
 msgstr "افتح المصدر الرسمي"
 
-#: .\templates\public\wizard_result.html:156
+#: .\templates\public\wizard_result.html:161
 msgid ""
 "This simulation is indicative and does not constitute legal advice or "
 "guarantee of outcome."
 msgstr "هذه المحاكاة إرشادية ولا تعدّ رأيًا قانونيًا ولا ضمانًا للنتيجة."
 
-#: .\templates\public\wizard_result.html:163
+#: .\templates\public\wizard_result.html:168
 msgid "Simulation ID"
 msgstr "معرّف المحاكاة"
 
-#: .\templates\public\wizard_result.html:167
+#: .\templates\public\wizard_result.html:172
 msgid "Created at"
 msgstr "أُنشئ في"
 
-#: .\templates\public\wizard_result.html:178
+#: .\templates\public\wizard_result.html:183
 msgid "Download PDF report"
 msgstr "تنزيل تقرير PDF"
 
-#: .\templates\public\wizard_result.html:183
+#: .\templates\public\wizard_result.html:188
 msgid "Back to methodology"
 msgstr "العودة إلى المنهجية"
 

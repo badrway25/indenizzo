@@ -42,6 +42,10 @@ class PublicResultMessage:
     public_next_steps: tuple[str, ...]
     primary_cta_label: str
     secondary_cta_label: str
+    # Optional one-liner that clarifies the Studio's applicable-law
+    # review for cross-border inheritance cases. Surfaced as a quiet
+    # callout above the next-steps list when set; ignored otherwise.
+    applicable_law_hint: str | None = None
 
 
 # ---------------------------------------------------------------------------
@@ -109,6 +113,10 @@ _INHERITANCE_REVIEW = PublicResultMessage(
     ),
     primary_cta_label=_("Request the Studio review"),
     secondary_cta_label=_("Back to the wizard"),
+    applicable_law_hint=_(
+        "The Studio will review the applicable law and cross-border "
+        "elements before any shares are calculated."
+    ),
 )
 
 

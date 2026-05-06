@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-05 19:59+0200\n"
+"POT-Creation-Date: 2026-05-06 08:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -517,58 +517,72 @@ msgstr ""
 msgid "simulation events"
 msgstr ""
 
-#: .\apps\cases\public_result_messages.py:53
-#: .\apps\cases\public_result_messages.py:121 .\apps\core\public_status.py:97
+#: .\apps\cases\public_result_messages.py:57
+#: .\apps\cases\public_result_messages.py:124 .\apps\core\public_status.py:97
 msgid "Preliminary legal assessment"
 msgstr "Valutazione legale preliminare"
 
-#: .\apps\cases\public_result_messages.py:55
-#: .\apps\cases\public_result_messages.py:123
+#: .\apps\cases\public_result_messages.py:59
+#: .\apps\cases\public_result_messages.py:126
 msgid ""
 "Your case has been received for a preliminary legal assessment by the Studio."
-msgstr "Il tuo caso è stato ricevuto per una valutazione legale preliminare da parte dello Studio."
+msgstr ""
+"Il tuo caso è stato ricevuto per una valutazione legale preliminare da parte "
+"dello Studio."
 
-#: .\apps\cases\public_result_messages.py:59
+#: .\apps\cases\public_result_messages.py:62
 msgid ""
 "A Studio lawyer reviews the facts and the applicable source material before "
 "any indicative amount is shown. The platform publishes amounts only when "
 "validated quantification sources are wired for the jurisdiction; for cross-"
 "border road accident cases the Studio prefers a manual reading of the case "
 "before any estimate is produced."
-msgstr "Un avvocato dello Studio esamina i fatti e le fonti applicabili prima di mostrare qualsiasi importo indicativo. La piattaforma pubblica importi solo quando sono disponibili fonti di quantificazione validate per la giurisdizione; per i casi di incidente stradale transfrontalieri lo Studio preferisce una lettura manuale del caso prima che venga prodotta qualsiasi stima."
+msgstr ""
+"Un avvocato dello Studio esamina i fatti e le fonti applicabili prima di "
+"mostrare qualsiasi importo indicativo. La piattaforma pubblica importi solo "
+"quando sono disponibili fonti di quantificazione validate per la "
+"giurisdizione; per i casi di incidente stradale transfrontalieri lo Studio "
+"preferisce una lettura manuale del caso prima che venga prodotta qualsiasi "
+"stima."
 
-#: .\apps\cases\public_result_messages.py:68
-#: .\apps\cases\public_result_messages.py:134
+#: .\apps\cases\public_result_messages.py:70
+#: .\apps\cases\public_result_messages.py:135
 msgid ""
 "A lawyer reads the case manually and replies on whether and how the firm can "
 "help."
-msgstr "Un avvocato legge il caso manualmente e risponde su se e come lo Studio può aiutarti."
+msgstr ""
+"Un avvocato legge il caso manualmente e risponde su se e come lo Studio può "
+"aiutarti."
 
 #: .\apps\cases\public_result_messages.py:72
-#: .\apps\cases\public_result_messages.py:107
-#: .\apps\cases\public_result_messages.py:138
+#: .\apps\cases\public_result_messages.py:106
+#: .\apps\cases\public_result_messages.py:137
 msgid ""
 "Keep the simulation reference below — the Studio uses it to retrieve the "
 "exact inputs of this run."
-msgstr "Conserva il riferimento della simulazione qui sotto — lo Studio lo utilizza per recuperare gli input esatti di questa esecuzione."
+msgstr ""
+"Conserva il riferimento della simulazione qui sotto — lo Studio lo utilizza "
+"per recuperare gli input esatti di questa esecuzione."
 
 #: .\apps\cases\public_result_messages.py:76
-#: .\apps\cases\public_result_messages.py:111
+#: .\apps\cases\public_result_messages.py:110
 msgid ""
 "You can download a PDF of the submission for your records or to share with "
 "another professional."
-msgstr "Puoi scaricare un PDF della richiesta da conservare o condividere con un altro professionista."
+msgstr ""
+"Puoi scaricare un PDF della richiesta da conservare o condividere con un "
+"altro professionista."
 
 #: .\apps\cases\public_result_messages.py:80
-#: .\apps\cases\public_result_messages.py:115
-#: .\apps\cases\public_result_messages.py:142
+#: .\apps\cases\public_result_messages.py:114
+#: .\apps\cases\public_result_messages.py:141
 msgid "Request the Studio review"
 msgstr "Richiedi una revisione dello Studio"
 
 #: .\apps\cases\public_result_messages.py:81
-#: .\apps\cases\public_result_messages.py:116
-#: .\apps\cases\public_result_messages.py:143
-#: .\apps\cases\public_result_messages.py:168
+#: .\apps\cases\public_result_messages.py:115
+#: .\apps\cases\public_result_messages.py:142
+#: .\apps\cases\public_result_messages.py:161
 #: .\templates\public\contact.html:126
 #: .\templates\public\contact_thank_you.html:24
 msgid "Back to the wizard"
@@ -582,55 +596,78 @@ msgstr "Analisi successoria internazionale"
 msgid ""
 "Your inheritance case has been received for manual legal review by the "
 "Studio."
-msgstr "Il tuo caso successorio è stato ricevuto per una revisione legale manuale da parte dello Studio."
+msgstr ""
+"Il tuo caso successorio è stato ricevuto per una revisione legale manuale da "
+"parte dello Studio."
 
-#: .\apps\cases\public_result_messages.py:92
+#: .\apps\cases\public_result_messages.py:91
 msgid ""
 "A Studio lawyer examines the family structure, the applicable law and the "
 "cross-border elements before any inheritance shares are produced. The "
 "Moroccan and Tunisian frameworks (Moudawana / Code du statut personnel) "
 "interact with EU Regulation 650/2012 on a case-by-case basis: the platform "
 "does not publish automatic shares without that manual reading."
-msgstr "Un avvocato dello Studio esamina la struttura famigliare, la legge applicabile e gli elementi transfrontalieri prima di produrre qualsiasi quota ereditaria. I quadri marocchino e tunisino (Moudawana / Code du statut personnel) interagiscono con il Regolamento UE 650/2012 caso per caso: la piattaforma non pubblica quote automatiche senza questa lettura manuale."
+msgstr ""
+"Un avvocato dello Studio esamina la struttura famigliare, la legge "
+"applicabile e gli elementi transfrontalieri prima di produrre qualsiasi "
+"quota ereditaria. I quadri marocchino e tunisino (Moudawana / Code du statut "
+"personnel) interagiscono con il Regolamento UE 650/2012 caso per caso: la "
+"piattaforma non pubblica quote automatiche senza questa lettura manuale."
 
-#: .\apps\cases\public_result_messages.py:102
+#: .\apps\cases\public_result_messages.py:101
 msgid ""
 "A lawyer reads the family situation and the patrimony context you entered, "
 "and identifies the law applicable to the succession."
-msgstr "Un avvocato legge la situazione famigliare e il contesto patrimoniale che hai inserito e identifica la legge applicabile alla successione."
+msgstr ""
+"Un avvocato legge la situazione famigliare e il contesto patrimoniale che "
+"hai inserito e identifica la legge applicabile alla successione."
 
-#: .\apps\cases\public_result_messages.py:127
+#: .\apps\cases\public_result_messages.py:117
+msgid ""
+"The Studio will review the applicable law and cross-border elements before "
+"any shares are calculated."
+msgstr "Lo Studio esaminerà la legge applicabile e gli elementi transfrontalieri prima che vengano calcolate quote ereditarie."
+
+#: .\apps\cases\public_result_messages.py:129
 msgid ""
 "A Studio lawyer reviews the case before any indicative amount is published. "
 "The platform produces estimates only when validated quantification sources "
 "are wired for the jurisdiction and the case type."
-msgstr "Un avvocato dello Studio esamina il caso prima che venga pubblicato qualsiasi importo indicativo. La piattaforma produce stime solo quando sono disponibili fonti di quantificazione validate per la giurisdizione e il tipo di caso."
+msgstr ""
+"Un avvocato dello Studio esamina il caso prima che venga pubblicato "
+"qualsiasi importo indicativo. La piattaforma produce stime solo quando sono "
+"disponibili fonti di quantificazione validate per la giurisdizione e il tipo "
+"di caso."
 
-#: .\apps\cases\public_result_messages.py:148
+#: .\apps\cases\public_result_messages.py:147
 msgid "More information needed"
 msgstr "Servono ulteriori informazioni"
 
-#: .\apps\cases\public_result_messages.py:150
+#: .\apps\cases\public_result_messages.py:148
 msgid "The Studio needs a little more context before it can review your case."
 msgstr ""
 
-#: .\apps\cases\public_result_messages.py:154
+#: .\apps\cases\public_result_messages.py:150
 msgid ""
 "Some of the inputs were not enough to identify the applicable law or the "
 "family structure. You can submit the case to the Studio with the context you "
 "have today — a lawyer will reply with the additional questions needed for a "
 "complete review."
-msgstr "Alcuni dati inseriti non bastano per identificare la legge applicabile o la struttura famigliare. Puoi inviare il caso allo Studio con il contesto che hai oggi — un avvocato risponderà con le domande aggiuntive necessarie per una valutazione completa."
+msgstr ""
+"Alcuni dati inseriti non bastano per identificare la legge applicabile o la "
+"struttura famigliare. Puoi inviare il caso allo Studio con il contesto che "
+"hai oggi — un avvocato risponderà con le domande aggiuntive necessarie per "
+"una valutazione completa."
 
-#: .\apps\cases\public_result_messages.py:161
+#: .\apps\cases\public_result_messages.py:157
 msgid "Submit the case to the Studio with what you know today."
 msgstr "Invia il caso allo Studio con quello che sai oggi."
 
-#: .\apps\cases\public_result_messages.py:163
+#: .\apps\cases\public_result_messages.py:158
 msgid "A lawyer replies with the additional context the case needs."
 msgstr ""
 
-#: .\apps\cases\public_result_messages.py:167 .\apps\core\public_status.py:111
+#: .\apps\cases\public_result_messages.py:160 .\apps\core\public_status.py:111
 #: .\apps\core\public_status.py:136
 #: .\templates\public\_inheritance_wizard_fields.html:140
 msgid "Submit the case to the Studio"
@@ -1997,12 +2034,12 @@ msgstr "OK"
 #: .\templates\partials\cta_consultation.html:11
 #: .\templates\public\countries.html:102
 #: .\templates\public\country_landing.html:256 .\templates\public\home.html:40
-#: .\templates\public\wizard_result.html:174
+#: .\templates\public\wizard_result.html:179
 msgid "Request legal review"
 msgstr "Richiedi una valutazione legale"
 
 #: .\templates\partials\disclaimer_banner.html:2
-#: .\templates\public\wizard_result.html:154
+#: .\templates\public\wizard_result.html:159
 msgid "Legal disclaimer"
 msgstr "Avvertenze legali"
 
@@ -3208,7 +3245,7 @@ msgstr "Vedrai un range indicativo min / mid / max"
 
 #: .\templates\public\wizard_italy_road_accident.html:29
 #: .\templates\public\wizard_result.html:19
-#: .\templates\public\wizard_result.html:89
+#: .\templates\public\wizard_result.html:94
 msgid "Min"
 msgstr "Min"
 
@@ -3218,7 +3255,7 @@ msgstr "Lettura prudenziale della cella TUN 2025 per i tuoi dati."
 
 #: .\templates\public\wizard_italy_road_accident.html:33
 #: .\templates\public\wizard_result.html:23
-#: .\templates\public\wizard_result.html:93
+#: .\templates\public\wizard_result.html:98
 msgid "Mid"
 msgstr "Centrale"
 
@@ -3232,7 +3269,7 @@ msgstr ""
 
 #: .\templates\public\wizard_italy_road_accident.html:37
 #: .\templates\public\wizard_result.html:27
-#: .\templates\public\wizard_result.html:97
+#: .\templates\public\wizard_result.html:102
 msgid "Max"
 msgstr "Max"
 
@@ -3321,15 +3358,15 @@ msgstr "Risultato preliminare"
 msgid "Indicative range"
 msgstr "Intervallo indicativo"
 
-#: .\templates\public\wizard_result.html:62
+#: .\templates\public\wizard_result.html:67
 msgid "What this means"
 msgstr "Cosa significa"
 
-#: .\templates\public\wizard_result.html:63
+#: .\templates\public\wizard_result.html:68
 msgid "A bargaining anchor, not a guaranteed payout"
 msgstr "Un’ancora di trattativa, non un risarcimento garantito"
 
-#: .\templates\public\wizard_result.html:65
+#: .\templates\public\wizard_result.html:70
 msgid ""
 "The min / mid / max values are the indicative range a Studio lawyer would "
 "use as a starting point in negotiation or judicial reasoning. They reflect "
@@ -3341,7 +3378,7 @@ msgstr ""
 "Riflettono le fonti validate citate sotto e i dati inseriti. Non sono una "
 "promessa di risarcimento, un preventivo o una sentenza."
 
-#: .\templates\public\wizard_result.html:68
+#: .\templates\public\wizard_result.html:73
 msgid ""
 "The actual amount finally awarded depends on documents, expert reports, the "
 "responsibility split, the competent jurisdiction, and the judicial "
@@ -3351,15 +3388,15 @@ msgstr ""
 "ripartizione delle responsabilità, giurisdizione competente e orientamento "
 "del giudice deciders — elementi che la piattaforma oggi non vede."
 
-#: .\templates\public\wizard_result.html:74
+#: .\templates\public\wizard_result.html:79
 msgid "Next steps"
 msgstr "Prossimi passi"
 
-#: .\templates\public\wizard_result.html:75
+#: .\templates\public\wizard_result.html:80
 msgid "What you can do with this result"
 msgstr "Cosa puoi fare con questo risultato"
 
-#: .\templates\public\wizard_result.html:77
+#: .\templates\public\wizard_result.html:82
 msgid ""
 "Download the PDF of this simulation. It carries the same range, sources and "
 "disclaimer, in a format you can save or share."
@@ -3367,7 +3404,7 @@ msgstr ""
 "Scarica il PDF di questa simulazione. Riporta lo stesso range, le stesse "
 "fonti e lo stesso disclaimer, in un formato salvabile o condivisibile."
 
-#: .\templates\public\wizard_result.html:78
+#: .\templates\public\wizard_result.html:83
 msgid ""
 "Request a legal review from the Studio. A lawyer reads the case manually and "
 "replies on whether and how the firm can help."
@@ -3375,7 +3412,7 @@ msgstr ""
 "Richiedi una revisione legale allo Studio. Un avvocato legge il caso "
 "manualmente e risponde su se e come può aiutarti."
 
-#: .\templates\public\wizard_result.html:79
+#: .\templates\public\wizard_result.html:84
 msgid ""
 "Keep the simulation ID below — the Studio uses it to retrieve the exact "
 "inputs and sources of this run."
@@ -3383,33 +3420,33 @@ msgstr ""
 "Conserva l’ID simulazione qui sotto — lo Studio lo usa per recuperare gli "
 "stessi input e fonti di questa esecuzione."
 
-#: .\templates\public\wizard_result.html:85
+#: .\templates\public\wizard_result.html:90
 msgid "Calculation basis"
 msgstr ""
 
-#: .\templates\public\wizard_result.html:86
+#: .\templates\public\wizard_result.html:91
 msgid "How to read this range"
 msgstr ""
 
-#: .\templates\public\wizard_result.html:90
+#: .\templates\public\wizard_result.html:95
 msgid ""
 "Lower bound of the indicative range based on the approved dataset and the "
 "conservative interpretation of fault and disability."
 msgstr ""
 
-#: .\templates\public\wizard_result.html:94
+#: .\templates\public\wizard_result.html:99
 msgid ""
 "Central reference value used as the working anchor in negotiations or "
 "judicial reasoning."
 msgstr ""
 
-#: .\templates\public\wizard_result.html:98
+#: .\templates\public\wizard_result.html:103
 msgid ""
 "Upper bound of the indicative range based on the approved dataset and the "
 "most favourable interpretation supported by sources."
 msgstr ""
 
-#: .\templates\public\wizard_result.html:102
+#: .\templates\public\wizard_result.html:107
 msgid ""
 "Amounts are derived from validated legal sources cited below. They are "
 "indicative: the actual valuation depends on documents, expert reports, "
@@ -3422,24 +3459,24 @@ msgstr ""
 "responsabilità, legge applicabile, giurisdizione competente, orientamenti "
 "giudiziari e prassi assicurative."
 
-#: .\templates\public\wizard_result.html:117
+#: .\templates\public\wizard_result.html:122
 msgid "Assumptions"
 msgstr "Ipotesi"
 
-#: .\templates\public\wizard_result.html:129
+#: .\templates\public\wizard_result.html:134
 msgid "Cited legal sources"
 msgstr "Fonti legali citate"
 
-#: .\templates\public\wizard_result.html:142
+#: .\templates\public\wizard_result.html:147
 #, python-format
 msgid "Open official source: %(title)s (opens in a new tab)"
 msgstr ""
 
-#: .\templates\public\wizard_result.html:143
+#: .\templates\public\wizard_result.html:148
 msgid "Open official source"
 msgstr "Apri fonte ufficiale"
 
-#: .\templates\public\wizard_result.html:156
+#: .\templates\public\wizard_result.html:161
 msgid ""
 "This simulation is indicative and does not constitute legal advice or "
 "guarantee of outcome."
@@ -3447,19 +3484,19 @@ msgstr ""
 "Questa simulazione è indicativa e non costituisce parere legale né garanzia "
 "di risultato."
 
-#: .\templates\public\wizard_result.html:163
+#: .\templates\public\wizard_result.html:168
 msgid "Simulation ID"
 msgstr "ID simulazione"
 
-#: .\templates\public\wizard_result.html:167
+#: .\templates\public\wizard_result.html:172
 msgid "Created at"
 msgstr "Creato il"
 
-#: .\templates\public\wizard_result.html:178
+#: .\templates\public\wizard_result.html:183
 msgid "Download PDF report"
 msgstr "Scarica report PDF"
 
-#: .\templates\public\wizard_result.html:183
+#: .\templates\public\wizard_result.html:188
 msgid "Back to methodology"
 msgstr "Torna alla metodologia"
 
