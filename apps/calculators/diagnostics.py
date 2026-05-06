@@ -1,0 +1,334 @@
+"""Centralised diagnostic codes for the calculator stack.
+
+Iter: ``F-calculator-warning-strings-translatable-pass1``.
+
+The MA / TN / FR / BE / IT engines used to write English warning
+sentences inline. They were never surfaced on the public template
+(the result page renders the curated
+:class:`apps.cases.public_result_messages.PublicResultMessage`
+instead) but they were embedded in ``Simulation.output_data`` and
+visible to Studio reviewers / audit logs.
+
+This module centralises every diagnostic so:
+
+- Engines emit warnings via :func:`diagnostic_to_internal_warning`
+  rather than hard-coded English strings.
+- The text is wrapped in :func:`gettext_lazy`, so audit interfaces
+  that activate a locale can render the message in IT / FR / AR.
+- The set of diagnostic codes is a stable, narrow vocabulary.
+- Public-safety is explicit: :func:`diagnostic_public_safe` returns
+  ``True`` only for messages that were vetted as safe to surface to
+  end users (today: none — every diagnostic is internal-only).
+
+The ``code`` strings match the existing ``missing_documents`` slugs
+emitted by the engines so downstream tests / Studio dashboards keep
+working unchanged.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Any
+
+from django.utils.translation import gettext_lazy as _
+
+# ---------------------------------------------------------------------------
+# Code constants — keep in sync with the slugs already used in
+# Simulation.output_data["missing_documents"] across the engines.
+# ---------------------------------------------------------------------------
+
+LEGAL_SOURCES_NOT_APPROVED = "legal_sources_not_approved"
+COMPENSATION_DATASET_NOT_APPROVED = "compensation_dataset_approved"
+RANGE_DATASET_NOT_APPROVED = "range_dataset_approved"
+CALCULATION_FORMULA_NOT_APPROVED = "calculation_formula_approved"
+CALCULATOR_ENGINE_PENDING = "calculator_engine_pending_for_jurisdiction"
+FORMULA_ENGINE_UNKNOWN = "formula_engine_unknown"
+FORMULA_AMOUNT_RULE_UNKNOWN = "formula_amount_rule_unknown"
+FORMULA_AMOUNT_RULE_NOT_SINGLE_ROW_RANGE = "formula_amount_rule_not_single_row_range"
+FORMULA_AMOUNT_RULE_NOT_INHERITANCE_SHARE = "formula_amount_rule_not_inheritance_share"
+FORMULA_ROW_TYPE_MISSING = "formula_row_type_missing"
+FORMULA_RANGE_PARAMETERS_INCOMPLETE = "formula_range_parameters_incomplete"
+COMPENSATION_ROW_MATCH_MISSING = "compensation_row_match"
+COMPENSATION_ROW_DISAMBIGUATION = "compensation_row_disambiguation"
+COMPENSATION_RANGE_INCONSISTENT = "compensation_range_inconsistent"
+INHERITANCE_SHARE_SPEC_INVALID = "shares_spec_invalid"
+APPLICABLE_LAW_REVIEW_REQUIRED = "applicable_law_review_required"
+APPLICABLE_LAW_CONTEXT_MISSING = "applicable_law_context_missing"
+INPUT_FIELDS_MISSING = "input_fields_missing"
+INPUT_ESTATE_VALUE_INVALID = "input_estate_value_invalid"
+INPUT_NEGATIVE_ESTATE = "input_negative_estate"
+INPUT_NO_HEIR_ALLOCATION = "input_no_heir_allocation"
+
+
+@dataclass(frozen=True)
+class _DiagnosticSpec:
+    code: str
+    message: Any  # gettext_lazy proxy
+    public_safe: bool = False
+
+
+# ---------------------------------------------------------------------------
+# Registry — single source of truth.
+# ---------------------------------------------------------------------------
+
+
+_REGISTRY: dict[str, _DiagnosticSpec] = {
+    LEGAL_SOURCES_NOT_APPROVED: _DiagnosticSpec(
+        code=LEGAL_SOURCES_NOT_APPROVED,
+        message=_(
+            "No approved legal sources are available for this jurisdiction "
+            "and case type. The simulation cannot produce an estimate "
+            "without legally validated sources."
+        ),
+    ),
+    COMPENSATION_DATASET_NOT_APPROVED: _DiagnosticSpec(
+        code=COMPENSATION_DATASET_NOT_APPROVED,
+        message=_(
+            "Approved legal sources are present, but no approved "
+            "compensation dataset is linked to them. A Studio reviewer "
+            "must promote the candidate dataset before any estimate can "
+            "be produced."
+        ),
+    ),
+    RANGE_DATASET_NOT_APPROVED: _DiagnosticSpec(
+        code=RANGE_DATASET_NOT_APPROVED,
+        message=_(
+            "The base dataset is approved, but the secondary range "
+            "dataset referenced by the formula has not been promoted "
+            "yet. A Studio reviewer must approve it before any range "
+            "estimate can be produced."
+        ),
+    ),
+    CALCULATION_FORMULA_NOT_APPROVED: _DiagnosticSpec(
+        code=CALCULATION_FORMULA_NOT_APPROVED,
+        message=_(
+            "Approved compensation dataset is present, but no approved "
+            "calculation formula is linked to it. The formula must be "
+            "validated by a legal reviewer before any estimate can be "
+            "produced."
+        ),
+    ),
+    CALCULATOR_ENGINE_PENDING: _DiagnosticSpec(
+        code=CALCULATOR_ENGINE_PENDING,
+        message=_(
+            "Calculator engine not yet implemented for this jurisdiction "
+            "and case type. Studio review is required before any "
+            "computation can be exposed publicly."
+        ),
+    ),
+    FORMULA_ENGINE_UNKNOWN: _DiagnosticSpec(
+        code=FORMULA_ENGINE_UNKNOWN,
+        message=_(
+            "An approved formula exists but its engine is not registered "
+            "in the calculator's supported list."
+        ),
+    ),
+    FORMULA_AMOUNT_RULE_UNKNOWN: _DiagnosticSpec(
+        code=FORMULA_AMOUNT_RULE_UNKNOWN,
+        message=_(
+            "An approved formula exists with a recognised engine, but its "
+            "amount rule is not registered in the calculator's supported "
+            "list."
+        ),
+    ),
+    FORMULA_AMOUNT_RULE_NOT_SINGLE_ROW_RANGE: _DiagnosticSpec(
+        code=FORMULA_AMOUNT_RULE_NOT_SINGLE_ROW_RANGE,
+        message=_(
+            "Approved formula declares an amount rule that this engine "
+            "does not support today. Only single-row range rules are "
+            "wired for road-accident bodily injury on this jurisdiction."
+        ),
+    ),
+    FORMULA_AMOUNT_RULE_NOT_INHERITANCE_SHARE: _DiagnosticSpec(
+        code=FORMULA_AMOUNT_RULE_NOT_INHERITANCE_SHARE,
+        message=_(
+            "Approved formula declares an amount rule that this engine "
+            "does not support today. Only inheritance-share rules apply "
+            "to inheritance allocation."
+        ),
+    ),
+    FORMULA_ROW_TYPE_MISSING: _DiagnosticSpec(
+        code=FORMULA_ROW_TYPE_MISSING,
+        message=_(
+            "Approved formula does not declare a row_type. The engine "
+            "requires this parameter to dispatch the rule to the right "
+            "compensation rows."
+        ),
+    ),
+    FORMULA_RANGE_PARAMETERS_INCOMPLETE: _DiagnosticSpec(
+        code=FORMULA_RANGE_PARAMETERS_INCOMPLETE,
+        message=_(
+            "The range rule is wired but one of its parameter fields is "
+            "missing or inconsistent. A Studio reviewer must complete "
+            "the formula before the range can be produced."
+        ),
+    ),
+    COMPENSATION_ROW_MATCH_MISSING: _DiagnosticSpec(
+        code=COMPENSATION_ROW_MATCH_MISSING,
+        message=_(
+            "No compensation row matches the input combination on the "
+            "approved dataset. Either the dataset is incomplete for this "
+            "case or the inputs fall outside the table."
+        ),
+    ),
+    COMPENSATION_ROW_DISAMBIGUATION: _DiagnosticSpec(
+        code=COMPENSATION_ROW_DISAMBIGUATION,
+        message=_(
+            "More than one compensation row matches the input "
+            "combination. A Studio reviewer must disambiguate the "
+            "dataset before any estimate can be produced."
+        ),
+    ),
+    COMPENSATION_RANGE_INCONSISTENT: _DiagnosticSpec(
+        code=COMPENSATION_RANGE_INCONSISTENT,
+        message=_(
+            "The min / mid / max rows of the range are inconsistent — "
+            "min must be ≤ mid ≤ max. A Studio reviewer must correct "
+            "the dataset before the range can be produced."
+        ),
+    ),
+    INHERITANCE_SHARE_SPEC_INVALID: _DiagnosticSpec(
+        code=INHERITANCE_SHARE_SPEC_INVALID,
+        message=_(
+            "The approved formula declares an invalid share specification. "
+            "The engine refuses to produce an estimate; a Studio reviewer "
+            "must correct the formula before any allocation can be shown."
+        ),
+    ),
+    APPLICABLE_LAW_REVIEW_REQUIRED: _DiagnosticSpec(
+        code=APPLICABLE_LAW_REVIEW_REQUIRED,
+        message=_(
+            "Applicable-law context requires Studio review before any "
+            "inheritance shares can be produced. The engine refuses to "
+            "compute on the fixture-only path until a legal reviewer "
+            "reads the family and cross-border elements of the case."
+        ),
+    ),
+    APPLICABLE_LAW_CONTEXT_MISSING: _DiagnosticSpec(
+        code=APPLICABLE_LAW_CONTEXT_MISSING,
+        message=_(
+            "Applicable-law context is missing from the wizard input. "
+            "The engine cannot decide which jurisdiction's law applies "
+            "without the country of last residence."
+        ),
+    ),
+    INPUT_FIELDS_MISSING: _DiagnosticSpec(
+        code=INPUT_FIELDS_MISSING,
+        message=_("Required input fields are missing for this calculation."),
+    ),
+    INPUT_ESTATE_VALUE_INVALID: _DiagnosticSpec(
+        code=INPUT_ESTATE_VALUE_INVALID,
+        message=_("Estate value is not a valid number."),
+    ),
+    INPUT_NEGATIVE_ESTATE: _DiagnosticSpec(
+        code=INPUT_NEGATIVE_ESTATE,
+        message=_("Estate value must be non-negative."),
+    ),
+    INPUT_NO_HEIR_ALLOCATION: _DiagnosticSpec(
+        code=INPUT_NO_HEIR_ALLOCATION,
+        message=_(
+            "No heir class with a positive head count matches the approved "
+            "share specification. Provide at least one heir covered by "
+            "the formula (spouse, father, mother, sons, daughters)."
+        ),
+    ),
+}
+
+
+# ---------------------------------------------------------------------------
+# Public API
+# ---------------------------------------------------------------------------
+
+
+def diagnostic_message(
+    code: str,
+    *,
+    language: str | None = None,
+    context: dict[str, Any] | None = None,
+) -> str:
+    """Return the localised message for ``code``.
+
+    ``language`` activates the Django translation if given; ``None``
+    keeps the current request's locale (or the project default if no
+    request is active). ``context`` is reserved for future field
+    interpolation (e.g. ``{rule!r}``); today the messages are
+    parameter-free so the dict is accepted but ignored.
+    """
+    spec = _REGISTRY.get(code)
+    if spec is None:
+        # Defensive: never raise from the diagnostic layer. Returning
+        # the code itself keeps audit logs readable while flagging the
+        # missing entry.
+        return code
+
+    if language is None:
+        return str(spec.message)
+
+    from django.utils import translation
+
+    with translation.override(language):
+        return str(spec.message)
+
+
+def diagnostic_public_safe(code: str) -> bool:
+    """Return ``True`` only for diagnostics vetted for public surfaces.
+
+    Today every diagnostic is internal-only. The public result page
+    renders the curated :class:`PublicResultMessage` instead. This
+    helper exists so future iters can selectively expose specific
+    codes (e.g. ``input_fields_missing`` could become public-safe
+    once the wizard guarantees they are field-level errors).
+    """
+    spec = _REGISTRY.get(code)
+    if spec is None:
+        return False
+    return spec.public_safe
+
+
+def diagnostic_to_internal_warning(
+    code: str,
+    *,
+    context: dict[str, Any] | None = None,
+) -> str:
+    """Return the engine-facing warning string for ``code``.
+
+    Engines call this to populate ``CalculationResult.warnings`` and
+    keep ``missing_documents=[code]`` for stable audit trails. The
+    returned string is the localised message in the current request
+    locale (lazy translation through :class:`gettext_lazy`).
+    """
+    return diagnostic_message(code, context=context)
+
+
+def known_diagnostic_codes() -> tuple[str, ...]:
+    """Return the registered codes — handy for tests / audit reports."""
+    return tuple(sorted(_REGISTRY))
+
+
+__all__ = [
+    "LEGAL_SOURCES_NOT_APPROVED",
+    "COMPENSATION_DATASET_NOT_APPROVED",
+    "RANGE_DATASET_NOT_APPROVED",
+    "CALCULATION_FORMULA_NOT_APPROVED",
+    "CALCULATOR_ENGINE_PENDING",
+    "FORMULA_ENGINE_UNKNOWN",
+    "FORMULA_AMOUNT_RULE_UNKNOWN",
+    "FORMULA_AMOUNT_RULE_NOT_SINGLE_ROW_RANGE",
+    "FORMULA_AMOUNT_RULE_NOT_INHERITANCE_SHARE",
+    "FORMULA_ROW_TYPE_MISSING",
+    "FORMULA_RANGE_PARAMETERS_INCOMPLETE",
+    "COMPENSATION_ROW_MATCH_MISSING",
+    "COMPENSATION_ROW_DISAMBIGUATION",
+    "COMPENSATION_RANGE_INCONSISTENT",
+    "INHERITANCE_SHARE_SPEC_INVALID",
+    "APPLICABLE_LAW_REVIEW_REQUIRED",
+    "APPLICABLE_LAW_CONTEXT_MISSING",
+    "INPUT_FIELDS_MISSING",
+    "INPUT_ESTATE_VALUE_INVALID",
+    "INPUT_NEGATIVE_ESTATE",
+    "INPUT_NO_HEIR_ALLOCATION",
+    "diagnostic_message",
+    "diagnostic_public_safe",
+    "diagnostic_to_internal_warning",
+    "known_diagnostic_codes",
+]

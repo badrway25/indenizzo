@@ -68,6 +68,7 @@ from typing import Any
 
 from apps.legal_sources.models import LegalSource
 
+from .. import diagnostics as _diag
 from ..enums import CalculationStatus, CaseType, ConfidenceLevel
 from ..registry import register_calculator
 from ..schemas import BreakdownItem, CalculationResult, SourceRef
@@ -89,13 +90,8 @@ class _MoroccoPlaceholderCalculator(BaseCalculator):
         return self._build_result(
             status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
             sources=[SourceRef.from_legal_source(s) for s in sources],
-            warnings=[
-                "Morocco calculator engine not yet implemented for this case "
-                "type. Inheritance shares (faraïd) under Moudawana require "
-                "Studio legal validation before any computation can be "
-                "exposed publicly."
-            ],
-            missing_documents=["calculator_engine_pending_for_jurisdiction"],
+            warnings=[_diag.diagnostic_to_internal_warning(_diag.CALCULATOR_ENGINE_PENDING)],
+            missing_documents=[_diag.CALCULATOR_ENGINE_PENDING],
         )
 
 
@@ -137,13 +133,9 @@ class MoroccoInternationalInheritanceCalculator(_MoroccoPlaceholderCalculator):
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
                 warnings=[
-                    "Approved legal sources are present, but no approved "
-                    "compensation dataset is linked to them for MA "
-                    "international inheritance. The Moudawana Livre III "
-                    "candidate dataset must be promoted to APPROVED by a "
-                    "Studio reviewer before any estimate can be produced."
+                    _diag.diagnostic_to_internal_warning(_diag.COMPENSATION_DATASET_NOT_APPROVED)
                 ],
-                missing_documents=["compensation_dataset_approved"],
+                missing_documents=[_diag.COMPENSATION_DATASET_NOT_APPROVED],
             )
 
         # --- gate 3 + 4 + 5: formula approved + engine + amount_rule
@@ -164,12 +156,11 @@ class MoroccoInternationalInheritanceCalculator(_MoroccoPlaceholderCalculator):
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
                 warnings=[
-                    f"Approved formula declares amount_rule={rule!r}, but the "
-                    "MA engine only supports inheritance-share rules today "
-                    "(morocco_inheritance_fixed_share_direct). Other rule "
-                    "families do not apply to inheritance allocation."
+                    _diag.diagnostic_to_internal_warning(
+                        _diag.FORMULA_AMOUNT_RULE_NOT_INHERITANCE_SHARE
+                    )
                 ],
-                missing_documents=["formula_amount_rule_not_inheritance_share"],
+                missing_documents=[_diag.FORMULA_AMOUNT_RULE_NOT_INHERITANCE_SHARE],
             )
 
         # --- gate 7: input minimi richiesti dalla formula
@@ -210,11 +201,7 @@ class MoroccoInternationalInheritanceCalculator(_MoroccoPlaceholderCalculator):
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
                 warnings=[
-                    "Applicable-law context requires Studio review before "
-                    "any inheritance shares can be produced. The engine "
-                    "refuses to compute on the fixture-only path until a "
-                    "legal reviewer reads the family / cross-border "
-                    "elements of the case."
+                    _diag.diagnostic_to_internal_warning(_diag.APPLICABLE_LAW_REVIEW_REQUIRED)
                 ],
                 missing_documents=[block],
             )
@@ -231,12 +218,7 @@ class MoroccoInternationalInheritanceCalculator(_MoroccoPlaceholderCalculator):
             return self._build_result(
                 status=CalculationStatus.INSUFFICIENT_INPUT.value,
                 sources=source_refs,
-                warnings=[
-                    "No heir class with a positive head count matches the "
-                    "approved share specification. Provide at least one "
-                    "heir (spouse / father / mother / sons / daughters) "
-                    "covered by the formula."
-                ],
+                warnings=[_diag.diagnostic_to_internal_warning(_diag.INPUT_NO_HEIR_ALLOCATION)],
             )
 
         # --- step 10: build breakdown + result
@@ -329,33 +311,22 @@ class MoroccoInternationalInheritanceCalculator(_MoroccoPlaceholderCalculator):
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
                 warnings=[
-                    "Approved compensation dataset is present, but no "
-                    "approved calculation formula is linked to it. The MA "
-                    "formula must be validated by a legal reviewer before "
-                    "any estimate can be produced."
+                    _diag.diagnostic_to_internal_warning(_diag.CALCULATION_FORMULA_NOT_APPROVED)
                 ],
-                missing_documents=["calculation_formula_approved"],
+                missing_documents=[_diag.CALCULATION_FORMULA_NOT_APPROVED],
             )
         if status == FormulaResolutionStatus.ENGINE_UNKNOWN:
             return self._build_result(
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
-                warnings=[
-                    "An approved formula exists but its `engine` is not "
-                    "registered in the MA calculator's supported list "
-                    "(expected 'morocco_inheritance_v1')."
-                ],
-                missing_documents=["formula_engine_unknown"],
+                warnings=[_diag.diagnostic_to_internal_warning(_diag.FORMULA_ENGINE_UNKNOWN)],
+                missing_documents=[_diag.FORMULA_ENGINE_UNKNOWN],
             )
         return self._build_result(
             status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
             sources=source_refs,
-            warnings=[
-                "An approved formula exists with a recognised engine, but "
-                "its `amount_rule` is not registered in the MA calculator's "
-                "supported list."
-            ],
-            missing_documents=["formula_amount_rule_unknown"],
+            warnings=[_diag.diagnostic_to_internal_warning(_diag.FORMULA_AMOUNT_RULE_UNKNOWN)],
+            missing_documents=[_diag.FORMULA_AMOUNT_RULE_UNKNOWN],
         )
 
 

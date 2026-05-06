@@ -67,6 +67,7 @@ from typing import Any
 
 from apps.legal_sources.models import LegalSource
 
+from .. import diagnostics as _diag
 from ..enums import CalculationStatus, CaseType, ConfidenceLevel
 from ..registry import register_calculator
 from ..schemas import BreakdownItem, CalculationResult, SourceRef
@@ -88,13 +89,8 @@ class _TunisiaPlaceholderCalculator(BaseCalculator):
         return self._build_result(
             status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
             sources=[SourceRef.from_legal_source(s) for s in sources],
-            warnings=[
-                "Tunisia calculator engine not yet implemented for this case "
-                "type. Inheritance shares (faraïd) under the Code du statut "
-                "personnel, Livre IX require Studio legal validation before "
-                "any computation can be exposed publicly."
-            ],
-            missing_documents=["calculator_engine_pending_for_jurisdiction"],
+            warnings=[_diag.diagnostic_to_internal_warning(_diag.CALCULATOR_ENGINE_PENDING)],
+            missing_documents=[_diag.CALCULATOR_ENGINE_PENDING],
         )
 
 
@@ -136,14 +132,9 @@ class TunisiaInternationalInheritanceCalculator(_TunisiaPlaceholderCalculator):
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
                 warnings=[
-                    "Approved legal sources are present, but no approved "
-                    "compensation dataset is linked to them for TN "
-                    "international inheritance. The Code du statut "
-                    "personnel candidate dataset must be promoted to "
-                    "APPROVED by a Studio reviewer before any estimate "
-                    "can be produced."
+                    _diag.diagnostic_to_internal_warning(_diag.COMPENSATION_DATASET_NOT_APPROVED)
                 ],
-                missing_documents=["compensation_dataset_approved"],
+                missing_documents=[_diag.COMPENSATION_DATASET_NOT_APPROVED],
             )
 
         # --- gate 3 + 4 + 5: formula approved + engine + amount_rule
@@ -164,13 +155,11 @@ class TunisiaInternationalInheritanceCalculator(_TunisiaPlaceholderCalculator):
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
                 warnings=[
-                    f"Approved formula declares amount_rule={rule!r}, but "
-                    "the TN engine only supports inheritance-share rules "
-                    "today (tunisia_inheritance_fixed_share_direct). "
-                    "Other rule families do not apply to inheritance "
-                    "allocation."
+                    _diag.diagnostic_to_internal_warning(
+                        _diag.FORMULA_AMOUNT_RULE_NOT_INHERITANCE_SHARE
+                    )
                 ],
-                missing_documents=["formula_amount_rule_not_inheritance_share"],
+                missing_documents=[_diag.FORMULA_AMOUNT_RULE_NOT_INHERITANCE_SHARE],
             )
 
         # --- gate 7: input minimi richiesti dalla formula
@@ -206,11 +195,7 @@ class TunisiaInternationalInheritanceCalculator(_TunisiaPlaceholderCalculator):
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
                 warnings=[
-                    "Applicable-law context requires Studio review before "
-                    "any inheritance shares can be produced. The engine "
-                    "refuses to compute on the fixture-only path until a "
-                    "legal reviewer reads the family / cross-border "
-                    "elements of the case."
+                    _diag.diagnostic_to_internal_warning(_diag.APPLICABLE_LAW_REVIEW_REQUIRED)
                 ],
                 missing_documents=[block],
             )
@@ -223,17 +208,14 @@ class TunisiaInternationalInheritanceCalculator(_TunisiaPlaceholderCalculator):
                 formula_params=params,
                 input_data=input_data,
             )
-        except InvalidInheritanceShareSpec as exc:
+        except InvalidInheritanceShareSpec:
             return self._build_result(
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
                 warnings=[
-                    "The approved formula declares an invalid share "
-                    f"specification: {exc}. The TN engine refuses to "
-                    "produce an estimate; Studio must correct the formula "
-                    "before public activation."
+                    _diag.diagnostic_to_internal_warning(_diag.INHERITANCE_SHARE_SPEC_INVALID)
                 ],
-                missing_documents=["shares_spec_invalid"],
+                missing_documents=[_diag.INHERITANCE_SHARE_SPEC_INVALID],
             )
 
         # --- gate 10: heirs vuoti / nessuna allocazione → insufficient
@@ -241,12 +223,7 @@ class TunisiaInternationalInheritanceCalculator(_TunisiaPlaceholderCalculator):
             return self._build_result(
                 status=CalculationStatus.INSUFFICIENT_INPUT.value,
                 sources=source_refs,
-                warnings=[
-                    "No heir class with a positive head count matches the "
-                    "approved share specification. Provide at least one "
-                    "heir (spouse / father / mother / sons / daughters) "
-                    "covered by the formula."
-                ],
+                warnings=[_diag.diagnostic_to_internal_warning(_diag.INPUT_NO_HEIR_ALLOCATION)],
             )
 
         # --- step 11: build breakdown + result
@@ -334,33 +311,22 @@ class TunisiaInternationalInheritanceCalculator(_TunisiaPlaceholderCalculator):
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
                 warnings=[
-                    "Approved compensation dataset is present, but no "
-                    "approved calculation formula is linked to it. The TN "
-                    "formula must be validated by a legal reviewer before "
-                    "any estimate can be produced."
+                    _diag.diagnostic_to_internal_warning(_diag.CALCULATION_FORMULA_NOT_APPROVED)
                 ],
-                missing_documents=["calculation_formula_approved"],
+                missing_documents=[_diag.CALCULATION_FORMULA_NOT_APPROVED],
             )
         if status == FormulaResolutionStatus.ENGINE_UNKNOWN:
             return self._build_result(
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
-                warnings=[
-                    "An approved formula exists but its `engine` is not "
-                    "registered in the TN calculator's supported list "
-                    "(expected 'tunisia_inheritance_v1')."
-                ],
-                missing_documents=["formula_engine_unknown"],
+                warnings=[_diag.diagnostic_to_internal_warning(_diag.FORMULA_ENGINE_UNKNOWN)],
+                missing_documents=[_diag.FORMULA_ENGINE_UNKNOWN],
             )
         return self._build_result(
             status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
             sources=source_refs,
-            warnings=[
-                "An approved formula exists with a recognised engine, but "
-                "its `amount_rule` is not registered in the TN calculator's "
-                "supported list."
-            ],
-            missing_documents=["formula_amount_rule_unknown"],
+            warnings=[_diag.diagnostic_to_internal_warning(_diag.FORMULA_AMOUNT_RULE_UNKNOWN)],
+            missing_documents=[_diag.FORMULA_AMOUNT_RULE_UNKNOWN],
         )
 
 

@@ -87,6 +87,7 @@ from typing import Any
 
 from apps.legal_sources.models import LegalSource
 
+from .. import diagnostics as _diag
 from ..enums import CalculationStatus, CaseType, ConfidenceLevel
 from ..registry import register_calculator
 from ..schemas import BreakdownItem, CalculationResult, SourceRef
@@ -122,12 +123,8 @@ class _BelgiumPlaceholderCalculator(BaseCalculator):
         return self._build_result(
             status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
             sources=[SourceRef.from_legal_source(s) for s in sources],
-            warnings=[
-                "Belgium calculator engine not yet implemented for this case "
-                "type. Even when approved legal sources will be present, the "
-                "compute logic is pending Studio validation in a later phase."
-            ],
-            missing_documents=["calculator_engine_pending_for_jurisdiction"],
+            warnings=[_diag.diagnostic_to_internal_warning(_diag.CALCULATOR_ENGINE_PENDING)],
+            missing_documents=[_diag.CALCULATOR_ENGINE_PENDING],
         )
 
 
@@ -171,13 +168,9 @@ class BelgiumRoadAccidentBodilyInjuryCalculator(_BelgiumPlaceholderCalculator):
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
                 warnings=[
-                    "Approved legal sources are present, but no approved "
-                    "compensation dataset is linked to them for BE road "
-                    "accident. The Tableau Indicatif candidate dataset must "
-                    "be promoted to APPROVED by a Studio reviewer before "
-                    "any estimate can be produced."
+                    _diag.diagnostic_to_internal_warning(_diag.COMPENSATION_DATASET_NOT_APPROVED)
                 ],
-                missing_documents=["compensation_dataset_approved"],
+                missing_documents=[_diag.COMPENSATION_DATASET_NOT_APPROVED],
             )
 
         # --- gate 3 + 4 + 5: formula approved + engine + amount_rule
@@ -198,14 +191,11 @@ class BelgiumRoadAccidentBodilyInjuryCalculator(_BelgiumPlaceholderCalculator):
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
                 warnings=[
-                    f"Approved formula declares amount_rule={rule!r}, but the "
-                    "BE engine only supports single-row range rules today "
-                    "(belgium_souffrances_age_severity_direct, "
-                    "belgium_forfait_age_annual_direct, "
-                    "belgium_deces_affection_relation_direct). Other rule "
-                    "families will be wired in future iters."
+                    _diag.diagnostic_to_internal_warning(
+                        _diag.FORMULA_AMOUNT_RULE_NOT_SINGLE_ROW_RANGE
+                    )
                 ],
-                missing_documents=["formula_amount_rule_not_single_row_range"],
+                missing_documents=[_diag.FORMULA_AMOUNT_RULE_NOT_SINGLE_ROW_RANGE],
             )
 
         # --- gate 7: input minimi richiesti dalla formula
@@ -237,12 +227,8 @@ class BelgiumRoadAccidentBodilyInjuryCalculator(_BelgiumPlaceholderCalculator):
             return self._build_result(
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
-                warnings=[
-                    "Approved formula does not declare a `row_type`. The BE "
-                    "engine refuses to scan the dataset blindly: the formula "
-                    "must pin the canonical row_type."
-                ],
-                missing_documents=["formula_row_type_missing"],
+                warnings=[_diag.diagnostic_to_internal_warning(_diag.FORMULA_ROW_TYPE_MISSING)],
+                missing_documents=[_diag.FORMULA_ROW_TYPE_MISSING],
             )
 
         match = find_matching_row_by_type(
@@ -256,23 +242,18 @@ class BelgiumRoadAccidentBodilyInjuryCalculator(_BelgiumPlaceholderCalculator):
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
                 warnings=[
-                    f"No table row of type {row_type!r} matches the provided "
-                    "input within the approved compensation dataset. The "
-                    "dataset may not yet cover this combination of "
-                    "(age band / severity / relation_code)."
+                    _diag.diagnostic_to_internal_warning(_diag.COMPENSATION_ROW_MATCH_MISSING)
                 ],
-                missing_documents=["compensation_row_match"],
+                missing_documents=[_diag.COMPENSATION_ROW_MATCH_MISSING],
             )
         if match.kind == RowMatchKind.MULTIPLE:
             return self._build_result(
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
                 warnings=[
-                    f"Multiple ({match.candidates}) rows of type {row_type!r} "
-                    "match the provided input. Disambiguation requires legal "
-                    "review: the calculator refuses to pick one arbitrarily."
+                    _diag.diagnostic_to_internal_warning(_diag.COMPENSATION_ROW_DISAMBIGUATION)
                 ],
-                missing_documents=["compensation_row_disambiguation"],
+                missing_documents=[_diag.COMPENSATION_ROW_DISAMBIGUATION],
             )
 
         # --- step 13: calcolo vero (single-row range rule)
@@ -291,12 +272,9 @@ class BelgiumRoadAccidentBodilyInjuryCalculator(_BelgiumPlaceholderCalculator):
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
                 warnings=[
-                    "Range amounts violate monotonicity (expected min <= mid "
-                    f"<= max, got {amounts.min_amount}/{amounts.mid_amount}/"
-                    f"{amounts.max_amount}). The calculator refuses to "
-                    "publish a non-monotone range."
+                    _diag.diagnostic_to_internal_warning(_diag.COMPENSATION_RANGE_INCONSISTENT)
                 ],
-                missing_documents=["compensation_range_inconsistent"],
+                missing_documents=[_diag.COMPENSATION_RANGE_INCONSISTENT],
             )
 
         breakdown_label = _RULE_BREAKDOWN_LABELS.get(rule, "Belgium amount")
@@ -368,34 +346,23 @@ class BelgiumRoadAccidentBodilyInjuryCalculator(_BelgiumPlaceholderCalculator):
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
                 warnings=[
-                    "Approved compensation dataset is present, but no "
-                    "approved calculation formula is linked to it. The BE "
-                    "formula must be validated by a legal reviewer before "
-                    "any estimate can be produced."
+                    _diag.diagnostic_to_internal_warning(_diag.CALCULATION_FORMULA_NOT_APPROVED)
                 ],
-                missing_documents=["calculation_formula_approved"],
+                missing_documents=[_diag.CALCULATION_FORMULA_NOT_APPROVED],
             )
         if status == FormulaResolutionStatus.ENGINE_UNKNOWN:
             return self._build_result(
                 status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
                 sources=source_refs,
-                warnings=[
-                    "An approved formula exists but its `engine` is not "
-                    "registered in the BE calculator's supported list "
-                    "(expected 'belgium_road_accident_v1')."
-                ],
-                missing_documents=["formula_engine_unknown"],
+                warnings=[_diag.diagnostic_to_internal_warning(_diag.FORMULA_ENGINE_UNKNOWN)],
+                missing_documents=[_diag.FORMULA_ENGINE_UNKNOWN],
             )
         # AMOUNT_RULE_UNKNOWN
         return self._build_result(
             status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
             sources=source_refs,
-            warnings=[
-                "An approved formula exists with a recognised engine, but "
-                "its `amount_rule` is not registered in the BE calculator's "
-                "supported list."
-            ],
-            missing_documents=["formula_amount_rule_unknown"],
+            warnings=[_diag.diagnostic_to_internal_warning(_diag.FORMULA_AMOUNT_RULE_UNKNOWN)],
+            missing_documents=[_diag.FORMULA_AMOUNT_RULE_UNKNOWN],
         )
 
 

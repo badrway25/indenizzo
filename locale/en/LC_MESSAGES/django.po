@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-06 08:41+0200\n"
+"POT-Creation-Date: 2026-05-06 10:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -106,6 +106,138 @@ msgstr ""
 #: .\apps\accounts\models.py:46
 msgid "users"
 msgstr ""
+
+#: .\apps\calculators\diagnostics.py:79
+msgid ""
+"No approved legal sources are available for this jurisdiction and case type. "
+"The simulation cannot produce an estimate without legally validated sources."
+msgstr "No approved legal sources are available for this jurisdiction and case type. The simulation cannot produce an estimate without legally validated sources."
+
+#: .\apps\calculators\diagnostics.py:87
+msgid ""
+"Approved legal sources are present, but no approved compensation dataset is "
+"linked to them. A Studio reviewer must promote the candidate dataset before "
+"any estimate can be produced."
+msgstr "Approved legal sources are present, but no approved compensation dataset is linked to them. A Studio reviewer must promote the candidate dataset before any estimate can be produced."
+
+#: .\apps\calculators\diagnostics.py:96
+msgid ""
+"The base dataset is approved, but the secondary range dataset referenced by "
+"the formula has not been promoted yet. A Studio reviewer must approve it "
+"before any range estimate can be produced."
+msgstr "The base dataset is approved, but the secondary range dataset referenced by the formula has not been promoted yet. A Studio reviewer must approve it before any range estimate can be produced."
+
+#: .\apps\calculators\diagnostics.py:105
+msgid ""
+"Approved compensation dataset is present, but no approved calculation "
+"formula is linked to it. The formula must be validated by a legal reviewer "
+"before any estimate can be produced."
+msgstr "Approved compensation dataset is present, but no approved calculation formula is linked to it. The formula must be validated by a legal reviewer before any estimate can be produced."
+
+#: .\apps\calculators\diagnostics.py:114
+msgid ""
+"Calculator engine not yet implemented for this jurisdiction and case type. "
+"Studio review is required before any computation can be exposed publicly."
+msgstr "Calculator engine not yet implemented for this jurisdiction and case type. Studio review is required before any computation can be exposed publicly."
+
+#: .\apps\calculators\diagnostics.py:122
+msgid ""
+"An approved formula exists but its engine is not registered in the "
+"calculator's supported list."
+msgstr "An approved formula exists but its engine is not registered in the calculator's supported list."
+
+#: .\apps\calculators\diagnostics.py:129
+msgid ""
+"An approved formula exists with a recognised engine, but its amount rule is "
+"not registered in the calculator's supported list."
+msgstr "An approved formula exists with a recognised engine, but its amount rule is not registered in the calculator's supported list."
+
+#: .\apps\calculators\diagnostics.py:137
+msgid ""
+"Approved formula declares an amount rule that this engine does not support "
+"today. Only single-row range rules are wired for road-accident bodily injury "
+"on this jurisdiction."
+msgstr "Approved formula declares an amount rule that this engine does not support today. Only single-row range rules are wired for road-accident bodily injury on this jurisdiction."
+
+#: .\apps\calculators\diagnostics.py:145
+msgid ""
+"Approved formula declares an amount rule that this engine does not support "
+"today. Only inheritance-share rules apply to inheritance allocation."
+msgstr "Approved formula declares an amount rule that this engine does not support today. Only inheritance-share rules apply to inheritance allocation."
+
+#: .\apps\calculators\diagnostics.py:153
+msgid ""
+"Approved formula does not declare a row_type. The engine requires this "
+"parameter to dispatch the rule to the right compensation rows."
+msgstr "Approved formula does not declare a row_type. The engine requires this parameter to dispatch the rule to the right compensation rows."
+
+#: .\apps\calculators\diagnostics.py:161
+msgid ""
+"The range rule is wired but one of its parameter fields is missing or "
+"inconsistent. A Studio reviewer must complete the formula before the range "
+"can be produced."
+msgstr "The range rule is wired but one of its parameter fields is missing or inconsistent. A Studio reviewer must complete the formula before the range can be produced."
+
+#: .\apps\calculators\diagnostics.py:169
+msgid ""
+"No compensation row matches the input combination on the approved dataset. "
+"Either the dataset is incomplete for this case or the inputs fall outside "
+"the table."
+msgstr "No compensation row matches the input combination on the approved dataset. Either the dataset is incomplete for this case or the inputs fall outside the table."
+
+#: .\apps\calculators\diagnostics.py:177
+msgid ""
+"More than one compensation row matches the input combination. A Studio "
+"reviewer must disambiguate the dataset before any estimate can be produced."
+msgstr "More than one compensation row matches the input combination. A Studio reviewer must disambiguate the dataset before any estimate can be produced."
+
+#: .\apps\calculators\diagnostics.py:185
+msgid ""
+"The min / mid / max rows of the range are inconsistent — min must be ≤ mid ≤ "
+"max. A Studio reviewer must correct the dataset before the range can be "
+"produced."
+msgstr "The min / mid / max rows of the range are inconsistent — min must be ≤ mid ≤ max. A Studio reviewer must correct the dataset before the range can be produced."
+
+#: .\apps\calculators\diagnostics.py:193
+msgid ""
+"The approved formula declares an invalid share specification. The engine "
+"refuses to produce an estimate; a Studio reviewer must correct the formula "
+"before any allocation can be shown."
+msgstr "The approved formula declares an invalid share specification. The engine refuses to produce an estimate; a Studio reviewer must correct the formula before any allocation can be shown."
+
+#: .\apps\calculators\diagnostics.py:201
+msgid ""
+"Applicable-law context requires Studio review before any inheritance shares "
+"can be produced. The engine refuses to compute on the fixture-only path "
+"until a legal reviewer reads the family and cross-border elements of the "
+"case."
+msgstr "Applicable-law context requires Studio review before any inheritance shares can be produced. The engine refuses to compute on the fixture-only path until a legal reviewer reads the family and cross-border elements of the case."
+
+#: .\apps\calculators\diagnostics.py:210
+msgid ""
+"Applicable-law context is missing from the wizard input. The engine cannot "
+"decide which jurisdiction's law applies without the country of last "
+"residence."
+msgstr "Applicable-law context is missing from the wizard input. The engine cannot decide which jurisdiction's law applies without the country of last residence."
+
+#: .\apps\calculators\diagnostics.py:217
+msgid "Required input fields are missing for this calculation."
+msgstr "Required input fields are missing for this calculation."
+
+#: .\apps\calculators\diagnostics.py:221
+msgid "Estate value is not a valid number."
+msgstr "Estate value is not a valid number."
+
+#: .\apps\calculators\diagnostics.py:225
+msgid "Estate value must be non-negative."
+msgstr "Estate value must be non-negative."
+
+#: .\apps\calculators\diagnostics.py:230
+msgid ""
+"No heir class with a positive head count matches the approved share "
+"specification. Provide at least one heir covered by the formula (spouse, "
+"father, mother, sons, daughters)."
+msgstr "No heir class with a positive head count matches the approved share specification. Provide at least one heir covered by the formula (spouse, father, mother, sons, daughters)."
 
 #: .\apps\calculators\enums.py:23
 msgid "Road accident — bodily injury"
@@ -620,7 +752,9 @@ msgstr ""
 msgid ""
 "The Studio will review the applicable law and cross-border elements before "
 "any shares are calculated."
-msgstr "The Studio will review the applicable law and cross-border elements before any shares are calculated."
+msgstr ""
+"The Studio will review the applicable law and cross-border elements before "
+"any shares are calculated."
 
 #: .\apps\cases\public_result_messages.py:129
 msgid ""
@@ -1948,7 +2082,7 @@ msgid ""
 "internazionali, basate su fonti legali validate."
 msgstr ""
 
-#: .\templates\base.html:66
+#: .\templates\base.html:79
 msgid "Skip to content"
 msgstr ""
 
