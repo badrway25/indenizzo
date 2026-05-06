@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-06 13:58+0200\n"
+"POT-Creation-Date: 2026-05-06 20:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,97 +17,57 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: .\apps\accounts\admin.py:12 .\apps\accounts\admin.py:25
 msgid "Studio profile"
 msgstr ""
 
-#: .\apps\accounts\models.py:8
 msgid "Client"
 msgstr ""
 
-#: .\apps\accounts\models.py:9
 msgid "Lawyer"
 msgstr ""
 
-#: .\apps\accounts\models.py:10
 msgid "Staff"
 msgstr ""
 
-#: .\apps\accounts\models.py:11
 msgid "Admin"
 msgstr ""
 
-#: .\apps\accounts\models.py:14 .\apps\cases\models.py:35
-#: .\apps\compliance\enums.py:14 .\apps\crm\models.py:30
 msgid "Italiano"
 msgstr "Italien"
 
-#: .\apps\accounts\models.py:15 .\apps\cases\models.py:36
-#: .\apps\compliance\enums.py:15 .\apps\crm\models.py:31
 msgid "Français"
 msgstr "Français"
 
-#: .\apps\accounts\models.py:16 .\apps\cases\models.py:37
-#: .\apps\compliance\enums.py:16 .\apps\crm\models.py:32
 msgid "English"
 msgstr "Anglais"
 
-#: .\apps\accounts\models.py:17 .\apps\cases\models.py:38
-#: .\apps\compliance\enums.py:17 .\apps\crm\models.py:33
 msgid "العربية"
 msgstr "Arabe"
 
-#: .\apps\accounts\models.py:20
 msgid "role"
 msgstr ""
 
-#: .\apps\accounts\models.py:26 .\apps\crm\models.py:87
 msgid "preferred language"
 msgstr ""
 
-#: .\apps\accounts\models.py:32 .\apps\crm\models.py:84
 msgid "phone number"
 msgstr ""
 
-#: .\apps\accounts\models.py:37
 msgid "company or firm name"
 msgstr ""
 
-#: .\apps\accounts\models.py:41 .\apps\cases\models.py:148
-#: .\apps\cases\models.py:199 .\apps\compensation\models.py:121
-#: .\apps\compensation\models.py:238 .\apps\compensation\models.py:327
-#: .\apps\compensation\models.py:419 .\apps\compliance\models.py:50
-#: .\apps\compliance\models.py:103 .\apps\compliance\models.py:165
-#: .\apps\compliance\models.py:203 .\apps\compliance\models.py:302
-#: .\apps\compliance\models.py:374 .\apps\crm\models.py:150
-#: .\apps\crm\models.py:201 .\apps\jurisdictions\models.py:40
-#: .\apps\jurisdictions\models.py:166 .\apps\legal_sources\models.py:129
-#: .\apps\legal_sources\models.py:229 .\apps\legal_sources\models.py:269
-#: .\apps\legal_sources\models.py:343
 msgid "created at"
 msgstr ""
 
-#: .\apps\accounts\models.py:42 .\apps\cases\models.py:149
-#: .\apps\compensation\models.py:122 .\apps\compensation\models.py:239
-#: .\apps\compensation\models.py:328 .\apps\compliance\models.py:51
-#: .\apps\compliance\models.py:104 .\apps\compliance\models.py:204
-#: .\apps\crm\models.py:151 .\apps\jurisdictions\models.py:41
-#: .\apps\jurisdictions\models.py:167 .\apps\legal_sources\models.py:130
-#: .\apps\legal_sources\models.py:230 .\apps\legal_sources\models.py:270
 msgid "updated at"
 msgstr ""
 
-#: .\apps\accounts\models.py:45 .\apps\cases\models.py:55
-#: .\apps\compliance\models.py:134 .\apps\compliance\models.py:224
-#: .\apps\compliance\models.py:361 .\apps\crm\models.py:75
 msgid "user"
 msgstr ""
 
-#: .\apps\accounts\models.py:46
 msgid "users"
 msgstr ""
 
-#: .\apps\calculators\diagnostics.py:105
 msgid ""
 "No approved legal sources are available for this jurisdiction and case type. "
 "The simulation cannot produce an estimate without legally validated sources."
@@ -116,7 +76,6 @@ msgstr ""
 "ce type de dossier. La simulation ne peut pas produire d'estimation sans "
 "sources juridiquement validées."
 
-#: .\apps\calculators\diagnostics.py:113
 msgid ""
 "Approved legal sources are present, but no approved compensation dataset is "
 "linked to them. A Studio reviewer must promote the candidate dataset before "
@@ -127,7 +86,6 @@ msgstr ""
 "promouvoir le jeu de données candidat avant qu'une estimation puisse être "
 "produite."
 
-#: .\apps\calculators\diagnostics.py:122
 msgid ""
 "The base dataset is approved, but the secondary range dataset referenced by "
 "the formula has not been promoted yet. A Studio reviewer must approve it "
@@ -138,7 +96,6 @@ msgstr ""
 "Cabinet doit l'approuver avant qu'une estimation de plage puisse être "
 "produite."
 
-#: .\apps\calculators\diagnostics.py:131
 msgid ""
 "Approved compensation dataset is present, but no approved calculation "
 "formula is linked to it. The formula must be validated by a legal reviewer "
@@ -148,7 +105,6 @@ msgstr ""
 "de calcul approuvée n'y est rattachée. La formule doit être validée par un "
 "réviseur juridique avant qu'une estimation puisse être produite."
 
-#: .\apps\calculators\diagnostics.py:140
 msgid ""
 "Calculator engine not yet implemented for this jurisdiction and case type. "
 "Studio review is required before any computation can be exposed publicly."
@@ -157,7 +113,6 @@ msgstr ""
 "dossier. Une revue du Cabinet est requise avant qu'un calcul puisse être "
 "exposé publiquement."
 
-#: .\apps\calculators\diagnostics.py:148
 msgid ""
 "An approved formula exists but its engine is not registered in the "
 "calculator's supported list."
@@ -165,7 +120,6 @@ msgstr ""
 "Une formule approuvée existe mais son moteur n'est pas enregistré dans la "
 "liste prise en charge par le calculateur."
 
-#: .\apps\calculators\diagnostics.py:155
 msgid ""
 "An approved formula exists with a recognised engine, but its amount rule is "
 "not registered in the calculator's supported list."
@@ -174,7 +128,6 @@ msgstr ""
 "montant n'est pas enregistrée dans la liste prise en charge par le "
 "calculateur."
 
-#: .\apps\calculators\diagnostics.py:163
 msgid ""
 "Approved formula declares an amount rule that this engine does not support "
 "today. Only single-row range rules are wired for road-accident bodily injury "
@@ -184,7 +137,6 @@ msgstr ""
 "en charge aujourd'hui. Seules les règles à ligne unique avec plage sont "
 "câblées pour les accidents corporels de la route dans cette juridiction."
 
-#: .\apps\calculators\diagnostics.py:171
 msgid ""
 "Approved formula declares an amount rule that this engine does not support "
 "today. Only inheritance-share rules apply to inheritance allocation."
@@ -193,7 +145,6 @@ msgstr ""
 "en charge aujourd'hui. Seules les règles de part successorale s'appliquent à "
 "l'attribution successorale."
 
-#: .\apps\calculators\diagnostics.py:179
 msgid ""
 "Approved formula does not declare a row_type. The engine requires this "
 "parameter to dispatch the rule to the right compensation rows."
@@ -201,7 +152,6 @@ msgstr ""
 "La formule approuvée ne déclare pas de row_type. Le moteur a besoin de ce "
 "paramètre pour acheminer la règle vers les bonnes lignes d'indemnisation."
 
-#: .\apps\calculators\diagnostics.py:187
 msgid ""
 "The range rule is wired but one of its parameter fields is missing or "
 "inconsistent. A Studio reviewer must complete the formula before the range "
@@ -211,7 +161,6 @@ msgstr ""
 "ou incohérent. Un réviseur du Cabinet doit compléter la formule avant que la "
 "plage puisse être produite."
 
-#: .\apps\calculators\diagnostics.py:195
 msgid ""
 "No compensation row matches the input combination on the approved dataset. "
 "Either the dataset is incomplete for this case or the inputs fall outside "
@@ -221,7 +170,6 @@ msgstr ""
 "le jeu de données approuvé. Soit le jeu de données est incomplet pour ce "
 "cas, soit les entrées sortent de la table."
 
-#: .\apps\calculators\diagnostics.py:203
 msgid ""
 "More than one compensation row matches the input combination. A Studio "
 "reviewer must disambiguate the dataset before any estimate can be produced."
@@ -230,7 +178,6 @@ msgstr ""
 "réviseur du Cabinet doit lever l'ambiguïté du jeu de données avant qu'une "
 "estimation puisse être produite."
 
-#: .\apps\calculators\diagnostics.py:211
 msgid ""
 "The min / mid / max rows of the range are inconsistent — min must be ≤ mid ≤ "
 "max. A Studio reviewer must correct the dataset before the range can be "
@@ -240,7 +187,6 @@ msgstr ""
 "mid ≤ max. Un réviseur du Cabinet doit corriger le jeu de données avant que "
 "la plage puisse être produite."
 
-#: .\apps\calculators\diagnostics.py:219
 msgid ""
 "The approved formula declares an invalid share specification. The engine "
 "refuses to produce an estimate; a Studio reviewer must correct the formula "
@@ -250,7 +196,6 @@ msgstr ""
 "moteur refuse de produire une estimation ; un réviseur du Cabinet doit "
 "corriger la formule avant qu'une attribution puisse être affichée."
 
-#: .\apps\calculators\diagnostics.py:227
 msgid ""
 "Applicable-law context requires Studio review before any inheritance shares "
 "can be produced. The engine refuses to compute on the fixture-only path "
@@ -262,7 +207,6 @@ msgstr ""
 "calculer sur la voie fixture-only tant qu'un réviseur juridique n'aura pas "
 "lu la situation familiale et les éléments transfrontaliers du dossier."
 
-#: .\apps\calculators\diagnostics.py:236
 msgid ""
 "Applicable-law context is missing from the wizard input. The engine cannot "
 "decide which jurisdiction's law applies without the country of last "
@@ -272,19 +216,15 @@ msgstr ""
 "ne peut pas décider quelle loi juridictionnelle s'applique sans le pays de "
 "dernière résidence."
 
-#: .\apps\calculators\diagnostics.py:243
 msgid "Required input fields are missing for this calculation."
 msgstr "Des champs obligatoires manquent pour ce calcul."
 
-#: .\apps\calculators\diagnostics.py:247
 msgid "Estate value is not a valid number."
 msgstr "La valeur de la succession n'est pas un nombre valide."
 
-#: .\apps\calculators\diagnostics.py:251
 msgid "Estate value must be non-negative."
 msgstr "La valeur de la succession doit être non négative."
 
-#: .\apps\calculators\diagnostics.py:256
 msgid ""
 "No heir class with a positive head count matches the approved share "
 "specification. Provide at least one heir covered by the formula (spouse, "
@@ -294,7 +234,6 @@ msgstr ""
 "spécification de parts approuvée. Indiquez au moins un héritier couvert par "
 "la formule (conjoint, père, mère, fils, filles)."
 
-#: .\apps\calculators\diagnostics.py:264
 msgid ""
 "The estimated min, central and max values coincide because the approved "
 "formula does not yet configure a personalisation range for this case. The "
@@ -305,7 +244,6 @@ msgstr ""
 "est le montant canonique de la TUN pour l'âge et le taux d'incapacité "
 "retenus."
 
-#: .\apps\calculators\diagnostics.py:275
 #, python-brace-format
 msgid ""
 "The reported {field} is not included in the automatic estimate: the approved "
@@ -315,20 +253,17 @@ msgstr ""
 "formule approuvée n'agrège pas ce poste. Le Cabinet les examine au cas par "
 "cas."
 
-#: .\apps\calculators\diagnostics.py:283
 msgid "A fault reduction was applied as declared by the approved formula."
 msgstr ""
 "Une réduction pour faute a été appliquée comme déclarée par la formule "
 "approuvée."
 
-#: .\apps\calculators\diagnostics.py:288
 msgid ""
 "A fault reduction was applied uniformly to the min, central and max values."
 msgstr ""
 "Une réduction pour faute a été appliquée uniformément aux valeurs min, "
 "centrale et max."
 
-#: .\apps\calculators\diagnostics.py:294
 #, python-brace-format
 msgid ""
 "Some fields needed for the estimate are missing: {fields}. Provide them and "
@@ -337,7 +272,6 @@ msgstr ""
 "Certains champs nécessaires à l'estimation manquent : {fields}. Indiquez-les "
 "et relancez la simulation."
 
-#: .\apps\calculators\diagnostics.py:302
 msgid ""
 "The percentage of fault must be between 0 and 100. The estimate cannot run "
 "with the value provided."
@@ -345,14 +279,12 @@ msgstr ""
 "Le pourcentage de faute doit être compris entre 0 et 100. L'estimation ne "
 "peut pas être lancée avec la valeur fournie."
 
-#: .\apps\calculators\diagnostics.py:310
 msgid ""
 "The percentage of fault is not a valid number. Use a digit between 0 and 100."
 msgstr ""
 "Le pourcentage de faute n'est pas un nombre valide. Utilisez un chiffre "
 "entre 0 et 100."
 
-#: .\apps\calculators\diagnostics.py:318
 msgid ""
 "The wizard payload could not be parsed by the calculator. Studio review is "
 "required to identify the inconsistency."
@@ -360,7 +292,6 @@ msgstr ""
 "Les données du wizard n'ont pas pu être analysées par le calculateur. Une "
 "revue du Cabinet est requise pour identifier l'incohérence."
 
-#: .\apps\calculators\diagnostics.py:325
 msgid ""
 "The approved formula declares input requirements that the wizard does not "
 "collect. A Studio reviewer must align the formula and the wizard before any "
@@ -370,216 +301,160 @@ msgstr ""
 "recueille pas. Un réviseur du Cabinet doit aligner la formule et le wizard "
 "avant qu'une estimation puisse être produite."
 
-#: .\apps\calculators\diagnostics.py:339
 msgid "documented medical expenses"
 msgstr "frais médicaux documentés"
 
-#: .\apps\calculators\diagnostics.py:340
 msgid "lost income"
 msgstr "revenu perdu"
 
-#: .\apps\calculators\diagnostics.py:341
 msgid "age of the injured person"
 msgstr "âge de la personne blessée"
 
-#: .\apps\calculators\diagnostics.py:342
 msgid "permanent disability percentage"
 msgstr "pourcentage d'invalidité permanente"
 
-#: .\apps\calculators\diagnostics.py:343
 msgid "total temporary disability days"
 msgstr "jours d'invalidité temporaire totale"
 
-#: .\apps\calculators\diagnostics.py:344
 msgid "partial temporary disability days"
 msgstr "jours d'invalidité temporaire partielle"
 
-#: .\apps\calculators\diagnostics.py:345
 msgid "percentage of fault"
 msgstr "pourcentage de faute"
 
-#: .\apps\calculators\diagnostics.py:346
 msgid "country of the accident"
 msgstr "pays de l'accident"
 
-#: .\apps\calculators\diagnostics.py:347
 msgid "date of the accident"
 msgstr "date de l'accident"
 
-#: .\apps\calculators\diagnostics.py:348
 msgid "family situation"
 msgstr "situation familiale"
 
-#: .\apps\calculators\diagnostics.py:349
 msgid "estimated estate value"
 msgstr "valeur estimée de la succession"
 
-#: .\apps\calculators\diagnostics.py:350
 msgid "country of the deceased's last residence"
 msgstr "pays de la dernière résidence du défunt"
 
-#: .\apps\calculators\diagnostics.py:351
 msgid "nationality"
 msgstr "nationalité"
 
-#: .\apps\calculators\enums.py:23
 msgid "Road accident — bodily injury"
 msgstr "Accident de la route — préjudice corporel"
 
-#: .\apps\calculators\enums.py:25
 msgid "Medical malpractice"
 msgstr "Responsabilité médicale"
 
-#: .\apps\calculators\enums.py:26
 msgid "Work injury"
 msgstr "Accident du travail"
 
-#: .\apps\calculators\enums.py:27
 msgid "Death compensation"
 msgstr "Indemnisation pour décès"
 
-#: .\apps\calculators\enums.py:28
 msgid "Parental loss"
 msgstr "Perte du lien parental"
 
-#: .\apps\calculators\enums.py:29
 msgid "Patrimonial damage"
 msgstr "Préjudice patrimonial"
 
-#: .\apps\calculators\enums.py:30
 msgid "Inheritance — basic"
 msgstr "Succession — base"
 
-#: .\apps\calculators\enums.py:33
 msgid "Inheritance — international"
 msgstr "Succession — internationale"
 
-#: .\apps\calculators\enums.py:37
 msgid "Generic legal assessment"
 msgstr "Évaluation juridique générique"
 
-#: .\apps\calculators\enums.py:53
 msgid "Unavailable — requires legal validation"
 msgstr "Non disponible — validation juridique requise"
 
-#: .\apps\calculators\enums.py:55
 msgid "Insufficient input"
 msgstr "Données insuffisantes"
 
-#: .\apps\calculators\enums.py:56
 msgid "Calculated"
 msgstr "Calculé"
 
-#: .\apps\calculators\enums.py:57 .\apps\cases\models.py:182
 msgid "Error"
 msgstr "Erreur"
 
-#: .\apps\calculators\enums.py:61 .\apps\compliance\models.py:411
-#: .\apps\crm\models.py:46 .\apps\legal_sources\enums.py:51
 msgid "Low"
 msgstr "Faible"
 
-#: .\apps\calculators\enums.py:62 .\apps\compliance\models.py:412
-#: .\apps\legal_sources\enums.py:50
 msgid "Medium"
 msgstr "Moyenne"
 
-#: .\apps\calculators\enums.py:63 .\apps\compliance\models.py:413
-#: .\apps\crm\models.py:48 .\apps\legal_sources\enums.py:49
 msgid "High"
 msgstr "Élevée"
 
-#: .\apps\cases\admin.py:110
 msgid "Geography"
 msgstr ""
 
-#: .\apps\cases\admin.py:114
 msgid "Output"
 msgstr ""
 
-#: .\apps\cases\admin.py:128
 msgid "Input & consent"
 msgstr ""
 
-#: .\apps\cases\admin.py:132 .\apps\crm\admin.py:118
 msgid "Request metadata"
 msgstr ""
 
-#: .\apps\cases\admin.py:144
 msgid "Anonymization"
 msgstr ""
 
-#: .\apps\cases\admin.py:147 .\apps\compensation\admin.py:73
-#: .\apps\crm\admin.py:132 .\apps\legal_sources\admin.py:109
 msgid "Audit"
 msgstr ""
 
-#: .\apps\cases\admin.py:159
 msgid "Anonymize selected simulations (GDPR)"
 msgstr ""
 
-#: .\apps\cases\admin.py:169
 #, python-format
 msgid "%(count)d simulation(s) anonymized."
 msgstr ""
 
-#: .\apps\cases\forms.py:55
 msgid "Date of the accident"
 msgstr "Date de l'accident"
 
-#: .\apps\cases\forms.py:58
 msgid "If you don't know the exact date, leave this empty."
 msgstr "Si vous ne connaissez pas la date exacte, laissez ce champ vide."
 
-#: .\apps\cases\forms.py:61
 msgid "Age of the injured person"
 msgstr "Âge de la personne blessée"
 
-#: .\apps\cases\forms.py:65
 msgid "Age at the time of the accident, in years."
 msgstr "Âge au moment de l'accident, en années."
 
-#: .\apps\cases\forms.py:68
 msgid "Permanent disability (%)"
 msgstr "Incapacité permanente (%)"
 
-#: .\apps\cases\forms.py:74
 msgid "Only if a medical report has assessed it. Otherwise leave empty."
 msgstr "Uniquement si une expertise médicale l'a évaluée. Sinon, laissez vide."
 
-#: .\apps\cases\forms.py:77
 msgid "Total temporary disability — days"
 msgstr "Incapacité temporaire totale — jours"
 
-#: .\apps\cases\forms.py:83
 msgid "Partial temporary disability — days"
 msgstr "Incapacité temporaire partielle — jours"
 
-#: .\apps\cases\forms.py:89
 msgid "Documented medical expenses"
 msgstr "Frais médicaux documentés"
 
-#: .\apps\cases\forms.py:95
 msgid "Currency: EUR. Only amounts you can document."
 msgstr "Devise : EUR. Uniquement les montants que vous pouvez justifier."
 
-#: .\apps\cases\forms.py:98
 msgid "Lost income"
 msgstr "Revenu perdu"
 
-#: .\apps\cases\forms.py:104
 msgid "Currency: EUR. Net income lost due to the accident."
 msgstr "Devise : EUR. Revenu net perdu en raison de l'accident."
 
-#: .\apps\cases\forms.py:107
 msgid "Estimated own fault (%)"
 msgstr "Part de responsabilité personnelle estimée (%)"
 
-#: .\apps\cases\forms.py:113
 msgid "0% if you believe you bear no responsibility."
 msgstr "0 % si vous estimez n'avoir aucune responsabilité."
 
-#: .\apps\cases\forms.py:127 .\apps\cases\forms.py:334
 msgid ""
 "I consent to processing the data above for the sole purpose of producing an "
 "indicative simulation."
@@ -587,79 +462,72 @@ msgstr ""
 "Je consens au traitement des données ci-dessus aux seules fins de produire "
 "une simulation indicative."
 
-#: .\apps\cases\forms.py:132 .\apps\cases\forms.py:339
 msgid "You must accept the simulation consent to run a simulation."
 msgstr "Vous devez accepter le consentement à la simulation pour la lancer."
 
-#: .\apps\cases\forms.py:148
 msgid "The accident date cannot be in the future."
 msgstr "La date de l'accident ne peut pas être dans le futur."
 
-#: .\apps\cases\forms.py:254
 msgid "Country of the deceased's last residence"
 msgstr "Pays de la dernière résidence du défunt"
 
-#: .\apps\cases\forms.py:257
 msgid "ISO 3166-1 alpha-2 code, e.g. MA, TN, IT, FR, BE."
 msgstr "Code ISO 3166-1 alpha-2, par ex. MA, TN, IT, FR, BE."
 
-#: .\apps\cases\forms.py:260
 msgid "Nationality of the deceased"
 msgstr "Nationalité du défunt"
 
-#: .\apps\cases\forms.py:263
 msgid "ISO 3166-1 alpha-2 code."
 msgstr "Code ISO 3166-1 alpha-2."
 
-#: .\apps\cases\forms.py:266
 msgid "Did the deceased leave a will?"
 msgstr "Le défunt a-t-il laissé un testament ?"
 
-#: .\apps\cases\forms.py:272
+msgid "Surviving husband (the deceased was a wife)"
+msgstr "Mari survivant (le défunt était une épouse)"
+
+msgid "Surviving wife (the deceased was a husband)"
+msgstr "Épouse survivante (le défunt était un époux)"
+
 msgid "Surviving spouse"
 msgstr "Conjoint survivant"
 
-#: .\apps\cases\forms.py:274
 msgid "Tick if the deceased is survived by a spouse."
 msgstr "Cochez si le défunt laisse un conjoint survivant."
 
-#: .\apps\cases\forms.py:277
+msgid "Surviving spouse — gender"
+msgstr "Conjoint survivant — sexe"
+
+msgid "Required only when a surviving spouse exists. Moroccan and Tunisian inheritance frameworks assign distinct shares to a surviving husband versus a surviving wife (Moudawana art. 342-344)."
+msgstr "Requis uniquement lorsqu’un conjoint survit. Les régimes successoraux marocain et tunisien attribuent des parts distinctes au mari survivant et à l’épouse survivante (Moudawana art. 342-344)."
+
 msgid "Number of surviving sons"
 msgstr "Nombre de fils survivants"
 
-#: .\apps\cases\forms.py:283
 msgid "Number of surviving daughters"
 msgstr "Nombre de filles survivantes"
 
-#: .\apps\cases\forms.py:289
 msgid "Father alive"
 msgstr "Père en vie"
 
-#: .\apps\cases\forms.py:291
 msgid "Tick if the deceased's father is alive."
 msgstr "Cochez si le père du défunt est en vie."
 
-#: .\apps\cases\forms.py:294
 msgid "Mother alive"
 msgstr "Mère en vie"
 
-#: .\apps\cases\forms.py:296
 msgid "Tick if the deceased's mother is alive."
 msgstr "Cochez si la mère du défunt est en vie."
 
-#: .\apps\cases\forms.py:299
 msgid "Number of surviving siblings"
 msgstr "Nombre de frères et sœurs survivants"
 
-#: .\apps\cases\forms.py:303
 msgid "Optional. Brothers and sisters of the deceased."
 msgstr "Facultatif. Frères et sœurs du défunt."
 
-#: .\apps\cases\forms.py:308
 msgid "Estimated estate value (EUR)"
 msgstr "Valeur estimée de la succession (EUR)"
 
-#: .\apps\cases\forms.py:314
 msgid ""
 "Optional. Used only to render indicative shares; the Studio verifies the "
 "actual estate before any final figure."
@@ -667,183 +535,126 @@ msgstr ""
 "Facultatif. Sert uniquement à rendre les parts indicatives ; le Cabinet "
 "vérifie la succession effective avant tout chiffre définitif."
 
-#: .\apps\cases\forms.py:319
 msgid "Countries where assets are located"
 msgstr "Pays où se trouvent les biens"
 
-#: .\apps\cases\forms.py:322
 msgid "Comma-separated ISO codes, e.g. 'MA, FR, IT'."
 msgstr "Codes ISO séparés par virgule, par ex. 'MA, FR, IT'."
 
-#: .\apps\cases\forms.py:325
 msgid "Additional context"
 msgstr "Contexte additionnel"
 
-#: .\apps\cases\forms.py:329
 msgid "Anything you think is relevant. No documents needed."
 msgstr "Tout ce que vous jugez pertinent. Aucun document n'est nécessaire."
 
-#: .\apps\cases\models.py:45 .\apps\crm\models.py:56
-#: .\apps\reports\models.py:40
+msgid "Please indicate whether the surviving spouse is a husband or a wife. Moroccan and Tunisian inheritance rules assign different shares depending on the spouse's gender."
+msgstr "Veuillez indiquer si le conjoint survivant est un mari ou une épouse. Les règles successorales marocaine et tunisienne attribuent des parts différentes selon le sexe du conjoint."
+
 msgid "public id"
 msgstr ""
 
-#: .\apps\cases\models.py:59 .\apps\compliance\models.py:138
-#: .\apps\crm\models.py:79
 msgid "session key"
 msgstr ""
 
-#: .\apps\cases\models.py:65 .\apps\compensation\models.py:76
-#: .\apps\jurisdictions\models.py:170 .\apps\legal_sources\models.py:55
 msgid "jurisdiction"
 msgstr ""
 
-#: .\apps\cases\models.py:73 .\apps\compensation\models.py:82
-#: .\apps\crm\models.py:96 .\apps\jurisdictions\models.py:44
-#: .\apps\jurisdictions\models.py:132 .\apps\legal_sources\models.py:49
 msgid "country"
 msgstr ""
 
-#: .\apps\cases\models.py:79 .\apps\compensation\models.py:86
-#: .\apps\crm\models.py:101
 msgid "case type"
 msgstr ""
 
-#: .\apps\cases\models.py:85 .\apps\compliance\models.py:161
 msgid "locale"
 msgstr ""
 
-#: .\apps\cases\models.py:91
 msgid "input data"
 msgstr ""
 
-#: .\apps\cases\models.py:92
 msgid "output data"
 msgstr ""
 
-#: .\apps\cases\models.py:93
 msgid "sources snapshot"
 msgstr ""
 
-#: .\apps\cases\models.py:96 .\apps\compensation\models.py:109
-#: .\apps\compensation\models.py:318 .\apps\compliance\models.py:234
-#: .\apps\crm\models.py:110 .\apps\legal_sources\models.py:89
-#: .\apps\reports\models.py:74
 msgid "status"
 msgstr ""
 
-#: .\apps\cases\models.py:103
 msgid "confidence"
 msgstr ""
 
-#: .\apps\cases\models.py:109 .\apps\jurisdictions\models.py:73
 msgid "currency"
 msgstr ""
 
-#: .\apps\cases\models.py:111
 msgid "estimated min"
 msgstr ""
 
-#: .\apps\cases\models.py:118
 msgid "estimated mid"
 msgstr ""
 
-#: .\apps\cases\models.py:125
 msgid "estimated max"
 msgstr ""
 
-#: .\apps\cases\models.py:136 .\apps\compliance\models.py:168
-#: .\apps\crm\models.py:127
 msgid "consent record"
 msgstr ""
 
-#: .\apps\cases\models.py:141 .\apps\compliance\models.py:159
-#: .\apps\compliance\models.py:297 .\apps\crm\models.py:132
 msgid "ip address"
 msgstr ""
 
-#: .\apps\cases\models.py:142 .\apps\compliance\models.py:160
-#: .\apps\compliance\models.py:298 .\apps\crm\models.py:133
 msgid "user agent"
 msgstr ""
 
-#: .\apps\cases\models.py:143 .\apps\compliance\models.py:162
-#: .\apps\crm\models.py:134
 msgid "source path"
 msgstr ""
 
-#: .\apps\cases\models.py:145
 msgid "anonymized"
 msgstr ""
 
-#: .\apps\cases\models.py:146
 msgid "anonymized at"
 msgstr ""
 
-#: .\apps\cases\models.py:152 .\apps\cases\models.py:189
-#: .\apps\crm\models.py:66 .\apps\reports\models.py:50
 msgid "simulation"
 msgstr ""
 
-#: .\apps\cases\models.py:153
 msgid "simulations"
 msgstr ""
 
-#: .\apps\cases\models.py:179 .\apps\crm\models.py:178
 msgid "Created"
 msgstr ""
 
-#: .\apps\cases\models.py:180
 msgid "Computed"
 msgstr ""
 
-#: .\apps\cases\models.py:181
 msgid "Anonymized"
 msgstr ""
 
-#: .\apps\cases\models.py:183 .\apps\compliance\enums.py:29
-#: .\apps\compliance\enums.py:54 .\apps\crm\models.py:185
 msgid "Other"
 msgstr ""
 
-#: .\apps\cases\models.py:192 .\apps\compliance\models.py:285
-#: .\apps\compliance\models.py:352 .\apps\crm\models.py:194
 msgid "event type"
 msgstr ""
 
-#: .\apps\cases\models.py:196 .\apps\crm\models.py:107 .\apps\crm\models.py:198
 msgid "message"
 msgstr ""
 
-#: .\apps\cases\models.py:197 .\apps\compensation\models.py:417
-#: .\apps\compliance\models.py:163 .\apps\compliance\models.py:300
-#: .\apps\compliance\models.py:373 .\apps\compliance\models.py:435
-#: .\apps\crm\models.py:199 .\apps\reports\models.py:81
 msgid "metadata"
 msgstr ""
 
-#: .\apps\cases\models.py:202
 msgid "simulation event"
 msgstr ""
 
-#: .\apps\cases\models.py:203
 msgid "simulation events"
 msgstr ""
 
-#: .\apps\cases\public_result_messages.py:57
-#: .\apps\cases\public_result_messages.py:124 .\apps\core\public_status.py:97
 msgid "Preliminary legal assessment"
 msgstr "Évaluation juridique préliminaire"
 
-#: .\apps\cases\public_result_messages.py:59
-#: .\apps\cases\public_result_messages.py:126
 msgid ""
 "Your case has been received for a preliminary legal assessment by the Studio."
 msgstr ""
 "Votre dossier a été reçu pour une évaluation juridique préliminaire par le "
 "Cabinet."
 
-#: .\apps\cases\public_result_messages.py:62
 msgid ""
 "A Studio lawyer reviews the facts and the applicable source material before "
 "any indicative amount is shown. The platform publishes amounts only when "
@@ -857,8 +668,6 @@ msgstr ""
 "pour la juridiction ; pour les accidents de la route transfrontaliers, le "
 "Cabinet préfère une lecture manuelle du dossier avant toute estimation."
 
-#: .\apps\cases\public_result_messages.py:70
-#: .\apps\cases\public_result_messages.py:135
 msgid ""
 "A lawyer reads the case manually and replies on whether and how the firm can "
 "help."
@@ -866,9 +675,6 @@ msgstr ""
 "Un avocat lit le dossier manuellement et répond sur la possibilité et la "
 "manière dont le Cabinet peut intervenir."
 
-#: .\apps\cases\public_result_messages.py:72
-#: .\apps\cases\public_result_messages.py:106
-#: .\apps\cases\public_result_messages.py:137
 msgid ""
 "Keep the simulation reference below — the Studio uses it to retrieve the "
 "exact inputs of this run."
@@ -876,8 +682,6 @@ msgstr ""
 "Conservez la référence de la simulation ci-dessous — le Cabinet l'utilise "
 "pour retrouver les données exactes de cette exécution."
 
-#: .\apps\cases\public_result_messages.py:76
-#: .\apps\cases\public_result_messages.py:110
 msgid ""
 "You can download a PDF of the submission for your records or to share with "
 "another professional."
@@ -885,26 +689,15 @@ msgstr ""
 "Vous pouvez télécharger un PDF de la soumission pour vos archives ou pour le "
 "partager avec un autre professionnel."
 
-#: .\apps\cases\public_result_messages.py:80
-#: .\apps\cases\public_result_messages.py:114
-#: .\apps\cases\public_result_messages.py:141
 msgid "Request the Studio review"
 msgstr "Demander une revue juridique"
 
-#: .\apps\cases\public_result_messages.py:81
-#: .\apps\cases\public_result_messages.py:115
-#: .\apps\cases\public_result_messages.py:142
-#: .\apps\cases\public_result_messages.py:161
-#: .\templates\public\contact.html:126
-#: .\templates\public\contact_thank_you.html:24
 msgid "Back to the wizard"
 msgstr "Retour à l’assistant"
 
-#: .\apps\cases\public_result_messages.py:86 .\apps\core\public_status.py:123
 msgid "International inheritance review"
 msgstr "Analyse successorale internationale"
 
-#: .\apps\cases\public_result_messages.py:88
 msgid ""
 "Your inheritance case has been received for manual legal review by the "
 "Studio."
@@ -912,7 +705,6 @@ msgstr ""
 "Votre dossier successoral a été reçu pour une revue juridique manuelle par "
 "le Cabinet."
 
-#: .\apps\cases\public_result_messages.py:91
 msgid ""
 "A Studio lawyer examines the family structure, the applicable law and the "
 "cross-border elements before any inheritance shares are produced. The "
@@ -926,7 +718,6 @@ msgstr ""
 "interagissent avec le Règlement UE 650/2012 au cas par cas : la plateforme "
 "ne publie pas de parts automatiques sans cette lecture manuelle."
 
-#: .\apps\cases\public_result_messages.py:101
 msgid ""
 "A lawyer reads the family situation and the patrimony context you entered, "
 "and identifies the law applicable to the succession."
@@ -934,7 +725,6 @@ msgstr ""
 "Un avocat lit la situation familiale et le contexte patrimonial que vous "
 "avez saisis, et identifie la loi applicable à la succession."
 
-#: .\apps\cases\public_result_messages.py:117
 msgid ""
 "The Studio will review the applicable law and cross-border elements before "
 "any shares are calculated."
@@ -942,7 +732,6 @@ msgstr ""
 "Le Cabinet examinera la loi applicable et les éléments transfrontaliers "
 "avant tout calcul de parts successorales."
 
-#: .\apps\cases\public_result_messages.py:129
 msgid ""
 "A Studio lawyer reviews the case before any indicative amount is published. "
 "The platform produces estimates only when validated quantification sources "
@@ -953,15 +742,12 @@ msgstr ""
 "sources de quantification validées sont disponibles pour la juridiction et "
 "le type de dossier."
 
-#: .\apps\cases\public_result_messages.py:147
 msgid "More information needed"
 msgstr "Informations supplémentaires nécessaires"
 
-#: .\apps\cases\public_result_messages.py:148
 msgid "The Studio needs a little more context before it can review your case."
 msgstr ""
 
-#: .\apps\cases\public_result_messages.py:150
 msgid ""
 "Some of the inputs were not enough to identify the applicable law or the "
 "family structure. You can submit the case to the Studio with the context you "
@@ -973,674 +759,495 @@ msgstr ""
 "contexte dont vous disposez aujourd'hui — un avocat répondra avec les "
 "questions complémentaires nécessaires à une revue complète."
 
-#: .\apps\cases\public_result_messages.py:157
 msgid "Submit the case to the Studio with what you know today."
 msgstr ""
 "Soumettez le dossier au Cabinet avec les éléments dont vous disposez "
 "aujourd'hui."
 
-#: .\apps\cases\public_result_messages.py:158
 msgid "A lawyer replies with the additional context the case needs."
 msgstr ""
 
-#: .\apps\cases\public_result_messages.py:160 .\apps\core\public_status.py:111
-#: .\apps\core\public_status.py:136
-#: .\templates\public\_inheritance_wizard_fields.html:140
 msgid "Submit the case to the Studio"
 msgstr "Soumettre le dossier au Cabinet"
 
-#: .\apps\compensation\admin.py:64
 msgid "rows"
 msgstr ""
 
-#: .\apps\compensation\admin.py:70
 msgid "Source & geography"
 msgstr ""
 
-#: .\apps\compensation\admin.py:71
 msgid "Validity"
 msgstr ""
 
-#: .\apps\compensation\admin.py:72 .\apps\legal_sources\admin.py:108
 msgid "Notes"
 msgstr ""
 
-#: .\apps\compensation\models.py:47 .\apps\legal_sources\enums.py:23
 msgid "Draft"
 msgstr ""
 
-#: .\apps\compensation\models.py:48 .\apps\legal_sources\enums.py:25
 msgid "Needs review"
 msgstr ""
 
-#: .\apps\compensation\models.py:49 .\apps\compliance\enums.py:35
-#: .\apps\legal_sources\enums.py:27
 msgid "Approved"
 msgstr ""
 
-#: .\apps\compensation\models.py:50 .\apps\legal_sources\enums.py:28
 msgid "Deprecated"
 msgstr ""
 
-#: .\apps\compensation\models.py:69 .\apps\compensation\models.py:392
-#: .\apps\legal_sources\models.py:135 .\apps\legal_sources\models.py:201
-#: .\apps\legal_sources\models.py:259 .\apps\legal_sources\models.py:316
 msgid "legal source"
 msgstr ""
 
-#: .\apps\compensation\models.py:70
 msgid "Fonte legale da cui i dati sono estratti."
 msgstr ""
 
-#: .\apps\compensation\models.py:91
 msgid ""
 "Tipo di caso a cui il dataset si applica. Determina quale calculator può "
 "eventualmente leggerlo."
 msgstr ""
 
-#: .\apps\compensation\models.py:97 .\apps\compensation\models.py:292
-#: .\apps\compliance\models.py:36 .\apps\compliance\models.py:189
-#: .\apps\crm\admin.py:139 .\apps\jurisdictions\models.py:32
-#: .\apps\jurisdictions\models.py:68 .\apps\jurisdictions\models.py:95
-#: .\apps\jurisdictions\models.py:140
 msgid "name"
 msgstr ""
 
-#: .\apps\compensation\models.py:99
 msgid "Etichetta umana, es. 'Tabella Unica Nazionale 2025'."
 msgstr ""
 
-#: .\apps\compensation\models.py:102 .\apps\legal_sources\models.py:204
 msgid "version label"
 msgstr ""
 
-#: .\apps\compensation\models.py:105
 msgid "Versione interna, es. '2025.1'."
 msgstr ""
 
-#: .\apps\compensation\models.py:116 .\apps\legal_sources\models.py:215
 msgid "valid from"
 msgstr ""
 
-#: .\apps\compensation\models.py:117 .\apps\legal_sources\models.py:216
 msgid "valid to"
 msgstr ""
 
-#: .\apps\compensation\models.py:119 .\apps\compensation\models.py:236
-#: .\apps\compensation\models.py:325 .\apps\jurisdictions\models.py:38
-#: .\apps\jurisdictions\models.py:164 .\apps\legal_sources\models.py:127
-#: .\apps\legal_sources\models.py:227
 msgid "notes"
 msgstr ""
 
-#: .\apps\compensation\models.py:125
 msgid "compensation dataset"
 msgstr ""
 
-#: .\apps\compensation\models.py:126
 msgid "compensation datasets"
 msgstr ""
 
-#: .\apps\compensation\models.py:144
 msgid "An approved dataset must reference a legal source."
 msgstr ""
 
-#: .\apps\compensation\models.py:150
 msgid "Cannot mark dataset APPROVED while its legal source is not APPROVED."
 msgstr ""
 
-#: .\apps\compensation\models.py:158
 msgid "`valid_to` must be greater than or equal to `valid_from`."
 msgstr ""
 
-#: .\apps\compensation\models.py:189 .\apps\compensation\models.py:284
-#: .\apps\compensation\models.py:400
 msgid "dataset"
 msgstr ""
 
-#: .\apps\compensation\models.py:193
 msgid "row type"
 msgstr ""
 
-#: .\apps\compensation\models.py:197
 msgid ""
 "Categoria libera della riga, es. 'point_value', "
 "'daily_temporary_disability', 'multiplier'."
 msgstr ""
 
-#: .\apps\compensation\models.py:202
 msgid "age min"
 msgstr ""
 
-#: .\apps\compensation\models.py:203
 msgid "age max"
 msgstr ""
 
-#: .\apps\compensation\models.py:205
 msgid "disability % min"
 msgstr ""
 
-#: .\apps\compensation\models.py:206
 msgid "disability % max"
 msgstr ""
 
-#: .\apps\compensation\models.py:209
 msgid "point value"
 msgstr ""
 
-#: .\apps\compensation\models.py:216
 msgid "daily amount"
 msgstr ""
 
-#: .\apps\compensation\models.py:223
 msgid "coefficient"
 msgstr ""
 
-#: .\apps\compensation\models.py:231
 msgid "extra"
 msgstr ""
 
-#: .\apps\compensation\models.py:234
 msgid "Campi opzionali specifici della tabella, JSON libero."
 msgstr ""
 
-#: .\apps\compensation\models.py:242
 msgid "compensation table row"
 msgstr ""
 
-#: .\apps\compensation\models.py:243
 msgid "compensation table rows"
 msgstr ""
 
-#: .\apps\compensation\models.py:255
 msgid "`age_max` must be >= `age_min`."
 msgstr ""
 
-#: .\apps\compensation\models.py:262
 msgid "`disability_max` must be >= `disability_min`."
 msgstr ""
 
-#: .\apps\compensation\models.py:288 .\apps\jurisdictions\models.py:135
 msgid "internal code"
 msgstr ""
 
-#: .\apps\compensation\models.py:290
 msgid "Identificatore stabile, es. 'tun_biologico_punto'."
 msgstr ""
 
-#: .\apps\compensation\models.py:294
 msgid "expression text"
 msgstr ""
 
-#: .\apps\compensation\models.py:297
 msgid ""
 "Descrizione testuale della formula, riprodotta dalla fonte. Non viene "
 "valutata automaticamente: serve come traccia."
 msgstr ""
 
-#: .\apps\compensation\models.py:302
 msgid "parameters"
 msgstr ""
 
-#: .\apps\compensation\models.py:305
 msgid "Mappa parametri opzionale, JSON libero."
 msgstr ""
 
-#: .\apps\compensation\models.py:308
 msgid "source reference"
 msgstr ""
 
-#: .\apps\compensation\models.py:312
 msgid ""
 "Riferimento testuale alla porzione di fonte da cui la formula è stata "
 "estratta, es. 'art. 138 comma 2'."
 msgstr ""
 
-#: .\apps\compensation\models.py:331
 msgid "calculation formula"
 msgstr ""
 
-#: .\apps\compensation\models.py:332
 msgid "calculation formulas"
 msgstr ""
 
-#: .\apps\compensation\models.py:351
 msgid "An approved formula must belong to a dataset."
 msgstr ""
 
-#: .\apps\compensation\models.py:357
 msgid "Cannot mark formula APPROVED while its dataset is not APPROVED."
 msgstr ""
 
-#: .\apps\compensation\models.py:379
 msgid "PDF attached"
 msgstr "PDF joint"
 
-#: .\apps\compensation\models.py:380
 msgid "CSV import"
 msgstr ""
 
-#: .\apps\compensation\models.py:381
 msgid "Manual entry"
 msgstr ""
 
-#: .\apps\compensation\models.py:384
 msgid "Success"
 msgstr ""
 
-#: .\apps\compensation\models.py:385
 msgid "Partial"
 msgstr ""
 
-#: .\apps\compensation\models.py:386 .\apps\reports\models.py:37
 msgid "Failed"
 msgstr ""
 
-#: .\apps\compensation\models.py:402
 msgid ""
 "Può essere null se l'estrazione non è arrivata a creare il dataset (es. "
 "errore durante l'attach del PDF)."
 msgstr ""
 
-#: .\apps\compensation\models.py:407
 msgid "method"
 msgstr ""
 
-#: .\apps\compensation\models.py:408
 msgid "file path"
 msgstr ""
 
-#: .\apps\compensation\models.py:409 .\apps\reports\models.py:60
 msgid "file sha256"
 msgstr ""
 
-#: .\apps\compensation\models.py:410 .\apps\reports\models.py:61
 msgid "file size (bytes)"
 msgstr ""
 
-#: .\apps\compensation\models.py:412
 msgid "rows imported"
 msgstr ""
 
-#: .\apps\compensation\models.py:413
 msgid "rows skipped"
 msgstr ""
 
-#: .\apps\compensation\models.py:415
 msgid "result"
 msgstr ""
 
-#: .\apps\compensation\models.py:416 .\apps\reports\models.py:80
 msgid "error message"
 msgstr ""
 
-#: .\apps\compensation\models.py:422
 msgid "extraction log"
 msgstr ""
 
-#: .\apps\compensation\models.py:423
 msgid "extraction logs"
 msgstr ""
 
-#: .\apps\compliance\admin.py:136 .\apps\crm\admin.py:110
 msgid "Workflow"
 msgstr ""
 
-#: .\apps\compliance\admin.py:137
 msgid "Internal"
 msgstr ""
 
-#: .\apps\compliance\enums.py:23
 msgid "Simulation inputs"
 msgstr ""
 
-#: .\apps\compliance\enums.py:24
 msgid "Simulation results"
 msgstr ""
 
-#: .\apps\compliance\enums.py:25
 msgid "Lead / contact requests"
 msgstr ""
 
-#: .\apps\compliance\enums.py:26
 msgid "Uploaded documents"
 msgstr ""
 
-#: .\apps\compliance\enums.py:27
 msgid "Consent records"
 msgstr ""
 
-#: .\apps\compliance\enums.py:28
 msgid "Audit / privacy events"
 msgstr ""
 
-#: .\apps\compliance\enums.py:33 .\apps\crm\models.py:37
 msgid "Received"
 msgstr ""
 
-#: .\apps\compliance\enums.py:34
 msgid "Verifying identity"
 msgstr ""
 
-#: .\apps\compliance\enums.py:36 .\apps\crm\models.py:41
-#: .\apps\crm\models.py:182
 msgid "Rejected"
 msgstr ""
 
-#: .\apps\compliance\enums.py:37
 msgid "Completed"
 msgstr ""
 
-#: .\apps\compliance\enums.py:47
 msgid "Consent given"
 msgstr ""
 
-#: .\apps\compliance\enums.py:48
 msgid "Consent withdrawn"
 msgstr ""
 
-#: .\apps\compliance\enums.py:49
 msgid "Data accessed"
 msgstr ""
 
-#: .\apps\compliance\enums.py:50
 msgid "Data exported"
 msgstr ""
 
-#: .\apps\compliance\enums.py:51
 msgid "Data deletion requested"
 msgstr ""
 
-#: .\apps\compliance\enums.py:52
 msgid "Data deletion completed"
 msgstr ""
 
-#: .\apps\compliance\enums.py:53
 msgid "Legal source reviewed"
 msgstr ""
 
-#: .\apps\compliance\models.py:35 .\apps\compliance\models.py:188
 msgid "code"
 msgstr ""
 
-#: .\apps\compliance\models.py:37 .\apps\compliance\models.py:190
-#: .\apps\legal_sources\models.py:267
 msgid "description"
 msgstr ""
 
-#: .\apps\compliance\models.py:38 .\apps\compliance\models.py:92
-#: .\apps\compliance\models.py:201 .\apps\jurisdictions\models.py:34
-#: .\apps\jurisdictions\models.py:70 .\apps\jurisdictions\models.py:96
-#: .\apps\jurisdictions\models.py:163
 msgid "active"
 msgstr ""
 
-#: .\apps\compliance\models.py:40
 msgid "required for simulation"
 msgstr ""
 
-#: .\apps\compliance\models.py:42
 msgid "Se True, il wizard di simulazione non può procedere senza."
 msgstr ""
 
-#: .\apps\compliance\models.py:45
 msgid "required for contact"
 msgstr ""
 
-#: .\apps\compliance\models.py:47
 msgid "Se True, il lead form non può inviare senza."
 msgstr ""
 
-#: .\apps\compliance\models.py:54
 msgid "consent purpose"
 msgstr ""
 
-#: .\apps\compliance\models.py:55
 msgid "consent purposes"
 msgstr ""
 
-#: .\apps\compliance\models.py:75 .\apps\compliance\models.py:144
 msgid "purpose"
 msgstr ""
 
-#: .\apps\compliance\models.py:78
 msgid "version"
 msgstr ""
 
-#: .\apps\compliance\models.py:80
 msgid "Etichetta umana stabile, es. '2026-04' o '1.0'."
 msgstr ""
 
-#: .\apps\compliance\models.py:83 .\apps\jurisdictions\models.py:99
-#: .\apps\legal_sources\models.py:64 .\apps\reports\models.py:53
 msgid "language"
 msgstr ""
 
-#: .\apps\compliance\models.py:87 .\apps\legal_sources\models.py:42
 msgid "title"
 msgstr ""
 
-#: .\apps\compliance\models.py:88
 msgid "body"
 msgstr ""
 
-#: .\apps\compliance\models.py:90
 msgid "effective from"
 msgstr ""
 
-#: .\apps\compliance\models.py:91
 msgid "effective to"
 msgstr ""
 
-#: .\apps\compliance\models.py:98
 msgid "created by"
 msgstr ""
 
-#: .\apps\compliance\models.py:107
 msgid "consent text version"
 msgstr ""
 
-#: .\apps\compliance\models.py:108
 msgid "consent text versions"
 msgstr ""
 
-#: .\apps\compliance\models.py:150
 msgid "text version"
 msgstr ""
 
-#: .\apps\compliance\models.py:153
 msgid "Versione del testo che l'utente ha visto al momento del consenso."
 msgstr ""
 
-#: .\apps\compliance\models.py:156
 msgid "accepted"
 msgstr ""
 
-#: .\apps\compliance\models.py:157
 msgid "accepted at"
 msgstr ""
 
-#: .\apps\compliance\models.py:169
 msgid "consent records"
 msgstr ""
 
-#: .\apps\compliance\models.py:192
 msgid "retention days"
 msgstr ""
 
-#: .\apps\compliance\models.py:193
 msgid "Giorni dopo i quali il dato deve essere eliminato/anonymizzato."
 msgstr ""
 
-#: .\apps\compliance\models.py:196
 msgid "applies to"
 msgstr ""
 
-#: .\apps\compliance\models.py:207
 msgid "data retention policy"
 msgstr ""
 
-#: .\apps\compliance\models.py:208
 msgid "data retention policies"
 msgstr ""
 
-#: .\apps\compliance\models.py:229 .\apps\crm\models.py:83
 msgid "email"
 msgstr ""
 
-#: .\apps\compliance\models.py:231
 msgid "Email di contatto, anche per richieste anonime senza account."
 msgstr ""
 
-#: .\apps\compliance\models.py:240
 msgid "reason"
 msgstr ""
 
-#: .\apps\compliance\models.py:241
 msgid "requested at"
 msgstr ""
 
-#: .\apps\compliance\models.py:242
 msgid "completed at"
 msgstr ""
 
-#: .\apps\compliance\models.py:248
 msgid "handled by"
 msgstr ""
 
-#: .\apps\compliance\models.py:252 .\apps\crm\models.py:140
 msgid "internal notes"
 msgstr ""
 
-#: .\apps\compliance\models.py:255
 msgid "data deletion request"
 msgstr ""
 
-#: .\apps\compliance\models.py:256
 msgid "data deletion requests"
 msgstr ""
 
-#: .\apps\compliance\models.py:280
 msgid "actor"
 msgstr ""
 
-#: .\apps\compliance\models.py:290
 msgid "target model"
 msgstr ""
 
-#: .\apps\compliance\models.py:293
 msgid "Es. 'cases.Simulation' o 'legal_sources.LegalSource'."
 msgstr ""
 
-#: .\apps\compliance\models.py:295
 msgid "target object id"
 msgstr ""
 
-#: .\apps\compliance\models.py:299 .\apps\compliance\models.py:372
 msgid "path"
 msgstr ""
 
-#: .\apps\compliance\models.py:305
 msgid "privacy audit event"
 msgstr ""
 
-#: .\apps\compliance\models.py:306
 msgid "privacy audit events"
 msgstr ""
 
-#: .\apps\compliance\models.py:347
 msgid "Login success"
 msgstr ""
 
-#: .\apps\compliance\models.py:348
 msgid "Login failed"
 msgstr ""
 
-#: .\apps\compliance\models.py:349
 msgid "Logout"
 msgstr ""
 
-#: .\apps\compliance\models.py:366 .\apps\compliance\models.py:427
 msgid "username hash"
 msgstr ""
 
-#: .\apps\compliance\models.py:368 .\apps\compliance\models.py:429
 msgid "ip address (masked)"
 msgstr ""
 
-#: .\apps\compliance\models.py:370
 msgid "user agent hash"
 msgstr ""
 
-#: .\apps\compliance\models.py:377
 msgid "staff access event"
 msgstr ""
 
-#: .\apps\compliance\models.py:378
 msgid "staff access events"
 msgstr ""
 
-#: .\apps\compliance\models.py:408
 msgid "Admin login brute-force"
 msgstr ""
 
-#: .\apps\compliance\models.py:416
 msgid "alert type"
 msgstr ""
 
-#: .\apps\compliance\models.py:422
 msgid "severity"
 msgstr ""
 
-#: .\apps\compliance\models.py:431
 msgid "event count"
 msgstr ""
 
-#: .\apps\compliance\models.py:432
 msgid "window seconds"
 msgstr ""
 
-#: .\apps\compliance\models.py:433
 msgid "triggered at"
 msgstr ""
 
-#: .\apps\compliance\models.py:434
 msgid "cooldown until"
 msgstr ""
 
-#: .\apps\compliance\models.py:438
 msgid "staff security alert"
 msgstr ""
 
-#: .\apps\compliance\models.py:439
 msgid "staff security alerts"
 msgstr ""
 
-#: .\apps\core\_translatable_country_names.py:18
 msgid "Italy"
 msgstr "Italie"
 
-#: .\apps\core\_translatable_country_names.py:19
 msgid "France"
 msgstr "France"
 
-#: .\apps\core\_translatable_country_names.py:20
 msgid "Belgium"
 msgstr "Belgique"
 
-#: .\apps\core\_translatable_country_names.py:21
 msgid "Morocco"
 msgstr "Maroc"
 
-#: .\apps\core\_translatable_country_names.py:22
 msgid "Tunisia"
 msgstr "Tunisie"
 
-#: .\apps\core\public_status.py:77
 msgid "Indicative calculation available"
 msgstr "Calcul indicatif disponible"
 
-#: .\apps\core\public_status.py:80
 msgid ""
 "An indicative calculation is available, based on the verified national "
 "dataset for the chosen jurisdiction."
@@ -1648,21 +1255,17 @@ msgstr ""
 "Un calcul indicatif est disponible, fondé sur le jeu de données national "
 "vérifié pour la juridiction choisie."
 
-#: .\apps\core\public_status.py:84
 msgid ""
 "Indicative simulation based on the verified national dataset. The Studio "
 "remains available to review the case and discuss the next step."
 msgstr ""
 
-#: .\apps\core\public_status.py:88
 msgid "Run an indicative simulation"
 msgstr "Lancer une simulation indicative"
 
-#: .\apps\core\public_status.py:89
 msgid "Request a Studio review of this case"
 msgstr "Demander une revue du Studio pour ce dossier"
 
-#: .\apps\core\public_status.py:100
 msgid ""
 "The Studio offers a preliminary legal assessment for this country: each case "
 "is reviewed manually and no automatic amount is published before the "
@@ -1672,25 +1275,20 @@ msgstr ""
 "chaque dossier est examiné manuellement et aucun montant automatique n’est "
 "publié avant la vérification des sources de quantification."
 
-#: .\apps\core\public_status.py:106
 msgid ""
 "The Studio reviews the case manually, on the basis of the verified "
 "quantification sources for the relevant jurisdiction. No automatic amount is "
 "published before the case has been examined by a lawyer."
 msgstr ""
 
-#: .\apps\core\public_status.py:112 .\apps\core\public_status.py:137
-#: .\apps\core\public_status.py:161
 msgid "Request a manual legal review"
 msgstr "Demander un examen juridique manuel"
 
-#: .\apps\core\public_status.py:114
 msgid ""
 "No automatic amount is shown before the quantification sources have been "
 "verified for the case."
 msgstr ""
 
-#: .\apps\core\public_status.py:126
 msgid ""
 "The Studio reviews each inheritance case manually; inheritance shares are "
 "not computed automatically without an applicable-law mapping for the case."
@@ -1699,7 +1297,6 @@ msgstr ""
 "successorales ne sont pas calculées automatiquement sans cartographie de la "
 "loi applicable au dossier."
 
-#: .\apps\core\public_status.py:131
 msgid ""
 "The Studio reviews the case manually under the applicable family-law regime "
 "and EU Regulation 650/2012. Inheritance shares are not computed "
@@ -1710,7 +1307,6 @@ msgstr ""
 "sont pas calculées automatiquement sans cartographie de la loi applicable au "
 "dossier."
 
-#: .\apps\core\public_status.py:139
 msgid ""
 "Inheritance shares are not computed automatically without an applicable-law "
 "mapping for the case."
@@ -1718,11 +1314,9 @@ msgstr ""
 "Les parts successorales ne sont pas calculées automatiquement sans "
 "cartographie de la loi applicable au dossier."
 
-#: .\apps\core\public_status.py:148
 msgid "Manual legal review"
 msgstr "Examen juridique manuel"
 
-#: .\apps\core\public_status.py:151
 msgid ""
 "The Studio offers a manual legal review for this country on request, while "
 "the national quantification dataset is being verified by our team."
@@ -1730,7 +1324,6 @@ msgstr ""
 "Le Cabinet propose pour ce pays un examen juridique manuel sur demande, le "
 "temps que notre équipe vérifie le jeu de données national de quantification."
 
-#: .\apps\core\public_status.py:156
 msgid ""
 "A lawyer of the Studio reviews the case directly, on the basis of the legal "
 "sources of the relevant jurisdiction. No automatic amount is published until "
@@ -1740,11 +1333,9 @@ msgstr ""
 "juridiques de la juridiction concernée. Aucun montant automatique n’est "
 "publié avant la vérification du jeu de données de quantification."
 
-#: .\apps\core\public_status.py:162 .\templates\public\contact.html:11
 msgid "Contact the Studio"
 msgstr "Contacter le Studio"
 
-#: .\apps\core\public_status.py:164
 msgid ""
 "No automatic amount is published until the underlying quantification dataset "
 "has been verified for this country."
@@ -1752,12 +1343,10 @@ msgstr ""
 "Aucun montant automatique n’est publié avant la vérification du jeu de "
 "données de quantification pour ce pays."
 
-#: .\apps\core\views.py:292 .\templates\public\country_landing.html:32
 #, python-format
 msgid "%(country)s — coverage and legal sources"
 msgstr "%(country)s — couverture et sources juridiques"
 
-#: .\apps\core\views.py:295 .\templates\public\country_landing.html:36
 #, python-format
 msgid ""
 "Indicative compensation simulation for %(country)s, based on approved legal "
@@ -1767,7 +1356,6 @@ msgstr ""
 "sources juridiques approuvées. L'estimation est informative et ne garantit "
 "jamais aucun résultat."
 
-#: .\apps\core\views.py:301
 #, python-format
 msgid ""
 "%(country)s legal sources are under Studio review. No automatic estimate is "
@@ -1777,517 +1365,389 @@ msgstr ""
 "Cabinet. Aucune estimation automatique n'est actuellement émise ; "
 "l'assistant enregistre votre demande pour une revue juridique."
 
-#: .\apps\crm\admin.py:94
 msgid "Contact"
 msgstr ""
 
-#: .\apps\crm\admin.py:106
 msgid "Case context"
 msgstr ""
 
-#: .\apps\crm\admin.py:114 .\templates\partials\footer.html:34
-#: .\templates\public\privacy.html:4 .\templates\public\privacy.html:9
 msgid "Privacy"
 msgstr "Confidentialité"
 
-#: .\apps\crm\admin.py:143
 msgid "Mark selected leads as Contacted"
 msgstr ""
 
-#: .\apps\crm\admin.py:157
 #, python-format
 msgid "%(n)d lead(s) marked as contacted."
 msgstr ""
 
-#: .\apps\crm\admin.py:159
 msgid "Mark selected leads as Qualified"
 msgstr ""
 
-#: .\apps\crm\admin.py:171
 #, python-format
 msgid "%(n)d lead(s) marked as qualified."
 msgstr ""
 
-#: .\apps\crm\admin.py:173
 msgid "Archive selected leads"
 msgstr ""
 
-#: .\apps\crm\admin.py:185
 #, python-format
 msgid "%(n)d lead(s) archived."
 msgstr ""
 
-#: .\apps\crm\forms.py:30
 msgid "First name"
 msgstr "Prénom"
 
-#: .\apps\crm\forms.py:34
 msgid "Last name"
 msgstr "Nom"
 
-#: .\apps\crm\forms.py:37
 msgid "Email"
 msgstr "Courriel"
 
-#: .\apps\crm\forms.py:39
 msgid "Phone number"
 msgstr "Téléphone"
 
-#: .\apps\crm\forms.py:44
 msgid "Preferred language"
 msgstr "Langue préférée"
 
-#: .\apps\crm\forms.py:49
 msgid "Country"
 msgstr "Pays"
 
-#: .\apps\crm\forms.py:52
 msgid "Select a country (optional)"
 msgstr "Choisir un pays (optionnel)"
 
-#: .\apps\crm\forms.py:55
 msgid "Case type"
 msgstr "Type d'affaire"
 
-#: .\apps\crm\forms.py:56
 msgid "Not specified"
 msgstr "Non précisé"
 
-#: .\apps\crm\forms.py:60
 msgid "How can we help?"
 msgstr "Comment pouvons-nous vous aider ?"
 
-#: .\apps\crm\forms.py:65
 msgid "I have read and accept the privacy notice."
 msgstr "J'ai lu et j'accepte l'avis de confidentialité."
 
-#: .\apps\crm\forms.py:68
 msgid "You must accept the privacy notice to send your request."
 msgstr ""
 "Vous devez accepter l'avis de confidentialité pour envoyer votre demande."
 
-#: .\apps\crm\forms.py:83
 #, python-format
 msgid "Please describe your case in at least %(n)d characters."
 msgstr "Veuillez décrire votre dossier en au moins %(n)d caractères."
 
-#: .\apps\crm\models.py:38 .\apps\crm\models.py:179
 msgid "Contacted"
 msgstr ""
 
-#: .\apps\crm\models.py:39 .\apps\crm\models.py:180
 msgid "Qualified"
 msgstr ""
 
-#: .\apps\crm\models.py:40 .\apps\crm\models.py:181
 msgid "Converted"
 msgstr ""
 
-#: .\apps\crm\models.py:42 .\apps\crm\models.py:183
 msgid "Archived"
 msgstr ""
 
-#: .\apps\crm\models.py:47
 msgid "Normal"
 msgstr ""
 
-#: .\apps\crm\models.py:49
 msgid "Urgent"
 msgstr ""
 
-#: .\apps\crm\models.py:81
 msgid "first name"
 msgstr ""
 
-#: .\apps\crm\models.py:82
 msgid "last name"
 msgstr ""
 
-#: .\apps\crm\models.py:117
 msgid "priority"
 msgstr ""
 
-#: .\apps\crm\models.py:136
 msgid "utm source"
 msgstr ""
 
-#: .\apps\crm\models.py:137
 msgid "utm medium"
 msgstr ""
 
-#: .\apps\crm\models.py:138
 msgid "utm campaign"
 msgstr ""
 
-#: .\apps\crm\models.py:145
 msgid "assigned to"
 msgstr ""
 
-#: .\apps\crm\models.py:152
 msgid "contacted at"
 msgstr ""
 
-#: .\apps\crm\models.py:153
 msgid "converted at"
 msgstr ""
 
-#: .\apps\crm\models.py:156 .\apps\crm\models.py:191
 msgid "lead"
 msgstr ""
 
-#: .\apps\crm\models.py:157
 msgid "leads"
 msgstr ""
 
-#: .\apps\crm\models.py:184
 msgid "Note"
 msgstr ""
 
-#: .\apps\crm\models.py:204
 msgid "lead event"
 msgstr ""
 
-#: .\apps\crm\models.py:205
 msgid "lead events"
 msgstr ""
 
-#: .\apps\jurisdictions\models.py:21
 msgid "ISO alpha-2 code"
 msgstr ""
 
-#: .\apps\jurisdictions\models.py:24
 msgid "Codice ISO 3166-1 alpha-2, es. IT, FR, BE, MA, TN."
 msgstr ""
 
-#: .\apps\jurisdictions\models.py:27
 msgid "ISO alpha-3 code"
 msgstr ""
 
-#: .\apps\jurisdictions\models.py:30
 msgid "Codice ISO 3166-1 alpha-3, opzionale."
 msgstr ""
 
-#: .\apps\jurisdictions\models.py:36
 msgid "Se False, il paese non viene proposto nei wizard pubblici."
 msgstr ""
 
-#: .\apps\jurisdictions\models.py:45
 msgid "countries"
 msgstr ""
 
-#: .\apps\jurisdictions\models.py:63
 msgid "ISO 4217 code"
 msgstr ""
 
-#: .\apps\jurisdictions\models.py:66
 msgid "Codice ISO 4217, es. EUR, MAD, TND, USD."
 msgstr ""
 
-#: .\apps\jurisdictions\models.py:69
 msgid "symbol"
 msgstr ""
 
-#: .\apps\jurisdictions\models.py:74
 msgid "currencies"
 msgstr ""
 
-#: .\apps\jurisdictions\models.py:90
 msgid "ISO 639-1 code"
 msgstr ""
 
-#: .\apps\jurisdictions\models.py:93
 msgid "Codice ISO 639-1, es. it, fr, en, ar."
 msgstr ""
 
-#: .\apps\jurisdictions\models.py:100
 msgid "languages"
 msgstr ""
 
-#: .\apps\jurisdictions\models.py:122
 msgid "Civil law"
 msgstr ""
 
-#: .\apps\jurisdictions\models.py:123
 msgid "Common law"
 msgstr ""
 
-#: .\apps\jurisdictions\models.py:124
 msgid "Mixed system"
 msgstr ""
 
-#: .\apps\jurisdictions\models.py:125
 msgid "Religious-based"
 msgstr ""
 
-#: .\apps\jurisdictions\models.py:126
 msgid "Unknown / not classified"
 msgstr ""
 
-#: .\apps\jurisdictions\models.py:138
 msgid "Identificatore interno stabile, es. IT, IT-LOM, FR, BE, MA, TN."
 msgstr ""
 
-#: .\apps\jurisdictions\models.py:142
 msgid "legal system"
 msgstr ""
 
-#: .\apps\jurisdictions\models.py:151
 msgid "default currency"
 msgstr ""
 
-#: .\apps\jurisdictions\models.py:159
 msgid "default language"
 msgstr ""
 
-#: .\apps\jurisdictions\models.py:171
 msgid "jurisdictions"
 msgstr ""
 
-#: .\apps\legal_sources\admin.py:86
 msgid "Geography & language"
 msgstr ""
 
-#: .\apps\legal_sources\admin.py:90
 msgid "Classification"
 msgstr ""
 
-#: .\apps\legal_sources\admin.py:94
 msgid "Dates"
 msgstr ""
 
-#: .\apps\legal_sources\admin.py:105
 msgid "Lineage"
 msgstr ""
 
-#: .\apps\legal_sources\enums.py:24
 msgid "Extracted"
 msgstr ""
 
-#: .\apps\legal_sources\enums.py:26
 msgid "Reviewed"
 msgstr ""
 
-#: .\apps\legal_sources\enums.py:29
 msgid "Replaced"
 msgstr ""
 
-#: .\apps\legal_sources\enums.py:35
 msgid "Official law / statute"
 msgstr ""
 
-#: .\apps\legal_sources\enums.py:36
 msgid "Ministry decree"
 msgstr ""
 
-#: .\apps\legal_sources\enums.py:37
 msgid "Court compensation table"
 msgstr ""
 
-#: .\apps\legal_sources\enums.py:38
 msgid "Administrative guideline"
 msgstr ""
 
-#: .\apps\legal_sources\enums.py:39
 msgid "Insurance reference"
 msgstr ""
 
-#: .\apps\legal_sources\enums.py:40
 msgid "Doctrine / academic"
 msgstr ""
 
-#: .\apps\legal_sources\enums.py:41
 msgid "Internal legal note"
 msgstr ""
 
-#: .\apps\legal_sources\enums.py:42
 msgid "Demo / placeholder (non legal)"
 msgstr ""
 
-#: .\apps\legal_sources\enums.py:48
 msgid "Official"
 msgstr ""
 
-#: .\apps\legal_sources\enums.py:52
 msgid "Unknown"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:43
 msgid "slug"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:58
 msgid "Giurisdizione specifica, se più precisa del paese."
 msgstr ""
 
-#: .\apps\legal_sources\models.py:70
 msgid "source type"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:75
 msgid "official URL"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:77
 msgid "citation / reference"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:80
 msgid "Riferimento testuale stabile, es. 'D.Lgs. 209/2005, art. 139'."
 msgstr ""
 
-#: .\apps\legal_sources\models.py:83
 msgid "publication date"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:84
 msgid "effective date"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:85
 msgid "valid until"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:86
 msgid "last checked at"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:96
 msgid "reliability"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:105
 msgid "legal reviewer"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:114 .\apps\legal_sources\models.py:222
 msgid "supersedes"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:122
 msgid "replaced by"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:136
 msgid "legal sources"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:157
 msgid "An approved legal source must declare its original language."
 msgstr ""
 
-#: .\apps\legal_sources\models.py:206
 msgid "Etichetta umana, es. '2024.1' o 'Tabelle Milano 2024'."
 msgstr ""
 
-#: .\apps\legal_sources\models.py:209
 msgid "content hash (sha256)"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:212
 msgid "SHA-256 del contenuto canonico, per integrità."
 msgstr ""
 
-#: .\apps\legal_sources\models.py:233
 msgid "legal source version"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:234
 msgid "legal source versions"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:261 .\apps\reports\models.py:56
 msgid "file"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:262
 msgid "original filename"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:263
 msgid "mime type"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:264
 msgid "size (bytes)"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:265
 msgid "sha256"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:273
 msgid "legal source attachment"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:274
 msgid "legal source attachments"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:307
 msgid "Request changes"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:308
 msgid "Approve"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:309
 msgid "Reject"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:310
 msgid "Reopen"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:322
 msgid "reviewer"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:325
 msgid "decision"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:330
 msgid "previous status"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:336
 msgid "new status"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:341
 msgid "comment"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:346
 msgid "legal review"
 msgstr ""
 
-#: .\apps\legal_sources\models.py:347
 msgid "legal reviews"
 msgstr ""
 
-#: .\apps\reports\models.py:36
 msgid "Generated"
 msgstr ""
 
-#: .\apps\reports\models.py:63
 msgid "generated at"
 msgstr ""
 
-#: .\apps\reports\models.py:68
 msgid "generated by"
 msgstr ""
 
-#: .\apps\reports\models.py:84
 msgid "simulation report"
 msgstr ""
 
-#: .\apps\reports\models.py:85
 msgid "simulation reports"
 msgstr ""
 
-#: .\templates\base.html:7
 #, python-format
 msgid ""
 "%(site)s — simulazioni indicative su risarcimenti e successioni "
@@ -2296,42 +1756,30 @@ msgstr ""
 "%(site)s — simulations indicatives sur les indemnisations et successions "
 "internationales, fondées sur des sources juridiques validées."
 
-#: .\templates\base.html:51
 msgid "Skip to content"
 msgstr "Aller au contenu"
 
-#: .\templates\partials\_module_status_card.html:20
-#: .\templates\partials\_module_status_card.html:22
-#: .\templates\partials\_module_status_card.html:38
 msgid "Module status"
 msgstr "Module prêt"
 
-#: .\templates\partials\_module_status_card.html:26
 msgid "What this does"
 msgstr ""
 
-#: .\templates\partials\_module_status_card.html:30
 msgid "What this does not do"
 msgstr ""
 
-#: .\templates\partials\_module_status_card.html:34
 msgid "Next step"
 msgstr ""
 
-#: .\templates\partials\_public_status_panel.html:29
-#: .\templates\partials\_public_status_panel.html:31
 msgid "Public status"
 msgstr "Statut public"
 
-#: .\templates\partials\cookie_consent_banner.html:13
 msgid "Cookie notice"
 msgstr "Avis cookies"
 
-#: .\templates\partials\cookie_consent_banner.html:19
 msgid "Cookies"
 msgstr "Cookies"
 
-#: .\templates\partials\cookie_consent_banner.html:20
 msgid ""
 "This site uses only strictly necessary technical cookies (session, CSRF). No "
 "analytics or marketing trackers are active."
@@ -2339,32 +1787,21 @@ msgstr ""
 "Ce site utilise uniquement des cookies techniques strictement nécessaires "
 "(session, CSRF). Aucun traceur analytique ou marketing n'est actif."
 
-#: .\templates\partials\cookie_consent_banner.html:21
 msgid "Read the privacy notice"
 msgstr "Lire l'avis de confidentialité"
 
-#: .\templates\partials\cookie_consent_banner.html:28
 msgid "OK"
 msgstr "OK"
 
-#: .\templates\partials\cta_consultation.html:6
-#: .\templates\partials\cta_consultation.html:11
-#: .\templates\public\countries.html:102
-#: .\templates\public\country_landing.html:256 .\templates\public\home.html:40
-#: .\templates\public\wizard_result.html:195
 msgid "Request legal review"
 msgstr "Demander une revue juridique"
 
-#: .\templates\partials\disclaimer_banner.html:2
-#: .\templates\public\wizard_result.html:175
 msgid "Legal disclaimer"
 msgstr "Avertissement juridique"
 
-#: .\templates\partials\disclaimer_banner.html:5
 msgid "Notice"
 msgstr "Avis"
 
-#: .\templates\partials\disclaimer_banner.html:6
 msgid ""
 "This platform provides indicative simulations only. It is not legal, medico-"
 "legal advice nor a guarantee of outcome."
@@ -2373,15 +1810,12 @@ msgstr ""
 "constitue ni un avis juridique, ni un avis médico-légal, ni une garantie de "
 "résultat."
 
-#: .\templates\partials\disclaimer_banner.html:8
 msgid "Read the full disclaimer"
 msgstr "Lire l'avertissement complet"
 
-#: .\templates\partials\footer.html:8 .\templates\partials\header.html:7
 msgid "Studio Legale Internazionale"
 msgstr "Cabinet Légal International"
 
-#: .\templates\partials\footer.html:13
 msgid ""
 "International legal practice with cross-border experience in compensation, "
 "inheritance and complex jurisdictional matters."
@@ -2389,77 +1823,51 @@ msgstr ""
 "Cabinet juridique international avec expérience transfrontalière en "
 "indemnisation, succession et questions juridictionnelles complexes."
 
-#: .\templates\partials\footer.html:16
-#: .\templates\public\contact_thank_you.html:31
-#: .\templates\public\rate_limited.html:24
 msgid "Visit institutional website"
 msgstr "Visiter le site institutionnel"
 
-#: .\templates\partials\footer.html:22
 msgid "Platform"
 msgstr "Plateforme"
 
-#: .\templates\partials\footer.html:24 .\templates\partials\header.html:13
-#: .\templates\public\country_landing.html:79
 msgid "Countries"
 msgstr "Pays"
 
-#: .\templates\partials\footer.html:25 .\templates\partials\header.html:14
-#: .\templates\public\case_types.html:11
 msgid "Case types"
 msgstr "Types de cas"
 
-#: .\templates\partials\footer.html:26 .\templates\partials\header.html:15
-#: .\templates\public\methodology.html:12
 msgid "Methodology"
 msgstr "Méthodologie"
 
-#: .\templates\partials\footer.html:31
 msgid "Legal"
 msgstr "Juridique"
 
-#: .\templates\partials\footer.html:33 .\templates\public\disclaimer.html:4
-#: .\templates\public\disclaimer.html:9
 msgid "Disclaimer"
 msgstr "Avertissement"
 
-#: .\templates\partials\footer.html:35
 msgid "Institutional website"
 msgstr "Site institutionnel"
 
-#: .\templates\partials\footer.html:43
 msgid "Indicative simulations. Not legal advice."
 msgstr "Simulations indicatives. Ne constituent pas un avis juridique."
 
-#: .\templates\partials\header.html:12
 msgid "Primary navigation"
 msgstr "Navigation principale"
 
-#: .\templates\partials\language_switcher.html:4
 msgid "Language switcher"
 msgstr ""
 
-#: .\templates\partials\language_switcher.html:7
 msgid "Choose language"
 msgstr "Choisir la langue"
 
-#: .\templates\partials\language_switcher.html:19
 msgid "Apply"
 msgstr "Appliquer"
 
-#: .\templates\public\_inheritance_wizard_fields.html:5
-#: .\templates\public\contact.html:32
-#: .\templates\public\wizard_belgium_road_accident.html:24
-#: .\templates\public\wizard_france_road_accident.html:24
-#: .\templates\public\wizard_italy_road_accident.html:49
 msgid "Website (do not fill)"
 msgstr "Site web (ne pas remplir)"
 
-#: .\templates\public\_inheritance_wizard_fields.html:19
 msgid "About the deceased"
 msgstr "À propos du défunt"
 
-#: .\templates\public\_inheritance_wizard_fields.html:21
 msgid ""
 "Provide what you can. Every field is optional and helps the Studio identify "
 "the applicable law before any review."
@@ -2467,11 +1875,9 @@ msgstr ""
 "Indiquez ce que vous pouvez. Chaque champ est facultatif et aide le Cabinet "
 "à identifier la loi applicable avant toute revue."
 
-#: .\templates\public\_inheritance_wizard_fields.html:46
 msgid "Family situation"
 msgstr "Situation familiale"
 
-#: .\templates\public\_inheritance_wizard_fields.html:48
 msgid ""
 "Indicate the heirs the Studio should account for. Sons and daughters are "
 "listed separately because Moroccan and Tunisian inheritance frameworks treat "
@@ -2481,14 +1887,9 @@ msgstr ""
 "les filles sont listés séparément car les régimes successoraux marocain et "
 "tunisien les traitent selon des règles d'attribution distinctes."
 
-#: .\templates\public\_inheritance_wizard_fields.html:104
 msgid "Patrimony and context"
 msgstr "Patrimoine et contexte"
 
-#: .\templates\public\_inheritance_wizard_fields.html:130
-#: .\templates\public\wizard_belgium_road_accident.html:108
-#: .\templates\public\wizard_france_road_accident.html:108
-#: .\templates\public\wizard_italy_road_accident.html:133
 msgid ""
 "I have read the <a href=\"/privacy/\" class=\"underline\">privacy notice</a> "
 "and consent to processing the data above for the sole purpose of producing "
@@ -2498,7 +1899,6 @@ msgstr ""
 "a> et consens au traitement des données ci-dessus dans le seul but de "
 "produire une simulation indicative."
 
-#: .\templates\public\_inheritance_wizard_fields.html:137
 msgid ""
 "Submitting this form does not create a professional engagement. No documents "
 "are collected."
@@ -2506,11 +1906,9 @@ msgstr ""
 "L'envoi de ce formulaire ne crée pas de mandat professionnel. Aucun document "
 "n'est collecté."
 
-#: .\templates\public\case_types.html:4
 msgid "Case types we cover"
 msgstr "Les pays que nous couvrons"
 
-#: .\templates\public\case_types.html:6
 msgid ""
 "Modular taxonomy of case types: each module is activated only when the "
 "underlying legal sources for the chosen jurisdiction are catalogued and "
@@ -2519,11 +1917,9 @@ msgstr ""
 "Chaque module est activé uniquement après que les sources juridiques sous-"
 "jacentes ont été cataloguées et validées par le Cabinet."
 
-#: .\templates\public\case_types.html:10
 msgid "Modular taxonomy"
 msgstr "Taxonomie modulaire"
 
-#: .\templates\public\case_types.html:13
 msgid ""
 "We implement modules in depth, one at a time. Each case type is activated "
 "only after the relevant legal sources are catalogued and validated for the "
@@ -2533,12 +1929,9 @@ msgstr ""
 "dossier est activé uniquement après que les sources juridiques pertinentes "
 "ont été cataloguées et validées pour la juridiction choisie."
 
-#: .\templates\public\case_types.html:44
-#: .\templates\public\wizard_start.html:86
 msgid "Coming next"
 msgstr "À venir"
 
-#: .\templates\public\case_types.html:46
 msgid ""
 "Additional case types on the Studio roadmap include catastrophic damage, "
 "loss of chance, defamation, school/professional damage and ruined holiday "
@@ -2549,18 +1942,15 @@ msgstr ""
 "professionnel et perte d’agrément de vacances, lorsqu’ils sont juridiquement "
 "praticables."
 
-#: .\templates\public\contact.html:4 .\templates\public\contact.html:12
 msgid "Request a legal review"
 msgstr "Demander une revue juridique"
 
-#: .\templates\public\contact.html:6
 msgid ""
 "Tell us about your case in your own words. The Studio reviews each request "
 "manually before deciding whether and how it can help. Submitting this form "
 "does not create a professional engagement."
 msgstr ""
 
-#: .\templates\public\contact.html:14
 msgid ""
 "Tell us about your case in your own words. A member of the Studio will get "
 "back to you to evaluate whether and how we can help."
@@ -2568,15 +1958,12 @@ msgstr ""
 "Décrivez votre cas avec vos propres mots. Un membre du Cabinet vous répondra "
 "pour évaluer si et comment nous pouvons vous aider."
 
-#: .\templates\public\contact.html:17
 msgid "What happens after you submit"
 msgstr ""
 
-#: .\templates\public\contact.html:18 .\templates\public\wizard_result.html:46
 msgid "What happens next"
 msgstr "Étapes suivantes"
 
-#: .\templates\public\contact.html:20
 msgid ""
 "A lawyer of the Studio reads your message manually — no automated reply, no "
 "third party."
@@ -2584,7 +1971,6 @@ msgstr ""
 "Un avocat du Studio lit votre message manuellement — aucune réponse "
 "automatisée, aucun tiers."
 
-#: .\templates\public\contact.html:21
 msgid ""
 "You receive a written reply at the email you provide. Average response: 3–5 "
 "working days."
@@ -2592,7 +1978,6 @@ msgstr ""
 "Vous recevez une réponse écrite à l’adresse e-mail indiquée. Délai moyen : 3 "
 "à 5 jours ouvrés."
 
-#: .\templates\public\contact.html:22
 msgid ""
 "If your case fits our scope, the Studio proposes the next step "
 "(consultation, document review, or legal opinion). Sending this form does "
@@ -2602,8 +1987,6 @@ msgstr ""
 "l’étape suivante (consultation, revue de documents ou avis juridique). "
 "L’envoi de ce formulaire ne crée aucun mandat professionnel."
 
-#: .\templates\public\contact.html:23
-#: .\templates\public\contact_thank_you.html:16
 msgid ""
 "Your data is processed only to reply to this request and is kept according "
 "to the Studio retention policy. See the privacy notice for details."
@@ -2612,11 +1995,9 @@ msgstr ""
 "conservées conformément à la politique de conservation du Studio. Voir "
 "l’avis de confidentialité pour plus de détails."
 
-#: .\templates\public\contact.html:65
 msgid "(optional)"
 msgstr "(facultatif)"
 
-#: .\templates\public\contact.html:98
 msgid ""
 "Briefly describe what happened, when, and where. Avoid sharing sensitive "
 "medical details now — we will request them only if needed."
@@ -2625,7 +2006,6 @@ msgstr ""
 "de partager des détails médicaux sensibles — nous vous les demanderons "
 "uniquement si nécessaire."
 
-#: .\templates\public\contact.html:106
 msgid ""
 "I have read the <a href=\"/privacy/\" class=\"underline\">privacy notice</a> "
 "and the <a href=\"/disclaimer/\" class=\"underline\">disclaimer</a>, and I "
@@ -2637,42 +2017,30 @@ msgstr ""
 "je consens au traitement de mes données par le Cabinet à seule fin de "
 "répondre à cette demande."
 
-#: .\templates\public\contact.html:115
-#: .\templates\public\wizard_belgium_road_accident.html:115
-#: .\templates\public\wizard_france_road_accident.html:115
-#: .\templates\public\wizard_italy_road_accident.html:140
 msgid "Submitting this form does not create a professional engagement."
 msgstr "L'envoi de ce formulaire ne crée pas de mandat professionnel."
 
-#: .\templates\public\contact.html:118
 msgid "Send my request"
 msgstr "Envoyer ma demande"
 
-#: .\templates\public\contact.html:124
 msgid "Useful pages"
 msgstr "Pages utiles"
 
-#: .\templates\public\contact.html:129
 msgid "Read the methodology"
 msgstr "Lire la méthodologie"
 
-#: .\templates\public\contact.html:132
 msgid "Open the disclaimer"
 msgstr "Ouvrir l’avertissement"
 
-#: .\templates\public\contact_thank_you.html:4
 msgid "Request received"
 msgstr "Demande reçue"
 
-#: .\templates\public\contact_thank_you.html:10
 msgid "Thank you"
 msgstr "Merci"
 
-#: .\templates\public\contact_thank_you.html:11
 msgid "Your request has been received."
 msgstr "Votre demande a bien été reçue."
 
-#: .\templates\public\contact_thank_you.html:13
 msgid ""
 "A lawyer of the Studio reads each request manually. You will receive a "
 "written reply at the email address you provided. Average response: 3–5 "
@@ -2682,7 +2050,6 @@ msgstr ""
 "réponse écrite à l’adresse e-mail fournie. Délai moyen : 3 à 5 jours "
 "ouvrés ; les dossiers transfrontaliers peuvent prendre un peu plus de temps."
 
-#: .\templates\public\contact_thank_you.html:19
 msgid ""
 "Submitting this form does not create a professional engagement. The Studio "
 "remains free to accept or decline the matter."
@@ -2690,20 +2057,15 @@ msgstr ""
 "L'envoi de ce formulaire ne crée pas de mandat professionnel. Le Cabinet "
 "reste libre d'accepter ou de refuser le dossier."
 
-#: .\templates\public\contact_thank_you.html:28
-#: .\templates\public\rate_limited.html:21
 msgid "Back to homepage"
 msgstr "Retour à l'accueil"
 
-#: .\templates\public\contact_thank_you.html:30
 msgid "Visit institutional website (opens in a new tab)"
 msgstr "Visiter le site institutionnel"
 
-#: .\templates\public\countries.html:4 .\templates\public\countries.html:12
 msgid "Countries we cover"
 msgstr "Les pays que nous couvrons"
 
-#: .\templates\public\countries.html:6
 msgid ""
 "MVP coverage map for the Badrane simulator: Italy publishes an indicative "
 "calculation on the verified TUN 2025 dataset; France, Belgium, Morocco and "
@@ -2714,11 +2076,9 @@ msgstr ""
 "Belgique, le Maroc et la Tunisie bénéficient d’une évaluation juridique "
 "préliminaire du Cabinet."
 
-#: .\templates\public\countries.html:11
 msgid "Coverage map"
 msgstr "Carte de couverture"
 
-#: .\templates\public\countries.html:14
 msgid ""
 "We open one jurisdiction at a time, only after the underlying legal sources "
 "are verified. Each country first receives a preliminary legal assessment "
@@ -2730,21 +2090,15 @@ msgstr ""
 "évaluation juridique préliminaire du Cabinet ; un calcul indicatif n’est "
 "publié qu’une fois les barèmes nationaux vérifiés."
 
-#: .\templates\public\countries.html:76 .\templates\public\countries.html:78
-#: .\templates\public\countries.html:80 .\templates\public\countries.html:82
-#: .\templates\public\countries.html:84
 msgid "Open country page"
 msgstr "Ouvrir la page pays"
 
-#: .\templates\public\countries.html:95
 msgid "Need a direct review?"
 msgstr "Besoin d'une revue directe ?"
 
-#: .\templates\public\countries.html:96
 msgid "Request a legal review on a complex case"
 msgstr "Demander une revue juridique sur un cas complexe"
 
-#: .\templates\public\countries.html:98
 msgid ""
 "If your case spans multiple jurisdictions, includes foreign assets, or the "
 "country shows a \"Preliminary legal assessment\" badge, the Studio reviews "
@@ -2754,7 +2108,6 @@ msgstr ""
 "ou si le pays affiche l’étiquette « Évaluation juridique préliminaire », le "
 "Cabinet examine le dossier directement et propose la suite."
 
-#: .\templates\public\countries.html:107
 msgid ""
 "Future jurisdictions on the roadmap include Spain, Germany, Canada, Romania, "
 "Algeria and Egypt."
@@ -2762,7 +2115,6 @@ msgstr ""
 "Les juridictions futures à la feuille de route incluent l'Espagne, "
 "l'Allemagne, le Canada, la Roumanie, l'Algérie et l'Égypte."
 
-#: .\templates\public\country_landing.html:38
 #, python-format
 msgid ""
 "Preliminary legal assessment for %(country)s: the Studio reviews each case "
@@ -2773,24 +2125,19 @@ msgstr ""
 "manuellement chaque dossier et aucun montant automatique n’est publié avant "
 "la vérification des sources de quantification."
 
-#: .\templates\public\country_landing.html:75
 msgid "Breadcrumb"
 msgstr "Fil d'Ariane"
 
-#: .\templates\public\country_landing.html:77
 msgid "Home"
 msgstr "Accueil"
 
-#: .\templates\public\country_landing.html:119
 msgid "Country page"
 msgstr "Page pays"
 
-#: .\templates\public\country_landing.html:122
 #, python-format
 msgid "%(country)s — what we currently cover"
 msgstr "%(country)s — ce que nous couvrons actuellement"
 
-#: .\templates\public\country_landing.html:126
 #, python-format
 msgid ""
 "Studio Legale Badrane provides an indicative compensation simulation for "
@@ -2801,7 +2148,6 @@ msgstr ""
 "pour %(country)s à partir de sources juridiques approuvées. L'estimation est "
 "informative et ne constitue jamais une garantie de résultat."
 
-#: .\templates\public\country_landing.html:128
 #, python-format
 msgid ""
 "For %(country)s the Studio offers a preliminary legal assessment: the case "
@@ -2814,12 +2160,10 @@ msgstr ""
 "directement. Aucun montant automatique n’est publié avant la vérification "
 "des sources de quantification pour le dossier."
 
-#: .\templates\public\country_landing.html:137
 msgid ""
 "Road traffic accident — bodily injury (danno biologico) under Italian law."
 msgstr "Accident de la circulation — dommage corporel selon le droit italien."
 
-#: .\templates\public\country_landing.html:141
 msgid ""
 "Reference dataset: Tabella Unica Nazionale 2025 (D.P.R. 12/2025), with the "
 "biological component and the moral range (Tabelle 2.A/2.B/2.C)."
@@ -2827,7 +2171,6 @@ msgstr ""
 "Jeu de données de référence : Tabella Unica Nazionale 2025 (D.P.R. 12/2025), "
 "avec la composante biologique et la fourchette morale (Tabelle 2.A/2.B/2.C)."
 
-#: .\templates\public\country_landing.html:145
 msgid ""
 "Approved TUN 2025 dataset feeds an indicative range (minimum, central, "
 "maximum). Result is not legal advice."
@@ -2835,13 +2178,11 @@ msgstr ""
 "Le jeu de données TUN 2025 approuvé alimente une fourchette indicative "
 "(minimum, centrale, maximum). Le résultat ne constitue pas un avis juridique."
 
-#: .\templates\public\country_landing.html:150
 msgid ""
 "Road traffic accident — bodily injury (préjudice corporel) under French law."
 msgstr ""
 "Accident de la circulation — préjudice corporel selon le droit français."
 
-#: .\templates\public\country_landing.html:154
 msgid ""
 "Candidate sources under Studio review: Référentiel Mornet 2024 and Barème de "
 "capitalisation Gazette du Palais 2022."
@@ -2849,7 +2190,6 @@ msgstr ""
 "Sources candidates en cours de revue au Cabinet : Référentiel Mornet 2024 et "
 "Barème de capitalisation Gazette du Palais 2022."
 
-#: .\templates\public\country_landing.html:158
 msgid ""
 "The Studio reviews each submission manually and offers a preliminary legal "
 "assessment; no automatic amount is published before the underlying "
@@ -2859,11 +2199,9 @@ msgstr ""
 "juridique préliminaire ; aucun montant automatique n’est publié avant la "
 "vérification des sources de quantification."
 
-#: .\templates\public\country_landing.html:163
 msgid "Road traffic accident — bodily injury under Belgian law."
 msgstr "Accident de la circulation — dommage corporel selon le droit belge."
 
-#: .\templates\public\country_landing.html:167
 msgid ""
 "Candidate sources under Studio review: Tableau Indicatif 2020, Tableau "
 "Indicatif 2024 and Tables Schryvers for capitalisation."
@@ -2871,7 +2209,6 @@ msgstr ""
 "Sources candidates en cours de revue au Cabinet : Tableau Indicatif 2020, "
 "Tableau Indicatif 2024 et Tables Schryvers pour la capitalisation."
 
-#: .\templates\public\country_landing.html:171
 msgid ""
 "The Studio reviews each case manually; no automatic amount is published "
 "before the underlying quantification sources have been verified."
@@ -2879,7 +2216,6 @@ msgstr ""
 "Le Cabinet examine manuellement chaque dossier ; aucun montant automatique "
 "n’est publié avant la vérification des sources de quantification."
 
-#: .\templates\public\country_landing.html:176
 msgid ""
 "International inheritance with Moroccan elements — heirs, foreign assets, "
 "applicable law."
@@ -2887,7 +2223,6 @@ msgstr ""
 "Succession internationale avec éléments marocains — héritiers, actifs "
 "étrangers, droit applicable."
 
-#: .\templates\public\country_landing.html:180
 msgid ""
 "Reference framework: Moudawana (Code de la famille, Loi 70-03), Code des "
 "droits réels and EU Succession Regulation 650/2012."
@@ -2895,8 +2230,6 @@ msgstr ""
 "Cadre de référence : Moudawana (Code de la famille, Loi 70-03), Code des "
 "droits réels et Règlement UE Successions 650/2012."
 
-#: .\templates\public\country_landing.html:184
-#: .\templates\public\country_landing.html:197
 msgid ""
 "The wizard collects qualitative inputs; no automatic share calculation is "
 "performed yet."
@@ -2904,7 +2237,6 @@ msgstr ""
 "L'assistant recueille des entrées qualitatives ; aucun calcul automatique "
 "des parts n'est encore effectué."
 
-#: .\templates\public\country_landing.html:189
 msgid ""
 "International inheritance with Tunisian elements — heirs, foreign assets, "
 "applicable law."
@@ -2912,7 +2244,6 @@ msgstr ""
 "Succession internationale avec éléments tunisiens — héritiers, actifs "
 "étrangers, droit applicable."
 
-#: .\templates\public\country_landing.html:193
 msgid ""
 "Reference framework: Code du statut personnel — Livre IX, Loi n°98-97 (Code "
 "de droit international privé), EU Regulation 650/2012."
@@ -2920,11 +2251,9 @@ msgstr ""
 "Cadre de référence : Code du statut personnel — Livre IX, Loi n°98-97 (Code "
 "de droit international privé), Règlement UE 650/2012."
 
-#: .\templates\public\country_landing.html:207
 msgid "Status"
 msgstr "Statut"
 
-#: .\templates\public\country_landing.html:224
 msgid ""
 "The wizard accepts compatible inputs and returns an indicative range based "
 "on the approved dataset."
@@ -2932,7 +2261,6 @@ msgstr ""
 "L'assistant accepte des entrées compatibles et retourne une fourchette "
 "indicative fondée sur le jeu de données approuvé."
 
-#: .\templates\public\country_landing.html:226
 msgid ""
 "The workflow forwards your request to the Studio, which reviews each case "
 "manually and offers a preliminary legal assessment. No automatic amount is "
@@ -2943,31 +2271,24 @@ msgstr ""
 "montant automatique n’est publié avant la vérification des sources de "
 "quantification."
 
-#: .\templates\public\country_landing.html:235 .\templates\public\home.html:35
 msgid "Start Italian compensation simulation"
 msgstr "Lancer la simulation Italie"
 
-#: .\templates\public\country_landing.html:239
 msgid "Submit a France case to the Studio"
 msgstr "Soumettre un dossier France au Cabinet"
 
-#: .\templates\public\country_landing.html:243
 msgid "Submit a Belgium case to the Studio"
 msgstr "Soumettre un dossier Belgique au Cabinet"
 
-#: .\templates\public\country_landing.html:247
 msgid "Request Moroccan inheritance review"
 msgstr "Demander la revue successorale marocaine"
 
-#: .\templates\public\country_landing.html:251
 msgid "Request Tunisian inheritance review"
 msgstr "Demander la revue successorale tunisienne"
 
-#: .\templates\public\country_landing.html:266
 msgid "Legal basis"
 msgstr "Base juridique"
 
-#: .\templates\public\country_landing.html:268
 msgid ""
 "Approved sources have been validated by the Studio's legal team. Sources "
 "marked as \"needs review\" are catalogued but cannot drive any public "
@@ -2977,33 +2298,24 @@ msgstr ""
 "Les sources marquées « à revoir » sont cataloguées mais ne peuvent pas "
 "encore alimenter une estimation publique."
 
-#: .\templates\public\country_landing.html:275
-#: .\templates\public\methodology.html:35
 msgid "approved"
 msgstr "approuvée"
 
-#: .\templates\public\country_landing.html:277
-#: .\templates\public\methodology.html:34
 msgid "needs review"
 msgstr "à revoir"
 
-#: .\templates\public\country_landing.html:286
 msgid "How to proceed"
 msgstr "Comment procéder"
 
-#: .\templates\public\country_landing.html:289
 msgid "Option 1"
 msgstr "Option 1"
 
-#: .\templates\public\country_landing.html:292
 msgid "Run the simulation wizard"
 msgstr "Lancer le simulateur guidé"
 
-#: .\templates\public\country_landing.html:294
 msgid "Submit a structured request"
 msgstr "Soumettre une demande structurée"
 
-#: .\templates\public\country_landing.html:299
 msgid ""
 "Provide age, disability percentage and fault percentage. The wizard returns "
 "an indicative range based on the approved TUN 2025 dataset."
@@ -3012,7 +2324,6 @@ msgstr ""
 "L'assistant retourne une fourchette indicative fondée sur le jeu de données "
 "TUN 2025 approuvé."
 
-#: .\templates\public\country_landing.html:301
 msgid ""
 "Open the country wizard to share the case context. We persist the request "
 "and reply after a manual legal review. No automatic estimate is issued."
@@ -3021,15 +2332,12 @@ msgstr ""
 "enregistrons la demande et répondons après une revue juridique manuelle. "
 "Aucune estimation automatique n'est émise."
 
-#: .\templates\public\country_landing.html:306
 msgid "Option 2"
 msgstr "Option 2"
 
-#: .\templates\public\country_landing.html:307
 msgid "Direct legal review"
 msgstr "Revue juridique directe"
 
-#: .\templates\public\country_landing.html:309
 msgid ""
 "If the case is complex, write to the Studio. A lawyer reviews the file, "
 "identifies applicable law and competent jurisdiction, and proposes the next "
@@ -3039,7 +2347,6 @@ msgstr ""
 "identifie le droit applicable et la juridiction compétente, et propose la "
 "prochaine étape."
 
-#: .\templates\public\country_landing.html:318
 msgid ""
 "This page is informative. Any simulation provided by the platform is "
 "indicative and does not constitute legal, medical-legal advice nor a "
@@ -3053,18 +2360,15 @@ msgstr ""
 "expertises, responsabilités, droit applicable, juridiction compétente, "
 "orientations jurisprudentielles et pratiques assurantielles."
 
-#: .\templates\public\country_landing.html:322
 msgid ""
 "No automatic estimate is currently issued until legal review is complete."
 msgstr ""
 "Aucune estimation automatique n'est émise tant que la revue juridique n'est "
 "pas terminée."
 
-#: .\templates\public\disclaimer.html:8
 msgid "Legal notice"
 msgstr "Mentions légales"
 
-#: .\templates\public\disclaimer.html:13
 msgid ""
 "This platform offers indicative simulations of compensation and inheritance "
 "scenarios across multiple jurisdictions. Each simulation is based on legal "
@@ -3075,7 +2379,6 @@ msgstr ""
 "simulation s'appuie sur des sources juridiques cataloguées et validées par "
 "notre équipe."
 
-#: .\templates\public\disclaimer.html:16
 msgid ""
 "A simulation is not legal advice, is not a medico-legal opinion and is not a "
 "guarantee of outcome. The actual evaluation of a case depends on documents, "
@@ -3088,7 +2391,6 @@ msgstr ""
 "de la juridiction compétente, de la jurisprudence et des pratiques "
 "assurantielles."
 
-#: .\templates\public\disclaimer.html:19
 msgid ""
 "If you require a binding evaluation, please request a legal review through "
 "our office."
@@ -3096,7 +2398,6 @@ msgstr ""
 "Si vous avez besoin d'une évaluation contraignante, veuillez demander une "
 "revue juridique auprès de notre Cabinet."
 
-#: .\templates\public\disclaimer.html:22
 msgid ""
 "This text is a working version. The final wording will be reviewed and "
 "signed off by the Studio's legal team."
@@ -3104,16 +2405,13 @@ msgstr ""
 "Ce texte est une version de travail. La formulation finale sera revue et "
 "validée par l'équipe juridique du Cabinet."
 
-#: .\templates\public\home.html:4
 #, python-format
 msgid "%(site)s — International compensation simulator"
 msgstr "%(site)s — Simulateur d'indemnisation international"
 
-#: .\templates\public\home.html:23
 msgid "Cross-border legal-tech platform"
 msgstr "Plateforme legal-tech transfrontalière"
 
-#: .\templates\public\home.html:26
 msgid ""
 "Indicative simulations for compensation and inheritance, grounded in "
 "validated legal sources."
@@ -3121,7 +2419,6 @@ msgstr ""
 "Simulations indicatives en indemnisation et succession, ancrées dans des "
 "sources juridiques validées."
 
-#: .\templates\public\home.html:29
 msgid ""
 "A professional tool by Studio Legale Internazionale Badrane. Each estimate "
 "is supported by validated legal sources, transparent ranges and clear "
@@ -3132,7 +2429,6 @@ msgstr ""
 "transparentes et des hypothèses explicites. Nous ne promettons aucun "
 "résultat : nous aidons à le comprendre."
 
-#: .\templates\public\home.html:45
 msgid ""
 "Simulations are indicative. They do not constitute legal advice or guarantee "
 "any outcome."
@@ -3140,18 +2436,15 @@ msgstr ""
 "Les simulations sont indicatives. Elles ne constituent ni un avis juridique "
 "ni une garantie de résultat."
 
-#: .\templates\public\home.html:51
 msgid "Trust by design"
 msgstr "Confiance par conception"
 
-#: .\templates\public\home.html:55
 msgid ""
 "Every estimate cites the legal sources behind it: title, version and date."
 msgstr ""
 "Chaque estimation cite les sources juridiques sous-jacentes : titre, version "
 "et date."
 
-#: .\templates\public\home.html:59
 msgid ""
 "If a jurisdiction is not yet legally validated, we say so explicitly — no "
 "fabricated numbers."
@@ -3159,34 +2452,27 @@ msgstr ""
 "Si une juridiction n'est pas encore validée, nous l'indiquons "
 "explicitement : aucun chiffre inventé."
 
-#: .\templates\public\home.html:63
 msgid ""
 "Reports include ranges, assumptions, missing documents and confidence level."
 msgstr ""
 "Les rapports incluent fourchettes, hypothèses, documents manquants et niveau "
 "de fiabilité."
 
-#: .\templates\public\home.html:67
 msgid "Available in Italian, French, English and Arabic."
 msgstr "Disponible en italien, français, anglais et arabe."
 
-#: .\templates\public\home.html:80
 msgid "Jurisdictions"
 msgstr "Juridictions"
 
-#: .\templates\public\home.html:81
 msgid "MVP coverage"
 msgstr "Périmètre MVP"
 
-#: .\templates\public\home.html:83
 msgid "See all countries"
 msgstr "Voir tous les pays"
 
-#: .\templates\public\home.html:101
 msgid "Validated sources only"
 msgstr "Sources validées uniquement"
 
-#: .\templates\public\home.html:103
 msgid ""
 "Every coefficient and figure used in a public calculation is tied to a legal "
 "source marked as approved by our team."
@@ -3194,11 +2480,9 @@ msgstr ""
 "Chaque coefficient et chiffre utilisé dans un calcul public est rattaché à "
 "une source juridique approuvée par notre équipe."
 
-#: .\templates\public\home.html:108
 msgid "Transparent ranges"
 msgstr "Fourchettes transparentes"
 
-#: .\templates\public\home.html:110
 msgid ""
 "You receive a minimum, a midpoint and a maximum, with the assumptions, the "
 "formulas and the missing documents clearly listed."
@@ -3206,11 +2490,9 @@ msgstr ""
 "Vous recevez un minimum, une valeur centrale et un maximum, avec hypothèses, "
 "formules et documents manquants clairement listés."
 
-#: .\templates\public\home.html:115
 msgid "Human review"
 msgstr "Revue humaine"
 
-#: .\templates\public\home.html:117
 msgid ""
 "A simulation is a starting point. The Studio takes over for real legal "
 "evaluation when you need a binding opinion."
@@ -3218,11 +2500,9 @@ msgstr ""
 "Une simulation est un point de départ. Le Cabinet prend le relais avec une "
 "évaluation juridique réelle lorsqu'un avis contraignant est nécessaire."
 
-#: .\templates\public\home.html:126
 msgid "Ready for a real legal evaluation?"
 msgstr "Prêt pour une évaluation juridique réelle ?"
 
-#: .\templates\public\home.html:128
 msgid ""
 "Our international team handles compensation, medical liability and cross-"
 "border inheritance matters across Europe and North Africa."
@@ -3231,22 +2511,18 @@ msgstr ""
 "médicale et les successions transfrontalières en Europe et en Afrique du "
 "Nord."
 
-#: .\templates\public\methodology.html:4
 msgid "Methodology — sources, validation and ranges"
 msgstr ""
 
-#: .\templates\public\methodology.html:6
 msgid ""
 "How we work: source-of-law catalogue, controlled validation lifecycle (draft "
 "→ approved), explicit \"calculation not available\" when no approved source "
 "exists, and transparent ranges with assumptions and confidence."
 msgstr ""
 
-#: .\templates\public\methodology.html:11
 msgid "How we work"
 msgstr "Notre démarche"
 
-#: .\templates\public\methodology.html:14
 msgid ""
 "Our simulator is built on a single principle: no figure is shown to the "
 "public unless we can cite the legal source behind it. This page explains how "
@@ -3256,11 +2532,9 @@ msgstr ""
 "public sans pouvoir en citer la source juridique. Cette page explique "
 "comment nous collectons, validons et versionnons les sources."
 
-#: .\templates\public\methodology.html:20
 msgid "Sources of law"
 msgstr "Sources de droit"
 
-#: .\templates\public\methodology.html:22
 msgid ""
 "For each jurisdiction we maintain a catalogue of laws, ministerial decrees, "
 "court compensation tables, administrative guidelines, insurance references "
@@ -3273,11 +2547,9 @@ msgstr ""
 "juridiction, sa langue, sa citation, son URL officielle, sa date de "
 "publication et d'effet."
 
-#: .\templates\public\methodology.html:28
 msgid "Validation status"
 msgstr "Statut de validation"
 
-#: .\templates\public\methodology.html:30
 msgid ""
 "A source moves through a controlled lifecycle: draft, extracted, needs "
 "review, reviewed, approved, deprecated, replaced. Only sources marked as "
@@ -3287,19 +2559,15 @@ msgstr ""
 "revue, approuvée, obsolète, remplacée. Seules les sources marquées comme "
 "approuvées alimentent un calcul public."
 
-#: .\templates\public\methodology.html:33
 msgid "draft"
 msgstr "brouillon"
 
-#: .\templates\public\methodology.html:36
 msgid "deprecated"
 msgstr "obsolète"
 
-#: .\templates\public\methodology.html:42
 msgid "When a calculation is not available"
 msgstr "Lorsqu'un calcul n'est pas disponible"
 
-#: .\templates\public\methodology.html:44
 msgid ""
 "If no approved source exists for the jurisdiction or the case type you "
 "select, the platform tells you explicitly. We do not invent a fallback "
@@ -3310,11 +2578,9 @@ msgstr ""
 "estimation de repli : nous invitons à demander une évaluation juridique "
 "humaine."
 
-#: .\templates\public\methodology.html:50
 msgid "Ranges, assumptions and confidence"
 msgstr "Fourchettes, hypothèses et fiabilité"
 
-#: .\templates\public\methodology.html:52
 msgid ""
 "Every available simulation reports a minimum, a midpoint and a maximum, with "
 "the formulas, the assumptions, the missing documents and a confidence level "
@@ -3325,11 +2591,9 @@ msgstr ""
 "fiabilité (faible, moyenne, élevée). L'avertissement complet est toujours "
 "joint."
 
-#: .\templates\public\privacy.html:8
 msgid "Personal data"
 msgstr "Données personnelles"
 
-#: .\templates\public\privacy.html:13
 msgid ""
 "We process personal data in accordance with the EU General Data Protection "
 "Regulation (GDPR) and the privacy laws applicable in each jurisdiction we "
@@ -3339,7 +2603,6 @@ msgstr ""
 "la Protection des Données (RGPD) et aux lois sur la vie privée applicables "
 "dans chaque juridiction couverte."
 
-#: .\templates\public\privacy.html:16
 msgid ""
 "When you use the simulator we may collect: the inputs you provide for the "
 "simulation, the language and country you choose, technical metadata such as "
@@ -3350,7 +2613,6 @@ msgstr ""
 "métadonnées techniques comme l'adresse IP et l'agent utilisateur, et les "
 "consentements que vous accordez."
 
-#: .\templates\public\privacy.html:19
 msgid ""
 "We do not sell personal data. We do not share it with third parties beyond "
 "what is strictly necessary to provide our legal services and meet legal "
@@ -3360,7 +2622,6 @@ msgstr ""
 "des tiers que dans la stricte mesure nécessaire pour fournir nos services "
 "juridiques et respecter nos obligations légales."
 
-#: .\templates\public\privacy.html:22
 msgid ""
 "You can request access, rectification, deletion or anonymization of your "
 "data at any time by contacting the Studio."
@@ -3368,7 +2629,6 @@ msgstr ""
 "Vous pouvez demander l'accès, la rectification, la suppression ou "
 "l'anonymisation de vos données à tout moment en contactant le Cabinet."
 
-#: .\templates\public\privacy.html:25
 msgid ""
 "A complete privacy policy will be published before the simulator goes live "
 "to the public. This page is a working summary."
@@ -3376,16 +2636,12 @@ msgstr ""
 "Une politique de confidentialité complète sera publiée avant la mise en "
 "production publique du simulateur. Cette page est un résumé de travail."
 
-#: .\templates\public\rate_limited.html:4
-#: .\templates\public\rate_limited.html:11
 msgid "Too many requests"
 msgstr "Trop de demandes"
 
-#: .\templates\public\rate_limited.html:10
 msgid "Rate limit"
 msgstr "Limitation de débit"
 
-#: .\templates\public\rate_limited.html:13
 msgid ""
 "For security reasons we received too many submissions from your network in a "
 "short time. Please try again later."
@@ -3393,7 +2649,6 @@ msgstr ""
 "Pour des raisons de sécurité, nous avons reçu trop d'envois depuis votre "
 "réseau en peu de temps. Veuillez réessayer plus tard."
 
-#: .\templates\public\rate_limited.html:16
 msgid ""
 "If you need urgent assistance, please contact the Studio directly via the "
 "institutional website."
@@ -3401,13 +2656,9 @@ msgstr ""
 "Si vous avez besoin d'une assistance urgente, contactez directement le "
 "Cabinet via le site institutionnel."
 
-#: .\templates\public\wizard_belgium_road_accident.html:4
-#: .\templates\public\wizard_belgium_road_accident.html:11
-#: .\templates\public\wizard_belgium_road_accident.html:17
 msgid "Belgium — road accident bodily injury"
 msgstr "Belgique — préjudice corporel après accident de la route"
 
-#: .\templates\public\wizard_belgium_road_accident.html:6
 msgid ""
 "Belgium road-accident workflow: the Studio offers a preliminary legal "
 "assessment based on the Loi du 21 novembre 1989, the Tableau Indicatif and "
@@ -3419,16 +2670,9 @@ msgstr ""
 "Indicatif et les Tables Schryvers. Aucun montant automatique n’est publié "
 "avant la vérification de ces tables pour le dossier."
 
-#: .\templates\public\wizard_belgium_road_accident.html:12
-#: .\templates\public\wizard_france_road_accident.html:12
-#: .\templates\public\wizard_italy_road_accident.html:12
-#: .\templates\public\wizard_morocco_inheritance.html:12
-#: .\templates\public\wizard_tunisia_inheritance.html:12
 msgid "Indicative simulation wizard"
 msgstr "Assistant de simulation indicatif"
 
-#: .\templates\public\wizard_belgium_road_accident.html:14
-#: .\templates\public\wizard_france_road_accident.html:14
 msgid ""
 "All fields below are optional. If you don't know a value, leave it empty. "
 "The Studio reviews each case manually and offers a preliminary legal "
@@ -3441,7 +2685,6 @@ msgstr ""
 "n’est publié avant la vérification des sources de quantification pour le "
 "dossier."
 
-#: .\templates\public\wizard_belgium_road_accident.html:17
 msgid ""
 "Recognised quantification tables: Loi du 21 novembre 1989, Tableau "
 "Indicatif, Tables Schryvers."
@@ -3449,32 +2692,18 @@ msgstr ""
 "Tables de quantification reconnues : Loi du 21 novembre 1989, Tableau "
 "Indicatif, Tables Schryvers."
 
-#: .\templates\public\wizard_belgium_road_accident.html:37
-#: .\templates\public\wizard_france_road_accident.html:37
-#: .\templates\public\wizard_italy_road_accident.html:62
 msgid "About the accident"
 msgstr "À propos de l'accident"
 
-#: .\templates\public\wizard_belgium_road_accident.html:56
-#: .\templates\public\wizard_france_road_accident.html:56
-#: .\templates\public\wizard_italy_road_accident.html:81
 msgid "Injury and disability"
 msgstr "Blessure et incapacité"
 
-#: .\templates\public\wizard_belgium_road_accident.html:79
-#: .\templates\public\wizard_france_road_accident.html:79
-#: .\templates\public\wizard_italy_road_accident.html:104
 msgid "Documented economic impact"
 msgstr "Impact économique documenté"
 
-#: .\templates\public\wizard_belgium_road_accident.html:118
-#: .\templates\public\wizard_france_road_accident.html:118
 msgid "Submit for legal review"
 msgstr "Soumettre pour revue juridique"
 
-#: .\templates\public\wizard_belgium_road_accident.html:125
-#: .\templates\public\wizard_france_road_accident.html:125
-#: .\templates\public\wizard_italy_road_accident.html:150
 msgid ""
 "The simulation is indicative and does not constitute legal advice, medical-"
 "legal opinion, or guarantee of outcome."
@@ -3482,13 +2711,9 @@ msgstr ""
 "La simulation est indicative et ne constitue ni un avis juridique, ni un "
 "avis médico-légal, ni une garantie de résultat."
 
-#: .\templates\public\wizard_france_road_accident.html:4
-#: .\templates\public\wizard_france_road_accident.html:11
-#: .\templates\public\wizard_france_road_accident.html:17
 msgid "France — road accident bodily injury"
 msgstr "France — préjudice corporel après accident de la route"
 
-#: .\templates\public\wizard_france_road_accident.html:6
 msgid ""
 "France road-accident workflow: the Studio offers a preliminary legal "
 "assessment based on the Loi Badinter, the Référentiel Mornet and the Gazette "
@@ -3501,7 +2726,6 @@ msgstr ""
 "automatique n’est publié avant la vérification de ces sources pour le "
 "dossier."
 
-#: .\templates\public\wizard_france_road_accident.html:17
 msgid ""
 "Recognised quantification sources: Loi Badinter, Référentiel Mornet, Gazette "
 "du Palais."
@@ -3509,12 +2733,9 @@ msgstr ""
 "Sources de quantification reconnues : Loi Badinter, Référentiel Mornet, "
 "Gazette du Palais."
 
-#: .\templates\public\wizard_italy_road_accident.html:4
-#: .\templates\public\wizard_italy_road_accident.html:11
 msgid "Italy — road accident bodily injury"
 msgstr "Italie — préjudice corporel après accident de la route"
 
-#: .\templates\public\wizard_italy_road_accident.html:6
 msgid ""
 "Indicative simulation wizard for road-accident bodily injury in Italy, based "
 "on the approved TUN 2025 dataset (D.P.R. 12/2025). The result is informative "
@@ -3524,7 +2745,6 @@ msgstr ""
 "sources juridiques approuvées. L'estimation est informative et ne garantit "
 "jamais aucun résultat."
 
-#: .\templates\public\wizard_italy_road_accident.html:14
 msgid ""
 "All fields below are optional. If you don't know a value, leave it empty. "
 "The simulation will not invent numbers: it produces an estimate only when "
@@ -3537,11 +2757,9 @@ msgstr ""
 "sont disponibles, sinon elle retourne honnêtement le statut « validation "
 "juridique requise »."
 
-#: .\templates\public\wizard_italy_road_accident.html:18
 msgid "Important"
 msgstr "Important"
 
-#: .\templates\public\wizard_italy_road_accident.html:19
 msgid ""
 "This wizard is informative. It does not replace a medical-legal report or a "
 "lawyer's opinion. It does not collect documents."
@@ -3549,59 +2767,44 @@ msgstr ""
 "Cet assistant est informatif. Il ne remplace ni une expertise médico-légale "
 "ni l'avis d'un avocat. Il ne collecte aucun document."
 
-#: .\templates\public\wizard_italy_road_accident.html:22
 msgid ""
 "Produces an indicative compensation range from the approved Tabella Unica "
 "Nazionale 2025 (D.P.R. 12/2025) for road-accident bodily injury under "
 "Italian law."
 msgstr ""
 
-#: .\templates\public\wizard_italy_road_accident.html:22
 msgid ""
 "It does not collect medical or financial documents, does not constitute "
 "legal advice, does not guarantee any outcome, and does not replace a medical-"
 "legal report."
 msgstr ""
 
-#: .\templates\public\wizard_italy_road_accident.html:22
 msgid ""
 "Submit to view the indicative range, download the PDF report, then request a "
 "legal review from the Studio if you want to act on it."
 msgstr ""
 
-#: .\templates\public\wizard_italy_road_accident.html:22
 msgid "Calculator available — TUN 2025"
 msgstr ""
 
-#: .\templates\public\wizard_italy_road_accident.html:24
 msgid "Result preview"
 msgstr "Aperçu du résultat"
 
-#: .\templates\public\wizard_italy_road_accident.html:25
 msgid "After you submit"
 msgstr "Après l’envoi"
 
-#: .\templates\public\wizard_italy_road_accident.html:26
 msgid "You will see an indicative min / mid / max range"
 msgstr "Vous verrez une fourchette indicative min / mid / max"
 
-#: .\templates\public\wizard_italy_road_accident.html:29
-#: .\templates\public\wizard_result.html:19
-#: .\templates\public\wizard_result.html:94
 msgid "Min"
 msgstr "Min"
 
-#: .\templates\public\wizard_italy_road_accident.html:30
 msgid "Conservative reading of the TUN 2025 cell for your inputs."
 msgstr "Lecture prudente de la cellule TUN 2025 pour vos saisies."
 
-#: .\templates\public\wizard_italy_road_accident.html:33
-#: .\templates\public\wizard_result.html:23
-#: .\templates\public\wizard_result.html:98
 msgid "Mid"
 msgstr "Médian"
 
-#: .\templates\public\wizard_italy_road_accident.html:34
 msgid ""
 "Central anchor used as a working reference in negotiation or judicial "
 "reasoning."
@@ -3609,18 +2812,13 @@ msgstr ""
 "Ancrage central utilisé comme référence de travail en négociation ou "
 "raisonnement judiciaire."
 
-#: .\templates\public\wizard_italy_road_accident.html:37
-#: .\templates\public\wizard_result.html:27
-#: .\templates\public\wizard_result.html:102
 msgid "Max"
 msgstr "Max"
 
-#: .\templates\public\wizard_italy_road_accident.html:38
 msgid "Most favourable reading still supported by the same TUN 2025 cell."
 msgstr ""
 "Lecture la plus favorable encore soutenue par la même cellule TUN 2025."
 
-#: .\templates\public\wizard_italy_road_accident.html:41
 msgid ""
 "The range is indicative, not a guaranteed payout. The actual valuation "
 "depends on documents, expert reports, applicable law and judicial "
@@ -3632,17 +2830,12 @@ msgstr ""
 "de la juridiction compétente, de la jurisprudence et des pratiques "
 "assurantielles."
 
-#: .\templates\public\wizard_italy_road_accident.html:143
 msgid "Run simulation"
 msgstr "Lancer la simulation"
 
-#: .\templates\public\wizard_morocco_inheritance.html:4
-#: .\templates\public\wizard_morocco_inheritance.html:11
-#: .\templates\public\wizard_morocco_inheritance.html:17
 msgid "Morocco — international inheritance"
 msgstr "Maroc — succession internationale"
 
-#: .\templates\public\wizard_morocco_inheritance.html:6
 msgid ""
 "International inheritance review for cases with Moroccan elements "
 "(Moudawana, EU Regulation 650/2012). The Studio reviews each case manually; "
@@ -3654,8 +2847,6 @@ msgstr ""
 "manuellement chaque dossier ; les parts successorales ne sont pas calculées "
 "automatiquement sans cartographie de la loi applicable au dossier."
 
-#: .\templates\public\wizard_morocco_inheritance.html:14
-#: .\templates\public\wizard_tunisia_inheritance.html:14
 msgid ""
 "All fields below are optional. The Studio reviews each inheritance case "
 "manually; inheritance shares are not computed automatically without an "
@@ -3665,7 +2856,6 @@ msgstr ""
 "chaque dossier successoral ; les parts successorales ne sont pas calculées "
 "automatiquement sans cartographie de la loi applicable au dossier."
 
-#: .\templates\public\wizard_morocco_inheritance.html:17
 msgid ""
 "Applicable framework: Moudawana (Code de la famille), Code des droits réels, "
 "EU Regulation 650/2012."
@@ -3673,7 +2863,6 @@ msgstr ""
 "Cadre applicable : Moudawana (Code de la famille), Code des droits réels, "
 "Règlement UE 650/2012."
 
-#: .\templates\public\wizard_morocco_inheritance.html:25
 msgid ""
 "The simulation is indicative and does not constitute legal advice or "
 "guarantee of outcome. Inheritance matters in Morocco follow the Moudawana "
@@ -3685,32 +2874,24 @@ msgstr ""
 "(Code de la famille), Livre III : un calcul précis nécessite la revue du "
 "Cabinet sur le contexte réel du dossier."
 
-#: .\templates\public\wizard_result.html:4
 msgid "Simulation result"
 msgstr "Résultat de la simulation"
 
-#: .\templates\public\wizard_result.html:9
-#: .\templates\public\wizard_start.html:11
 msgid "Indicative simulation"
 msgstr "Simulation indicative"
 
-#: .\templates\public\wizard_result.html:10
 msgid "Preliminary result"
 msgstr "Résultat préliminaire"
 
-#: .\templates\public\wizard_result.html:16
 msgid "Indicative range"
 msgstr "Fourchette indicative"
 
-#: .\templates\public\wizard_result.html:67
 msgid "What this means"
 msgstr "Ce que cela signifie"
 
-#: .\templates\public\wizard_result.html:68
 msgid "A bargaining anchor, not a guaranteed payout"
 msgstr "Un point d’ancrage de négociation, non un versement garanti"
 
-#: .\templates\public\wizard_result.html:70
 msgid ""
 "The min / mid / max values are the indicative range a Studio lawyer would "
 "use as a starting point in negotiation or judicial reasoning. They reflect "
@@ -3723,7 +2904,6 @@ msgstr ""
 "saisies. Elles ne constituent ni une promesse d’indemnisation, ni un devis, "
 "ni un jugement."
 
-#: .\templates\public\wizard_result.html:73
 msgid ""
 "The actual amount finally awarded depends on documents, expert reports, the "
 "responsibility split, the competent jurisdiction, and the judicial "
@@ -3734,15 +2914,12 @@ msgstr ""
 "judiciaire du tribunal saisi — autant d’éléments que la plateforme ne voit "
 "pas aujourd’hui."
 
-#: .\templates\public\wizard_result.html:79
 msgid "Next steps"
 msgstr "Étapes suivantes"
 
-#: .\templates\public\wizard_result.html:80
 msgid "What you can do with this result"
 msgstr "Ce que vous pouvez faire de ce résultat"
 
-#: .\templates\public\wizard_result.html:82
 msgid ""
 "Download the PDF of this simulation. It carries the same range, sources and "
 "disclaimer, in a format you can save or share."
@@ -3751,7 +2928,6 @@ msgstr ""
 "mêmes sources et le même avertissement, dans un format que vous pouvez "
 "conserver ou partager."
 
-#: .\templates\public\wizard_result.html:83
 msgid ""
 "Request a legal review from the Studio. A lawyer reads the case manually and "
 "replies on whether and how the firm can help."
@@ -3759,7 +2935,6 @@ msgstr ""
 "Demandez une revue juridique au Studio. Un avocat lit le dossier "
 "manuellement et répond sur l’opportunité et les modalités d’une intervention."
 
-#: .\templates\public\wizard_result.html:84
 msgid ""
 "Keep the simulation ID below — the Studio uses it to retrieve the exact "
 "inputs and sources of this run."
@@ -3767,33 +2942,27 @@ msgstr ""
 "Conservez l’identifiant de simulation ci-dessous — le Studio l’utilise pour "
 "retrouver les saisies et les sources exactes de cette exécution."
 
-#: .\templates\public\wizard_result.html:90
 msgid "Calculation basis"
 msgstr ""
 
-#: .\templates\public\wizard_result.html:91
 msgid "How to read this range"
 msgstr ""
 
-#: .\templates\public\wizard_result.html:95
 msgid ""
 "Lower bound of the indicative range based on the approved dataset and the "
 "conservative interpretation of fault and disability."
 msgstr ""
 
-#: .\templates\public\wizard_result.html:99
 msgid ""
 "Central reference value used as the working anchor in negotiations or "
 "judicial reasoning."
 msgstr ""
 
-#: .\templates\public\wizard_result.html:103
 msgid ""
 "Upper bound of the indicative range based on the approved dataset and the "
 "most favourable interpretation supported by sources."
 msgstr ""
 
-#: .\templates\public\wizard_result.html:107
 msgid ""
 "Amounts are derived from validated legal sources cited below. They are "
 "indicative: the actual valuation depends on documents, expert reports, "
@@ -3806,32 +2975,25 @@ msgstr ""
 "expertises, responsabilités, droit applicable, juridiction compétente, "
 "orientations jurisprudentielles et pratiques assurantielles."
 
-#: .\templates\public\wizard_result.html:122
 msgid "Assumptions"
 msgstr "Hypothèses"
 
-#: .\templates\public\wizard_result.html:134
 msgid "Notes on this estimate"
 msgstr "Notes sur cette estimation"
 
-#: .\templates\public\wizard_result.html:134
 msgid "Notes on the simulation"
 msgstr "Notes sur la simulation"
 
-#: .\templates\public\wizard_result.html:150
 msgid "Cited legal sources"
 msgstr "Sources juridiques citées"
 
-#: .\templates\public\wizard_result.html:163
 #, python-format
 msgid "Open official source: %(title)s (opens in a new tab)"
 msgstr ""
 
-#: .\templates\public\wizard_result.html:164
 msgid "Open official source"
 msgstr "Ouvrir la source officielle"
 
-#: .\templates\public\wizard_result.html:177
 msgid ""
 "This simulation is indicative and does not constitute legal advice or "
 "guarantee of outcome."
@@ -3839,28 +3001,21 @@ msgstr ""
 "Cette simulation est indicative et ne constitue ni un avis juridique ni une "
 "garantie de résultat."
 
-#: .\templates\public\wizard_result.html:184
 msgid "Simulation ID"
 msgstr "ID de simulation"
 
-#: .\templates\public\wizard_result.html:188
 msgid "Created at"
 msgstr "Créé le"
 
-#: .\templates\public\wizard_result.html:199
 msgid "Download PDF report"
 msgstr "Télécharger le rapport PDF"
 
-#: .\templates\public\wizard_result.html:204
 msgid "Back to methodology"
 msgstr "Retour à la méthodologie"
 
-#: .\templates\public\wizard_start.html:4
-#: .\templates\public\wizard_start.html:12
 msgid "Start a guided simulation"
 msgstr "Démarrer une simulation guidée"
 
-#: .\templates\public\wizard_start.html:6
 msgid ""
 "Pick a country and a case type. Indicative simulations are produced only "
 "when validated legal sources are available — otherwise the wizard explicitly "
@@ -3871,7 +3026,6 @@ msgstr ""
 "sources juridiques validées sont disponibles — sinon elle retourne un statut "
 "clair « validation juridique requise »."
 
-#: .\templates\public\wizard_start.html:14
 msgid ""
 "Pick the country and the case type that best fits your situation. The "
 "simulation is indicative: it will only produce an estimate when validated "
@@ -3883,23 +3037,18 @@ msgstr ""
 "sources juridiques validées sont disponibles — sinon elle retourne un statut "
 "clair « validation juridique requise »."
 
-#: .\templates\public\wizard_start.html:64
 msgid "How it works"
 msgstr "Comment ça marche"
 
-#: .\templates\public\wizard_start.html:65
 msgid "From your inputs to a Studio review"
 msgstr "De vos saisies à la revue du Studio"
 
-#: .\templates\public\wizard_start.html:68
 msgid "Step 1"
 msgstr "Étape 1"
 
-#: .\templates\public\wizard_start.html:69
 msgid "You fill the wizard"
 msgstr "Vous remplissez le formulaire"
 
-#: .\templates\public\wizard_start.html:70
 msgid ""
 "Tell us about the case in your own words. All fields are optional. We never "
 "ask for documents at this stage."
@@ -3907,15 +3056,12 @@ msgstr ""
 "Décrivez le cas avec vos propres mots. Tous les champs sont facultatifs. "
 "Aucun document n’est demandé à ce stade."
 
-#: .\templates\public\wizard_start.html:73
 msgid "Step 2"
 msgstr "Étape 2"
 
-#: .\templates\public\wizard_start.html:74
 msgid "We compute or report honestly"
 msgstr "Nous calculons ou signalons honnêtement"
 
-#: .\templates\public\wizard_start.html:75
 msgid ""
 "If validated legal sources are available (today: Italy, road accident), the "
 "platform returns an indicative min/mid/max range. Otherwise it explicitly "
@@ -3926,15 +3072,12 @@ msgstr ""
 "mid/max. Sinon, elle indique explicitement « validation juridique requise » "
 "— aucun chiffre inventé."
 
-#: .\templates\public\wizard_start.html:78
 msgid "Step 3"
 msgstr "Étape 3"
 
-#: .\templates\public\wizard_start.html:79
 msgid "You request a Studio review"
 msgstr "Vous demandez une revue du Studio"
 
-#: .\templates\public\wizard_start.html:80
 msgid ""
 "Download the PDF of your simulation and ask the Studio for a manual legal "
 "review. The Studio remains free to accept or decline the matter."
@@ -3943,7 +3086,6 @@ msgstr ""
 "juridique manuelle. Le Studio reste libre d’accepter ou de refuser le "
 "dossier."
 
-#: .\templates\public\wizard_start.html:97
 msgid ""
 "Each module is activated only after the underlying legal sources are "
 "catalogued and validated by the Studio."
@@ -3951,7 +3093,6 @@ msgstr ""
 "Chaque module est activé uniquement après que les sources juridiques sous-"
 "jacentes ont été cataloguées et validées par le Cabinet."
 
-#: .\templates\public\wizard_start.html:102
 msgid ""
 "A simulation is not legal advice. It is an informative starting point. The "
 "Studio remains free to accept or decline a matter."
@@ -3959,13 +3100,9 @@ msgstr ""
 "Une simulation n'est pas un avis juridique. C'est un point de départ "
 "informatif. Le Cabinet reste libre d'accepter ou de refuser un dossier."
 
-#: .\templates\public\wizard_tunisia_inheritance.html:4
-#: .\templates\public\wizard_tunisia_inheritance.html:11
-#: .\templates\public\wizard_tunisia_inheritance.html:17
 msgid "Tunisia — international inheritance"
 msgstr "Tunisie — succession internationale"
 
-#: .\templates\public\wizard_tunisia_inheritance.html:6
 msgid ""
 "International inheritance review for cases with Tunisian elements (Code du "
 "statut personnel, Loi 98-97, EU Regulation 650/2012). The Studio reviews "
@@ -3978,7 +3115,6 @@ msgstr ""
 "successorales ne sont pas calculées automatiquement sans cartographie de la "
 "loi applicable au dossier."
 
-#: .\templates\public\wizard_tunisia_inheritance.html:17
 msgid ""
 "Applicable framework: Code du statut personnel (Loi 98-97), Code de droit "
 "international privé, EU Regulation 650/2012."
@@ -3986,7 +3122,6 @@ msgstr ""
 "Cadre applicable : Code du statut personnel (Loi 98-97), Code de droit "
 "international privé, Règlement UE 650/2012."
 
-#: .\templates\public\wizard_tunisia_inheritance.html:25
 msgid ""
 "The simulation is indicative and does not constitute legal advice or "
 "guarantee of outcome. Inheritance matters in Tunisia follow the Code du "
@@ -3997,128 +3132,3 @@ msgstr ""
 "garantie de résultat. Les successions en Tunisie relèvent du Code du statut "
 "personnel, Livre IX : un calcul précis nécessite la revue du Cabinet sur le "
 "contexte réel du dossier."
-
-#~ msgid "Warnings"
-#~ msgstr "Avertissements"
-
-#~ msgid "Missing documents"
-#~ msgstr "Documents manquants"
-
-#~ msgid "Habitual residence country at death"
-#~ msgstr "Pays de résidence habituelle au décès"
-
-#~ msgid "If different from the country of last domicile."
-#~ msgstr "Si différent du pays du dernier domicile."
-
-#~ msgid "Number of surviving parents (0, 1, or 2)"
-#~ msgstr "Nombre de parents survivants (0, 1 ou 2)"
-
-#~ msgid "Preliminary legal assessment — no automatic amount."
-#~ msgstr "Évaluation juridique préliminaire — aucun montant automatique."
-
-#~ msgid ""
-#~ "The Studio reviews each Belgian road-accident case manually, using the "
-#~ "recognised quantification tables (Loi du 21 novembre 1989, Tableau "
-#~ "Indicatif, Schryvers). No automatic amount is published before these "
-#~ "tables have been verified for the case. If you prefer to skip the form, "
-#~ "you can write directly to the Studio."
-#~ msgstr ""
-#~ "Le Cabinet examine manuellement chaque dossier belge d’accident de la "
-#~ "route, en s’appuyant sur les tables de quantification reconnues (Loi du "
-#~ "21 novembre 1989, Tableau Indicatif, Schryvers). Aucun montant "
-#~ "automatique n’est publié avant la vérification de ces tables pour le "
-#~ "dossier. Si vous préférez ne pas remplir le formulaire, vous pouvez "
-#~ "écrire directement au Cabinet."
-
-#~ msgid ""
-#~ "Collects qualitative information about your case so the Studio can review "
-#~ "it manually."
-#~ msgstr ""
-#~ "Recueille des informations qualitatives sur votre dossier afin que le "
-#~ "Cabinet puisse l’examiner manuellement."
-
-#~ msgid ""
-#~ "It does not publish an automatic amount. The Belgian indicative tables "
-#~ "(Tableau Indicatif, Schryvers) are reviewed manually by the Studio for "
-#~ "each case."
-#~ msgstr ""
-#~ "Il ne publie aucun montant automatique. Les tables indicatives belges "
-#~ "(Tableau Indicatif, Schryvers) sont examinées manuellement par le Cabinet "
-#~ "pour chaque dossier."
-
-#~ msgid ""
-#~ "The Studio reviews each French road-accident case manually, using the "
-#~ "recognised quantification sources (Loi Badinter, Référentiel Mornet, "
-#~ "Gazette du Palais). No automatic amount is published before these sources "
-#~ "have been verified for the case. If you prefer to skip the form, you can "
-#~ "write directly to the Studio."
-#~ msgstr ""
-#~ "Le Cabinet examine manuellement chaque dossier français d’accident de la "
-#~ "route, en s’appuyant sur les sources de quantification reconnues (Loi "
-#~ "Badinter, Référentiel Mornet, Gazette du Palais). Aucun montant "
-#~ "automatique n’est publié avant la vérification de ces sources pour le "
-#~ "dossier. Si vous préférez ne pas remplir le formulaire, vous pouvez "
-#~ "écrire directement au Cabinet."
-
-#~ msgid ""
-#~ "International inheritance review — shares not computed automatically."
-#~ msgstr ""
-#~ "Analyse successorale internationale — parts non calculées automatiquement."
-
-#~ msgid ""
-#~ "The Studio reviews each Moroccan inheritance case manually, on the basis "
-#~ "of the Moudawana (Code de la famille), the Code des droits réels and EU "
-#~ "Regulation 650/2012. Inheritance shares are not computed automatically "
-#~ "without an applicable-law mapping for the case. If you prefer to skip the "
-#~ "form, you can write directly to the Studio."
-#~ msgstr ""
-#~ "Le Cabinet examine manuellement chaque dossier successoral marocain, sur "
-#~ "la base de la Moudawana (Code de la famille), du Code des droits réels et "
-#~ "du Règlement UE 650/2012. Les parts successorales ne sont pas calculées "
-#~ "automatiquement sans cartographie de la loi applicable au dossier. Si "
-#~ "vous préférez ne pas remplir le formulaire, vous pouvez écrire "
-#~ "directement au Cabinet."
-
-#~ msgid ""
-#~ "It does not compute inheritance shares automatically. The Studio reviews "
-#~ "the case under the Moudawana (Code de la famille) and EU Regulation "
-#~ "650/2012 manually."
-#~ msgstr ""
-#~ "Il ne calcule pas automatiquement les parts successorales. Le Cabinet "
-#~ "examine manuellement le dossier au regard de la Moudawana (Code de la "
-#~ "famille) et du Règlement UE 650/2012."
-
-#~ msgid ""
-#~ "For this jurisdiction and case type, a lawyer of the Studio reviews each "
-#~ "submission manually rather than publishing an automatic amount. We will "
-#~ "reply directly with the next step (applicable law, competent "
-#~ "jurisdiction, documents to gather)."
-#~ msgstr ""
-#~ "Pour cette juridiction et ce type de dossier, un avocat du Cabinet "
-#~ "examine manuellement chaque demande plutôt que de publier un montant "
-#~ "automatique. Nous répondrons directement avec la suite (loi applicable, "
-#~ "juridiction compétente, documents à rassembler)."
-
-#~ msgid ""
-#~ "The Studio reviews each Tunisian inheritance case manually, on the basis "
-#~ "of the Code du statut personnel (Loi 98-97), the Code de droit "
-#~ "international privé and EU Regulation 650/2012. Inheritance shares are "
-#~ "not computed automatically without an applicable-law mapping for the "
-#~ "case. If you prefer to skip the form, you can write directly to the "
-#~ "Studio."
-#~ msgstr ""
-#~ "Le Cabinet examine manuellement chaque dossier successoral tunisien, sur "
-#~ "la base du Code du statut personnel (Loi 98-97), du Code de droit "
-#~ "international privé et du Règlement UE 650/2012. Les parts successorales "
-#~ "ne sont pas calculées automatiquement sans cartographie de la loi "
-#~ "applicable au dossier. Si vous préférez ne pas remplir le formulaire, "
-#~ "vous pouvez écrire directement au Cabinet."
-
-#~ msgid ""
-#~ "It does not compute inheritance shares automatically. The Studio reviews "
-#~ "the case under the Code du statut personnel (Loi 98-97) and EU Regulation "
-#~ "650/2012 manually."
-#~ msgstr ""
-#~ "Il ne calcule pas automatiquement les parts successorales. Le Cabinet "
-#~ "examine manuellement le dossier au regard du Code du statut personnel "
-#~ "(Loi 98-97) et du Règlement UE 650/2012."

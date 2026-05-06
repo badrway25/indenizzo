@@ -268,10 +268,27 @@ class InternationalInheritanceWizardForm(forms.Form):
     )
 
     # --- Family situation ------------------------------------------------
+    SPOUSE_GENDER_CHOICES = (
+        ("husband", _("Surviving husband (the deceased was a wife)")),
+        ("wife", _("Surviving wife (the deceased was a husband)")),
+    )
+
     spouse_present = forms.BooleanField(
         label=_("Surviving spouse"),
         required=False,
         help_text=_("Tick if the deceased is survived by a spouse."),
+    )
+    surviving_spouse_gender = forms.ChoiceField(
+        label=_("Surviving spouse — gender"),
+        required=False,
+        choices=SPOUSE_GENDER_CHOICES,
+        widget=forms.RadioSelect,
+        help_text=_(
+            "Required only when a surviving spouse exists. Moroccan and "
+            "Tunisian inheritance frameworks assign distinct shares to a "
+            "surviving husband versus a surviving wife (Moudawana art. "
+            "342-344)."
+        ),
     )
     sons_count = forms.IntegerField(
         label=_("Number of surviving sons"),
@@ -350,6 +367,24 @@ class InternationalInheritanceWizardForm(forms.Form):
     def is_likely_bot(self) -> bool:
         return bool(self.data.get("website"))
 
+    def clean(self) -> dict[str, Any]:
+        cleaned = super().clean() or {}
+        spouse = bool(cleaned.get("spouse_present"))
+        gender = (cleaned.get("surviving_spouse_gender") or "").strip()
+        if spouse and not gender:
+            self.add_error(
+                "surviving_spouse_gender",
+                _(
+                    "Please indicate whether the surviving spouse is a "
+                    "husband or a wife. Moroccan and Tunisian inheritance "
+                    "rules assign different shares depending on the "
+                    "spouse's gender."
+                ),
+            )
+        if not spouse and gender:
+            cleaned["surviving_spouse_gender"] = ""
+        return cleaned
+
     def to_input_data(self) -> dict[str, Any]:
         from apps.calculators.inheritance_applicable_law import normalise_assets_countries
 
@@ -364,6 +399,8 @@ class InternationalInheritanceWizardForm(forms.Form):
         spouse = 1 if cleaned.get("spouse_present") else 0
         father = 1 if cleaned.get("father_present") else 0
         mother = 1 if cleaned.get("mother_present") else 0
+        spouse_gender_raw = (cleaned.get("surviving_spouse_gender") or "").strip()
+        surviving_spouse_gender = spouse_gender_raw if spouse and spouse_gender_raw else None
         estate_value = cleaned.get("estate_value")
         assets_raw = cleaned.get("assets_countries") or None
         assets_normalised = list(normalise_assets_countries(assets_raw))
@@ -373,6 +410,7 @@ class InternationalInheritanceWizardForm(forms.Form):
             "has_will": cleaned.get("has_will"),
             "heirs": {
                 "spouse": spouse,
+                "surviving_spouse_gender": surviving_spouse_gender,
                 "sons": sons,
                 "daughters": daughters,
                 "father": father,

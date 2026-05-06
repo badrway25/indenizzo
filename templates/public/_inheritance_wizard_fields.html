@@ -76,6 +76,28 @@
     </label>
   </div>
 
+  {# Surviving-spouse gender — required only when spouse_present is on.   #}
+  {# Moudawana art. 342-344 assigns distinct shares to husband vs wife,    #}
+  {# so the wizard must capture this disambiguation before any rule can    #}
+  {# fire. Block is hidden until the spouse checkbox is ticked.            #}
+  <div data-spouse-gender-block class="rounded-xl border border-gold-400 bg-sand-50 px-4 py-4"{% if not form.spouse_present.value %} hidden{% endif %}>
+    <p class="text-sm font-medium text-ink-900">{{ form.surviving_spouse_gender.label }}</p>
+    {% if form.surviving_spouse_gender.help_text %}
+      <p class="mt-1 text-xs text-stone2-500 leading-relaxed">{{ form.surviving_spouse_gender.help_text }}</p>
+    {% endif %}
+    <div class="mt-3 grid sm:grid-cols-2 gap-3">
+      {% for choice in form.surviving_spouse_gender %}
+        <label class="flex items-start gap-3 rounded-xl border border-stone2-200 bg-white px-4 py-3 cursor-pointer hover:border-gold-500 transition">
+          {{ choice.tag }}
+          <span class="text-sm text-ink-900">{{ choice.choice_label }}</span>
+        </label>
+      {% endfor %}
+    </div>
+    {% for err in form.surviving_spouse_gender.errors %}
+      <p class="text-xs text-red-700 mt-2">{{ err }}</p>
+    {% endfor %}
+  </div>
+
   {# Counted heirs: sons / daughters / siblings.                           #}
   <div class="grid sm:grid-cols-3 gap-5">
     <div>
@@ -141,3 +163,23 @@
     <span aria-hidden="true">→</span>
   </button>
 </div>
+
+<script>
+  // F-inheritance-wizard-spouse-gender-pass2 — show/hide the spouse-gender
+  // block based on the spouse checkbox. JS-free fallback: the block stays
+  // visible (server still validates conditional requirement).
+  (function () {
+    var spouse = document.getElementById("{{ form.spouse_present.id_for_label }}");
+    var block = document.querySelector("[data-spouse-gender-block]");
+    if (!spouse || !block) { return; }
+    function sync() {
+      if (spouse.checked) {
+        block.removeAttribute("hidden");
+      } else {
+        block.setAttribute("hidden", "");
+      }
+    }
+    spouse.addEventListener("change", sync);
+    sync();
+  })();
+</script>

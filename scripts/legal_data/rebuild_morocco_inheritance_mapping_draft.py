@@ -4,6 +4,9 @@ Iter origin: F-morocco-moudawana-real-pdf-remap-pass2.
 Refined in: F-morocco-moudawana-mapping-refinement-pass3 (split
 article 346 mother case, add ``unsupported_mechanisms`` section,
 add ``activation_blockers`` per rule).
+Refined in: F-inheritance-wizard-spouse-gender-pass2 (declare the
+new ``surviving_spouse_gender`` wizard input and add it as an
+explicit precondition on the husband-* / wife-* rules).
 
 Read the freshly-extracted Moudawana articles JSON and emit a
 mapping draft anchored on the real PDF's sha256, with every rule
@@ -60,11 +63,12 @@ def main() -> int:
 
     mapping = {
         "schema_version": "1.0",
-        "iter": "F-morocco-moudawana-mapping-refinement-pass3",
+        "iter": "F-inheritance-wizard-spouse-gender-pass2",
         "iter_lineage": [
             "F-morocco-moudawana-livre-iii-mapping-draft-pass1 (placeholder PDF — superseded)",
             "F-morocco-moudawana-real-pdf-remap-pass2 (real PDF, 8 rules)",
             "F-morocco-moudawana-mapping-refinement-pass3 (split 346, unsupported_mechanisms, activation_blockers)",
+            "F-inheritance-wizard-spouse-gender-pass2 (wizard captures surviving_spouse_gender; husband-* / wife-* rules now precondition on it)",
         ],
         "country": "MA",
         "case_type": "international_inheritance",
@@ -91,13 +95,19 @@ def main() -> int:
             {
                 "rule_id": "ma-inh-husband-without-descendants",
                 "article_references": ["342"],
-                "scenario": {"husband": 1, "sons": 0, "daughters": 0},
+                "scenario": {
+                    "surviving_spouse_gender": "husband",
+                    "husband": 1,
+                    "sons": 0,
+                    "daughters": 0,
+                },
                 "share_spec": {"husband": "1/2"},
                 "extracted_text_snippet": _snippet(articles, "342"),
                 "confidence": "medium",
                 "needs_manual_review": True,
                 "activation_blockers": [
                     "article 342 lists four other 1/2 cases (single daughter, single granddaughter, single full sister, single consanguine sister) — this rule isolates only the husband case",
+                    "wizard now captures surviving_spouse_gender; engine must read heirs.surviving_spouse_gender == 'husband' before firing this rule",
                 ],
                 "comment": (
                     "Article 342 (1): l'epoux a droit a 1/2 si l'epouse n'a "
@@ -110,12 +120,19 @@ def main() -> int:
             {
                 "rule_id": "ma-inh-husband-with-descendants",
                 "article_references": ["343"],
-                "scenario": {"husband": 1, "sons": ">=1", "daughters": ">=0"},
+                "scenario": {
+                    "surviving_spouse_gender": "husband",
+                    "husband": 1,
+                    "sons": ">=1",
+                    "daughters": ">=0",
+                },
                 "share_spec": {"husband": "1/4"},
                 "extracted_text_snippet": _snippet(articles, "343"),
                 "confidence": "medium",
                 "needs_manual_review": True,
-                "activation_blockers": [],
+                "activation_blockers": [
+                    "wizard now captures surviving_spouse_gender; engine must read heirs.surviving_spouse_gender == 'husband' before firing this rule",
+                ],
                 "comment": (
                     "Article 343 (1): l'epoux concourant avec une descendance "
                     "de l'epouse a vocation successorale prend 1/4."
@@ -124,12 +141,19 @@ def main() -> int:
             {
                 "rule_id": "ma-inh-wife-without-descendants",
                 "article_references": ["343"],
-                "scenario": {"wife": 1, "sons": 0, "daughters": 0},
+                "scenario": {
+                    "surviving_spouse_gender": "wife",
+                    "wife": 1,
+                    "sons": 0,
+                    "daughters": 0,
+                },
                 "share_spec": {"wife": "1/4"},
                 "extracted_text_snippet": _snippet(articles, "343"),
                 "confidence": "medium",
                 "needs_manual_review": True,
-                "activation_blockers": [],
+                "activation_blockers": [
+                    "wizard now captures surviving_spouse_gender; engine must read heirs.surviving_spouse_gender == 'wife' before firing this rule",
+                ],
                 "comment": (
                     "Article 343 (2): l'epouse en l'absence de descendance "
                     "de l'epoux a vocation successorale prend 1/4."
@@ -138,12 +162,19 @@ def main() -> int:
             {
                 "rule_id": "ma-inh-wife-with-descendants",
                 "article_references": ["344"],
-                "scenario": {"wife": 1, "sons": ">=1", "daughters": ">=0"},
+                "scenario": {
+                    "surviving_spouse_gender": "wife",
+                    "wife": 1,
+                    "sons": ">=1",
+                    "daughters": ">=0",
+                },
                 "share_spec": {"wife": "1/8"},
                 "extracted_text_snippet": _snippet(articles, "344"),
                 "confidence": "high",
                 "needs_manual_review": True,
-                "activation_blockers": [],
+                "activation_blockers": [
+                    "wizard now captures surviving_spouse_gender; engine must read heirs.surviving_spouse_gender == 'wife' before firing this rule",
+                ],
                 "comment": (
                     "Article 344: l'epouse prend 1/8 lorsque l'epoux laisse "
                     "une descendance a vocation successorale. Article text "
@@ -299,9 +330,19 @@ def main() -> int:
                     "input_data_path": "heirs.siblings",
                     "type": "integer (0..30)",
                 },
+                {
+                    "form_field": "surviving_spouse_gender",
+                    "input_data_path": "heirs.surviving_spouse_gender",
+                    "type": "choice ('husband' | 'wife' | None)",
+                    "since_iter": "F-inheritance-wizard-spouse-gender-pass2",
+                    "validation": (
+                        "required only when spouse_present=True; otherwise "
+                        "ignored. The form rejects spouse_present=True with "
+                        "an empty gender."
+                    ),
+                },
             ],
             "missing_for_full_faraid": [
-                "husband_vs_wife distinction (current 'spouse_present' boolean is gender-neutral; mapping rules use husband/wife separately for articles 342-344)",
                 "sibling sub-typing (full / consanguine / uterine) — articles 348-351",
                 "grandchildren (son's daughters, son's sons) — article 345 (2)",
                 "agnatic ascendants (paternal grandfather, paternal grandmother) — article 339",
@@ -365,7 +406,7 @@ def main() -> int:
         "blockers_before_activation": [
             "every rule's confidence must be re-checked by a Studio reviewer reading the extracted_text_snippet alongside the full article in the source PDF",
             "the engine must read heirs.siblings (already captured by the wizard) and gate ma-inh-mother-no-descendants-no-multi-siblings on siblings <= 1 before activation",
-            "the engine must distinguish husband vs wife (currently both fold into 'spouse'); rules ma-inh-husband-* and ma-inh-wife-* are intentionally redundant on the spouse axis until that split lands",
+            "the engine must read heirs.surviving_spouse_gender (captured by the wizard since F-inheritance-wizard-spouse-gender-pass2) and gate ma-inh-husband-* / ma-inh-wife-* rules on the corresponding gender",
             "every entry in unsupported_mechanisms must either be modelled or have an explicit blocked_rules list of cases the engine refuses to compute",
             "EU 650/2012 applicable-law decision must be wired before the public funnel can output a Moroccan-law allocation for cross-border cases",
         ],
