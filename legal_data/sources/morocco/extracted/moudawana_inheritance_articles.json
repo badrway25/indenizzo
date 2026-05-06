@@ -1,11 +1,723 @@
 {
   "schema_version": "1.0",
   "iter": "F-morocco-moudawana-livre-iii-mapping-draft-pass1",
-  "generated_at": "2026-05-06T16:38:16.434042+00:00",
+  "generated_at": "2026-05-06T17:52:50.089484+00:00",
   "pdf_path": "legal_data\\sources\\morocco\\official_downloaded\\ma-code-famille-moudawana-fr-pdf.pdf",
-  "source_sha256": "932aa556678ff0ceed2e49f57b697d818bc92c60ca42ddcd177b0f60e3c2ce3f",
-  "size_bytes": 227,
-  "extractor": "stub",
-  "extraction_blocked_reason": "local PDF is too small (227 bytes) — looks like a synthetic fixture, not the real Moudawana document",
-  "articles": []
+  "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+  "size_bytes": 489071,
+  "extractor": "pdfplumber",
+  "extraction_blocked_reason": "",
+  "articles": [
+    {
+      "article": "9",
+      "title": "Lorsque le Sadaq (la dot) a été acquitté en totalité ou en partie par le",
+      "text": "Lorsque le Sadaq (la dot) a été acquitté en totalité ou en partie par le\nfiancé, et qu’il y a eu rupture des fiançailles ou décès de l’un des fiancés,\nle fiancé ou ses héritiers peuvent demander la restitution des biens remis\nou, à défaut, leur équivalent ou leur valeur au jour d…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "157",
+      "title": "Lorsque la filiation paternelle est établie, même à la suite d’un",
+      "text": "Lorsque la filiation paternelle est établie, même à la suite d’un\nmariage vicié, de rapports sexuels par erreur, ou d’une reconnaissance\nde paternité (Istilhak), elle produit tous ses effets. Elle interdit les\nmariages prohibés pour cause d’alliance ou d’allaitement et donne droi…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "203",
+      "title": "En cas de pluralité d’enfants, la pension alimentaire due aux parents",
+      "text": "En cas de pluralité d’enfants, la pension alimentaire due aux parents\nse répartit entre leurs enfants selon leurs ressources et non d’après la\nquotité de leur part successorale.",
+      "extraction_confidence": "medium",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "252",
+      "title": "Les deux adoul , après en avoir informé le ministère public,",
+      "text": "Les deux adoul , après en avoir informé le ministère public,\nprocèdent sur ordonnance et sous la supervision du juge chargé des\ntutelles à l’inventaire définitif et intégral des biens, droits et obligations,\nen présence des héritiers, du représentant légal et de l’interdit lorsqu…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "261",
+      "title": "Les biens sont remis à l’interdit à sa majorité, à ses héritiers après",
+      "text": "Les biens sont remis à l’interdit à sa majorité, à ses héritiers après\nson décès et au successeur du tuteur testamentaire ou datif dans les\nautres cas.\nEn cas de non remise, les dispositions visées à l’article 270 ci-après\nsont applicables.",
+      "extraction_confidence": "medium",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "262",
+      "title": "En cas de décès du tuteur testamentaire ou datif ou en cas de perte",
+      "text": "En cas de décès du tuteur testamentaire ou datif ou en cas de perte\nde sa capacité civile, le juge chargé des tutelles prend les mesures à\nmême de protéger et préserver les biens de l’interdit.\nLes créances et indemnités dues à l’interdit sur la succession du\ntuteur testamentaire…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "266",
+      "title": "Lorsqu'une personne décède en laissant des héritiers mineurs ou",
+      "text": "Lorsqu'une personne décède en laissant des héritiers mineurs ou\nlorsque le tuteur testamentaire ou datif décède, les autorités\nadministratives locales et les proches parents avec qui le défunt vivait\ndoivent en informer le juge chargé des tutelles, dans un délai ne\ndépassant pas …",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "267",
+      "title": "Le juge chargé des tutelles ordonne l’établissement d’un acte",
+      "text": "Le juge chargé des tutelles ordonne l’établissement d’un acte\nd'hérédité (Iratha) mentionnant les héritiers et la prise de toute mesure\nqu’il estime adéquate pour la préservation des droits et des intérêts\nfinanciers et personnels des mineurs.\n-86 -\nPURL:https://www.legal-tools.o…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "280",
+      "title": "Le testament ne peut être fait en faveur d’un héritier, sauf",
+      "text": "Le testament ne peut être fait en faveur d’un héritier, sauf\npermission des autres héritiers. Toutefois, cela n’empêche pas d’en\ndresser acte.\n-90 -\nPURL:https://www.legal-tools.org/doc/0e057b/",
+      "extraction_confidence": "medium",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "289",
+      "title": "Le testament fait en faveur d’un légataire déterminé peut être l’objet",
+      "text": "Le testament fait en faveur d’un légataire déterminé peut être l’objet\ndu refus de ce dernier, s’il a pleine capacité. La faculté de refuser est\ntransmise aux héritiers du bénéficiaire décédé.",
+      "extraction_confidence": "medium",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "296",
+      "title": "Pour être valable, le testament doit faire l’objet d’un acte adoulaire",
+      "text": "Pour être valable, le testament doit faire l’objet d’un acte adoulaire\nou constaté par toute autorité officielle habilitée à dresser des actes ou\npar un acte manuscrit du testateur et signé par lui.\nLorsqu'une nécessité impérieuse rend impossible de constater l’acte\ndu testament …",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "299",
+      "title": "Le testament ne peut être exécuté sur une succession dont le passif",
+      "text": "Le testament ne peut être exécuté sur une succession dont le passif\nest supérieur à l’actif, à moins que le créancier jouissant de sa pleine\ncapacité n’y consente ou qu’il y ait extinction de créances.",
+      "extraction_confidence": "medium",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "300",
+      "title": "Lorsque le legs est égal à la part revenant à un héritier non",
+      "text": "Lorsque le legs est égal à la part revenant à un héritier non\ndéterminé, le légataire a droit à une part calculée en considération du\nnombre des successibles, mais ne peut prétendre à plus du tiers, sauf\npermission des héritiers majeurs.",
+      "extraction_confidence": "medium",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "302",
+      "title": "Lorsque des legs de même rang dépassent le tiers disponible, les",
+      "text": "Lorsque des legs de même rang dépassent le tiers disponible, les\nbénéficiaires se partagent ce tiers au prorata de leur part.\nLorsque l’un des legs porte sur un bien déterminé, le bénéficiaire\nd’un tel legs prend sa part sur ce bien même. La part du bénéficiaire\nd’un legs portant…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "303",
+      "title": "Si les héritiers ont, soit après la mort du testateur, soit pendant sa",
+      "text": "Si les héritiers ont, soit après la mort du testateur, soit pendant sa\ndernière maladie, ratifié le testament fait au profit d’un héritier ou le\ntestament portant sur plus du tiers de la succession ou si le testateur\navait demandé préalablement leur autorisation à cet effet et qu…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "304",
+      "title": "Lorsqu’une personne décède après avoir fait un legs en faveur d’un",
+      "text": "Lorsqu’une personne décède après avoir fait un legs en faveur d’un\nenfant à naître, ses héritiers ont l’usufruit de la chose léguée, jusqu’à ce\nque l’enfant naisse vivant ; il recueille alors le legs.",
+      "extraction_confidence": "medium",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "305",
+      "title": "L’usufruit appartient à celui des légataires existant au moment du",
+      "text": "L’usufruit appartient à celui des légataires existant au moment du\ndécès du testateur ou postérieurement à celui-ci. Tout légataire qui se\nrévèle après le décès concourt au bénéfice de l’usufruit, jusqu’au jour où\ndevient certaine l’inexistence d’autres légataires. Les légataires…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "307",
+      "title": "Le légataire qui décède, après être né vivant, a droit au legs. Ce",
+      "text": "Le légataire qui décède, après être né vivant, a droit au legs. Ce\ndernier fait partie de la succession de ce légataire qui est considéré\ncomme ayant vécu au moment de la dévolution héréditaire.",
+      "extraction_confidence": "medium",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "311",
+      "title": "Dans le cas où le legs ne concerne que l’usufruit, on prend en",
+      "text": "Dans le cas où le legs ne concerne que l’usufruit, on prend en\nconsidération la valeur de la pleine propriété pour déterminer la part du\nlegs par rapport à la succession.",
+      "extraction_confidence": "medium",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "312",
+      "title": "En cas de perte de la chose déterminée faisant l’objet du legs ou de",
+      "text": "En cas de perte de la chose déterminée faisant l’objet du legs ou de\nl’attribution de celle-ci à un tiers du vivant du testateur, à la suite d’une\nrevendication, le légataire n'a plus aucun droit. Toutefois, si cette perte\nou cette attribution n’affecte qu’une partie de l’objet d…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "313",
+      "title": "Lorsqu’un bien est légué au profit d’un enfant à naître d’une tierce",
+      "text": "Lorsqu’un bien est légué au profit d’un enfant à naître d’une tierce\npersonne qui décède sans laisser d’enfant né ou à naître, ce bien revient à\nla succession du testateur.",
+      "extraction_confidence": "medium",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "316",
+      "title": "Le Tanzil est formé de la même manière que le testament lorsque son",
+      "text": "Le Tanzil est formé de la même manière que le testament lorsque son\nauteur dit : « telle personne héritera avec mon enfant ou avec mes\nenfants » ou bien : « faites inclure telle personne parmi mes héritiers » ou\nbien : « faites hériter telle personne de mes biens » ou bien, dans …",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "317",
+      "title": "Lorsqu' en cas de Tanzil, il existe un héritier réservataire (Fardh) et si",
+      "text": "Lorsqu' en cas de Tanzil, il existe un héritier réservataire (Fardh) et si\nl’auteur du Tanzil formule expressément sa volonté d’attribuer au\nbénéficiaire du Tanzil une part égale à celle de l’héritier auquel il est\nassimilé, la détermination des parts s’opère au moyen de fraction…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "318",
+      "title": "Lorsqu' en cas de Tanzil, il n’existe pas d’héritiers réservataires",
+      "text": "Lorsqu' en cas de Tanzil, il n’existe pas d’héritiers réservataires\n(Fardh), la personne instituée en tant qu'héritier (Monazzal) est assimilée,\nselon le cas, aux héritiers masculins ou féminins.",
+      "extraction_confidence": "medium",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "319",
+      "title": "En cas de Tanzil, lorsqu’il existe plusieurs personnes, de sexe",
+      "text": "En cas de Tanzil, lorsqu’il existe plusieurs personnes, de sexe\nmasculin ou féminin, instituées en tant qu'héritiers et que l’auteur du\nTanzil a exprimé sa volonté, soit de leur attribuer la part que leur père\naurait recueillie de son vivant, soit de les lui substituer, le partag…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "321",
+      "title": "La succession est l’ensemble des biens ou droits patrimoniaux",
+      "text": "La succession est l’ensemble des biens ou droits patrimoniaux\nlaissés par le de cujus.",
+      "extraction_confidence": "low",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "322",
+      "title": "Sont compris et déduits de la succession cinq droits, dans l’ordre ci-",
+      "text": "Sont compris et déduits de la succession cinq droits, dans l’ordre ci-\naprès :\n1) les droits grevant les biens réels faisant partie de la succession ;\n2) les frais funéraires réglés dans les limites des convenances ;\n3) les dettes du de cujus ;\n4) le testament valable et exécutoi…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "323",
+      "title": "L’héritage est la transmission d’un droit, à la mort de son titulaire,",
+      "text": "L’héritage est la transmission d’un droit, à la mort de son titulaire,\naprès liquidation de la succession, à la personne qui y prétend\nlégalement, sans qu’il y ait ni libéralité ni contrepartie.",
+      "extraction_confidence": "medium",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "324",
+      "title": "L’héritage est de droit à la mort réelle ou présumée du de cujus et à",
+      "text": "L’héritage est de droit à la mort réelle ou présumée du de cujus et à\nla survie certaine de son héritier.",
+      "extraction_confidence": "low",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "326",
+      "title": "La personne portée disparue est tenue pour vivante à l’égard de ses",
+      "text": "La personne portée disparue est tenue pour vivante à l’égard de ses\nbiens. Sa succession ne peut être ouverte et partagée entre ses héritiers\nqu’après le prononcé d’un jugement déclarant son décès. Elle est\nconsidérée comme étant en vie aussi bien à l’égard de ses propres droits\n…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "331",
+      "title": "Le nouveau né n’a droit à la succession que lorsqu’il est établi qu'il",
+      "text": "Le nouveau né n’a droit à la succession que lorsqu’il est établi qu'il\nest né vivant suite aux premiers vagissements, à l’allaitement ou à\nd’autres indices analogues.",
+      "extraction_confidence": "medium",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "334",
+      "title": "Il y a quatre catégories d’héritiers :",
+      "text": "Il y a quatre catégories d’héritiers :\n- à Fardh seulement ;\n- par Taâsib seulement ;\n- à Fardh et par Taâsib à la fois ;\n- à Fardh ou par Taâsib séparément.\n-101 -\nPURL:https://www.legal-tools.org/doc/0e057b/",
+      "extraction_confidence": "medium",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "335",
+      "title": "Le Fardh est une part successorale déterminée, assignée à l’héritier.",
+      "text": "Le Fardh est une part successorale déterminée, assignée à l’héritier.\nLa succession est dévolue, en premier lieu, aux héritiers à Fardh.\nLe Taâsib consiste à hériter de l’ensemble de la succession ou de ce\nqui en reste, après l’affectation des parts dues aux héritiers à Fardh.",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "336",
+      "title": "En l’absence d’héritier à Fardh ou lorsqu’il en existe et que les parts",
+      "text": "En l’absence d’héritier à Fardh ou lorsqu’il en existe et que les parts\nFardh n’épuisent pas la succession, celle-ci ou ce qui en reste après que\nles héritiers à Fardh aient reçu leurs parts, revient aux héritiers par Taâsib.",
+      "extraction_confidence": "medium",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "337",
+      "title": "Les héritiers à Fardh seulement sont au nombre de six : la mère ,",
+      "text": "Les héritiers à Fardh seulement sont au nombre de six : la mère ,\nl’aïeule, l’époux, l’épouse, le frère utérin et la sœur utérine.",
+      "extraction_confidence": "medium",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "338",
+      "title": "Les héritiers par Taâsib seulement sont au nombre de huit : le fils, le",
+      "text": "Les héritiers par Taâsib seulement sont au nombre de huit : le fils, le\nfils du fils à l’infini, le frère germain, le frère consanguin et le fils de\nchacun d’eux à l’infini, l’oncle germain, l’oncle paternel et le fils de\nchacun d’eux à l’infini.",
+      "extraction_confidence": "medium",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "339",
+      "title": "Les héritiers à la fois à Fardh et par Taâsib sont au nombre de deux :",
+      "text": "Les héritiers à la fois à Fardh et par Taâsib sont au nombre de deux :\nle père et l’aïeul.",
+      "extraction_confidence": "low",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "340",
+      "title": "Les héritiers à Fardh ou par Taâsib, mais qui ne peuvent réunir les",
+      "text": "Les héritiers à Fardh ou par Taâsib, mais qui ne peuvent réunir les\ndeux qualités, sont au nombre de quatre : la fille, la fille du fils, la sœur\ngermaine et la sœur consanguine.\n-102 -\nPURL:https://www.legal-tools.org/doc/0e057b/\n\nTTIITTRREE IIVV DDEESS HHEERRIITTIIEERRSS AA FFA…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "342",
+      "title": "Les héritiers ayant droit à une part de Fardh, égale à la moitié de la",
+      "text": "Les héritiers ayant droit à une part de Fardh, égale à la moitié de la\nsuccession, sont au nombre de cinq :\n1) l’époux, à condition que son épouse n’ait laissé aucune\ndescendance à vocation successorale tant masculine que féminine ;\n2) la fille, à condition qu’elle ne se trouve e…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "343",
+      "title": "Les héritiers qui ont droit à une part de Fardh, égale au quart de la",
+      "text": "Les héritiers qui ont droit à une part de Fardh, égale au quart de la\nsuccession, sont au nombre de deux :\n1) l’époux, en concours avec une descendance de l’épouse ayant\nvocation successorale ;\n2) l’épouse, en l’absence de descendance de l’époux ayant vocation\nsuccessorale.\n-103 …",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "344",
+      "title": "Un seul héritier à Fardh peut recevoir le huitième de la succession :",
+      "text": "Un seul héritier à Fardh peut recevoir le huitième de la succession :\nl’épouse, lorsque son époux laisse une descendance ayant vocation\nsuccessorale.",
+      "extraction_confidence": "medium",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "345",
+      "title": "Quatre héritiers ont droit aux deux-tiers de la succession :",
+      "text": "Quatre héritiers ont droit aux deux-tiers de la succession :\n1) deux filles ou plus du de cujus , en l’absence de fils ;\n2) deux filles ou plus du fils du de cujus, à condition qu’elles ne se\ntrouvent pas en présence d’enfant du de cujus de sexe masculin ou\nféminin et de fils du …",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "346",
+      "title": "Trois héritiers ont droit à une part de Fardh égale au tiers de la",
+      "text": "Trois héritiers ont droit à une part de Fardh égale au tiers de la\nsuccession :\n1) la mère, à condition que le de cujus ne laisse pas de descendants\nayant vocation successorale, ni deux ou plus de frères et sœurs, même\ns’ils font objet d’éviction (Hajb) ;\n2) plusieurs frères et/o…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "347",
+      "title": "Les bénéficiaires du sixième de la succession sont :",
+      "text": "Les bénéficiaires du sixième de la succession sont :\n1) le père, en présence d’enfant ou d’enfant de fils du de cujus qu’il\nsoit de sexe masculin ou féminin ;\n-104 -\nPURL:https://www.legal-tools.org/doc/0e057b/\n\n2) la mère, à condition qu’elle soit en présence d’enfant ou d’enfan…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "348",
+      "title": "Il y a trois sortes d’héritiers âsaba :",
+      "text": "Il y a trois sortes d’héritiers âsaba :\n1) les héritiers âsaba par eux-mêmes ;\n2) les héritiers âsaba par autrui ;\n3) les héritiers âsaba avec autrui.",
+      "extraction_confidence": "medium",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "349",
+      "title": "Les héritiers âsaba par eux-mêmes sont classés dans l’ordre de",
+      "text": "Les héritiers âsaba par eux-mêmes sont classés dans l’ordre de\npriorité suivant :\n1) les descendants mâles de père en fils à l’infini ;\n2) le père ;\n3) l’aïeul paternel et les frères germains et consanguins ;\n-105 -\nPURL:https://www.legal-tools.org/doc/0e057b/\n\n4) les descendants…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "350",
+      "title": "1) Lorsque, dans une même catégorie, se trouvent plusieurs héritiers",
+      "text": "1) Lorsque, dans une même catégorie, se trouvent plusieurs héritiers\nâsaba par eux–mêmes, la succession appartient à celui qui est du degré de\nparenté le plus proche du de cujus ;\n2) Lorsque, dans la catégorie, il y a plusieurs héritiers au même\ndegré, la priorité est fondée sur …",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "351",
+      "title": "Les héritiers âsaba par autrui sont :",
+      "text": "Les héritiers âsaba par autrui sont :\n1) la fille, en présence de fils ;\n2) la fille de fils à l’infini, en présence de fils de fils à l’infini, lorsqu’il\nse trouve au même degré qu’elle, ou à un degré inférieur et à moins\nqu’elle n’hérite autrement ;\n3) les sœurs germaines, en p…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "352",
+      "title": "Les héritiers âsaba avec autrui sont les sœurs germaines ou",
+      "text": "Les héritiers âsaba avec autrui sont les sœurs germaines ou\nconsanguines, en présence de fille ou de fille de fils à l’infini, elles\nrecueillent le reste de la succession après le prélèvement des parts de\nFardh.\nDans ce cas, les sœurs germaines sont assimilées aux frères\ngermains…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "353",
+      "title": "Lorsque le père ou l’aïeul est en concours avec la fille ou la fille de",
+      "text": "Lorsque le père ou l’aïeul est en concours avec la fille ou la fille de\nfils à l’infini, il a droit au sixième de la succession à titre d’héritier à Fardh\net à ce qui reste de celle-ci, à titre d’héritier âsib.",
+      "extraction_confidence": "medium",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "354",
+      "title": "1) Lorsque l’aïeul paternel est en présence uniquement de frères",
+      "text": "1) Lorsque l’aïeul paternel est en présence uniquement de frères\ngermains et/ou de sœurs germaines ou lorsqu’il est en concours\nuniquement avec des frères consanguins et/ou des sœurs consanguines,\nil a droit à la plus forte des deux parts suivantes : le tiers de la succession\nou …",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "356",
+      "title": "Il y a deux sortes d’éviction :",
+      "text": "Il y a deux sortes d’éviction :\n1) l'éviction partielle qui réduit la part d’héritage en la ramenant à\nune part inférieure ;\n2) l'éviction totale qui exclut de la succession.",
+      "extraction_confidence": "medium",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "357",
+      "title": "L’éviction totale ne peut frapper les six héritiers suivants : le fils, la",
+      "text": "L’éviction totale ne peut frapper les six héritiers suivants : le fils, la\nfille, le père, la mère, l’époux et l’épouse.",
+      "extraction_confidence": "low",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "359",
+      "title": "L’éviction partielle se produit dans les cas suivants :",
+      "text": "L’éviction partielle se produit dans les cas suivants :\n1) la mère : sa part de Fardh est ramenée du tiers au sixième par le\nfils, le fils de fils, la fille, la fille de fils, et aussi par deux ou plusieurs\nfrères et sœurs, qu’ils soient germains, consanguins ou utérins, héritier…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "360",
+      "title": "Le cas mouâdda",
+      "text": "Le cas mouâdda\nLorsqu’il y a, avec les frères et sœurs germains, des frères et sœurs\nconsanguins, les premiers font entrer l’aïeul en ligne de compte avec les\nseconds pour éviter que l’aïeul ne reçoive une trop forte part de la\nsuccession. Ensuite, si, dans le groupe des frères e…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "362",
+      "title": "Le cas el-malikiya.",
+      "text": "Le cas el-malikiya.\nLorsque sont en présence : l’aïeul, l’époux, la mère ou l’aïeule, un\nfrère consanguin ou plus et deux frères et sœurs utérins ou plus, l’époux\nreçoit la moitié, la mère le sixième et l’aïeul le reste de la succession. Les\nfrères et sœurs utérins n’ont droit à …",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "363",
+      "title": "Le cas chibhou el-malikiya (quasi el-malikiya).",
+      "text": "Le cas chibhou el-malikiya (quasi el-malikiya).\nLorsque l’aïeul vient à la succession avec l’époux, la mère ou\nl’aïeule, un frère germain et deux frères et sœurs utérins ou plus, l’aïeul\nprend ce qui reste après prélèvement des parts de Fardh, à l’exception\ndes frères et sœurs du…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "366",
+      "title": "Le cas el-gharâwyn.",
+      "text": "Le cas el-gharâwyn.\nLorsque sont en présence : l’épouse et les père et mère du de cujus,\nl’épouse a droit au quart, la mère au tiers de ce qui reste de la succession,\n-111 -\nPURL:https://www.legal-tools.org/doc/0e057b/\n\nc’est-à-dire au quart, et le père reçoit le reste. Lorsque l…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "369",
+      "title": "Lorsqu’une personne décède en laissant des petits-enfants issus",
+      "text": "Lorsqu’une personne décède en laissant des petits-enfants issus\nd’un fils ou d’une fille prédécédé (e) ou décédé (e) en même temps\nqu’elle, ces petits-enfants bénéficient, dans la limite du tiers disponible\nde la succession, d’un legs obligatoire, selon la répartition et\nconformé…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "370",
+      "title": "Le legs obligatoire attribué aux petits-enfants visés à l'article",
+      "text": "Le legs obligatoire attribué aux petits-enfants visés à l'article\nprécédent, est égal à la part de la succession que leur père ou mère aurait\nrecueillie de son ascendant s’il lui avait survécu ; toutefois, le tiers de la\nsuccession ne peut être dépassé.\n-112 -\nPURL:https://www.le…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "371",
+      "title": "Les petits-enfants précités n’ont pas droit au legs obligatoire,",
+      "text": "Les petits-enfants précités n’ont pas droit au legs obligatoire,\nlorsqu’ils héritent de l’ascendant de leur père ou mère que ce soit l’aïeul\nou l’aïeule, ni dans l’hypothèse où celui-ci a testé en leur faveur ou\ndonné, à titre gracieux, de son vivant, des biens d’une valeur égale…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "373",
+      "title": "Le tribunal peut, le cas échéant, prendre toutes les mesures",
+      "text": "Le tribunal peut, le cas échéant, prendre toutes les mesures\nnécessaires tels que le paiement des frais funéraires du défunt, dans les\nlimites des convenances, et les procédures urgentes nécessaires à la\npréservation de la succession. Il peut particulièrement ordonner\nl’appositio…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "374",
+      "title": "Le juge chargé des tutelles ordonne, d’office, que ces procédures",
+      "text": "Le juge chargé des tutelles ordonne, d’office, que ces procédures\nsoient suivies lorsqu’il s’avère qu’il y a parmi les héritiers un mineur non\npourvu de tuteur testamentaire, il en est de même lorsque l’un des\nhéritiers est absent.\n-113 -\nPURL:https://www.legal-tools.org/doc/0e05…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "375",
+      "title": "Le tribunal désigne, pour liquider la succession, la personne sur le",
+      "text": "Le tribunal désigne, pour liquider la succession, la personne sur le\nchoix de laquelle les héritiers se sont mis d'accord. Faute d’accord, et si le\ntribunal estime nécessaire la désignation d’un liquidateur, il leur impose\nde le choisir parmi les héritiers dans la mesure du possi…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "376",
+      "title": "Il est interdit à quiconque, parmi les héritiers, de prendre en main la",
+      "text": "Il est interdit à quiconque, parmi les héritiers, de prendre en main la\ngestion des biens successoraux avant la liquidation, sauf si une nécessité\nimpérieuse l’y contraint. Il lui est également interdit de percevoir les\ncréances et de payer les dettes de la succession, sans l’aut…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "377",
+      "title": "Il appartient au liquidateur, dès sa désignation, de procéder à",
+      "text": "Il appartient au liquidateur, dès sa désignation, de procéder à\nl’inventaire de tous les biens du défunt par l’intermédiaire de deux adoul,\nconformément aux règles de l’inventaire en vigueur. De même, il doit\nrechercher ce que la succession comporte de créances ou de dettes.\nLes …",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "378",
+      "title": "Le représentant légal accompagne le liquidateur de la succession",
+      "text": "Le représentant légal accompagne le liquidateur de la succession\nlors de l’accomplissement des procédures dont il est chargé en vertu des\ndispositions de l’article 377 et suivants. Il accompagne également la\npersonne désignée par le juge chargé des tutelles pour l’exécution des\nm…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "382",
+      "title": "La décision de désignation impartit un délai au liquidateur pour",
+      "text": "La décision de désignation impartit un délai au liquidateur pour\nprésenter le résultat de l'inventaire de la succession.",
+      "extraction_confidence": "low",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "384",
+      "title": "Les frais de la liquidation sont à la charge de la succession.",
+      "text": "Les frais de la liquidation sont à la charge de la succession.\n-115 -\nPURL:https://www.legal-tools.org/doc/0e057b/",
+      "extraction_confidence": "low",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "386",
+      "title": "Après examen de l’inventaire par le tribunal, la succession est",
+      "text": "Après examen de l’inventaire par le tribunal, la succession est\nliquidée sous son contrôle.",
+      "extraction_confidence": "low",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "387",
+      "title": "Au cours de la liquidation de la succession, le liquidateur doit",
+      "text": "Au cours de la liquidation de la succession, le liquidateur doit\naccomplir les actes de gestion qui s’imposent. Il doit aussi représenter la\nsuccession dans les instances judiciaires et percevoir les créances\nsuccessorales arrivées à échéance.\nLe liquidateur, même s’il n’est pas …",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "389",
+      "title": "Après avoir demandé la permission du juge chargé des tutelles ou",
+      "text": "Après avoir demandé la permission du juge chargé des tutelles ou\ndu tribunal et après l’approbation des héritiers, le liquidateur procède au\npaiement des dettes successorales qui sont exigibles. Quant aux dettes\nlitigieuses, elles ne sont réglées qu’après qu'il soit statué défini…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "390",
+      "title": "En cas d’insolvabilité ou de présomption d’insolvabilité de la",
+      "text": "En cas d’insolvabilité ou de présomption d’insolvabilité de la\nsuccession, le liquidateur doit suspendre le paiement de toute dette,\nalors même qu’elle ne serait pas l’objet d’une contestation, jusqu’à ce que\nl’ensemble des litiges afférents au passif de la succession ait été\ndéf…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "391",
+      "title": "Le liquidateur règle les dettes de la succession au moyen des",
+      "text": "Le liquidateur règle les dettes de la succession au moyen des\ncréances qu’il recouvre, des sommes d’argent qu’elle comprend et du\nmontant de la vente des biens mobiliers. En cas d'insuffisance, il sera fait\nrecours aux montants de la vente des biens immobiliers à hauteur des\ndett…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "392",
+      "title": "Après règlement des dettes successorales dans l’ordre prévu à",
+      "text": "Après règlement des dettes successorales dans l’ordre prévu à\nl’article 322, l’acte de testament est remis par le liquidateur de la\nsuccession à la personne habilitée à exécuter le testament conformément\nà l’article 298.\n-117 -\nPURL:https://www.legal-tools.org/doc/0e057b/\n\nTTIITT…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "393",
+      "title": "Après acquittement des charges successorales, les héritiers entrent",
+      "text": "Après acquittement des charges successorales, les héritiers entrent\nen possession de ce qui reste de la succession, chacun selon sa part\nlégale. Dès l’achèvement de l’inventaire de la succession, les héritiers\npeuvent demander, sur la base du compte, à entrer en possession des\nob…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "394",
+      "title": "Tout héritier peut obtenir des deux adoul copie de l’acte de",
+      "text": "Tout héritier peut obtenir des deux adoul copie de l’acte de\nsuccession (Iratha) et copie de l'inventaire successoral indiquant sa part et\ndéterminant ce qui revient à chacun des héritiers des biens de la\nsuccession.",
+      "extraction_confidence": "medium",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "395",
+      "title": "Toute personne qui a droit à une part dans la succession à titre",
+      "text": "Toute personne qui a droit à une part dans la succession à titre\nd’héritier à Fardh et/ou âsib ou de légataire, a le droit d’exiger la\ndistraction de sa part conformément à la loi.\n-118 -\nPURL:https://www.legal-tools.org/doc/0e057b/\n\nLLIIVVRREE VVIIII DDIISSPPOOSSIITTIIOONNSS TTR…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    },
+    {
+      "article": "2",
+      "title": "Les tribunaux de première instance comprennent:",
+      "text": "Les tribunaux de première instance comprennent:\nUn président,…………\n........................................\n…….………. du parquet.\nLes tribunaux de première instance peuvent être divisés suivant la\nnature des affaires qu'ils connaissent en sections des affaires de la famille\net en ch…",
+      "extraction_confidence": "high",
+      "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+      "page_start": null,
+      "page_end": null
+    }
+  ]
 }

@@ -1,73 +1,30 @@
 {
   "schema_version": "1.0",
-  "iter": "F-morocco-moudawana-livre-iii-mapping-draft-pass1",
+  "iter": "F-morocco-moudawana-real-pdf-remap-pass2",
   "country": "MA",
   "case_type": "international_inheritance",
   "source_slug": "ma-code-famille-moudawana-fr-pdf",
   "source_canonical_reference": "Loi n. 70-03 portant Code de la famille (Moudawana) — Livre VI : De la succession (articles 321-395)",
+  "source_sha256": "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96",
+  "source_size_bytes": 489071,
+  "extraction_basis": "official_pdf",
   "status": "draft",
   "activation_allowed": false,
   "needs_manual_review": true,
   "extraction_provenance": {
     "extraction_artifact": "legal_data/sources/morocco/extracted/moudawana_inheritance_articles.json",
-    "extracted_articles_count": 0,
-    "extraction_blocked_reason": "dev fixture is a synthetic stub PDF (~227 bytes); real Moudawana text is not yet present in the repo. Article numbers below are anchored on the canonical published Code de la famille; the extracted_text_snippet field is intentionally empty until a real PDF is fetched and re-extracted.",
-    "next_step_for_extraction": "replace legal_data/sources/morocco/official_downloaded/ma-code-famille-moudawana-fr-pdf.pdf with the real document, re-run scripts/legal_data/extract_morocco_moudawana_inheritance_articles.py, and re-validate via `validate_official_legal_sources --commit`."
+    "extracted_articles_count": 79,
+    "extractor": "pdfplumber",
+    "generated_at": "2026-05-06T17:52:50.089484+00:00",
+    "previous_pass_used_synthetic_stub": false,
+    "previous_pass_replaced_by_iter": "F-morocco-moudawana-real-pdf-remap-pass2"
   },
   "rules": [
     {
-      "rule_id": "ma-inh-spouse-with-descendants",
-      "article_references": ["322", "337", "341"],
-      "scenario": {
-        "spouse": 1,
-        "sons": ">=1",
-        "daughters": ">=0"
-      },
-      "share_spec": {
-        "spouse": "1/8",
-        "sons_group": "remainder_2_to_1",
-        "daughters_group": "remainder_2_to_1"
-      },
-      "extracted_text_snippet": "",
-      "confidence": "low",
-      "needs_manual_review": true,
-      "comment": "Surviving wife with descendants takes 1/8 (faraïd). The residuary (asaba) is split among sons and daughters with the doctrinal 2:1 ratio (sons : daughters). Article numbers reflect the canonical Moudawana Livre VI; the snippet is empty because the dev PDF is a stub."
-    },
-    {
-      "rule_id": "ma-inh-spouse-without-descendants",
-      "article_references": ["322", "337"],
-      "scenario": {
-        "spouse": 1,
-        "sons": 0,
-        "daughters": 0
-      },
-      "share_spec": {
-        "spouse": "1/4"
-      },
-      "extracted_text_snippet": "",
-      "confidence": "low",
-      "needs_manual_review": true,
-      "comment": "Surviving wife without descendants takes 1/4 (faraïd). The residuary then flows to the remaining qualifying heirs per the Livre VI hierarchy — NOT modelled here because the engine does not yet codify ascendants/collaterals."
-    },
-    {
-      "rule_id": "ma-inh-husband-with-descendants",
-      "article_references": ["322", "337"],
-      "scenario": {
-        "husband": 1,
-        "sons": ">=1",
-        "daughters": ">=0"
-      },
-      "share_spec": {
-        "husband": "1/4"
-      },
-      "extracted_text_snippet": "",
-      "confidence": "low",
-      "needs_manual_review": true,
-      "comment": "Surviving husband with descendants takes 1/4 (faraïd). The wizard currently only models a single spouse slot; this rule documents the doctrinal asymmetry between husband and wife shares."
-    },
-    {
       "rule_id": "ma-inh-husband-without-descendants",
-      "article_references": ["322", "337"],
+      "article_references": [
+        "342"
+      ],
       "scenario": {
         "husband": 1,
         "sons": 0,
@@ -76,30 +33,105 @@
       "share_spec": {
         "husband": "1/2"
       },
-      "extracted_text_snippet": "",
-      "confidence": "low",
+      "extracted_text_snippet": "Les héritiers ayant droit à une part de Fardh, égale à la moitié de la\nsuccession, sont au nombre de cinq :\n1) l’époux, à condition que son épouse n’ait laissé aucune\ndescendance à vocation successorale tant masculine qu…",
+      "confidence": "medium",
       "needs_manual_review": true,
-      "comment": "Surviving husband without descendants takes 1/2 (faraïd). Same modelling caveat as the previous rule."
+      "comment": "Article 342 (1): l'epoux a droit a 1/2 si l'epouse n'a laisse aucune descendance a vocation successorale (masculine ou feminine). Confidence=medium because the article also lists 1/2 cases for unique daughter / single sister; this rule isolates the husband-only case."
     },
     {
-      "rule_id": "ma-inh-mother-with-descendants",
-      "article_references": ["337", "341"],
+      "rule_id": "ma-inh-husband-with-descendants",
+      "article_references": [
+        "343"
+      ],
       "scenario": {
-        "mother": 1,
+        "husband": 1,
         "sons": ">=1",
         "daughters": ">=0"
       },
       "share_spec": {
-        "mother": "1/6"
+        "husband": "1/4"
       },
-      "extracted_text_snippet": "",
-      "confidence": "low",
+      "extracted_text_snippet": "Les héritiers qui ont droit à une part de Fardh, égale au quart de la\nsuccession, sont au nombre de deux :\n1) l’époux, en concours avec une descendance de l’épouse ayant\nvocation successorale ;\n2) l’épouse, en l’absence…",
+      "confidence": "medium",
       "needs_manual_review": true,
-      "comment": "Mother takes 1/6 in the presence of descendants. Modelled as a fixed share; ascendants are not yet a wizard input."
+      "comment": "Article 343 (1): l'epoux concourant avec une descendance de l'epouse a vocation successorale prend 1/4."
+    },
+    {
+      "rule_id": "ma-inh-wife-without-descendants",
+      "article_references": [
+        "343"
+      ],
+      "scenario": {
+        "wife": 1,
+        "sons": 0,
+        "daughters": 0
+      },
+      "share_spec": {
+        "wife": "1/4"
+      },
+      "extracted_text_snippet": "Les héritiers qui ont droit à une part de Fardh, égale au quart de la\nsuccession, sont au nombre de deux :\n1) l’époux, en concours avec une descendance de l’épouse ayant\nvocation successorale ;\n2) l’épouse, en l’absence…",
+      "confidence": "medium",
+      "needs_manual_review": true,
+      "comment": "Article 343 (2): l'epouse en l'absence de descendance de l'epoux a vocation successorale prend 1/4."
+    },
+    {
+      "rule_id": "ma-inh-wife-with-descendants",
+      "article_references": [
+        "344"
+      ],
+      "scenario": {
+        "wife": 1,
+        "sons": ">=1",
+        "daughters": ">=0"
+      },
+      "share_spec": {
+        "wife": "1/8"
+      },
+      "extracted_text_snippet": "Un seul héritier à Fardh peut recevoir le huitième de la succession :\nl’épouse, lorsque son époux laisse une descendance ayant vocation\nsuccessorale.",
+      "confidence": "high",
+      "needs_manual_review": true,
+      "comment": "Article 344: l'epouse prend 1/8 lorsque l'epoux laisse une descendance a vocation successorale. Article text is unambiguous."
+    },
+    {
+      "rule_id": "ma-inh-multiple-daughters-no-sons",
+      "article_references": [
+        "345"
+      ],
+      "scenario": {
+        "sons": 0,
+        "daughters": ">=2"
+      },
+      "share_spec": {
+        "daughters_group": "2/3"
+      },
+      "extracted_text_snippet": "Quatre héritiers ont droit aux deux-tiers de la succession :\n1) deux filles ou plus du de cujus , en l’absence de fils ;\n2) deux filles ou plus du fils du de cujus, à condition qu’elles ne se\ntrouvent pas en présence d’e…",
+      "confidence": "high",
+      "needs_manual_review": true,
+      "comment": "Article 345 (1): deux filles ou plus du de cujus, en l'absence de fils, partagent collectivement 2/3."
+    },
+    {
+      "rule_id": "ma-inh-mother-no-descendants-no-multi-siblings",
+      "article_references": [
+        "346"
+      ],
+      "scenario": {
+        "mother": 1,
+        "sons": 0,
+        "daughters": 0
+      },
+      "share_spec": {
+        "mother": "1/3"
+      },
+      "extracted_text_snippet": "Trois héritiers ont droit à une part de Fardh égale au tiers de la\nsuccession :\n1) la mère, à condition que le de cujus ne laisse pas de descendants\nayant vocation successorale, ni deux ou plus de frères et sœurs, même\ns…",
+      "confidence": "medium",
+      "needs_manual_review": true,
+      "comment": "Article 346 (1): la mere prend 1/3 si le de cujus ne laisse pas de descendants a vocation successorale ni deux ou plus de freres et soeurs (meme evinces par hajb). The wizard does not yet capture sibling counts; this rule cannot be activated until it does."
     },
     {
       "rule_id": "ma-inh-father-with-descendants",
-      "article_references": ["337", "341"],
+      "article_references": [
+        "347"
+      ],
       "scenario": {
         "father": 1,
         "sons": ">=1",
@@ -108,72 +140,63 @@
       "share_spec": {
         "father": "1/6"
       },
-      "extracted_text_snippet": "",
-      "confidence": "low",
+      "extracted_text_snippet": "Les bénéficiaires du sixième de la succession sont :\n1) le père, en présence d’enfant ou d’enfant de fils du de cujus qu’il\nsoit de sexe masculin ou féminin ;\n-104 -\nPURL:https://www.legal-tools.org/doc/0e057b/\n\n2) la mè…",
+      "confidence": "high",
       "needs_manual_review": true,
-      "comment": "Father takes 1/6 in the presence of male descendants. With only female descendants the father is also asaba on the residuary — not modelled in this draft."
+      "comment": "Article 347 (1): le pere en presence d'enfant ou d'enfant de fils du de cujus (homme ou femme) prend 1/6."
     },
     {
-      "rule_id": "ma-inh-only-daughters",
-      "article_references": ["337", "341"],
+      "rule_id": "ma-inh-mother-with-descendants",
+      "article_references": [
+        "347"
+      ],
       "scenario": {
-        "spouse": 0,
-        "sons": 0,
-        "daughters": ">=2"
+        "mother": 1,
+        "sons": ">=1",
+        "daughters": ">=0"
       },
       "share_spec": {
-        "daughters_group": "2/3"
+        "mother": "1/6"
       },
-      "extracted_text_snippet": "",
-      "confidence": "low",
+      "extracted_text_snippet": "Les bénéficiaires du sixième de la succession sont :\n1) le père, en présence d’enfant ou d’enfant de fils du de cujus qu’il\nsoit de sexe masculin ou féminin ;\n-104 -\nPURL:https://www.legal-tools.org/doc/0e057b/\n\n2) la mè…",
+      "confidence": "high",
       "needs_manual_review": true,
-      "comment": "Two or more daughters with no sons share 2/3 collectively. A single daughter without sons takes 1/2 — separate rule needed if the wizard distinguishes the count."
-    },
-    {
-      "rule_id": "ma-inh-single-daughter",
-      "article_references": ["337", "341"],
-      "scenario": {
-        "spouse": 0,
-        "sons": 0,
-        "daughters": 1
-      },
-      "share_spec": {
-        "daughters_group": "1/2"
-      },
-      "extracted_text_snippet": "",
-      "confidence": "low",
-      "needs_manual_review": true,
-      "comment": "A single daughter without sons takes 1/2 (faraïd)."
+      "comment": "Article 347 (2): la mere en presence d'enfant ou d'enfant de fils du de cujus prend 1/6."
     }
   ],
   "fixture_compatibility": {
     "engine": "morocco_inheritance_v1",
     "amount_rule": "morocco_inheritance_fixed_share_direct",
     "smoke_scenario": {
-      "heirs": {"spouse": 1, "sons": 1, "daughters": 1},
+      "heirs": {
+        "spouse": 1,
+        "sons": 1,
+        "daughters": 1
+      },
       "estate_value": "800000",
       "expected_breakdown": {
         "spouse_amount_eur": "100000",
         "sons_group_amount_eur_approx": "466666.67",
         "daughters_group_amount_eur_approx": "233333.33"
-      }
+      },
+      "anchor_rule_id": "ma-inh-wife-with-descendants",
+      "anchor_article": "344"
     },
     "fixture_only": true,
     "public_db_activation": false
   },
   "non_modelled_concepts": [
-    "hajb (exclusion of an heir by a closer-degree heir)",
-    "'awl (proportional reduction when fixed shares exceed unity)",
-    "radd (devolution of the residue when no asaba is present)",
-    "asaba ordering across degrees (paternal grandfather, brothers, etc.)",
-    "kalala / mu'tiqa edge cases",
-    "interaction with EU 650/2012 applicable-law selection (handled by a separate skeleton iter, not here)"
+    "hajb (exclusion by closer-degree heir) — see articles 332-335",
+    "'awl (proportional reduction when shares exceed unity) — article 364",
+    "radd (devolution of residue) — articles 374-378",
+    "ta'sib / asaba ordering across degrees — articles 339, 348-356",
+    "kalala (siblings inheritance specifics) — articles 348, 351",
+    "EU 650/2012 applicable-law decision (skeleton iter, separate)"
   ],
   "blockers_before_activation": [
-    "real Moudawana PDF must replace the synthetic stub",
-    "every rule's extracted_text_snippet must be filled from the verified PDF",
-    "every rule's confidence must be set by a Studio reviewer, not by the script",
-    "hajb / 'awl / radd / asaba ordering must be modelled before the engine can be called complete",
+    "every rule's confidence must be re-checked by a Studio reviewer reading the extracted_text_snippet alongside the full article in the source PDF",
+    "hajb / 'awl / radd / asaba ordering must be modelled before the engine output can claim completeness",
+    "the wizard must capture sibling counts before mother-1/3 (article 346) can be activated",
     "EU 650/2012 applicable-law decision must be wired before the public funnel can output a Moroccan-law allocation for cross-border cases"
   ]
 }

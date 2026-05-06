@@ -76,6 +76,9 @@ def mapping_payload() -> dict:
     return json.loads(MAPPING_JSON.read_text(encoding="utf-8"))
 
 
+REAL_MOUDAWANA_SHA256 = "41db4ab3d505c16a985e06f7df34678afeabe9f09a0b3df09d38033563beda96"
+
+
 def test_mapping_top_level_schema(mapping_payload):
     assert mapping_payload["country"] == "MA"
     assert mapping_payload["case_type"] == "international_inheritance"
@@ -85,6 +88,103 @@ def test_mapping_top_level_schema(mapping_payload):
     assert mapping_payload["needs_manual_review"] is True
     assert isinstance(mapping_payload["rules"], list)
     assert len(mapping_payload["rules"]) >= 1
+
+
+# ---------------------------------------------------------------------------
+# pass2 — mapping anchored on the real PDF sha256
+# ---------------------------------------------------------------------------
+
+
+def test_mapping_records_real_pdf_sha256(mapping_payload):
+    """Pass2 invariant: the mapping must carry the sha256 of the real
+    Moudawana PDF, not the synthetic stub from pass1."""
+    assert mapping_payload.get("source_sha256") == REAL_MOUDAWANA_SHA256, (
+        f"mapping source_sha256={mapping_payload.get('source_sha256')!r} "
+        f"does not match the real Moudawana PDF sha256 "
+        f"{REAL_MOUDAWANA_SHA256!r}"
+    )
+    assert mapping_payload.get("extraction_basis") == "official_pdf"
+
+
+def test_mapping_does_not_reference_synthetic_or_fake(mapping_payload):
+    """The pass2 mapping must not carry any 'synthetic' / 'fake' /
+    'stub' marker in user-facing text. The schema does carry an
+    explicit ``previous_pass_used_synthetic_stub: false`` flag — a
+    machine-readable key whose VALUE is False; we tolerate that key
+    name but ban any other appearance of the tokens."""
+    raw = json.dumps(mapping_payload, ensure_ascii=False).lower()
+    for needle in ("synthetic", "fake", "stub"):
+        # Allow exactly one mention of "synthetic" via the
+        # explicit ``previous_pass_used_synthetic_stub: false``
+        # provenance flag.
+        if needle == "synthetic":
+            assert raw.count(needle) <= 1, (
+                f"mapping contains {raw.count(needle)} 'synthetic' tokens "
+                f"(only the previous_pass_used_synthetic_stub flag is allowed)"
+            )
+            continue
+        if needle == "stub":
+            # Same provenance flag spells "stub" once.
+            assert raw.count(needle) <= 1, f"mapping contains {raw.count(needle)} 'stub' tokens"
+            continue
+        assert (
+            needle not in raw
+        ), f"mapping must not mention {needle!r}; got: ...{raw[max(0, raw.find(needle) - 20):raw.find(needle) + 60]}..."
+
+
+def test_every_rule_snippet_appears_in_extraction(mapping_payload):
+    """Every ``extracted_text_snippet`` must be a substring of the
+    corresponding article's text in the extraction artefact. This
+    pins the mapping to verbatim text from the official PDF."""
+    extraction = json.loads(EXTRACTION_JSON.read_text(encoding="utf-8"))
+    extraction_by_article = {a["article"]: a["text"] for a in extraction.get("articles", [])}
+    # The rebuilder script truncates snippets and appends a
+    # horizontal-ellipsis '…' for readability. Strip the trailing
+    # '…' before comparing.
+    for rule in mapping_payload["rules"]:
+        snippet = (rule.get("extracted_text_snippet") or "").rstrip().rstrip("…")
+        if not snippet:
+            continue
+        candidates = [
+            extraction_by_article[a]
+            for a in rule.get("article_references", [])
+            if a in extraction_by_article
+        ]
+        assert any(snippet in candidate for candidate in candidates), (
+            f"rule {rule.get('rule_id')!r} snippet not found in any of the "
+            f"referenced articles' extracted text. Snippet: {snippet[:80]!r}"
+        )
+
+
+def test_every_rule_article_present_in_extraction(mapping_payload):
+    extraction = json.loads(EXTRACTION_JSON.read_text(encoding="utf-8"))
+    extracted_articles = {a["article"] for a in extraction.get("articles", [])}
+    for rule in mapping_payload["rules"]:
+        refs = set(rule.get("article_references", []))
+        assert refs & extracted_articles, (
+            f"rule {rule.get('rule_id')!r} references articles not present "
+            f"in the extraction artefact: {refs}"
+        )
+
+
+def test_extraction_artifact_is_not_a_stub():
+    """The extraction artefact must report ``extractor=pdfplumber`` and
+    a non-empty ``articles`` list. ``extractor=stub`` would mean the
+    PDF is the synthetic placeholder again."""
+    extraction = json.loads(EXTRACTION_JSON.read_text(encoding="utf-8"))
+    assert extraction.get("extractor") == "pdfplumber", (
+        f"extraction artefact extractor={extraction.get('extractor')!r}; "
+        f"the real Moudawana PDF must be on disk and parsed by pdfplumber"
+    )
+    assert extraction.get("articles"), "extraction artefact has no articles"
+    assert extraction.get("source_sha256") == REAL_MOUDAWANA_SHA256, (
+        f"extraction sha256 {extraction.get('source_sha256')!r} does not "
+        f"match the real Moudawana PDF sha256"
+    )
+    assert extraction.get("size_bytes", 0) > 50_000, (
+        f"extraction size {extraction.get('size_bytes')!r} is too small "
+        f"to be the real PDF (must be >50KB)"
+    )
 
 
 def test_every_rule_has_article_references(mapping_payload):
@@ -270,15 +370,24 @@ def ma_synthetic_approved_db(db):
         valid_from=date(2004, 2, 5),
     )
     payload = json.loads(MAPPING_JSON.read_text(encoding="utf-8"))
-    smoke_shares = next(
-        rule["share_spec"]
-        for rule in payload["rules"]
-        if rule["rule_id"] == "ma-inh-spouse-with-descendants"
-    )
+    # The pass2 mapping splits ``spouse`` into the gender-specific
+    # Moudawana classes (``husband``/``wife``). The existing engine
+    # uses the generic ``spouse`` key, so we anchor the smoke
+    # fixture on the wife-with-descendants rule (1/8) and translate
+    # back to the engine's ``spouse`` key plus the canonical
+    # 2:1 sons:daughters residual shares from the smoke scenario.
+    anchor_rule_id = payload["fixture_compatibility"]["smoke_scenario"]["anchor_rule_id"]
+    anchor_rule = next(rule for rule in payload["rules"] if rule["rule_id"] == anchor_rule_id)
+    spouse_share = anchor_rule["share_spec"]["wife"]
+    smoke_shares = {
+        "spouse": spouse_share,
+        "sons_group": "remainder_2_to_1",
+        "daughters_group": "remainder_2_to_1",
+    }
     CalculationFormula.objects.create(
         dataset=ds,
-        code="ma-inheritance-fixture-mapping-draft-pass1",
-        name="MA inheritance fixture mapping draft pass1",
+        code="ma-inheritance-fixture-mapping-draft-pass2",
+        name="MA inheritance fixture mapping draft pass2",
         expression_text="fixed shares + 2:1 residual (Moudawana mapping draft)",
         source_reference=str(MAPPING_JSON.relative_to(REPO_ROOT)),
         parameters={
