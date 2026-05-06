@@ -237,12 +237,21 @@ def wizard_result(request, public_id: uuid.UUID):
     _ = missing_documents  # consumed by audit log / DB only
     legal_disclaimer = output.get("legal_disclaimer") or ""
 
-    # On the calculated path the engine emits public-safe warnings (e.g.
-    # "min/max coincide", "<field> not aggregated") sourced from the
-    # diagnostics layer. We render them only when an estimate is
-    # produced; on the no-estimate path the curated PublicResultMessage
-    # already carries every user-facing copy.
-    public_warnings: list[str] = list(warnings) if warnings else []
+    # The engine emits public-safe warnings (e.g. "min/max coincide",
+    # "<field> not aggregated", "fields needed are missing") sourced
+    # from the diagnostics layer. We render them when:
+    # - the estimate is produced (calculated path), or
+    # - the engine reached the input-validation gate (insufficient
+    #   input path) — those warnings are public-safe by design.
+    # On the unavailable path we suppress them: the curated
+    # PublicResultMessage carries every user-facing copy and the
+    # engine-emitted warning may still be the un-migrated English
+    # string from ``base.py``.
+    _PUBLIC_WARNING_STATUSES = {"calculated", "insufficient_input"}
+    if simulation.status in _PUBLIC_WARNING_STATUSES and warnings:
+        public_warnings = list(warnings)
+    else:
+        public_warnings = []
 
     # Costruzione URL CTA verso il lead form già in F6.
     contact_url = reverse("crm:contact") + f"?sim={simulation.public_id}"

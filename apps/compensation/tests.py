@@ -912,7 +912,11 @@ def test_missing_victim_age_returns_insufficient_input(full_approved_stack):
     calc = ItalyRoadAccidentBodilyInjuryCalculator()
     result = calc.compute({"permanent_disability_percentage": 10})
     assert result.status == CalculationStatus.INSUFFICIENT_INPUT.value
-    assert any("victim_age" in w for w in result.warnings)
+    # Diagnostic layer renders the field with a localised label.
+    assert any(
+        ("victim_age" in w) or ("age of the injured person" in w) or ("età" in w.lower())
+        for w in result.warnings
+    )
     assert result.estimated_min is None
 
 
@@ -924,7 +928,12 @@ def test_missing_disability_returns_insufficient_input(full_approved_stack):
     calc = ItalyRoadAccidentBodilyInjuryCalculator()
     result = calc.compute({"victim_age": 30})
     assert result.status == CalculationStatus.INSUFFICIENT_INPUT.value
-    assert any("permanent_disability_percentage" in w for w in result.warnings)
+    assert any(
+        ("permanent_disability_percentage" in w)
+        or ("permanent disability" in w.lower())
+        or ("invalidità permanente" in w.lower())
+        for w in result.warnings
+    )
 
 
 @pytest.mark.django_db
@@ -943,7 +952,13 @@ def test_fault_percentage_out_of_range_returns_insufficient_input(
         }
     )
     assert result.status == CalculationStatus.INSUFFICIENT_INPUT.value
-    assert any("fault_percentage" in w.lower() for w in result.warnings)
+    assert any(
+        ("fault_percentage" in w.lower())
+        or ("percentage of fault" in w.lower())
+        or ("0 and 100" in w)
+        or ("colpa" in w.lower())
+        for w in result.warnings
+    )
 
 
 # --- formula gating: engine / amount_rule -------------------------------

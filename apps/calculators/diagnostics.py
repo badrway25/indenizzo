@@ -71,6 +71,20 @@ ITALY_FIELD_NOT_AGGREGATED = "italy_field_not_aggregated"
 ITALY_FAULT_REDUCTION_APPLIED = "italy_fault_reduction_applied"
 ITALY_FAULT_REDUCTION_APPLIED_UNIFORM = "italy_fault_reduction_applied_uniform"
 
+# ---------------------------------------------------------------------------
+# Italy input-validation codes — emitted by the engine when the wizard
+# input is missing or out of range. Public-safe today because the
+# wizard already prevents the impossible cases (HTML min/max +
+# required attributes), but the engine still validates as a safety
+# net and the message is shown on the result page if it fires.
+# ---------------------------------------------------------------------------
+
+ITALY_REQUIRED_INPUT_MISSING = "italy_required_input_missing"
+ITALY_FAULT_PERCENTAGE_OUT_OF_RANGE = "italy_fault_percentage_out_of_range"
+ITALY_INVALID_PERCENTAGE_INPUT = "italy_invalid_percentage_input"
+ITALY_INPUT_PAYLOAD_INVALID = "italy_input_payload_invalid"
+ITALY_FORMULA_INPUT_MISMATCH = "italy_formula_input_mismatch"
+
 
 @dataclass(frozen=True)
 class _DiagnosticSpec:
@@ -274,15 +288,66 @@ _REGISTRY: dict[str, _DiagnosticSpec] = {
         message=_("A fault reduction was applied uniformly to the min, central " "and max values."),
         public_safe=True,
     ),
+    ITALY_REQUIRED_INPUT_MISSING: _DiagnosticSpec(
+        code=ITALY_REQUIRED_INPUT_MISSING,
+        message=_(
+            "Some fields needed for the estimate are missing: {fields}. "
+            "Provide them and run the simulation again."
+        ),
+        public_safe=True,
+    ),
+    ITALY_FAULT_PERCENTAGE_OUT_OF_RANGE: _DiagnosticSpec(
+        code=ITALY_FAULT_PERCENTAGE_OUT_OF_RANGE,
+        message=_(
+            "The percentage of fault must be between 0 and 100. The "
+            "estimate cannot run with the value provided."
+        ),
+        public_safe=True,
+    ),
+    ITALY_INVALID_PERCENTAGE_INPUT: _DiagnosticSpec(
+        code=ITALY_INVALID_PERCENTAGE_INPUT,
+        message=_(
+            "The percentage of fault is not a valid number. Use a digit " "between 0 and 100."
+        ),
+        public_safe=True,
+    ),
+    ITALY_INPUT_PAYLOAD_INVALID: _DiagnosticSpec(
+        code=ITALY_INPUT_PAYLOAD_INVALID,
+        message=_(
+            "The wizard payload could not be parsed by the calculator. "
+            "Studio review is required to identify the inconsistency."
+        ),
+    ),
+    ITALY_FORMULA_INPUT_MISMATCH: _DiagnosticSpec(
+        code=ITALY_FORMULA_INPUT_MISMATCH,
+        message=_(
+            "The approved formula declares input requirements that the "
+            "wizard does not collect. A Studio reviewer must align the "
+            "formula and the wizard before any estimate can be produced."
+        ),
+    ),
 }
 
 
-# Human-friendly labels for the dynamic context fields used by
-# :data:`ITALY_FIELD_NOT_AGGREGATED`. Translated lazily so audit logs
-# / FR / AR locales render the right name.
+# Human-friendly labels for the dynamic context fields. Translated
+# lazily so audit logs / FR / AR locales render the right name.
+# Used by:
+#   - ITALY_FIELD_NOT_AGGREGATED (single field)
+#   - ITALY_REQUIRED_INPUT_MISSING (comma-joined list of fields)
 _ITALY_FIELD_LABELS = {
     "medical_expenses": _("documented medical expenses"),
     "lost_income": _("lost income"),
+    "victim_age": _("age of the injured person"),
+    "permanent_disability_percentage": _("permanent disability percentage"),
+    "total_temporary_disability_days": _("total temporary disability days"),
+    "partial_temporary_disability_days": _("partial temporary disability days"),
+    "fault_percentage": _("percentage of fault"),
+    "accident_country": _("country of the accident"),
+    "accident_date": _("date of the accident"),
+    "heirs": _("family situation"),
+    "estate_value": _("estimated estate value"),
+    "deceased_country_of_last_residence": _("country of the deceased's last residence"),
+    "nationality": _("nationality"),
 }
 
 
@@ -333,13 +398,26 @@ def _localised_context(context: dict[str, Any], *, language: str | None) -> dict
 
     Only interpolation values that are project-known field slugs are
     swapped for their localised label; unknown values pass through
-    untouched.
+    untouched. Two slot shapes are handled:
+
+    - ``"field"`` — single slug, swapped in place.
+    - ``"fields"`` — list/tuple/iterable of slugs, joined with ", " and
+      every slug looked up against the label dict (unknown slugs render
+      their raw form).
     """
     out = dict(context)
     if "field" in out:
         label = _ITALY_FIELD_LABELS.get(out["field"])
         if label is not None:
             out["field"] = _render(label, language=language)
+    if "fields" in out:
+        raw = out["fields"]
+        if isinstance(raw, (list, tuple, set, frozenset)):
+            translated = []
+            for slug in raw:
+                label = _ITALY_FIELD_LABELS.get(slug)
+                translated.append(_render(label, language=language) if label else str(slug))
+            out["fields"] = ", ".join(translated)
     return out
 
 
@@ -415,6 +493,11 @@ __all__ = [
     "ITALY_FIELD_NOT_AGGREGATED",
     "ITALY_FAULT_REDUCTION_APPLIED",
     "ITALY_FAULT_REDUCTION_APPLIED_UNIFORM",
+    "ITALY_REQUIRED_INPUT_MISSING",
+    "ITALY_FAULT_PERCENTAGE_OUT_OF_RANGE",
+    "ITALY_INVALID_PERCENTAGE_INPUT",
+    "ITALY_INPUT_PAYLOAD_INVALID",
+    "ITALY_FORMULA_INPUT_MISMATCH",
     "diagnostic_to_public_warning",
     "LEGAL_SOURCES_NOT_APPROVED",
     "COMPENSATION_DATASET_NOT_APPROVED",

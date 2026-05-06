@@ -171,8 +171,10 @@ class MoroccoInternationalInheritanceCalculator(_MoroccoPlaceholderCalculator):
                 status=CalculationStatus.INSUFFICIENT_INPUT.value,
                 sources=source_refs,
                 warnings=[
-                    "Required input fields are missing for this calculation: "
-                    + ", ".join(missing_inputs)
+                    _diag.diagnostic_to_public_warning(
+                        _diag.ITALY_REQUIRED_INPUT_MISSING,
+                        context={"fields": tuple(missing_inputs)},
+                    )
                 ],
             )
 

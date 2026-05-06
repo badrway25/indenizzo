@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-06 11:22+0200\n"
+"POT-Creation-Date: 2026-05-06 13:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -107,7 +107,7 @@ msgstr ""
 msgid "users"
 msgstr ""
 
-#: .\apps\calculators\diagnostics.py:91
+#: .\apps\calculators\diagnostics.py:105
 msgid ""
 "No approved legal sources are available for this jurisdiction and case type. "
 "The simulation cannot produce an estimate without legally validated sources."
@@ -116,7 +116,7 @@ msgstr ""
 "ce type de dossier. La simulation ne peut pas produire d'estimation sans "
 "sources juridiquement validées."
 
-#: .\apps\calculators\diagnostics.py:99
+#: .\apps\calculators\diagnostics.py:113
 msgid ""
 "Approved legal sources are present, but no approved compensation dataset is "
 "linked to them. A Studio reviewer must promote the candidate dataset before "
@@ -127,7 +127,7 @@ msgstr ""
 "promouvoir le jeu de données candidat avant qu'une estimation puisse être "
 "produite."
 
-#: .\apps\calculators\diagnostics.py:108
+#: .\apps\calculators\diagnostics.py:122
 msgid ""
 "The base dataset is approved, but the secondary range dataset referenced by "
 "the formula has not been promoted yet. A Studio reviewer must approve it "
@@ -138,7 +138,7 @@ msgstr ""
 "Cabinet doit l'approuver avant qu'une estimation de plage puisse être "
 "produite."
 
-#: .\apps\calculators\diagnostics.py:117
+#: .\apps\calculators\diagnostics.py:131
 msgid ""
 "Approved compensation dataset is present, but no approved calculation "
 "formula is linked to it. The formula must be validated by a legal reviewer "
@@ -148,7 +148,7 @@ msgstr ""
 "de calcul approuvée n'y est rattachée. La formule doit être validée par un "
 "réviseur juridique avant qu'une estimation puisse être produite."
 
-#: .\apps\calculators\diagnostics.py:126
+#: .\apps\calculators\diagnostics.py:140
 msgid ""
 "Calculator engine not yet implemented for this jurisdiction and case type. "
 "Studio review is required before any computation can be exposed publicly."
@@ -157,7 +157,7 @@ msgstr ""
 "dossier. Une revue du Cabinet est requise avant qu'un calcul puisse être "
 "exposé publiquement."
 
-#: .\apps\calculators\diagnostics.py:134
+#: .\apps\calculators\diagnostics.py:148
 msgid ""
 "An approved formula exists but its engine is not registered in the "
 "calculator's supported list."
@@ -165,7 +165,7 @@ msgstr ""
 "Une formule approuvée existe mais son moteur n'est pas enregistré dans la "
 "liste prise en charge par le calculateur."
 
-#: .\apps\calculators\diagnostics.py:141
+#: .\apps\calculators\diagnostics.py:155
 msgid ""
 "An approved formula exists with a recognised engine, but its amount rule is "
 "not registered in the calculator's supported list."
@@ -174,7 +174,7 @@ msgstr ""
 "montant n'est pas enregistrée dans la liste prise en charge par le "
 "calculateur."
 
-#: .\apps\calculators\diagnostics.py:149
+#: .\apps\calculators\diagnostics.py:163
 msgid ""
 "Approved formula declares an amount rule that this engine does not support "
 "today. Only single-row range rules are wired for road-accident bodily injury "
@@ -184,7 +184,7 @@ msgstr ""
 "en charge aujourd'hui. Seules les règles à ligne unique avec plage sont "
 "câblées pour les accidents corporels de la route dans cette juridiction."
 
-#: .\apps\calculators\diagnostics.py:157
+#: .\apps\calculators\diagnostics.py:171
 msgid ""
 "Approved formula declares an amount rule that this engine does not support "
 "today. Only inheritance-share rules apply to inheritance allocation."
@@ -193,7 +193,7 @@ msgstr ""
 "en charge aujourd'hui. Seules les règles de part successorale s'appliquent à "
 "l'attribution successorale."
 
-#: .\apps\calculators\diagnostics.py:165
+#: .\apps\calculators\diagnostics.py:179
 msgid ""
 "Approved formula does not declare a row_type. The engine requires this "
 "parameter to dispatch the rule to the right compensation rows."
@@ -201,7 +201,7 @@ msgstr ""
 "La formule approuvée ne déclare pas de row_type. Le moteur a besoin de ce "
 "paramètre pour acheminer la règle vers les bonnes lignes d'indemnisation."
 
-#: .\apps\calculators\diagnostics.py:173
+#: .\apps\calculators\diagnostics.py:187
 msgid ""
 "The range rule is wired but one of its parameter fields is missing or "
 "inconsistent. A Studio reviewer must complete the formula before the range "
@@ -211,7 +211,7 @@ msgstr ""
 "ou incohérent. Un réviseur du Cabinet doit compléter la formule avant que la "
 "plage puisse être produite."
 
-#: .\apps\calculators\diagnostics.py:181
+#: .\apps\calculators\diagnostics.py:195
 msgid ""
 "No compensation row matches the input combination on the approved dataset. "
 "Either the dataset is incomplete for this case or the inputs fall outside "
@@ -221,7 +221,7 @@ msgstr ""
 "le jeu de données approuvé. Soit le jeu de données est incomplet pour ce "
 "cas, soit les entrées sortent de la table."
 
-#: .\apps\calculators\diagnostics.py:189
+#: .\apps\calculators\diagnostics.py:203
 msgid ""
 "More than one compensation row matches the input combination. A Studio "
 "reviewer must disambiguate the dataset before any estimate can be produced."
@@ -230,7 +230,7 @@ msgstr ""
 "réviseur du Cabinet doit lever l'ambiguïté du jeu de données avant qu'une "
 "estimation puisse être produite."
 
-#: .\apps\calculators\diagnostics.py:197
+#: .\apps\calculators\diagnostics.py:211
 msgid ""
 "The min / mid / max rows of the range are inconsistent — min must be ≤ mid ≤ "
 "max. A Studio reviewer must correct the dataset before the range can be "
@@ -240,7 +240,7 @@ msgstr ""
 "mid ≤ max. Un réviseur du Cabinet doit corriger le jeu de données avant que "
 "la plage puisse être produite."
 
-#: .\apps\calculators\diagnostics.py:205
+#: .\apps\calculators\diagnostics.py:219
 msgid ""
 "The approved formula declares an invalid share specification. The engine "
 "refuses to produce an estimate; a Studio reviewer must correct the formula "
@@ -250,7 +250,7 @@ msgstr ""
 "moteur refuse de produire une estimation ; un réviseur du Cabinet doit "
 "corriger la formule avant qu'une attribution puisse être affichée."
 
-#: .\apps\calculators\diagnostics.py:213
+#: .\apps\calculators\diagnostics.py:227
 msgid ""
 "Applicable-law context requires Studio review before any inheritance shares "
 "can be produced. The engine refuses to compute on the fixture-only path "
@@ -262,7 +262,7 @@ msgstr ""
 "calculer sur la voie fixture-only tant qu'un réviseur juridique n'aura pas "
 "lu la situation familiale et les éléments transfrontaliers du dossier."
 
-#: .\apps\calculators\diagnostics.py:222
+#: .\apps\calculators\diagnostics.py:236
 msgid ""
 "Applicable-law context is missing from the wizard input. The engine cannot "
 "decide which jurisdiction's law applies without the country of last "
@@ -272,19 +272,19 @@ msgstr ""
 "ne peut pas décider quelle loi juridictionnelle s'applique sans le pays de "
 "dernière résidence."
 
-#: .\apps\calculators\diagnostics.py:229
+#: .\apps\calculators\diagnostics.py:243
 msgid "Required input fields are missing for this calculation."
 msgstr "Des champs obligatoires manquent pour ce calcul."
 
-#: .\apps\calculators\diagnostics.py:233
+#: .\apps\calculators\diagnostics.py:247
 msgid "Estate value is not a valid number."
 msgstr "La valeur de la succession n'est pas un nombre valide."
 
-#: .\apps\calculators\diagnostics.py:237
+#: .\apps\calculators\diagnostics.py:251
 msgid "Estate value must be non-negative."
 msgstr "La valeur de la succession doit être non négative."
 
-#: .\apps\calculators\diagnostics.py:242
+#: .\apps\calculators\diagnostics.py:256
 msgid ""
 "No heir class with a positive head count matches the approved share "
 "specification. Provide at least one heir covered by the formula (spouse, "
@@ -294,7 +294,7 @@ msgstr ""
 "spécification de parts approuvée. Indiquez au moins un héritier couvert par "
 "la formule (conjoint, père, mère, fils, filles)."
 
-#: .\apps\calculators\diagnostics.py:250
+#: .\apps\calculators\diagnostics.py:264
 msgid ""
 "The estimated min, central and max values coincide because the approved "
 "formula does not yet configure a personalisation range for this case. The "
@@ -305,7 +305,7 @@ msgstr ""
 "est le montant canonique de la TUN pour l'âge et le taux d'incapacité "
 "retenus."
 
-#: .\apps\calculators\diagnostics.py:261
+#: .\apps\calculators\diagnostics.py:275
 #, python-brace-format
 msgid ""
 "The reported {field} is not included in the automatic estimate: the approved "
@@ -315,26 +315,112 @@ msgstr ""
 "formule approuvée n'agrège pas ce poste. Le Cabinet les examine au cas par "
 "cas."
 
-#: .\apps\calculators\diagnostics.py:270
+#: .\apps\calculators\diagnostics.py:283
 msgid "A fault reduction was applied as declared by the approved formula."
 msgstr ""
 "Une réduction pour faute a été appliquée comme déclarée par la formule "
 "approuvée."
 
-#: .\apps\calculators\diagnostics.py:278
+#: .\apps\calculators\diagnostics.py:288
 msgid ""
 "A fault reduction was applied uniformly to the min, central and max values."
 msgstr ""
 "Une réduction pour faute a été appliquée uniformément aux valeurs min, "
 "centrale et max."
 
-#: .\apps\calculators\diagnostics.py:290
+#: .\apps\calculators\diagnostics.py:294
+#, python-brace-format
+msgid ""
+"Some fields needed for the estimate are missing: {fields}. Provide them and "
+"run the simulation again."
+msgstr ""
+"Certains champs nécessaires à l'estimation manquent : {fields}. Indiquez-les "
+"et relancez la simulation."
+
+#: .\apps\calculators\diagnostics.py:302
+msgid ""
+"The percentage of fault must be between 0 and 100. The estimate cannot run "
+"with the value provided."
+msgstr ""
+"Le pourcentage de faute doit être compris entre 0 et 100. L'estimation ne "
+"peut pas être lancée avec la valeur fournie."
+
+#: .\apps\calculators\diagnostics.py:310
+msgid ""
+"The percentage of fault is not a valid number. Use a digit between 0 and 100."
+msgstr ""
+"Le pourcentage de faute n'est pas un nombre valide. Utilisez un chiffre "
+"entre 0 et 100."
+
+#: .\apps\calculators\diagnostics.py:318
+msgid ""
+"The wizard payload could not be parsed by the calculator. Studio review is "
+"required to identify the inconsistency."
+msgstr ""
+"Les données du wizard n'ont pas pu être analysées par le calculateur. Une "
+"revue du Cabinet est requise pour identifier l'incohérence."
+
+#: .\apps\calculators\diagnostics.py:325
+msgid ""
+"The approved formula declares input requirements that the wizard does not "
+"collect. A Studio reviewer must align the formula and the wizard before any "
+"estimate can be produced."
+msgstr ""
+"La formule approuvée déclare des exigences d'entrée que le wizard ne "
+"recueille pas. Un réviseur du Cabinet doit aligner la formule et le wizard "
+"avant qu'une estimation puisse être produite."
+
+#: .\apps\calculators\diagnostics.py:339
 msgid "documented medical expenses"
 msgstr "frais médicaux documentés"
 
-#: .\apps\calculators\diagnostics.py:291
+#: .\apps\calculators\diagnostics.py:340
 msgid "lost income"
 msgstr "revenu perdu"
+
+#: .\apps\calculators\diagnostics.py:341
+msgid "age of the injured person"
+msgstr "âge de la personne blessée"
+
+#: .\apps\calculators\diagnostics.py:342
+msgid "permanent disability percentage"
+msgstr "pourcentage d'invalidité permanente"
+
+#: .\apps\calculators\diagnostics.py:343
+msgid "total temporary disability days"
+msgstr "jours d'invalidité temporaire totale"
+
+#: .\apps\calculators\diagnostics.py:344
+msgid "partial temporary disability days"
+msgstr "jours d'invalidité temporaire partielle"
+
+#: .\apps\calculators\diagnostics.py:345
+msgid "percentage of fault"
+msgstr "pourcentage de faute"
+
+#: .\apps\calculators\diagnostics.py:346
+msgid "country of the accident"
+msgstr "pays de l'accident"
+
+#: .\apps\calculators\diagnostics.py:347
+msgid "date of the accident"
+msgstr "date de l'accident"
+
+#: .\apps\calculators\diagnostics.py:348
+msgid "family situation"
+msgstr "situation familiale"
+
+#: .\apps\calculators\diagnostics.py:349
+msgid "estimated estate value"
+msgstr "valeur estimée de la succession"
+
+#: .\apps\calculators\diagnostics.py:350
+msgid "country of the deceased's last residence"
+msgstr "pays de la dernière résidence du défunt"
+
+#: .\apps\calculators\diagnostics.py:351
+msgid "nationality"
+msgstr "nationalité"
 
 #: .\apps\calculators\enums.py:23
 msgid "Road accident — bodily injury"
@@ -2210,7 +2296,7 @@ msgstr ""
 "%(site)s — simulations indicatives sur les indemnisations et successions "
 "internationales, fondées sur des sources juridiques validées."
 
-#: .\templates\base.html:79
+#: .\templates\base.html:51
 msgid "Skip to content"
 msgstr "Aller au contenu"
 
@@ -2265,12 +2351,12 @@ msgstr "OK"
 #: .\templates\partials\cta_consultation.html:11
 #: .\templates\public\countries.html:102
 #: .\templates\public\country_landing.html:256 .\templates\public\home.html:40
-#: .\templates\public\wizard_result.html:193
+#: .\templates\public\wizard_result.html:195
 msgid "Request legal review"
 msgstr "Demander une revue juridique"
 
 #: .\templates\partials\disclaimer_banner.html:2
-#: .\templates\public\wizard_result.html:173
+#: .\templates\public\wizard_result.html:175
 msgid "Legal disclaimer"
 msgstr "Avertissement juridique"
 
@@ -3724,24 +3810,28 @@ msgstr ""
 msgid "Assumptions"
 msgstr "Hypothèses"
 
-#: .\templates\public\wizard_result.html:133
+#: .\templates\public\wizard_result.html:134
 msgid "Notes on this estimate"
 msgstr "Notes sur cette estimation"
 
-#: .\templates\public\wizard_result.html:148
+#: .\templates\public\wizard_result.html:134
+msgid "Notes on the simulation"
+msgstr "Notes sur la simulation"
+
+#: .\templates\public\wizard_result.html:150
 msgid "Cited legal sources"
 msgstr "Sources juridiques citées"
 
-#: .\templates\public\wizard_result.html:161
+#: .\templates\public\wizard_result.html:163
 #, python-format
 msgid "Open official source: %(title)s (opens in a new tab)"
 msgstr ""
 
-#: .\templates\public\wizard_result.html:162
+#: .\templates\public\wizard_result.html:164
 msgid "Open official source"
 msgstr "Ouvrir la source officielle"
 
-#: .\templates\public\wizard_result.html:175
+#: .\templates\public\wizard_result.html:177
 msgid ""
 "This simulation is indicative and does not constitute legal advice or "
 "guarantee of outcome."
@@ -3749,19 +3839,19 @@ msgstr ""
 "Cette simulation est indicative et ne constitue ni un avis juridique ni une "
 "garantie de résultat."
 
-#: .\templates\public\wizard_result.html:182
+#: .\templates\public\wizard_result.html:184
 msgid "Simulation ID"
 msgstr "ID de simulation"
 
-#: .\templates\public\wizard_result.html:186
+#: .\templates\public\wizard_result.html:188
 msgid "Created at"
 msgstr "Créé le"
 
-#: .\templates\public\wizard_result.html:197
+#: .\templates\public\wizard_result.html:199
 msgid "Download PDF report"
 msgstr "Télécharger le rapport PDF"
 
-#: .\templates\public\wizard_result.html:202
+#: .\templates\public\wizard_result.html:204
 msgid "Back to methodology"
 msgstr "Retour à la méthodologie"
 

@@ -206,18 +206,20 @@ class BelgiumRoadAccidentBodilyInjuryCalculator(_BelgiumPlaceholderCalculator):
                 status=CalculationStatus.INSUFFICIENT_INPUT.value,
                 sources=source_refs,
                 warnings=[
-                    "Required input fields are missing for this calculation: "
-                    + ", ".join(missing_inputs)
+                    _diag.diagnostic_to_public_warning(
+                        _diag.ITALY_REQUIRED_INPUT_MISSING,
+                        context={"fields": tuple(missing_inputs)},
+                    )
                 ],
             )
 
         # --- gate 8: fault_percentage in range (0..100) se fornito
-        fault_warning = _validate_fault_percentage(input_data)
-        if fault_warning:
+        fault_code = _validate_fault_percentage(input_data)
+        if fault_code is not None:
             return self._build_result(
                 status=CalculationStatus.INSUFFICIENT_INPUT.value,
                 sources=source_refs,
-                warnings=[fault_warning],
+                warnings=[_diag.diagnostic_to_public_warning(fault_code)],
             )
 
         # --- gate 9/10/11: row match unico via row_type whitelisted
@@ -385,15 +387,16 @@ def _has_value(input_data: dict[str, Any], field: str) -> bool:
 
 
 def _validate_fault_percentage(input_data: dict[str, Any]) -> str | None:
+    """Returns a diagnostic code when invalid, ``None`` when ok."""
     if not _has_value(input_data, "fault_percentage"):
         return None
     raw = input_data["fault_percentage"]
     try:
         value = Decimal(str(raw))
     except Exception:
-        return "fault_percentage is not a valid number."
+        return _diag.ITALY_INVALID_PERCENTAGE_INPUT
     if value < Decimal(0) or value > Decimal(100):
-        return "fault_percentage must be between 0 and 100."
+        return _diag.ITALY_FAULT_PERCENTAGE_OUT_OF_RANGE
     return None
 
 
