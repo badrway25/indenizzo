@@ -7,7 +7,18 @@
     <meta name="description" content="{% block meta_description %}{% blocktranslate with site=SITE_NAME %}{{ site }} — simulazioni indicative su risarcimenti e successioni internazionali, basate su fonti legali validate.{% endblocktranslate %}{% endblock %}">
     <meta name="robots" content="{% block meta_robots %}index, follow{% endblock %}">
 
-    {# Tailwind via CDN: pragmatico per F7. In F11 si passerà a build pipeline. #}
+    {% comment %}
+      Local premium stylesheet — covers every utility used across the
+      templates so the site renders styled even when the CDN is
+      unreachable (offline sandbox, restricted networks). The CDN
+      below is kept as enrichment for utilities not covered locally.
+    {% endcomment %}
+    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+
+    {% comment %}
+      Tailwind via CDN: enrichment only. The local CSS above already
+      carries every layout-critical utility.
+    {% endcomment %}
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
