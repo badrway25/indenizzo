@@ -1,0 +1,179 @@
+{
+  "schema_version": "1.0",
+  "iter": "F-morocco-moudawana-livre-iii-mapping-draft-pass1",
+  "country": "MA",
+  "case_type": "international_inheritance",
+  "source_slug": "ma-code-famille-moudawana-fr-pdf",
+  "source_canonical_reference": "Loi n. 70-03 portant Code de la famille (Moudawana) — Livre VI : De la succession (articles 321-395)",
+  "status": "draft",
+  "activation_allowed": false,
+  "needs_manual_review": true,
+  "extraction_provenance": {
+    "extraction_artifact": "legal_data/sources/morocco/extracted/moudawana_inheritance_articles.json",
+    "extracted_articles_count": 0,
+    "extraction_blocked_reason": "dev fixture is a synthetic stub PDF (~227 bytes); real Moudawana text is not yet present in the repo. Article numbers below are anchored on the canonical published Code de la famille; the extracted_text_snippet field is intentionally empty until a real PDF is fetched and re-extracted.",
+    "next_step_for_extraction": "replace legal_data/sources/morocco/official_downloaded/ma-code-famille-moudawana-fr-pdf.pdf with the real document, re-run scripts/legal_data/extract_morocco_moudawana_inheritance_articles.py, and re-validate via `validate_official_legal_sources --commit`."
+  },
+  "rules": [
+    {
+      "rule_id": "ma-inh-spouse-with-descendants",
+      "article_references": ["322", "337", "341"],
+      "scenario": {
+        "spouse": 1,
+        "sons": ">=1",
+        "daughters": ">=0"
+      },
+      "share_spec": {
+        "spouse": "1/8",
+        "sons_group": "remainder_2_to_1",
+        "daughters_group": "remainder_2_to_1"
+      },
+      "extracted_text_snippet": "",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "comment": "Surviving wife with descendants takes 1/8 (faraïd). The residuary (asaba) is split among sons and daughters with the doctrinal 2:1 ratio (sons : daughters). Article numbers reflect the canonical Moudawana Livre VI; the snippet is empty because the dev PDF is a stub."
+    },
+    {
+      "rule_id": "ma-inh-spouse-without-descendants",
+      "article_references": ["322", "337"],
+      "scenario": {
+        "spouse": 1,
+        "sons": 0,
+        "daughters": 0
+      },
+      "share_spec": {
+        "spouse": "1/4"
+      },
+      "extracted_text_snippet": "",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "comment": "Surviving wife without descendants takes 1/4 (faraïd). The residuary then flows to the remaining qualifying heirs per the Livre VI hierarchy — NOT modelled here because the engine does not yet codify ascendants/collaterals."
+    },
+    {
+      "rule_id": "ma-inh-husband-with-descendants",
+      "article_references": ["322", "337"],
+      "scenario": {
+        "husband": 1,
+        "sons": ">=1",
+        "daughters": ">=0"
+      },
+      "share_spec": {
+        "husband": "1/4"
+      },
+      "extracted_text_snippet": "",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "comment": "Surviving husband with descendants takes 1/4 (faraïd). The wizard currently only models a single spouse slot; this rule documents the doctrinal asymmetry between husband and wife shares."
+    },
+    {
+      "rule_id": "ma-inh-husband-without-descendants",
+      "article_references": ["322", "337"],
+      "scenario": {
+        "husband": 1,
+        "sons": 0,
+        "daughters": 0
+      },
+      "share_spec": {
+        "husband": "1/2"
+      },
+      "extracted_text_snippet": "",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "comment": "Surviving husband without descendants takes 1/2 (faraïd). Same modelling caveat as the previous rule."
+    },
+    {
+      "rule_id": "ma-inh-mother-with-descendants",
+      "article_references": ["337", "341"],
+      "scenario": {
+        "mother": 1,
+        "sons": ">=1",
+        "daughters": ">=0"
+      },
+      "share_spec": {
+        "mother": "1/6"
+      },
+      "extracted_text_snippet": "",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "comment": "Mother takes 1/6 in the presence of descendants. Modelled as a fixed share; ascendants are not yet a wizard input."
+    },
+    {
+      "rule_id": "ma-inh-father-with-descendants",
+      "article_references": ["337", "341"],
+      "scenario": {
+        "father": 1,
+        "sons": ">=1",
+        "daughters": ">=0"
+      },
+      "share_spec": {
+        "father": "1/6"
+      },
+      "extracted_text_snippet": "",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "comment": "Father takes 1/6 in the presence of male descendants. With only female descendants the father is also asaba on the residuary — not modelled in this draft."
+    },
+    {
+      "rule_id": "ma-inh-only-daughters",
+      "article_references": ["337", "341"],
+      "scenario": {
+        "spouse": 0,
+        "sons": 0,
+        "daughters": ">=2"
+      },
+      "share_spec": {
+        "daughters_group": "2/3"
+      },
+      "extracted_text_snippet": "",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "comment": "Two or more daughters with no sons share 2/3 collectively. A single daughter without sons takes 1/2 — separate rule needed if the wizard distinguishes the count."
+    },
+    {
+      "rule_id": "ma-inh-single-daughter",
+      "article_references": ["337", "341"],
+      "scenario": {
+        "spouse": 0,
+        "sons": 0,
+        "daughters": 1
+      },
+      "share_spec": {
+        "daughters_group": "1/2"
+      },
+      "extracted_text_snippet": "",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "comment": "A single daughter without sons takes 1/2 (faraïd)."
+    }
+  ],
+  "fixture_compatibility": {
+    "engine": "morocco_inheritance_v1",
+    "amount_rule": "morocco_inheritance_fixed_share_direct",
+    "smoke_scenario": {
+      "heirs": {"spouse": 1, "sons": 1, "daughters": 1},
+      "estate_value": "800000",
+      "expected_breakdown": {
+        "spouse_amount_eur": "100000",
+        "sons_group_amount_eur_approx": "466666.67",
+        "daughters_group_amount_eur_approx": "233333.33"
+      }
+    },
+    "fixture_only": true,
+    "public_db_activation": false
+  },
+  "non_modelled_concepts": [
+    "hajb (exclusion of an heir by a closer-degree heir)",
+    "'awl (proportional reduction when fixed shares exceed unity)",
+    "radd (devolution of the residue when no asaba is present)",
+    "asaba ordering across degrees (paternal grandfather, brothers, etc.)",
+    "kalala / mu'tiqa edge cases",
+    "interaction with EU 650/2012 applicable-law selection (handled by a separate skeleton iter, not here)"
+  ],
+  "blockers_before_activation": [
+    "real Moudawana PDF must replace the synthetic stub",
+    "every rule's extracted_text_snippet must be filled from the verified PDF",
+    "every rule's confidence must be set by a Studio reviewer, not by the script",
+    "hajb / 'awl / radd / asaba ordering must be modelled before the engine can be called complete",
+    "EU 650/2012 applicable-law decision must be wired before the public funnel can output a Moroccan-law allocation for cross-border cases"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "iter": "F-morocco-moudawana-livre-iii-mapping-draft-pass1",
+  "generated_at": "2026-05-06T16:38:16.434042+00:00",
+  "pdf_path": "legal_data\\sources\\morocco\\official_downloaded\\ma-code-famille-moudawana-fr-pdf.pdf",
+  "source_sha256": "932aa556678ff0ceed2e49f57b697d818bc92c60ca42ddcd177b0f60e3c2ce3f",
+  "size_bytes": 227,
+  "extractor": "stub",
+  "extraction_blocked_reason": "local PDF is too small (227 bytes) — looks like a synthetic fixture, not the real Moudawana document",
+  "articles": []
+}
