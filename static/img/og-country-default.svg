@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Default Open Graph / Twitter Card image (1200x630).
+  Iter: F-product-country-landing-pass4-og-twitter-cards.
+
+  Niente fotografia stock, niente claim numerico: solo identità Studio
+  + statement informativo. Coerente con palette del sito (ink-950
+  background, gold accent, sand text).
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="Studio Legale Internazionale Badrane — Indicative compensation simulations and inheritance reviews">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#07172f"/>
+      <stop offset="100%" stop-color="#0c2046"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#9a6b21"/>
+      <stop offset="60%" stop-color="#b88336"/>
+      <stop offset="100%" stop-color="#cba36b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <!-- Decorative arc -->
+  <circle cx="1080" cy="120" r="180" fill="#9a6b21" opacity="0.08"/>
+  <circle cx="120"  cy="540" r="220" fill="#cba36b" opacity="0.06"/>
+  <!-- Brand mark -->
+  <circle cx="100" cy="100" r="34" fill="#07172f" stroke="#cba36b" stroke-width="2"/>
+  <text x="100" y="113" text-anchor="middle" font-family="Georgia, 'Cormorant Garamond', serif" font-size="32" font-weight="700" fill="#faf6ef">B</text>
+  <text x="156" y="92"  font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="600" letter-spacing="3" fill="#cba36b">STUDIO LEGALE INTERNAZIONALE</text>
+  <text x="156" y="120" font-family="Georgia, 'Cormorant Garamond', serif" font-size="32" font-weight="600" fill="#faf6ef">Badrane</text>
+  <!-- Headline -->
+  <text x="100" y="320" font-family="Georgia, 'Cormorant Garamond', serif" font-size="72" font-weight="600" fill="#faf6ef">Indicative compensation</text>
+  <text x="100" y="400" font-family="Georgia, 'Cormorant Garamond', serif" font-size="72" font-weight="600" fill="#faf6ef">and inheritance reviews</text>
+  <!-- Subhead -->
+  <text x="100" y="465" font-family="Inter, system-ui, sans-serif" font-size="26" font-weight="400" fill="#cba36b">IT · FR · BE · MA · TN — based on validated legal sources</text>
+  <!-- Footer line -->
+  <line x1="100" y1="540" x2="1100" y2="540" stroke="url(#accent)" stroke-width="2"/>
+  <text x="100"  y="585" font-family="Inter, system-ui, sans-serif" font-size="20" font-weight="500" fill="#faf6ef">Simulazioni indicative — non costituiscono parere legale.</text>
+  <text x="1100" y="585" text-anchor="end" font-family="Inter, system-ui, sans-serif" font-size="20" font-weight="600" fill="#cba36b">studiolegalebadrane.it</text>
+</svg>

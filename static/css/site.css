@@ -420,6 +420,45 @@ button[id="cookie-consent-accept"] {
 [dir="rtl"] .text-left { text-align: right; }
 [dir="rtl"] .text-right { text-align: left; }
 
+/* -------------------------------------------------------------------------
+   F-frontend-release-polish-pass2 — three non-blocking polish items.
+   ------------------------------------------------------------------------- */
+
+/* Polish 1 — reserve space at the bottom of the page so the floating
+   cookie banner never overlaps the page content. The cookie banner JS
+   sets --cookie-banner-h on <html> when visible and clears it once the
+   user accepts. The padding-bottom additively combines with whatever
+   the page already declares, so this is a safe global rule. */
+body { padding-bottom: var(--cookie-banner-h, 0px); }
+
+/* Polish 2 — country-landing hero photo: a uniform aspect-ratio
+   container plus a slight upward focal point so MA/TN read like
+   IT/FR/BE despite different photo compositions. */
+.country-hero-photo {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1200 / 627;
+  object-fit: cover;
+  object-position: center 35%;
+  display: block;
+}
+
+/* Polish 3 — AR/RTL typography. Pair Amiri (serif Arabic) for
+   headings with Tajawal (sans Arabic) for body so the Arabic
+   surface mirrors the IT/FR Cormorant + Inter rhythm rather than
+   falling back to whatever Arabic font the OS happens to ship. */
+[dir="rtl"] body {
+  font-family: 'Tajawal', 'Inter', system-ui, sans-serif;
+}
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3,
+[dir="rtl"] h4,
+[dir="rtl"] .font-serif {
+  font-family: 'Amiri', 'Cormorant Garamond', Georgia, serif;
+  letter-spacing: 0;
+}
+
 /* =========================================================================
    Pass-2 additions — F-frontend-remove-tailwind-cdn-runtime-pass2.
    These rules close the gaps surfaced by audit_local_css_coverage.py

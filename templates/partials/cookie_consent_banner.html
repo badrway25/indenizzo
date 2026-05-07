@@ -43,8 +43,24 @@
       // mostrare il banner ad ogni visita che bloccare il sito.
       hasConsent = false;
     }
+    function syncBodyPadding() {
+      // Reserve space at the bottom of the page so the floating
+      // banner never overlaps content (premium polish, especially
+      // visible on the mobile result page where the lower CTA
+      // cluster used to slip under the banner).
+      if (banner.classList.contains("hidden")) {
+        document.documentElement.style.removeProperty("--cookie-banner-h");
+      } else {
+        var rect = banner.getBoundingClientRect();
+        var h = Math.ceil(rect.height) + 8;
+        document.documentElement.style.setProperty("--cookie-banner-h", h + "px");
+      }
+    }
     if (!hasConsent) {
       banner.classList.remove("hidden");
+      // Wait one frame so layout stabilises before measuring.
+      window.requestAnimationFrame(syncBodyPadding);
+      window.addEventListener("resize", syncBodyPadding);
     }
     var acceptBtn = document.getElementById("cookie-consent-accept");
     if (acceptBtn) {
@@ -55,6 +71,7 @@
           // ignora — la dismissione resta valida solo per la sessione.
         }
         banner.classList.add("hidden");
+        syncBodyPadding();
       });
     }
   })();
