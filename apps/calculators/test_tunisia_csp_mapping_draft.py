@@ -157,14 +157,28 @@ def test_mapping_declares_eu_650_blocked_and_not_load_bearing(mapping_payload):
 
 
 def test_extraction_json_exists_and_official_html_basis():
+    """Pass2 evolved the extraction JSON to multi-source: top-level
+    ``source_*`` were dropped in favour of a ``pages`` block and
+    per-article ``source_slug`` / ``source_sha256``. The Hajb page
+    must still be present in ``pages`` and arts 122-143 must still
+    be extracted with the original sha.
+    """
     assert EXTRACTION_JSON.is_file()
     payload = json.loads(EXTRACTION_JSON.read_text(encoding="utf-8"))
     assert payload["extraction_basis"] == "official_html"
-    assert payload["source_sha256"] == CSP_SHA
-    assert payload["source_slug"] == "tn-code-statut-personnel-livre-ix-succession"
     assert isinstance(payload["articles"], list)
     assert payload["articles_count"] == len(payload["articles"])
-    assert payload["articles_count"] >= 22
+    # Pass2 covers full Livre IX (≥ 61 articles across 7 pages).
+    assert payload["articles_count"] >= 61
+    pages_by_slug = {p["slug"]: p for p in payload.get("pages", [])}
+    assert "tn-code-statut-personnel-livre-ix-succession" in pages_by_slug
+    hajb_page = pages_by_slug["tn-code-statut-personnel-livre-ix-succession"]
+    assert hajb_page["sha256"] == CSP_SHA
+    # Every article must carry its own source_slug + source_sha256.
+    for art in payload["articles"]:
+        assert art.get("source_slug"), f"article {art.get('article')} missing source_slug"
+        assert art.get("source_sha256"), f"article {art.get('article')} missing source_sha256"
+        assert art.get("extraction_basis") == "official_html"
 
 
 # ---------------------------------------------------------------------------

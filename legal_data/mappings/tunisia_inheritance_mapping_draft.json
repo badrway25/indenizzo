@@ -1,23 +1,123 @@
 {
   "schema_version": "1.0",
-  "iter": "F-tunisia-csp-livre-ix-mapping-draft-pass1",
+  "iter": "F-tunisia-csp-adjacent-article-ranges-fetch-pass2",
   "iter_lineage": [
     "F-tunisia-official-source-real-files-restore-pass1 (real CSP + DIP files restored)",
-    "F-tunisia-csp-livre-ix-mapping-draft-pass1 (Hajb-only blocked rules; EU 650 declared blocked context)"
+    "F-tunisia-csp-livre-ix-mapping-draft-pass1 (Hajb-only blocked rules; EU 650 declared blocked context)",
+    "F-tunisia-csp-adjacent-article-ranges-fetch-pass2 (added 6 adjacent CSP pages — full Livre IX coverage 89-152)"
   ],
   "country": "TN",
   "case_type": "international_inheritance",
   "source_slug": "tn-code-statut-personnel-livre-ix-succession",
-  "source_canonical_reference": "Code du statut personnel — Livre IX (De la succession), Tunisie. Articles 122–143 only (Hajb / éviction). Loi initiale 1956, version consolidée 2024 publiée par jurisitetunisie.com.",
+  "source_canonical_reference": "Code du statut personnel — Livre IX (De la succession), Tunisie. Articles 89-152 split across 7 jurisitetunisie.com pages (Csp1080, 1085, 1090, 1095, 1100, 1105, 1110). Loi initiale 1956, version consolidée 2024 publiée par jurisitetunisie.com.",
   "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
   "source_size_bytes": 36183,
   "extraction_basis": "official_html",
   "extraction_artifact": "legal_data/sources/tunisia/extracted/csp_livre_ix_inheritance_articles.json",
-  "generated_at": "2026-05-07T08:27:41.777325+00:00",
+  "generated_at": "2026-05-07T09:08:21.038238+00:00",
   "status": "draft",
   "activation_allowed": false,
   "needs_manual_review": true,
   "context_sources": [
+    {
+      "slug": "tn-code-statut-personnel-livre-ix-art-89-90",
+      "status": "real_verified",
+      "sha256": "e7825ee23a329b0b9fa19870ae968bd1ec6c6a0e1f5ef4add835f676635d04e4",
+      "size_bytes": 14123,
+      "load_bearing": true,
+      "anchored_articles": [
+        89,
+        90
+      ],
+      "role": "Adjacent CSP Livre IX page (tn-code-statut-personnel-livre-ix-art-89-90.html); anchors arts 89-90. Fetched and validated by F-tunisia-csp-adjacent-article-ranges-fetch-pass2; load-bearing only insofar as the rules in this mapping cite this page's article snippets — no share_spec is derived."
+    },
+    {
+      "slug": "tn-code-statut-personnel-livre-ix-art-91-98",
+      "status": "real_verified",
+      "sha256": "f291debeb9e6e66a7a41d248e9ca3102d3dfc5f32dd40e4693f5c4783cbefe2d",
+      "size_bytes": 21113,
+      "load_bearing": true,
+      "anchored_articles": [
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98
+      ],
+      "role": "Adjacent CSP Livre IX page (tn-code-statut-personnel-livre-ix-art-91-98.html); anchors arts 91-98. Fetched and validated by F-tunisia-csp-adjacent-article-ranges-fetch-pass2; load-bearing only insofar as the rules in this mapping cite this page's article snippets — no share_spec is derived."
+    },
+    {
+      "slug": "tn-code-statut-personnel-livre-ix-art-99-110",
+      "status": "real_verified",
+      "sha256": "43b4204a7c8c02824709b6d236b771fcfada68a1509c0335c1705aed5ce7a382",
+      "size_bytes": 30539,
+      "load_bearing": true,
+      "anchored_articles": [
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        110
+      ],
+      "role": "Adjacent CSP Livre IX page (tn-code-statut-personnel-livre-ix-art-99-110.html); anchors arts 99-110. Fetched and validated by F-tunisia-csp-adjacent-article-ranges-fetch-pass2; load-bearing only insofar as the rules in this mapping cite this page's article snippets — no share_spec is derived."
+    },
+    {
+      "slug": "tn-code-statut-personnel-livre-ix-art-113-121",
+      "status": "real_verified",
+      "sha256": "b6891c5a222b77932e46731303026e2b68cf6feaf871456af3baeabe49a9555b",
+      "size_bytes": 21324,
+      "load_bearing": true,
+      "anchored_articles": [
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121
+      ],
+      "role": "Adjacent CSP Livre IX page (tn-code-statut-personnel-livre-ix-art-113-121.html); anchors arts 113-121. Fetched and validated by F-tunisia-csp-adjacent-article-ranges-fetch-pass2; load-bearing only insofar as the rules in this mapping cite this page's article snippets — no share_spec is derived."
+    },
+    {
+      "slug": "tn-code-statut-personnel-livre-ix-art-144-146",
+      "status": "real_verified",
+      "sha256": "965e96334553090a6eafc1ec64a1117de8d80945ab2f29023a820de0b048d305",
+      "size_bytes": 14741,
+      "load_bearing": true,
+      "anchored_articles": [
+        144,
+        145,
+        146
+      ],
+      "role": "Adjacent CSP Livre IX page (tn-code-statut-personnel-livre-ix-art-144-146.html); anchors arts 144-146. Fetched and validated by F-tunisia-csp-adjacent-article-ranges-fetch-pass2; load-bearing only insofar as the rules in this mapping cite this page's article snippets — no share_spec is derived."
+    },
+    {
+      "slug": "tn-code-statut-personnel-livre-ix-art-147-152",
+      "status": "real_verified",
+      "sha256": "e9be440f0dd4c33a5876963bad9bdbfeaac1e68b9ccc161da84b9b49b8a43384",
+      "size_bytes": 18862,
+      "load_bearing": true,
+      "anchored_articles": [
+        147,
+        148,
+        149,
+        150,
+        151,
+        152
+      ],
+      "role": "Adjacent CSP Livre IX page (tn-code-statut-personnel-livre-ix-art-147-152.html); anchors arts 147-152. Fetched and validated by F-tunisia-csp-adjacent-article-ranges-fetch-pass2; load-bearing only insofar as the rules in this mapping cite this page's article snippets — no share_spec is derived."
+    },
     {
       "slug": "tn-code-dip-loi-98-97",
       "status": "real_verified",
@@ -99,17 +199,622 @@
       }
     ],
     "missing_for_full_faraid": [
-      "sibling sub-typing (full / consanguine / uterine) — needed for arts 132–139",
-      "grandchildren (sons' sons, sons' daughters) — covered by arts 125–127 but no wizard field",
-      "agnatic ascendants (paternal grandfather, paternal grandmother) — covered by arts 140–143 but no wizard field",
-      "cousin / aunt / uncle relationships — covered by arts 134–137 but no wizard field"
+      "sibling sub-typing (full / consanguine / uterine) — needed for arts 132-139",
+      "grandchildren (sons' sons, sons' daughters) — covered by arts 125-127 but no wizard field",
+      "agnatic ascendants (paternal grandfather, paternal grandmother) — covered by arts 140-143 but no wizard field",
+      "cousin / aunt / uncle relationships — covered by arts 134-137 but no wizard field"
     ],
-    "missing_articles_for_share_distribution": [
-      "CSP arts 85–121 (general succession + Fardh shares) — not in local source tree",
-      "CSP arts 144–152 (residual rules + remainders) — not in local source tree"
+    "missing_articles_in_local_source_tree": [
+      85,
+      86,
+      87,
+      88,
+      109,
+      111,
+      112
     ]
   },
   "rules": [
+    {
+      "rule_id": "tn-csp-art-89",
+      "article_references": [
+        "89"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-89-90",
+      "source_sha256": "e7825ee23a329b0b9fa19870ae968bd1ec6c6a0e1f5ef4add835f676635d04e4",
+      "extracted_text_snippet": "Les personnes successibles sont deux sortes : les héritiers réservataires et les héritiers agnats (aceb).",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 89. Text extracted from 'tn-code-statut-personnel-livre-ix-art-89-90' (e7825ee23a32…)."
+    },
+    {
+      "rule_id": "tn-csp-art-90",
+      "article_references": [
+        "90"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-89-90",
+      "source_sha256": "e7825ee23a329b0b9fa19870ae968bd1ec6c6a0e1f5ef4add835f676635d04e4",
+      "extracted_text_snippet": "Les personnes du sexe masculin pouvant avoir vocation héréditaire : 1°) le père, 2°) le grand-père, même s'il est d'un degré supérieur, à la condition que la ligne de parenté avec le défunt ne soit pas interrompue par un héritier du sexe féminin, 3°) le fils, 4°) le petit-fils (d",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 90. Text extracted from 'tn-code-statut-personnel-livre-ix-art-89-90' (e7825ee23a32…)."
+    },
+    {
+      "rule_id": "tn-csp-art-91",
+      "article_references": [
+        "91"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-91-98",
+      "source_sha256": "f291debeb9e6e66a7a41d248e9ca3102d3dfc5f32dd40e4693f5c4783cbefe2d",
+      "extracted_text_snippet": "La réserve de la quote-part successorale est fixée au profit de l'héritier. La succession est déférée en premier lieu aux héritiers réservataires. Les bénéficiaires de ces quotes-parts du sexe masculin sont : 1°) le père, 2°) le grand-père paternel, même s'il est d'un degré supér",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 91. Text extracted from 'tn-code-statut-personnel-livre-ix-art-91-98' (f291debeb9e6…)."
+    },
+    {
+      "rule_id": "tn-csp-art-92",
+      "article_references": [
+        "92"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-91-98",
+      "source_sha256": "f291debeb9e6e66a7a41d248e9ca3102d3dfc5f32dd40e4693f5c4783cbefe2d",
+      "extracted_text_snippet": "Les quotes-parts successorales sont au nombre de six : la moitié, le quart, le huitième, les deux tiers, le tiers et le sixième.",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 92. Text extracted from 'tn-code-statut-personnel-livre-ix-art-91-98' (f291debeb9e6…)."
+    },
+    {
+      "rule_id": "tn-csp-art-93",
+      "article_references": [
+        "93"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-91-98",
+      "source_sha256": "f291debeb9e6e66a7a41d248e9ca3102d3dfc5f32dd40e4693f5c4783cbefe2d",
+      "extracted_text_snippet": "Les bénéficiaires de la moitié sont au nombre de cinq : 1°) le mari, à la condition que l'épouse n'ait pas laissé de descendance tant masculine que féminine, 2°) la fille, à la condition qu'elle soit unique descendante de son auteur qui n'a pas laissé avec elle d'autres enfants d",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 93. Text extracted from 'tn-code-statut-personnel-livre-ix-art-91-98' (f291debeb9e6…)."
+    },
+    {
+      "rule_id": "tn-csp-art-94",
+      "article_references": [
+        "94"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-91-98",
+      "source_sha256": "f291debeb9e6e66a7a41d248e9ca3102d3dfc5f32dd40e4693f5c4783cbefe2d",
+      "extracted_text_snippet": "- Les bénéficiaires du quart sont au nombre de deux : 1°) le mari, s'il y a avec lui des descendants pouvant avoir vocation à la succession de l'épouse, 2°) l'épouse, si le mari défunt n'a pas laissé de descendants pouvant avoir vocation à sa succession.",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 94. Text extracted from 'tn-code-statut-personnel-livre-ix-art-91-98' (f291debeb9e6…)."
+    },
+    {
+      "rule_id": "tn-csp-art-95",
+      "article_references": [
+        "95"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-91-98",
+      "source_sha256": "f291debeb9e6e66a7a41d248e9ca3102d3dfc5f32dd40e4693f5c4783cbefe2d",
+      "extracted_text_snippet": "- Le huitième est la quote-part de l'épouse si le mari défunt a laissé des descendants pouvant avoir vocation à sa succession.",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 95. Text extracted from 'tn-code-statut-personnel-livre-ix-art-91-98' (f291debeb9e6…)."
+    },
+    {
+      "rule_id": "tn-csp-art-96",
+      "article_references": [
+        "96"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-91-98",
+      "source_sha256": "f291debeb9e6e66a7a41d248e9ca3102d3dfc5f32dd40e4693f5c4783cbefe2d",
+      "extracted_text_snippet": "- Les bénéficiaires des deux tiers sont au nombre de quatre : 1°) les deux filles ou plus du défunt, à la condition qu'elles soient seules descendantes, leur auteur n'ayant pas laissé avec elles un fils, 2°) les deux petites-filles du fils, à la condition qu'elles soient seules d",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 96. Text extracted from 'tn-code-statut-personnel-livre-ix-art-91-98' (f291debeb9e6…)."
+    },
+    {
+      "rule_id": "tn-csp-art-97",
+      "article_references": [
+        "97"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-91-98",
+      "source_sha256": "f291debeb9e6e66a7a41d248e9ca3102d3dfc5f32dd40e4693f5c4783cbefe2d",
+      "extracted_text_snippet": "- Les bénéficiaires du tiers sont au nombre de trois : 1°) la mère, à la condition qu'il n'y ait pas de descendants du défunt pouvant avoir vocation à la succession ni deux frères ou plus, 2°) les frères et sœurs utérins, à la condition qu'ils soient plusieurs et qu'il n'y ait pa",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 97. Text extracted from 'tn-code-statut-personnel-livre-ix-art-91-98' (f291debeb9e6…)."
+    },
+    {
+      "rule_id": "tn-csp-art-98",
+      "article_references": [
+        "98"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-91-98",
+      "source_sha256": "f291debeb9e6e66a7a41d248e9ca3102d3dfc5f32dd40e4693f5c4783cbefe2d",
+      "extracted_text_snippet": "- Le sixième est la quote-part des sept bénéficiaires suivants : 1°) le père, à la condition que le défunt ait laissé des enfants ou des petits-enfants du côté du fils qu'ils soient du sexe masculin ou du sexe féminin, 2°) la mère, à la condition de l'existence avec elle d'enfant",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 98. Text extracted from 'tn-code-statut-personnel-livre-ix-art-91-98' (f291debeb9e6…)."
+    },
+    {
+      "rule_id": "tn-csp-art-99",
+      "article_references": [
+        "99"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-99-110",
+      "source_sha256": "43b4204a7c8c02824709b6d236b771fcfada68a1509c0335c1705aed5ce7a382",
+      "extracted_text_snippet": "Trois cas affectant la vocation héréditaire du père : 1°) il intervient exclusivement en sa qualité d'héritierréservataire avec sa quote-part du sixième, hormis saqualité d'agnat, lorsqu'il vient en concours avec le fils dudéfunt et le petit-fils de celui-ci à l'infini, 2°) il in",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 99. Text extracted from 'tn-code-statut-personnel-livre-ix-art-99-110' (43b4204a7c8c…)."
+    },
+    {
+      "rule_id": "tn-csp-art-100",
+      "article_references": [
+        "100"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-99-110",
+      "source_sha256": "43b4204a7c8c02824709b6d236b771fcfada68a1509c0335c1705aed5ce7a382",
+      "extracted_text_snippet": "Trois cas se présentent pour les frères et sœurs utérins : 1°) le sixième est attribué au frère utérin s'il est unique, 2°) le tiers est attribué à deux frères utérins ou plus, qu'ils soient du sexe masculin ou de sexe féminin, à parts égales entre eux, 3°) il y a déchéance de la",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 100. Text extracted from 'tn-code-statut-personnel-livre-ix-art-99-110' (43b4204a7c8c…)."
+    },
+    {
+      "rule_id": "tn-csp-art-101",
+      "article_references": [
+        "101"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-99-110",
+      "source_sha256": "43b4204a7c8c02824709b6d236b771fcfada68a1509c0335c1705aed5ce7a382",
+      "extracted_text_snippet": "Deux cas se présentent pour le mari : 1°) il a droit à la moitié en cas d'absence de descendants de l'épouse et de descendants du fils, même s'ils sont d'un degré inférieur, 2°) il a droit au quart en présence de descendants de l'épouse ou de descendants du fils, même s'ils sont ",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 101. Text extracted from 'tn-code-statut-personnel-livre-ix-art-99-110' (43b4204a7c8c…)."
+    },
+    {
+      "rule_id": "tn-csp-art-102",
+      "article_references": [
+        "102"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-99-110",
+      "source_sha256": "43b4204a7c8c02824709b6d236b771fcfada68a1509c0335c1705aed5ce7a382",
+      "extracted_text_snippet": "- Deux cas se présentent quand il y a une ou plusieurs épouses ; 1°) le quart est attribué à une ou plusieurs épouses en cas d'absence de descendants du mari ou de descendants du fils,même s'ils sont d'un degré inférieur, 2°) le huitième seulement leur est attribué àune ou plusie",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 102. Text extracted from 'tn-code-statut-personnel-livre-ix-art-99-110' (43b4204a7c8c…)."
+    },
+    {
+      "rule_id": "tn-csp-art-103",
+      "article_references": [
+        "103"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-99-110",
+      "source_sha256": "43b4204a7c8c02824709b6d236b771fcfada68a1509c0335c1705aed5ce7a382",
+      "extracted_text_snippet": "- Trois cas se présentent pour les filles : 1°) la moitié est attribuée à la fille quand elle est fille unique, 2°) les deux tiers sont attribués aux filles quand elles sont plusieurs (soit 2 ou plus), 3°) quand elles interviennent en qualité d'héritières agnates de leurs frères.",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 103. Text extracted from 'tn-code-statut-personnel-livre-ix-art-99-110' (43b4204a7c8c…)."
+    },
+    {
+      "rule_id": "tn-csp-art-104",
+      "article_references": [
+        "104"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-99-110",
+      "source_sha256": "43b4204a7c8c02824709b6d236b771fcfada68a1509c0335c1705aed5ce7a382",
+      "extracted_text_snippet": "- Les filles du fils sont assimilées aux filles du défunt et présentent six cas : 1°) la moitié est attribuée à la petite-fille quand il s'agit d'une unique petite-fille, 2°) les deux tiers sont attribués aux petites-filles quand il s'agit de deux petites-filles ou plus, à condit",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 104. Text extracted from 'tn-code-statut-personnel-livre-ix-art-99-110' (43b4204a7c8c…)."
+    },
+    {
+      "rule_id": "tn-csp-art-105",
+      "article_references": [
+        "105"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-99-110",
+      "source_sha256": "43b4204a7c8c02824709b6d236b771fcfada68a1509c0335c1705aed5ce7a382",
+      "extracted_text_snippet": "Les sœurs germaines présentent cinq cas : 1°) la moitié est attribuée quand il s'agit d'une soeur unique, 2°) les deux tiers sont attribués quand il s'agit de deuxs soeurs germaines ou plus, 3°) elles interviennent à titre d'héritières agnates, si elles sont agnatisées par le frè",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 105. Text extracted from 'tn-code-statut-personnel-livre-ix-art-99-110' (43b4204a7c8c…)."
+    },
+    {
+      "rule_id": "tn-csp-art-106",
+      "article_references": [
+        "106"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-99-110",
+      "source_sha256": "43b4204a7c8c02824709b6d236b771fcfada68a1509c0335c1705aed5ce7a382",
+      "extracted_text_snippet": "Les sœurs consanguines présentent six cas : 1°) la moitié est attribuée à la sœur quand elle est unique, 2°) les deux tiers leur sont attribués quand il s'agit de deux sœurs consanguines ou plus et en cas d'absence de sœurs germaines, 3°) le sixième leur est attribué en présence ",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 106. Text extracted from 'tn-code-statut-personnel-livre-ix-art-99-110' (43b4204a7c8c…)."
+    },
+    {
+      "rule_id": "tn-csp-art-107",
+      "article_references": [
+        "107"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-99-110",
+      "source_sha256": "43b4204a7c8c02824709b6d236b771fcfada68a1509c0335c1705aed5ce7a382",
+      "extracted_text_snippet": "La mère présente trois cas : 1°) le sixième lui est attribué si le cujus a laissé un enfant ou un petit-fils (du côté du fils), même s'il est d'un degré inférieur, ou si elle hérite conjointement avec deux sœurs ou plus, que celles-ci soient germaines ou consanguines ou utérines,",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 107. Text extracted from 'tn-code-statut-personnel-livre-ix-art-99-110' (43b4204a7c8c…)."
+    },
+    {
+      "rule_id": "tn-csp-art-108",
+      "article_references": [
+        "108"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-99-110",
+      "source_sha256": "43b4204a7c8c02824709b6d236b771fcfada68a1509c0335c1705aed5ce7a382",
+      "extracted_text_snippet": "Quand le grand-père est appelé à la succession, quatre cas peuvent se présenter : 1°) s'il a comme cohéritier un fils ou un petit-fils (du côté du fils), même s'il est d'un degré inférieur, il héritera alors du sixième sans pouvoir prétendre à plus, 2°) s'il a comme cohéritiers d",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 108. Text extracted from 'tn-code-statut-personnel-livre-ix-art-99-110' (43b4204a7c8c…)."
+    },
+    {
+      "rule_id": "tn-csp-art-110",
+      "article_references": [
+        "110"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-99-110",
+      "source_sha256": "43b4204a7c8c02824709b6d236b771fcfada68a1509c0335c1705aed5ce7a382",
+      "extracted_text_snippet": "Si l'on se trouve en présence d'un grand-père, d'une seule sœur germaine et d'une sœur consanguine, la sœur germaine fera tenir compte de l'existence de la sœur consanguine et ainsi le grand-père recueillera la moitié de la succession, la deuxième moitié reviendra à la sœur germa",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 110. Text extracted from 'tn-code-statut-personnel-livre-ix-art-99-110' (43b4204a7c8c…)."
+    },
+    {
+      "rule_id": "tn-csp-art-113",
+      "article_references": [
+        "113"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-113-121",
+      "source_sha256": "b6891c5a222b77932e46731303026e2b68cf6feaf871456af3baeabe49a9555b",
+      "extracted_text_snippet": "Les héritiers universels sont de trois sortes : 1°) héritiers universels par eux-mêmes, 2°) héritiers universels par suite de la présence d'autres héritiers, 3°) héritiers universels avec autrui.",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 113. Text extracted from 'tn-code-statut-personnel-livre-ix-art-113-121' (b6891c5a222b…)."
+    },
+    {
+      "rule_id": "tn-csp-art-114",
+      "article_references": [
+        "114"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-113-121",
+      "source_sha256": "b6891c5a222b77932e46731303026e2b68cf6feaf871456af3baeabe49a9555b",
+      "extracted_text_snippet": "L'héritier universel hérite de la totalité de la succession lorsqu'il est seul, le reste, s'il en existe, va aux légitimaires, faute de quoi, ils seront évincés. Prennent rang d'héritiers agnats (aceb) et succèdent en cette qualité : 1°) le père, 2°) l'ascendant ; même s'il est a",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 114. Text extracted from 'tn-code-statut-personnel-livre-ix-art-113-121' (b6891c5a222b…)."
+    },
+    {
+      "rule_id": "tn-csp-art-115",
+      "article_references": [
+        "115"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-113-121",
+      "source_sha256": "b6891c5a222b77932e46731303026e2b68cf6feaf871456af3baeabe49a9555b",
+      "extracted_text_snippet": "Les héritiers universels par eux-mêmes se divisent en classes rangées par ordre de priorité, ainsi qu'il suit : 1°) les descendants, 2°) le père, 3°) les ascendants des frères, 4°) les descendants des frères, 5°) les oncles germains et leurs descendants qui occupent le même rang ",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 115. Text extracted from 'tn-code-statut-personnel-livre-ix-art-113-121' (b6891c5a222b…)."
+    },
+    {
+      "rule_id": "tn-csp-art-116",
+      "article_references": [
+        "116"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-113-121",
+      "source_sha256": "b6891c5a222b77932e46731303026e2b68cf6feaf871456af3baeabe49a9555b",
+      "extracted_text_snippet": "L'héritier dont le degré [martaba] est le plus proche prend place avant les autres, même s'il est éloigné de ceux dont le degré est inférieur.",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 116. Text extracted from 'tn-code-statut-personnel-livre-ix-art-113-121' (b6891c5a222b…)."
+    },
+    {
+      "rule_id": "tn-csp-art-117",
+      "article_references": [
+        "117"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-113-121",
+      "source_sha256": "b6891c5a222b77932e46731303026e2b68cf6feaf871456af3baeabe49a9555b",
+      "extracted_text_snippet": "En cas d'égalité dans la classe et de différence dans le degré, l'héritier du degré le plus rapproché est placé avant celui du degré le plus éloigné.",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 117. Text extracted from 'tn-code-statut-personnel-livre-ix-art-113-121' (b6891c5a222b…)."
+    },
+    {
+      "rule_id": "tn-csp-art-118",
+      "article_references": [
+        "118"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-113-121",
+      "source_sha256": "b6891c5a222b77932e46731303026e2b68cf6feaf871456af3baeabe49a9555b",
+      "extracted_text_snippet": "En cas d'égalité dans la classe et le degré et lorsque la parenté est plus ou moins proche, le lien de parenté le plus fort l'emporte sur celui le plus faible.",
+      "extraction_confidence": "medium",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 118. Text extracted from 'tn-code-statut-personnel-livre-ix-art-113-121' (b6891c5a222b…)."
+    },
+    {
+      "rule_id": "tn-csp-art-119",
+      "article_references": [
+        "119"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-113-121",
+      "source_sha256": "b6891c5a222b77932e46731303026e2b68cf6feaf871456af3baeabe49a9555b",
+      "extracted_text_snippet": "L'agnate par suite de la présence d'autres héritiers est toute femme qui devient agnate par concours avec un homme : la fille, la petite fille du côté du fils, la s÷ur germaine et la sœur consanguine. La fille est agnatisée par son frère. Elle héritera conjointement avec lui, soi",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 119. Text extracted from 'tn-code-statut-personnel-livre-ix-art-113-121' (b6891c5a222b…)."
+    },
+    {
+      "rule_id": "tn-csp-art-120",
+      "article_references": [
+        "120"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-113-121",
+      "source_sha256": "b6891c5a222b77932e46731303026e2b68cf6feaf871456af3baeabe49a9555b",
+      "extracted_text_snippet": "Toute femme, n'ayant pas droit à une part successorale et dont le frère est agnat, ne pourra devenir, en aucun cas, elle-même agnate en raison de la présence de son frère. Il en est ainsi, par exemple, de l'oncle paternel avec la tante paternelle, du cousin paternel avec la cousi",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 120. Text extracted from 'tn-code-statut-personnel-livre-ix-art-113-121' (b6891c5a222b…)."
+    },
+    {
+      "rule_id": "tn-csp-art-121",
+      "article_references": [
+        "121"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-113-121",
+      "source_sha256": "b6891c5a222b77932e46731303026e2b68cf6feaf871456af3baeabe49a9555b",
+      "extracted_text_snippet": "L'agnate avec autrui et toute femme qui deviendra héritière universelle conjointement avec une autre : a) la sœur germaine avec une ou plusieurs filles ou avec une ou plusieurs petites-filles du côté du fils, b) la sœur consanguine avec une ou plusieurs filles ou avec une ou plus",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 121. Text extracted from 'tn-code-statut-personnel-livre-ix-art-113-121' (b6891c5a222b…)."
+    },
     {
       "rule_id": "tn-csp-art-122",
       "article_references": [
@@ -118,16 +823,18 @@
       "scenario": {},
       "share_spec": null,
       "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
       "extracted_text_snippet": "L'éviction en matière successorale \"Hajb\" consiste à évincer totalement ou partiellement un héritier de l'héritage. Elle est de deux espèces : 1°) éviction par réduction qui consiste à réduire la part d'héritage en la ramenant à une part inférieure, 2°) éviction totale de l'hérit",
       "extraction_confidence": "high",
       "confidence": "low",
       "needs_manual_review": true,
       "activation_blockers": [
-        "the available CSP page (articles 122–143) covers Hajb (éviction successorale), an unsupported_mechanism — no share_spec can be derived from this article alone",
-        "the CSP Fardh / share-distribution articles (85–121, 144–152) live on adjacent jurisitetunisie.com pages not yet fetched into the local source tree",
-        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing",
+        "the article belongs to the Hajb (éviction successorale) chapter — Hajb is an unsupported_mechanism on the engine; the rule stays blocked even after Studio derivation until the engine models eviction"
       ],
-      "comment": "CSP Livre IX, article 122. Text extracted from the validated official_html source (sha pinned in the mapping header). The article belongs to the Hajb (éviction) section of Livre IX; this iter records the article verbatim for Studio review but does not derive any computed share."
+      "comment": "CSP Livre IX, article 122. Text extracted from 'tn-code-statut-personnel-livre-ix-succession' (ab8078968ccf…)."
     },
     {
       "rule_id": "tn-csp-art-123",
@@ -137,16 +844,18 @@
       "scenario": {},
       "share_spec": null,
       "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
       "extracted_text_snippet": "L'éviction totale ne pourra être invoquée contre six rangs d'héritiers : le père, la mère, la fille, le fils, le mari et l'épouse. L'éviction par réduction pourra atteindre les deux conjoints, les père et mère, le grand-père, la petite-fille du côté du fils, la s÷ur germaine, la ",
       "extraction_confidence": "high",
       "confidence": "low",
       "needs_manual_review": true,
       "activation_blockers": [
-        "the available CSP page (articles 122–143) covers Hajb (éviction successorale), an unsupported_mechanism — no share_spec can be derived from this article alone",
-        "the CSP Fardh / share-distribution articles (85–121, 144–152) live on adjacent jurisitetunisie.com pages not yet fetched into the local source tree",
-        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing",
+        "the article belongs to the Hajb (éviction successorale) chapter — Hajb is an unsupported_mechanism on the engine; the rule stays blocked even after Studio derivation until the engine models eviction"
       ],
-      "comment": "CSP Livre IX, article 123. Text extracted from the validated official_html source (sha pinned in the mapping header). The article belongs to the Hajb (éviction) section of Livre IX; this iter records the article verbatim for Studio review but does not derive any computed share."
+      "comment": "CSP Livre IX, article 123. Text extracted from 'tn-code-statut-personnel-livre-ix-succession' (ab8078968ccf…)."
     },
     {
       "rule_id": "tn-csp-art-124",
@@ -156,16 +865,18 @@
       "scenario": {},
       "share_spec": null,
       "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
       "extracted_text_snippet": "Ceux qui peuvent prétendre à l'éviction par réduction sont au nombre de six : le fils, le petit-fils, la fille, la petite-fille du côté du fils, les frères sans distinction et la sœur germaine.",
       "extraction_confidence": "high",
       "confidence": "low",
       "needs_manual_review": true,
       "activation_blockers": [
-        "the available CSP page (articles 122–143) covers Hajb (éviction successorale), an unsupported_mechanism — no share_spec can be derived from this article alone",
-        "the CSP Fardh / share-distribution articles (85–121, 144–152) live on adjacent jurisitetunisie.com pages not yet fetched into the local source tree",
-        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing",
+        "the article belongs to the Hajb (éviction successorale) chapter — Hajb is an unsupported_mechanism on the engine; the rule stays blocked even after Studio derivation until the engine models eviction"
       ],
-      "comment": "CSP Livre IX, article 124. Text extracted from the validated official_html source (sha pinned in the mapping header). The article belongs to the Hajb (éviction) section of Livre IX; this iter records the article verbatim for Studio review but does not derive any computed share."
+      "comment": "CSP Livre IX, article 124. Text extracted from 'tn-code-statut-personnel-livre-ix-succession' (ab8078968ccf…)."
     },
     {
       "rule_id": "tn-csp-art-125",
@@ -175,16 +886,18 @@
       "scenario": {},
       "share_spec": null,
       "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
       "extracted_text_snippet": "Le fils et le petit-fils couvrent, chacun d'eux : le mari, en réduisant sa part dans l'héritage qui passera de la moitié au quart, l'épouse, en ramenant sa part du quart au huitième, la mère dont la part passera du tiers au sixième, et enfin le père ou le grand-père qui, perdant ",
       "extraction_confidence": "high",
       "confidence": "low",
       "needs_manual_review": true,
       "activation_blockers": [
-        "the available CSP page (articles 122–143) covers Hajb (éviction successorale), an unsupported_mechanism — no share_spec can be derived from this article alone",
-        "the CSP Fardh / share-distribution articles (85–121, 144–152) live on adjacent jurisitetunisie.com pages not yet fetched into the local source tree",
-        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing",
+        "the article belongs to the Hajb (éviction successorale) chapter — Hajb is an unsupported_mechanism on the engine; the rule stays blocked even after Studio derivation until the engine models eviction"
       ],
-      "comment": "CSP Livre IX, article 125. Text extracted from the validated official_html source (sha pinned in the mapping header). The article belongs to the Hajb (éviction) section of Livre IX; this iter records the article verbatim for Studio review but does not derive any computed share."
+      "comment": "CSP Livre IX, article 125. Text extracted from 'tn-code-statut-personnel-livre-ix-succession' (ab8078968ccf…)."
     },
     {
       "rule_id": "tn-csp-art-126",
@@ -194,16 +907,18 @@
       "scenario": {},
       "share_spec": null,
       "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
       "extracted_text_snippet": "La fille unique couvre la petite-fille du côté du fils en ramenant la part de cette dernière de la moitié au sixième. S'il s'agit de deux petites filles, leur part sera ramenée des deux tiers au sixième. Il en est de même pour la sœur germaine ou la sœur consanguine, dont la part",
       "extraction_confidence": "high",
       "confidence": "low",
       "needs_manual_review": true,
       "activation_blockers": [
-        "the available CSP page (articles 122–143) covers Hajb (éviction successorale), an unsupported_mechanism — no share_spec can be derived from this article alone",
-        "the CSP Fardh / share-distribution articles (85–121, 144–152) live on adjacent jurisitetunisie.com pages not yet fetched into the local source tree",
-        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing",
+        "the article belongs to the Hajb (éviction successorale) chapter — Hajb is an unsupported_mechanism on the engine; the rule stays blocked even after Studio derivation until the engine models eviction"
       ],
-      "comment": "CSP Livre IX, article 126. Text extracted from the validated official_html source (sha pinned in the mapping header). The article belongs to the Hajb (éviction) section of Livre IX; this iter records the article verbatim for Studio review but does not derive any computed share."
+      "comment": "CSP Livre IX, article 126. Text extracted from 'tn-code-statut-personnel-livre-ix-succession' (ab8078968ccf…)."
     },
     {
       "rule_id": "tn-csp-art-127",
@@ -213,16 +928,18 @@
       "scenario": {},
       "share_spec": null,
       "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
       "extracted_text_snippet": "La petite-fille du côté du fils couvre les petites-filles du côté du fils d'un degré inférieur en les agnatisant relativement à la succession d'un frère ou d'un cousin paternel du même degré qu'elle, de sorte que, s'il s'agit d'une seule petite-fille, la part de celle-ci passera ",
       "extraction_confidence": "high",
       "confidence": "low",
       "needs_manual_review": true,
       "activation_blockers": [
-        "the available CSP page (articles 122–143) covers Hajb (éviction successorale), an unsupported_mechanism — no share_spec can be derived from this article alone",
-        "the CSP Fardh / share-distribution articles (85–121, 144–152) live on adjacent jurisitetunisie.com pages not yet fetched into the local source tree",
-        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing",
+        "the article belongs to the Hajb (éviction successorale) chapter — Hajb is an unsupported_mechanism on the engine; the rule stays blocked even after Studio derivation until the engine models eviction"
       ],
-      "comment": "CSP Livre IX, article 127. Text extracted from the validated official_html source (sha pinned in the mapping header). The article belongs to the Hajb (éviction) section of Livre IX; this iter records the article verbatim for Studio review but does not derive any computed share."
+      "comment": "CSP Livre IX, article 127. Text extracted from 'tn-code-statut-personnel-livre-ix-succession' (ab8078968ccf…)."
     },
     {
       "rule_id": "tn-csp-art-128",
@@ -232,16 +949,18 @@
       "scenario": {},
       "share_spec": null,
       "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
       "extracted_text_snippet": "La sœur germaine couvre la sœur consanguine en ramenant la part de celle-ci de la moitié au sixième, à moins qu'elle n'ait, comme héritier, un frère consanguin, par lequel elle serait agnatisée. Il en est de même pour deux sœurs consanguines dont la part sera ramenée des deux tie",
       "extraction_confidence": "high",
       "confidence": "low",
       "needs_manual_review": true,
       "activation_blockers": [
-        "the available CSP page (articles 122–143) covers Hajb (éviction successorale), an unsupported_mechanism — no share_spec can be derived from this article alone",
-        "the CSP Fardh / share-distribution articles (85–121, 144–152) live on adjacent jurisitetunisie.com pages not yet fetched into the local source tree",
-        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing",
+        "the article belongs to the Hajb (éviction successorale) chapter — Hajb is an unsupported_mechanism on the engine; the rule stays blocked even after Studio derivation until the engine models eviction"
       ],
-      "comment": "CSP Livre IX, article 128. Text extracted from the validated official_html source (sha pinned in the mapping header). The article belongs to the Hajb (éviction) section of Livre IX; this iter records the article verbatim for Studio review but does not derive any computed share."
+      "comment": "CSP Livre IX, article 128. Text extracted from 'tn-code-statut-personnel-livre-ix-succession' (ab8078968ccf…)."
     },
     {
       "rule_id": "tn-csp-art-129",
@@ -251,16 +970,18 @@
       "scenario": {},
       "share_spec": null,
       "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
       "extracted_text_snippet": "Les personnes couvrant en totalité d'autres héritiers sont au nombre de seize : le fils, les descendants du sexe masculin de celui-ci, même s'ils sont d'un degré inférieur, la fille, la petite-fille du côté du fils, le frère germain, le frère consanguin, le neveu germain, le neve",
       "extraction_confidence": "high",
       "confidence": "low",
       "needs_manual_review": true,
       "activation_blockers": [
-        "the available CSP page (articles 122–143) covers Hajb (éviction successorale), an unsupported_mechanism — no share_spec can be derived from this article alone",
-        "the CSP Fardh / share-distribution articles (85–121, 144–152) live on adjacent jurisitetunisie.com pages not yet fetched into the local source tree",
-        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing",
+        "the article belongs to the Hajb (éviction successorale) chapter — Hajb is an unsupported_mechanism on the engine; the rule stays blocked even after Studio derivation until the engine models eviction"
       ],
-      "comment": "CSP Livre IX, article 129. Text extracted from the validated official_html source (sha pinned in the mapping header). The article belongs to the Hajb (éviction) section of Livre IX; this iter records the article verbatim for Studio review but does not derive any computed share."
+      "comment": "CSP Livre IX, article 129. Text extracted from 'tn-code-statut-personnel-livre-ix-succession' (ab8078968ccf…)."
     },
     {
       "rule_id": "tn-csp-art-130",
@@ -270,16 +991,18 @@
       "scenario": {},
       "share_spec": null,
       "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
       "extracted_text_snippet": "Ne pourront hériter avec le fils ou les descendants du fils, même s'ils sont d'un degré inférieur, ni les enfants du fils des deux sexes, ni les frères qu'ils soient germains ou consanguins ou utérins, ni les oncles paternels qu'ils soient germains ou consanguins.",
       "extraction_confidence": "high",
       "confidence": "low",
       "needs_manual_review": true,
       "activation_blockers": [
-        "the available CSP page (articles 122–143) covers Hajb (éviction successorale), an unsupported_mechanism — no share_spec can be derived from this article alone",
-        "the CSP Fardh / share-distribution articles (85–121, 144–152) live on adjacent jurisitetunisie.com pages not yet fetched into the local source tree",
-        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing",
+        "the article belongs to the Hajb (éviction successorale) chapter — Hajb is an unsupported_mechanism on the engine; the rule stays blocked even after Studio derivation until the engine models eviction"
       ],
-      "comment": "CSP Livre IX, article 130. Text extracted from the validated official_html source (sha pinned in the mapping header). The article belongs to the Hajb (éviction) section of Livre IX; this iter records the article verbatim for Studio review but does not derive any computed share."
+      "comment": "CSP Livre IX, article 130. Text extracted from 'tn-code-statut-personnel-livre-ix-succession' (ab8078968ccf…)."
     },
     {
       "rule_id": "tn-csp-art-131",
@@ -289,16 +1012,18 @@
       "scenario": {},
       "share_spec": null,
       "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
       "extracted_text_snippet": "Ne pourront avoir vocation à l'héritage en même temps que la fille ou la petite-fille du côté du fils, le ou les frères ou sœurs utérins. N'hériteront pas également avec les deux filles, le frère utérin, ni la ou les petites-filles du côté du fils, si elles ne sont agnatisées par",
       "extraction_confidence": "high",
       "confidence": "low",
       "needs_manual_review": true,
       "activation_blockers": [
-        "the available CSP page (articles 122–143) covers Hajb (éviction successorale), an unsupported_mechanism — no share_spec can be derived from this article alone",
-        "the CSP Fardh / share-distribution articles (85–121, 144–152) live on adjacent jurisitetunisie.com pages not yet fetched into the local source tree",
-        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing",
+        "the article belongs to the Hajb (éviction successorale) chapter — Hajb is an unsupported_mechanism on the engine; the rule stays blocked even after Studio derivation until the engine models eviction"
       ],
-      "comment": "CSP Livre IX, article 131. Text extracted from the validated official_html source (sha pinned in the mapping header). The article belongs to the Hajb (éviction) section of Livre IX; this iter records the article verbatim for Studio review but does not derive any computed share."
+      "comment": "CSP Livre IX, article 131. Text extracted from 'tn-code-statut-personnel-livre-ix-succession' (ab8078968ccf…)."
     },
     {
       "rule_id": "tn-csp-art-132",
@@ -308,16 +1033,18 @@
       "scenario": {},
       "share_spec": null,
       "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
       "extracted_text_snippet": "Ne pourront hériter, en même temps que le frère germain, le ou les frères consanguins, ni l'oncle paternel qu'il soit germain ou consanguin. Quant au frère utérin, il ne pourra en aucun cas être couvert par le frère germain.",
       "extraction_confidence": "high",
       "confidence": "low",
       "needs_manual_review": true,
       "activation_blockers": [
-        "the available CSP page (articles 122–143) covers Hajb (éviction successorale), an unsupported_mechanism — no share_spec can be derived from this article alone",
-        "the CSP Fardh / share-distribution articles (85–121, 144–152) live on adjacent jurisitetunisie.com pages not yet fetched into the local source tree",
-        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing",
+        "the article belongs to the Hajb (éviction successorale) chapter — Hajb is an unsupported_mechanism on the engine; the rule stays blocked even after Studio derivation until the engine models eviction"
       ],
-      "comment": "CSP Livre IX, article 132. Text extracted from the validated official_html source (sha pinned in the mapping header). The article belongs to the Hajb (éviction) section of Livre IX; this iter records the article verbatim for Studio review but does not derive any computed share."
+      "comment": "CSP Livre IX, article 132. Text extracted from 'tn-code-statut-personnel-livre-ix-succession' (ab8078968ccf…)."
     },
     {
       "rule_id": "tn-csp-art-133",
@@ -327,16 +1054,18 @@
       "scenario": {},
       "share_spec": null,
       "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
       "extracted_text_snippet": "Ne pourront hériter conjointement avec le frère consanguin, ni l'oncle paternel, qu'il soit germain ou consanguin, ni les enfants du frère, même si ce dernier est germain.",
       "extraction_confidence": "high",
       "confidence": "low",
       "needs_manual_review": true,
       "activation_blockers": [
-        "the available CSP page (articles 122–143) covers Hajb (éviction successorale), an unsupported_mechanism — no share_spec can be derived from this article alone",
-        "the CSP Fardh / share-distribution articles (85–121, 144–152) live on adjacent jurisitetunisie.com pages not yet fetched into the local source tree",
-        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing",
+        "the article belongs to the Hajb (éviction successorale) chapter — Hajb is an unsupported_mechanism on the engine; the rule stays blocked even after Studio derivation until the engine models eviction"
       ],
-      "comment": "CSP Livre IX, article 133. Text extracted from the validated official_html source (sha pinned in the mapping header). The article belongs to the Hajb (éviction) section of Livre IX; this iter records the article verbatim for Studio review but does not derive any computed share."
+      "comment": "CSP Livre IX, article 133. Text extracted from 'tn-code-statut-personnel-livre-ix-succession' (ab8078968ccf…)."
     },
     {
       "rule_id": "tn-csp-art-134",
@@ -346,16 +1075,18 @@
       "scenario": {},
       "share_spec": null,
       "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
       "extracted_text_snippet": "Ne pourront hériter, conjointement avec le fils du frère germain, ni l'oncle paternel, même s'il est germain, ni l'enfant du frère consanguin, ni ceux qui lui sont d'un degré inférieur tels que les descendants des enfants du frère.",
       "extraction_confidence": "high",
       "confidence": "low",
       "needs_manual_review": true,
       "activation_blockers": [
-        "the available CSP page (articles 122–143) covers Hajb (éviction successorale), an unsupported_mechanism — no share_spec can be derived from this article alone",
-        "the CSP Fardh / share-distribution articles (85–121, 144–152) live on adjacent jurisitetunisie.com pages not yet fetched into the local source tree",
-        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing",
+        "the article belongs to the Hajb (éviction successorale) chapter — Hajb is an unsupported_mechanism on the engine; the rule stays blocked even after Studio derivation until the engine models eviction"
       ],
-      "comment": "CSP Livre IX, article 134. Text extracted from the validated official_html source (sha pinned in the mapping header). The article belongs to the Hajb (éviction) section of Livre IX; this iter records the article verbatim for Studio review but does not derive any computed share."
+      "comment": "CSP Livre IX, article 134. Text extracted from 'tn-code-statut-personnel-livre-ix-succession' (ab8078968ccf…)."
     },
     {
       "rule_id": "tn-csp-art-135",
@@ -365,16 +1096,18 @@
       "scenario": {},
       "share_spec": null,
       "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
       "extracted_text_snippet": "Ne pourront hériter, conjointement avec le fils du frère consanguin, ni l'oncle paternel, même s'il est germain, ni ceux qui lui sont d'un degré inférieur tels que les descendants du frère, même si ce dernier est germain.",
       "extraction_confidence": "high",
       "confidence": "low",
       "needs_manual_review": true,
       "activation_blockers": [
-        "the available CSP page (articles 122–143) covers Hajb (éviction successorale), an unsupported_mechanism — no share_spec can be derived from this article alone",
-        "the CSP Fardh / share-distribution articles (85–121, 144–152) live on adjacent jurisitetunisie.com pages not yet fetched into the local source tree",
-        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing",
+        "the article belongs to the Hajb (éviction successorale) chapter — Hajb is an unsupported_mechanism on the engine; the rule stays blocked even after Studio derivation until the engine models eviction"
       ],
-      "comment": "CSP Livre IX, article 135. Text extracted from the validated official_html source (sha pinned in the mapping header). The article belongs to the Hajb (éviction) section of Livre IX; this iter records the article verbatim for Studio review but does not derive any computed share."
+      "comment": "CSP Livre IX, article 135. Text extracted from 'tn-code-statut-personnel-livre-ix-succession' (ab8078968ccf…)."
     },
     {
       "rule_id": "tn-csp-art-136",
@@ -384,16 +1117,18 @@
       "scenario": {},
       "share_spec": null,
       "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
       "extracted_text_snippet": "Ne pourront hériter, conjointement avec l'oncle paternel germain, ni l'oncle paternel consanguin, ni ceux qui lui sont d'un degré inférieur tels que les descendants de l'oncle, même si ce dernier est germain ou consanguin.",
       "extraction_confidence": "high",
       "confidence": "low",
       "needs_manual_review": true,
       "activation_blockers": [
-        "the available CSP page (articles 122–143) covers Hajb (éviction successorale), an unsupported_mechanism — no share_spec can be derived from this article alone",
-        "the CSP Fardh / share-distribution articles (85–121, 144–152) live on adjacent jurisitetunisie.com pages not yet fetched into the local source tree",
-        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing",
+        "the article belongs to the Hajb (éviction successorale) chapter — Hajb is an unsupported_mechanism on the engine; the rule stays blocked even after Studio derivation until the engine models eviction"
       ],
-      "comment": "CSP Livre IX, article 136. Text extracted from the validated official_html source (sha pinned in the mapping header). The article belongs to the Hajb (éviction) section of Livre IX; this iter records the article verbatim for Studio review but does not derive any computed share."
+      "comment": "CSP Livre IX, article 136. Text extracted from 'tn-code-statut-personnel-livre-ix-succession' (ab8078968ccf…)."
     },
     {
       "rule_id": "tn-csp-art-137",
@@ -403,16 +1138,18 @@
       "scenario": {},
       "share_spec": null,
       "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
       "extracted_text_snippet": "Ne pourront hériter, conjointement avec le cousin paternel germain, ni le cousin paternel consanguin, ni ceux qui lui sont d'un degré inférieur tels que les descendants de l'oncle germain ou consanguin.",
       "extraction_confidence": "high",
       "confidence": "low",
       "needs_manual_review": true,
       "activation_blockers": [
-        "the available CSP page (articles 122–143) covers Hajb (éviction successorale), an unsupported_mechanism — no share_spec can be derived from this article alone",
-        "the CSP Fardh / share-distribution articles (85–121, 144–152) live on adjacent jurisitetunisie.com pages not yet fetched into the local source tree",
-        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing",
+        "the article belongs to the Hajb (éviction successorale) chapter — Hajb is an unsupported_mechanism on the engine; the rule stays blocked even after Studio derivation until the engine models eviction"
       ],
-      "comment": "CSP Livre IX, article 137. Text extracted from the validated official_html source (sha pinned in the mapping header). The article belongs to the Hajb (éviction) section of Livre IX; this iter records the article verbatim for Studio review but does not derive any computed share."
+      "comment": "CSP Livre IX, article 137. Text extracted from 'tn-code-statut-personnel-livre-ix-succession' (ab8078968ccf…)."
     },
     {
       "rule_id": "tn-csp-art-138",
@@ -422,16 +1159,18 @@
       "scenario": {},
       "share_spec": null,
       "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
       "extracted_text_snippet": "Ne pourront hériter, conjointement avec la fille ou la sœur germaine ou la petite-fille du côté du fils et la sœur germaine, le ou les frères consanguins.",
       "extraction_confidence": "high",
       "confidence": "low",
       "needs_manual_review": true,
       "activation_blockers": [
-        "the available CSP page (articles 122–143) covers Hajb (éviction successorale), an unsupported_mechanism — no share_spec can be derived from this article alone",
-        "the CSP Fardh / share-distribution articles (85–121, 144–152) live on adjacent jurisitetunisie.com pages not yet fetched into the local source tree",
-        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing",
+        "the article belongs to the Hajb (éviction successorale) chapter — Hajb is an unsupported_mechanism on the engine; the rule stays blocked even after Studio derivation until the engine models eviction"
       ],
-      "comment": "CSP Livre IX, article 138. Text extracted from the validated official_html source (sha pinned in the mapping header). The article belongs to the Hajb (éviction) section of Livre IX; this iter records the article verbatim for Studio review but does not derive any computed share."
+      "comment": "CSP Livre IX, article 138. Text extracted from 'tn-code-statut-personnel-livre-ix-succession' (ab8078968ccf…)."
     },
     {
       "rule_id": "tn-csp-art-139",
@@ -441,16 +1180,18 @@
       "scenario": {},
       "share_spec": null,
       "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
       "extracted_text_snippet": "N'héritera pas, conjointement avec les deux sœurs germaines, la sœur consanguine, si elle n'est pas agnatisée par un frère.",
       "extraction_confidence": "high",
       "confidence": "low",
       "needs_manual_review": true,
       "activation_blockers": [
-        "the available CSP page (articles 122–143) covers Hajb (éviction successorale), an unsupported_mechanism — no share_spec can be derived from this article alone",
-        "the CSP Fardh / share-distribution articles (85–121, 144–152) live on adjacent jurisitetunisie.com pages not yet fetched into the local source tree",
-        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing",
+        "the article belongs to the Hajb (éviction successorale) chapter — Hajb is an unsupported_mechanism on the engine; the rule stays blocked even after Studio derivation until the engine models eviction"
       ],
-      "comment": "CSP Livre IX, article 139. Text extracted from the validated official_html source (sha pinned in the mapping header). The article belongs to the Hajb (éviction) section of Livre IX; this iter records the article verbatim for Studio review but does not derive any computed share."
+      "comment": "CSP Livre IX, article 139. Text extracted from 'tn-code-statut-personnel-livre-ix-succession' (ab8078968ccf…)."
     },
     {
       "rule_id": "tn-csp-art-140",
@@ -460,16 +1201,18 @@
       "scenario": {},
       "share_spec": null,
       "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
       "extracted_text_snippet": "N'hériteront pas, conjointement avec le père, ni le grand-père, ni la grand-mère paternelle, ni l'oncle paternel, ni le frère.",
       "extraction_confidence": "high",
       "confidence": "low",
       "needs_manual_review": true,
       "activation_blockers": [
-        "the available CSP page (articles 122–143) covers Hajb (éviction successorale), an unsupported_mechanism — no share_spec can be derived from this article alone",
-        "the CSP Fardh / share-distribution articles (85–121, 144–152) live on adjacent jurisitetunisie.com pages not yet fetched into the local source tree",
-        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing",
+        "the article belongs to the Hajb (éviction successorale) chapter — Hajb is an unsupported_mechanism on the engine; the rule stays blocked even after Studio derivation until the engine models eviction"
       ],
-      "comment": "CSP Livre IX, article 140. Text extracted from the validated official_html source (sha pinned in the mapping header). The article belongs to the Hajb (éviction) section of Livre IX; this iter records the article verbatim for Studio review but does not derive any computed share."
+      "comment": "CSP Livre IX, article 140. Text extracted from 'tn-code-statut-personnel-livre-ix-succession' (ab8078968ccf…)."
     },
     {
       "rule_id": "tn-csp-art-141",
@@ -479,16 +1222,18 @@
       "scenario": {},
       "share_spec": null,
       "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
       "extracted_text_snippet": "N'hériteront pas, conjointement avec le grand-père, ni les aïeux d'un degré supérieur à celui de ce dernier, ni les frères utérins, ni l'oncle paternel, ni les neveux du côté du frère.",
       "extraction_confidence": "high",
       "confidence": "low",
       "needs_manual_review": true,
       "activation_blockers": [
-        "the available CSP page (articles 122–143) covers Hajb (éviction successorale), an unsupported_mechanism — no share_spec can be derived from this article alone",
-        "the CSP Fardh / share-distribution articles (85–121, 144–152) live on adjacent jurisitetunisie.com pages not yet fetched into the local source tree",
-        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing",
+        "the article belongs to the Hajb (éviction successorale) chapter — Hajb is an unsupported_mechanism on the engine; the rule stays blocked even after Studio derivation until the engine models eviction"
       ],
-      "comment": "CSP Livre IX, article 141. Text extracted from the validated official_html source (sha pinned in the mapping header). The article belongs to the Hajb (éviction) section of Livre IX; this iter records the article verbatim for Studio review but does not derive any computed share."
+      "comment": "CSP Livre IX, article 141. Text extracted from 'tn-code-statut-personnel-livre-ix-succession' (ab8078968ccf…)."
     },
     {
       "rule_id": "tn-csp-art-142",
@@ -498,16 +1243,18 @@
       "scenario": {},
       "share_spec": null,
       "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
       "extracted_text_snippet": "N'hériteront pas, conjointement avec la mère, ni la grand-mère maternelle, ni la grand-mère paternelle.",
       "extraction_confidence": "high",
       "confidence": "low",
       "needs_manual_review": true,
       "activation_blockers": [
-        "the available CSP page (articles 122–143) covers Hajb (éviction successorale), an unsupported_mechanism — no share_spec can be derived from this article alone",
-        "the CSP Fardh / share-distribution articles (85–121, 144–152) live on adjacent jurisitetunisie.com pages not yet fetched into the local source tree",
-        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing",
+        "the article belongs to the Hajb (éviction successorale) chapter — Hajb is an unsupported_mechanism on the engine; the rule stays blocked even after Studio derivation until the engine models eviction"
       ],
-      "comment": "CSP Livre IX, article 142. Text extracted from the validated official_html source (sha pinned in the mapping header). The article belongs to the Hajb (éviction) section of Livre IX; this iter records the article verbatim for Studio review but does not derive any computed share."
+      "comment": "CSP Livre IX, article 142. Text extracted from 'tn-code-statut-personnel-livre-ix-succession' (ab8078968ccf…)."
     },
     {
       "rule_id": "tn-csp-art-143",
@@ -517,16 +1264,198 @@
       "scenario": {},
       "share_spec": null,
       "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
       "extracted_text_snippet": "N'héritera pas, conjointement avec la grand-mère maternelle, la grand-mère paternelle, si elle est d'un degré plus éloigné que cette dernière.",
       "extraction_confidence": "high",
       "confidence": "low",
       "needs_manual_review": true,
       "activation_blockers": [
-        "the available CSP page (articles 122–143) covers Hajb (éviction successorale), an unsupported_mechanism — no share_spec can be derived from this article alone",
-        "the CSP Fardh / share-distribution articles (85–121, 144–152) live on adjacent jurisitetunisie.com pages not yet fetched into the local source tree",
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing",
+        "the article belongs to the Hajb (éviction successorale) chapter — Hajb is an unsupported_mechanism on the engine; the rule stays blocked even after Studio derivation until the engine models eviction"
+      ],
+      "comment": "CSP Livre IX, article 143. Text extracted from 'tn-code-statut-personnel-livre-ix-succession' (ab8078968ccf…)."
+    },
+    {
+      "rule_id": "tn-csp-art-144",
+      "article_references": [
+        "144"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-144-146",
+      "source_sha256": "965e96334553090a6eafc1ec64a1117de8d80945ab2f29023a820de0b048d305",
+      "extracted_text_snippet": "Si une femme décède, laissant comme cohéritiers un mari, une mère ou une grand-mère, des frères utérins, un ou plusieurs frères germains, les frères utérins et les frères germains se partageront, entre eux, ce qui restera après le prélèvement de la part du mari, de celle de la mè",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
         "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
       ],
-      "comment": "CSP Livre IX, article 143. Text extracted from the validated official_html source (sha pinned in the mapping header). The article belongs to the Hajb (éviction) section of Livre IX; this iter records the article verbatim for Studio review but does not derive any computed share."
+      "comment": "CSP Livre IX, article 144. Text extracted from 'tn-code-statut-personnel-livre-ix-art-144-146' (965e96334553…)."
+    },
+    {
+      "rule_id": "tn-csp-art-145",
+      "article_references": [
+        "145"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-144-146",
+      "source_sha256": "965e96334553090a6eafc1ec64a1117de8d80945ab2f29023a820de0b048d305",
+      "extracted_text_snippet": "Si une femme décède, laissant comme cohéritiers un mari, une mère ou une grand-mère, des frères utérins, un ou plusieurs frères germains et un grand-père, le mari recevra la moitié, la mère ou la grand-mère le sixième, le grand-père le sixième, le frère germain ou le frère consan",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 145. Text extracted from 'tn-code-statut-personnel-livre-ix-art-144-146' (965e96334553…)."
+    },
+    {
+      "rule_id": "tn-csp-art-146",
+      "article_references": [
+        "146"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-144-146",
+      "source_sha256": "965e96334553090a6eafc1ec64a1117de8d80945ab2f29023a820de0b048d305",
+      "extracted_text_snippet": "Si une femme décède, laissant comme cohéritiers un mari, une mère, une s÷ur germaine ou une sœur consanguine et un grand-père, le mari prendra la moitié, la mère le tiers, la sœur la moitié, le grand-père le sixième. Les parts de la sœur et du grand-père seront réunies et partagé",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 146. Text extracted from 'tn-code-statut-personnel-livre-ix-art-144-146' (965e96334553…)."
+    },
+    {
+      "rule_id": "tn-csp-art-147",
+      "article_references": [
+        "147"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-147-152",
+      "source_sha256": "e9be440f0dd4c33a5876963bad9bdbfeaac1e68b9ccc161da84b9b49b8a43384",
+      "extracted_text_snippet": "Il sera prélevé sur la succession, en raison de l'existence, parmi les héritiers, d'un enfant à naître, une part supérieure à celle devant revenir à un seul enfant du sexe féminin, s'il a vocation à la succession ou s'il couvre partiellement les autres héritiers. Mais s'il les co",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 147. Text extracted from 'tn-code-statut-personnel-livre-ix-art-147-152' (e9be440f0dd4…)."
+    },
+    {
+      "rule_id": "tn-csp-art-148",
+      "article_references": [
+        "148"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-147-152",
+      "source_sha256": "e9be440f0dd4c33a5876963bad9bdbfeaac1e68b9ccc161da84b9b49b8a43384",
+      "extracted_text_snippet": "Si l'enfant à naître peut avoir vocation à la succession avec les autres héritiers ou les couvre partiellement, ceux dont les parts successorales ne peuvent être modifiées rentrent en possession de leurs quotes-parts. Mais, ceux dont les parts seraient susceptibles d'être réduite",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 148. Text extracted from 'tn-code-statut-personnel-livre-ix-art-147-152' (e9be440f0dd4…)."
+    },
+    {
+      "rule_id": "tn-csp-art-149",
+      "article_references": [
+        "149"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-147-152",
+      "source_sha256": "e9be440f0dd4c33a5876963bad9bdbfeaac1e68b9ccc161da84b9b49b8a43384",
+      "extracted_text_snippet": "En cas de contestation au sujet de la grossesse, il sera fait appel à des spécialistes.",
+      "extraction_confidence": "medium",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 149. Text extracted from 'tn-code-statut-personnel-livre-ix-art-147-152' (e9be440f0dd4…)."
+    },
+    {
+      "rule_id": "tn-csp-art-150",
+      "article_references": [
+        "150"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-147-152",
+      "source_sha256": "e9be440f0dd4c33a5876963bad9bdbfeaac1e68b9ccc161da84b9b49b8a43384",
+      "extracted_text_snippet": "L'enfant conçu des ÷uvres d'un homme décédé n'héritera que s'il naît vivant dans un délai ne dépassant pas un an à partir du jour du décès, ou, en cas de divorce, du point de départ de la retraite légale de la femme. L'enfant conçu n'a vocation héréditaire dans une succession aut",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 150. Text extracted from 'tn-code-statut-personnel-livre-ix-art-147-152' (e9be440f0dd4…)."
+    },
+    {
+      "rule_id": "tn-csp-art-151",
+      "article_references": [
+        "151"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-147-152",
+      "source_sha256": "e9be440f0dd4c33a5876963bad9bdbfeaac1e68b9ccc161da84b9b49b8a43384",
+      "extracted_text_snippet": "La part revenant à un disparu dans une succession lui est réservée. Il la prendra s'il se révèle en vie. Si un jugement déclarant la disparition est prononcé, cette part fera retour aux ayants droit, héritiers à la date de la mort de l'auteur. Si après le jugement déclaratif de d",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 151. Text extracted from 'tn-code-statut-personnel-livre-ix-art-147-152' (e9be440f0dd4…)."
+    },
+    {
+      "rule_id": "tn-csp-art-152",
+      "article_references": [
+        "152"
+      ],
+      "scenario": {},
+      "share_spec": null,
+      "blocked": true,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-147-152",
+      "source_sha256": "e9be440f0dd4c33a5876963bad9bdbfeaac1e68b9ccc161da84b9b49b8a43384",
+      "extracted_text_snippet": "L'enfant adultérin n'héritera que sa mère et des parents de celle-ci. La mère et ses parents auront, seuls, vocation héréditaire dans la succession dudit enfant. / Codes et lois en texte intégral / Les forums / Index et taux / Partages de successions Copyright J urisite T unisie ",
+      "extraction_confidence": "high",
+      "confidence": "low",
+      "needs_manual_review": true,
+      "activation_blockers": [
+        "no share_spec has been derived: this iter pins the article text verbatim from the validated official_html source but does not compute any share — Studio review must derive the share_spec (if any) from the article and from the missing siblings rules (arts 85-88, 109, 111, 112).",
+        "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing"
+      ],
+      "comment": "CSP Livre IX, article 152. Text extracted from 'tn-code-statut-personnel-livre-ix-art-147-152' (e9be440f0dd4…)."
     }
   ],
   "unsupported_mechanisms": [
@@ -581,28 +1510,28 @@
         "tn-csp-art-142",
         "tn-csp-art-143"
       ],
-      "comment": "All 22 articles in the available CSP page (122–143) describe Hajb. The engine cannot apply Hajb without the full taxonomy of heir relationships (degrees, uterine/consanguine/germain distinction). Every rule in this draft is therefore blocked."
+      "comment": "Articles 122-143 describe Hajb. The engine cannot apply Hajb without the full taxonomy of heir relationships (degrees, uterine/consanguine/germain distinction). Every Hajb rule in this draft stays blocked even after Studio derivation until the engine models eviction."
     },
     {
       "name": "'awl",
       "label_en": "Proportional reduction when fixed shares exceed unity",
       "article_references": [],
       "blocked_rules": [],
-      "comment": "Not on the available CSP page; covered in arts 144+ which are not in the local source tree."
+      "comment": "Likely covered by arts 144-152 now in the local tree, but the engine does not model the 'awl arithmetic. The Studio reviewer must read the relevant articles and decide whether to expose 'awl in a future iter."
     },
     {
       "name": "radd",
       "label_en": "Devolution of residual to fixed-share heirs",
       "article_references": [],
       "blocked_rules": [],
-      "comment": "Not on the available CSP page."
+      "comment": "Likely covered by arts 144-152 now in the local tree, but the engine does not model radd. Studio review required."
     },
     {
       "name": "asaba_residuary_ordering",
       "label_en": "Residuary heirs ordering (asaba)",
       "article_references": [],
       "blocked_rules": [],
-      "comment": "Not on the available CSP page."
+      "comment": "Articles 144-146 (Csp1105) and 147-152 (Csp1110) are candidates for the residuary section but require Studio review to confirm and to tag every relevant article."
     },
     {
       "name": "applicable_law_decision",
@@ -627,10 +1556,11 @@
     }
   ],
   "blockers_before_activation": [
-    "every rule's confidence must be reviewed by a Studio reviewer reading the extracted_text_snippet against the full CSP Livre IX page",
-    "the missing CSP article ranges (85–121, 144–152) must be fetched and validated before any share_spec can be drafted",
-    "the engine must implement Hajb (eviction) before any rule from this mapping can fire",
+    "every rule's confidence must be reviewed by a Studio reviewer reading the extracted_text_snippet against the corresponding jurisitetunisie.com page",
+    "no rule has a share_spec — this iter expanded the corpus but did not derive shares; the next mapping iter must propose share_specs and re-classify rules where Hajb does not apply",
+    "the engine must implement Hajb (eviction) before any of the 22 Hajb-tagged rules (arts 122-143) can fire",
     "EU 650/2012 must be unblocked (real-verified file + classification=fetch_success) before any cross-border rule may be drafted",
-    "TN applicable-law decision skeleton must be wired"
+    "TN applicable-law decision skeleton must be wired",
+    "missing-in-source-tree articles ([85, 86, 87, 88, 109, 111, 112]) require an alternative edition (e.g. JORT 1956) before Studio review can be exhaustive"
   ]
 }

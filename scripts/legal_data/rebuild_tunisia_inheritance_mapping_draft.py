@@ -1,27 +1,11 @@
-"""F-tunisia-csp-livre-ix-mapping-draft-pass1 — mapping draft rebuilder.
+"""F-tunisia-csp-adjacent-article-ranges-fetch-pass2 — mapping rebuilder.
 
-The Tunisia inheritance mapping draft is a thin, deliberately
-under-claiming JSON snapshot tied to the validated CSP Livre IX
-extraction artefact. It does **not** contain any active share rule:
-the only article range we have on disk (122–143) covers the Hajb
-(éviction successorale) — a mechanism the engine does not model
-and which the brief explicitly lists under
-``unsupported_mechanisms``.
-
-Every rule in the draft is therefore a **blocked** rule with no
-``share_spec``. The mapping pins:
-
-* the source slug + sha (real-verified by
-  ``F-tunisia-official-source-real-files-restore-pass1``);
-* the context_sources, with EU 650/2012 declared explicitly as
-  ``blocked_fetch_failed`` and ``load_bearing=false``;
-* the wizard inputs already captured by the form;
-* every CSP article anchored on the official page as a ``blocked``
-  ``ma_inh_csp_art_*``-style rule with the article's text snippet
-  for Studio review;
-* the unsupported_mechanisms list including the explicit dependency
-  on the EU 650 source being unblocked before any cross-border rule
-  can fire.
+The Tunisia inheritance mapping draft now spans the full Livre IX
+(arts 89-152) extracted from 7 jurisitetunisie.com pages. Every rule
+is still blocked — no ``share_spec`` is derived in this iter — but
+the mapping records the load-bearing source slug per article so a
+future Studio promotion iter can verify each snippet against the
+right official page.
 
 Re-run after editing this script::
 
@@ -45,103 +29,174 @@ EXTRACT_JSON = (
 )
 OUTPUT = REPO_ROOT / "legal_data" / "mappings" / "tunisia_inheritance_mapping_draft.json"
 
-SOURCE_SLUG = "tn-code-statut-personnel-livre-ix-succession"
+# The single source slug recorded at the mapping header level — the
+# canonical Hajb page that originally seeded the draft. The new
+# pages are recorded one-by-one in ``context_sources`` and per-rule
+# via ``source_slug`` on each article.
+HEADER_SOURCE_SLUG = "tn-code-statut-personnel-livre-ix-succession"
+HEADER_SOURCE_SHA = "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd"
+HEADER_SOURCE_SIZE = 36183
+
+
+# Articles whose anchor section is the Hajb chapter (122-143). For
+# every other article in Livre IX, the rule's blocker list mentions
+# that the share-spec still needs Studio derivation but does not
+# tag the article as Hajb.
+HAJB_ARTICLE_RANGE = range(122, 144)
 
 
 def _build_rule(article: dict) -> dict:
     article_no = article["article"]
     snippet = article["text"][:280]
+    is_hajb = article_no in HAJB_ARTICLE_RANGE
+    blockers = [
+        (
+            "no share_spec has been derived: this iter pins the article text "
+            "verbatim from the validated official_html source but does not "
+            "compute any share — Studio review must derive the share_spec "
+            "(if any) from the article and from the missing siblings rules "
+            "(arts 85-88, 109, 111, 112)."
+        ),
+        (
+            "EU 650/2012 source is currently classified blocked_fetch_failed; "
+            "no cross-border rule may fire until it becomes load-bearing"
+        ),
+    ]
+    if is_hajb:
+        blockers.append(
+            "the article belongs to the Hajb (éviction successorale) chapter "
+            "— Hajb is an unsupported_mechanism on the engine; the rule "
+            "stays blocked even after Studio derivation until the engine "
+            "models eviction"
+        )
     return {
         "rule_id": f"tn-csp-art-{article_no}",
         "article_references": [str(article_no)],
         "scenario": {},
         "share_spec": None,
         "blocked": True,
+        "source_slug": article["source_slug"],
+        "source_sha256": article["source_sha256"],
         "extracted_text_snippet": snippet,
         "extraction_confidence": article["extraction_confidence"],
         "confidence": "low",
         "needs_manual_review": True,
-        "activation_blockers": [
-            "the available CSP page (articles 122–143) covers Hajb (éviction successorale), an unsupported_mechanism — no share_spec can be derived from this article alone",
-            "the CSP Fardh / share-distribution articles (85–121, 144–152) live on adjacent jurisitetunisie.com pages not yet fetched into the local source tree",
-            "EU 650/2012 source is currently classified blocked_fetch_failed; no cross-border rule may fire until it becomes load-bearing",
-        ],
+        "activation_blockers": blockers,
         "comment": (
-            f"CSP Livre IX, article {article_no}. Text extracted from the "
-            f"validated official_html source (sha pinned in the mapping "
-            f"header). The article belongs to the Hajb (éviction) section "
-            f"of Livre IX; this iter records the article verbatim for "
-            f"Studio review but does not derive any computed share."
+            f"CSP Livre IX, article {article_no}. Text extracted from "
+            f"{article['source_slug']!r} ({article['source_sha256'][:12]}…)."
         ),
     }
+
+
+def _build_context_sources(extraction: dict) -> list[dict]:
+    """Build the context_sources block.
+
+    Records every per-page CSP source as ``real_verified``, the TN
+    Code DIP as ``real_verified`` (non-load-bearing), and the EU
+    650/2012 as ``blocked_fetch_failed`` (non-load-bearing).
+    """
+    contexts: list[dict] = []
+    for page in extraction.get("pages", []):
+        if page["slug"] == HEADER_SOURCE_SLUG:
+            continue  # already named at the header level
+        contexts.append(
+            {
+                "slug": page["slug"],
+                "status": "real_verified",
+                "sha256": page["sha256"],
+                "size_bytes": page["size_bytes"],
+                "load_bearing": True,
+                "anchored_articles": page["anchored_articles"],
+                "role": (
+                    f"Adjacent CSP Livre IX page ({page['filename']}); "
+                    f"anchors arts {page['anchored_min']}-{page['anchored_max']}. "
+                    "Fetched and validated by "
+                    "F-tunisia-csp-adjacent-article-ranges-fetch-pass2; "
+                    "load-bearing only insofar as the rules in this mapping "
+                    "cite this page's article snippets — no share_spec is "
+                    "derived."
+                ),
+            }
+        )
+    contexts.append(
+        {
+            "slug": "tn-code-dip-loi-98-97",
+            "status": "real_verified",
+            "sha256": "d379a07076177f66cf0fc6ad4704b78dd8c7b79acef03954c598a5218eb8e76a",
+            "size_bytes": 15424,
+            "load_bearing": False,
+            "role": (
+                "Tunisian private international law (Code DIP, Loi 98-97). "
+                "Provides Tunisian-side conflict-of-laws context for "
+                "cross-border successions but is not used to derive any "
+                "share. Will become load-bearing only when the engine "
+                "wires a TN applicable-law decision skeleton."
+            ),
+        }
+    )
+    contexts.append(
+        {
+            "slug": "eu-regulation-650-2012-successions",
+            "status": "blocked_fetch_failed",
+            "load_bearing": False,
+            "role": (
+                "EU Regulation 650/2012 on cross-border successions. "
+                "Currently classified as fetch_failed in "
+                "legal_data/sources/eu/official_downloaded/official_sync_manifest.json "
+                "(EUR-Lex returns HTTP 202 + empty body for synchronous "
+                "fetches). The mapping draft refuses to use it as a "
+                "load-bearing reference until a real download succeeds."
+            ),
+            "blocked_reason": "EUR-Lex async content-delivery; manual download required",
+            "manual_unblock_path": (
+                "Download "
+                "https://eur-lex.europa.eu/legal-content/FR/TXT/PDF/?uri=CELEX:32012R0650 "
+                "into legal_data/sources/eu/official_downloaded/, then "
+                "manage.py sync_official_sources --slug "
+                "eu-regulation-650-2012-successions, then "
+                "manage.py validate_official_legal_sources --commit "
+                "--slug eu-regulation-650-2012-successions."
+            ),
+        }
+    )
+    return contexts
 
 
 def main() -> int:
     extraction = json.loads(EXTRACT_JSON.read_text(encoding="utf-8"))
     rules = [_build_rule(a) for a in extraction["articles"]]
+    missing_in_local_tree = extraction.get("missing_articles_in_local_source_tree", [])
+    hajb_rule_ids = [
+        r["rule_id"] for r in rules if int(r["article_references"][0]) in HAJB_ARTICLE_RANGE
+    ]
 
     mapping = {
         "schema_version": "1.0",
-        "iter": "F-tunisia-csp-livre-ix-mapping-draft-pass1",
+        "iter": "F-tunisia-csp-adjacent-article-ranges-fetch-pass2",
         "iter_lineage": [
             "F-tunisia-official-source-real-files-restore-pass1 (real CSP + DIP files restored)",
             "F-tunisia-csp-livre-ix-mapping-draft-pass1 (Hajb-only blocked rules; EU 650 declared blocked context)",
+            "F-tunisia-csp-adjacent-article-ranges-fetch-pass2 (added 6 adjacent CSP pages — full Livre IX coverage 89-152)",
         ],
         "country": "TN",
         "case_type": "international_inheritance",
-        "source_slug": SOURCE_SLUG,
+        "source_slug": HEADER_SOURCE_SLUG,
         "source_canonical_reference": (
             "Code du statut personnel — Livre IX (De la succession), Tunisie. "
-            "Articles 122–143 only (Hajb / éviction). "
+            "Articles 89-152 split across 7 jurisitetunisie.com pages "
+            "(Csp1080, 1085, 1090, 1095, 1100, 1105, 1110). "
             "Loi initiale 1956, version consolidée 2024 publiée par jurisitetunisie.com."
         ),
-        "source_sha256": extraction["source_sha256"],
-        "source_size_bytes": extraction["size_bytes"],
+        "source_sha256": HEADER_SOURCE_SHA,
+        "source_size_bytes": HEADER_SOURCE_SIZE,
         "extraction_basis": "official_html",
         "extraction_artifact": str(EXTRACT_JSON.relative_to(REPO_ROOT)).replace("\\", "/"),
         "generated_at": datetime.now(UTC).isoformat(),
         "status": "draft",
         "activation_allowed": False,
         "needs_manual_review": True,
-        "context_sources": [
-            {
-                "slug": "tn-code-dip-loi-98-97",
-                "status": "real_verified",
-                "sha256": "d379a07076177f66cf0fc6ad4704b78dd8c7b79acef03954c598a5218eb8e76a",
-                "size_bytes": 15424,
-                "load_bearing": False,
-                "role": (
-                    "Tunisian private international law (Code DIP, Loi 98-97). "
-                    "Provides Tunisian-side conflict-of-laws context for "
-                    "cross-border successions but is not used to derive any "
-                    "share. Will become load-bearing only when the engine "
-                    "wires a TN applicable-law decision skeleton."
-                ),
-            },
-            {
-                "slug": "eu-regulation-650-2012-successions",
-                "status": "blocked_fetch_failed",
-                "load_bearing": False,
-                "role": (
-                    "EU Regulation 650/2012 on cross-border successions. "
-                    "Currently classified as fetch_failed in "
-                    "legal_data/sources/eu/official_downloaded/official_sync_manifest.json "
-                    "(EUR-Lex returns HTTP 202 + empty body for synchronous "
-                    "fetches). The mapping draft refuses to use it as a "
-                    "load-bearing reference until a real download succeeds."
-                ),
-                "blocked_reason": "EUR-Lex async content-delivery; manual download required",
-                "manual_unblock_path": (
-                    "Download "
-                    "https://eur-lex.europa.eu/legal-content/FR/TXT/PDF/?uri=CELEX:32012R0650 "
-                    "into legal_data/sources/eu/official_downloaded/, then "
-                    "manage.py sync_official_sources --slug "
-                    "eu-regulation-650-2012-successions, then "
-                    "manage.py validate_official_legal_sources --commit "
-                    "--slug eu-regulation-650-2012-successions."
-                ),
-            },
-        ],
+        "context_sources": _build_context_sources(extraction),
         "wizard_inputs": {
             "captured": [
                 {
@@ -190,29 +245,26 @@ def main() -> int:
                 },
             ],
             "missing_for_full_faraid": [
-                "sibling sub-typing (full / consanguine / uterine) — needed for arts 132–139",
-                "grandchildren (sons' sons, sons' daughters) — covered by arts 125–127 but no wizard field",
-                "agnatic ascendants (paternal grandfather, paternal grandmother) — covered by arts 140–143 but no wizard field",
-                "cousin / aunt / uncle relationships — covered by arts 134–137 but no wizard field",
+                "sibling sub-typing (full / consanguine / uterine) — needed for arts 132-139",
+                "grandchildren (sons' sons, sons' daughters) — covered by arts 125-127 but no wizard field",
+                "agnatic ascendants (paternal grandfather, paternal grandmother) — covered by arts 140-143 but no wizard field",
+                "cousin / aunt / uncle relationships — covered by arts 134-137 but no wizard field",
             ],
-            "missing_articles_for_share_distribution": [
-                "CSP arts 85–121 (general succession + Fardh shares) — not in local source tree",
-                "CSP arts 144–152 (residual rules + remainders) — not in local source tree",
-            ],
+            "missing_articles_in_local_source_tree": missing_in_local_tree,
         },
         "rules": rules,
         "unsupported_mechanisms": [
             {
                 "name": "hajb",
                 "label_en": "Eviction (total or by reduction)",
-                "article_references": [str(a["article"]) for a in extraction["articles"]],
-                "blocked_rules": [r["rule_id"] for r in rules],
+                "article_references": [str(n) for n in HAJB_ARTICLE_RANGE],
+                "blocked_rules": hajb_rule_ids,
                 "comment": (
-                    "All 22 articles in the available CSP page (122–143) "
-                    "describe Hajb. The engine cannot apply Hajb without "
-                    "the full taxonomy of heir relationships (degrees, "
-                    "uterine/consanguine/germain distinction). Every rule "
-                    "in this draft is therefore blocked."
+                    "Articles 122-143 describe Hajb. The engine cannot apply "
+                    "Hajb without the full taxonomy of heir relationships "
+                    "(degrees, uterine/consanguine/germain distinction). "
+                    "Every Hajb rule in this draft stays blocked even after "
+                    "Studio derivation until the engine models eviction."
                 ),
             },
             {
@@ -221,8 +273,10 @@ def main() -> int:
                 "article_references": [],
                 "blocked_rules": [],
                 "comment": (
-                    "Not on the available CSP page; covered in arts 144+ "
-                    "which are not in the local source tree."
+                    "Likely covered by arts 144-152 now in the local tree, "
+                    "but the engine does not model the 'awl arithmetic. The "
+                    "Studio reviewer must read the relevant articles and "
+                    "decide whether to expose 'awl in a future iter."
                 ),
             },
             {
@@ -230,14 +284,22 @@ def main() -> int:
                 "label_en": "Devolution of residual to fixed-share heirs",
                 "article_references": [],
                 "blocked_rules": [],
-                "comment": "Not on the available CSP page.",
+                "comment": (
+                    "Likely covered by arts 144-152 now in the local tree, "
+                    "but the engine does not model radd. Studio review "
+                    "required."
+                ),
             },
             {
                 "name": "asaba_residuary_ordering",
                 "label_en": "Residuary heirs ordering (asaba)",
                 "article_references": [],
                 "blocked_rules": [],
-                "comment": "Not on the available CSP page.",
+                "comment": (
+                    "Articles 144-146 (Csp1105) and 147-152 (Csp1110) are "
+                    "candidates for the residuary section but require Studio "
+                    "review to confirm and to tag every relevant article."
+                ),
             },
             {
                 "name": "applicable_law_decision",
@@ -275,18 +337,20 @@ def main() -> int:
             },
         ],
         "blockers_before_activation": [
-            "every rule's confidence must be reviewed by a Studio reviewer reading the extracted_text_snippet against the full CSP Livre IX page",
-            "the missing CSP article ranges (85–121, 144–152) must be fetched and validated before any share_spec can be drafted",
-            "the engine must implement Hajb (eviction) before any rule from this mapping can fire",
+            "every rule's confidence must be reviewed by a Studio reviewer reading the extracted_text_snippet against the corresponding jurisitetunisie.com page",
+            "no rule has a share_spec — this iter expanded the corpus but did not derive shares; the next mapping iter must propose share_specs and re-classify rules where Hajb does not apply",
+            "the engine must implement Hajb (eviction) before any of the 22 Hajb-tagged rules (arts 122-143) can fire",
             "EU 650/2012 must be unblocked (real-verified file + classification=fetch_success) before any cross-border rule may be drafted",
             "TN applicable-law decision skeleton must be wired",
+            f"missing-in-source-tree articles ({missing_in_local_tree}) require an alternative edition (e.g. JORT 1956) before Studio review can be exhaustive",
         ],
     }
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(json.dumps(mapping, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"[ok] wrote {OUTPUT.relative_to(REPO_ROOT)}")
     print(f"     rules: {len(rules)} (all blocked)")
-    print(f"     source_sha256: {mapping['source_sha256']}")
+    print(f"     hajb-tagged rules: {len(hajb_rule_ids)}")
+    print(f"     non-hajb rules:    {len(rules) - len(hajb_rule_ids)}")
     print(f"     activation_allowed: {mapping['activation_allowed']}")
     return 0
 

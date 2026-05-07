@@ -1,17 +1,391 @@
 {
   "schema_version": "1.0",
-  "iter": "F-tunisia-csp-livre-ix-mapping-draft-pass1",
+  "iter": "F-tunisia-csp-adjacent-article-ranges-fetch-pass2",
+  "iter_lineage": [
+    "F-tunisia-csp-livre-ix-mapping-draft-pass1 (Csp1100 only — arts 122-143)",
+    "F-tunisia-csp-adjacent-article-ranges-fetch-pass2 (added Csp1080/1085/1090/1095/1105/1110 — full Livre IX coverage)"
+  ],
   "country": "TN",
-  "source_slug": "tn-code-statut-personnel-livre-ix-succession",
-  "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
-  "size_bytes": 36183,
   "extraction_basis": "official_html",
   "extractor": "scripts/legal_data/extract_tunisia_csp_inheritance_articles.py",
-  "extracted_at": "2026-05-07T08:26:15.571900+00:00",
-  "page_scope": "Livre IX — articles 122–143 (Hajb + Fardh fragment)",
-  "scope_note": "The official jurisitetunisie.com page for the Code du statut personnel — Livre IX exposes only articles 122–143 of the Successions book (Hajb / éviction + the first share rules). Articles 85–121 and 144–152 are on adjacent pages that have not yet been fetched into the local source tree. The mapping draft restricts itself to what is anchored in this single validated file.",
-  "articles_count": 22,
+  "extracted_at": "2026-05-07T09:06:38.977827+00:00",
+  "page_scope": "Livre IX — articles 89-152 across 7 jurisitetunisie.com pages (Csp1080, 1085, 1090, 1095, 1100, 1105, 1110).",
+  "scope_note": "The CSP Livre IX is split across 7 jurisitetunisie.com pages. Each is fetched into the local source tree under its own LegalSource slug. Articles 85-88 (introduction to Livre IX) are not anchored on the visible pages and are absent from the local tree; the same is true for arts 109, 111, 112 — anchored neither on Csp1090 nor on Csp1095. Those gaps are documented in 'missing_articles_in_local_source_tree' below.",
+  "pages": [
+    {
+      "slug": "tn-code-statut-personnel-livre-ix-art-89-90",
+      "filename": "tn-code-statut-personnel-livre-ix-art-89-90.html",
+      "sha256": "e7825ee23a329b0b9fa19870ae968bd1ec6c6a0e1f5ef4add835f676635d04e4",
+      "size_bytes": 14123,
+      "anchored_articles": [
+        89,
+        90
+      ],
+      "anchored_min": 89,
+      "anchored_max": 90
+    },
+    {
+      "slug": "tn-code-statut-personnel-livre-ix-art-91-98",
+      "filename": "tn-code-statut-personnel-livre-ix-art-91-98.html",
+      "sha256": "f291debeb9e6e66a7a41d248e9ca3102d3dfc5f32dd40e4693f5c4783cbefe2d",
+      "size_bytes": 21113,
+      "anchored_articles": [
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98
+      ],
+      "anchored_min": 91,
+      "anchored_max": 98
+    },
+    {
+      "slug": "tn-code-statut-personnel-livre-ix-art-99-110",
+      "filename": "tn-code-statut-personnel-livre-ix-art-99-110.html",
+      "sha256": "43b4204a7c8c02824709b6d236b771fcfada68a1509c0335c1705aed5ce7a382",
+      "size_bytes": 30539,
+      "anchored_articles": [
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        110
+      ],
+      "anchored_min": 99,
+      "anchored_max": 110
+    },
+    {
+      "slug": "tn-code-statut-personnel-livre-ix-art-113-121",
+      "filename": "tn-code-statut-personnel-livre-ix-art-113-121.html",
+      "sha256": "b6891c5a222b77932e46731303026e2b68cf6feaf871456af3baeabe49a9555b",
+      "size_bytes": 21324,
+      "anchored_articles": [
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121
+      ],
+      "anchored_min": 113,
+      "anchored_max": 121
+    },
+    {
+      "slug": "tn-code-statut-personnel-livre-ix-succession",
+      "filename": "tn-code-statut-personnel-livre-ix-succession.html",
+      "sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
+      "size_bytes": 36183,
+      "anchored_articles": [
+        122,
+        123,
+        124,
+        125,
+        126,
+        127,
+        128,
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142,
+        143
+      ],
+      "anchored_min": 122,
+      "anchored_max": 143
+    },
+    {
+      "slug": "tn-code-statut-personnel-livre-ix-art-144-146",
+      "filename": "tn-code-statut-personnel-livre-ix-art-144-146.html",
+      "sha256": "965e96334553090a6eafc1ec64a1117de8d80945ab2f29023a820de0b048d305",
+      "size_bytes": 14741,
+      "anchored_articles": [
+        144,
+        145,
+        146
+      ],
+      "anchored_min": 144,
+      "anchored_max": 146
+    },
+    {
+      "slug": "tn-code-statut-personnel-livre-ix-art-147-152",
+      "filename": "tn-code-statut-personnel-livre-ix-art-147-152.html",
+      "sha256": "e9be440f0dd4c33a5876963bad9bdbfeaac1e68b9ccc161da84b9b49b8a43384",
+      "size_bytes": 18862,
+      "anchored_articles": [
+        147,
+        148,
+        149,
+        150,
+        151,
+        152
+      ],
+      "anchored_min": 147,
+      "anchored_max": 152
+    }
+  ],
+  "articles_count": 61,
   "articles": [
+    {
+      "article": 89,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-89-90",
+      "source_sha256": "e7825ee23a329b0b9fa19870ae968bd1ec6c6a0e1f5ef4add835f676635d04e4",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Les personnes successibles sont deux sortes : les héritiers réservataires et les héritiers agnats (aceb)."
+    },
+    {
+      "article": 90,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-89-90",
+      "source_sha256": "e7825ee23a329b0b9fa19870ae968bd1ec6c6a0e1f5ef4add835f676635d04e4",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Les personnes du sexe masculin pouvant avoir vocation héréditaire : 1°) le père, 2°) le grand-père, même s'il est d'un degré supérieur, à la condition que la ligne de parenté avec le défunt ne soit pas interrompue par un héritier du sexe féminin, 3°) le fils, 4°) le petit-fils (du côté du fils), même s'il est d'un degré inférieur, 5°) le frère, qu'il soit germain ou consanguin ou utérin, 6°) le fils du frère germain ou du frère consanguin, 7°) l'oncle paternel germain ou consanguin, 8°) le cousin paternel germain ou consanguin, et 9°) le mari. Les personnes du sexe féminin pouvant avoir vocation héréditaire sont : 1°) la mère, 2°) la grand-mère maternelle, à la condition que la ligne de parenté avec le défunt ne soit pas interrompue par l'existence d'un héritier du sexe masculin ainsi que la grand-mère paternelle, à la condition que la ligne de parenté avec le défunt ne soit pas interrompue par l'existence d'un héritier du sexe masculin autre que l'ascendant fut-il d'un degré inférieur, 3°) la fille, 4°) la petite fille (du coté du fils), même si elle est d'un degré inférieur, à la condition que sa filiation avec le défunt ne soit pas interrompue par l'existence d'un héritier du sexe féminin, 5°) la s÷ur germaine ou consanguine ou utérine, et 6°) l'épouse. / Codes et lois en texte intégral / Les forums / Index et taux / Partages de successions Copyright J urisite T unisie © 2001- document.write(new Date().getFullYear())"
+    },
+    {
+      "article": 91,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-91-98",
+      "source_sha256": "f291debeb9e6e66a7a41d248e9ca3102d3dfc5f32dd40e4693f5c4783cbefe2d",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "La réserve de la quote-part successorale est fixée au profit de l'héritier. La succession est déférée en premier lieu aux héritiers réservataires. Les bénéficiaires de ces quotes-parts du sexe masculin sont : 1°) le père, 2°) le grand-père paternel, même s'il est d'un degré supérieur, 3°) le frère utérin, et 4°) le mari Les bénéficia ires desdits quotes-parts du sexe féminin sont : 1°) la mère, 2°) la grand-mère, 3°) la fille, 4°) la petite-fille (du côté du fils), même si elle est d'un degré inférieur, 5°) la sœur germaine, 6°) la sœur consanguine, 7°) la sœur utérine, et 8°) l'épouse."
+    },
+    {
+      "article": 92,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-91-98",
+      "source_sha256": "f291debeb9e6e66a7a41d248e9ca3102d3dfc5f32dd40e4693f5c4783cbefe2d",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Les quotes-parts successorales sont au nombre de six : la moitié, le quart, le huitième, les deux tiers, le tiers et le sixième."
+    },
+    {
+      "article": 93,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-91-98",
+      "source_sha256": "f291debeb9e6e66a7a41d248e9ca3102d3dfc5f32dd40e4693f5c4783cbefe2d",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Les bénéficiaires de la moitié sont au nombre de cinq : 1°) le mari, à la condition que l'épouse n'ait pas laissé de descendance tant masculine que féminine, 2°) la fille, à la condition qu'elle soit unique descendante de son auteur qui n'a pas laissé avec elle d'autres enfants du sexe masculin ou du sexe féminin, 3°) la fille du fils, à la condition qu'elle soit unique descendante de son auteur qui n'a pas laissé avec elle d'autres enfants du sexe masculin ou du sexe féminin, ni de petits-fils, 4°) la sœur germaine, à la condition de l'inexistence du père ainsi que celle de descendants du défunt qu'ils soient du sexe masculin ou du sexe féminin, ainsi que celle de descendants du fils et celle du frère germain, 5°) la sœur consanguine, à la condition qu'elle soit l'unique descendante à l'exclusion de ceux cités à propos de la sœur germaine ainsi qu'à celle du frère consanguin et de la sœur consanguine du défunt."
+    },
+    {
+      "article": 94,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-91-98",
+      "source_sha256": "f291debeb9e6e66a7a41d248e9ca3102d3dfc5f32dd40e4693f5c4783cbefe2d",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "- Les bénéficiaires du quart sont au nombre de deux : 1°) le mari, s'il y a avec lui des descendants pouvant avoir vocation à la succession de l'épouse, 2°) l'épouse, si le mari défunt n'a pas laissé de descendants pouvant avoir vocation à sa succession."
+    },
+    {
+      "article": 95,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-91-98",
+      "source_sha256": "f291debeb9e6e66a7a41d248e9ca3102d3dfc5f32dd40e4693f5c4783cbefe2d",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "- Le huitième est la quote-part de l'épouse si le mari défunt a laissé des descendants pouvant avoir vocation à sa succession."
+    },
+    {
+      "article": 96,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-91-98",
+      "source_sha256": "f291debeb9e6e66a7a41d248e9ca3102d3dfc5f32dd40e4693f5c4783cbefe2d",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "- Les bénéficiaires des deux tiers sont au nombre de quatre : 1°) les deux filles ou plus du défunt, à la condition qu'elles soient seules descendantes, leur auteur n'ayant pas laissé avec elles un fils, 2°) les deux petites-filles du fils, à la condition qu'elles soient seules descendantes et que le défunt n'ait pas laissé de descendants du sexe masculin ou de sexe féminin ni un petit-fils, 3°) les deux sœurs germaines, à la condition qu'elles soient seules descendantes du défunt qui n'a laissé avec elles ni père ni descendants du sexe masculin ou du sexe féminin ni un frère germain, 4°) les deux sœurs consanguines, à la condition qu'elles soient seules descendantes du défunt qui n'a laissé avec elles aucun de ceux déjà cités à propos des deux sœurs germaines, ni un frère utérin."
+    },
+    {
+      "article": 97,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-91-98",
+      "source_sha256": "f291debeb9e6e66a7a41d248e9ca3102d3dfc5f32dd40e4693f5c4783cbefe2d",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "- Les bénéficiaires du tiers sont au nombre de trois : 1°) la mère, à la condition qu'il n'y ait pas de descendants du défunt pouvant avoir vocation à la succession ni deux frères ou plus, 2°) les frères et sœurs utérins, à la condition qu'ils soient plusieurs et qu'il n'y ait pas avec eux ni père du défunt ni descendants du sexe masculin ou du sexe féminin, ni descendants du fils, 3°) le grand-père, s'il a comme cohéritiers, des frères du défunt et si le tiers constitue pour lui la part la plus forte."
+    },
+    {
+      "article": 98,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-91-98",
+      "source_sha256": "f291debeb9e6e66a7a41d248e9ca3102d3dfc5f32dd40e4693f5c4783cbefe2d",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "- Le sixième est la quote-part des sept bénéficiaires suivants : 1°) le père, à la condition que le défunt ait laissé des enfants ou des petits-enfants du côté du fils qu'ils soient du sexe masculin ou du sexe féminin, 2°) la mère, à la condition de l'existence avec elle d'enfants du défunt ou de petits-fils du côté du fils ou de deux frères ou plus venant effectivement à la succession ou couverts par d'autres héritiers, 3°) la petite-fille (du côté du fils), à la condition qu'elle se trouve avec une seule fille du défunt et qu'il n'y ait pas un petit-fils (du côté du fils) avec elle, 4°) la sœur consanguine, à la condition qu'elle soit avec une seule sœur germaine du défunt et qu'il n'y ait pas avec elle de père ni de descendants du défunt, qu'ils soient de sexe masculin ou du sexe féminin, ni un frère consanguin, 5°) le frère utérin, à la condition qu'il soit seul et la sœur utérine à la même condition et que le défunt n'ait pas laissé de père, de grand-père, d'enfants et de descendants de son fils, qu'ils soient du sexe masculin ou du sexe féminin, 6°) la grand-mère, quand elle est seule, qu'elle soit maternelle ou paternelle. Si l'on se trouve en présence de deux grands-mères, elles se partageront le sixième, à la condition qu'elles soient du même degré ou que la grand-mère maternelle soit d'un degré plus éloigné, si, au contraire, la grand-mère maternelle est d'un degré plus proche, elle prendra le sixième à elle seule. 7°) le grand-père, s'il y a des descendants du défunt ou des descendants du fils du défunt et à défaut du père du défunt. / Codes et lois en texte intégral / Les forums / Index et taux / Partages de successions Copyright J urisite T unisie © 2001- document.write(new Date().getFullYear())"
+    },
+    {
+      "article": 99,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-99-110",
+      "source_sha256": "43b4204a7c8c02824709b6d236b771fcfada68a1509c0335c1705aed5ce7a382",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Trois cas affectant la vocation héréditaire du père : 1°) il intervient exclusivement en sa qualité d'héritierréservataire avec sa quote-part du sixième, hormis saqualité d'agnat, lorsqu'il vient en concours avec le fils dudéfunt et le petit-fils de celui-ci à l'infini, 2°) il intervient en sa double qualité d'héritier réservataireet d'agnat quand il vient en concours avec la fille du défuntet la fille du fils à l'infini, 3°) il intervient exclusivement en sa qualité d'agnat enl'absence de descendance du défunt et de l'inexistence d'enfants du fils du défunt à l'infini."
+    },
+    {
+      "article": 100,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-99-110",
+      "source_sha256": "43b4204a7c8c02824709b6d236b771fcfada68a1509c0335c1705aed5ce7a382",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Trois cas se présentent pour les frères et sœurs utérins : 1°) le sixième est attribué au frère utérin s'il est unique, 2°) le tiers est attribué à deux frères utérins ou plus, qu'ils soient du sexe masculin ou de sexe féminin, à parts égales entre eux, 3°) il y a déchéance de la qualité d'héritier en cas d'existence d'un fils ou d'un petit-fils, même s'il est d'un degré inférieur et en cas d'existence d'une fille, d'une petite-fille (du côté du fils), même si elle est d'un degré inférieur et enfin, en cas d'existence d'un père ou d'un grand-père."
+    },
+    {
+      "article": 101,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-99-110",
+      "source_sha256": "43b4204a7c8c02824709b6d236b771fcfada68a1509c0335c1705aed5ce7a382",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Deux cas se présentent pour le mari : 1°) il a droit à la moitié en cas d'absence de descendants de l'épouse et de descendants du fils, même s'ils sont d'un degré inférieur, 2°) il a droit au quart en présence de descendants de l'épouse ou de descendants du fils, même s'ils sont d'un degré inférieur."
+    },
+    {
+      "article": 102,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-99-110",
+      "source_sha256": "43b4204a7c8c02824709b6d236b771fcfada68a1509c0335c1705aed5ce7a382",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "- Deux cas se présentent quand il y a une ou plusieurs épouses ; 1°) le quart est attribué à une ou plusieurs épouses en cas d'absence de descendants du mari ou de descendants du fils,même s'ils sont d'un degré inférieur, 2°) le huitième seulement leur est attribué àune ou plusieurs épouses en cas d'absence de descendants du mari ou de descendants du fils, même s'ils sont d'un degré inférieur."
+    },
+    {
+      "article": 103,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-99-110",
+      "source_sha256": "43b4204a7c8c02824709b6d236b771fcfada68a1509c0335c1705aed5ce7a382",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "- Trois cas se présentent pour les filles : 1°) la moitié est attribuée à la fille quand elle est fille unique, 2°) les deux tiers sont attribués aux filles quand elles sont plusieurs (soit 2 ou plus), 3°) quand elles interviennent en qualité d'héritières agnates de leurs frères. Dans ce cas, leur participation s'effectuera suivant le principe selon lequel l'héritier du sexe masculin a une part double de celle attribuée à un héritier de sexe féminin."
+    },
+    {
+      "article": 104,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-99-110",
+      "source_sha256": "43b4204a7c8c02824709b6d236b771fcfada68a1509c0335c1705aed5ce7a382",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "- Les filles du fils sont assimilées aux filles du défunt et présentent six cas : 1°) la moitié est attribuée à la petite-fille quand il s'agit d'une unique petite-fille, 2°) les deux tiers sont attribués aux petites-filles quand il s'agit de deux petites-filles ou plus, à condition qu'il y ait absence de filles du défunt, 3°) le sixième leur est attribué en présence d'une fille unique du défunt, en vue de faire le complément des deux tiers, 4°) elles n'hériteront pas conjointement avec deux filles ou plus du défunt, à moins qu'elles n'aient avec elles comme cohéritier un petit-fils (du côté du fils) du sexe masculin venant au même degré qu'elles, 5°) si ce dernier est d'un degré inférieur au leur,il interviendra au titre d'héritier agnat et, dans ce cas, elles hériteront conjointement avec lui du reste de la succession sur la base du principe selon lequel l'héritier du sexe masculin a une part double de celle attribuée à un héritierdu sexe féminin, 6°) il y a déchéance de leur qualité d'héritières en raison de l'existence du fils du défunt."
+    },
+    {
+      "article": 105,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-99-110",
+      "source_sha256": "43b4204a7c8c02824709b6d236b771fcfada68a1509c0335c1705aed5ce7a382",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Les sœurs germaines présentent cinq cas : 1°) la moitié est attribuée quand il s'agit d'une soeur unique, 2°) les deux tiers sont attribués quand il s'agit de deuxs soeurs germaines ou plus, 3°) elles interviennent à titre d'héritières agnates, si elles sont agnatisées par le frère germain et par le grand-père et suivant le principe selon lequel l'héritier du sexe masculin a une part double de celle attribuée à un éritier du sexe féminin, 4°) une fois en position d'agnate, la sœur germaine héritera du reste de la succession conjointement avec les filles ou les petites-filles (du côté du fils), 5°) il y a déchéance de leurs droits à la succession en raison de la présence du père, du fils, du petit-fils (du côté du fils), même s'il est d'un degré inférieur."
+    },
+    {
+      "article": 106,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-99-110",
+      "source_sha256": "43b4204a7c8c02824709b6d236b771fcfada68a1509c0335c1705aed5ce7a382",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Les sœurs consanguines présentent six cas : 1°) la moitié est attribuée à la sœur quand elle est unique, 2°) les deux tiers leur sont attribués quand il s'agit de deux sœurs consanguines ou plus et en cas d'absence de sœurs germaines, 3°) le sixième leur est attribué en présence d'une unique sœur germaine, 4°) elles héritent en qualité d'agnates en présence de deux sœurs germaines, si elles ont comme cohéritier un frère consanguin. Le reste de la succession sera partagé entre eux suivant le principe selon lequel l'héritier du sexe masculin a une part double de celle attribuée à l'héritier du sexe féminin, 5°) elles héritent en qualité d'agnates en présence des filles du défunt ou des filles du fils, 6°) il y a déchéance de leurs droits dans la succession,en raison de la présence du père, du fils, du petit-fils et de l'arrière petit-fils, même s'il est d'un degré inférieur, du frère germain, de la sœur germaine si celle-ci est héritière agnate conjointement avec les filles ou avec les petites-filles du fils ou avec les deux sœurs germaines quand elles n'ont pas avec elles un frère consanguin."
+    },
+    {
+      "article": 107,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-99-110",
+      "source_sha256": "43b4204a7c8c02824709b6d236b771fcfada68a1509c0335c1705aed5ce7a382",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "La mère présente trois cas : 1°) le sixième lui est attribué si le cujus a laissé un enfant ou un petit-fils (du côté du fils), même s'il est d'un degré inférieur, ou si elle hérite conjointement avec deux sœurs ou plus, que celles-ci soient germaines ou consanguines ou utérines, 2°) le tiers de la totalité du patrimoine lui est attribuéen cas d'absence des cohéritiers ci-dessus cités, 3°) le tiers du reste de la succession lui est attribué après prélèvement de la quote-part de l'un des conjoints et celle-ci dans les deux cas suivants : a) si l'on se trouve en présence d'un mari et des père et mère, b) si l'on se trouve en présence d'une épouse et des père et mère. Si, au lieu du père, il y a un grand-père, la mère a droit au tiers de la succession après prélèvement de la quote-part de l'un des conjoints."
+    },
+    {
+      "article": 108,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-99-110",
+      "source_sha256": "43b4204a7c8c02824709b6d236b771fcfada68a1509c0335c1705aed5ce7a382",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Quand le grand-père est appelé à la succession, quatre cas peuvent se présenter : 1°) s'il a comme cohéritier un fils ou un petit-fils (du côté du fils), même s'il est d'un degré inférieur, il héritera alors du sixième sans pouvoir prétendre à plus, 2°) s'il a comme cohéritiers des bénéficiaires de quotes-parts uniquement, il lui sera attribué avec eux le sixième. Si la succession laisse un reliquat, celui-ci sera recueilli par le grand-père en qualité d'agnat, 3°) s'il n'a comme cohéritiers que des frères du défunt, il aura le choix entre le tiers de la succession ou le partage de cette dernière. Le tiers deviendra obligatoire si le nombre des frères et sœurs est supérieur à deux frères et quatre sœurs Le partage deviendra à son tour obligatoire et le grand-père prendra le rang d'un frère pour partager la succession avec eux suivant la règle de l'octroi à l'héritier du sexe masculin d'une part double de celle attribuée à un héritier du sexe féminin, s'il s'agit d'un seul frère et de trois sœurs, 4°) s'il a comme cohéritiers des frères et des bénéficiaires de quotes-parts, il bénéficiera de la meilleure des trois options suivantes : il prendra, soit la totalité du sixième, soit le tiers du reste de la succession après prélèvement des quotes-parts des réservataires ou participera à un partage avec les frères."
+    },
+    {
+      "article": 110,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-99-110",
+      "source_sha256": "43b4204a7c8c02824709b6d236b771fcfada68a1509c0335c1705aed5ce7a382",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Si l'on se trouve en présence d'un grand-père, d'une seule sœur germaine et d'une sœur consanguine, la sœur germaine fera tenir compte de l'existence de la sœur consanguine et ainsi le grand-père recueillera la moitié de la succession, la deuxième moitié reviendra à la sœur germaine et la sœur consanguine n'aura aucun droit. Si, au contraire, le grand-père et l'unique sœur germaine ont, comme cohéritiers, deux ou trois sœurs consanguines, ces dernières recueilleront le reste de la succession, après qu'il ait été tenu compte du grand-père, de l'ensemble des sœurs dans le partage et que la sœur germaine ait prélevé la moitié de la succession."
+    },
+    {
+      "article": 113,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-113-121",
+      "source_sha256": "b6891c5a222b77932e46731303026e2b68cf6feaf871456af3baeabe49a9555b",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Les héritiers universels sont de trois sortes : 1°) héritiers universels par eux-mêmes, 2°) héritiers universels par suite de la présence d'autres héritiers, 3°) héritiers universels avec autrui."
+    },
+    {
+      "article": 114,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-113-121",
+      "source_sha256": "b6891c5a222b77932e46731303026e2b68cf6feaf871456af3baeabe49a9555b",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "L'héritier universel hérite de la totalité de la succession lorsqu'il est seul, le reste, s'il en existe, va aux légitimaires, faute de quoi, ils seront évincés. Prennent rang d'héritiers agnats (aceb) et succèdent en cette qualité : 1°) le père, 2°) l'ascendant ; même s'il est au plus haut degré, 3°) le fils, 4°) le descendant du fils, même s'il est au plus bas degré, 5°) le frère germain ou consanguin, 6°) le descendant du frère germain, même s'il est au plus bas degré, 7°) l'oncle germain ou consanguin, 8°) le cousin germain, que l'oncle soit au plus haut ou au plus bas degré, comme l'oncle germain du père ou l'ascendant, 9°) le trésor."
+    },
+    {
+      "article": 115,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-113-121",
+      "source_sha256": "b6891c5a222b77932e46731303026e2b68cf6feaf871456af3baeabe49a9555b",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Les héritiers universels par eux-mêmes se divisent en classes rangées par ordre de priorité, ainsi qu'il suit : 1°) les descendants, 2°) le père, 3°) les ascendants des frères, 4°) les descendants des frères, 5°) les oncles germains et leurs descendants qui occupent le même rang mais sont classés par ordre de parenté la plus proche, 6°) le trésor."
+    },
+    {
+      "article": 116,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-113-121",
+      "source_sha256": "b6891c5a222b77932e46731303026e2b68cf6feaf871456af3baeabe49a9555b",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "L'héritier dont le degré [martaba] est le plus proche prend place avant les autres, même s'il est éloigné de ceux dont le degré est inférieur."
+    },
+    {
+      "article": 117,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-113-121",
+      "source_sha256": "b6891c5a222b77932e46731303026e2b68cf6feaf871456af3baeabe49a9555b",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "En cas d'égalité dans la classe et de différence dans le degré, l'héritier du degré le plus rapproché est placé avant celui du degré le plus éloigné."
+    },
+    {
+      "article": 118,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-113-121",
+      "source_sha256": "b6891c5a222b77932e46731303026e2b68cf6feaf871456af3baeabe49a9555b",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "medium",
+      "text": "En cas d'égalité dans la classe et le degré et lorsque la parenté est plus ou moins proche, le lien de parenté le plus fort l'emporte sur celui le plus faible."
+    },
+    {
+      "article": 119,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-113-121",
+      "source_sha256": "b6891c5a222b77932e46731303026e2b68cf6feaf871456af3baeabe49a9555b",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "L'agnate par suite de la présence d'autres héritiers est toute femme qui devient agnate par concours avec un homme : la fille, la petite fille du côté du fils, la s÷ur germaine et la sœur consanguine. La fille est agnatisée par son frère. Elle héritera conjointement avec lui, soit de la totalité de la masse successorale, soit du reliquat, suivant la règle de l'attribution à l'héritier masculin d'une part double de celle revenant aux femmes. La petite-fille du côté du fils est agnatisée par son frère ainsi que par son cousin germain du même degré qu'elle, sans condition. Elle est également agnatisée par le petit-fils d'un degré inférieur au sien à la condition qu'elle n'ait pas vocation aux deux tiers. La sœur germaine ou la sœur consanguine sont agnatisées par leur frère et leur grand-père qui occupera, dans l'héritage, le même rang que celui de leur frère."
+    },
+    {
+      "article": 120,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-113-121",
+      "source_sha256": "b6891c5a222b77932e46731303026e2b68cf6feaf871456af3baeabe49a9555b",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Toute femme, n'ayant pas droit à une part successorale et dont le frère est agnat, ne pourra devenir, en aucun cas, elle-même agnate en raison de la présence de son frère. Il en est ainsi, par exemple, de l'oncle paternel avec la tante paternelle, du cousin paternel avec la cousine paternelle et du neveu du côté du frère avec la nièce du même côté. La succession est dévolue à l'agnat et la sœur n'y aura aucun droit."
+    },
+    {
+      "article": 121,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-113-121",
+      "source_sha256": "b6891c5a222b77932e46731303026e2b68cf6feaf871456af3baeabe49a9555b",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "L'agnate avec autrui et toute femme qui deviendra héritière universelle conjointement avec une autre : a) la sœur germaine avec une ou plusieurs filles ou avec une ou plusieurs petites-filles du côté du fils, b) la sœur consanguine avec une ou plusieurs filles ou avec une ou plusieurs petites-filles du côté du fils. / Codes et lois en texte intégral / Les forums / Index et taux / Partages de successions Copyright J urisite T unisie © 2001- document.write(new Date().getFullYear())"
+    },
     {
       "article": 122,
       "source_slug": "tn-code-statut-personnel-livre-ix-succession",
@@ -187,6 +561,87 @@
       "extraction_basis": "official_html",
       "extraction_confidence": "high",
       "text": "N'héritera pas, conjointement avec la grand-mère maternelle, la grand-mère paternelle, si elle est d'un degré plus éloigné que cette dernière."
+    },
+    {
+      "article": 144,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-144-146",
+      "source_sha256": "965e96334553090a6eafc1ec64a1117de8d80945ab2f29023a820de0b048d305",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Si une femme décède, laissant comme cohéritiers un mari, une mère ou une grand-mère, des frères utérins, un ou plusieurs frères germains, les frères utérins et les frères germains se partageront, entre eux, ce qui restera après le prélèvement de la part du mari, de celle de la mère ou de la grand-mère, à parts égales sans distinction entre les hommes et les femmes et entre le frère germain et le frère utérin, s'il y a avec les frères germains des frères consanguins, ces derniers n'hériteront pas."
+    },
+    {
+      "article": 145,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-144-146",
+      "source_sha256": "965e96334553090a6eafc1ec64a1117de8d80945ab2f29023a820de0b048d305",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Si une femme décède, laissant comme cohéritiers un mari, une mère ou une grand-mère, des frères utérins, un ou plusieurs frères germains et un grand-père, le mari recevra la moitié, la mère ou la grand-mère le sixième, le grand-père le sixième, le frère germain ou le frère consanguin le reliquat de la succession à titre d'agnats et qui correspond au sixième restant. Les frères utérins ne recevront rien."
+    },
+    {
+      "article": 146,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-144-146",
+      "source_sha256": "965e96334553090a6eafc1ec64a1117de8d80945ab2f29023a820de0b048d305",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Si une femme décède, laissant comme cohéritiers un mari, une mère, une s÷ur germaine ou une sœur consanguine et un grand-père, le mari prendra la moitié, la mère le tiers, la sœur la moitié, le grand-père le sixième. Les parts de la sœur et du grand-père seront réunies et partagées suivant la règle attribuant à l'héritier du sexe masculin la double part d'une femme. / Codes et lois en texte intégral / Les forums / Index et taux / Partages de successions Copyright J urisite T unisie © 2001- document.write(new Date().getFullYear())"
+    },
+    {
+      "article": 147,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-147-152",
+      "source_sha256": "e9be440f0dd4c33a5876963bad9bdbfeaac1e68b9ccc161da84b9b49b8a43384",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Il sera prélevé sur la succession, en raison de l'existence, parmi les héritiers, d'un enfant à naître, une part supérieure à celle devant revenir à un seul enfant du sexe féminin, s'il a vocation à la succession ou s'il couvre partiellement les autres héritiers. Mais s'il les couvre totalement, toute la succession devra être réservée et ne sera pas partagée."
+    },
+    {
+      "article": 148,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-147-152",
+      "source_sha256": "e9be440f0dd4c33a5876963bad9bdbfeaac1e68b9ccc161da84b9b49b8a43384",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Si l'enfant à naître peut avoir vocation à la succession avec les autres héritiers ou les couvre partiellement, ceux dont les parts successorales ne peuvent être modifiées rentrent en possession de leurs quotes-parts. Mais, ceux dont les parts seraient susceptibles d'être réduites prendront la part minimum. Quant à ceux qui seront appelés à être évincés totalement de la succession en raison du sexe de l'enfant à naître, ils ne recevront rien."
+    },
+    {
+      "article": 149,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-147-152",
+      "source_sha256": "e9be440f0dd4c33a5876963bad9bdbfeaac1e68b9ccc161da84b9b49b8a43384",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "medium",
+      "text": "En cas de contestation au sujet de la grossesse, il sera fait appel à des spécialistes."
+    },
+    {
+      "article": 150,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-147-152",
+      "source_sha256": "e9be440f0dd4c33a5876963bad9bdbfeaac1e68b9ccc161da84b9b49b8a43384",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "L'enfant conçu des ÷uvres d'un homme décédé n'héritera que s'il naît vivant dans un délai ne dépassant pas un an à partir du jour du décès, ou, en cas de divorce, du point de départ de la retraite légale de la femme. L'enfant conçu n'a vocation héréditaire dans une succession autre que celle de son père que dans les deux cas suivants : a) s'il naît vivant dans un délai maximum de 365 jours à compter de la date de la mort ou de la séparation lorsque la mère est en retraite légale pour cause de décès du mari au cours de la dite retraite légale, b) s'il naît vivant dans un délai maximum de 270 jours à compter de la mort de l'auteur lorsque l'enfant est l'œuvre d'époux encore unis par les liens du mariage lors du décès dudit auteur."
+    },
+    {
+      "article": 151,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-147-152",
+      "source_sha256": "e9be440f0dd4c33a5876963bad9bdbfeaac1e68b9ccc161da84b9b49b8a43384",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "La part revenant à un disparu dans une succession lui est réservée. Il la prendra s'il se révèle en vie. Si un jugement déclarant la disparition est prononcé, cette part fera retour aux ayants droit, héritiers à la date de la mort de l'auteur. Si après le jugement déclaratif de disparition, le disparu se révèle en vie, celui-ci ne recevra que ce qu'il restera de sa part entre les mains des héritiers."
+    },
+    {
+      "article": 152,
+      "source_slug": "tn-code-statut-personnel-livre-ix-art-147-152",
+      "source_sha256": "e9be440f0dd4c33a5876963bad9bdbfeaac1e68b9ccc161da84b9b49b8a43384",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "L'enfant adultérin n'héritera que sa mère et des parents de celle-ci. La mère et ses parents auront, seuls, vocation héréditaire dans la succession dudit enfant. / Codes et lois en texte intégral / Les forums / Index et taux / Partages de successions Copyright J urisite T unisie © 2001- document.write(new Date().getFullYear())"
     }
+  ],
+  "missing_articles_in_local_source_tree": [
+    85,
+    86,
+    87,
+    88,
+    109,
+    111,
+    112
   ]
 }
