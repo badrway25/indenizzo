@@ -1,45 +1,45 @@
 {
-  "base_url": "http://127.0.0.1:48107",
+  "base_url": "http://127.0.0.1:48110",
   "fixtures": [
     {
       "label": "fr_road_accident_unavailable",
-      "wizard_url": "http://127.0.0.1:48107/wizard/fr/road-accident/",
-      "result_url": "http://127.0.0.1:48107/wizard/result/51ba88b9-9d27-4b12-b01b-c667ad748055/",
+      "wizard_url": "http://127.0.0.1:48110/wizard/fr/road-accident/",
+      "result_url": "http://127.0.0.1:48110/wizard/result/350b1ef3-697a-44ef-8a0b-2755cad256e6/",
       "passed": true,
       "leaks": []
     },
     {
       "label": "be_road_accident_unavailable",
-      "wizard_url": "http://127.0.0.1:48107/wizard/be/road-accident/",
-      "result_url": "http://127.0.0.1:48107/wizard/result/dc2856ee-082f-468c-b796-8bb26333480f/",
+      "wizard_url": "http://127.0.0.1:48110/wizard/be/road-accident/",
+      "result_url": "http://127.0.0.1:48110/wizard/result/3a9acdd5-9c19-42d5-af8e-2a3601a2a7b5/",
       "passed": true,
       "leaks": []
     },
     {
       "label": "ma_inheritance_unavailable",
-      "wizard_url": "http://127.0.0.1:48107/wizard/ma/inheritance/",
-      "result_url": "http://127.0.0.1:48107/wizard/result/ec928384-117b-4a55-bcb5-45bb8608967a/",
+      "wizard_url": "http://127.0.0.1:48110/wizard/ma/inheritance/",
+      "result_url": "http://127.0.0.1:48110/wizard/ma/inheritance/",
       "passed": true,
       "leaks": []
     },
     {
       "label": "tn_inheritance_unavailable",
-      "wizard_url": "http://127.0.0.1:48107/wizard/tn/inheritance/",
-      "result_url": "http://127.0.0.1:48107/wizard/result/29c641e1-b519-468b-bd74-1da8d453a948/",
+      "wizard_url": "http://127.0.0.1:48110/wizard/tn/inheritance/",
+      "result_url": "http://127.0.0.1:48110/wizard/tn/inheritance/",
       "passed": true,
       "leaks": []
     },
     {
       "label": "fr_road_accident_unavailable_FR",
-      "wizard_url": "http://127.0.0.1:48107/fr/wizard/fr/road-accident/",
-      "result_url": "http://127.0.0.1:48107/fr/wizard/result/04da36fc-52e8-481b-b061-bf6225275ddd/",
+      "wizard_url": "http://127.0.0.1:48110/fr/wizard/fr/road-accident/",
+      "result_url": "http://127.0.0.1:48110/fr/wizard/result/b1393063-e6bb-4219-8345-1eadf156b131/",
       "passed": true,
       "leaks": []
     },
     {
       "label": "ma_inheritance_unavailable_AR",
-      "wizard_url": "http://127.0.0.1:48107/ar/wizard/ma/inheritance/",
-      "result_url": "http://127.0.0.1:48107/ar/wizard/result/cef3f313-b5ba-42e5-8d56-7bbd764031aa/",
+      "wizard_url": "http://127.0.0.1:48110/ar/wizard/ma/inheritance/",
+      "result_url": "http://127.0.0.1:48110/ar/wizard/ma/inheritance/",
       "passed": true,
       "leaks": []
     }

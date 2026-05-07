@@ -6,8 +6,8 @@ Templates scanned: every `*.html` under `templates/`.
 CSS file: `static\css\site.css` (29433 bytes).
 
 ## Summary
-- Distinct utility classes used: 322
-- Covered by `site.css`: 318
+- Distinct utility classes used: 323
+- Covered by `site.css`: 319
 - Missing (informational): 0
   - **CRITICAL** (layout/typography primitives): 0
   - other (utility / hover / arbitrary): 0

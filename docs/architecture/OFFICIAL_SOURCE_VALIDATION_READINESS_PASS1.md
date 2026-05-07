@@ -2,7 +2,7 @@
 
 Iter: F-legal-sources-official-validation-pass1.
 
-- generated: `2026-05-06T13:24:00.623512+00:00`
+- generated: `2026-05-06T16:28:04.286749+00:00`
 - LegalSource rows audited: 25
 - bucket counts:
   - `OFFICIAL_BUT_NOT_CALCULATION_READY`: 6
@@ -13,15 +13,15 @@ Iter: F-legal-sources-official-validation-pass1.
 
 | Country | Slug | Status | Bucket | sha256 match | marker | reasons |
 | --- | --- | :-: | --- | :-: | :-: | --- |
-| `BE` | `be-loi-1989-11-21-rc-auto` | `needs_review` | `OFFICIAL_BUT_NOT_CALCULATION_READY` | ✓ | — | — |
+| `BE` | `be-loi-1989-11-21-rc-auto` | `approved` | `OFFICIAL_BUT_NOT_CALCULATION_READY` | ✓ | — | — |
 | `BE` | `be-tableau-indicatif-2020` | `needs_review` | `NEEDS_REVIEW_NON_OFFICIAL` | — | — | intrinsically_non_official |
 | `BE` | `be-tableau-indicatif-2024` | `needs_review` | `NEEDS_REVIEW_NON_OFFICIAL` | — | — | source_kind=court_indicative_table, intrinsically_non_official |
 | `BE` | `be-tables-schryvers-2026-page` | `needs_review` | `NEEDS_REVIEW_NON_OFFICIAL` | — | — | intrinsically_non_official |
 | `BE` | `be-tables-schryvers-tableurs` | `needs_review` | `NEEDS_REVIEW_NON_OFFICIAL` | — | — | intrinsically_non_official |
-| `EU` | `eu-regulation-650-2012-successions` | `needs_review` | `OFFICIAL_BUT_NOT_CALCULATION_READY` | ✓ | — | — |
+| `EU` | `eu-regulation-650-2012-successions` | `approved` | `OFFICIAL_BUT_NOT_CALCULATION_READY` | ✓ | — | — |
 | `FR` | `fr-bareme-capitalisation-gazette-palais-2022` | `needs_review` | `NEEDS_REVIEW_NON_OFFICIAL` | — | — | intrinsically_non_official |
 | `FR` | `fr-bareme-capitalisation-gazette-palais-2025-page` | `needs_review` | `NEEDS_REVIEW_NON_OFFICIAL` | — | — | intrinsically_non_official |
-| `FR` | `fr-loi-badinter-1985` | `needs_review` | `OFFICIAL_BUT_NOT_CALCULATION_READY` | ✓ | ✓ | — |
+| `FR` | `fr-loi-badinter-1985` | `approved` | `OFFICIAL_BUT_NOT_CALCULATION_READY` | ✓ | ✓ | — |
 | `FR` | `fr-nomenclature-dintilhac-2005` | `needs_review` | `NEEDS_REVIEW_NON_OFFICIAL` | — | — | intrinsically_non_official |
 | `FR` | `fr-referentiel-mornet-2024` | `needs_review` | `NEEDS_REVIEW_NON_OFFICIAL` | — | — | source_kind=private_bareme, intrinsically_non_official |
 | `IT` | `it-dlgs-209-2005-cap-art-138-139` | `needs_review` | `NEEDS_REVIEW_NON_OFFICIAL` | — | — | no_official_sync_or_manual_attach_block |
@@ -32,11 +32,11 @@ Iter: F-legal-sources-official-validation-pass1.
 | `MA` | `eu-regulation-650-2012-successions-fr-ma` | `needs_review` | `NEEDS_REVIEW_NON_OFFICIAL` | — | — | no_official_sync_or_manual_attach_block |
 | `MA` | `ma-code-droits-reels-loi-39-08` | `needs_review` | `NEEDS_REVIEW_NON_OFFICIAL` | — | — | no_official_sync_or_manual_attach_block |
 | `MA` | `ma-code-droits-reels-traduction-aute` | `needs_review` | `NEEDS_REVIEW_NON_OFFICIAL` | — | — | no_official_sync_or_manual_attach_block |
-| `MA` | `ma-code-famille-moudawana-fr-pdf` | `needs_review` | `OFFICIAL_BUT_NOT_CALCULATION_READY` | ✓ | — | — |
+| `MA` | `ma-code-famille-moudawana-fr-pdf` | `approved` | `OFFICIAL_BUT_NOT_CALCULATION_READY` | ✓ | — | — |
 | `TN` | `eu-regulation-650-2012-successions-fr-tn` | `needs_review` | `NEEDS_REVIEW_NON_OFFICIAL` | — | — | no_official_sync_or_manual_attach_block |
-| `TN` | `tn-code-dip-loi-98-97` | `needs_review` | `OFFICIAL_BUT_NOT_CALCULATION_READY` | ✓ | — | — |
+| `TN` | `tn-code-dip-loi-98-97` | `approved` | `OFFICIAL_BUT_NOT_CALCULATION_READY` | ✓ | — | — |
 | `TN` | `tn-code-statut-personnel-compiled` | `needs_review` | `NEEDS_REVIEW_NON_OFFICIAL` | — | — | no_official_sync_or_manual_attach_block |
-| `TN` | `tn-code-statut-personnel-livre-ix-succession` | `needs_review` | `OFFICIAL_BUT_NOT_CALCULATION_READY` | ✓ | — | — |
+| `TN` | `tn-code-statut-personnel-livre-ix-succession` | `approved` | `OFFICIAL_BUT_NOT_CALCULATION_READY` | ✓ | — | — |
 | `TN` | `tn-jort-code-statut-personnel-1956` | `needs_review` | `NEEDS_REVIEW_NON_OFFICIAL` | — | — | no_official_sync_or_manual_attach_block |
 
 ## Draft datasets blocked

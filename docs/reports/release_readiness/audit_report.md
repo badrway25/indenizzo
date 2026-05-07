@@ -93,7 +93,7 @@
 
 ## Italia 35/10/0 baseline
 
-- result URL: `http://127.0.0.1:48107/wizard/result/f2fdd850-8bbd-4ef5-8c83-79c4612d7420/`
+- result URL: `http://127.0.0.1:48107/wizard/result/e5bea52d-ee6a-47af-a866-ed8973b40364/`
 - amounts present (`26268, 27353, 28439` EUR): `True`
 - public status calculated: `True`
 - PDF status: `200`
@@ -103,10 +103,10 @@
 
 | Label | Result URL | Status | Leaks | Has amounts |
 | --- | --- | :-: | --- | :-: |
-| `fr_road_accident` | `http://127.0.0.1:48107/wizard/result/3fb25c1d-1b6b-41ec-8c40-8010134a98be/` | OK | — | — |
-| `be_road_accident` | `http://127.0.0.1:48107/wizard/result/df18c428-c671-4b27-8e28-c2d898580e51/` | OK | — | — |
-| `ma_inheritance` | `http://127.0.0.1:48107/wizard/result/8b41f8a0-b6f2-45a3-9e94-da4012571d19/` | OK | — | — |
-| `tn_inheritance` | `http://127.0.0.1:48107/wizard/result/015b683f-ee26-49c1-aadf-b00feda3779c/` | OK | — | — |
+| `fr_road_accident` | `http://127.0.0.1:48107/wizard/result/5cbc91e9-a07e-488f-9eea-a6018ae1e491/` | OK | — | — |
+| `be_road_accident` | `http://127.0.0.1:48107/wizard/result/c1d8c063-28ed-431f-9f99-518bd5b858bb/` | OK | — | — |
+| `ma_inheritance` | `http://127.0.0.1:48107/wizard/result/0a2d2fff-def0-4a83-bab5-e8aee1d3b584/` | OK | — | — |
+| `tn_inheritance` | `http://127.0.0.1:48107/wizard/result/345e322b-c889-46ea-9646-b9b12f801e40/` | OK | — | — |
 
 ## Legal data invariants
 

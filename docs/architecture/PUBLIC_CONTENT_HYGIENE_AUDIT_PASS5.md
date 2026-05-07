@@ -1,7 +1,7 @@
 # Public content hygiene audit — pass 5
 
 Iter: F-product-public-site-release-polish-pass5-premium-content-cleanup.
-- base URL: `http://127.0.0.1:48107`
+- base URL: `http://127.0.0.1:48110`
 - pages probed: 72
 - pages with issues: 0
 - verdict: **OK**
