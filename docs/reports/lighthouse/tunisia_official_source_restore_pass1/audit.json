@@ -1,0 +1,38 @@
+{
+  "tool": "playwright_fallback",
+  "base_url": "http://127.0.0.1:48111",
+  "urls": {
+    "/": {
+      "failures": [],
+      "passed": true
+    },
+    "/countries/": {
+      "failures": [],
+      "passed": true
+    },
+    "/countries/italy/": {
+      "failures": [],
+      "passed": true
+    },
+    "/wizard/": {
+      "failures": [],
+      "passed": true
+    },
+    "/wizard/it/road-accident/": {
+      "failures": [],
+      "passed": true
+    },
+    "/wizard/fr/road-accident/": {
+      "failures": [],
+      "passed": true
+    },
+    "/contact/": {
+      "failures": [],
+      "passed": true
+    },
+    "/methodology/": {
+      "failures": [],
+      "passed": true
+    }
+  }
+}
