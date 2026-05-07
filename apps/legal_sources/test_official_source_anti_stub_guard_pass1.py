@@ -309,17 +309,28 @@ def test_tn_public_funnel_still_unavailable_after_pass1(db):
 
 
 # ---------------------------------------------------------------------------
-# 6 — no Tunisia mapping draft was created by this iter
+# 6 — if a TN mapping exists, it must stay activation_allowed=false until
+#     a future promotion iter explicitly lifts every blocker
 # ---------------------------------------------------------------------------
 
 
-def test_no_tunisia_inheritance_mapping_draft_created_in_pass1():
-    """F-tunisia-official-source-real-files-restore-pass1 is purely a
-    source-restoration iter. The Tunisia mapping draft is out of
-    scope and must not exist on disk.
+def test_tn_inheritance_mapping_stays_activation_disabled_if_present():
+    """The restore iter (F-tunisia-official-source-real-files-restore-pass1)
+    deliberately did not create the mapping. A later iter
+    (F-tunisia-csp-livre-ix-mapping-draft-pass1) may create it as a
+    DRAFT — but it MUST stay ``activation_allowed=false`` until a
+    Studio-signed promotion iter lifts every per-rule blocker.
     """
     p = REPO_ROOT / "legal_data" / "mappings" / "tunisia_inheritance_mapping_draft.json"
-    assert not p.exists(), (
-        "tunisia_inheritance_mapping_draft.json must not be created by "
-        "this iter; the brief explicitly forbids it"
+    if not p.exists():
+        return  # mapping not yet drafted — fine
+    payload = json.loads(p.read_text(encoding="utf-8"))
+    assert payload.get("activation_allowed") is False, (
+        "tunisia_inheritance_mapping_draft.json exists but "
+        "activation_allowed != false — pass1 contract is broken; the "
+        "engine guard relies on this flag staying false."
+    )
+    assert payload.get("status") == "draft", (
+        "tunisia_inheritance_mapping_draft.json must stay status='draft' "
+        "until a Studio-signed promotion iter."
     )

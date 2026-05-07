@@ -1,0 +1,192 @@
+{
+  "schema_version": "1.0",
+  "iter": "F-tunisia-csp-livre-ix-mapping-draft-pass1",
+  "country": "TN",
+  "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+  "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
+  "size_bytes": 36183,
+  "extraction_basis": "official_html",
+  "extractor": "scripts/legal_data/extract_tunisia_csp_inheritance_articles.py",
+  "extracted_at": "2026-05-07T08:26:15.571900+00:00",
+  "page_scope": "Livre IX — articles 122–143 (Hajb + Fardh fragment)",
+  "scope_note": "The official jurisitetunisie.com page for the Code du statut personnel — Livre IX exposes only articles 122–143 of the Successions book (Hajb / éviction + the first share rules). Articles 85–121 and 144–152 are on adjacent pages that have not yet been fetched into the local source tree. The mapping draft restricts itself to what is anchored in this single validated file.",
+  "articles_count": 22,
+  "articles": [
+    {
+      "article": 122,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "L'éviction en matière successorale \"Hajb\" consiste à évincer totalement ou partiellement un héritier de l'héritage. Elle est de deux espèces : 1°) éviction par réduction qui consiste à réduire la part d'héritage en la ramenant à une part inférieure, 2°) éviction totale de l'héritage"
+    },
+    {
+      "article": 123,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "L'éviction totale ne pourra être invoquée contre six rangs d'héritiers : le père, la mère, la fille, le fils, le mari et l'épouse. L'éviction par réduction pourra atteindre les deux conjoints, les père et mère, le grand-père, la petite-fille du côté du fils, la s÷ur germaine, la sœur consanguine."
+    },
+    {
+      "article": 124,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Ceux qui peuvent prétendre à l'éviction par réduction sont au nombre de six : le fils, le petit-fils, la fille, la petite-fille du côté du fils, les frères sans distinction et la sœur germaine."
+    },
+    {
+      "article": 125,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Le fils et le petit-fils couvrent, chacun d'eux : le mari, en réduisant sa part dans l'héritage qui passera de la moitié au quart, l'épouse, en ramenant sa part du quart au huitième, la mère dont la part passera du tiers au sixième, et enfin le père ou le grand-père qui, perdant leur part d'agnat, n'obtiendront ainsi que le sixième de l'héritage."
+    },
+    {
+      "article": 126,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "La fille unique couvre la petite-fille du côté du fils en ramenant la part de cette dernière de la moitié au sixième. S'il s'agit de deux petites filles, leur part sera ramenée des deux tiers au sixième. Il en est de même pour la sœur germaine ou la sœur consanguine, dont la part sera dune agnate au lieu de la moitié. Également pour ce qui concerne les deux s÷urs germaines ou consanguines qui prendront rang d'agnates au lieu des deux tiers. La part du mari sera également ramenée de la moitié au quart. La part de l'épouse sera ramenée du quart au huitième. La part de la mère sera ramenée du tiers au sixième, le père et le grand-père, perdant leur qualité d'agnat, bénéficieront du sixième et recueilleront au titre d'agnats le reste de la succession, s'il existe."
+    },
+    {
+      "article": 127,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "La petite-fille du côté du fils couvre les petites-filles du côté du fils d'un degré inférieur en les agnatisant relativement à la succession d'un frère ou d'un cousin paternel du même degré qu'elle, de sorte que, s'il s'agit d'une seule petite-fille, la part de celle-ci passera de la moitié au sixième. Mais s'il s'agit de deux petites-filles, la part de celles-ci sera ramenée des deux tiers au sixième. Elle couvrira également la sœur germaine ou consanguine en ramenant sa part de la moitié à une part d'agnate. Elle couvrira également les deux sœurs germaines ou consanguines en les faisant passer au rang d'agnates alors qu'elles auraient pu prétendre aux deux tiers. Il en est de même pour le mari dont la part passera de la moitié au quart, de l'épouse dont la part sera ramenée du quart au huitième, de la mère dont la part passera du tiers au sixième, et enfin du père et du grand-père dont la part agnatique passera au sixième et recueilleront au titre d'agnats le reste de la succession, s'il y en a. Les frères et sœurs, quelles que soient leurs prétentions, qu'ils soient héritiers ou couverts par autrui, couvrent, à leur tour, la mère en ramenant sa part du tiers au sixième."
+    },
+    {
+      "article": 128,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "La sœur germaine couvre la sœur consanguine en ramenant la part de celle-ci de la moitié au sixième, à moins qu'elle n'ait, comme héritier, un frère consanguin, par lequel elle serait agnatisée. Il en est de même pour deux sœurs consanguines dont la part sera ramenée des deux tiers au sixième, à moins qu'elles n'aient, comme cohéritier, un frère consanguin."
+    },
+    {
+      "article": 129,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Les personnes couvrant en totalité d'autres héritiers sont au nombre de seize : le fils, les descendants du sexe masculin de celui-ci, même s'ils sont d'un degré inférieur, la fille, la petite-fille du côté du fils, le frère germain, le frère consanguin, le neveu germain, le neveu consanguin, l'oncle paternel germain, le cousin paternel germain, la fille ou la petite-fille du côté du fils avec la sœur germaine, les deux sœurs germaines, le père ; le grand-père, la mère et la grand-mère maternelle."
+    },
+    {
+      "article": 130,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Ne pourront hériter avec le fils ou les descendants du fils, même s'ils sont d'un degré inférieur, ni les enfants du fils des deux sexes, ni les frères qu'ils soient germains ou consanguins ou utérins, ni les oncles paternels qu'ils soient germains ou consanguins."
+    },
+    {
+      "article": 131,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Ne pourront avoir vocation à l'héritage en même temps que la fille ou la petite-fille du côté du fils, le ou les frères ou sœurs utérins. N'hériteront pas également avec les deux filles, le frère utérin, ni la ou les petites-filles du côté du fils, si elles ne sont agnatisées par un frère ou un cousin paternel du même degré qu'elles pour pouvoir prétendre au reste de la succession à titre d'agnates, et suivant la règle attribuant à l'héritier du sexe masculin le double de la part d'une femme. Il en est de même pour les deux petites-filles du côté du fils, par rapport aux descendants du sexe féminin d'un degré inférieur au leur et provenant du côté du petit-fils."
+    },
+    {
+      "article": 132,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Ne pourront hériter, en même temps que le frère germain, le ou les frères consanguins, ni l'oncle paternel qu'il soit germain ou consanguin. Quant au frère utérin, il ne pourra en aucun cas être couvert par le frère germain."
+    },
+    {
+      "article": 133,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Ne pourront hériter conjointement avec le frère consanguin, ni l'oncle paternel, qu'il soit germain ou consanguin, ni les enfants du frère, même si ce dernier est germain."
+    },
+    {
+      "article": 134,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Ne pourront hériter, conjointement avec le fils du frère germain, ni l'oncle paternel, même s'il est germain, ni l'enfant du frère consanguin, ni ceux qui lui sont d'un degré inférieur tels que les descendants des enfants du frère."
+    },
+    {
+      "article": 135,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Ne pourront hériter, conjointement avec le fils du frère consanguin, ni l'oncle paternel, même s'il est germain, ni ceux qui lui sont d'un degré inférieur tels que les descendants du frère, même si ce dernier est germain."
+    },
+    {
+      "article": 136,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Ne pourront hériter, conjointement avec l'oncle paternel germain, ni l'oncle paternel consanguin, ni ceux qui lui sont d'un degré inférieur tels que les descendants de l'oncle, même si ce dernier est germain ou consanguin."
+    },
+    {
+      "article": 137,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Ne pourront hériter, conjointement avec le cousin paternel germain, ni le cousin paternel consanguin, ni ceux qui lui sont d'un degré inférieur tels que les descendants de l'oncle germain ou consanguin."
+    },
+    {
+      "article": 138,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "Ne pourront hériter, conjointement avec la fille ou la sœur germaine ou la petite-fille du côté du fils et la sœur germaine, le ou les frères consanguins."
+    },
+    {
+      "article": 139,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "N'héritera pas, conjointement avec les deux sœurs germaines, la sœur consanguine, si elle n'est pas agnatisée par un frère."
+    },
+    {
+      "article": 140,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "N'hériteront pas, conjointement avec le père, ni le grand-père, ni la grand-mère paternelle, ni l'oncle paternel, ni le frère."
+    },
+    {
+      "article": 141,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "N'hériteront pas, conjointement avec le grand-père, ni les aïeux d'un degré supérieur à celui de ce dernier, ni les frères utérins, ni l'oncle paternel, ni les neveux du côté du frère."
+    },
+    {
+      "article": 142,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "N'hériteront pas, conjointement avec la mère, ni la grand-mère maternelle, ni la grand-mère paternelle."
+    },
+    {
+      "article": 143,
+      "source_slug": "tn-code-statut-personnel-livre-ix-succession",
+      "source_sha256": "ab8078968ccfa07eaefc34bb38a1ec49071d000dfe0ffd85b1410d343a348ffd",
+      "extraction_basis": "official_html",
+      "extraction_confidence": "high",
+      "text": "N'héritera pas, conjointement avec la grand-mère maternelle, la grand-mère paternelle, si elle est d'un degré plus éloigné que cette dernière."
+    }
+  ]
+}
