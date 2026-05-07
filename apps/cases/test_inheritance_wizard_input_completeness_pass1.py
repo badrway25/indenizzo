@@ -75,6 +75,10 @@ VALID_PAYLOAD = {
     "deceased_country_of_last_residence": "MA",
     "nationality": "MA",
     "spouse_present": "on",
+    # F-inheritance-wizard-spouse-gender-pass2: gender is required
+    # whenever a surviving spouse is declared, otherwise the form
+    # rejects the submission.
+    "surviving_spouse_gender": "wife",
     "sons_count": "1",
     "daughters_count": "1",
     "consent_simulation": "on",
@@ -150,6 +154,7 @@ def test_ma_post_persists_heirs_structure(morocco_setup):
     heirs = sim.input_data["heirs"]
     assert heirs == {
         "spouse": 1,
+        "surviving_spouse_gender": "wife",
         "sons": 1,
         "daughters": 1,
         "father": 1,
