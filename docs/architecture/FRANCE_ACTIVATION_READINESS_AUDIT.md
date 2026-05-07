@@ -2,7 +2,7 @@
 
 **Iter:** `F-france-activation-readiness-audit`.
 
-**Generated:** `2026-05-03T17:40:52+00:00`.
+**Generated:** `2026-05-06T19:10:26+00:00`.
 
 Read-only audit of the FR road-accident pipeline. The script that
 produced this file (`scripts/legal_data/audit_france_activation_readiness.py`)
@@ -35,9 +35,9 @@ The current state is the conservative one:
 
 | Check | Status | Details |
 |---|---|---|
-| Badinter — official legal basis | **PASS** | status=needs_review \| manual_attach_block=present \| official_source_validation_block=present \| manual_attach.sha256=6165313bad9d \| manual_attach.marker_check_passed=True \| official_source_validation.structural_markers=11/11 |
-| fr-referentiel-mornet-2024 — quantification source | **BLOCKED** | status=needs_review \| reliability=high \| 1 attachment(s) \| legal_reviewer=unset |
-| fr-bareme-capitalisation-gazette-palais-2022 — quantification source | **BLOCKED** | status=needs_review \| reliability=high \| 1 attachment(s) \| legal_reviewer=unset |
+| Badinter — official legal basis | **PASS** | status=needs_review \| manual_attach_block=present \| official_source_validation_block=present \| manual_attach.sha256=000000000000 \| manual_attach.marker_check_passed=True \| official_source_validation.structural_markers=11/11 |
+| fr-referentiel-mornet-2024 — quantification source | **BLOCKED** | status=needs_review \| reliability=high \| no LegalSourceAttachment \| legal_reviewer=unset |
+| fr-bareme-capitalisation-gazette-palais-2022 — quantification source | **BLOCKED** | status=needs_review \| reliability=high \| no LegalSourceAttachment \| legal_reviewer=unset |
 
 ## 4. Candidate datasets
 
