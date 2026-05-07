@@ -52,6 +52,7 @@ COMPENSATION_ROW_MATCH_MISSING = "compensation_row_match"
 COMPENSATION_ROW_DISAMBIGUATION = "compensation_row_disambiguation"
 COMPENSATION_RANGE_INCONSISTENT = "compensation_range_inconsistent"
 INHERITANCE_SHARE_SPEC_INVALID = "shares_spec_invalid"
+INHERITANCE_RULE_ACTIVATION_BLOCKED = "inheritance_rule_activation_blocked"
 APPLICABLE_LAW_REVIEW_REQUIRED = "applicable_law_review_required"
 APPLICABLE_LAW_CONTEXT_MISSING = "applicable_law_context_missing"
 INPUT_FIELDS_MISSING = "input_fields_missing"
@@ -219,6 +220,15 @@ _REGISTRY: dict[str, _DiagnosticSpec] = {
             "The approved formula declares an invalid share specification. "
             "The engine refuses to produce an estimate; a Studio reviewer "
             "must correct the formula before any allocation can be shown."
+        ),
+    ),
+    INHERITANCE_RULE_ACTIVATION_BLOCKED: _DiagnosticSpec(
+        code=INHERITANCE_RULE_ACTIVATION_BLOCKED,
+        message=_(
+            "The selected inheritance rule still carries one or more "
+            "activation blockers declared in its mapping payload. The "
+            "engine refuses to fire the rule until every blocker is "
+            "lifted by a Studio reviewer."
         ),
     ),
     APPLICABLE_LAW_REVIEW_REQUIRED: _DiagnosticSpec(

@@ -163,6 +163,27 @@ class MoroccoInternationalInheritanceCalculator(_MoroccoPlaceholderCalculator):
                 missing_documents=[_diag.FORMULA_AMOUNT_RULE_NOT_INHERITANCE_SHARE],
             )
 
+        # --- gate 6.5: activation_blockers guard.
+        # F-morocco-engine-activation-blockers-guard-pass1: the mapping
+        # JSON tags every rule with an ``activation_blockers`` list of
+        # preconditions that must be lifted before the rule may fire
+        # publicly (e.g. doctrinal hajb-noqsan modelling, sibling
+        # sub-typing, gender disambiguation). When a Studio reviewer
+        # promotes a rule to ``CalculationFormula.parameters`` they
+        # carry over the blocker list. The engine refuses to compute
+        # whenever the list is non-empty — this is the enforcer for
+        # the mapping's contract.
+        blockers = _extract_activation_blockers(params)
+        if blockers:
+            return self._build_result(
+                status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
+                sources=source_refs,
+                warnings=[
+                    _diag.diagnostic_to_internal_warning(_diag.INHERITANCE_RULE_ACTIVATION_BLOCKED)
+                ],
+                missing_documents=[_diag.INHERITANCE_RULE_ACTIVATION_BLOCKED],
+            )
+
         # --- gate 7: input minimi richiesti dalla formula
         required = params.get("requires") or []
         missing_inputs = [field for field in required if not _has_value(input_data, field)]
@@ -335,6 +356,28 @@ class MoroccoInternationalInheritanceCalculator(_MoroccoPlaceholderCalculator):
 # ---------------------------------------------------------------------------
 # helpers di modulo
 # ---------------------------------------------------------------------------
+
+
+def _extract_activation_blockers(params: dict[str, Any]) -> list[str]:
+    """Return the rule's ``activation_blockers`` list, or ``[]`` if none.
+
+    Reads the canonical ``params['activation_blockers']`` slot first.
+    For forward-compatibility with future formulas that nest the rule
+    payload under ``rule_metadata`` or ``selected_rule``, also looks at
+    those siblings. Any non-list value is treated as empty (the engine
+    will not infer a blocker from a malformed payload).
+    """
+    candidates: list[Any] = [params.get("activation_blockers")]
+    rule_meta = params.get("rule_metadata")
+    if isinstance(rule_meta, dict):
+        candidates.append(rule_meta.get("activation_blockers"))
+    selected_rule = params.get("selected_rule")
+    if isinstance(selected_rule, dict):
+        candidates.append(selected_rule.get("activation_blockers"))
+    for candidate in candidates:
+        if isinstance(candidate, list) and candidate:
+            return [str(b) for b in candidate if str(b).strip()]
+    return []
 
 
 def _has_value(input_data: dict[str, Any], field: str) -> bool:
