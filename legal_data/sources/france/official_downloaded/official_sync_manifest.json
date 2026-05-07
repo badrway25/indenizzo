@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "iter": "F-product-official-source-automation-and-full-site-functional-upgrade",
+  "country": "FR",
+  "generated_at": "2026-05-06T16:43:37.516266+00:00",
+  "started_at": "2026-05-06T16:43:37.516266+00:00",
+  "dry_run": false,
+  "metadata_only": true,
+  "slug_filter": "fr-loi-badinter-1985",
+  "results": [
+    {
+      "slug": "fr-loi-badinter-1985",
+      "country": "FR",
+      "jurisdiction": "FR-NATIONAL",
+      "case_type": "road_accident_bodily_injury",
+      "source_kind": "official_law",
+      "authority": "legifrance",
+      "can_auto_ingest": false,
+      "human_exception_review_required": true,
+      "ingest_mode": "manual_attach",
+      "official_url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000693454",
+      "final_url": "",
+      "http_status": null,
+      "sha256": "",
+      "size_bytes": 0,
+      "local_path": "",
+      "synced_at": "2026-05-06T16:43:37.516266+00:00",
+      "legal_source_id": 1,
+      "legal_source_status_before": "draft",
+      "legal_source_status_after": "needs_review",
+      "note_appended": true,
+      "error": "",
+      "skipped_reason": "human_exception_review or manual_attach",
+      "classification": "human_exception_only",
+      "fetched_at": "",
+      "fallback_attempts": [],
+      "crosscheck_only": false,
+      "no_reimport": false,
+      "no_calculator_activation_change": false,
+      "marker_check_passed": null
+    }
+  ]
+}

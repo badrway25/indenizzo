@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "iter": "F-product-official-source-automation-and-full-site-functional-upgrade",
+  "country": "EU",
+  "generated_at": "2026-05-06T16:43:38.049733+00:00",
+  "started_at": "2026-05-06T16:43:38.041465+00:00",
+  "dry_run": false,
+  "metadata_only": false,
+  "slug_filter": "eu-regulation-650-2012-successions",
+  "results": [
+    {
+      "slug": "eu-regulation-650-2012-successions",
+      "country": "EU",
+      "jurisdiction": "EU-INTL",
+      "case_type": "international_inheritance",
+      "source_kind": "eu_regulation",
+      "authority": "eurlex",
+      "can_auto_ingest": true,
+      "human_exception_review_required": false,
+      "ingest_mode": "fetch",
+      "official_url": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32012R0650",
+      "final_url": "",
+      "http_status": null,
+      "sha256": "",
+      "size_bytes": 0,
+      "local_path": "",
+      "synced_at": "2026-05-06T16:43:38.041465+00:00",
+      "legal_source_id": 1,
+      "legal_source_status_before": "draft",
+      "legal_source_status_after": "needs_review",
+      "note_appended": true,
+      "error": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32012R0650 -> fetch_failed: ConnectionError: simulated network error for tests | https://eur-lex.europa.eu/legal-content/FR/TXT/XML/?uri=CELEX:32012R0650 -> fetch_failed: ConnectionError: simulated network error for tests | https://eur-lex.europa.eu/legal-content/FR/TXT/PDF/?uri=CELEX:32012R0650 -> fetch_failed: ConnectionError: simulated network error for tests",
+      "skipped_reason": "",
+      "classification": "fetch_failed",
+      "fetched_at": "",
+      "fallback_attempts": [],
+      "crosscheck_only": false,
+      "no_reimport": false,
+      "no_calculator_activation_change": false,
+      "marker_check_passed": null
+    }
+  ]
+}

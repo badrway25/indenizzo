@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "iter": "F-product-official-source-automation-and-full-site-functional-upgrade",
+  "country": "IT",
+  "generated_at": "2026-05-06T16:43:38.141220+00:00",
+  "started_at": "2026-05-06T16:43:38.133030+00:00",
+  "dry_run": false,
+  "metadata_only": false,
+  "slug_filter": "it-dpr-12-2025-tun-danno-biologico",
+  "results": [
+    {
+      "slug": "it-dpr-12-2025-tun-danno-biologico",
+      "country": "IT",
+      "jurisdiction": "IT-NATIONAL",
+      "case_type": "road_accident_bodily_injury",
+      "source_kind": "official_decree",
+      "authority": "official_gazette",
+      "can_auto_ingest": true,
+      "human_exception_review_required": false,
+      "ingest_mode": "verify_existing",
+      "official_url": "https://www.gazzettaufficiale.it/eli/id/2025/02/11/25G00021/sg",
+      "final_url": "https://www.gazzettaufficiale.it/eli/gu/2025/02/11/34/sg/pdf",
+      "http_status": 200,
+      "sha256": "12f3f81d0a1c687eca8bdbb931475861c668b818eefb9de62bec34298c33b8ea",
+      "size_bytes": 533,
+      "local_path": "legal_data\\sources\\italy\\official_downloaded\\it-dpr-12-2025-tun-danno-biologico.pdf",
+      "synced_at": "2026-05-06T16:43:38.133030+00:00",
+      "legal_source_id": 2,
+      "legal_source_status_before": "draft",
+      "legal_source_status_after": "needs_review",
+      "note_appended": true,
+      "error": "",
+      "skipped_reason": "",
+      "classification": "crosscheck_success",
+      "fetched_at": "2026-05-06T16:43:38.133030+00:00",
+      "fallback_attempts": [],
+      "crosscheck_only": true,
+      "no_reimport": true,
+      "no_calculator_activation_change": true,
+      "marker_check_passed": true
+    }
+  ]
+}
