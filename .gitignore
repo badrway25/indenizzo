@@ -74,3 +74,16 @@ legal_data/exports/*.json
 # Local runtime/dev artifacts
 backups/
 .playwright-mcp/
+
+# Pexels image cache — runtime download (vedi
+# docs/architecture/PEXELS_IMAGE_INTEGRATION.md). NESSUN file Pexels
+# va committato: per licenza dobbiamo scaricarli su istanze "online"
+# e non distribuirli via repo. Il manifest pexels_manifest.json è
+# generato dal comando `manage.py fetch_pexels_site_images` e resta
+# locale. `media/` è già gitignored sopra, queste righe sono uno
+# guard esplicito per chiunque sposti la cache fuori da `media/`.
+**/pexels_manifest.json
+**/pexels/*.jpg
+**/pexels/*.jpeg
+**/pexels/*.png
+**/pexels/*.webp
