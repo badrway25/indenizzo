@@ -66,10 +66,19 @@ def test_country_landings_have_single_h1(path):
 
 
 def test_italy_landing_has_wizard_cta():
+    """Pass-6 centralised the country status: the IT landing now reads
+    the badge from ``apps/core/public_status.py`` — "Indicative
+    calculation available" (or its IT translation). The legacy
+    "Calculator available" wording is kept as a fallback."""
+
     client = Client()
     body = client.get("/countries/italy/").content.decode("utf-8")
     assert "/wizard/it/road-accident/" in body
-    assert "Calculator available" in body
+    assert (
+        ("Indicative calculation available" in body)
+        or ("Calcolo indicativo disponibile" in body)
+        or ("Calculator available" in body)
+    )
 
 
 # ---------------------------------------------------------------------------

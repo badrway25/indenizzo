@@ -11,13 +11,14 @@ Calculator registrati:
 - ``france`` — Francia, road_accident scaffold (F-france-road-accident-
   bootstrap), placeholder che ritorna sempre ``unavailable``;
 - ``belgium`` — Belgio, road_accident scaffold (F-belgium-road-accident-
-  bootstrap), placeholder che ritorna sempre ``unavailable``.
-
-Marocco e Tunisia restano nella roadmap (probabilmente con focus su
-successioni internazionali piuttosto che road accident).
+  bootstrap), placeholder che ritorna sempre ``unavailable``;
+- ``morocco`` — Marocco, international_inheritance scaffold
+  (F-ma-tn-international-inheritance-bootstrap), placeholder;
+- ``tunisia`` — Tunisia, international_inheritance scaffold
+  (F-ma-tn-international-inheritance-bootstrap), placeholder.
 """
 
 from __future__ import annotations
 
 # Forzare il side-effect delle registrazioni.
-from . import belgium, france, italy  # noqa: F401
+from . import belgium, france, italy, morocco, tunisia  # noqa: F401

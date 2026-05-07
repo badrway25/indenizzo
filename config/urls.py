@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path
@@ -31,3 +33,11 @@ urlpatterns += i18n_patterns(
     path("", include("apps.reports.urls")),
     prefix_default_language=False,
 )
+
+# In dev (DEBUG=True) il runserver serve direttamente /media/ per
+# poter mostrare le immagini Pexels cached. In produzione queste
+# verranno servite dal reverse proxy (Caddy/nginx) con
+# `Cache-Control` aggressivo. Niente file Pexels è committato
+# nel repo (media/ è gitignored).
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

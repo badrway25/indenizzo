@@ -24,6 +24,16 @@ urlpatterns = [
         name="wizard_belgium_road_accident",
     ),
     path(
+        "wizard/ma/inheritance/",
+        views.wizard_morocco_inheritance,
+        name="wizard_morocco_inheritance",
+    ),
+    path(
+        "wizard/tn/inheritance/",
+        views.wizard_tunisia_inheritance,
+        name="wizard_tunisia_inheritance",
+    ),
+    path(
         "wizard/result/<uuid:public_id>/",
         views.wizard_result,
         name="wizard_result",

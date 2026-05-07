@@ -409,6 +409,7 @@ def test_public_ma_inheritance_stays_unavailable():
         "deceased_country_of_last_residence": "MA",
         "nationality": "MA",
         "spouse_present": "on",
+        "surviving_spouse_gender": "wife",
         "sons_count": "1",
         "daughters_count": "1",
         "estate_value": "800000",

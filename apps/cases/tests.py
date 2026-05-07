@@ -868,6 +868,7 @@ WIZARD_INHERITANCE_VALID_PAYLOAD = {
     "deceased_country_of_last_residence": "MA",
     "nationality": "MA",
     "spouse_present": "on",
+    "surviving_spouse_gender": "wife",
     "sons_count": "1",
     "daughters_count": "1",
     "consent_simulation": "on",

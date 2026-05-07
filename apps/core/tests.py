@@ -552,10 +552,15 @@ def test_countries_page_shows_morocco_and_tunisia_as_legal_sources_under_review(
     response = Client().get("/en/countries/")
     assert response.status_code == 200
     body = response.content.decode("utf-8")
-    # FR, BE, MA, TN all scaffold-only → 4 occurrences of the badge.
-    # Pass-5 renamed the badge.
-    badge_hits = body.count("Preliminary legal assessment") + body.count(
-        "Legal sources under review"
+    # FR, BE, MA, TN all scaffold-only → 4 occurrences of a non-available badge.
+    # Pass-5 renamed the badge to "Preliminary legal assessment"; pass-6
+    # split MA/TN out into "International inheritance review" while
+    # keeping FR/BE on "Preliminary legal assessment". Either way, the
+    # 4 scaffolded countries must surface a non-available badge.
+    badge_hits = (
+        body.count("Preliminary legal assessment")
+        + body.count("International inheritance review")
+        + body.count("Legal sources under review")
     )
     assert badge_hits >= 4
 
@@ -571,12 +576,20 @@ def test_wizard_start_page_offers_morocco_and_tunisia_inheritance_links():
 
 @pytest.mark.django_db
 def test_case_types_page_marks_international_inheritance_as_scaffold():
-    """international_inheritance has only scaffold registrations (MA, TN)."""
+    """international_inheritance has only scaffold registrations (MA, TN).
+
+    Pass-6 split the inheritance scaffold into its own status so the
+    page now reads "International inheritance review" for the
+    international_inheritance row. We accept either wording for
+    forward / backward compatibility.
+    """
+
     response = Client().get("/en/case-types/")
     assert response.status_code == 200
     body = response.content.decode("utf-8")
     assert "international_inheritance" in body
-    # The page should mark it as scaffold (not "Module ready" /
-    # "Indicative calculation available"). Pass-5 renamed the badge to
-    # "Preliminary legal assessment".
-    assert ("Preliminary legal assessment" in body) or ("Legal sources under review" in body)
+    assert (
+        ("International inheritance review" in body)
+        or ("Preliminary legal assessment" in body)
+        or ("Legal sources under review" in body)
+    )
