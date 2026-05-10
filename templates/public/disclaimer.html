@@ -4,27 +4,69 @@
 {% block title %}{% translate "Disclaimer" %} — {{ SITE_NAME }}{% endblock %}
 
 {% block content %}
-  <section class="max-w-3xl mx-auto px-5 lg:px-8 py-16">
+  <section class="max-w-3xl mx-auto px-5 lg:px-8 py-16" data-legal-page="disclaimer">
     <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Legal notice" %}</p>
     <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Disclaimer" %}</h1>
 
-    <div class="mt-8 prose prose-lg max-w-none text-ink-800 leading-relaxed">
+    {% include "partials/legal_page_status.html" with page_label=_("Disclaimer") version=DISCLAIMER_VERSION status=DISCLAIMER_STATUS signed_at=DISCLAIMER_SIGNED_AT %}
+
+    <article class="mt-2 space-y-6 text-ink-800 leading-relaxed">
+      <h2 class="font-serif text-2xl text-ink-950 mt-8">{% translate "1. Informational nature" %}</h2>
       <p>
-        {% blocktranslate %}This platform offers indicative simulations of compensation and inheritance scenarios across multiple jurisdictions. Each simulation is based on legal sources catalogued and validated by our team.{% endblocktranslate %}
+        {% blocktranslate %}This platform offers indicative simulations of compensation and inheritance scenarios across multiple jurisdictions. The content is informational; it is not a binding legal evaluation of your case.{% endblocktranslate %}
       </p>
+
+      <h2 class="font-serif text-2xl text-ink-950 mt-8">{% translate "2. No automated legal advice" %}</h2>
       <p>
-        {% blocktranslate %}A simulation is not legal advice, is not a medico-legal opinion and is not a guarantee of outcome. The actual evaluation of a case depends on documents, expert reports, liability assessment, applicable law, competent jurisdiction, case law and insurance practice.{% endblocktranslate %}
+        {% blocktranslate %}The simulations are produced by deterministic engines and reference tables. They do not constitute legal advice, do not replace a lawyer's evaluation and do not generate any professional duty of care from the Studio towards you.{% endblocktranslate %}
       </p>
+
+      <h2 class="font-serif text-2xl text-ink-950 mt-8">{% translate "3. No guarantee of outcome" %}</h2>
       <p>
-        {% blocktranslate %}If you require a binding evaluation, please request a legal review through our office.{% endblocktranslate %}
+        {% blocktranslate %}A simulation is not a guarantee of outcome. The actual evaluation of a case depends on documents, expert reports, liability assessment, applicable law, competent jurisdiction, case law and insurance practice.{% endblocktranslate %}
       </p>
-      <p class="text-sm text-stone2-500 mt-10">
-        {% blocktranslate %}This text is a working version. The final wording will be reviewed and signed off by the Studio's legal team.{% endblocktranslate %}
+
+      <h2 class="font-serif text-2xl text-ink-950 mt-8">{% translate "4. Indicative ranges only" %}</h2>
+      <p>
+        {% blocktranslate %}When a result is shown, it is an indicative range based on legal sources catalogued and validated by our team. Where no validated calculator exists for a jurisdiction or case type, the platform explicitly states that the simulation is unavailable and requires legal validation.{% endblocktranslate %}
       </p>
+
+      <h2 class="font-serif text-2xl text-ink-950 mt-8">{% translate "5. Sources and limits of the tables" %}</h2>
+      <p>
+        {% blocktranslate %}Each simulation references the legal sources used (decrees, statutes, judicial guidelines). Tables and coefficients are linked to a publication date, an effective date and a validation status. Sources marked working-copy or under review are not used for public calculations.{% endblocktranslate %}
+      </p>
+
+      <h2 class="font-serif text-2xl text-ink-950 mt-8">{% translate "6. Engagement only by written agreement" %}</h2>
+      <p>
+        {% blocktranslate %}A professional engagement with the Studio arises only after a written agreement is signed. Submitting a simulation or a contact request through this platform does not, by itself, create a lawyer-client relationship.{% endblocktranslate %}
+      </p>
+
+      <h2 class="font-serif text-2xl text-ink-950 mt-8">{% translate "7. Professional independence" %}</h2>
+      <p>
+        {% blocktranslate %}The Studio retains full professional independence. Simulation results, marketing material and CRM workflows do not affect the legal opinion the Studio will give in a signed engagement.{% endblocktranslate %}
+      </p>
+
+      <h2 class="font-serif text-2xl text-ink-950 mt-8">{% translate "8. Data and confidentiality" %}</h2>
+      <p>
+        {% blocktranslate %}Submitted data is processed under the privacy policy and the consents you give. Pre-engagement communications are treated with care, but full attorney-client privilege only applies after a signed engagement.{% endblocktranslate %}
+      </p>
+
+      <h2 class="font-serif text-2xl text-ink-950 mt-8">{% translate "9. International handling" %}</h2>
+      <p>
+        {% blocktranslate %}Where the platform addresses cross-border matters (Italy, France, Belgium, Morocco, Tunisia and EU regulation 650/2012), the international handling is informational and does not represent a delegated mandate by any institution.{% endblocktranslate %}
+      </p>
+    </article>
+
+    <div class="mt-12">
+      {% include "partials/cta_consultation.html" with variant="block" %}
     </div>
 
-    <div class="mt-10">
-      {% include "partials/cta_consultation.html" with variant="block" %}
+    <div class="mt-12 text-xs text-stone2-500 space-y-1" data-legal-page-version-block>
+      <p>{% blocktranslate with v=DISCLAIMER_VERSION %}Disclaimer version: {{ v }}.{% endblocktranslate %}</p>
+      <p>{% blocktranslate with s=DISCLAIMER_STATUS %}Status: {{ s }}.{% endblocktranslate %}</p>
+      {% if DISCLAIMER_SIGNED_AT %}
+        <p>{% blocktranslate with d=DISCLAIMER_SIGNED_AT %}Signed on: {{ d }}.{% endblocktranslate %}</p>
+      {% endif %}
     </div>
   </section>
 {% endblock %}

@@ -1,0 +1,40 @@
+{% load i18n %}
+{% comment %}
+  F-p0-leg-1-6-legal-pages — banner di stato per le pagine legali
+  pubbliche (privacy policy, disclaimer).
+
+  Variabili attese nel context:
+    page_label   — etichetta umana, es. "Privacy policy" / "Disclaimer".
+    version      — stringa versione (PRIVACY_POLICY_VERSION o DISCLAIMER_VERSION).
+    status       — "working_copy" o "signed".
+    signed_at    — stringa ISO opzionale (vuota se status=working_copy).
+
+  Render:
+  - Pillola "WORKING COPY" arancione se non firmata.
+  - Pillola "SIGNED" verde se firmata + data firma se presente.
+  - Riga avviso visibile sopra il testo della pagina quando non firmata.
+{% endcomment %}
+<div class="rounded-2xl border p-5 mb-8 {% if status == 'signed' %}bg-emerald-50 border-emerald-200{% else %}bg-amber-50 border-amber-200{% endif %}" data-legal-status="{{ status }}">
+  <div class="flex flex-wrap items-center gap-3">
+    <span class="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] font-semibold {% if status == 'signed' %}text-emerald-800{% else %}text-amber-800{% endif %}" data-legal-status-pill>
+      {% if status == 'signed' %}
+        <span aria-hidden="true">✓</span> {% translate "Signed" %}
+      {% else %}
+        <span aria-hidden="true">⚠</span> {% translate "Working copy" %}
+      {% endif %}
+    </span>
+    <span class="text-xs text-ink-800">
+      {% blocktranslate with v=version %}Version: {{ v }}{% endblocktranslate %}
+    </span>
+    {% if signed_at %}
+      <span class="text-xs text-ink-800">
+        {% blocktranslate with d=signed_at %}Signed on: {{ d }}{% endblocktranslate %}
+      </span>
+    {% endif %}
+  </div>
+  {% if status != 'signed' %}
+    <p class="mt-3 text-xs text-amber-900 leading-relaxed">
+      {% blocktranslate with l=page_label %}This {{ l }} is a working copy. The final wording must be reviewed and signed by the Studio's legal team before going live. The platform is not in production.{% endblocktranslate %}
+    </p>
+  {% endif %}
+</div>

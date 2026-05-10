@@ -54,6 +54,25 @@ def site_context(request) -> dict:
             settings, "SPECIAL_CATEGORIES_NOTICE_VERSION", "working-copy"
         ),
     }
+    # F-p0-leg-1-6-legal-pages: versioni e status delle pagine legali
+    # pubbliche (privacy policy, disclaimer). Esposte al template per
+    # rendere il badge di stato + il banner working-copy.
+    legal_pages = {
+        "PRIVACY_POLICY_VERSION": getattr(
+            settings, "PRIVACY_POLICY_VERSION", "working-copy"
+        ),
+        "PRIVACY_POLICY_STATUS": getattr(
+            settings, "PRIVACY_POLICY_STATUS", "working_copy"
+        ),
+        "PRIVACY_POLICY_SIGNED_AT": getattr(settings, "PRIVACY_POLICY_SIGNED_AT", ""),
+        "DISCLAIMER_VERSION": getattr(
+            settings, "DISCLAIMER_VERSION", "working-copy"
+        ),
+        "DISCLAIMER_STATUS": getattr(
+            settings, "DISCLAIMER_STATUS", "working_copy"
+        ),
+        "DISCLAIMER_SIGNED_AT": getattr(settings, "DISCLAIMER_SIGNED_AT", ""),
+    }
     return {
         "SITE_NAME": getattr(settings, "SITE_NAME", "Studio Legale Badrane"),
         "SITE_DOMAIN": getattr(settings, "SITE_DOMAIN", ""),
@@ -68,6 +87,7 @@ def site_context(request) -> dict:
         "RTL_LANGUAGES": list(RTL_LANGUAGES),
         **studio_identity,
         **consent_versions,
+        **legal_pages,
     }
 
 

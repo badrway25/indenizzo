@@ -1,29 +1,68 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% translate "Privacy" %} — {{ SITE_NAME }}{% endblock %}
+{% block title %}{% translate "Privacy policy" %} — {{ SITE_NAME }}{% endblock %}
 
 {% block content %}
-  <section class="max-w-3xl mx-auto px-5 lg:px-8 py-16">
+  <section class="max-w-3xl mx-auto px-5 lg:px-8 py-16" data-legal-page="privacy">
     <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Personal data" %}</p>
-    <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Privacy" %}</h1>
+    <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Privacy policy" %}</h1>
 
-    <div class="mt-8 space-y-5 text-ink-800 leading-relaxed">
+    {% include "partials/legal_page_status.html" with page_label=_("Privacy policy") version=PRIVACY_POLICY_VERSION status=PRIVACY_POLICY_STATUS signed_at=PRIVACY_POLICY_SIGNED_AT %}
+
+    <article class="mt-2 space-y-6 text-ink-800 leading-relaxed">
+      <h2 class="font-serif text-2xl text-ink-950 mt-8">{% translate "1. Data controller" %}</h2>
       <p>
-        {% blocktranslate %}We process personal data in accordance with the EU General Data Protection Regulation (GDPR) and the privacy laws applicable in each jurisdiction we cover.{% endblocktranslate %}
+        {% blocktranslate %}The data controller is the Studio Legale Internazionale Badrane (the "Studio"). The platform operates as a sub-domain of the Studio's institutional website and complies with the professional rules applicable to the legal profession.{% endblocktranslate %}
       </p>
+
+      <h2 class="font-serif text-2xl text-ink-950 mt-8">{% translate "2. What we collect" %}</h2>
       <p>
-        {% blocktranslate %}When you use the simulator we may collect: the inputs you provide for the simulation, the language and country you choose, technical metadata such as IP address and user agent, and the consents you grant.{% endblocktranslate %}
+        {% blocktranslate %}When you use the simulator or the contact form we may collect: the inputs you provide for the simulation, the language and country you choose, your name and email if you submit a contact request, the consents you grant, and technical metadata such as IP address, user agent and request path.{% endblocktranslate %}
       </p>
+
+      <h2 class="font-serif text-2xl text-ink-950 mt-8">{% translate "3. Special categories (GDPR art. 9)" %}</h2>
+      <p>
+        {% blocktranslate %}Some requests legitimately involve special categories of personal data — health data, family events, judicial proceedings. We process them only after you give explicit consent (GDPR art. 9.2.a) on a separate, dedicated checkbox, and only for the purpose of replying to your specific request.{% endblocktranslate %}
+      </p>
+
+      <h2 class="font-serif text-2xl text-ink-950 mt-8">{% translate "4. Legal bases" %}</h2>
+      <p>
+        {% blocktranslate %}We process your data on the basis of: (a) your consent, for sending us the request; (b) pre-contractual measures (GDPR art. 6.1.b), to evaluate whether the Studio can take your case; (c) the Studio's legitimate interest, to keep audit trails of consent, technical and security events.{% endblocktranslate %}
+      </p>
+
+      <h2 class="font-serif text-2xl text-ink-950 mt-8">{% translate "5. Retention" %}</h2>
+      <p>
+        {% blocktranslate %}Personal data is retained only for as long as needed for the purpose it was collected, and within the periods stated in our retention policy. After the retention period the data is anonymized or deleted. The retention periods are documented internally and will be signed off by the Studio before go-live.{% endblocktranslate %}
+      </p>
+
+      <h2 class="font-serif text-2xl text-ink-950 mt-8">{% translate "6. Your rights" %}</h2>
+      <p>
+        {% blocktranslate %}You can request access, rectification, deletion, anonymization, restriction, portability and object to processing of your data at any time by contacting the Studio. You also have the right to lodge a complaint with your national data protection authority.{% endblocktranslate %}
+      </p>
+
+      <h2 class="font-serif text-2xl text-ink-950 mt-8">{% translate "7. Sharing" %}</h2>
       <p>
         {% blocktranslate %}We do not sell personal data. We do not share it with third parties beyond what is strictly necessary to provide our legal services and meet legal obligations.{% endblocktranslate %}
       </p>
+
+      <h2 class="font-serif text-2xl text-ink-950 mt-8">{% translate "8. Consent versions used by the platform" %}</h2>
       <p>
-        {% blocktranslate %}You can request access, rectification, deletion or anonymization of your data at any time by contacting the Studio.{% endblocktranslate %}
+        {% blocktranslate %}The platform records the version of the consent text shown to you at submit time, so the Studio can prove which wording you agreed to. The current versions in use are referenced internally as the privacy notice version and the special-categories notice version (working copies until the Studio signs the final wording).{% endblocktranslate %}
       </p>
-      <p class="text-sm text-stone2-500 mt-10">
-        {% blocktranslate %}A complete privacy policy will be published before the simulator goes live to the public. This page is a working summary.{% endblocktranslate %}
+
+      <h2 class="font-serif text-2xl text-ink-950 mt-8">{% translate "9. Contact" %}</h2>
+      <p>
+        {% blocktranslate %}For any privacy-related question, please contact the Studio through the contact page or by certified email (PEC) — see the professional identification section in the page footer.{% endblocktranslate %}
       </p>
+    </article>
+
+    <div class="mt-12 text-xs text-stone2-500 space-y-1" data-legal-page-version-block>
+      <p>{% blocktranslate with v=PRIVACY_POLICY_VERSION %}Privacy policy version: {{ v }}.{% endblocktranslate %}</p>
+      <p>{% blocktranslate with s=PRIVACY_POLICY_STATUS %}Status: {{ s }}.{% endblocktranslate %}</p>
+      {% if PRIVACY_POLICY_SIGNED_AT %}
+        <p>{% blocktranslate with d=PRIVACY_POLICY_SIGNED_AT %}Signed on: {{ d }}.{% endblocktranslate %}</p>
+      {% endif %}
     </div>
   </section>
 {% endblock %}

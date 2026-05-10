@@ -203,6 +203,107 @@ def check_consent_versions_signed_in_production(app_configs, **kwargs):
     return issues
 
 
+_LEGAL_PAGE_DRAFT_MARKERS = ("working-copy", "draft")
+
+
+def _check_legal_page_signed(*, label, version_setting, status_setting, signed_at_setting, error_id):
+    """
+    Helper condiviso fra core.E006 (privacy) e core.E007 (disclaimer):
+    raccoglie gli `Error` quando una pagina legale pubblica non e'
+    pronta per la produzione.
+
+    In dev (`DEBUG=True`) ritorna `[]`. La logica e' identica per
+    privacy/disclaimer: cambiano solo le etichette e i nomi setting.
+    """
+    if getattr(settings, "DEBUG", False):
+        return []
+
+    issues: list[Error] = []
+
+    version = (getattr(settings, version_setting, "") or "").strip()
+    status = (getattr(settings, status_setting, "") or "").strip().lower()
+    signed_at = (getattr(settings, signed_at_setting, "") or "").strip()
+
+    if not version:
+        issues.append(
+            Error(
+                f"{version_setting} is empty. Cannot deploy {label} page in "
+                "production: every visitor would see a versionless legal text.",
+                hint=(
+                    f"Set {version_setting} via env var to the version string "
+                    "the Studio has signed (e.g. '2026-09-15-final')."
+                ),
+                id=error_id,
+            )
+        )
+    else:
+        lowered = version.lower()
+        if any(marker in lowered for marker in _LEGAL_PAGE_DRAFT_MARKERS):
+            issues.append(
+                Error(
+                    f"{version_setting}={version!r} is a working-copy / draft "
+                    f"version. Cannot deploy {label} in production until the "
+                    "Studio signs the final wording.",
+                    hint=(
+                        f"Replace {version_setting} with the signed version "
+                        "string (no 'working-copy' / 'draft' substring)."
+                    ),
+                    id=error_id,
+                )
+            )
+
+    if status != "signed":
+        issues.append(
+            Error(
+                f"{status_setting}={status!r} is not 'signed'. The {label} "
+                "page must be marked as signed before going live.",
+                hint=(
+                    f"Set {status_setting}=signed once the Studio has signed "
+                    "off the final wording."
+                ),
+                id=error_id,
+            )
+        )
+    elif not signed_at:
+        issues.append(
+            Error(
+                f"{status_setting}=signed but {signed_at_setting} is empty. "
+                "A signed legal page must record when it was signed.",
+                hint=(
+                    f"Set {signed_at_setting} to the ISO date the Studio "
+                    "signed the document (e.g. '2026-09-15')."
+                ),
+                id=error_id,
+            )
+        )
+
+    return issues
+
+
+@register("core")
+def check_privacy_policy_signed_in_production(app_configs, **kwargs):
+    """`core.E006` — fail in produzione se la privacy policy non e' firmata."""
+    return _check_legal_page_signed(
+        label="privacy policy",
+        version_setting="PRIVACY_POLICY_VERSION",
+        status_setting="PRIVACY_POLICY_STATUS",
+        signed_at_setting="PRIVACY_POLICY_SIGNED_AT",
+        error_id="core.E006",
+    )
+
+
+@register("core")
+def check_disclaimer_signed_in_production(app_configs, **kwargs):
+    """`core.E007` — fail in produzione se il disclaimer non e' firmato."""
+    return _check_legal_page_signed(
+        label="disclaimer",
+        version_setting="DISCLAIMER_VERSION",
+        status_setting="DISCLAIMER_STATUS",
+        signed_at_setting="DISCLAIMER_SIGNED_AT",
+        error_id="core.E007",
+    )
+
+
 @register("core")
 def check_csp_enforcing_in_production(app_configs, **kwargs):
     """

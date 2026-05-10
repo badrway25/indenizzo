@@ -554,6 +554,31 @@ SPECIAL_CATEGORIES_NOTICE_VERSION = env(
 
 
 # ---------------------------------------------------------------------------
+# Privacy policy & disclaimer page versions (F-p0-leg-1-6-legal-pages)
+#
+# Le due pagine pubbliche /privacy/ e /disclaimer/ sono "atti firmati":
+# devono avere una versione tracciabile e una data di firma.
+#
+# `*_STATUS` ammette solo i due valori `working_copy` o `signed`. Il
+# system check `core.E006`/`core.E007` blocca il deploy in produzione
+# finche' lo status non e' `signed` (e finche' la versione contiene
+# marker `working-copy` o `draft`).
+#
+# `*_SIGNED_AT` deve essere una data ISO (`2026-09-15`) quando lo
+# status diventa `signed`; in dev resta vuoto.
+#
+# Default: working_copy + version `working-copy-2026-05-10`. La pagina
+# pubblica mostra un banner visibile finche' lo status e' working_copy.
+# ---------------------------------------------------------------------------
+PRIVACY_POLICY_VERSION = env("PRIVACY_POLICY_VERSION", default="working-copy-2026-05-10")
+PRIVACY_POLICY_STATUS = env("PRIVACY_POLICY_STATUS", default="working_copy")
+PRIVACY_POLICY_SIGNED_AT = env("PRIVACY_POLICY_SIGNED_AT", default="")
+DISCLAIMER_VERSION = env("DISCLAIMER_VERSION", default="working-copy-2026-05-10")
+DISCLAIMER_STATUS = env("DISCLAIMER_STATUS", default="working_copy")
+DISCLAIMER_SIGNED_AT = env("DISCLAIMER_SIGNED_AT", default="")
+
+
+# ---------------------------------------------------------------------------
 # Data retention policy scaffold (F-p0-leg-4-retention)
 #
 # Policy retention "wide": Lead, Simulation, ConsentRecord, audit log
