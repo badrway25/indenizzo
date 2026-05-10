@@ -2,7 +2,10 @@
 {% load i18n %}
 
 {% block title %}{% translate "Request a legal review" %} — {{ SITE_NAME }}{% endblock %}
-{% block meta_robots %}noindex, nofollow{% endblock %}
+{# /contact/ ereditano `index, follow` dal default di base.html. Pagina
+   pubblica utile a SEO/lead/conversione: NON deve essere `noindex`. La
+   coerenza con `/robots.txt` (Allow: /contact/) e' garantita dal test
+   `apps/core/test_meta_robots_noindex.py::test_contact_form_is_indexable`. #}
 {% block meta_description %}{% blocktranslate %}Tell us about your case in your own words. The Studio reviews each request manually before deciding whether and how it can help. Submitting this form does not create a professional engagement.{% endblocktranslate %}{% endblock %}
 
 {% block content %}

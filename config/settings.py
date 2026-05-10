@@ -155,6 +155,10 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.i18n",
                 "apps.core.context_processors.site_context",
+                # F-p0-codice-2-hreflang-globale: inietta
+                # `hreflang_alternates` per pagine pubbliche multilingua
+                # (allowlist esplicita).
+                "apps.core.context_processors.seo_global_hreflang",
             ],
         },
     },

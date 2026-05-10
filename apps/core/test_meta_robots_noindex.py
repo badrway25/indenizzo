@@ -139,21 +139,28 @@ def test_contact_thank_you_emits_noindex_meta_robots(db):
 # ---------------------------------------------------------------------------
 
 
-def test_contact_form_is_not_noindex(db):
-    """`/contact/` e' pagina pubblica utile a SEO: NON deve avere noindex."""
+def test_contact_form_is_indexable(db):
+    """
+    `/contact/` deve essere indicizzabile (index, follow).
+
+    Coerenza con la decisione SEO documentata in robots.txt
+    (Allow: /contact/). Il template eredita il default
+    `index, follow` da base.html. Canarino contro regressioni
+    che reintroducano `noindex` accidentalmente.
+    """
     client = Client()
     resp = client.get("/contact/")
     assert resp.status_code == 200
     html = resp.content.decode("utf-8")
     value = _meta_robots_value(html)
-    # /contact/ ha esplicitamente `{% block meta_robots %}noindex, nofollow{% endblock %}`
-    # in templates/public/contact.html: e' una scelta di prodotto specifica
-    # (form pre-engagement, non SEO-utile). Documentiamo lo stato attuale come
-    # tale e lasciamo a un futuro iter (decisione Studio) la possibilita' di
-    # rimuovere noindex se si valuta che /contact/ debba essere indicizzata
-    # per long-tail SEO. Per ora il test e' "pinning": lo stato e' noto e
-    # voluto (canarino contro modifiche accidentali al template).
     assert value is not None, "<meta name='robots'> mancante nel contact form"
+    normalized = value.lower().replace(" ", "")
+    assert "noindex" not in normalized, (
+        f"/contact/ ha `noindex` (regressione SEO/lead): got={value!r}"
+    )
+    assert "nofollow" not in normalized, (
+        f"/contact/ ha `nofollow` (regressione SEO/lead): got={value!r}"
+    )
 
 
 # ---------------------------------------------------------------------------

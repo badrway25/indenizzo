@@ -40,10 +40,14 @@
 {% endblock %}
 
 {% block head_extra %}
-  {# Canonical self-reference + hreflang alternates (pass 2). #}
+  {% comment %}
+    Canonical self-reference (pass 2). hreflang alternates sono ora
+    emessi globalmente dal block "hreflang" in base.html
+    (F-p0-codice-2-hreflang-globale): la view passa comunque
+    `hreflang_alternates` nel context, quindi base.html ne emette
+    i link senza bisogno di duplicarli qui.
+  {% endcomment %}
   {% if canonical_url %}<link rel="canonical" href="{{ canonical_url }}">{% endif %}
-  {% for alt in hreflang_alternates %}<link rel="alternate" hreflang="{{ alt.lang }}" href="{{ alt.href }}">
-  {% endfor %}
   {% comment %}
     Open Graph + Twitter Card metadata (pass 4). Costruiti in
     apps/core/views.py via build_open_graph_metadata(...). title e
