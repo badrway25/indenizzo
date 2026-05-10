@@ -1,0 +1,26 @@
+{% load i18n %}
+{% comment %}
+  F-p0-leg-2-mandate — riquadro che ribadisce la separazione fra
+  valutazione preliminare (lead/simulazione) e incarico professionale
+  vero e proprio. Da includere su contact_thank_you e wizard_result
+  e su qualsiasi pagina post-submit.
+
+  Render minimo: 1 riga visibile + 1 riga "working copy banner" se
+  `MANDATE_TEMPLATE_STATUS != 'signed'`.
+{% endcomment %}
+<div
+  class="mt-6 rounded-2xl border border-stone2-200 bg-sand-100 p-5 text-left"
+  data-mandate-notice="{{ MANDATE_TEMPLATE_STATUS|default:'working_copy' }}"
+>
+  <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">
+    {% translate "Professional engagement" %}
+  </p>
+  <p class="mt-2 text-sm text-ink-800 leading-relaxed">
+    {% blocktranslate %}The preliminary evaluation does not constitute a professional engagement. Any engagement requires a separate written agreement (mandate) signed by the Studio.{% endblocktranslate %}
+  </p>
+  {% if MANDATE_TEMPLATE_STATUS != 'signed' %}
+    <p class="mt-2 text-xs text-amber-800 leading-relaxed">
+      {% blocktranslate %}The mandate template wording is currently a working copy pending the Studio's legal sign-off. The platform is not in production.{% endblocktranslate %}
+    </p>
+  {% endif %}
+</div>

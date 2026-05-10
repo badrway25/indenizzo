@@ -19,6 +19,8 @@
     {% blocktranslate %}Submitting this form does not create a professional engagement. The Studio remains free to accept or decline the matter.{% endblocktranslate %}
   </p>
 
+  {% include "partials/mandate_notice.html" %}
+
   <div class="mt-10 flex flex-wrap gap-3 justify-center">
     <a href="{% url 'cases:wizard_start' %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
       {% translate "Back to the wizard" %}

@@ -305,6 +305,106 @@ def check_disclaimer_signed_in_production(app_configs, **kwargs):
 
 
 @register("core")
+def check_mandate_template_signed_in_production(app_configs, **kwargs):
+    """
+    `core.E008` — fail in produzione finche' il mandato professionale
+    non e' firmato e il flag `REQUIRE_MANDATE_BEFORE_CASE_ACTIVATION`
+    e' attivo.
+
+    Il mandato e' lo strumento che separa una richiesta in entrata
+    (lead/simulation, pre-contrattuale) da un incarico professionale.
+    Andare in produzione con un template `working-copy` significa che
+    ogni "firma" raccolta dal sistema sarebbe firma di un testo non
+    finalizzato.
+
+    In dev (`DEBUG=True`) il check e' silenzioso.
+    """
+    if getattr(settings, "DEBUG", False):
+        return []
+
+    issues: list[Error] = []
+
+    version = (getattr(settings, "MANDATE_TEMPLATE_VERSION", "") or "").strip()
+    status = (getattr(settings, "MANDATE_TEMPLATE_STATUS", "") or "").strip().lower()
+    signed_at = (getattr(settings, "MANDATE_TEMPLATE_SIGNED_AT", "") or "").strip()
+    require_flag = bool(
+        getattr(settings, "REQUIRE_MANDATE_BEFORE_CASE_ACTIVATION", True)
+    )
+
+    if not version:
+        issues.append(
+            Error(
+                "MANDATE_TEMPLATE_VERSION is empty. Cannot deploy: every "
+                "mandate signed by the platform would point to an empty "
+                "version field, breaking the audit trail.",
+                hint=(
+                    "Set MANDATE_TEMPLATE_VERSION via env var to the version "
+                    "string the Studio has signed (e.g. '2026-09-15-final')."
+                ),
+                id="core.E008",
+            )
+        )
+    else:
+        lowered = version.lower()
+        if any(marker in lowered for marker in _LEGAL_PAGE_DRAFT_MARKERS):
+            issues.append(
+                Error(
+                    f"MANDATE_TEMPLATE_VERSION={version!r} is a working-copy / "
+                    "draft version. Cannot deploy: the Studio must sign the "
+                    "final mandate wording first.",
+                    hint=(
+                        "Replace MANDATE_TEMPLATE_VERSION with the signed "
+                        "version string (no 'working-copy' / 'draft' substring)."
+                    ),
+                    id="core.E008",
+                )
+            )
+
+    if status != "signed":
+        issues.append(
+            Error(
+                f"MANDATE_TEMPLATE_STATUS={status!r} is not 'signed'. The "
+                "mandate template must be marked as signed before going live.",
+                hint=(
+                    "Set MANDATE_TEMPLATE_STATUS=signed once the Studio has "
+                    "signed off the final mandate wording."
+                ),
+                id="core.E008",
+            )
+        )
+    elif not signed_at:
+        issues.append(
+            Error(
+                "MANDATE_TEMPLATE_STATUS=signed but MANDATE_TEMPLATE_SIGNED_AT "
+                "is empty. A signed mandate template must record the signing "
+                "date for audit.",
+                hint=(
+                    "Set MANDATE_TEMPLATE_SIGNED_AT to the ISO date the Studio "
+                    "signed the document (e.g. '2026-09-15')."
+                ),
+                id="core.E008",
+            )
+        )
+
+    if not require_flag:
+        issues.append(
+            Error(
+                "REQUIRE_MANDATE_BEFORE_CASE_ACTIVATION=False in production. "
+                "The platform would allow internal flows to treat leads as "
+                "active cases without a signed mandate, breaking the "
+                "professional engagement boundary.",
+                hint=(
+                    "Set REQUIRE_MANDATE_BEFORE_CASE_ACTIVATION=True (default) "
+                    "before deploy."
+                ),
+                id="core.E008",
+            )
+        )
+
+    return issues
+
+
+@register("core")
 def check_csp_enforcing_in_production(app_configs, **kwargs):
     """
     `core.E003` — fail in produzione se CSP gira solo in

@@ -49,11 +49,15 @@ class LeadAdmin(admin.ModelAdmin):
         "country",
         "case_type",
         "status",
+        "mandate_status",
+        "mandate_signed",
         "priority",
         "assigned_to",
     )
     list_filter = (
         "status",
+        "mandate_status",
+        "mandate_signed",
         "priority",
         "country",
         "case_type",
@@ -109,6 +113,24 @@ class LeadAdmin(admin.ModelAdmin):
         (
             _("Workflow"),
             {"fields": ("contacted_at", "converted_at", "internal_notes")},
+        ),
+        (
+            _("Mandate (professional engagement)"),
+            {
+                "fields": (
+                    "mandate_status",
+                    "mandate_signed",
+                    "mandate_signed_at",
+                    "mandate_version",
+                    "mandate_source",
+                ),
+                "description": _(
+                    "Mandate state. A lead becomes an active case only after "
+                    "the Studio signs a separate written agreement (mandate). "
+                    "Use the dedicated service apps.compliance.mandate."
+                    "mark_mandate_signed to record acceptance."
+                ),
+            },
         ),
         (
             _("Privacy"),

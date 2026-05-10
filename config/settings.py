@@ -554,6 +554,34 @@ SPECIAL_CATEGORIES_NOTICE_VERSION = env(
 
 
 # ---------------------------------------------------------------------------
+# Mandate / professional engagement scaffold (F-p0-leg-2-mandate)
+#
+# Una richiesta entrata via /contact/ o una /wizard/ NON equivalgono a un
+# incarico professionale. L'incarico nasce solo dopo un accordo scritto
+# firmato (mandato professionale).
+#
+# I tre setting `MANDATE_TEMPLATE_*` versionano il TESTO del mandato
+# (working copy finche' lo Studio non lo firma).
+# `REQUIRE_MANDATE_BEFORE_CASE_ACTIVATION` (default True) e' il flag che
+# protegge qualsiasi flow futuro di promozione lead → pratica: nessun
+# percorso interno deve trattare un lead come pratica attiva senza
+# `mandate_signed=True` su quel lead.
+#
+# Il system check `core.E008` blocca il deploy in produzione finche' la
+# versione del template e' working-copy/draft, lo status non e' `signed`,
+# o `REQUIRE_MANDATE_BEFORE_CASE_ACTIVATION` e' stato spento.
+# ---------------------------------------------------------------------------
+MANDATE_TEMPLATE_VERSION = env(
+    "MANDATE_TEMPLATE_VERSION", default="working-copy-2026-05-10"
+)
+MANDATE_TEMPLATE_STATUS = env("MANDATE_TEMPLATE_STATUS", default="working_copy")
+MANDATE_TEMPLATE_SIGNED_AT = env("MANDATE_TEMPLATE_SIGNED_AT", default="")
+REQUIRE_MANDATE_BEFORE_CASE_ACTIVATION = env.bool(
+    "REQUIRE_MANDATE_BEFORE_CASE_ACTIVATION", default=True
+)
+
+
+# ---------------------------------------------------------------------------
 # Privacy policy & disclaimer page versions (F-p0-leg-1-6-legal-pages)
 #
 # Le due pagine pubbliche /privacy/ e /disclaimer/ sono "atti firmati":

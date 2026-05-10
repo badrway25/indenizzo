@@ -49,6 +49,20 @@ class LeadPriority(models.TextChoices):
     URGENT = "urgent", _("Urgent")
 
 
+class MandateStatus(models.TextChoices):
+    """
+    F-p0-leg-2-mandate — stato del mandato professionale per un Lead.
+
+    Default `mandate_required` per ogni nuovo lead: la richiesta arriva
+    pre-contrattuale, l'incarico nasce solo dopo la firma.
+    """
+
+    REQUIRED = "mandate_required", _("Mandate required")
+    SENT = "mandate_sent", _("Mandate sent")
+    SIGNED = "mandate_signed", _("Mandate signed")
+    DECLINED = "mandate_declined", _("Mandate declined")
+
+
 class Lead(models.Model):
     """Richiesta di valutazione legale entrata dal form pubblico."""
 
@@ -194,6 +208,30 @@ class Lead(models.Model):
 
     anonymized = models.BooleanField(_("anonymized"), default=False, db_index=True)
     anonymized_at = models.DateTimeField(_("anonymized at"), null=True, blank=True)
+
+    # F-p0-leg-2-mandate — il mandato professionale che trasforma una
+    # richiesta in pratica vera e propria. Default sicuro: non firmato.
+    # Le funzioni che promuovono un Lead a pratica attiva DEVONO
+    # verificare `mandate_signed=True` (vedi
+    # `apps.compliance.mandate.assert_mandate_signed_for_case_activation`).
+    mandate_signed = models.BooleanField(_("mandate signed"), default=False, db_index=True)
+    mandate_signed_at = models.DateTimeField(
+        _("mandate signed at"), null=True, blank=True
+    )
+    mandate_version = models.CharField(_("mandate version"), max_length=64, blank=True)
+    mandate_status = models.CharField(
+        _("mandate status"),
+        max_length=24,
+        choices=MandateStatus.choices,
+        default=MandateStatus.REQUIRED,
+        db_index=True,
+    )
+    mandate_source = models.CharField(
+        _("mandate source"),
+        max_length=24,
+        blank=True,
+        help_text=_("manual | upload | external_signature | staff"),
+    )
 
     class Meta:
         verbose_name = _("lead")

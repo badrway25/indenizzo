@@ -316,6 +316,141 @@ class PrivacyAuditEvent(models.Model):
         return f"[{self.event_type}] {who} → {self.target_model}:{self.target_object_id}"
 
 
+class MandateTemplateVersion(models.Model):
+    """
+    Versione tracciabile del mandato professionale (testo + stato firma).
+
+    Iter: F-p0-leg-2-mandate.
+
+    Il modello memorizza il *testo* del mandato che lo Studio adotta in
+    un dato momento (es. `2026-09-15-final`). Ogni `MandateAcceptance`
+    rifirma questa versione: cambiando il testo si crea una nuova riga,
+    le acceptance esistenti restano legate alla versione che il
+    cliente ha effettivamente firmato.
+
+    Niente PII qui dentro: e' solo il testo + i metadati del template.
+    """
+
+    class Status(models.TextChoices):
+        WORKING_COPY = "working_copy", _("Working copy")
+        SIGNED = "signed", _("Signed")
+        DEPRECATED = "deprecated", _("Deprecated")
+
+    version = models.CharField(_("version"), max_length=64, unique=True)
+    status = models.CharField(
+        _("status"),
+        max_length=16,
+        choices=Status.choices,
+        default=Status.WORKING_COPY,
+        db_index=True,
+    )
+    signed_at = models.DateField(_("signed at"), null=True, blank=True)
+    title = models.CharField(_("title"), max_length=255, blank=True)
+    locale = models.CharField(
+        _("locale"),
+        max_length=4,
+        choices=ConsentLanguage.choices,
+        blank=True,
+    )
+    notes = models.TextField(_("notes"), blank=True)
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("updated at"), auto_now=True)
+
+    class Meta:
+        verbose_name = _("mandate template version")
+        verbose_name_plural = _("mandate template versions")
+        ordering = ["-signed_at", "-created_at"]
+        indexes = [
+            models.Index(fields=["status", "signed_at"]),
+        ]
+
+    def __str__(self) -> str:
+        return f"mandate v{self.version} ({self.status})"
+
+
+class MandateAcceptance(models.Model):
+    """
+    Atto di firma del mandato professionale.
+
+    Iter: F-p0-leg-2-mandate.
+
+    Append-only, come `ConsentRecord`. Ogni firma diventa una riga
+    qui. Il record e' la prova tecnica che, in un istante dato, il
+    cliente identificato da `client_name_snapshot` (o tramite il
+    `lead`/`simulation` collegati) ha firmato il mandato in versione
+    `mandate_version`.
+
+    Privacy: niente IP completo, niente user-agent grezzo. Solo
+    quello che la policy P0-LEG-3 / P0-LEG-4 gia' raccoglie altrove.
+    Il ledger e' utile come trail: per il dettaglio cliente lo Studio
+    consulta la pratica fisica (PDF firmato, mail, PEC).
+    """
+
+    class Source(models.TextChoices):
+        MANUAL = "manual", _("Manual entry by staff")
+        UPLOAD = "upload", _("Document upload")
+        EXTERNAL_SIGNATURE = "external_signature", _("External signature provider")
+        STAFF = "staff", _("Marked by staff after offline signature")
+
+    lead = models.ForeignKey(
+        "crm.Lead",
+        on_delete=models.SET_NULL,
+        related_name="mandate_acceptances",
+        verbose_name=_("lead"),
+        null=True,
+        blank=True,
+    )
+    simulation = models.ForeignKey(
+        "cases.Simulation",
+        on_delete=models.SET_NULL,
+        related_name="mandate_acceptances",
+        verbose_name=_("simulation"),
+        null=True,
+        blank=True,
+    )
+
+    mandate_version = models.CharField(_("mandate version"), max_length=64)
+    accepted = models.BooleanField(_("accepted"), default=False)
+    signed_at = models.DateTimeField(_("signed at"))
+    client_name_snapshot = models.CharField(
+        _("client name snapshot"),
+        max_length=160,
+        blank=True,
+        help_text=_(
+            "Snapshot of the signer's name at signing time. May be left "
+            "blank for offline signatures recorded in the physical file."
+        ),
+    )
+    source = models.CharField(
+        _("source"),
+        max_length=24,
+        choices=Source.choices,
+        default=Source.STAFF,
+    )
+    locale = models.CharField(_("locale"), max_length=16, blank=True)
+    metadata = models.JSONField(_("metadata"), default=dict, blank=True)
+
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("mandate acceptance")
+        verbose_name_plural = _("mandate acceptances")
+        ordering = ["-signed_at", "-pk"]
+        indexes = [
+            models.Index(fields=["mandate_version", "accepted"]),
+            models.Index(fields=["lead", "accepted"]),
+            models.Index(fields=["simulation", "accepted"]),
+        ]
+
+    def __str__(self) -> str:
+        target = (
+            f"lead={self.lead_id}"
+            if self.lead_id
+            else (f"sim={self.simulation_id}" if self.simulation_id else "anon")
+        )
+        return f"mandate {self.mandate_version} {target} {'signed' if self.accepted else 'pending'}"
+
+
 class RetentionRunLog(models.Model):
     """
     Append-only log di ogni esecuzione della retention policy.

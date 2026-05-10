@@ -72,6 +72,17 @@ def site_context(request) -> dict:
             settings, "DISCLAIMER_STATUS", "working_copy"
         ),
         "DISCLAIMER_SIGNED_AT": getattr(settings, "DISCLAIMER_SIGNED_AT", ""),
+        # F-p0-leg-2-mandate: stato del template mandato (versione +
+        # status). Non e' PII: il template lo mostra come banner.
+        "MANDATE_TEMPLATE_VERSION": getattr(
+            settings, "MANDATE_TEMPLATE_VERSION", "working-copy"
+        ),
+        "MANDATE_TEMPLATE_STATUS": getattr(
+            settings, "MANDATE_TEMPLATE_STATUS", "working_copy"
+        ),
+        "MANDATE_TEMPLATE_SIGNED_AT": getattr(
+            settings, "MANDATE_TEMPLATE_SIGNED_AT", ""
+        ),
     }
     return {
         "SITE_NAME": getattr(settings, "SITE_NAME", "Studio Legale Badrane"),
