@@ -15,6 +15,7 @@ from decimal import Decimal
 
 import pytest
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 from apps.jurisdictions.models import Country, Jurisdiction, Language
 from apps.legal_sources.enums import Reliability, SourceStatus, SourceType
@@ -82,7 +83,7 @@ def test_approved_manager_filters_non_approved(italy: Country):
 
 @pytest.mark.django_db
 def test_approved_manager_excludes_expired_sources(italy: Country):
-    yesterday = date.today() - timedelta(days=1)
+    yesterday = timezone.now().date() - timedelta(days=1)
     LegalSource.objects.create(
         title="Fonte approvata ma scaduta",
         country=italy,
@@ -95,7 +96,7 @@ def test_approved_manager_excludes_expired_sources(italy: Country):
         country=italy,
         source_type=SourceType.OFFICIAL_LAW,
         status=SourceStatus.APPROVED,
-        valid_until=date.today() + timedelta(days=10),
+        valid_until=timezone.now().date() + timedelta(days=10),
     )
     no_expiry = LegalSource.objects.create(
         title="Fonte approvata senza scadenza",
@@ -124,7 +125,7 @@ def test_is_usable_for_calculations(italy: Country):
         country=italy,
         source_type=SourceType.OFFICIAL_LAW,
         status=SourceStatus.APPROVED,
-        valid_until=date.today() - timedelta(days=1),
+        valid_until=timezone.now().date() - timedelta(days=1),
     )
     assert valid_source.is_usable_for_calculations is True
     assert expired_source.is_usable_for_calculations is False
@@ -224,14 +225,14 @@ def test_approved_manager_excludes_sources_with_future_effective_date(italy: Cou
         country=italy,
         source_type=SourceType.MINISTRY_DECREE,
         status=SourceStatus.APPROVED,
-        effective_date=date.today() + timedelta(days=30),
+        effective_date=timezone.now().date() + timedelta(days=30),
     )
     in_force = LegalSource.objects.create(
         title="Decreto vigente",
         country=italy,
         source_type=SourceType.MINISTRY_DECREE,
         status=SourceStatus.APPROVED,
-        effective_date=date.today() - timedelta(days=30),
+        effective_date=timezone.now().date() - timedelta(days=30),
     )
     titles = set(LegalSource.objects.approved().values_list("title", flat=True))
     assert in_force.title in titles
@@ -284,12 +285,12 @@ def test_is_usable_at_respects_effective_date(italy: Country):
         country=italy,
         source_type=SourceType.MINISTRY_DECREE,
         status=SourceStatus.APPROVED,
-        effective_date=date.today() + timedelta(days=10),
+        effective_date=timezone.now().date() + timedelta(days=10),
     )
     # Oggi non è usabile.
     assert not_yet.is_usable_at() is False
     # Lo è in una data successiva all'effective_date.
-    assert not_yet.is_usable_at(date.today() + timedelta(days=20)) is True
+    assert not_yet.is_usable_at(timezone.now().date() + timedelta(days=20)) is True
 
 
 # ---------------------------------------------------------------------------
