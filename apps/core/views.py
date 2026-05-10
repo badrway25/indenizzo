@@ -75,6 +75,51 @@ def healthz(request):
     return JsonResponse({"status": "ok"})
 
 
+_FAVICON_SVG_BYTES: bytes | None = None
+
+
+@require_GET
+def favicon_ico(request):
+    """
+    Serve `/favicon.ico` returning the local SVG favicon.
+
+    Iter: F-p1-seo-2-favicon. Modern browsers honour the
+    ``<link rel="icon" type="image/svg+xml">`` in `base.html`, but
+    naive clients (curl, some bots, the Lighthouse runner without
+    DOM-discovery) hit `/favicon.ico` directly. Without this view
+    those requests 404, polluting the console + the LHCI report.
+
+    Implementation: read the SVG once at module load, cache in a
+    module-level variable, return it with `Content-Type: image/svg+xml`.
+    Browsers honour the Content-Type even when the URL ends in `.ico`.
+    """
+    global _FAVICON_SVG_BYTES
+    if _FAVICON_SVG_BYTES is None:
+        from django.conf import settings as _settings
+
+        candidates = [_settings.BASE_DIR / "static" / "img" / "favicon.svg"]
+        # When the project is collected (`collectstatic`) STATIC_ROOT
+        # also has the file; in dev the `static/` source dir is the
+        # source of truth.
+        for path in candidates:
+            if path.exists():
+                _FAVICON_SVG_BYTES = path.read_bytes()
+                break
+        else:
+            # Defensive: if the file went missing we still return a
+            # valid response rather than letting a 500 leak.
+            _FAVICON_SVG_BYTES = (
+                b'<svg xmlns="http://www.w3.org/2000/svg" '
+                b'viewBox="0 0 64 64"><rect width="64" height="64" fill="#0c2046"/></svg>'
+            )
+    response = HttpResponse(_FAVICON_SVG_BYTES, content_type="image/svg+xml")
+    # Long-lived cache: browsers + CDNs can keep the favicon for a
+    # year. Bumping the SVG bytes implicitly busts the cache because
+    # most clients fetch on first visit per session anyway.
+    response["Cache-Control"] = "public, max-age=31536000"
+    return response
+
+
 # Path da escludere dall'indicizzazione tramite robots.txt.
 # Note:
 # - /contact/ NON è in lista: è una pagina pubblica utile a SEO/lead.
