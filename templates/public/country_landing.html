@@ -67,7 +67,7 @@
     country e il canonical URL già sanitizzato.
   {% endcomment %}
   {% if json_ld_legal_service_json %}
-  <script type="application/ld+json">{{ json_ld_legal_service_json|safe }}</script>
+  <script type="application/ld+json" nonce="{{ CSP_NONCE }}">{{ json_ld_legal_service_json|safe }}</script>
   {% endif %}
 {% endblock %}
 

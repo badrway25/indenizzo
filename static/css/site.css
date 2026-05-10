@@ -675,3 +675,7 @@ body { padding-bottom: var(--cookie-banner-h, 0px); }
   a { color: var(--ink-900); text-decoration: underline; }
   .bg-ink-950, .bg-ink-900 { background: #fff !important; color: var(--ink-950) !important; }
 }
+
+/* ----- F-p0-codice-4-csp: honeypot anti-bot utility (no inline style) ----- */
+.is-honeypot { position: absolute; left: -9999px; top: -9999px; }
+

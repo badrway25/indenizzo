@@ -31,7 +31,7 @@
     {% csrf_token %}
 
     {# Honeypot anti-bot (nascosto agli utenti reali via CSS + aria-hidden) #}
-    <div aria-hidden="true" style="position:absolute; left:-9999px; top:-9999px;">
+    <div aria-hidden="true" class="is-honeypot">
       <label for="id_website">{% translate "Website (do not fill)" %}</label>
       {{ form.website }}
     </div>

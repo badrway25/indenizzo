@@ -34,9 +34,14 @@ COUNTRY_PATHS = [
 
 
 def _extract_json_ld(html: str) -> dict | None:
-    """Estrae il primo blocco <script type="application/ld+json">."""
+    """Estrae il primo blocco <script type="application/ld+json">.
+
+    Tollera attributi addizionali (es. `nonce="..."` aggiunto dal
+    F-p0-codice-4-csp): il `type` puo' apparire in qualunque posizione
+    tra gli attributi del tag.
+    """
     m = re.search(
-        r'<script\s+type="application/ld\+json">(.+?)</script>',
+        r'<script\b[^>]*\btype="application/ld\+json"[^>]*>(.+?)</script>',
         html,
         flags=re.IGNORECASE | re.DOTALL,
     )

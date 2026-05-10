@@ -30,7 +30,7 @@
 Native inputs rendered via {{ form.field }} need CSS classes applied at
 runtime to look premium. JS-free fallback: inputs work browser-default.
 {% endcomment %}
-<script>
+<script nonce="{{ CSP_NONCE }}">
   (function(){
     const cls = "mt-1 w-full rounded-xl border border-stone2-200 bg-sand-50 px-3 py-2.5 focus:border-gold-500 focus:bg-white outline-none";
     document.querySelectorAll('form input[type="text"]:not([type="hidden"]), form input[type="number"], form select, form textarea').forEach(function(el){

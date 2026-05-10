@@ -1,20 +1,22 @@
 """
 Django system checks per `apps.core`.
 
-Iter: F-p0-codice-3-footer-pass1 (audit/indennizzati-platform).
+Iter:
+- F-p0-codice-3-footer-pass1 (`core.E001`/`core.W001`):
+  identificazione professionale obbligatoria.
+- F-p0-codice-4-csp (`core.E002`, `core.E003`):
+  Content-Security-Policy enforcing in produzione.
 
 Scopo: bloccare `manage.py check` (e quindi il deploy in produzione)
-quando gli identificativi professionali obbligatori dello Studio non
-sono configurati nel footer. Senza questi dati la piattaforma viola
-gli obblighi deontologici (art. 17-bis Cod. deont. + D.Lgs. 70/2003
-art. 7 + L. 247/2012 art. 12).
+quando la configurazione di sicurezza/deontologia minima non e'
+soddisfatta:
+- footer professionale: art. 17-bis Cod. deont. + D.Lgs. 70/2003 art. 7;
+- CSP enforcing: chiude P0-SEC-1 in `docs/SECURITY_INDEX.md`.
 
 Logica:
-- attivo solo in scenario *production-like* (`DEBUG=False`);
-- in dev (`DEBUG=True`) emette al massimo un Warning, non un Error,
-  cosi' lo sviluppatore non e' bloccato durante il lavoro normale;
-- i campi minimi obbligatori sono concordati nel batch P0-CODICE-3:
-  vedi documentazione `docs/LEGAL_COMPLIANCE_CONTENT_AUDIT.md` Sez. 1.2.
+- attivi solo in scenario *production-like* (`DEBUG=False`);
+- in dev (`DEBUG=True`) i check footer emettono Warning, i check CSP
+  sono silenti (default sicuro: CSP_ENABLED=True).
 """
 
 from __future__ import annotations
@@ -104,3 +106,71 @@ def check_studio_professional_identification(app_configs, **kwargs):
             id="core.W001",
         )
     ]
+
+
+@register("core")
+def check_csp_enabled_in_production(app_configs, **kwargs):
+    """
+    `core.E002` — fail in produzione se CSP non e' attivo.
+
+    Chiude P0-SEC-1 (`docs/SECURITY_INDEX.md`): il deploy in
+    produzione deve emettere `Content-Security-Policy`. Se
+    `CSP_ENABLED=False` con `DEBUG=False`, blocchiamo.
+
+    In dev (`DEBUG=True`) il check e' silenzioso: lo sviluppatore
+    puo' disattivare CSP per debug locale senza fastidi.
+    """
+    if getattr(settings, "DEBUG", False):
+        return []
+    if not getattr(settings, "CSP_ENABLED", True):
+        return [
+            Error(
+                "CSP_ENABLED=False in production-like scenario. The site "
+                "would deploy without a Content-Security-Policy header, "
+                "leaving XSS/clickjacking mitigations entirely to the "
+                "reverse proxy (no Django-side guarantee).",
+                hint=(
+                    "Set CSP_ENABLED=True before deploy. To dry-run the "
+                    "policy without enforcing, use CSP_REPORT_ONLY=True "
+                    "(but consider that production scenarios also fail "
+                    "core.E003 in that case)."
+                ),
+                id="core.E002",
+            )
+        ]
+    return []
+
+
+@register("core")
+def check_csp_enforcing_in_production(app_configs, **kwargs):
+    """
+    `core.E003` — fail in produzione se CSP gira solo in
+    Report-Only.
+
+    Report-Only e' utile per dry-run su staging, ma non offre
+    protezione attiva. Per chiudere P0-SEC-1 vogliamo enforcing.
+
+    In dev (`DEBUG=True`) il check e' silenzioso.
+    """
+    if getattr(settings, "DEBUG", False):
+        return []
+    csp_enabled = getattr(settings, "CSP_ENABLED", True)
+    if not csp_enabled:
+        # Caso gia' coperto da core.E002, evita doppio segnale.
+        return []
+    if getattr(settings, "CSP_REPORT_ONLY", False):
+        return [
+            Error(
+                "CSP_REPORT_ONLY=True in production-like scenario. The "
+                "browser would only report violations, not block them. "
+                "P0-SEC-1 (closing CSP gap) requires enforcing.",
+                hint=(
+                    "Set CSP_REPORT_ONLY=False before deploy. To run "
+                    "report-only in parallel with enforcing (advanced), "
+                    "use a custom CONTENT_SECURITY_POLICY_REPORT_ONLY "
+                    "setting alongside enforcing."
+                ),
+                id="core.E003",
+            )
+        ]
+    return []

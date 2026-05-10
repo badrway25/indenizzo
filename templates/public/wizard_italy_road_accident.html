@@ -45,7 +45,7 @@
     {% csrf_token %}
 
     {# Honeypot anti-bot — invisibile agli utenti reali #}
-    <div aria-hidden="true" style="position:absolute; left:-9999px; top:-9999px;">
+    <div aria-hidden="true" class="is-honeypot">
       <label for="id_website">{% translate "Website (do not fill)" %}</label>
       {{ form.website }}
     </div>
@@ -157,7 +157,7 @@ Tailwind defaults aren't applied to native inputs/selects rendered via
 form premium without breaking server-side rendering. JS-free fallback:
 the inputs still work, just look browser-default.
 {% endcomment %}
-<script>
+<script nonce="{{ CSP_NONCE }}">
   (function(){
     const cls = "mt-1 w-full rounded-xl border border-stone2-200 bg-sand-50 px-3 py-2.5 focus:border-gold-500 focus:bg-white outline-none";
     document.querySelectorAll('form input[type="date"], form input[type="number"], form input[type="text"]:not([type="hidden"])').forEach(function(el){

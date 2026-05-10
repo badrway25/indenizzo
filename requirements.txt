@@ -38,3 +38,7 @@ sentry-sdk[django]>=2.18,<3
 # il flusso di attivazione (locale-first → staging → prod).
 django-otp>=1.5,<2
 qrcode>=7.4,<9
+# Content-Security-Policy header emission (F-p0-codice-4-csp).
+# Pin alla 4.x: API stabile, supporta nonce e direttive
+# tradizionali via settings. Non a INSTALLED_APPS — solo middleware.
+django-csp>=4.0,<5

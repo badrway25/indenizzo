@@ -1,7 +1,7 @@
 {% load i18n %}
 
 {# Honeypot anti-bot — invisible to real users #}
-<div aria-hidden="true" style="position:absolute; left:-9999px; top:-9999px;">
+<div aria-hidden="true" class="is-honeypot">
   <label for="id_website">{% translate "Website (do not fill)" %}</label>
   {{ form.website }}
 </div>
@@ -164,7 +164,7 @@
   </button>
 </div>
 
-<script>
+<script nonce="{{ CSP_NONCE }}">
   // F-inheritance-wizard-spouse-gender-pass2 — show/hide the spouse-gender
   // block based on the spouse checkbox. JS-free fallback: the block stays
   // visible (server still validates conditional requirement).

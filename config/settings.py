@@ -119,6 +119,13 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
 # ---------------------------------------------------------------------------
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    # CSP middleware (F-p0-codice-4-csp): emette Content-Security-Policy
+    # quando CONTENT_SECURITY_POLICY e' configurato (vedi sotto). Posizionato
+    # subito dopo SecurityMiddleware (early in the chain) cosi' che la policy
+    # esca anche per response generate da middleware/view in seguito.
+    # Lazy: se CSP_ENABLED=False, le DIRECTIVES sono vuote e il middleware
+    # non emette nulla.
+    "csp.middleware.CSPMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -159,6 +166,11 @@ TEMPLATES = [
                 # `hreflang_alternates` per pagine pubbliche multilingua
                 # (allowlist esplicita).
                 "apps.core.context_processors.seo_global_hreflang",
+                # F-p0-codice-4-csp: espone `CSP_NONCE` al template per
+                # gli inline `<script>` e `<style>`. Il valore e' lazy:
+                # se il template non lo usa, il middleware non emette
+                # `'nonce-...'` nell'header.
+                "csp.context_processors.nonce",
             ],
         },
     },
@@ -511,3 +523,89 @@ LOGGING = {
         },
     },
 }
+
+
+# ---------------------------------------------------------------------------
+# Content-Security-Policy (F-p0-codice-4-csp)
+#
+# Chiude P0-SEC-1 (vedi `docs/SECURITY_INDEX.md`). Usiamo `django-csp` 4.x
+# con nonce per-request via `csp.middleware.CSPMiddleware`. Inline
+# `<script>` e `<style>` ricevono `nonce="{{ CSP_NONCE }}"` (vedi
+# `templates/base.html` e `templates/partials/cookie_consent_banner.html`).
+#
+# Filosofia:
+# - default-src 'self': baseline restrittiva.
+# - script-src/style-src: 'self' + nonce (no `unsafe-inline`).
+# - frame-ancestors 'none', object-src 'none', base-uri 'self',
+#   form-action 'self': lock-down clickjacking/XSS.
+# - img-src include `data:` e `blob:` per le immagini Pexels in
+#   media/ e per data URI generati dal frontend (es. SVG inline).
+# - font-src include `https://fonts.gstatic.com`: Google Fonts e'
+#   tuttora servito da CDN (debito P1-LEG-1 in
+#   `LEGAL_COMPLIANCE_CONTENT_AUDIT.md` Sez. 4 — hostare le font
+#   localmente. Quando chiuso, rimuovere dalla policy).
+# - style-src include `https://fonts.googleapis.com` per la stessa
+#   ragione (CSS delle font CDN).
+#
+# `CSP_ENABLED` e' opt-in via env; default True. Disattivabile per
+# debug locale. In prod (`DEBUG=False`) un system check
+# `core.E002` blocca il deploy se CSP_ENABLED=False.
+#
+# `CSP_REPORT_ONLY=True` emette `Content-Security-Policy-Report-Only`
+# invece di enforcing — utile per dry-run su staging. Default False
+# (enforcing). In prod (`DEBUG=False`) il system check `core.E003`
+# blocca il deploy se CSP_REPORT_ONLY=True (preferiamo enforcing).
+#
+# `CSP_REPORT_URI` opzionale: endpoint dove il browser POST violations.
+# ---------------------------------------------------------------------------
+CSP_ENABLED = env.bool("CSP_ENABLED", default=True)
+CSP_REPORT_ONLY = env.bool("CSP_REPORT_ONLY", default=False)
+CSP_REPORT_URI = env("CSP_REPORT_URI", default="")
+
+
+def _build_csp_directives() -> dict:
+    """
+    Costruisce le DIRECTIVES per `CONTENT_SECURITY_POLICY`.
+
+    Tutte le voci sono parametrizzate via env per permettere override
+    tattico in staging/prod senza toccare il codice. I default sono
+    una baseline ragionevole per il sito reale (verificata in
+    P0-CODICE-4 con browser live).
+    """
+    from csp.constants import NONE, NONCE, SELF
+
+    directives = {
+        "default-src": env.list("CSP_DEFAULT_SRC", default=[SELF]) or [SELF],
+        "script-src": env.list("CSP_SCRIPT_SRC", default=[SELF]) + [NONCE],
+        "style-src": (
+            env.list(
+                "CSP_STYLE_SRC",
+                default=[SELF, "https://fonts.googleapis.com"],
+            )
+            + [NONCE]
+        ),
+        "img-src": env.list(
+            "CSP_IMG_SRC",
+            default=[SELF, "data:", "blob:"],
+        ),
+        "font-src": env.list(
+            "CSP_FONT_SRC",
+            default=[SELF, "data:", "https://fonts.gstatic.com"],
+        ),
+        "connect-src": env.list("CSP_CONNECT_SRC", default=[SELF]),
+        "frame-ancestors": env.list("CSP_FRAME_ANCESTORS", default=[NONE]),
+        "base-uri": env.list("CSP_BASE_URI", default=[SELF]),
+        "form-action": env.list("CSP_FORM_ACTION", default=[SELF]),
+        "object-src": env.list("CSP_OBJECT_SRC", default=[NONE]),
+    }
+    if CSP_REPORT_URI:
+        directives["report-uri"] = [CSP_REPORT_URI]
+    return directives
+
+
+if CSP_ENABLED:
+    _csp_config = {"DIRECTIVES": _build_csp_directives()}
+    if CSP_REPORT_ONLY:
+        CONTENT_SECURITY_POLICY_REPORT_ONLY = _csp_config
+    else:
+        CONTENT_SECURITY_POLICY = _csp_config
