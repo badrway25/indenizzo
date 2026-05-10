@@ -554,6 +554,44 @@ SPECIAL_CATEGORIES_NOTICE_VERSION = env(
 
 
 # ---------------------------------------------------------------------------
+# Data retention policy scaffold (F-p0-leg-4-retention)
+#
+# Policy retention "wide": Lead, Simulation, ConsentRecord, audit log
+# privacy. Iter complementare a STAFF_AUDIT_RETENTION_* (pass 10), che
+# resta dedicato esclusivamente a StaffAccessEvent + StaffSecurityAlert.
+#
+# Filosofia P0:
+# - SCAFFOLD ONLY: lo Studio non ha ancora firmato i giorni effettivi.
+#   I default `*_DAYS` qui sono valori di sviluppo (1 anno per dati
+#   personali, 5 anni per consensi e audit) per permettere ai test di
+#   produrre cutoff deterministici. NON sono un parere legale.
+# - DRY-RUN PRIMA DI TUTTO: `RETENTION_MODE` default = `dry_run`.
+# - ANONYMIZE PRIMA DI DELETE: il delete fisico non gira in automatico
+#   sui dati legali, neanche con `--yes-i-understand`, finche' lo Studio
+#   non firma la policy (`RETENTION_REQUIRE_SIGNED_VERSION=True` in
+#   produzione).
+# - SYSTEM CHECK BLOCCANTE: in produzione (`DEBUG=False`) il check
+#   `compliance.E001` blocca `manage.py check` se la policy version e'
+#   ancora `working-copy-*` o `draft-*` o se `RETENTION_MODE` e' un
+#   valore invalido.
+# ---------------------------------------------------------------------------
+RETENTION_POLICY_VERSION = env(
+    "RETENTION_POLICY_VERSION", default="working-copy-2026-05-10"
+)
+RETENTION_ENABLED = env.bool("RETENTION_ENABLED", default=False)
+RETENTION_MODE = env("RETENTION_MODE", default="dry_run")
+RETENTION_LEAD_DAYS = env.int("RETENTION_LEAD_DAYS", default=365)
+RETENTION_SIMULATION_DAYS = env.int("RETENTION_SIMULATION_DAYS", default=365)
+RETENTION_CONSENT_RECORD_DAYS = env.int("RETENTION_CONSENT_RECORD_DAYS", default=1825)
+RETENTION_AUDIT_LOG_DAYS = env.int("RETENTION_AUDIT_LOG_DAYS", default=1825)
+# In prod-like il go-live richiede una versione policy firmata. In dev
+# (DEBUG=True) il flag e' silenzioso.
+RETENTION_REQUIRE_SIGNED_VERSION = env.bool(
+    "RETENTION_REQUIRE_SIGNED_VERSION", default=True
+)
+
+
+# ---------------------------------------------------------------------------
 # Content-Security-Policy (F-p0-codice-4-csp)
 #
 # Chiude P0-SEC-1 (vedi `docs/SECURITY_INDEX.md`). Usiamo `django-csp` 4.x

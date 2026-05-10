@@ -192,6 +192,9 @@ class Lead(models.Model):
     contacted_at = models.DateTimeField(_("contacted at"), null=True, blank=True)
     converted_at = models.DateTimeField(_("converted at"), null=True, blank=True)
 
+    anonymized = models.BooleanField(_("anonymized"), default=False, db_index=True)
+    anonymized_at = models.DateTimeField(_("anonymized at"), null=True, blank=True)
+
     class Meta:
         verbose_name = _("lead")
         verbose_name_plural = _("leads")

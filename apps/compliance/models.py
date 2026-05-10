@@ -316,6 +316,82 @@ class PrivacyAuditEvent(models.Model):
         return f"[{self.event_type}] {who} → {self.target_model}:{self.target_object_id}"
 
 
+class RetentionRunLog(models.Model):
+    """
+    Append-only log di ogni esecuzione della retention policy.
+
+    Iter: F-p0-leg-4-retention.
+
+    Ogni invocazione di `apps.compliance.retention.run_retention` (sia
+    da management command, sia da Celery task futuro) crea una row qui
+    PRIMA di toccare qualunque tabella, e la aggiorna con i conteggi
+    finali al termine. Cosi' uno staff member puo' ricostruire dopo:
+    - quando e' partita la retention,
+    - quale policy version era firmata,
+    - quale modalita' (dry_run/anonymize/delete),
+    - quanti record erano candidati,
+    - quanti sono stati effettivamente toccati,
+    - se e' fallita, con quale errore.
+
+    REGOLA: nessun PII qui. `notes` e `error_message` sono per
+    operatori, non per dati utente.
+    """
+
+    class Mode(models.TextChoices):
+        DRY_RUN = "dry_run", _("Dry run")
+        ANONYMIZE = "anonymize", _("Anonymize")
+        DELETE = "delete", _("Delete")
+
+    class Status(models.TextChoices):
+        STARTED = "started", _("Started")
+        SUCCESS = "success", _("Success")
+        FAILED = "failed", _("Failed")
+
+    started_at = models.DateTimeField(_("started at"), auto_now_add=True, db_index=True)
+    finished_at = models.DateTimeField(_("finished at"), null=True, blank=True)
+    policy_version = models.CharField(_("policy version"), max_length=64)
+    mode = models.CharField(_("mode"), max_length=16, choices=Mode.choices)
+    dry_run = models.BooleanField(_("dry run"), default=True)
+
+    lead_candidates_count = models.PositiveIntegerField(_("lead candidates"), default=0)
+    simulation_candidates_count = models.PositiveIntegerField(
+        _("simulation candidates"), default=0
+    )
+    consent_candidates_count = models.PositiveIntegerField(_("consent candidates"), default=0)
+    audit_candidates_count = models.PositiveIntegerField(_("audit candidates"), default=0)
+
+    anonymized_count = models.PositiveIntegerField(_("anonymized count"), default=0)
+    deleted_count = models.PositiveIntegerField(_("deleted count"), default=0)
+
+    status = models.CharField(
+        _("status"),
+        max_length=16,
+        choices=Status.choices,
+        default=Status.STARTED,
+        db_index=True,
+    )
+    error_message = models.TextField(_("error message"), blank=True)
+    executed_by = models.CharField(
+        _("executed by"),
+        max_length=32,
+        default="system",
+        help_text=_("system|manual|test|cron"),
+    )
+    notes = models.TextField(_("notes"), blank=True)
+
+    class Meta:
+        verbose_name = _("retention run log")
+        verbose_name_plural = _("retention run logs")
+        ordering = ["-started_at", "-pk"]
+        indexes = [
+            models.Index(fields=["mode", "status"]),
+            models.Index(fields=["status", "started_at"]),
+        ]
+
+    def __str__(self) -> str:
+        return f"[{self.mode}/{self.status}] policy={self.policy_version} @ {self.started_at:%Y-%m-%d %H:%M}"
+
+
 class StaffAccessEvent(models.Model):
     """
     Evento di accesso allo staff/admin Django (login success/failed,
