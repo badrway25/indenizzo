@@ -600,7 +600,14 @@ def main() -> int:
                 print(f"           {r.details}")
 
     write_report(report)
-    print(f"\nReport written: {REPORT_PATH.relative_to(REPO_ROOT).as_posix()}")
+    # Tests can redirect REPORT_PATH to a tmp_path outside REPO_ROOT, in
+    # which case `relative_to` raises ValueError. Fall back to the
+    # absolute path for the log line; the script logic is unaffected.
+    try:
+        printable = REPORT_PATH.relative_to(REPO_ROOT).as_posix()
+    except ValueError:
+        printable = str(REPORT_PATH)
+    print(f"\nReport written: {printable}")
     return 0
 
 

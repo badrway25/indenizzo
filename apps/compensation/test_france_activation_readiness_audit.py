@@ -27,7 +27,23 @@ import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCRIPT_PATH = REPO_ROOT / "scripts" / "legal_data" / "audit_france_activation_readiness.py"
-REPORT_PATH = REPO_ROOT / "docs" / "architecture" / "FRANCE_ACTIVATION_READINESS_AUDIT.md"
+
+
+@pytest.fixture(autouse=True)
+def _redirect_audit_report_path(tmp_path, monkeypatch):
+    """Redirect the audit script's REPORT_PATH to tmp_path.
+
+    Without this, every test that calls ``module.main()`` writes the
+    real ``docs/architecture/FRANCE_ACTIVATION_READINESS_AUDIT.md`` and
+    leaves the working tree dirty (timestamp drift on each run). The
+    script reads ``REPORT_PATH`` as a module global, so monkeypatching
+    the attribute redirects all writes — both the ``mkdir`` at the start
+    of ``write_report`` and the ``write_text`` at the end.
+    """
+    module = _load_audit_module()
+    redirected = tmp_path / "FRANCE_ACTIVATION_READINESS_AUDIT.md"
+    monkeypatch.setattr(module, "REPORT_PATH", redirected)
+    yield redirected
 
 
 def _load_audit_module():
@@ -217,11 +233,12 @@ def test_audit_script_runs_and_returns_zero(fr_audit_baseline, tmp_path, setting
 
 
 @pytest.mark.django_db
-def test_audit_writes_markdown_report(fr_audit_baseline):
+def test_audit_writes_markdown_report(fr_audit_baseline, _redirect_audit_report_path):
     module = _load_audit_module()
     module.main()
-    assert REPORT_PATH.exists()
-    body = REPORT_PATH.read_text(encoding="utf-8")
+    redirected = _redirect_audit_report_path
+    assert redirected.exists()
+    body = redirected.read_text(encoding="utf-8")
     # Section markers (12 sections per the iter spec).
     for section in (
         "Executive summary",
