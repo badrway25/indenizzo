@@ -31,6 +31,11 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Lighthouse CI scratch (P1-SEO-2). Reports we want to keep live in
+# `docs/qa/lighthouse-baseline/`; the `.lighthouseci/` dir is the
+# per-run scratch space.
+.lighthouseci/
+
 # IDE
 .vscode/*
 !.vscode/settings.json

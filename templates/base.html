@@ -34,6 +34,15 @@
     <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
     <link rel="stylesheet" href="{% static 'css/site.css' %}">
 
+    {% comment %}
+      F-p1-seo-2-favicon: local SVG favicon. Modern browsers prefer
+      the SVG (scales infinitely on retina + dark mode). Naive
+      `/favicon.ico` requests (curl, some bots) hit a Django route
+      that returns the same SVG with the right Content-Type — see
+      `apps.core.views.favicon_ico`. No external asset.
+    {% endcomment %}
+    <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
+
     <style nonce="{{ CSP_NONCE }}">
       html { scroll-behavior: smooth; }
       body { font-family: 'Inter', system-ui, sans-serif; background: #faf6ef; color: #0c2046; }

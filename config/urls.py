@@ -6,12 +6,16 @@ from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path
 
 from apps.core.sitemaps import SITEMAPS
-from apps.core.views import healthz, robots_txt
+from apps.core.views import favicon_ico, healthz, robots_txt
 
 urlpatterns = [
     # /healthz/ è OUT of i18n_patterns: il monitoring deve hittare
     # un path stabile e indipendente dalla lingua del browser.
     path("healthz/", healthz, name="healthz"),
+    # /favicon.ico è OUT of i18n_patterns: i client lo richiedono
+    # auto-magicamente, deve rispondere 200 in qualunque lingua.
+    # Iter: F-p1-seo-2-favicon.
+    path("favicon.ico", favicon_ico, name="favicon_ico"),
     # /robots.txt è OUT of i18n_patterns: i bot consumano un singolo
     # file plain-text neutrale, identico per ogni dominio/lingua.
     # Iter: F-p0-codice-1-robots-txt.
