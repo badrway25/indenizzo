@@ -12,6 +12,7 @@ class CrmConfig(AppConfig):
         # append-only e non serve auditlog.
         from auditlog.registry import auditlog
 
+        from . import checks  # noqa: F401 — registra system checks crm.E001
         from .models import Lead
 
         auditlog.register(Lead)

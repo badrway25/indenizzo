@@ -11,8 +11,9 @@ Il wizard pubblico (F-wizard) e il lead form (F6) avranno view dedicate.
 from __future__ import annotations
 
 from django.contrib.admin.views.decorators import staff_member_required
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
+from django.urls import reverse
 from django.views.decorators.http import require_GET
 
 from apps.calculators.enums import CaseType
@@ -72,6 +73,51 @@ def healthz(request):
     di hardening produzione.
     """
     return JsonResponse({"status": "ok"})
+
+
+# Path da escludere dall'indicizzazione tramite robots.txt.
+# Note:
+# - /contact/ NON è in lista: è una pagina pubblica utile a SEO/lead.
+# - /contact/thank-you/ è bloccata (pagina post-submit, non SEO-utile).
+# - /wizard/result/ è bloccata: contiene input personali utente
+#   (la regola robots.txt è la prima linea di difesa, ma il vero
+#   noindex sta nel meta tag dei template — robots.txt da solo non
+#   evita indicizzazione di URL già scoperti).
+# - /admin/, /staff/, /reports/ sono back-office.
+_ROBOTS_DISALLOW_PATHS = (
+    "/admin/",
+    "/staff/",
+    "/reports/",
+    "/wizard/result/",
+    "/contact/thank-you/",
+)
+
+
+@require_GET
+def robots_txt(request):
+    """
+    `/robots.txt` statico, servito plain-text.
+
+    Iter: F-p0-codice-1-robots-txt (audit/indennizzati-platform).
+
+    Strategia:
+    - User-agent universale `*`;
+    - Disallow su back-office, pagine post-submit con dati utente,
+      pagine confirmation;
+    - Allow esplicito di /contact/ (pagina pubblica utile a SEO);
+    - Sitemap puntato all'URL assoluto (lo sitemap framework Django
+      e' montato fuori da i18n_patterns).
+    """
+    sitemap_url = request.build_absolute_uri(
+        reverse("django.contrib.sitemaps.views.sitemap")
+    )
+    lines = ["User-agent: *"]
+    lines.extend(f"Disallow: {path}" for path in _ROBOTS_DISALLOW_PATHS)
+    lines.append("Allow: /contact/")
+    lines.append("")
+    lines.append(f"Sitemap: {sitemap_url}")
+    body = "\n".join(lines) + "\n"
+    return HttpResponse(body, content_type="text/plain; charset=utf-8")
 
 
 def _pexels_hero(request, purpose: str, country_code: str | None = None) -> dict | None:
