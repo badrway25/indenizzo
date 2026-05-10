@@ -659,12 +659,13 @@ RETENTION_REQUIRE_SIGNED_VERSION = env.bool(
 #   form-action 'self': lock-down clickjacking/XSS.
 # - img-src include `data:` e `blob:` per le immagini Pexels in
 #   media/ e per data URI generati dal frontend (es. SVG inline).
-# - font-src include `https://fonts.gstatic.com`: Google Fonts e'
-#   tuttora servito da CDN (debito P1-LEG-1 in
-#   `LEGAL_COMPLIANCE_CONTENT_AUDIT.md` Sez. 4 — hostare le font
-#   localmente. Quando chiuso, rimuovere dalla policy).
-# - style-src include `https://fonts.googleapis.com` per la stessa
-#   ragione (CSS delle font CDN).
+# - font-src e' `'self'` solo: P1-SEC-1 (`p1/local-fonts-csp-hardening`)
+#   ha vendored Inter / Cormorant Garamond / Amiri / Tajawal sotto
+#   `static/fonts/` (vedi `static/fonts/README.md`). Niente fetch
+#   runtime verso `fonts.gstatic.com`.
+# - style-src e' `'self'` + nonce. Stessa motivazione: niente piu'
+#   `fonts.googleapis.com` perche' il CSS `@font-face` e' locale
+#   (`static/css/fonts.css`).
 #
 # `CSP_ENABLED` e' opt-in via env; default True. Disattivabile per
 # debug locale. In prod (`DEBUG=False`) un system check
@@ -699,7 +700,7 @@ def _build_csp_directives() -> dict:
         "style-src": (
             env.list(
                 "CSP_STYLE_SRC",
-                default=[SELF, "https://fonts.googleapis.com"],
+                default=[SELF],
             )
             + [NONCE]
         ),
@@ -709,7 +710,7 @@ def _build_csp_directives() -> dict:
         ),
         "font-src": env.list(
             "CSP_FONT_SRC",
-            default=[SELF, "data:", "https://fonts.gstatic.com"],
+            default=[SELF],
         ),
         "connect-src": env.list("CSP_CONNECT_SRC", default=[SELF]),
         "frame-ancestors": env.list("CSP_FRAME_ANCESTORS", default=[NONE]),
