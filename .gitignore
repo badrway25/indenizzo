@@ -36,6 +36,11 @@ yarn-error.log*
 # per-run scratch space.
 .lighthouseci/
 
+# Per-run hygiene reports (P1-LEG-2). The script writes JSON here on
+# demand; nothing in `artifacts/` is canonical. Keep findings in PR
+# descriptions or fold them into `docs/qa/` if persistent.
+artifacts/
+
 # IDE
 .vscode/*
 !.vscode/settings.json
