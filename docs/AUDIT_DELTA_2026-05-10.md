@@ -308,3 +308,77 @@ Attendo conferma utente sui seguenti punti:
    o dopo conferma utente separata?**
 
 Senza conferma su questi 4 punti non procedo a scrittura ulteriore.
+
+---
+
+## 11. P0 execution closure — commits and residual gates
+
+**Aggiornamento**: 2026-05-10. Tutti i punti 1-4 di Sez. 10 sono stati
+confermati e l'esecuzione P0 è chiusa lato dev. Vedi
+`docs/P0_TECHNICAL_CLOSURE_2026-05-10.md` per il consolidato
+operativo.
+
+### 11.1 Commit P0 in ordine
+
+| # | Commit | Iter |
+|---|---|---|
+| 1 | `b45ec5d` | P0-CODICE-1 — robots.txt + noindex + `crm.E001` |
+| 2 | `1b2cfbc` | P0-CODICE-2 — global hreflang + /contact/ indexability |
+| 3 | `5fe7e11` | P0-CODICE-3 — professional identification footer + `core.E001/W001` |
+| 4 | `d2bd12b` | P0-CODICE-4 — CSP enforcing + `core.E002/E003` |
+| 5 | `d57a22d` | P0-LEG-3 — double consent art. 6 + art. 9 + `core.E004` |
+| 6 | `88a6f9e` | P0-LEG-4 — retention scaffold + cron command + `compliance.E001` |
+| 7 | `3b3c4f7` | test infra — FRANCE timestamp drift fixed |
+| 8 | `0431ce1` | P0-LEG-1/6 — versioned privacy + disclaimer pages + `core.E006/E007` |
+| 9 | `96e9320` | P0-LEG-2 — mandate scaffold + `core.E008` |
+
+### 11.2 Stato P0 alla chiusura
+
+- **Tutti i P0 tecnici chiusi** (CSP, robots, noindex, hreflang,
+  footer identificativi, system check `LEAD_NOTIFICATION_*`).
+- **Tutti i P0 legali scaffolded** (privacy notice + special
+  categories notice + privacy policy page + disclaimer page +
+  retention policy + mandato professionale): codice in linea,
+  default working-copy, system check blocca produzione finché lo
+  Studio non firma.
+- 9 system check attivi (`core.E001/E002/E003/E004/E006/E007/E008/W001`,
+  `compliance.E001`, `crm.E001`).
+- Test suite: 1720 passed, 1 skipped.
+- Working tree clean dopo `pytest -q` (micro-fix `3b3c4f7` ha chiuso
+  il drift del timestamp FRANCE).
+
+### 11.3 Residual gates non-tecnici
+
+L'unica cosa che rimane prima del go-live non è codice: è la firma
+Studio sui contenuti elencati in `docs/STUDIO_SIGNOFF_ACTION_PACK.md`
+e la valorizzazione delle env var di
+`docs/PRODUCTION_ENV_REQUIRED_VARS.md`. Verifica empirica del
+2026-05-10:
+
+```text
+$ DJANGO_DEBUG=False python manage.py check        →  17 errors
+$ DJANGO_DEBUG=False <env tutte firmate>           →  0 issues
+```
+
+### 11.4 Branch isolato
+
+Il lavoro Tunisia/EU650 pre-esistente è stato messo da parte sul
+branch `work/tunisia-csp-eu650-restore` (commit `b44a5c2`),
+**non merged** in `audit/indennizzati-platform`. Quando lo Studio è
+pronto per la review tunisina, quel branch è il punto di partenza
+indipendente.
+
+### 11.5 Prossimo batch consigliato
+
+Vedi `docs/ROADMAP_PRIORITIZED.md` per il dettaglio. Le opzioni
+naturali post-P0 sono:
+
+1. **P1-CRM** — webhook dispatcher firmato HMAC + n8n workflow.
+2. **P1-LEG-1** — Google Fonts hostati localmente + restringimento
+   CSP `font-src` / `style-src`.
+3. **P1-SEO-2** — Lighthouse CI gating.
+4. **Tunisia/EU650** — review e merge del branch isolato.
+5. **Studio review non-IT** — sblocca il vincolo `P0-MVP-1` di
+   `LOCAL_NEXT_STEPS.md` Sez. 0 (almeno un caso d'uso non-IT verde).
+
+La scelta dipende dalle priorità dello Studio.

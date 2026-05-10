@@ -27,31 +27,37 @@ possano scegliere il prossimo batch senza dover ricucire 7 audit.
 
 ## 1. P0 — Pre go-live (bloccanti)
 
+> **2026-05-10 — Stato P0**: tutto il lato tecnico è chiuso e tutto
+> il lato legale è scaffoldato (codice in linea, default working-copy,
+> system check blocca produzione finché lo Studio firma). Vedi
+> `docs/P0_TECHNICAL_CLOSURE_2026-05-10.md` per il consolidato.
+> Le righe sotto mostrano lo stato finale.
+
 ### 1.1 P0 sicurezza/tecnico (vedi `SECURITY_INDEX.md`)
 
-| ID | Voce | Effort | Owner |
+| ID | Voce | Stato | Commit / Note |
 |---|---|---|---|
-| P0-SEC-1 | Content-Security-Policy emessa (django-csp o reverse proxy) | M | dev |
-| P0-SEC-2 | Django system check su `LEAD_NOTIFICATION_TO_EMAILS=[]` | S | dev |
+| P0-SEC-1 | Content-Security-Policy emessa (django-csp o reverse proxy) | ✅ CHIUSO | `d2bd12b` (P0-CODICE-4): django-csp 4.x + nonce + `core.E002/E003` |
+| P0-SEC-2 | Django system check su `LEAD_NOTIFICATION_TO_EMAILS=[]` | ✅ CHIUSO | `b45ec5d` (P0-CODICE-1): `crm.E001` |
 
 ### 1.2 P0 deontologia/legale (vedi `LEGAL_COMPLIANCE_CONTENT_AUDIT.md`)
 
-| ID | Voce | Effort | Owner |
+| ID | Voce | Stato | Commit / Note |
 |---|---|---|---|
-| P0-LEG-1 | Privacy policy completa firmata, in 4 lingue, versionata via `ConsentTextVersion` | L | Studio + dev |
-| P0-LEG-2 | Modello mandato professionale + flow `mandate_signed` | M | Studio + dev |
-| P0-LEG-3 | Doppio consenso (GDPR art. 6 + art. 9) per dati particolari nel wizard | M | Studio + dev |
-| P0-LEG-4 | Retention policy firmata + cron implementato | M | Studio + dev |
-| P0-LEG-5 | Identificativi professionali nel footer (Ordine, P.IVA, PEC, polizza) | S | Studio + dev |
-| P0-LEG-6 | Disclaimer firmato (oggi: working version) | S | Studio |
+| P0-LEG-1 | Privacy policy completa firmata, in 4 lingue, versionata | ✅ scaffold (firma Studio in attesa) | `0431ce1` — `core.E006` blocca prod |
+| P0-LEG-2 | Modello mandato professionale + flow `mandate_signed` | ✅ scaffold (firma Studio in attesa) | `96e9320` — `core.E008` blocca prod |
+| P0-LEG-3 | Doppio consenso (GDPR art. 6 + art. 9) per dati particolari nel wizard | ✅ scaffold (firma Studio in attesa) | `d57a22d` — `core.E004` blocca prod |
+| P0-LEG-4 | Retention policy firmata + cron implementato | ✅ scaffold (firma Studio in attesa) | `88a6f9e` — `compliance.E001` blocca prod |
+| P0-LEG-5 | Identificativi professionali nel footer (Ordine, P.IVA, PEC, polizza) | ✅ scaffold (dati Studio in attesa) | `5fe7e11` — `core.E001` blocca prod |
+| P0-LEG-6 | Disclaimer firmato | ✅ scaffold (firma Studio in attesa) | `0431ce1` — `core.E007` blocca prod |
 
 ### 1.3 P0 SEO (vedi `SEO_AUDIT_AND_CONTENT_ARCHITECTURE.md`)
 
-| ID | Voce | Effort | Owner |
+| ID | Voce | Stato | Commit / Note |
 |---|---|---|---|
-| P0-SEO-1 | `robots.txt` servito | S | dev |
-| P0-SEO-2 | `noindex` su `/wizard/result/<uuid>/` e `/contact/thank-you/` | S | dev |
-| P0-SEO-3 | hreflang globale (oltre 5 country landings) | M | dev |
+| P0-SEO-1 | `robots.txt` servito | ✅ CHIUSO | `b45ec5d` |
+| P0-SEO-2 | `noindex` su `/wizard/result/<uuid>/` e `/contact/thank-you/` | ✅ CHIUSO | `b45ec5d` |
+| P0-SEO-3 | hreflang globale (oltre 5 country landings) | ✅ CHIUSO | `1b2cfbc` |
 
 ### 1.4 P0 multi-paese (vedi `MULTI_COUNTRY_PATTERN.md` Sez. 4)
 
@@ -73,6 +79,18 @@ possano scegliere il prossimo batch senza dover ricucire 7 audit.
 (`docs/legal_sources/<COUNTRY>_LEGAL_REVIEW_PACKAGE.md`) riga per
 riga. Niente codice dev può sbloccare questo P0 senza la firma
 Studio.
+
+### 1.5 P0 closure recap
+
+Tutti i P0 dev-side sono chiusi al **2026-05-10**. Per andare in
+produzione servono solo le firme Studio (vedi
+`docs/STUDIO_SIGNOFF_ACTION_PACK.md`) e la valorizzazione delle env
+var (`docs/PRODUCTION_ENV_REQUIRED_VARS.md`). La checklist
+operativa è in `docs/GO_LIVE_GATE_CHECKLIST.md`.
+
+**Prossimo batch consigliato**: `P1-CRM-1..7` (webhook firmato HMAC +
+n8n workflow) oppure `P1-LEG-1` (Google Fonts locali per chiudere il
+debito CSP-via-CDN). Scelta operativa allo Studio.
 
 ---
 
