@@ -62,6 +62,7 @@ VALID_PAYLOAD = {
     "case_type": "",
     "message": "Ho avuto un incidente stradale a Milano e vorrei capire i passi.",
     "privacy_accepted": "on",
+    "special_categories_accepted": "on",
     "simulation_public_id": "",
     "website": "",
 }

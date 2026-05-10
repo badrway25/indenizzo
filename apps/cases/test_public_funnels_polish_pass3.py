@@ -253,6 +253,7 @@ def test_calculated_result_has_amounts_pdf_cta_and_new_sections(italy_calculator
             "permanent_disability_percentage": 10,
             "fault_percentage": 0,
             "consent_simulation": "on",
+            "special_categories_consent": "on",
         },
         follow=True,
     )
@@ -312,6 +313,7 @@ def test_unavailable_result_has_contact_cta_and_no_amounts(italy_calculator_fixt
             "permanent_disability_percentage": 10,
             "fault_percentage": 0,
             "consent_simulation": "on",
+            "special_categories_consent": "on",
         },
         follow=True,
     )

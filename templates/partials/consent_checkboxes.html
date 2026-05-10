@@ -1,0 +1,88 @@
+{% load i18n %}
+{% comment %}
+  F-p0-leg-3-consent — partial riutilizzabile per il doppio consenso
+  GDPR art. 6 + art. 9.
+
+  Variabili attese nel context:
+    privacy_field            — bound BooleanField del consenso art. 6
+                                (es. form.privacy_accepted o
+                                 form.consent_simulation)
+    special_categories_field — bound BooleanField del consenso art. 9
+                                (es. form.special_categories_accepted o
+                                 form.special_categories_consent)
+
+  Regole UX/deontologiche:
+  - checkbox NON pre-selezionate (Django `BooleanField(required=True)`
+    di default emette `<input>` senza `checked`);
+  - testo visibile, leggibile (`text-sm`, `leading-relaxed`);
+  - vicino al pulsante submit (chi include questo partial deve metterlo
+    appena prima del bottone);
+  - link a privacy/disclaimer (URL fisse del progetto, ottenute via
+    `{% url %}`);
+  - error message inline sotto ogni checkbox;
+  - compatibile RTL (la struttura usa flexbox con `gap-3`, il margin
+    e' fisico left, ma in RTL `dir="rtl"` ribalta il flexbox, quindi
+    la checkbox finisce a destra del testo come da convenzione araba);
+  - banner "working copy" finche' lo Studio non firma le versioni
+    definitive (vedi `PRIVACY_NOTICE_VERSION` /
+    `SPECIAL_CATEGORIES_NOTICE_VERSION` in `config/settings.py`).
+{% endcomment %}
+<div class="space-y-3" data-consent-block>
+  {% if privacy_field.field.required and special_categories_field.field.required %}
+    <p class="text-[11px] uppercase tracking-[0.18em] text-stone2-500 font-semibold">
+      {% translate "Required consents" %}
+    </p>
+  {% endif %}
+
+  {# --- GDPR art. 6 --- #}
+  <div class="rounded-xl bg-sand-100 border border-stone2-200 p-4 flex items-start gap-3" data-consent-art-6>
+    <input
+      type="checkbox"
+      name="{{ privacy_field.html_name }}"
+      id="{{ privacy_field.id_for_label }}"
+      {% if privacy_field.value %}checked{% endif %}
+      required
+      class="mt-1 w-5 h-5 rounded border-stone2-200 text-ink-950 focus:ring-gold-500"
+    >
+    <label for="{{ privacy_field.id_for_label }}" class="text-sm text-ink-800 leading-relaxed">
+      {{ privacy_field.label }}
+      <a href="{% url 'core:privacy' %}" class="underline hover:text-gold-600">{% translate "Read the privacy notice" %}</a>.
+    </label>
+  </div>
+  {% for err in privacy_field.errors %}
+    <p class="text-xs text-red-700 ms-2" role="alert">{{ err }}</p>
+  {% endfor %}
+
+  {# --- GDPR art. 9 --- #}
+  <div class="rounded-xl bg-sand-100 border border-stone2-200 p-4 flex items-start gap-3" data-consent-art-9>
+    <input
+      type="checkbox"
+      name="{{ special_categories_field.html_name }}"
+      id="{{ special_categories_field.id_for_label }}"
+      {% if special_categories_field.value %}checked{% endif %}
+      required
+      class="mt-1 w-5 h-5 rounded border-stone2-200 text-ink-950 focus:ring-gold-500"
+    >
+    <label for="{{ special_categories_field.id_for_label }}" class="text-sm text-ink-800 leading-relaxed">
+      {{ special_categories_field.label }}
+      <a href="{% url 'core:disclaimer' %}" class="underline hover:text-gold-600">{% translate "Read the disclaimer" %}</a>.
+    </label>
+  </div>
+  {% for err in special_categories_field.errors %}
+    <p class="text-xs text-red-700 ms-2" role="alert">{{ err }}</p>
+  {% endfor %}
+
+  {% comment %}
+    Working-copy banner — visibile finche' le versioni del testo non
+    sono firmate. Quando `PRIVACY_NOTICE_VERSION` / `SPECIAL_CATEGORIES_NOTICE_VERSION`
+    saranno valori firmati (es. "2026-09-15-final"), questo banner
+    sparisce automaticamente. Il system check `core.E004` blocca
+    comunque il deploy in produzione finche' le versioni contengono
+    `working-copy` o `draft`.
+  {% endcomment %}
+  {% if "working-copy" in PRIVACY_NOTICE_VERSION or "working-copy" in SPECIAL_CATEGORIES_NOTICE_VERSION or "draft" in PRIVACY_NOTICE_VERSION or "draft" in SPECIAL_CATEGORIES_NOTICE_VERSION %}
+    <p class="text-xs text-amber-700 leading-relaxed">
+      {% blocktranslate %}Consent texts are working copies pending the Studio's legal sign-off. The platform is not in production.{% endblocktranslate %}
+    </p>
+  {% endif %}
+</div>

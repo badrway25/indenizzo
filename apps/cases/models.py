@@ -136,6 +136,45 @@ class Simulation(models.Model):
         verbose_name=_("consent record"),
         null=True,
         blank=True,
+        help_text=_(
+            "Backward-compatible FK al primo ConsentRecord (simulation_processing). "
+            "Iter F-p0-leg-3-consent: il doppio consenso GDPR art. 6 + art. 9 e' "
+            "tracciato anche tramite i campi denormalizzati privacy_*/special_categories_* "
+            "sotto + un secondo ConsentRecord con purpose `special_categories_processing`."
+        ),
+    )
+
+    # F-p0-leg-3-consent: doppio consenso GDPR (art. 6 base + art. 9
+    # categorie particolari). Vedi `apps/crm/models.py::Lead` per il
+    # disegno gemello. Questi campi sono denormalizzati: il source-of-truth
+    # del consenso firmato resta `compliance.ConsentRecord`.
+    privacy_consent_given = models.BooleanField(
+        _("privacy consent (GDPR art. 6) given"),
+        default=False,
+    )
+    privacy_consent_at = models.DateTimeField(
+        _("privacy consent timestamp"),
+        null=True,
+        blank=True,
+    )
+    privacy_consent_version = models.CharField(
+        _("privacy consent text version"),
+        max_length=64,
+        blank=True,
+    )
+    special_categories_consent_given = models.BooleanField(
+        _("special categories consent (GDPR art. 9) given"),
+        default=False,
+    )
+    special_categories_consent_at = models.DateTimeField(
+        _("special categories consent timestamp"),
+        null=True,
+        blank=True,
+    )
+    special_categories_consent_version = models.CharField(
+        _("special categories consent text version"),
+        max_length=64,
+        blank=True,
     )
 
     ip_address = models.GenericIPAddressField(_("ip address"), null=True, blank=True)

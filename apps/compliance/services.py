@@ -128,6 +128,91 @@ def record_consent(
     return record
 
 
+_PRIVACY_GENERAL_PURPOSE_CODE = "privacy_general"
+_SPECIAL_CATEGORIES_PURPOSE_CODE = "special_categories_processing"
+
+
+def _get_or_create_purpose(code: str, *, name: str, description: str, required_for_contact: bool = False, required_for_simulation: bool = False) -> ConsentPurpose:
+    purpose, _ = ConsentPurpose.objects.get_or_create(
+        code=code,
+        defaults={
+            "name": name,
+            "description": description,
+            "required_for_contact": required_for_contact,
+            "required_for_simulation": required_for_simulation,
+        },
+    )
+    return purpose
+
+
+def record_double_consent(
+    *,
+    request: Any | None,
+    user: Any | None = None,
+    privacy_purpose_code: str,
+    privacy_purpose_label: str,
+    privacy_version: str,
+    special_categories_version: str,
+    metadata: dict | None = None,
+) -> tuple[ConsentRecord, ConsentRecord]:
+    """
+    Registra il doppio consenso GDPR art. 6 + art. 9 in atomic.
+
+    Ritorna `(privacy_record, special_categories_record)`.
+
+    `privacy_purpose_code` e' il codice del consenso art. 6 (varia per
+    contesto: `lead_contact`, `simulation_processing`, ecc.).
+    `privacy_purpose_label` e' il nome leggibile usato come default
+    quando il `ConsentPurpose` viene creato al volo.
+
+    Iter F-p0-leg-3-consent.
+    """
+    privacy_purpose = _get_or_create_purpose(
+        privacy_purpose_code,
+        name=privacy_purpose_label,
+        description=(
+            f"GDPR art. 6 base consent for purpose '{privacy_purpose_code}'."
+        ),
+        required_for_contact=privacy_purpose_code == "lead_contact",
+        required_for_simulation=privacy_purpose_code == "simulation_processing",
+    )
+    special_categories_purpose = _get_or_create_purpose(
+        _SPECIAL_CATEGORIES_PURPOSE_CODE,
+        name="Special categories processing (GDPR art. 9)",
+        description=(
+            "Explicit consent to processing of special categories of personal "
+            "data (health, family events, judicial proceedings) under GDPR "
+            "art. 9.2.a, scoped to the request that gathered it."
+        ),
+        required_for_contact=False,
+        required_for_simulation=False,
+    )
+
+    extra_meta = dict(metadata or {})
+    privacy_metadata = {**extra_meta, "consent_kind": "privacy_general", "version": privacy_version}
+    special_categories_metadata = {
+        **extra_meta,
+        "consent_kind": "special_categories",
+        "version": special_categories_version,
+    }
+
+    privacy_record = record_consent(
+        purpose=privacy_purpose,
+        accepted=True,
+        request=request,
+        user=user,
+        metadata=privacy_metadata,
+    )
+    special_categories_record = record_consent(
+        purpose=special_categories_purpose,
+        accepted=True,
+        request=request,
+        user=user,
+        metadata=special_categories_metadata,
+    )
+    return privacy_record, special_categories_record
+
+
 def has_consent(
     *,
     purpose_code: str,

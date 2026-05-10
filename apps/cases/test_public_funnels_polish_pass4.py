@@ -265,6 +265,7 @@ def test_fr_result_calculated_translates_new_sections(italy_calculator_fixture):
             "permanent_disability_percentage": 10,
             "fault_percentage": 0,
             "consent_simulation": "on",
+            "special_categories_consent": "on",
         },
         follow=True,
     )
@@ -318,6 +319,7 @@ def test_ar_result_unavailable_translates_contact_cta(italy_calculator_fixture):
             "permanent_disability_percentage": 10,
             "fault_percentage": 0,
             "consent_simulation": "on",
+            "special_categories_consent": "on",
         },
         follow=True,
     )

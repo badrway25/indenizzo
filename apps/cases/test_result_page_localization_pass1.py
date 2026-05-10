@@ -136,6 +136,7 @@ def _post_and_follow_inheritance(client: Client, country_code: str, payload_extr
         "sons_count": "1",
         "daughters_count": "1",
         "consent_simulation": "on",
+        "special_categories_consent": "on",
         "website": "",
         **payload_extra,
     }
@@ -150,6 +151,7 @@ def _post_and_follow_road_accident(client: Client, country_code: str) -> str:
         "permanent_disability_percentage": "5",
         "fault_percentage": "0",
         "consent_simulation": "on",
+        "special_categories_consent": "on",
         "website": "",
     }
     response = client.post(url, payload, follow=True)
@@ -237,6 +239,7 @@ def test_fr_result_translated_under_fr_locale(fr_setup):
         "permanent_disability_percentage": "5",
         "fault_percentage": "0",
         "consent_simulation": "on",
+        "special_categories_consent": "on",
         "website": "",
     }
     response = client.post("/fr/wizard/fr/road-accident/", payload, follow=True)
@@ -266,6 +269,7 @@ def test_ma_result_translated_under_ar_locale(morocco_setup):
         "daughters_count": "1",
         "estate_value": "800000",
         "consent_simulation": "on",
+        "special_categories_consent": "on",
         "website": "",
     }
     response = client.post("/ar/wizard/ma/inheritance/", payload, follow=True)

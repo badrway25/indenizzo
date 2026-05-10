@@ -220,6 +220,7 @@ def test_contact_post_under_limit_creates_lead(client: Client):
         "case_type": "",
         "message": "Ho avuto un incidente stradale a Milano e vorrei capire i passi.",
         "privacy_accepted": "on",
+        "special_categories_accepted": "on",
         "simulation_public_id": "",
         "website": "",
     }
@@ -244,6 +245,7 @@ def test_contact_post_over_limit_returns_429_and_no_lead(client: Client):
         "case_type": "",
         "message": "Ho avuto un incidente stradale a Milano e vorrei capire i passi.",
         "privacy_accepted": "on",
+        "special_categories_accepted": "on",
         "simulation_public_id": "",
         "website": "",
     }
@@ -299,6 +301,7 @@ def test_rate_limit_disable_via_override_settings(client: Client):
         "case_type": "",
         "message": "Ho avuto un incidente stradale a Milano e vorrei capire i passi.",
         "privacy_accepted": "on",
+        "special_categories_accepted": "on",
         "simulation_public_id": "",
         "website": "",
     }

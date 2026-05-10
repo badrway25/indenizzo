@@ -253,6 +253,7 @@ def test_tn_public_funnel_still_unavailable_after_pass2(db):
             "daughters_count": "1",
             "estate_value": "500000",
             "consent_simulation": "on",
+            "special_categories_consent": "on",
             "website": "",
         },
         follow=True,

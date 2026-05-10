@@ -126,14 +126,8 @@
       </div>
     </fieldset>
 
-    <div class="rounded-xl bg-sand-100 border border-stone2-200 p-4 flex items-start gap-3">
-      <input type="checkbox" name="{{ form.consent_simulation.html_name }}" id="{{ form.consent_simulation.id_for_label }}" {% if form.consent_simulation.value %}checked{% endif %} required
-        class="mt-1 w-5 h-5 rounded border-stone2-200 text-ink-950 focus:ring-gold-500">
-      <label for="{{ form.consent_simulation.id_for_label }}" class="text-sm text-ink-800 leading-relaxed">
-        {% blocktranslate %}I have read the <a href="/privacy/" class="underline">privacy notice</a> and consent to processing the data above for the sole purpose of producing an indicative simulation.{% endblocktranslate %}
-      </label>
-    </div>
-    {% for err in form.consent_simulation.errors %}<p class="text-xs text-red-700">{{ err }}</p>{% endfor %}
+    {# F-p0-leg-3-consent: doppio consenso GDPR art. 6 + art. 9. #}
+    {% include "partials/consent_checkboxes.html" with privacy_field=form.consent_simulation special_categories_field=form.special_categories_consent %}
 
     <div class="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between pt-2">
       <p class="text-xs text-stone2-500 leading-relaxed">

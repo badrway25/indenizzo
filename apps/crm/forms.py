@@ -61,11 +61,34 @@ class ContactForm(forms.Form):
         widget=forms.Textarea(attrs={"rows": 5}),
         min_length=MESSAGE_MIN_LENGTH,
     )
+    # F-p0-leg-3-consent: doppio consenso GDPR art. 6 + art. 9.
+    # `privacy_accepted` (legacy nome) e' il consenso art. 6 (trattamento
+    # dei dati di contatto per rispondere alla richiesta). Il nuovo
+    # `special_categories_accepted` e' il consenso esplicito art. 9 (dati
+    # particolari: salute, eventi traumatici, decesso, dati legali) che
+    # possono apparire nel campo `message` o emergere dalla descrizione
+    # del caso. Entrambi sono obbligatori sul contact form: la natura
+    # del servizio (richiesta di valutazione legale) implica spesso la
+    # condivisione di dati art. 9 anche solo nel testo libero.
     privacy_accepted = forms.BooleanField(
         label=_("I have read and accept the privacy notice."),
         required=True,
         error_messages={
             "required": _("You must accept the privacy notice to send your request."),
+        },
+    )
+    special_categories_accepted = forms.BooleanField(
+        label=_(
+            "I expressly consent to the processing of special categories of "
+            "personal data (health, family events, judicial proceedings) under "
+            "GDPR art. 9.2.a, for the sole purpose of replying to this request."
+        ),
+        required=True,
+        error_messages={
+            "required": _(
+                "You must give the explicit special-categories consent (GDPR "
+                "art. 9) to send your request."
+            ),
         },
     )
 

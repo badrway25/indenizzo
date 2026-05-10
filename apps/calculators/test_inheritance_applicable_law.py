@@ -169,6 +169,7 @@ def test_to_input_data_normalises_assets_countries():
             "daughters_count": "0",
             "assets_countries": "ma, fr, IT, fr",  # mixed case + duplicate
             "consent_simulation": "on",
+            "special_categories_consent": "on",
             "website": "",
         }
     )
@@ -244,6 +245,7 @@ def test_ma_post_persists_applicable_law_context(morocco_setup):
             "daughters_count": "1",
             "assets_countries": "MA, FR",
             "consent_simulation": "on",
+            "special_categories_consent": "on",
             "website": "",
         },
     )
@@ -274,6 +276,7 @@ def test_tn_post_persists_applicable_law_context(tunisia_setup):
             "daughters_count": "0",
             "assets_countries": "TN",
             "consent_simulation": "on",
+            "special_categories_consent": "on",
             "website": "",
         },
     )
@@ -303,6 +306,7 @@ def test_output_data_contains_internal_applicable_law_decision(morocco_setup):
             "daughters_count": "1",
             "assets_countries": "MA, FR, IT",
             "consent_simulation": "on",
+            "special_categories_consent": "on",
             "website": "",
         },
     )
@@ -336,6 +340,7 @@ def test_public_result_does_not_surface_decision_details(morocco_setup):
             "daughters_count": "1",
             "assets_countries": "MA, FR, IT",
             "consent_simulation": "on",
+            "special_categories_consent": "on",
             "website": "",
         },
         follow=True,
@@ -507,6 +512,7 @@ def test_inheritance_result_renders_single_h1(morocco_setup):
             "sons_count": "1",
             "daughters_count": "1",
             "consent_simulation": "on",
+            "special_categories_consent": "on",
             "website": "",
         },
         follow=True,

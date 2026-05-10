@@ -378,6 +378,7 @@ def test_public_ma_result_does_not_leak_diagnostic_slug(ma_jurisdiction):
             "daughters_count": "1",
             "estate_value": "800000",
             "consent_simulation": "on",
+            "special_categories_consent": "on",
             "website": "",
         },
         follow=True,

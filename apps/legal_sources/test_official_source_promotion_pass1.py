@@ -514,6 +514,7 @@ def test_fr_be_ma_tn_calculators_unavailable_after_promotion():
         body = {
             "csrfmiddlewaretoken": client.cookies["csrftoken"].value,
             "consent_simulation": "on",
+            "special_categories_consent": "on",
             "website": "",
             **payload,
         }

@@ -526,6 +526,34 @@ LOGGING = {
 
 
 # ---------------------------------------------------------------------------
+# Privacy & special-category consent versions (F-p0-leg-3-consent)
+#
+# Versionamento del testo dei due consensi che la piattaforma raccoglie
+# da ogni form pubblico (vedi `templates/partials/consent_checkboxes.html`).
+# Il valore qui memorizzato finisce in:
+#  - `crm.Lead.privacy_consent_version` /
+#    `crm.Lead.special_categories_consent_version`
+#  - `cases.Simulation.privacy_consent_version` /
+#    `cases.Simulation.special_categories_consent_version`
+#  - `compliance.ConsentRecord.text_version` (quando il record viene
+#    creato con `purpose=privacy_general` o `purpose=special_categories_processing`)
+# cosi' il consenso e' tracciabile alla versione esatta del testo
+# che l'utente ha visto al momento del submit.
+#
+# Default `working-copy-...`: scaffold tecnico. Lo Studio firmera' la
+# versione definitiva (es. `2026-09-15-final`) prima del go-live. Il
+# system check `core.E004` (`apps/core/checks.py`) blocca il deploy
+# in produzione finche' la versione contiene `working-copy` o `draft`.
+# ---------------------------------------------------------------------------
+PRIVACY_NOTICE_VERSION = env(
+    "PRIVACY_NOTICE_VERSION", default="working-copy-2026-05-10"
+)
+SPECIAL_CATEGORIES_NOTICE_VERSION = env(
+    "SPECIAL_CATEGORIES_NOTICE_VERSION", default="working-copy-2026-05-10"
+)
+
+
+# ---------------------------------------------------------------------------
 # Content-Security-Policy (F-p0-codice-4-csp)
 #
 # Chiude P0-SEC-1 (vedi `docs/SECURITY_INDEX.md`). Usiamo `django-csp` 4.x

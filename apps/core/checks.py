@@ -141,6 +141,68 @@ def check_csp_enabled_in_production(app_configs, **kwargs):
     return []
 
 
+_CONSENT_VERSION_DRAFT_MARKERS = ("working-copy", "draft")
+
+
+@register("core")
+def check_consent_versions_signed_in_production(app_configs, **kwargs):
+    """
+    `core.E004` — fail in produzione se le versioni dei consensi
+    GDPR (privacy art. 6 + special categories art. 9) non sono
+    firmate.
+
+    Iter F-p0-leg-3-consent. Il deploy in produzione richiede che
+    PRIVACY_NOTICE_VERSION e SPECIAL_CATEGORIES_NOTICE_VERSION
+    siano valori firmati dallo Studio (es. "2026-09-15-final"),
+    non placeholder come `working-copy-...` o `draft-...`. Senza
+    versione firmata il consenso raccolto e' un consenso a un
+    testo che potrebbe ancora cambiare.
+
+    In dev (`DEBUG=True`) il check e' silenzioso.
+    """
+    if getattr(settings, "DEBUG", False):
+        return []
+
+    issues: list[Error] = []
+    pairs = (
+        ("PRIVACY_NOTICE_VERSION", "GDPR art. 6 base privacy notice"),
+        ("SPECIAL_CATEGORIES_NOTICE_VERSION", "GDPR art. 9 special categories notice"),
+    )
+    for setting_name, label in pairs:
+        value = (getattr(settings, setting_name, "") or "").strip()
+        if not value:
+            issues.append(
+                Error(
+                    f"{setting_name} is empty. Cannot record signed "
+                    f"consent for {label} — every submit would persist "
+                    "an empty version field on Lead/Simulation.",
+                    hint=(
+                        f"Set {setting_name} via env var to the version "
+                        "string the Studio has signed (e.g. "
+                        "'2026-09-15-final')."
+                    ),
+                    id="core.E004",
+                )
+            )
+            continue
+        lowered = value.lower()
+        if any(marker in lowered for marker in _CONSENT_VERSION_DRAFT_MARKERS):
+            issues.append(
+                Error(
+                    f"{setting_name}={value!r} is a working-copy / draft "
+                    f"version. Cannot deploy to production: the Studio "
+                    "must sign the final wording first.",
+                    hint=(
+                        f"Replace {setting_name} with the signed version "
+                        "string (no 'working-copy' / 'draft' substring) "
+                        "before deploy."
+                    ),
+                    id="core.E004",
+                )
+            )
+    return issues
+
+
 @register("core")
 def check_csp_enforcing_in_production(app_configs, **kwargs):
     """

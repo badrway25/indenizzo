@@ -389,6 +389,7 @@ def test_contact_submit_renders_thank_you_in_italian():
         "case_type": "",
         "message": "QA pass1 funnel test (do not reply). Lorem ipsum dolor sit amet.",
         "privacy_accepted": "on",
+        "special_categories_accepted": "on",
         "robots": "",
     }
     response = client.post("/contact/", data=payload, follow=True)

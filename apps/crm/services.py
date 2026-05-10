@@ -20,6 +20,8 @@ from typing import Any
 
 from django.db import transaction
 
+from django.conf import settings
+
 from apps.cases.models import Simulation
 from apps.compliance.enums import PrivacyEventType
 from apps.compliance.models import ConsentPurpose
@@ -27,6 +29,7 @@ from apps.compliance.services import (
     get_request_meta,
     log_privacy_event,
     record_consent,
+    record_double_consent,
 )
 
 from .models import Lead, LeadEvent
@@ -62,22 +65,26 @@ def create_lead_from_form(
     Crea un `Lead` dal payload pulito di `ContactForm`.
 
     Side-effects:
-    - registra `ConsentRecord(accepted=True)` per `lead_contact`;
+    - registra DUE `ConsentRecord` (accepted=True) per
+      `lead_contact` (GDPR art. 6) e `special_categories_processing`
+      (GDPR art. 9). F-p0-leg-3-consent;
+    - salva i campi denormalizzati `privacy_consent_*` /
+      `special_categories_consent_*` sul `Lead`;
     - crea `LeadEvent(type=CREATED)`;
     - registra `PrivacyAuditEvent(type=CONSENT_GIVEN)` con target=cases.Simulation
       se collegata, altrimenti target=crm.Lead.
 
     Niente `message` nei log (privacy by default): logghiamo solo public_id.
     """
-    purpose = get_or_create_lead_contact_purpose()
-
     resolved_user = _resolve_user(user, request)
 
-    consent = record_consent(
-        purpose=purpose,
-        accepted=True,
+    privacy_record, _special_record = record_double_consent(
         request=request,
         user=resolved_user,
+        privacy_purpose_code="lead_contact",
+        privacy_purpose_label="Lead contact request",
+        privacy_version=settings.PRIVACY_NOTICE_VERSION,
+        special_categories_version=settings.SPECIAL_CATEGORIES_NOTICE_VERSION,
         metadata={"trigger": "contact_form"},
     )
 
@@ -91,14 +98,23 @@ def create_lead_from_form(
             .first()
         )
 
+    from django.utils import timezone as _tz
+
+    now = _tz.now()
     lead = Lead.objects.create(
         simulation=simulation,
         user=resolved_user,
         session_key=meta.session_key,
-        consent_record=consent,
+        consent_record=privacy_record,
         ip_address=meta.ip_address,
         user_agent=meta.user_agent,
         source_path=meta.path,
+        privacy_consent_given=True,
+        privacy_consent_at=now,
+        privacy_consent_version=settings.PRIVACY_NOTICE_VERSION,
+        special_categories_consent_given=True,
+        special_categories_consent_at=now,
+        special_categories_consent_version=settings.SPECIAL_CATEGORIES_NOTICE_VERSION,
         **form_kwargs,
     )
 
@@ -119,7 +135,9 @@ def create_lead_from_form(
         actor=resolved_user,
         target_model="crm.Lead",
         target_object_id=lead.pk,
-        metadata={"purpose": purpose.code},
+        # Doppio consenso: vedi `record_double_consent` chiamato sopra
+        # per i `ConsentRecord` separati (lead_contact + special_categories_processing).
+        metadata={"purposes": ["lead_contact", "special_categories_processing"]},
     )
 
     logger.info(

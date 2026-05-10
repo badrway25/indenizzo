@@ -368,6 +368,7 @@ WIZARD_VALID_PAYLOAD = {
     "fault_percentage": "",
     "accident_country": "IT",
     "consent_simulation": "on",
+    "special_categories_consent": "on",
     "website": "",
 }
 
@@ -619,6 +620,7 @@ WIZARD_FR_VALID_PAYLOAD = {
     "permanent_disability_percentage": "10",
     "fault_percentage": "0",
     "consent_simulation": "on",
+    "special_categories_consent": "on",
     "website": "",
 }
 
@@ -743,6 +745,7 @@ WIZARD_BE_VALID_PAYLOAD = {
     "permanent_disability_percentage": "10",
     "fault_percentage": "0",
     "consent_simulation": "on",
+    "special_categories_consent": "on",
     "website": "",
 }
 
@@ -872,6 +875,7 @@ WIZARD_INHERITANCE_VALID_PAYLOAD = {
     "sons_count": "1",
     "daughters_count": "1",
     "consent_simulation": "on",
+    "special_categories_consent": "on",
     "website": "",
 }
 

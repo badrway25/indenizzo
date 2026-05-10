@@ -43,6 +43,17 @@ def site_context(request) -> dict:
             settings, "STUDIO_PROFESSIONAL_INSURANCE_CEILING", ""
         ),
     }
+    # F-p0-leg-3-consent: versioni del testo dei consensi (esposte al
+    # template per il banner "working-copy" + per i campi denormalizzati
+    # salvati in DB).
+    consent_versions = {
+        "PRIVACY_NOTICE_VERSION": getattr(
+            settings, "PRIVACY_NOTICE_VERSION", "working-copy"
+        ),
+        "SPECIAL_CATEGORIES_NOTICE_VERSION": getattr(
+            settings, "SPECIAL_CATEGORIES_NOTICE_VERSION", "working-copy"
+        ),
+    }
     return {
         "SITE_NAME": getattr(settings, "SITE_NAME", "Studio Legale Badrane"),
         "SITE_DOMAIN": getattr(settings, "SITE_DOMAIN", ""),
@@ -56,6 +67,7 @@ def site_context(request) -> dict:
         "IS_RTL": current in RTL_LANGUAGES,
         "RTL_LANGUAGES": list(RTL_LANGUAGES),
         **studio_identity,
+        **consent_versions,
     }
 
 

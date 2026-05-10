@@ -121,7 +121,12 @@ class ItalyRoadAccidentWizardForm(forms.Form):
         max_length=2,
     )
 
-    # Consent — obbligatorio per `simulation_processing`.
+    # F-p0-leg-3-consent: doppio consenso GDPR art. 6 + art. 9.
+    # Il wizard road-accident raccoglie inevitabilmente dati art. 9
+    # (percentuale invalidita', giorni ITT/ITP, perdita reddito, danno
+    # biologico, eta' della vittima) che sono dati sanitari e
+    # patrimoniali sensibili. Il consenso esplicito e' obbligatorio.
+    # `consent_simulation` (legacy nome) resta il consenso art. 6.
     consent_simulation = forms.BooleanField(
         label=_(
             "I consent to processing the data above for the sole purpose of "
@@ -130,6 +135,20 @@ class ItalyRoadAccidentWizardForm(forms.Form):
         required=True,
         error_messages={
             "required": _("You must accept the simulation consent to run a simulation."),
+        },
+    )
+    special_categories_consent = forms.BooleanField(
+        label=_(
+            "I expressly consent to the processing of special categories of "
+            "personal data (health, disability, lost income) under GDPR art. "
+            "9.2.a, for the sole purpose of producing this indicative simulation."
+        ),
+        required=True,
+        error_messages={
+            "required": _(
+                "You must give the explicit special-categories consent (GDPR "
+                "art. 9) to run a simulation."
+            ),
         },
     )
 
@@ -346,6 +365,10 @@ class InternationalInheritanceWizardForm(forms.Form):
         help_text=_("Anything you think is relevant. No documents needed."),
     )
 
+    # F-p0-leg-3-consent: doppio consenso GDPR art. 6 + art. 9.
+    # Il wizard inheritance raccoglie dati di parentela, decesso e
+    # eventi familiari sensibili (oltre a indicazioni patrimoniali e
+    # cittadinanza/residenza), tutti coperti dall'art. 9 GDPR.
     consent_simulation = forms.BooleanField(
         label=_(
             "I consent to processing the data above for the sole purpose of "
@@ -354,6 +377,21 @@ class InternationalInheritanceWizardForm(forms.Form):
         required=True,
         error_messages={
             "required": _("You must accept the simulation consent to run a simulation."),
+        },
+    )
+    special_categories_consent = forms.BooleanField(
+        label=_(
+            "I expressly consent to the processing of special categories of "
+            "personal data (family events, deaths, civil-status data) under "
+            "GDPR art. 9.2.a, for the sole purpose of producing this "
+            "indicative simulation."
+        ),
+        required=True,
+        error_messages={
+            "required": _(
+                "You must give the explicit special-categories consent (GDPR "
+                "art. 9) to run a simulation."
+            ),
         },
     )
 

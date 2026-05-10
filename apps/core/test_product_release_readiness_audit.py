@@ -313,6 +313,7 @@ def test_fr_be_ma_tn_unavailable_no_amounts():
         body_payload = {
             "csrfmiddlewaretoken": client.cookies["csrftoken"].value,
             "consent_simulation": "on",
+            "special_categories_consent": "on",
             "website": "",
             **payload,
         }

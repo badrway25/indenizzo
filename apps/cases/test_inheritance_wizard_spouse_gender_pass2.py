@@ -119,6 +119,7 @@ def test_form_rejects_spouse_present_without_gender():
             "siblings_count": "0",
             "estate_value": "100000",
             "consent_simulation": "on",
+            "special_categories_consent": "on",
             "website": "",
         }
     )
@@ -147,6 +148,7 @@ def test_form_drops_gender_when_no_spouse():
             "siblings_count": "0",
             "estate_value": "100000",
             "consent_simulation": "on",
+            "special_categories_consent": "on",
             "website": "",
         }
     )
@@ -177,6 +179,7 @@ def test_form_husband_round_trips_into_heirs():
             "siblings_count": "0",
             "estate_value": "100000",
             "consent_simulation": "on",
+            "special_categories_consent": "on",
             "website": "",
         }
     )
@@ -207,6 +210,7 @@ def test_form_wife_round_trips_into_heirs():
             "siblings_count": "0",
             "estate_value": "800000",
             "consent_simulation": "on",
+            "special_categories_consent": "on",
             "website": "",
         }
     )
@@ -237,6 +241,7 @@ def test_form_rejects_invalid_gender_choice():
             "siblings_count": "0",
             "estate_value": "100000",
             "consent_simulation": "on",
+            "special_categories_consent": "on",
             "website": "",
         }
     )
@@ -332,6 +337,7 @@ def test_ma_post_with_gender_still_unavailable(morocco_setup, client):
             "siblings_count": "0",
             "estate_value": "800000",
             "consent_simulation": "on",
+            "special_categories_consent": "on",
             "website": "",
         },
         follow=True,
@@ -368,6 +374,7 @@ def test_tn_post_with_gender_still_unavailable(tunisia_setup, client):
             "siblings_count": "0",
             "estate_value": "500000",
             "consent_simulation": "on",
+            "special_categories_consent": "on",
             "website": "",
         },
         follow=True,

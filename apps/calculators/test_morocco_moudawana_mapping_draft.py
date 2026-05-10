@@ -292,6 +292,7 @@ def test_pass3_wizard_form_serializes_siblings_into_heirs():
             "siblings_count": "3",
             "estate_value": "100000",
             "consent_simulation": "on",
+            "special_categories_consent": "on",
             "website": "",
         }
     )
@@ -405,6 +406,7 @@ def test_public_ma_inheritance_stays_unavailable():
     payload = {
         "csrfmiddlewaretoken": client.cookies["csrftoken"].value,
         "consent_simulation": "on",
+        "special_categories_consent": "on",
         "website": "",
         "deceased_country_of_last_residence": "MA",
         "nationality": "MA",

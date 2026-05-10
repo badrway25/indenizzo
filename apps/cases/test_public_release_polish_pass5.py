@@ -345,6 +345,7 @@ def test_italy_result_has_premium_sections(italy_calculator_fixture):
             "permanent_disability_percentage": 10,
             "fault_percentage": 0,
             "consent_simulation": "on",
+            "special_categories_consent": "on",
         },
         follow=True,
     )
@@ -401,6 +402,7 @@ def test_fr_unavailable_result_has_no_amounts_and_no_technical_status(italy_calc
             "permanent_disability_percentage": 10,
             "fault_percentage": 0,
             "consent_simulation": "on",
+            "special_categories_consent": "on",
         },
         follow=True,
     )

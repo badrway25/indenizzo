@@ -145,6 +145,7 @@ def test_result_page_does_not_surface_technical_status_token():
         {
             "accident_country": "FR",
             "consent_simulation": "on",
+            "special_categories_consent": "on",
         }
     )
     assert form.is_valid(), form.errors

@@ -49,6 +49,10 @@ def run_simulation(
     user: Any | None = None,
     consent_record: Any | None = None,
     locale: str = "it",
+    privacy_consent_given: bool = False,
+    privacy_consent_version: str = "",
+    special_categories_consent_given: bool = False,
+    special_categories_consent_version: str = "",
 ) -> Simulation:
     """
     Esegui una simulazione e persistila.
@@ -56,6 +60,12 @@ def run_simulation(
     NON solleva eccezioni in caso di calculator mancante o jurisdiction
     sconosciuta: la `Simulation` viene comunque salvata con status
     `unavailable_requires_legal_validation` e un warning esplicativo.
+
+    F-p0-leg-3-consent: i parametri `privacy_consent_*` e
+    `special_categories_consent_*` sono campi denormalizzati per
+    audit/admin. Default backward-compatibili (False / ""), cosi' i
+    chiamanti pre-batch continuano a funzionare. Le view del wizard
+    che hanno aggiornato i form passano sempre i valori effettivi.
     """
     locale = (locale or "it").lower()
     payload = dict(input_data or {})
@@ -66,6 +76,7 @@ def run_simulation(
         .first()
     )
 
+    now = timezone.now()
     simulation = Simulation(
         case_type=case_type,
         locale=locale,
@@ -73,6 +84,12 @@ def run_simulation(
         country=jurisdiction.country if jurisdiction else None,
         input_data=payload,
         consent_record=consent_record,
+        privacy_consent_given=bool(privacy_consent_given),
+        privacy_consent_at=now if privacy_consent_given else None,
+        privacy_consent_version=privacy_consent_version or "",
+        special_categories_consent_given=bool(special_categories_consent_given),
+        special_categories_consent_at=now if special_categories_consent_given else None,
+        special_categories_consent_version=special_categories_consent_version or "",
     )
 
     # Resolve user (preferenza esplicita, fallback request.user).

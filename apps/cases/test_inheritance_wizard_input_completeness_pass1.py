@@ -82,6 +82,7 @@ VALID_PAYLOAD = {
     "sons_count": "1",
     "daughters_count": "1",
     "consent_simulation": "on",
+    "special_categories_consent": "on",
     "website": "",
 }
 

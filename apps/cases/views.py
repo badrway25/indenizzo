@@ -33,8 +33,10 @@ from django.views.decorators.http import require_GET, require_http_methods
 
 from apps.calculators.enums import CaseType
 from apps.calculators.registry import list_available_calculators
+from django.conf import settings
+
 from apps.compliance.models import ConsentPurpose
-from apps.compliance.services import record_consent
+from apps.compliance.services import record_consent, record_double_consent
 from apps.core.public_status import get_country_public_status
 from apps.core.rate_limit import public_post_rate_limit
 
@@ -317,29 +319,60 @@ def wizard_result(request, public_id: uuid.UUID):
 
 def _run_italy_road_accident(request, form: ItalyRoadAccidentWizardForm) -> Simulation:
     """
-    Registra ConsentRecord (`simulation_processing`) e chiama il service.
+    Registra il doppio consenso GDPR art. 6 + art. 9 e chiama il service.
 
-    `record_consent` è già idempotente lato service e tollerante a
-    `request=None`. Qui passiamo la request reale per catturare IP/UA/path.
+    F-p0-leg-3-consent: il submit del wizard richiede entrambi i
+    consensi (validati dal form). Qui creiamo due ConsentRecord
+    (`simulation_processing` + `special_categories_processing`) e
+    salviamo i campi denormalizzati sulla `Simulation`.
     """
-    purpose = _get_or_create_simulation_purpose()
-    consent = record_consent(
-        purpose=purpose,
-        accepted=True,
+    return _run_road_accident_simulation(
         request=request,
-        user=request.user if request.user.is_authenticated else None,
-        metadata={"trigger": "wizard_italy_road_accident"},
-    )
-    locale = (translation.get_language() or "it").split("-", 1)[0].lower()
-
-    return run_simulation(
+        form=form,
         jurisdiction_code=ITALY_ROAD_ACCIDENT_JURISDICTION,
         case_type=ITALY_ROAD_ACCIDENT_CASE_TYPE,
+        trigger="wizard_italy_road_accident",
+        privacy_purpose_code=SIMULATION_CONSENT_PURPOSE_CODE,
+        privacy_purpose_label="Italy road-accident simulation",
+        default_locale="it",
+    )
+
+
+def _run_road_accident_simulation(
+    *,
+    request,
+    form,
+    jurisdiction_code: str,
+    case_type: str,
+    trigger: str,
+    privacy_purpose_code: str,
+    privacy_purpose_label: str,
+    default_locale: str,
+) -> Simulation:
+    """Helper comune ai 3 wizard road-accident (IT, FR, BE)."""
+    user = request.user if request.user.is_authenticated else None
+    privacy_record, _special_record = record_double_consent(
+        request=request,
+        user=user,
+        privacy_purpose_code=privacy_purpose_code,
+        privacy_purpose_label=privacy_purpose_label,
+        privacy_version=settings.PRIVACY_NOTICE_VERSION,
+        special_categories_version=settings.SPECIAL_CATEGORIES_NOTICE_VERSION,
+        metadata={"trigger": trigger},
+    )
+    locale = (translation.get_language() or default_locale).split("-", 1)[0].lower()
+    return run_simulation(
+        jurisdiction_code=jurisdiction_code,
+        case_type=case_type,
         input_data=form.to_input_data(),
         request=request,
-        user=request.user if request.user.is_authenticated else None,
-        consent_record=consent,
+        user=user,
+        consent_record=privacy_record,
         locale=locale,
+        privacy_consent_given=True,
+        privacy_consent_version=settings.PRIVACY_NOTICE_VERSION,
+        special_categories_consent_given=True,
+        special_categories_consent_version=settings.SPECIAL_CATEGORIES_NOTICE_VERSION,
     )
 
 
@@ -396,24 +429,15 @@ def wizard_france_road_accident(request):
 
 def _run_france_road_accident(request, form: FranceRoadAccidentWizardForm) -> Simulation:
     """Stesso pattern di `_run_italy_road_accident` ma su giurisdizione FR."""
-    purpose = _get_or_create_simulation_purpose()
-    consent = record_consent(
-        purpose=purpose,
-        accepted=True,
+    return _run_road_accident_simulation(
         request=request,
-        user=request.user if request.user.is_authenticated else None,
-        metadata={"trigger": "wizard_france_road_accident"},
-    )
-    locale = (translation.get_language() or "fr").split("-", 1)[0].lower()
-
-    return run_simulation(
+        form=form,
         jurisdiction_code=FRANCE_ROAD_ACCIDENT_JURISDICTION,
         case_type=FRANCE_ROAD_ACCIDENT_CASE_TYPE,
-        input_data=form.to_input_data(),
-        request=request,
-        user=request.user if request.user.is_authenticated else None,
-        consent_record=consent,
-        locale=locale,
+        trigger="wizard_france_road_accident",
+        privacy_purpose_code=SIMULATION_CONSENT_PURPOSE_CODE,
+        privacy_purpose_label="France road-accident simulation",
+        default_locale="fr",
     )
 
 
@@ -467,24 +491,15 @@ def wizard_belgium_road_accident(request):
 
 def _run_belgium_road_accident(request, form: BelgiumRoadAccidentWizardForm) -> Simulation:
     """Stesso pattern di `_run_france_road_accident` ma su giurisdizione BE."""
-    purpose = _get_or_create_simulation_purpose()
-    consent = record_consent(
-        purpose=purpose,
-        accepted=True,
+    return _run_road_accident_simulation(
         request=request,
-        user=request.user if request.user.is_authenticated else None,
-        metadata={"trigger": "wizard_belgium_road_accident"},
-    )
-    locale = (translation.get_language() or "fr").split("-", 1)[0].lower()
-
-    return run_simulation(
+        form=form,
         jurisdiction_code=BELGIUM_ROAD_ACCIDENT_JURISDICTION,
         case_type=BELGIUM_ROAD_ACCIDENT_CASE_TYPE,
-        input_data=form.to_input_data(),
-        request=request,
-        user=request.user if request.user.is_authenticated else None,
-        consent_record=consent,
-        locale=locale,
+        trigger="wizard_belgium_road_accident",
+        privacy_purpose_code=SIMULATION_CONSENT_PURPOSE_CODE,
+        privacy_purpose_label="Belgium road-accident simulation",
+        default_locale="fr",
     )
 
 
@@ -516,12 +531,14 @@ def _wizard_inheritance_view(
                 logger.info("cases.wizard.dropped reason=honeypot path=%s", request.path)
                 return redirect(reverse("cases:wizard_start"))
 
-            purpose = _get_or_create_simulation_purpose()
-            consent = record_consent(
-                purpose=purpose,
-                accepted=True,
+            user = request.user if request.user.is_authenticated else None
+            privacy_record, _special_record = record_double_consent(
                 request=request,
-                user=request.user if request.user.is_authenticated else None,
+                user=user,
+                privacy_purpose_code=SIMULATION_CONSENT_PURPOSE_CODE,
+                privacy_purpose_label="International inheritance simulation",
+                privacy_version=settings.PRIVACY_NOTICE_VERSION,
+                special_categories_version=settings.SPECIAL_CATEGORIES_NOTICE_VERSION,
                 metadata={"trigger": trigger},
             )
             locale = (translation.get_language() or default_locale).split("-", 1)[0].lower()
@@ -530,9 +547,13 @@ def _wizard_inheritance_view(
                 case_type=INTERNATIONAL_INHERITANCE_CASE_TYPE,
                 input_data=form.to_input_data(),
                 request=request,
-                user=request.user if request.user.is_authenticated else None,
-                consent_record=consent,
+                user=user,
+                consent_record=privacy_record,
                 locale=locale,
+                privacy_consent_given=True,
+                privacy_consent_version=settings.PRIVACY_NOTICE_VERSION,
+                special_categories_consent_given=True,
+                special_categories_consent_version=settings.SPECIAL_CATEGORIES_NOTICE_VERSION,
             )
             return redirect(
                 reverse(
