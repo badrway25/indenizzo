@@ -244,6 +244,40 @@ PARENT_SITE_URL = env(
 
 
 # ---------------------------------------------------------------------------
+# Studio professional identification (F-p0-codice-3-footer-pass1)
+#
+# Identificativi obbligatori per conformita' deontologica forense
+# (art. 17-bis Cod. deont. + D.Lgs. 70/2003 art. 7 + L. 247/2012 art. 12).
+# Esposti al template via `apps.core.context_processors.site_context`.
+#
+# Default: stringa vuota -> il footer mostra placeholder
+# `[da configurare prima del go-live]` (vedi
+# `templates/partials/footer.html`). In produzione il system check
+# `core.E001` (`apps/core/checks.py`) fa fallire `manage.py check`
+# se i campi minimi obbligatori sono vuoti.
+#
+# Filosofia: niente dati inventati. Lo Studio fornisce i valori reali
+# via env var prima del go-live. La struttura e' pronta, i dati no.
+# ---------------------------------------------------------------------------
+STUDIO_LEAD_LAWYER_NAME = env("STUDIO_LEAD_LAWYER_NAME", default="")
+STUDIO_BAR_ASSOCIATION = env("STUDIO_BAR_ASSOCIATION", default="")
+STUDIO_BAR_REGISTRATION_NUMBER = env("STUDIO_BAR_REGISTRATION_NUMBER", default="")
+STUDIO_VAT_NUMBER = env("STUDIO_VAT_NUMBER", default="")
+STUDIO_TAX_CODE = env("STUDIO_TAX_CODE", default="")
+STUDIO_PEC_EMAIL = env("STUDIO_PEC_EMAIL", default="")
+STUDIO_PHYSICAL_ADDRESS = env("STUDIO_PHYSICAL_ADDRESS", default="")
+STUDIO_PROFESSIONAL_INSURANCE_INSURER = env(
+    "STUDIO_PROFESSIONAL_INSURANCE_INSURER", default=""
+)
+STUDIO_PROFESSIONAL_INSURANCE_POLICY = env(
+    "STUDIO_PROFESSIONAL_INSURANCE_POLICY", default=""
+)
+STUDIO_PROFESSIONAL_INSURANCE_CEILING = env(
+    "STUDIO_PROFESSIONAL_INSURANCE_CEILING", default=""
+)
+
+
+# ---------------------------------------------------------------------------
 # Public POST rate-limit (F-local-product-hardening-pass1)
 #
 # Limite cache-based applicato dal decoratore

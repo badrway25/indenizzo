@@ -11,6 +11,10 @@ class CoreConfig(AppConfig):
     label = "core"
 
     def ready(self) -> None:
+        # F-p0-codice-3-footer: registra system check core.E001/W001 sui
+        # campi obbligatori del footer professionale.
+        from . import checks  # noqa: F401
+
         # Sentry init opzionale: se SENTRY_DSN è vuoto la funzione
         # ritorna False senza tentare l'import di sentry_sdk. In caso
         # di import error con DSN configurato, logghiamo ma non

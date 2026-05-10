@@ -21,6 +21,28 @@ RTL_LANGUAGES = frozenset({"ar"})
 
 def site_context(request) -> dict:
     current = (get_language() or settings.LANGUAGE_CODE or "it").lower()
+    # F-p0-codice-3-footer: identificativi professionali Studio. Default
+    # stringa vuota -> il template mostra `[da configurare prima del go-live]`.
+    studio_identity = {
+        "STUDIO_LEAD_LAWYER_NAME": getattr(settings, "STUDIO_LEAD_LAWYER_NAME", ""),
+        "STUDIO_BAR_ASSOCIATION": getattr(settings, "STUDIO_BAR_ASSOCIATION", ""),
+        "STUDIO_BAR_REGISTRATION_NUMBER": getattr(
+            settings, "STUDIO_BAR_REGISTRATION_NUMBER", ""
+        ),
+        "STUDIO_VAT_NUMBER": getattr(settings, "STUDIO_VAT_NUMBER", ""),
+        "STUDIO_TAX_CODE": getattr(settings, "STUDIO_TAX_CODE", ""),
+        "STUDIO_PEC_EMAIL": getattr(settings, "STUDIO_PEC_EMAIL", ""),
+        "STUDIO_PHYSICAL_ADDRESS": getattr(settings, "STUDIO_PHYSICAL_ADDRESS", ""),
+        "STUDIO_PROFESSIONAL_INSURANCE_INSURER": getattr(
+            settings, "STUDIO_PROFESSIONAL_INSURANCE_INSURER", ""
+        ),
+        "STUDIO_PROFESSIONAL_INSURANCE_POLICY": getattr(
+            settings, "STUDIO_PROFESSIONAL_INSURANCE_POLICY", ""
+        ),
+        "STUDIO_PROFESSIONAL_INSURANCE_CEILING": getattr(
+            settings, "STUDIO_PROFESSIONAL_INSURANCE_CEILING", ""
+        ),
+    }
     return {
         "SITE_NAME": getattr(settings, "SITE_NAME", "Studio Legale Badrane"),
         "SITE_DOMAIN": getattr(settings, "SITE_DOMAIN", ""),
@@ -33,6 +55,7 @@ def site_context(request) -> dict:
         "CURRENT_LANGUAGE": current,
         "IS_RTL": current in RTL_LANGUAGES,
         "RTL_LANGUAGES": list(RTL_LANGUAGES),
+        **studio_identity,
     }
 
 

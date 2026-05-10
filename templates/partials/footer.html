@@ -1,4 +1,15 @@
 {% load i18n %}
+{% comment %}
+  F-p0-codice-3-footer-pass1: identificazione professionale obbligatoria.
+  Sezione "Professional identification" alimentata da settings env-driven
+  (`STUDIO_*`), esposti via `apps.core.context_processors.site_context`.
+  Quando una env var manca, il template renderizza un placeholder visibile
+  `[da configurare prima del go-live]` cosi' lo Studio vede esattamente
+  cosa va valorizzato. Il system check `core.E001` blocca il deploy
+  in produzione (DEBUG=False) finche' i campi minimi obbligatori sono
+  vuoti.
+{% endcomment %}
+{% with placeholder="["|add:"da configurare prima del go-live]" %}
 <footer class="bg-sand-100 border-t border-stone2-200 mt-12">
   <div class="max-w-7xl mx-auto px-5 lg:px-8 py-12 grid gap-10 lg:grid-cols-4">
     <div class="lg:col-span-2">
@@ -37,6 +48,55 @@
     </div>
   </div>
 
+  <section
+    class="border-t border-stone2-200 bg-sand-50/60"
+    aria-labelledby="studio-professional-identification-heading"
+    data-studio-identification
+  >
+    <div class="max-w-7xl mx-auto px-5 lg:px-8 py-8">
+      <h2 id="studio-professional-identification-heading" class="text-xs uppercase tracking-[0.22em] text-gold-600 font-semibold">
+        {% translate "Professional identification" %}
+      </h2>
+      <dl class="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-3 text-sm text-ink-800">
+        <div>
+          <dt class="text-stone2-500 text-xs uppercase tracking-[0.14em]">{% translate "Lead lawyer" %}</dt>
+          <dd class="mt-1" data-studio-field="STUDIO_LEAD_LAWYER_NAME">{% if STUDIO_LEAD_LAWYER_NAME %}{{ STUDIO_LEAD_LAWYER_NAME }}{% else %}<span class="text-amber-700">{{ placeholder }}</span>{% endif %}</dd>
+        </div>
+        <div>
+          <dt class="text-stone2-500 text-xs uppercase tracking-[0.14em]">{% translate "Bar association" %}</dt>
+          <dd class="mt-1" data-studio-field="STUDIO_BAR_ASSOCIATION">{% if STUDIO_BAR_ASSOCIATION %}{{ STUDIO_BAR_ASSOCIATION }}{% if STUDIO_BAR_REGISTRATION_NUMBER %} — {% translate "no." %} {{ STUDIO_BAR_REGISTRATION_NUMBER }}{% endif %}{% else %}<span class="text-amber-700">{{ placeholder }}</span>{% endif %}</dd>
+        </div>
+        <div>
+          <dt class="text-stone2-500 text-xs uppercase tracking-[0.14em]">{% translate "VAT number" %}</dt>
+          <dd class="mt-1" data-studio-field="STUDIO_VAT_NUMBER">{% if STUDIO_VAT_NUMBER %}{{ STUDIO_VAT_NUMBER }}{% else %}<span class="text-amber-700">{{ placeholder }}</span>{% endif %}{% if STUDIO_TAX_CODE %} · {% translate "Tax code" %} {{ STUDIO_TAX_CODE }}{% endif %}</dd>
+        </div>
+        <div>
+          <dt class="text-stone2-500 text-xs uppercase tracking-[0.14em]">{% translate "Certified email (PEC)" %}</dt>
+          <dd class="mt-1 break-all" data-studio-field="STUDIO_PEC_EMAIL">{% if STUDIO_PEC_EMAIL %}<a href="mailto:{{ STUDIO_PEC_EMAIL }}" class="hover:text-gold-600">{{ STUDIO_PEC_EMAIL }}</a>{% else %}<span class="text-amber-700">{{ placeholder }}</span>{% endif %}</dd>
+        </div>
+        <div class="sm:col-span-2">
+          <dt class="text-stone2-500 text-xs uppercase tracking-[0.14em]">{% translate "Registered office" %}</dt>
+          <dd class="mt-1" data-studio-field="STUDIO_PHYSICAL_ADDRESS">{% if STUDIO_PHYSICAL_ADDRESS %}{{ STUDIO_PHYSICAL_ADDRESS }}{% else %}<span class="text-amber-700">{{ placeholder }}</span>{% endif %}</dd>
+        </div>
+        <div class="sm:col-span-2 lg:col-span-3">
+          <dt class="text-stone2-500 text-xs uppercase tracking-[0.14em]">{% translate "Professional liability insurance" %}</dt>
+          <dd class="mt-1" data-studio-field="STUDIO_PROFESSIONAL_INSURANCE">
+            {% if STUDIO_PROFESSIONAL_INSURANCE_INSURER or STUDIO_PROFESSIONAL_INSURANCE_POLICY %}
+              {% if STUDIO_PROFESSIONAL_INSURANCE_INSURER %}{{ STUDIO_PROFESSIONAL_INSURANCE_INSURER }}{% else %}<span class="text-amber-700">{{ placeholder }}</span>{% endif %}
+              {% if STUDIO_PROFESSIONAL_INSURANCE_POLICY %} · {% translate "policy" %} {{ STUDIO_PROFESSIONAL_INSURANCE_POLICY }}{% else %} · <span class="text-amber-700">{{ placeholder }}</span>{% endif %}
+              {% if STUDIO_PROFESSIONAL_INSURANCE_CEILING %} · {% translate "ceiling" %} {{ STUDIO_PROFESSIONAL_INSURANCE_CEILING }}{% endif %}
+            {% else %}
+              <span class="text-amber-700">{{ placeholder }}</span>
+            {% endif %}
+          </dd>
+        </div>
+      </dl>
+      <p class="mt-5 text-xs text-stone2-500 leading-relaxed">
+        {% blocktranslate %}This platform operates as a sub-domain of the Studio's institutional website and complies with the Italian forensic deontology rules on professional information.{% endblocktranslate %}
+      </p>
+    </div>
+  </section>
+
   <div class="border-t border-stone2-200">
     <div class="max-w-7xl mx-auto px-5 lg:px-8 py-5 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between text-xs text-stone2-500">
       <p>© {{ SITE_NAME }}.</p>
@@ -44,3 +104,4 @@
     </div>
   </div>
 </footer>
+{% endwith %}
