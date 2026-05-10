@@ -146,6 +146,22 @@ def create_lead_from_form(
         lead.status,
         simulation is not None,
     )
+
+    # F-p1-crm-1-webhook-dispatcher — enqueue CRM webhook delivery if
+    # the dispatcher is enabled. Failure-soft: a webhook enqueue error
+    # never breaks the Lead creation flow (the Studio still has the
+    # email + the DB row + the audit ledger).
+    try:
+        from .webhooks import enqueue_lead_webhook
+
+        enqueue_lead_webhook(lead, event_type="lead.created")
+    except Exception as exc:  # pragma: no cover — defensive only
+        logger.warning(
+            "crm.webhook.enqueue.failed lead_public_id=%s error=%s",
+            lead.public_id,
+            exc.__class__.__name__,
+        )
+
     return lead
 
 

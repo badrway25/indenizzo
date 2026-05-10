@@ -295,3 +295,107 @@ class LeadEvent(models.Model):
 
     def __str__(self) -> str:
         return f"{self.event_type}@{self.lead_id}"
+
+
+class LeadWebhookDelivery(models.Model):
+    """
+    Outbox row per la consegna di un evento Lead al webhook CRM/n8n.
+
+    Iter: F-p1-crm-1-webhook-dispatcher.
+
+    Single source of truth per lo stato di consegna. Il dispatcher
+    (management command `dispatch_crm_webhooks`) legge le righe
+    `pending` con `next_attempt_at <= now`, tenta la POST firmata
+    HMAC, e aggiorna lo stato:
+
+    - 2xx -> `delivered`
+    - 4xx (non-retriable) -> `failed`
+    - 5xx / timeout / network -> retry con backoff lineare
+    - dopo `max_attempts` -> `dead`
+
+    NON memorizza:
+    - HMAC secret (vive solo in env);
+    - URL completo (memorizza solo `target_url_domain`, audit-friendly);
+    - payload (lo si rigenera on-demand dal Lead, cosi' resta
+      coerente con eventuali GDPR anonymize / retention).
+    """
+
+    class Status(models.TextChoices):
+        PENDING = "pending", _("Pending")
+        SENDING = "sending", _("Sending")
+        DELIVERED = "delivered", _("Delivered")
+        FAILED = "failed", _("Failed (non-retriable)")
+        DEAD = "dead", _("Dead (max attempts reached)")
+
+    lead = models.ForeignKey(
+        Lead,
+        on_delete=models.CASCADE,
+        related_name="webhook_deliveries",
+        verbose_name=_("lead"),
+    )
+    event_type = models.CharField(
+        _("event type"),
+        max_length=64,
+        help_text=_("e.g. 'lead.created'."),
+    )
+    payload_version = models.CharField(_("payload version"), max_length=16)
+    idempotency_key = models.CharField(
+        _("idempotency key"),
+        max_length=128,
+        unique=True,
+        help_text=_(
+            "Stable across retries. Receiver uses it to deduplicate "
+            "if the dispatcher retries after a network split."
+        ),
+    )
+    target_url_domain = models.CharField(
+        _("target url domain"),
+        max_length=255,
+        blank=True,
+        help_text=_(
+            "Audit-friendly host snapshot of `CRM_WEBHOOK_URL` at "
+            "enqueue time. Never the full URL nor any query string."
+        ),
+    )
+
+    status = models.CharField(
+        _("status"),
+        max_length=16,
+        choices=Status.choices,
+        default=Status.PENDING,
+        db_index=True,
+    )
+    attempts = models.PositiveIntegerField(_("attempts"), default=0)
+    max_attempts = models.PositiveIntegerField(_("max attempts"), default=5)
+    next_attempt_at = models.DateTimeField(_("next attempt at"), null=True, blank=True)
+    last_attempt_at = models.DateTimeField(_("last attempt at"), null=True, blank=True)
+    delivered_at = models.DateTimeField(_("delivered at"), null=True, blank=True)
+    last_status_code = models.PositiveIntegerField(
+        _("last HTTP status code"), null=True, blank=True
+    )
+    last_error = models.CharField(
+        _("last error"), max_length=255, blank=True,
+        help_text=_("Short error class name + message excerpt."),
+    )
+    response_excerpt = models.CharField(
+        _("response excerpt"), max_length=500, blank=True,
+        help_text=_("First 500 bytes of the receiver response, for debugging."),
+    )
+
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("updated at"), auto_now=True)
+
+    class Meta:
+        verbose_name = _("lead webhook delivery")
+        verbose_name_plural = _("lead webhook deliveries")
+        ordering = ["-created_at", "-pk"]
+        indexes = [
+            models.Index(fields=["status", "next_attempt_at"]),
+            models.Index(fields=["lead", "event_type"]),
+        ]
+
+    def __str__(self) -> str:
+        return (
+            f"webhook[{self.idempotency_key[:12]}…] "
+            f"{self.event_type} {self.status} ({self.attempts}/{self.max_attempts})"
+        )

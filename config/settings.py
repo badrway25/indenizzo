@@ -554,6 +554,30 @@ SPECIAL_CATEGORIES_NOTICE_VERSION = env(
 
 
 # ---------------------------------------------------------------------------
+# CRM webhook dispatcher (F-p1-crm-1-webhook-dispatcher)
+#
+# Outbox pattern verso un endpoint CRM/n8n. Default OFF: nessuna
+# delivery viene creata o spedita finche' lo Studio non configura
+# l'endpoint reale + il secret HMAC.
+#
+# Tutti i payload sono firmati HMAC-SHA256 su `timestamp + "." + body`.
+# Vedi `docs/integrations/N8N_CRM_WEBHOOK.md` per il runbook lato n8n.
+# Il system check `crm.E002` blocca produzione se ENABLED=True con
+# URL/secret invalidi.
+# ---------------------------------------------------------------------------
+CRM_WEBHOOK_ENABLED = env.bool("CRM_WEBHOOK_ENABLED", default=False)
+CRM_WEBHOOK_URL = env("CRM_WEBHOOK_URL", default="")
+CRM_WEBHOOK_SECRET = env("CRM_WEBHOOK_SECRET", default="")
+CRM_WEBHOOK_TIMEOUT_SECONDS = env.int("CRM_WEBHOOK_TIMEOUT_SECONDS", default=10)
+CRM_WEBHOOK_MAX_ATTEMPTS = env.int("CRM_WEBHOOK_MAX_ATTEMPTS", default=5)
+CRM_WEBHOOK_BACKOFF_SECONDS = env.int("CRM_WEBHOOK_BACKOFF_SECONDS", default=300)
+CRM_WEBHOOK_INCLUDE_SPECIAL_CATEGORY_SUMMARY = env.bool(
+    "CRM_WEBHOOK_INCLUDE_SPECIAL_CATEGORY_SUMMARY", default=False
+)
+CRM_WEBHOOK_PAYLOAD_VERSION = env("CRM_WEBHOOK_PAYLOAD_VERSION", default="v1")
+
+
+# ---------------------------------------------------------------------------
 # Mandate / professional engagement scaffold (F-p0-leg-2-mandate)
 #
 # Una richiesta entrata via /contact/ o una /wizard/ NON equivalgono a un
