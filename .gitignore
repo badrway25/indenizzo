@@ -43,6 +43,17 @@ yarn-error.log*
 # descriptions or fold them into `docs/qa/` if persistent.
 artifacts/
 
+# Pre-compressed static companions (P2-PERF-1). `manage.py precompress_static`
+# generates `<file>.gz` next to each `.css`/`.js`/`.svg` in `static/` so
+# WhiteNoise can serve compressed responses to clients with
+# `Accept-Encoding: gzip`. The companions are build artefacts: source
+# files are the truth, .gz are derived. Regenerate locally with
+# `python manage.py precompress_static` (or via the Lighthouse runner
+# pre-step). In production, `collectstatic` with
+# `CompressedStaticFilesStorage` does the same thing.
+static/**/*.gz
+static/**/*.br
+
 # IDE
 .vscode/*
 !.vscode/settings.json

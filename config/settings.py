@@ -73,6 +73,13 @@ if not DEBUG:
 # Applications
 # ---------------------------------------------------------------------------
 DJANGO_APPS = [
+    # WhiteNoise's runserver_nostatic shim (F-p2-perf-1). Subclasses
+    # `runserver` to default `--nostatic` to True so the static-files
+    # handler doesn't short-circuit our middleware chain — required
+    # for WhiteNoiseMiddleware to actually serve / compress static
+    # files in dev. Must be listed BEFORE `django.contrib.staticfiles`
+    # for the management-command resolution order.
+    "whitenoise.runserver_nostatic",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -119,6 +126,25 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
 # ---------------------------------------------------------------------------
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    # Static-file serving with auto-compression (F-p2-perf-1).
+    # WhiteNoise serves files under STATIC_URL with gzip (and
+    # brotli if available), and sets Cache-Control. Must sit
+    # directly under SecurityMiddleware so it short-circuits
+    # static-file requests early in the chain — see WhiteNoise
+    # docs.  In dev (DEBUG=True) it uses the staticfiles finders
+    # directly (WHITENOISE_USE_FINDERS=True below), so it works
+    # without a `collectstatic` step.
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    # GZip compression for dynamic responses (F-p2-perf-1). Django
+    # built-in, no new dependency. Compresses non-streaming
+    # responses (HTML) for clients that send `Accept-Encoding:
+    # gzip`. WhiteNoise above already handles static files.
+    # BREACH: Django >= 1.10 masks CSRF tokens per-request, which
+    # defangs the BREACH attack on the most common Django leak
+    # vector. In production the upstream CDN/WAF typically owns
+    # transport compression; this middleware is a no-op when the
+    # upstream layer has already set `Content-Encoding`.
+    "django.middleware.gzip.GZipMiddleware",
     # CSP middleware (F-p0-codice-4-csp): emette Content-Security-Policy
     # quando CONTENT_SECURITY_POLICY e' configurato (vedi sotto). Posizionato
     # subito dopo SecurityMiddleware (early in the chain) cosi' che la policy
@@ -225,6 +251,24 @@ LOCALE_PATHS = [BASE_DIR / "locale"]
 # Static & media
 # ---------------------------------------------------------------------------
 STATIC_URL = "static/"
+
+# WhiteNoise — static file delivery with auto-compression (P2-PERF-1).
+#
+# - In dev (DEBUG=True) `WHITENOISE_USE_FINDERS=True` makes WhiteNoise
+#   read the source static dirs via the staticfiles finders, so no
+#   `collectstatic` is needed between edits. In production the
+#   deploy step still runs `collectstatic`; WhiteNoise will then
+#   serve from STATIC_ROOT (the canonical path).
+# - `WHITENOISE_MAX_AGE` controls Cache-Control: 600 s for unhashed
+#   files in dev (the default 60 was too aggressive for Lighthouse's
+#   `cache-insight` audit on hashed-free assets). In production with
+#   `ManifestStaticFilesStorage` files carry content-hashes and
+#   WhiteNoise auto-bumps them to year-long immutable.
+# - Auto-compression: WhiteNoise pre-compresses on first request and
+#   caches the compressed payload in memory; subsequent requests are
+#   served without recompression cost.
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_MAX_AGE = 600
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 

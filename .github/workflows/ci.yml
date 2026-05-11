@@ -205,6 +205,9 @@ jobs:
       - name: Compile translations
         run: python manage.py compilemessages -l fr -l ar -l it
 
+      - name: Pre-compress static .gz companions (P2-PERF-1)
+        run: python manage.py precompress_static
+
       - name: Start Django dev server (background)
         run: |
           nohup python manage.py runserver 127.0.0.1:8000 --noreload \
@@ -289,6 +292,9 @@ jobs:
 
       - name: Compile translations
         run: python manage.py compilemessages -l fr -l ar -l it
+
+      - name: Pre-compress static .gz companions (P2-PERF-1)
+        run: python manage.py precompress_static
 
       - name: Start Django dev server (background)
         run: |
