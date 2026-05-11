@@ -69,6 +69,11 @@ python manage.py precompress_static >/dev/null 2>&1 \
   && echo "[lighthouse mobile runner] static .gz companions ready" \
   || echo "[lighthouse mobile runner] WARNING: could not pre-compress static files (venv off?)"
 
+# P2-IMG-1: same WebP-companion generation as the desktop runner.
+python manage.py compress_pexels_images >/dev/null 2>&1 \
+  && echo "[lighthouse mobile runner] pexels WebP companions ready" \
+  || echo "[lighthouse mobile runner] WARNING: could not generate WebP variants"
+
 # Pairs of "label:URL_PATH". Keep in sync with lighthouserc.mobile.json.
 TARGETS=(
   "home-it:/"
