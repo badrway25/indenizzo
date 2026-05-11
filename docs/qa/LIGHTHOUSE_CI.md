@@ -44,16 +44,29 @@ and leaves orphan processes.
 source .venv/Scripts/activate           # or `. .venv\Scripts\Activate.ps1`
 python manage.py runserver 127.0.0.1:8000
 
-# Terminal B — gate
+# Terminal B — gate (default: artifacts/lighthouse/latest/ — gitignored)
 bash scripts/run_lighthouse_local.sh    # bash / Git Bash / WSL
 # or
 pwsh scripts/run_lighthouse_local.ps1   # PowerShell
+
+# Terminal B — explicit baseline refresh (writes tracked files in
+# docs/qa/lighthouse-baseline/ — commit the diff after review)
+bash scripts/run_lighthouse_local.sh --update-baseline
+pwsh scripts/run_lighthouse_local.ps1 -UpdateBaseline
 ```
 
 The script runs `npx lighthouse@latest` against each URL listed in
-`lighthouserc.json::ci.collect.url`, writes one JSON report per URL
-into `docs/qa/lighthouse-baseline/`, and exits non-zero if any
-score is below the gating threshold.
+`lighthouserc.json::ci.collect.url` and exits non-zero if any score
+is below the gating threshold. Output destination:
+
+- **default (gate run)** — `artifacts/lighthouse/latest/<label>-desktop.json`.
+  The `artifacts/` directory is gitignored, so a routine gate run
+  never dirties the working tree.
+- **`--update-baseline`** — `docs/qa/lighthouse-baseline/<label>-desktop.json`.
+  This IS the only path that intentionally writes to tracked files.
+  Use it when the Studio has approved a visible change that
+  legitimately moves the scores. Commit the diff + the matching
+  `SUMMARY.md` update.
 
 Optional: native LHCI autorun (single command, but EPERMs on
 Windows during cleanup):
@@ -219,19 +232,24 @@ fine with the temp-dir cleanup); on Windows runners we fall back to
 ## 8. Refreshing the baseline
 
 Whenever the Studio approves a visible change that legitimately
-moves the scores:
+moves the scores, use the **explicit** `--update-baseline` flag —
+it's the only command that writes to the tracked baseline dir.
 
 ```
 # 1. Make sure the dev server is running with the new code.
-# 2. Drop the existing baseline so we don't keep stale JSON.
-rm -f docs/qa/lighthouse-baseline/*-desktop.json
+# 2. Refresh the baseline (writes tracked docs/qa/lighthouse-baseline/).
+bash scripts/run_lighthouse_local.sh --update-baseline
+# or:  pwsh scripts/run_lighthouse_local.ps1 -UpdateBaseline
 
-# 3. Re-run the gate — it both fails-fast and writes the JSON.
-bash scripts/run_lighthouse_local.sh
+# 3. Inspect the diff:
+git diff docs/qa/lighthouse-baseline/
 
-# 4. Update the SUMMARY.md table to match the new numbers.
-# 5. Commit the JSON + SUMMARY.md + (if needed) the threshold tweak.
+# 4. Update docs/qa/lighthouse-baseline/SUMMARY.md to match the new numbers.
+# 5. Commit JSON + SUMMARY.md + (if needed) the threshold tweak.
 ```
 
 The baseline lives in git intentionally: it lets a future regression
-be diff'd against a known-good snapshot.
+be diff'd against a known-good snapshot. The default mode (without
+`--update-baseline`) writes only to `artifacts/lighthouse/latest/`
+which is gitignored, so a routine gate run never dirties the
+working tree.

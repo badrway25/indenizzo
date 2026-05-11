@@ -1,23 +1,41 @@
-# Local Lighthouse CI runner (P1-SEO-2) — PowerShell variant.
+# Local Lighthouse CI runner (P1-SEO-2 + P1-QA-1A) — PowerShell variant.
 #
 # Usage:
 #   pwsh scripts/run_lighthouse_local.ps1
+#   pwsh scripts/run_lighthouse_local.ps1 -UpdateBaseline
 #
 # Mirror of `scripts/run_lighthouse_local.sh`. Drives
-# `npx lighthouse@latest` against the URL list, writes JSON
-# reports into docs/qa/lighthouse-baseline/, exits non-zero if
+# `npx lighthouse@latest` against the URL list, exits non-zero if
 # any score is below the gating threshold.
+#
+# Output destination depends on mode:
+# - default (gate run): writes JSON into the gitignored
+#   `artifacts/lighthouse/latest/` — a normal gate run does NOT
+#   dirty the working tree;
+# - -UpdateBaseline: writes JSON into the tracked
+#   `docs/qa/lighthouse-baseline/` (the only path that intentionally
+#   modifies a tracked baseline file).
 #
 # The chrome-launcher EPERM during temp-dir cleanup on Windows is
 # expected and ignored — the JSON is fully written before the
 # cleanup attempt.
+
+param(
+    [switch]$UpdateBaseline
+)
 
 $ErrorActionPreference = "Continue"
 
 $RepoRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 Set-Location $RepoRoot
 
-$OutDir = "docs/qa/lighthouse-baseline"
+if ($UpdateBaseline) {
+    $OutDir = "docs/qa/lighthouse-baseline"
+    Write-Host "[lighthouse runner] mode: UPDATE-BASELINE (writes tracked files in $OutDir)" -ForegroundColor Yellow
+} else {
+    $OutDir = "artifacts/lighthouse/latest"
+    Write-Host "[lighthouse runner] mode: GATE (writes gitignored $OutDir/)"
+}
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
 
 try {
