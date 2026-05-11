@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 #
-# Local Lighthouse CI runner (P1-SEO-2).
+# Local Lighthouse CI runner (P1-SEO-2 + P1-QA-1A).
 #
 # Usage:
-#   bash scripts/run_lighthouse_local.sh
+#   bash scripts/run_lighthouse_local.sh                  # gate run
+#   bash scripts/run_lighthouse_local.sh --update-baseline # refresh baseline
 #
 # What it does:
 # 1. Refuses to run if Django is not already serving on :8000 (the
@@ -11,9 +12,13 @@
 #    with manage.py reload + leave dangling processes on Windows).
 # 2. Drives `npx lighthouse@latest` against every URL in
 #    lighthouserc.json's `ci.collect.url` list.
-# 3. Writes one JSON report per URL into `docs/qa/lighthouse-baseline/`,
-#    overwriting the previous run. Commit the new files to refresh
-#    the baseline.
+# 3. Output destination depends on mode:
+#    - default (gate run): writes JSON into the gitignored
+#      `artifacts/lighthouse/latest/` so a normal gate run does NOT
+#      dirty the working tree;
+#    - `--update-baseline`: writes JSON into the tracked
+#      `docs/qa/lighthouse-baseline/` (this IS the only command
+#      that intentionally modifies a tracked baseline file).
 # 4. Exits non-zero if any score is below the gating threshold
 #    (performance 0.80, the rest 0.90).
 #
@@ -26,7 +31,30 @@ set -u
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "${REPO_ROOT}"
 
-OUT_DIR="docs/qa/lighthouse-baseline"
+UPDATE_BASELINE=0
+for arg in "$@"; do
+  case "${arg}" in
+    --update-baseline) UPDATE_BASELINE=1 ;;
+    -h|--help)
+      sed -n '2,30p' "$0" | sed 's/^# \{0,1\}//'
+      exit 0
+      ;;
+    *)
+      echo "Unknown flag: ${arg}" >&2
+      echo "Run with --help for usage." >&2
+      exit 2
+      ;;
+  esac
+done
+
+if [ "${UPDATE_BASELINE}" -eq 1 ]; then
+  OUT_DIR="docs/qa/lighthouse-baseline"
+  OUT_MODE="UPDATE-BASELINE (writes tracked files in ${OUT_DIR})"
+else
+  OUT_DIR="artifacts/lighthouse/latest"
+  OUT_MODE="GATE (writes gitignored ${OUT_DIR}/)"
+fi
+printf '[lighthouse runner] mode: %s\n' "${OUT_MODE}"
 mkdir -p "${OUT_DIR}"
 
 if ! curl -s -o /dev/null -w "%{http_code}" "http://127.0.0.1:8000/" | grep -q "^200$"; then

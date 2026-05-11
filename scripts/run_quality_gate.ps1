@@ -132,8 +132,9 @@ Write-Host ("=" * 60)
 $drift = git diff --quiet docs/qa/lighthouse-baseline/ 2>$null
 if ($LASTEXITCODE -ne 0) {
     Write-Host ""
-    Write-Host "Note: docs/qa/lighthouse-baseline/ was rewritten by the Lighthouse stage."
-    Write-Host "If the regen was informational only, discard with:"
+    Write-Host "Unexpected: docs/qa/lighthouse-baseline/ was modified by the gate." -ForegroundColor Yellow
+    Write-Host "This should only happen if you ran the lighthouse runner with -UpdateBaseline."
+    Write-Host "If not intentional, discard with:"
     Write-Host "    git checkout -- docs/qa/lighthouse-baseline/"
 }
 exit 0

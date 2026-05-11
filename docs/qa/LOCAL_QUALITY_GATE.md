@@ -141,27 +141,36 @@ RESULT: all URLs cleared the gate.
 
 ## 8. Keeping `git status` clean
 
-The gate regenerates the JSON files under
-`docs/qa/lighthouse-baseline/` (stage 4 always overwrites them with
-the fresh Lighthouse output). If your run was **informational only**
-— i.e. you didn't intentionally re-baseline — discard the
-working-copy drift:
+A normal gate run is **idempotent against the working tree**: it
+writes only to gitignored directories.
 
-```bash
-git checkout -- docs/qa/lighthouse-baseline/
+| Stage | Tracked files touched? |
+|---|---|
+| 1 — manage.py check | none |
+| 2 — pytest | none (`.pytest_cache/` is gitignored) |
+| 3 — content hygiene | none (the script writes JSON only when `--json` is passed) |
+| 4 — Lighthouse (default) | **none** — JSON goes to `artifacts/lighthouse/latest/` (gitignored) |
+| 4 — Lighthouse with `--update-baseline` | yes, intentionally — `docs/qa/lighthouse-baseline/` |
+
+The wrapper checks `docs/qa/lighthouse-baseline/` for unexpected
+drift at the end of the run and emits a warning if it changed
+without `--update-baseline` (defensive — should never trigger).
+
+To **intentionally refresh** the baseline (e.g. after a Studio-
+approved visible change that legitimately moves the scores):
+
+```
+# Run the runner directly with --update-baseline, NOT the quality
+# gate, since the gate's job is to verify against the existing
+# baseline, not to write to it.
+bash scripts/run_lighthouse_local.sh --update-baseline
+# or:  pwsh scripts/run_lighthouse_local.ps1 -UpdateBaseline
+
+# Then update SUMMARY.md to match and commit the diff.
 ```
 
-The wrapper prints a reminder when this drift is detected. The
-`.lighthouseci/` scratch dir is already in `.gitignore`.
-
-The other three stages do not touch tracked files. `pytest` writes
-to `.pytest_cache/` (gitignored); the content-hygiene script writes
-nothing unless `--json` is passed.
-
-To **intentionally re-baseline** (e.g. after a Studio-approved
-visual change that legitimately moves the scores): keep the regen,
-inspect, update `docs/qa/lighthouse-baseline/SUMMARY.md` to match,
-commit. See `docs/qa/LIGHTHOUSE_CI.md` §8.
+See `docs/qa/LIGHTHOUSE_CI.md` §8 for the full re-baseline
+procedure.
 
 ---
 

@@ -169,11 +169,15 @@ printf '\n============================================================\n'
 printf '  ALL GATES CLEARED  (%d s total)\n' "${TOTAL}"
 printf '============================================================\n'
 
-# Remind the operator about the gitignored / regenerated artifacts.
+# Defensive guard. Stage 4 writes the JSON reports to the gitignored
+# `artifacts/lighthouse/latest/`; we never expect the tracked
+# baseline at `docs/qa/lighthouse-baseline/` to change unless the
+# operator explicitly ran the runner with `--update-baseline`.
 if ! git diff --quiet docs/qa/lighthouse-baseline/ 2>/dev/null; then
-  printf '\nNote: docs/qa/lighthouse-baseline/ was rewritten by the '
-  printf 'Lighthouse stage.\n'
-  printf 'If the regen was informational only, discard with:\n'
+  printf '\nUnexpected: docs/qa/lighthouse-baseline/ was modified by '
+  printf 'the gate.\n'
+  printf 'This should only happen if you ran with --update-baseline. '
+  printf 'If not intentional, discard with:\n'
   printf '    git checkout -- docs/qa/lighthouse-baseline/\n'
 fi
 exit 0
