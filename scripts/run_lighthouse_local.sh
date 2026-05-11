@@ -74,6 +74,15 @@ python manage.py precompress_static >/dev/null 2>&1 \
   && echo "[lighthouse runner] static .gz companions ready" \
   || echo "[lighthouse runner] WARNING: could not pre-compress static files (venv off?)"
 
+# P2-IMG-1: pre-generate WebP variants of cached Pexels images. The
+# command no-ops in CI (no media/pexels/ checkout) and is idempotent
+# on dev (skips fresh companions). Without this step the hero would
+# fall back to the original JPEG and LCP scores would be artificially
+# low.
+python manage.py compress_pexels_images >/dev/null 2>&1 \
+  && echo "[lighthouse runner] pexels WebP companions ready" \
+  || echo "[lighthouse runner] WARNING: could not generate WebP variants"
+
 # Pairs of "label:URL_PATH". Keep in sync with lighthouserc.json.
 TARGETS=(
   "home-it:/"

@@ -176,7 +176,12 @@ def test_principal_pages_have_exactly_one_h1_and_no_skipping(path):
 @pytest.mark.django_db
 def test_no_inline_wide_styles_on_principal_pages():
     client = Client()
-    suspicious = re.compile(r"width:\s*([4-9]\d{2,}|\d{4,})px", re.IGNORECASE)
+    # `(?<![-\w])` excludes `max-width:` and `min-width:` inside media
+    # queries (e.g. P2-IMG-1 responsive `<source media="(max-width:
+    # 640px)">`). The intent of this test is to catch inline-CSS
+    # leaks like `<div style="width: 800px">`, not legitimate media
+    # queries.
+    suspicious = re.compile(r"(?<![-\w])width:\s*([4-9]\d{2,}|\d{4,})px", re.IGNORECASE)
     for path in PRINCIPAL_PATHS:
         body = client.get(path).content.decode("utf-8", errors="replace")
         leaks = suspicious.findall(body)

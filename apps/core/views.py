@@ -168,18 +168,64 @@ def robots_txt(request):
 def _pexels_hero(request, purpose: str, country_code: str | None = None) -> dict | None:
     """
     Lookup read-only del manifest Pexels per la slot indicata.
-    Ritorna `{"src", "alt"}` per il template (URL assoluto), oppure
-    None per fallback. Niente chiamata API live.
+    Ritorna un dict per il template (URL assoluti), oppure None per
+    fallback. Niente chiamata API live.
+
+    Keys:
+      - ``src``           : original JPEG/PNG URL (always present)
+      - ``alt``           : alt text (may be empty)
+      - ``webp_src``      : full-resolution WebP URL, only if the
+                            companion file exists on disk
+                            (see `manage.py compress_pexels_images`)
+      - ``webp_src_mobile``: 800-wide mobile WebP URL, same condition
+
+    Templates that want to emit a `<picture>` element MUST check
+    `webp_src` and `webp_src_mobile` before using them — if the
+    companion files were never generated, the `<source>` elements
+    must be omitted so the browser falls back to the original
+    JPEG/PNG via the `<img>` tag.
     """
+    from pathlib import Path
+
+    from django.conf import settings
+
     from .pexels import get_image_for_slot, media_url_for_entry
 
     entry = get_image_for_slot(purpose, country_code=country_code)
     if not entry:
         return None
-    return {
+
+    result: dict[str, str] = {
         "src": request.build_absolute_uri(media_url_for_entry(entry)),
         "alt": entry.get("alt") or "",
     }
+
+    # WebP companions (P2-IMG-1). The compress_pexels_images command
+    # writes `<name>.webp` and `<name>.mobile.webp` next to each
+    # source JPEG/PNG. We surface their URLs only when the files
+    # actually exist on disk, so a project that has not run the
+    # compression step still gets a working <img> fallback.
+    local_path = (entry.get("local_path") or "").lstrip("/")
+    if local_path:
+        source_disk = Path(settings.MEDIA_ROOT) / local_path
+        media_url = (getattr(settings, "MEDIA_URL", "/media/") or "/media/").rstrip("/")
+        relative_dir = "/".join(local_path.split("/")[:-1])
+        relative_dir = (relative_dir + "/") if relative_dir else ""
+
+        stem = source_disk.stem
+        webp_desktop_disk = source_disk.with_suffix(".webp")
+        webp_mobile_disk = source_disk.with_name(stem + ".mobile.webp")
+
+        if webp_desktop_disk.is_file():
+            result["webp_src"] = request.build_absolute_uri(
+                f"{media_url}/{relative_dir}{webp_desktop_disk.name}"
+            )
+        if webp_mobile_disk.is_file():
+            result["webp_src_mobile"] = request.build_absolute_uri(
+                f"{media_url}/{relative_dir}{webp_mobile_disk.name}"
+            )
+
+    return result
 
 
 @require_GET

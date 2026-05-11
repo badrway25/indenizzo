@@ -22,15 +22,25 @@
 {% endcomment %}
 {% if pexels_image %}
 <section class="max-w-7xl mx-auto px-5 lg:px-8 pt-8">
+  {% comment %}
+    P2-IMG-1: secondary hero is below-the-fold (loading="lazy") and
+    is not the LCP element on its pages — but it is still ~100 KiB
+    uncompressed. Same <picture> wrapping as the home hero so WebP
+    savings apply consistently.
+  {% endcomment %}
   <figure class="relative isolate rounded-3xl overflow-hidden shadow-card">
-    <img
-      src="{{ pexels_image.src }}"
-      alt="{{ pexels_image.alt }}"
-      width="1280"
-      height="640"
-      class="w-full h-52 sm:h-64 lg:h-80 object-cover"
-      loading="lazy"
-      decoding="async">
+    <picture>
+      {% if pexels_image.webp_src_mobile %}<source media="(max-width: 640px)" type="image/webp" srcset="{{ pexels_image.webp_src_mobile }}">{% endif %}
+      {% if pexels_image.webp_src %}<source type="image/webp" srcset="{{ pexels_image.webp_src }}">{% endif %}
+      <img
+        src="{{ pexels_image.src }}"
+        alt="{{ pexels_image.alt }}"
+        width="1280"
+        height="640"
+        class="w-full h-52 sm:h-64 lg:h-80 object-cover"
+        loading="lazy"
+        decoding="async">
+    </picture>
     <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-tr from-ink-950/30 via-ink-950/0 to-ink-950/0"></div>
   </figure>
 </section>

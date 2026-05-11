@@ -3,14 +3,46 @@
 
 {% block title %}{% blocktranslate with site=SITE_NAME %}{{ site }} — International compensation simulator{% endblocktranslate %}{% endblock %}
 
+{% block head_extra %}
+  {% comment %}
+    P2-IMG-1: hero preload. The home hero is the LCP element on
+    this page (both LTR and the i18n variants including /ar/). A
+    <link rel="preload" as="image"> with imagesrcset lets the
+    browser start fetching the right variant during HTML parse,
+    instead of after parsing the <picture> below. Conditional on
+    the WebP companions existing on disk — see view's
+    `_pexels_hero()` for the contract. CSP `img-src 'self' data:
+    blob:` already allows these (same origin).
+  {% endcomment %}
+  {% if pexels_image and pexels_image.webp_src and pexels_image.webp_src_mobile %}
+    <link rel="preload" as="image" type="image/webp" href="{{ pexels_image.webp_src_mobile }}" imagesrcset="{{ pexels_image.webp_src_mobile }} 800w, {{ pexels_image.webp_src }} 1920w" imagesizes="100vw" fetchpriority="high">
+  {% elif pexels_image %}
+    <link rel="preload" as="image" href="{{ pexels_image.src }}" fetchpriority="high">
+  {% endif %}
+{% endblock %}
+
 {% block content %}
-  {# -------- Hero with image-as-backdrop (pass2 premium) -------- #}
+  {% comment %}
+    -------- Hero with image-as-backdrop (pass2 premium) --------
+    P2-IMG-1: the hero is the LCP element on /, /ar/ and other
+    i18n variants. We emit a <picture> with two WebP <source>
+    elements (mobile + desktop) and the original JPEG/PNG as
+    fallback. The WebP sources are emitted ONLY when the
+    companion files exist on disk (the view sets `webp_src` /
+    `webp_src_mobile` exclusively in that case). A project that
+    has not run `manage.py compress_pexels_images` still
+    renders the page — it just serves the original asset.
+  {% endcomment %}
   <section class="relative isolate overflow-hidden">
     {% if pexels_image %}
-      <img src="{{ pexels_image.src }}" alt="{{ pexels_image.alt }}"
-           width="1920" height="1080"
-           class="absolute inset-0 w-full h-full object-cover"
-           loading="eager" decoding="async" fetchpriority="high">
+      <picture>
+        {% if pexels_image.webp_src_mobile %}<source media="(max-width: 640px)" type="image/webp" srcset="{{ pexels_image.webp_src_mobile }}">{% endif %}
+        {% if pexels_image.webp_src %}<source type="image/webp" srcset="{{ pexels_image.webp_src }}">{% endif %}
+        <img src="{{ pexels_image.src }}" alt="{{ pexels_image.alt }}"
+             width="1920" height="1080"
+             class="absolute inset-0 w-full h-full object-cover"
+             loading="eager" decoding="async" fetchpriority="high">
+      </picture>
       {# Overlay scuro per leggibilità testo: gradient ink-950/80 → ink-900/70. #}
       <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-br from-ink-950/85 via-ink-950/75 to-ink-900/65"></div>
     {% else %}
