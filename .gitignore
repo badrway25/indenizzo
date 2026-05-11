@@ -31,10 +31,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Lighthouse CI scratch (P1-SEO-2). Reports we want to keep live in
-# `docs/qa/lighthouse-baseline/`; the `.lighthouseci/` dir is the
-# per-run scratch space.
+# Lighthouse CI scratch (P1-SEO-2 + P2-SEO-1). Reports we want to
+# keep live in `docs/qa/lighthouse-baseline/` (desktop) and
+# `docs/qa/lighthouse-mobile-baseline/` (mobile); the
+# `.lighthouseci*/` dirs are the per-run scratch space.
 .lighthouseci/
+.lighthouseci-mobile/
 
 # Per-run hygiene reports (P1-LEG-2). The script writes JSON here on
 # demand; nothing in `artifacts/` is canonical. Keep findings in PR

@@ -19,7 +19,8 @@
 
 param(
     [switch]$NoLighthouse,
-    [switch]$NoPytest
+    [switch]$NoPytest,
+    [switch]$MobileLighthouse
 )
 
 $ErrorActionPreference = "Continue"
@@ -114,6 +115,33 @@ if ($NoLighthouse) {
 
     $ok = Invoke-Stage "[4/4] Lighthouse: pwsh scripts/run_lighthouse_local.ps1" {
         pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/run_lighthouse_local.ps1
+    }
+    if (-not $ok) {
+        Write-Host ""
+        Write-Host "Gate aborted at: $GateFailed" -ForegroundColor Red
+        exit 1
+    }
+}
+
+# ---- 5 (optional). Lighthouse mobile ----
+if ($MobileLighthouse) {
+    try {
+        $code = (Invoke-WebRequest -UseBasicParsing -Uri "http://127.0.0.1:8000/" -TimeoutSec 5).StatusCode
+    } catch { $code = 0 }
+    if ($code -ne 200) {
+        Write-Host ""
+        Write-Host "[SKIP] [5/5] Lighthouse mobile - Django not responding on 127.0.0.1:8000." -ForegroundColor Yellow
+        $total = [int]((Get-Date) - $GateStart).TotalSeconds
+        Write-Host ""
+        Write-Host ("=" * 60)
+        Write-Host "  GATE FAILED - Mobile Lighthouse prerequisite missing" -ForegroundColor Red
+        Write-Host "  Total: $total s"
+        Write-Host ("=" * 60)
+        exit 1
+    }
+
+    $ok = Invoke-Stage "[5/5] Lighthouse mobile: pwsh scripts/run_lighthouse_mobile_local.ps1" {
+        pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/run_lighthouse_mobile_local.ps1
     }
     if (-not $ok) {
         Write-Host ""
