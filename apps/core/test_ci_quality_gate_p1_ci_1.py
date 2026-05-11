@@ -1,5 +1,5 @@
 """
-Tests F-p1-ci-1-ci-quality-gate.
+Tests F-p1-ci-1-ci-quality-gate (+ P1-CI-1A micro-fix).
 
 Static-side smoke tests for the CI quality gate workflow. They do
 NOT run GitHub Actions locally, do NOT spawn `gh` or `act`, and do
@@ -7,8 +7,8 @@ NOT execute Lighthouse. They pin the contract that the committed
 workflow:
 
  1. lives at .github/workflows/ci.yml;
- 2. carries the three expected jobs (python-tests, lighthouse-desktop,
-    lighthouse-mobile);
+ 2. carries the four expected jobs (python-tests, production-checks,
+    lighthouse-desktop, lighthouse-mobile);
  3. runs every command the runbook documents (manage.py check,
     pytest -q, content hygiene --strict, non-IT readiness audit,
     desktop lighthouse runner, mobile lighthouse runner);
@@ -19,7 +19,10 @@ workflow:
     HTTP targets;
  7. uploads Lighthouse artefacts on every run (always() clause);
  8. the companion runbook docs/qa/CI_QUALITY_GATE.md exists and
-    references every job + every command.
+    references every job + every command;
+ 9. (P1-CI-1A) production-checks job runs with DEBUG=false +
+    simulated signed env vars; no real secrets present; documents
+    intent in the runbook.
 """
 
 from __future__ import annotations
@@ -63,6 +66,11 @@ def test_runbook_file_exists():
 def test_workflow_has_python_tests_job():
     text = _workflow_text()
     assert "python-tests:" in text
+
+
+def test_workflow_has_production_checks_job():
+    text = _workflow_text()
+    assert "production-checks:" in text
 
 
 def test_workflow_has_lighthouse_desktop_job():
@@ -241,6 +249,101 @@ def test_runbook_documents_why_mobile_is_opt_in():
     text = _runbook_text()
     assert "opt-in" in text.lower()
     assert "workflow_dispatch" in text
+
+
+# ---------------------------------------------------------------------------
+# 9. P1-CI-1A — production-checks job
+# ---------------------------------------------------------------------------
+
+
+def test_production_checks_runs_django_check():
+    text = _workflow_text()
+    # The production-checks job must run `python manage.py check`.
+    # Two occurrences of that command in the workflow are expected:
+    # one in python-tests (DEBUG=true) and one here (DEBUG=false).
+    assert text.count("python manage.py check") >= 2
+
+
+def test_production_checks_sets_django_debug_false():
+    text = _workflow_text()
+    assert 'DJANGO_DEBUG: "false"' in text
+
+
+def test_production_checks_simulates_signed_studio_identity():
+    text = _workflow_text()
+    # The 7 STUDIO_* env vars that core.E001 enforces.
+    for var in (
+        "STUDIO_LEAD_LAWYER_NAME",
+        "STUDIO_BAR_ASSOCIATION",
+        "STUDIO_VAT_NUMBER",
+        "STUDIO_PEC_EMAIL",
+        "STUDIO_PHYSICAL_ADDRESS",
+        "STUDIO_PROFESSIONAL_INSURANCE_INSURER",
+        "STUDIO_PROFESSIONAL_INSURANCE_POLICY",
+    ):
+        assert var in text, f"production-checks missing {var}"
+
+
+def test_production_checks_simulates_signed_policy_versions():
+    text = _workflow_text()
+    # Each policy version block: VERSION + STATUS=signed + SIGNED_AT.
+    for var in (
+        "PRIVACY_NOTICE_VERSION",
+        "SPECIAL_CATEGORIES_NOTICE_VERSION",
+        "PRIVACY_POLICY_VERSION",
+        "PRIVACY_POLICY_STATUS",
+        "PRIVACY_POLICY_SIGNED_AT",
+        "DISCLAIMER_VERSION",
+        "DISCLAIMER_STATUS",
+        "DISCLAIMER_SIGNED_AT",
+        "MANDATE_TEMPLATE_VERSION",
+        "MANDATE_TEMPLATE_STATUS",
+        "MANDATE_TEMPLATE_SIGNED_AT",
+        "RETENTION_POLICY_VERSION",
+    ):
+        assert var in text, f"production-checks missing {var}"
+
+
+def test_production_checks_keeps_external_services_off():
+    text = _workflow_text()
+    # Even when DEBUG=false, external services must stay off in CI.
+    assert 'CRM_WEBHOOK_ENABLED: "false"' in text
+    assert 'PEXELS_ENABLED: "false"' in text
+    assert 'SENTRY_DSN: ""' in text
+
+
+def test_production_checks_uses_invalid_tld_for_emails():
+    text = _workflow_text()
+    # `.invalid` (RFC 6761) never resolves to a real mailbox.
+    assert "ci@example.invalid" in text
+
+
+def test_production_checks_secret_key_is_not_django_insecure_prefix():
+    text = _workflow_text()
+    # In DEBUG=false the project refuses to start with a
+    # `django-insecure-` prefixed key. The CI value must be neither
+    # that prefix nor a real-shaped secret.
+    # Read the production-checks DJANGO_SECRET_KEY assignment.
+    m = re.search(
+        r"production-checks:.*?DJANGO_SECRET_KEY:\s*\"([^\"]+)\"",
+        text,
+        re.DOTALL,
+    )
+    assert m is not None, "production-checks DJANGO_SECRET_KEY block not found"
+    secret = m.group(1)
+    assert not secret.startswith("django-insecure-"), (
+        "production-checks key must not start with django-insecure- "
+        "(prod refuses to start with that prefix)"
+    )
+    # Belt-and-braces: the value contains the literal "ci-not-real"
+    # marker so a casual reader cannot mistake it for a real secret.
+    assert "ci-not-real" in secret
+
+
+def test_runbook_documents_production_checks_job():
+    text = _runbook_text()
+    assert "production-checks" in text
+    assert "DEBUG=false" in text
 
 
 def test_runbook_does_not_invent_external_dependencies():

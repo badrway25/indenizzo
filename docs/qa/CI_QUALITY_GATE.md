@@ -20,25 +20,78 @@ reproduce.
 | # | Job | Trigger | Time | Blocks merge? |
 |---|-----|---------|------|---------------|
 | 1 | `python-tests` | `pull_request`, `push` to `main`, `workflow_dispatch` | ~3–5 min | **yes** |
-| 2 | `lighthouse-desktop` | `pull_request`, `push` to `main`, `workflow_dispatch` | ~5–8 min | **yes** |
-| 3 | `lighthouse-mobile` | `workflow_dispatch` **only** | ~6–10 min | manual |
+| 2 | `production-checks` | `pull_request`, `push` to `main`, `workflow_dispatch` | ~1–2 min | **yes** |
+| 3 | `lighthouse-desktop` | `pull_request`, `push` to `main`, `workflow_dispatch` | ~5–8 min | **yes** |
+| 4 | `lighthouse-mobile` | `workflow_dispatch` **only** | ~6–10 min | manual |
 
-The two blocking jobs run in parallel — total wall-clock for a PR
-is the longer of the two (~8 min in practice).
+The three blocking jobs run in parallel — total wall-clock for a PR
+is the longest of the three (~8 min, bounded by `lighthouse-desktop`).
+`production-checks` finishes in 1–2 min so it never widens the
+critical path.
 
 ---
 
 ## 2. What each job runs
 
-### `python-tests` — fast, deterministic checks
+### `python-tests` — fast, deterministic checks (dev / test env)
+
+Runs with `DJANGO_DEBUG=true` so the test suite exercises the
+placeholder state (working-copy mandate, working-copy disclaimer,
+etc.). The production-only system checks (`core.E001/E002/E003/E004/E006/E007/E008`,
+`compliance.E001`, `jurisdictions.E001`) are skipped here — they
+get their own job (see `production-checks` below) so the gate
+verifies the deploy path with one eye, and the test path with the
+other.
 
 | Step | Command | Why |
 |---|---|---|
-| Django system check | `python manage.py check` | Catches missing migrations, broken settings, all `core.*` / `crm.*` / `compliance.*` / `jurisdictions.*` errors. |
+| Django system check | `python manage.py check` | Catches missing migrations, broken settings, every error that fires in DEBUG=true. |
 | Migrations | `python manage.py migrate --noinput` | Required so the next steps can hit the DB. SQLite in CI; the project supports Postgres in prod via `DATABASE_URL`. |
-| Tests | `pytest -q` | The full ~1850 test suite. |
+| Tests | `pytest -q` | The full ~1900 test suite. |
 | Content hygiene | `python scripts/audit_legal_content_hygiene.py --strict` | Six categories of deontology phrasing (see `docs/qa/PUBLIC_CONTENT_HYGIENE.md`). |
 | Non-IT readiness | `python scripts/legal_data/audit_non_it_readiness.py` | Verifies the FR/BE/MA/TN chain integrity: every APPROVED LegalSource must have a matching APPROVE LegalReview audit row. Exits 1 on `APPROVED-INCONSISTENT`. The system check `jurisdictions.E001` enforces the same contract in prod. |
+
+### `production-checks` — production-like Django system check
+
+Runs **`python manage.py check` only**, with `DJANGO_DEBUG=false`
+and a complete set of plausible-shaped (but fictitious) signed env
+values. The point is to exercise the production-blocking system
+checks against the *real* code path that fires on deploy, instead
+of accepting "they're skipped in CI, we'll find out in prod".
+
+What it catches: a `core.W001` → `core.E001` promotion that breaks
+because a new STUDIO_* field was added but not threaded through the
+deploy gate. Same shape for CSP enforcing
+(`core.E002/E003`), consent versions (`core.E004`), legal pages
+signed (`core.E006/E007`), mandate signed (`core.E008`), retention
+policy (`compliance.E001`), and non-IT chain (`jurisdictions.E001`).
+
+| Step | Command | Why |
+|---|---|---|
+| Install deps | `pip install -r requirements.txt` | |
+| Production-like Django check | `python manage.py check` | All env vars below are placeholders chosen to pass each check. If a new prod-blocking check lands and this job goes red, the deploy gate would fail too. |
+
+**No real secret is present in this job.** Specifically:
+
+- `DJANGO_SECRET_KEY` is a CI-only placeholder (50+ chars, no
+  `django-insecure-` prefix so the runtime accepts it under
+  DEBUG=false, but the value itself is not used to sign real
+  sessions).
+- `STUDIO_*` fields are placeholder names/numbers, not real Studio
+  identity.
+- `*_NOTICE_VERSION` / `*_POLICY_VERSION` / `MANDATE_TEMPLATE_VERSION`
+  are dated strings shaped like `2026-05-10-final` — enough to clear
+  the "no draft / working-copy marker" check; the real signed
+  values come from the Studio.
+- `LEAD_NOTIFICATION_TO_EMAILS` resolves only to `ci@example.invalid`
+  (RFC 6761 — the `.invalid` TLD never reaches a real mailbox).
+- `CRM_WEBHOOK_ENABLED=false`, `PEXELS_ENABLED=false`, `SENTRY_DSN=""`,
+  `ADMIN_MFA_REQUIRED=false` — no external service is contacted.
+
+This job intentionally does **not** run pytest or Lighthouse;
+adding either would make it duplicate `python-tests` /
+`lighthouse-desktop` while increasing the CI bill. The
+production-only system checks are the single deliverable.
 
 ### `lighthouse-desktop` — public-surface budgets
 
@@ -65,6 +118,7 @@ why.
 | What | Blocks merge? | Notes |
 |---|---|---|
 | `python-tests` failure | yes | Test regression or hygiene/audit failure. |
+| `production-checks` failure | yes | A production-blocking system check would fail on deploy. Most common cause: a new check landed in `apps/*/checks.py` but its required env var was not added to this job. |
 | `lighthouse-desktop` failure | yes | Perf/a11y/best/seo regression on the public surface. |
 | `lighthouse-mobile` failure | no | Manual dispatch only; treated as informational. |
 | `public-site-audit.yml` (legacy Playwright structural audit) | yes — separately | Orthogonal to this gate; runs on PRs and uploads its own artefacts. |
@@ -208,7 +262,7 @@ the variance:
 | Per-PR preview deploys | n/a | Not configured. The team operates against the local dev server + the staging environment. |
 | Real CRM webhook smoke | n/a | `LEAD_NOTIFICATION_ENABLED=false` in CI. The local CRM dispatcher tests are unit-level (signed payloads, retry budget, outbox state machine). |
 | Real Pexels image fetch | n/a | `PEXELS_ENABLED=false`. The cache mechanism is unit-tested. |
-| Production deploy checks (`core.E001`, `compliance.E001`, `jurisdictions.E001`, etc.) | local with `DJANGO_DEBUG=false` | The prod-only system checks are deliberately skipped in CI (the test DB doesn't have signed STUDIO_*, RETENTION_*, or LegalReview rows). They fire on prod deploy via the runtime `manage.py check`. |
+| Production deploy checks (`core.E001`, `compliance.E001`, `jurisdictions.E001`, etc.) | **covered** by `production-checks` (P1-CI-1A) | The deploy-gate `manage.py check` is exercised with `DJANGO_DEBUG=false` and simulated signed env values in CI, separately from `python-tests`. Real prod values come from the Studio. |
 | Cross-browser visual regression | n/a | Out of scope — pinned Lighthouse desktop + mobile preset is the perf-discipline lever. |
 
 ---

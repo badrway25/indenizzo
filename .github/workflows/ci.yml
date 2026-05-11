@@ -79,6 +79,92 @@ jobs:
       - name: Non-IT readiness audit
         run: python scripts/legal_data/audit_non_it_readiness.py
 
+  production-checks:
+    # P1-CI-1A. Runs `manage.py check` with DEBUG=False + simulated
+    # signed env vars, so the production-only system checks
+    # (`core.E001/E002/E003/E004/E006/E007/E008`, `compliance.E001`,
+    # `jurisdictions.E001`) actually execute. The `python-tests` job
+    # runs in DEBUG=true to exercise the test surface; this job runs
+    # in DEBUG=false to verify the deploy gate stays green.
+    #
+    # NONE of the env values below is a real secret. They are
+    # plausible-shaped placeholders chosen specifically to pass each
+    # production-blocking check. A real production deploy uses real
+    # signed values supplied out-of-band by the Studio.
+    name: Production-like system checks (DEBUG=false)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    env:
+      DJANGO_DEBUG: "false"
+      DJANGO_SECRET_KEY: "ci-not-real-secret-key-only-for-checks-must-be-fifty-chars-XXXXX"
+      DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1,testserver"
+
+      # Lead notification — enabled to exercise the LeadNotificationConfig
+      # check, but to-emails resolve only to the test sink.
+      LEAD_NOTIFICATION_ENABLED: "true"
+      LEAD_NOTIFICATION_TO_EMAILS: "ci@example.invalid"
+
+      # core.E001 — Studio professional identification (placeholder, not real).
+      STUDIO_LEAD_LAWYER_NAME: "Avv. Test CI"
+      STUDIO_BAR_ASSOCIATION: "Ordine Test CI"
+      STUDIO_VAT_NUMBER: "IT00000000000"
+      STUDIO_PEC_EMAIL: "ci@example.invalid"
+      STUDIO_PHYSICAL_ADDRESS: "CI Test Address"
+      STUDIO_PROFESSIONAL_INSURANCE_INSURER: "CI Insurance"
+      STUDIO_PROFESSIONAL_INSURANCE_POLICY: "CI-POLICY-001"
+
+      # core.E002 / core.E003 — CSP must be enforcing in prod.
+      CSP_ENABLED: "true"
+      CSP_REPORT_ONLY: "false"
+
+      # core.E004 — consent notice versions must be signed.
+      PRIVACY_NOTICE_VERSION: "2026-05-10-final"
+      SPECIAL_CATEGORIES_NOTICE_VERSION: "2026-05-10-final"
+
+      # core.E006 / core.E007 — public legal pages must be signed.
+      PRIVACY_POLICY_VERSION: "2026-05-10-final"
+      PRIVACY_POLICY_STATUS: "signed"
+      PRIVACY_POLICY_SIGNED_AT: "2026-05-10"
+      DISCLAIMER_VERSION: "2026-05-10-final"
+      DISCLAIMER_STATUS: "signed"
+      DISCLAIMER_SIGNED_AT: "2026-05-10"
+
+      # compliance.E001 — retention policy must be signed + mode valid.
+      RETENTION_POLICY_VERSION: "2026-05-10-final"
+      RETENTION_ENABLED: "false"
+      RETENTION_MODE: "anonymize"
+
+      # core.E008 — professional mandate must be signed.
+      MANDATE_TEMPLATE_VERSION: "2026-05-10-final"
+      MANDATE_TEMPLATE_STATUS: "signed"
+      MANDATE_TEMPLATE_SIGNED_AT: "2026-05-10"
+      REQUIRE_MANDATE_BEFORE_CASE_ACTIVATION: "true"
+
+      # External services explicitly disabled.
+      CRM_WEBHOOK_ENABLED: "false"
+      PEXELS_ENABLED: "false"
+      SENTRY_DSN: ""
+      ADMIN_MFA_REQUIRED: "false"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Production-like Django system check
+        run: python manage.py check
+
   lighthouse-desktop:
     name: Lighthouse desktop (perf / a11y / best / seo budgets)
     runs-on: ubuntu-latest
