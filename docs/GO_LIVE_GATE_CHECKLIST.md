@@ -38,6 +38,51 @@ in production.
 
 ---
 
+## 1.5 GitHub branch protection / required checks
+
+Full proposal: `docs/qa/GITHUB_BRANCH_PROTECTION.md`. Verify before
+the first deploy that the protection rule is actually live — a rule
+that exists only in docs blocks nothing.
+
+- [ ] `main` has branch protection enabled (or a Repository Ruleset
+      with equivalent semantics).
+- [ ] `audit/indennizzati-platform` has branch protection enabled.
+- [ ] Required status checks on BOTH branches include, at minimum:
+      - `Python tests + content hygiene + non-IT readiness`
+        (`ci.yml` → `python-tests` job display name);
+      - `Production-like system checks (DEBUG=false)`
+        (`ci.yml` → `production-checks` job display name);
+      - `Lighthouse desktop (perf / a11y / best / seo budgets)`
+        (`ci.yml` → `lighthouse-desktop` job display name);
+      - `Playwright structural audit`
+        (`public-site-audit.yml` → `audit` job display name).
+- [ ] `Lighthouse mobile (opt-in — workflow_dispatch only)` is
+      explicitly **NOT required** (would deadlock PRs because the
+      job is opt-in / skipped on PR runs).
+- [ ] "Require pull request before merge" enabled (≥ 1 approval).
+- [ ] "Require branches to be up to date before merging" enabled.
+- [ ] "Require conversation resolution before merging" enabled.
+- [ ] "Block force pushes" enabled.
+- [ ] "Block deletions" enabled.
+- [ ] "Require linear history" is **OFF** (the project uses
+      `git merge --no-ff p*/...` for every batch — enabling linear
+      history would forbid that pattern; see
+      `docs/qa/GITHUB_BRANCH_PROTECTION.md` §5).
+- [ ] Enforce on administrators: enabled (recommended) OR
+      documented exemption with explicit dev-lead sign-off.
+- [ ] Read-back verification done:
+      ```
+      gh api repos/<org>/<repo>/branches/main/protection | jq
+      gh api repos/<org>/<repo>/branches/audit%2Findennizzati-platform/protection | jq
+      ```
+
+If no GitHub remote is configured yet, this section is skipped at
+the deploy gate — but a remote MUST be added before the first
+public release, otherwise the project lives in a single working
+tree with no off-machine recovery path.
+
+---
+
 ## 2. System checks (production-like)
 
 ```bash
