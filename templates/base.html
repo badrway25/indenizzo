@@ -19,30 +19,39 @@
     <link rel="alternate" hreflang="{{ alt.lang }}" href="{{ alt.href }}">{% endfor %}{% endif %}{% endblock %}
 
     {% comment %}
-      Local premium stylesheet — sole CSS source. The Tailwind CDN
-      runtime is no longer loaded (F-frontend-remove-tailwind-cdn-runtime-pass2);
-      every utility used across the templates is hand-defined in
-      static/css/site.css and the design tokens live as CSS custom
-      properties.
+      F-p2-perf-1: above-the-fold font preload (LTR only).
+
+      The browser otherwise discovers the @font-face declarations
+      only after parsing fonts.css, which serialises the font fetch
+      behind the stylesheet download. Preload pushes the fetch to
+      start in parallel with the CSS, shaving ~100-300 ms off FCP
+      under mobile throttling. We preload only the weights used
+      above the fold; the rest stay lazy.
+
+      RTL pages deliberately do NOT preload Arabic fonts: on RTL
+      home (the only RTL page with a background-image hero) the
+      hero image is the LCP element, and competing for HTTP/1.1
+      connection slots against two extra font requests measurably
+      delays LCP. Without the preload the Arabic page recovers
+      its baseline LCP while still benefiting from the CSS
+      compression below.
+
+      The CSP `font-src 'self'` already allows these — no policy
+      change. `crossorigin` is required by the spec for preloaded
+      font resources even when same-origin.
     {% endcomment %}
-    {% comment %}
-      F-p1-sec-1-local-fonts: web fonts vendored under static/fonts/ —
-      no runtime fetch from Google Fonts CDNs. The CSP `font-src` and
-      `style-src` correspondingly drop those upstream allowances. See
-      `static/fonts/README.md`.
-    {% endcomment %}
-    <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
-    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+    {% if not IS_RTL %}
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="{% static 'fonts/inter/inter-400-latin.woff2' %}">
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="{% static 'fonts/cormorant-garamond/cormorant-garamond-600-latin.woff2' %}">
+    {% endif %}
 
     {% comment %}
-      F-p1-seo-2-favicon: local SVG favicon. Modern browsers prefer
-      the SVG (scales infinitely on retina + dark mode). Naive
-      `/favicon.ico` requests (curl, some bots) hit a Django route
-      that returns the same SVG with the right Content-Type — see
-      `apps.core.views.favicon_ico`. No external asset.
+      F-p2-perf-1: critical CSS inline ABOVE the external stylesheets.
+      The browser applies the body font-family, focus ring and
+      reduce-motion rules during the time fonts.css + site.css are
+      still downloading. This is the same nonce-protected inline
+      block that already existed; only its position changed.
     {% endcomment %}
-    <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
-
     <style nonce="{{ CSP_NONCE }}">
       html { scroll-behavior: smooth; }
       body { font-family: 'Inter', system-ui, sans-serif; background: #faf6ef; color: #0c2046; }
@@ -67,6 +76,30 @@
         }
       }
     </style>
+
+    {% comment %}
+      Local premium stylesheet — sole CSS source. The Tailwind CDN
+      runtime is no longer loaded (F-frontend-remove-tailwind-cdn-runtime-pass2);
+      every utility used across the templates is hand-defined in
+      static/css/site.css and the design tokens live as CSS custom
+      properties.
+
+      F-p1-sec-1-local-fonts: web fonts vendored under static/fonts/ —
+      no runtime fetch from Google Fonts CDNs. The CSP `font-src` and
+      `style-src` correspondingly drop those upstream allowances. See
+      `static/fonts/README.md`.
+    {% endcomment %}
+    <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
+    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+
+    {% comment %}
+      F-p1-seo-2-favicon: local SVG favicon. Modern browsers prefer
+      the SVG (scales infinitely on retina + dark mode). Naive
+      `/favicon.ico` requests (curl, some bots) hit a Django route
+      that returns the same SVG with the right Content-Type — see
+      `apps.core.views.favicon_ico`. No external asset.
+    {% endcomment %}
+    <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
 
     {% block head_extra %}{% endblock %}
   </head>

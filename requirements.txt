@@ -42,3 +42,10 @@ qrcode>=7.4,<9
 # Pin alla 4.x: API stabile, supporta nonce e direttive
 # tradizionali via settings. Non a INSTALLED_APPS — solo middleware.
 django-csp>=4.0,<5
+# Static-file serving with auto-compression (F-p2-perf-1). Standard
+# Django add-on for serving static assets with gzip/brotli. In dev
+# (DEBUG=True) we set WHITENOISE_USE_FINDERS=True so it serves
+# directly from the finders, without requiring `collectstatic`. In
+# prod the CDN typically owns transport compression; WhiteNoise
+# remains as a safety net for static-file delivery.
+whitenoise>=6.6,<7
