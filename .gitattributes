@@ -1,0 +1,61 @@
+# Git line-ending normalisation.
+#
+# Why this file exists: on Windows, the default `core.autocrlf=true`
+# converts LF -> CRLF on checkout. That breaks executable shell
+# scripts (bash on Git-Bash / WSL refuses to run a .sh with CRLF
+# line endings) and produces noisy diffs across platforms.
+#
+# Rules:
+#   - Shell scripts MUST stay LF — they are invoked by bash, both
+#     locally (Git-Bash, WSL) and in CI (Ubuntu runners). CRLF
+#     breaks the shebang and `set -u` etc.
+#   - Python / YAML / Markdown / JSON keep LF too: identical
+#     behaviour on every platform, identical diffs, identical
+#     test fixtures.
+#   - Windows-specific files (.ps1, .bat, .cmd) keep CRLF — that
+#     is the native PowerShell / cmd convention and `pwsh` is fine
+#     with either, but PowerShell ISE expects CRLF.
+
+# Default: auto, let Git pick based on contents.
+* text=auto
+
+# Force LF on text files we know must stay LF cross-platform.
+*.sh           text eol=lf
+*.py           text eol=lf
+*.yml          text eol=lf
+*.yaml         text eol=lf
+*.md           text eol=lf
+*.json         text eol=lf
+*.toml         text eol=lf
+*.css          text eol=lf
+*.html         text eol=lf
+*.js           text eol=lf
+*.cfg          text eol=lf
+*.ini          text eol=lf
+*.txt          text eol=lf
+.gitignore     text eol=lf
+.gitattributes text eol=lf
+Makefile       text eol=lf
+
+# Force CRLF on Windows-native scripts (PowerShell ISE expects it).
+*.ps1          text eol=crlf
+*.bat          text eol=crlf
+*.cmd          text eol=crlf
+
+# Binary — never line-ending-mangle these.
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.gif    binary
+*.webp   binary
+*.ico    binary
+*.pdf    binary
+*.woff   binary
+*.woff2  binary
+*.ttf    binary
+*.otf    binary
+*.eot    binary
+*.zip    binary
+*.gz     binary
+*.tar    binary
+*.mo     binary
