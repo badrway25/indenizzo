@@ -24,9 +24,10 @@
 # when the run is informational only.
 #
 # Flags:
-#   --no-lighthouse   skip stage 4 (useful in tight inner loops)
-#   --no-pytest       skip stage 2 (very rarely useful; documents
-#                     the gate is intentionally not split further)
+#   --no-lighthouse      skip stage 4 (useful in tight inner loops)
+#   --no-pytest          skip stage 2 (rarely useful)
+#   --mobile-lighthouse  add an opt-in stage 5 with the mobile preset
+#                        (default off — adds ~2 min of throttled audits)
 #
 # Requirements:
 #   - venv activated (or python on PATH pointing at the project env);
@@ -45,11 +46,13 @@ set -u
 # ---- argument parsing ----
 SKIP_LIGHTHOUSE=0
 SKIP_PYTEST=0
+MOBILE_LIGHTHOUSE=0
 
 for arg in "$@"; do
   case "${arg}" in
-    --no-lighthouse) SKIP_LIGHTHOUSE=1 ;;
-    --no-pytest)     SKIP_PYTEST=1 ;;
+    --no-lighthouse)     SKIP_LIGHTHOUSE=1 ;;
+    --no-pytest)         SKIP_PYTEST=1 ;;
+    --mobile-lighthouse) MOBILE_LIGHTHOUSE=1 ;;
     -h|--help)
       sed -n '2,40p' "$0" | sed 's/^# \{0,1\}//'
       exit 0
@@ -152,14 +155,40 @@ if [ "${SKIP_LIGHTHOUSE}" -eq 0 ]; then
     exit 1
   fi
 
-  run_stage "[4/4] Lighthouse: bash scripts/run_lighthouse_local.sh" \
+  run_stage "[4/4] Lighthouse desktop: bash scripts/run_lighthouse_local.sh" \
     bash scripts/run_lighthouse_local.sh
   [ -n "${GATE_FAILED}" ] && {
     printf '\nGate aborted at: %s\n' "${GATE_FAILED}"
     exit 1
   }
 else
-  printf '\n[SKIP] [4/4] Lighthouse (flag --no-lighthouse)\n'
+  printf '\n[SKIP] [4/4] Lighthouse desktop (flag --no-lighthouse)\n'
+fi
+
+# ---- 5 (optional). Lighthouse mobile ----
+# Opt-in. Mobile audits introduce throttling-driven variance and add
+# ~2 min per gate run; default-off keeps the standard gate at ~5 min.
+if [ "${MOBILE_LIGHTHOUSE}" -eq 1 ]; then
+  if ! curl -s -o /dev/null -w "%{http_code}" "http://127.0.0.1:8000/" \
+       2>/dev/null | grep -q "^200$"; then
+    printf '\n[SKIP] [5/5] Lighthouse mobile — Django not responding on '
+    printf '127.0.0.1:8000.\n'
+    printf '       Start it in another terminal:\n'
+    printf '           python manage.py runserver 127.0.0.1:8000\n'
+    GATE_T1=$(date +%s)
+    printf '\n============================================================\n'
+    printf '  GATE FAILED — Mobile Lighthouse prerequisite missing\n'
+    printf '  Total: %d s\n' "$((GATE_T1 - GATE_T0))"
+    printf '============================================================\n'
+    exit 1
+  fi
+
+  run_stage "[5/5] Lighthouse mobile: bash scripts/run_lighthouse_mobile_local.sh" \
+    bash scripts/run_lighthouse_mobile_local.sh
+  [ -n "${GATE_FAILED}" ] && {
+    printf '\nGate aborted at: %s\n' "${GATE_FAILED}"
+    exit 1
+  }
 fi
 
 # ---- summary ----
