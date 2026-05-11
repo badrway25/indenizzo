@@ -1,0 +1,243 @@
+name: CI quality gate
+
+# Iter: F-p1-ci-1-ci-quality-gate.
+#
+# Ports the consolidated local quality gate (see
+# docs/qa/LOCAL_QUALITY_GATE.md) to GitHub Actions. Mirror of the
+# stages a developer runs locally via `bash scripts/run_quality_gate.sh`:
+#
+#   1. python manage.py check                                       (python-tests)
+#   2. pytest -q                                                    (python-tests)
+#   3. python scripts/audit_legal_content_hygiene.py --strict       (python-tests)
+#   4. python scripts/legal_data/audit_non_it_readiness.py          (python-tests)
+#   5. bash scripts/run_lighthouse_local.sh                         (lighthouse-desktop)
+#   6. bash scripts/run_lighthouse_mobile_local.sh                  (lighthouse-mobile, opt-in)
+#
+# The mobile audit is intentionally opt-in (workflow_dispatch only)
+# because mobile-throttling Lighthouse adds ~2 min and carries the
+# documented ~±0.05 perf jitter — keeping it default-on would
+# generate noise. See docs/qa/LIGHTHOUSE_MOBILE_BASELINE.md §7.
+#
+# Companion (NOT modified by this batch):
+# .github/workflows/public-site-audit.yml runs the legacy Playwright
+# structural audit; it is orthogonal to this quality gate.
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python-tests:
+    name: Python tests + content hygiene + non-IT readiness
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      # Safety env: CI stays fully self-contained — no external
+      # services, no real production secrets.
+      DJANGO_DEBUG: "true"
+      DJANGO_SECRET_KEY: "django-insecure-ci-quality-gate-dummy-key"
+      DJANGO_ALLOWED_HOSTS: "127.0.0.1,localhost"
+      PEXELS_ENABLED: "false"
+      LEAD_NOTIFICATION_ENABLED: "false"
+      SENTRY_DSN: ""
+      ADMIN_MFA_REQUIRED: "false"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Django system check
+        run: python manage.py check
+
+      - name: Apply migrations (sqlite)
+        run: python manage.py migrate --noinput
+
+      - name: pytest
+        run: pytest -q
+
+      - name: Deontological content hygiene (--strict)
+        run: python scripts/audit_legal_content_hygiene.py --strict
+
+      - name: Non-IT readiness audit
+        run: python scripts/legal_data/audit_non_it_readiness.py
+
+  lighthouse-desktop:
+    name: Lighthouse desktop (perf / a11y / best / seo budgets)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      DJANGO_DEBUG: "true"
+      DJANGO_SECRET_KEY: "django-insecure-ci-quality-gate-dummy-key"
+      DJANGO_ALLOWED_HOSTS: "127.0.0.1,localhost"
+      PEXELS_ENABLED: "false"
+      LEAD_NOTIFICATION_ENABLED: "false"
+      SENTRY_DSN: ""
+      ADMIN_MFA_REQUIRED: "false"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Apply migrations (sqlite)
+        run: python manage.py migrate --noinput
+
+      - name: Compile translations
+        run: python manage.py compilemessages -l fr -l ar -l it
+
+      - name: Start Django dev server (background)
+        run: |
+          nohup python manage.py runserver 127.0.0.1:8000 --noreload \
+            > runserver.log 2>&1 &
+          echo $! > runserver.pid
+
+      - name: Wait for /healthz/
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8000/healthz/ > /dev/null; then
+              echo "server up after $i attempt(s)"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "server did not come up; runserver.log:"
+          cat runserver.log || true
+          exit 1
+
+      - name: Lighthouse desktop gate
+        run: bash scripts/run_lighthouse_local.sh
+
+      - name: Upload Lighthouse desktop artefacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-desktop-reports
+          path: artifacts/lighthouse/latest/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Stop Django dev server
+        if: always()
+        run: |
+          if [ -f runserver.pid ]; then
+            kill "$(cat runserver.pid)" || true
+          fi
+
+  lighthouse-mobile:
+    name: Lighthouse mobile (opt-in — workflow_dispatch only)
+    # Opt-in: this job runs only on manual dispatch. Default PR runs
+    # are NOT slowed by the mobile audit. Mobile-throttling adds
+    # ~2 min and carries documented ~±0.05 perf jitter that is real
+    # signal but flaps on tight floors — keeping the mobile gate
+    # manual matches the local convention
+    # (`bash scripts/run_quality_gate.sh --mobile-lighthouse`).
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    env:
+      DJANGO_DEBUG: "true"
+      DJANGO_SECRET_KEY: "django-insecure-ci-quality-gate-dummy-key"
+      DJANGO_ALLOWED_HOSTS: "127.0.0.1,localhost"
+      PEXELS_ENABLED: "false"
+      LEAD_NOTIFICATION_ENABLED: "false"
+      SENTRY_DSN: ""
+      ADMIN_MFA_REQUIRED: "false"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Apply migrations (sqlite)
+        run: python manage.py migrate --noinput
+
+      - name: Compile translations
+        run: python manage.py compilemessages -l fr -l ar -l it
+
+      - name: Start Django dev server (background)
+        run: |
+          nohup python manage.py runserver 127.0.0.1:8000 --noreload \
+            > runserver.log 2>&1 &
+          echo $! > runserver.pid
+
+      - name: Wait for /healthz/
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8000/healthz/ > /dev/null; then
+              echo "server up after $i attempt(s)"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "server did not come up; runserver.log:"
+          cat runserver.log || true
+          exit 1
+
+      - name: Lighthouse mobile gate
+        run: bash scripts/run_lighthouse_mobile_local.sh
+
+      - name: Upload Lighthouse mobile artefacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-mobile-reports
+          path: artifacts/lighthouse-mobile/latest/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Stop Django dev server
+        if: always()
+        run: |
+          if [ -f runserver.pid ]; then
+            kill "$(cat runserver.pid)" || true
+          fi
