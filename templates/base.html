@@ -88,6 +88,18 @@
       no runtime fetch from Google Fonts CDNs. The CSP `font-src` and
       `style-src` correspondingly drop those upstream allowances. See
       `static/fonts/README.md`.
+
+      F-p2-perf-2 (experiment, NOT shipped): we trialed inlining a
+      larger critical-CSS block + async-loading site.css via a
+      self-hosted JS module. The async loader caused an LCP
+      regression on /countries/ (-0.05 perf) because the page's LCP
+      element is a text paragraph dependent on font-swap timing of
+      Inter; without site.css render-blocking, Chrome marks LCP at
+      the post-swap repaint (~3.4 s) instead of FCP (~1.7 s). Net
+      across the 8 gated URLs was a wash. See
+      `docs/qa/lighthouse-mobile-baseline/P2_PERF_2_COMPARISON.md`
+      for the full reasoning. site.css therefore remains a regular
+      render-blocking stylesheet.
     {% endcomment %}
     <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
     <link rel="stylesheet" href="{% static 'css/site.css' %}">
