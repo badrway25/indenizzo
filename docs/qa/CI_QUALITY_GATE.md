@@ -123,6 +123,53 @@ why.
 | `lighthouse-mobile` failure | no | Manual dispatch only; treated as informational. |
 | `public-site-audit.yml` (legacy Playwright structural audit) | yes — separately | Orthogonal to this gate; runs on PRs and uploads its own artefacts. |
 
+**Important**: "blocks merge?" above describes the *intent* of each
+job. Whether GitHub actually enforces it depends on the
+branch-protection rule being live — without a protection rule, a
+red check is just a red square next to a merge button that still
+works. See `docs/qa/GITHUB_BRANCH_PROTECTION.md` for the proposed
+rule, the dry-run scripts, and the read-back verification command.
+At the time of writing (2026-05-11) no GitHub remote is wired and
+the protection rule is documented but not applied.
+
+### Required-check names (paste exactly into the protection rule)
+
+GitHub matches required checks by the job's display name
+(`name:` field in the workflow), not the YAML id:
+
+| Job id | Display name to require |
+|---|---|
+| `python-tests` (in `ci.yml`) | `Python tests + content hygiene + non-IT readiness` |
+| `production-checks` (in `ci.yml`) | `Production-like system checks (DEBUG=false)` |
+| `lighthouse-desktop` (in `ci.yml`) | `Lighthouse desktop (perf / a11y / best / seo budgets)` |
+| `audit` (in `public-site-audit.yml`) | `Playwright structural audit` |
+| `lighthouse-mobile` (in `ci.yml`) | **Do NOT require** — opt-in / skipped on PR runs |
+
+If a workflow's `name:` changes, update the protection rule at
+the same time — otherwise the rule becomes "pending forever". The
+script `scripts/github/branch_protection_plan.sh` prints the
+current pairs so the operator can paste them verbatim.
+
+### How to verify required checks are active
+
+After a protection rule is applied via
+`scripts/github/branch_protection_plan.{sh,ps1}` (see §1 of
+`docs/qa/GITHUB_BRANCH_PROTECTION.md`):
+
+```bash
+gh api repos/<org>/<repo>/branches/main/protection | jq '.required_status_checks.contexts'
+gh api repos/<org>/<repo>/branches/audit%2Findennizzati-platform/protection | jq '.required_status_checks.contexts'
+```
+
+Both calls must list the 4 required display names from the table
+above. If a name is missing, the rule is incomplete.
+
+### What to do if a required check is stuck pending
+
+Documented in `docs/qa/GITHUB_BRANCH_PROTECTION.md` §9. Most common
+cause: a workflow's `name:` was renamed and the rule still requires
+the old string.
+
 The two parallel CI workflows complement each other:
 - `ci.yml` = **functional + perf budget gate** (this doc).
 - `public-site-audit.yml` = **structural Playwright audit** (HTML
@@ -303,3 +350,6 @@ locally with a single command.
   non-IT readiness audit step protects.
 - `.github/workflows/public-site-audit.yml` — the orthogonal
   Playwright structural audit (NOT modified by this batch).
+- `docs/qa/GITHUB_BRANCH_PROTECTION.md` — proposed branch-protection
+  rule + dry-run scripts to apply it. **Read before assuming
+  CI red blocks a merge** — without the rule active, it doesn't.
