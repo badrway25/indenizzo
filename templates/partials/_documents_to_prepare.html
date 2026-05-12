@@ -1,0 +1,72 @@
+{% load i18n %}
+{% comment %}
+  F-product-2-funnel: generic, country-agnostic document-prep
+  checklist. Reused on the result page (under the "Next steps"
+  block) and on the thank-you page (under "What you can do while
+  you wait"). The wording deliberately stays generic — no medical
+  / case-specific advice that would require Studio sign-off. The
+  checklist is informational only, not a consent or a contract.
+
+  Variants supported via the `variant` arg:
+
+   - "result" — wider card-style block matching the rest of the
+     result page;
+   - "thank-you" — narrower centered version for the thank-you page.
+
+  No new copy that's user-facing-binding is introduced: every item
+  describes what *any* reasonable preliminary review would need to
+  see, regardless of jurisdiction or case type.
+{% endcomment %}
+
+{% if variant == "thank-you" %}
+<div class="mt-10 mx-auto max-w-2xl text-left rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7">
+{% else %}
+<div class="mt-8 rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7">
+{% endif %}
+  <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Documents to prepare" %}</p>
+  <h3 class="mt-2 font-serif text-xl text-ink-950">
+    {% if variant == "thank-you" %}
+      {% translate "While you wait for our reply" %}
+    {% else %}
+      {% translate "What the Studio will ask for" %}
+    {% endif %}
+  </h3>
+  <p class="mt-3 text-sm text-ink-800 leading-relaxed">
+    {% if variant == "thank-you" %}
+      {% blocktranslate %}A written reply takes 3–5 working days. In the meantime, gathering the documents below speeds up the Studio's review and shortens the round-trip on follow-up questions.{% endblocktranslate %}
+    {% else %}
+      {% blocktranslate %}A lawyer reviewing your case will typically need the documents below. They are not required to submit the contact form — you can send them later by email once the Studio replies.{% endblocktranslate %}
+    {% endif %}
+  </p>
+  <ul class="mt-4 space-y-3 text-sm text-ink-900 leading-relaxed">
+    <li class="flex gap-3">
+      <span aria-hidden="true" class="mt-1 inline-block w-1.5 h-1.5 rounded-full bg-gold-500 shrink-0"></span>
+      <span>{% blocktranslate %}Medical reports describing the injury, treatment received, and any permanent consequences. Hospital discharge letters, specialist reports, rehabilitation notes.{% endblocktranslate %}</span>
+    </li>
+    <li class="flex gap-3">
+      <span aria-hidden="true" class="mt-1 inline-block w-1.5 h-1.5 rounded-full bg-gold-500 shrink-0"></span>
+      <span>{% blocktranslate %}Accident records: police report, road-accident statement (CAI / constat amiable), photographs, sketches, anything filed at the scene or with the authorities.{% endblocktranslate %}</span>
+    </li>
+    <li class="flex gap-3">
+      <span aria-hidden="true" class="mt-1 inline-block w-1.5 h-1.5 rounded-full bg-gold-500 shrink-0"></span>
+      <span>{% blocktranslate %}Insurance correspondence: claim numbers, settlement offers received, refusal letters, communications with the third-party insurer. Save the originals, do not sign anything before review.{% endblocktranslate %}</span>
+    </li>
+    <li class="flex gap-3">
+      <span aria-hidden="true" class="mt-1 inline-block w-1.5 h-1.5 rounded-full bg-gold-500 shrink-0"></span>
+      <span>{% blocktranslate %}Proof of economic impact: payslips before/after, sick-leave certificates, invoices for medical expenses, transport, equipment, or domestic help.{% endblocktranslate %}</span>
+    </li>
+    <li class="flex gap-3">
+      <span aria-hidden="true" class="mt-1 inline-block w-1.5 h-1.5 rounded-full bg-gold-500 shrink-0"></span>
+      <span>{% blocktranslate %}Identity and contact: a copy of your ID for the file, a phone number where the Studio can reach you, and the preferred language for the reply.{% endblocktranslate %}</span>
+    </li>
+    {% if variant != "thank-you" %}
+      <li class="flex gap-3">
+        <span aria-hidden="true" class="mt-1 inline-block w-1.5 h-1.5 rounded-full bg-gold-500 shrink-0"></span>
+        <span>{% blocktranslate %}Witness contacts if anyone saw the events and is willing to confirm what happened — name and a way to reach them is enough at this stage.{% endblocktranslate %}</span>
+      </li>
+    {% endif %}
+  </ul>
+  <p class="mt-4 text-xs text-stone2-500 leading-relaxed">
+    {% blocktranslate %}You don't need to send everything at once. The Studio will ask for what's missing once the case has been reviewed.{% endblocktranslate %}
+  </p>
+</div>

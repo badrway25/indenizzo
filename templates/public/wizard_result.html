@@ -80,6 +80,7 @@
       <ol class="mt-4 space-y-3 text-sm text-ink-900 leading-relaxed list-decimal list-inside">
         <li>{% blocktranslate %}Download the PDF of this simulation. It carries the same range, sources and disclaimer, in a format you can save or share.{% endblocktranslate %}</li>
         <li>{% blocktranslate %}Request a legal review from the Studio. A lawyer reads the case manually and replies on whether and how the firm can help.{% endblocktranslate %}</li>
+        <li>{% blocktranslate %}Gather the documents listed below before contacting the Studio — it speeds up the review and shortens follow-up questions.{% endblocktranslate %}</li>
         <li>{% blocktranslate %}Keep the simulation ID below — the Studio uses it to retrieve the exact inputs and sources of this run.{% endblocktranslate %}</li>
       </ol>
     </div>
@@ -107,6 +108,13 @@
       </p>
     </div>
   {% endif %}
+
+  {# F-product-2-funnel: generic document-prep checklist (reused
+     on the thank-you page). Rendered on BOTH the estimate path
+     and the review-gated path — the documents the Studio will
+     need are the same set in either case, and surfacing them
+     here helps users move forward while waiting for the reply. #}
+  {% include "partials/_documents_to_prepare.html" with variant="result" %}
 
   {% comment %}
     Backend diagnostic arrays are intentionally NOT surfaced on the

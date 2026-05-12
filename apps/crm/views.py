@@ -74,9 +74,33 @@ def _dispatch_lead_notification(lead, *, request) -> None:
 @require_http_methods(["GET", "POST"])
 def contact(request):
     initial = {}
+    linked_simulation = None
     sim_id = request.GET.get("sim")
     if sim_id:
         initial["simulation_public_id"] = sim_id
+        # F-product-2-funnel: when the contact form is opened from a
+        # specific result page (`/wizard/result/<uuid>/` → `/contact/?sim=<uuid>`),
+        # prefill `country` and `case_type` from the linked Simulation
+        # so the user doesn't re-pick what they just selected in the
+        # wizard. Failure-soft: malformed UUID (ValidationError),
+        # unknown UUID (no row), or any DB hiccup must NOT break the
+        # contact form — it opens blank instead.
+        from apps.cases.models import Simulation
+        from django.core.exceptions import ValidationError
+
+        try:
+            linked_simulation = (
+                Simulation.objects.filter(public_id=sim_id)
+                .select_related("country")
+                .first()
+            )
+        except (ValidationError, ValueError):
+            linked_simulation = None
+        if linked_simulation is not None:
+            if linked_simulation.country_id:
+                initial["country"] = linked_simulation.country
+            if linked_simulation.case_type:
+                initial["case_type"] = linked_simulation.case_type
 
     if request.method == "POST":
         form = ContactForm(request.POST)
@@ -107,6 +131,7 @@ def contact(request):
         "public/contact.html",
         {
             "form": form,
+            "linked_simulation": linked_simulation,
             "pexels_image": _pexels_hero(request, "contact_hero"),
         },
     )
