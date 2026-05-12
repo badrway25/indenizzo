@@ -21,6 +21,13 @@
 
   {% include "partials/mandate_notice.html" %}
 
+  {# F-product-2-funnel: "what you can do while you wait" block —
+     generic, country-agnostic document-prep checklist. Same partial
+     used on the result page (variant="result"); here variant
+     "thank-you" yields a narrower centred card matching the
+     thank-you layout. #}
+  {% include "partials/_documents_to_prepare.html" with variant="thank-you" %}
+
   <div class="mt-10 flex flex-wrap gap-3 justify-center">
     <a href="{% url 'cases:wizard_start' %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
       {% translate "Back to the wizard" %}

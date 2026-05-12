@@ -17,6 +17,26 @@
     {% blocktranslate %}Tell us about your case in your own words. A member of the Studio will get back to you to evaluate whether and how we can help.{% endblocktranslate %}
   </p>
 
+  {% comment %}
+    F-product-2-funnel: visual confirmation that this form is linked
+    to a simulation the user just ran. Avoids the "did the wizard
+    work? am I starting from scratch?" friction. The hidden
+    `simulation_public_id` field carries the link server-side; this
+    block makes the link visible to the user. Suppressed when the
+    contact form is opened directly (no `?sim=` querystring).
+  {% endcomment %}
+  {% if linked_simulation %}
+    <aside class="mt-6 rounded-2xl border border-ok-600/30 bg-ok-600/5 p-4 lg:p-5 flex flex-col sm:flex-row sm:items-start gap-3" aria-label="{% translate 'Simulation linked to this request' %}">
+      <span aria-hidden="true" class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-ok-600/10 text-ok-600 text-base shrink-0">✓</span>
+      <div class="text-sm text-ink-900 leading-relaxed">
+        <p class="font-semibold">{% translate "Connected to your simulation" %}</p>
+        <p class="mt-1">
+          {% blocktranslate with sim_id=linked_simulation.public_id %}We have prefilled the country and case type from simulation <span class="font-mono text-xs">{{ sim_id }}</span>. The Studio will read your inputs and the cited sources together with your message — no need to retype them here.{% endblocktranslate %}
+        </p>
+      </div>
+    </aside>
+  {% endif %}
+
   <aside class="mt-8 rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7" aria-label="{% translate 'What happens after you submit' %}">
     <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "What happens next" %}</p>
     <ol class="mt-4 space-y-3 text-sm text-ink-900 leading-relaxed list-decimal list-inside">
