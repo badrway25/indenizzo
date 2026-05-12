@@ -1,0 +1,115 @@
+{% load i18n %}
+{% comment %}
+  F-product-3-wizard-mobile-ux: shared form-fields partial for the
+  three road-accident wizards (Italy / France / Belgium). Replaces
+  the inline duplication that previously lived in each country's
+  template (~80 LOC × 3). Future UX changes touch this single file.
+
+  Field split:
+
+  - "Essential information" — always visible. These are the three
+    fields that drive the calculator output (where a calculator is
+    active) or that the Studio needs first for a review-gated path:
+    `accident_date`, `victim_age`, `permanent_disability_percentage`.
+
+  - "Additional details (optional)" — collapsed under `<details>`.
+    Native HTML; opens via click/keyboard without JS; accessible.
+    Holds the 5 informational fields the calculator v1 does not
+    aggregate today: `total_temporary_disability_days`,
+    `partial_temporary_disability_days`, `medical_expenses`,
+    `lost_income`, `fault_percentage`.
+
+  Consents (`consent_simulation` + `special_categories_consent`)
+  and the submit button remain in the parent template, OUTSIDE
+  this partial — never hidden behind the disclosure toggle.
+  Honeypot and non-field errors also remain in the parent.
+
+  Caller contract: parent template provides `form` in context.
+{% endcomment %}
+
+<p class="text-sm text-ink-800 leading-relaxed">
+  {% blocktranslate %}Fill in the essential details below to receive a first indicative assessment. You can add more details — they help the Studio's review but are not required.{% endblocktranslate %}
+</p>
+
+{# ----- Essential information (always visible) -------------------------- #}
+<fieldset class="space-y-5">
+  <legend class="font-serif text-xl text-ink-950">{% translate "Essential information" %}</legend>
+
+  <div class="grid sm:grid-cols-2 gap-5">
+    <div>
+      <label for="{{ form.accident_date.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.accident_date.label }}</label>
+      {{ form.accident_date }}
+      {% if form.accident_date.help_text %}<p class="mt-1 text-xs text-stone2-500">{{ form.accident_date.help_text }}</p>{% endif %}
+      {% for err in form.accident_date.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
+    </div>
+    <div>
+      <label for="{{ form.victim_age.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.victim_age.label }}</label>
+      {{ form.victim_age }}
+      {% if form.victim_age.help_text %}<p class="mt-1 text-xs text-stone2-500">{{ form.victim_age.help_text }}</p>{% endif %}
+      {% for err in form.victim_age.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
+    </div>
+  </div>
+
+  <div>
+    <label for="{{ form.permanent_disability_percentage.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.permanent_disability_percentage.label }}</label>
+    {{ form.permanent_disability_percentage }}
+    {% if form.permanent_disability_percentage.help_text %}<p class="mt-1 text-xs text-stone2-500">{{ form.permanent_disability_percentage.help_text }}</p>{% endif %}
+    {% for err in form.permanent_disability_percentage.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
+  </div>
+</fieldset>
+
+{# ----- Additional details (collapsed by default) ----------------------- #}
+<details class="mt-6 rounded-2xl border border-stone2-200 bg-sand-50 group" data-product-3-optional-details>
+  <summary class="cursor-pointer select-none px-5 py-4 flex items-center justify-between gap-3 font-serif text-lg text-ink-950 hover:bg-sand-100 rounded-2xl">
+    <span class="flex items-center gap-3">
+      <span class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">{% translate "Optional" %}</span>
+      <span>{% translate "Additional details" %}</span>
+    </span>
+    <span aria-hidden="true" class="text-stone2-500 text-base transition-transform group-open:rotate-180">▾</span>
+  </summary>
+  <div class="px-5 pb-5 pt-1 space-y-5">
+    <p class="text-sm text-ink-800 leading-relaxed">
+      {% blocktranslate %}Add what you know. None of these is required. They give the Studio a fuller picture for the manual review and may refine the indicative range when applicable.{% endblocktranslate %}
+    </p>
+
+    {# Temporary disability days. #}
+    <div class="grid sm:grid-cols-2 gap-5">
+      <div>
+        <label for="{{ form.total_temporary_disability_days.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.total_temporary_disability_days.label }}</label>
+        {{ form.total_temporary_disability_days }}
+        {% if form.total_temporary_disability_days.help_text %}<p class="mt-1 text-xs text-stone2-500">{{ form.total_temporary_disability_days.help_text }}</p>{% endif %}
+        {% for err in form.total_temporary_disability_days.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
+      </div>
+      <div>
+        <label for="{{ form.partial_temporary_disability_days.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.partial_temporary_disability_days.label }}</label>
+        {{ form.partial_temporary_disability_days }}
+        {% if form.partial_temporary_disability_days.help_text %}<p class="mt-1 text-xs text-stone2-500">{{ form.partial_temporary_disability_days.help_text }}</p>{% endif %}
+        {% for err in form.partial_temporary_disability_days.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
+      </div>
+    </div>
+
+    {# Economic impact. #}
+    <div class="grid sm:grid-cols-2 gap-5">
+      <div>
+        <label for="{{ form.medical_expenses.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.medical_expenses.label }}</label>
+        {{ form.medical_expenses }}
+        {% if form.medical_expenses.help_text %}<p class="mt-1 text-xs text-stone2-500">{{ form.medical_expenses.help_text }}</p>{% endif %}
+        {% for err in form.medical_expenses.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
+      </div>
+      <div>
+        <label for="{{ form.lost_income.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.lost_income.label }}</label>
+        {{ form.lost_income }}
+        {% if form.lost_income.help_text %}<p class="mt-1 text-xs text-stone2-500">{{ form.lost_income.help_text }}</p>{% endif %}
+        {% for err in form.lost_income.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
+      </div>
+    </div>
+
+    {# Fault percentage. #}
+    <div>
+      <label for="{{ form.fault_percentage.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.fault_percentage.label }}</label>
+      {{ form.fault_percentage }}
+      {% if form.fault_percentage.help_text %}<p class="mt-1 text-xs text-stone2-500">{{ form.fault_percentage.help_text }}</p>{% endif %}
+      {% for err in form.fault_percentage.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
+    </div>
+  </div>
+</details>
