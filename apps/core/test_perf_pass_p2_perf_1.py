@@ -99,11 +99,14 @@ def test_base_html_inline_style_comes_before_external_stylesheets():
 def test_base_html_preloads_ltr_fonts():
     text = _base_html()
     # LTR pages preload Inter latin + Cormorant Garamond.
+    # F-p2-perf-3 (2026-05-12): Cormorant preload tracks weight 700
+    # (h1/h2/h3 default-bold) instead of 600 — see
+    # `docs/qa/lighthouse-mobile-baseline/P2_PERF_3_COMPARISON.md`.
     assert 'rel="preload"' in text
     assert 'as="font"' in text
     assert "crossorigin" in text
     assert "inter-400-latin.woff2" in text
-    assert "cormorant-garamond-600-latin.woff2" in text
+    assert "cormorant-garamond-700-latin.woff2" in text
 
 
 def test_base_html_does_not_preload_rtl_fonts():

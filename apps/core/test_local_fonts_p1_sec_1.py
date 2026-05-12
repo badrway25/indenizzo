@@ -112,9 +112,14 @@ def test_fonts_css_declares_all_four_families():
     blocks = content.count("@font-face")
     swaps = content.count("font-display: swap")
     assert blocks == swaps, f"{blocks} blocks but {swaps} font-display:swap rules"
-    # The script vendors at least 19 files (4 Inter weights × 2 subsets
-    # + 3 Cormorant × 2 subsets + 2 Amiri arabic + 3 Tajawal arabic).
-    assert blocks >= 19
+    # The script vendors at least 16 files. Original P1-SEC-1 floor
+    # was 19 (4 Inter × 2 subsets + 3 Cormorant × 2 subsets + 2 Amiri
+    # arabic + 3 Tajawal arabic). F-p2-perf-3 (2026-05-12) dropped
+    # Inter 700 (latin + latin-ext) and Amiri 400 (arabic) — both
+    # weights were never fetched by any measured public-page render
+    # per Lighthouse mobile network panel. Current floor: 3 Inter × 2
+    # subsets + 3 Cormorant × 2 subsets + 1 Amiri + 3 Tajawal = 16.
+    assert blocks >= 16
 
 
 def test_every_woff2_referenced_by_fonts_css_exists_on_disk():

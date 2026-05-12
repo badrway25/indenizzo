@@ -36,13 +36,21 @@
       its baseline LCP while still benefiting from the CSS
       compression below.
 
+      F-p2-perf-3: the Cormorant Garamond preload is weight 700
+      (not 600). Hero `<h1>` / `<h2>` / `<h3>` carry the default
+      browser font-weight of bold; the CSS rule above resolves
+      that to Cormorant 700 via font-face matching. Preloading
+      the weight we actually paint with cuts the FOUT window on
+      the LCP element. See
+      `docs/qa/lighthouse-mobile-baseline/P2_PERF_3_COMPARISON.md`.
+
       The CSP `font-src 'self'` already allows these — no policy
       change. `crossorigin` is required by the spec for preloaded
       font resources even when same-origin.
     {% endcomment %}
     {% if not IS_RTL %}
     <link rel="preload" as="font" type="font/woff2" crossorigin href="{% static 'fonts/inter/inter-400-latin.woff2' %}">
-    <link rel="preload" as="font" type="font/woff2" crossorigin href="{% static 'fonts/cormorant-garamond/cormorant-garamond-600-latin.woff2' %}">
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="{% static 'fonts/cormorant-garamond/cormorant-garamond-700-latin.woff2' %}">
     {% endif %}
 
     {% comment %}

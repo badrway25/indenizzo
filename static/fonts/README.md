@@ -14,14 +14,28 @@ instead of the Google Fonts `<link>` it used to load.
 
 ## Inventory
 
-| Family | Weights | Subsets | Files | Total |
-|---|---|---|---|---|
-| Inter | 400, 500, 600, 700 | latin, latin-ext | 8 | 520.8 KB |
-| Cormorant Garamond | 500, 600, 700 | latin, latin-ext | 6 | 209.1 KB |
-| Amiri | 400, 700 | arabic | 2 | 203.6 KB |
-| Tajawal | 400, 500, 700 | arabic | 3 | 26.2 KB |
+| Family | Weights | Subsets | Files |
+|---|---|---|---|
+| Inter | 400, 500, 600 | latin, latin-ext | 6 |
+| Cormorant Garamond | 500, 600, 700 | latin, latin-ext | 6 |
+| Amiri | 700 | arabic | 1 |
+| Tajawal | 400, 500, 700 | arabic | 3 |
 
-Total: ~960 KB across 19 `.woff2` files.
+Inter 700 was removed in **F-p2-perf-3** (2026-05-12): no public
+template renders Latin text with `font-weight: 700` outside the
+`<h1>`/`<h2>`/`<h3>` rule, which targets Cormorant Garamond (serif),
+not Inter. Browser font matching now resolves the few default-bold
+sans-serif fragments (e.g. `<strong>` on the staff-only MFA page) to
+Inter 600, which is visually indistinguishable at body sizes and
+never on a public hot path.
+
+Amiri 400 was removed in the same pass: the RTL templates set every
+Amiri-rendered element to a bold weight via the `<h1>`/`<h2>`/`<h3>`
+inherit chain, and Lighthouse mobile runs on `/ar/` never fetched
+the 400 weight. Browser matching falls back to Amiri 700 if a 400
+ever does appear.
+
+See `docs/qa/lighthouse-mobile-baseline/P2_PERF_3_COMPARISON.md`.
 
 `latin` covers the basic Latin range used by Italian, French and
 English (including the accented letters `à è é ì ò ù ç …`).

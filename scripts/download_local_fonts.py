@@ -31,11 +31,25 @@ CHROME_UA = (
 )
 
 # Each family: which weights, which unicode subsets to keep.
+#
+# F-p2-perf-3 (2026-05-12): Inter 700 and Amiri 400 were removed.
+# Lighthouse mobile network panels showed neither weight was ever
+# fetched by a real page render (templates default to the system
+# `font-bold` keyword which Tailwind resolves to 700 only for the
+# sans-serif body — but body text in headers and CTAs uses Inter
+# 500/600 explicitly, and `font-bold` Latin text outside h1-h3
+# does not exist in the public templates; for Arabic, `<b>` /
+# default-bold Cormorant tags do not render Amiri 400 because
+# RTL pages always inherit a bold weight). Dropping the unused
+# weights saves ~95 KB of .woff2 ship weight per release and
+# removes the spurious entries from the `Cache-Control: immutable`
+# WhiteNoise manifest. See
+# `docs/qa/lighthouse-mobile-baseline/P2_PERF_3_COMPARISON.md`.
 FAMILIES = [
     {
         "family": "Inter",
         "slug": "inter",
-        "weights": [400, 500, 600, 700],
+        "weights": [400, 500, 600],
         "subsets": {"latin", "latin-ext"},
     },
     {
@@ -47,7 +61,7 @@ FAMILIES = [
     {
         "family": "Amiri",
         "slug": "amiri",
-        "weights": [400, 700],
+        "weights": [700],
         "subsets": {"arabic"},
     },
     {
