@@ -12,6 +12,16 @@ Run once locally to refresh the vendored set:
 
 The script also emits `static/css/fonts.css` with the local
 `@font-face` rules.
+
+IMPORTANT — F-p2-perf-4 (2026-05-12): Amiri 700 is **re-subset
+locally** after the upstream fetch by `scripts/subset_arabic_fonts.py`,
+and the `unicode-range` in `static/css/fonts.css` is tightened to
+match what the post-subset font actually carries. If you re-run
+this script, you MUST also re-run the Amiri subsetter AND restore
+the tightened Amiri `@font-face` block in `fonts.css`. The
+upstream Google copy is preserved at
+`static/fonts/amiri/amiri-700-arabic.original.woff2` and is the
+input the subsetter reads.
 """
 
 from __future__ import annotations

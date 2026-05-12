@@ -49,3 +49,11 @@ django-csp>=4.0,<5
 # prod the CDN typically owns transport compression; WhiteNoise
 # remains as a safety net for static-file delivery.
 whitenoise>=6.6,<7
+# Font subsetting toolchain (F-p2-perf-4). Used by
+# `scripts/subset_arabic_fonts.py` to re-subset Amiri 700 against
+# the actual Arabic corpus used in the platform (templates + .po),
+# bringing the Arabic font ship weight from ~98 KB to ~30 KB.
+# The `[woff]` extra pulls in `brotli` so pyftsubset can emit
+# woff2 directly. Not loaded at runtime by Django — script-side
+# dependency only.
+fonttools[woff]>=4.50

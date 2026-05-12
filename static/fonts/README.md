@@ -14,12 +14,12 @@ instead of the Google Fonts `<link>` it used to load.
 
 ## Inventory
 
-| Family | Weights | Subsets | Files |
-|---|---|---|---|
-| Inter | 400, 500, 600 | latin, latin-ext | 6 |
-| Cormorant Garamond | 500, 600, 700 | latin, latin-ext | 6 |
-| Amiri | 700 | arabic | 1 |
-| Tajawal | 400, 500, 700 | arabic | 3 |
+| Family | Weights | Subsets | Files | Notes |
+|---|---|---|---|---|
+| Inter | 400, 500, 600 | latin, latin-ext | 6 | Google Fonts upstream subset, unmodified. |
+| Cormorant Garamond | 500, 600, 700 | latin, latin-ext | 6 | Google Fonts upstream subset, unmodified. |
+| Amiri | 700 | arabic | 1 (+ `.original.woff2`) | **Re-subset locally** — see `scripts/subset_arabic_fonts.py`. |
+| Tajawal | 400, 500, 700 | arabic | 3 | Google Fonts upstream subset, unmodified. |
 
 Inter 700 was removed in **F-p2-perf-3** (2026-05-12): no public
 template renders Latin text with `font-weight: 700` outside the
@@ -36,6 +36,36 @@ the 400 weight. Browser matching falls back to Amiri 700 if a 400
 ever does appear.
 
 See `docs/qa/lighthouse-mobile-baseline/P2_PERF_3_COMPARISON.md`.
+
+### Amiri 700 re-subset (F-p2-perf-4, 2026-05-12)
+
+The Google Fonts CDN ships an `amiri-700-arabic.woff2` covering
+~9000 codepoints across 14 disjoint Unicode blocks (Arabic
+Supplement, Arabic Extended-A/B/C, Presentation Forms-A,
+Presentation Forms-B, Mathematical Arabic, Coptic Epact, Rumi
+Numerals). A tree-wide grep shows the platform's actual Arabic
+corpus uses **48** codepoints, all in the basic Arabic block
+(`U+0600-06FF`).
+
+`scripts/subset_arabic_fonts.py` re-subsets Amiri 700 against the
+real corpus while **preserving every OpenType GSUB/GPOS layout
+feature** — `init`, `medi`, `fina`, `ccmp`, `rlig`, `locl`, `mark`,
+`mkmk`, `kern`, `curs` — which is what HarfBuzz uses to drive
+Arabic contextual shaping. Stripping those features would silently
+break Arabic rendering; the script does not allow that.
+
+Size delta on disk: 97.6 KB → 73.5 KB (-24.7 %). The upstream
+reference is preserved at `amiri/amiri-700-arabic.original.woff2`
+so the subset is fully reproducible without re-fetching from the
+Google CDN:
+
+```
+.venv/Scripts/python.exe scripts/subset_arabic_fonts.py
+```
+
+See `docs/qa/lighthouse-mobile-baseline/P2_PERF_4_ARABIC_SUBSET_COMPARISON.md`
+for the full measurements, the visual-QA harness, and the
+Studio-sign-off contract.
 
 `latin` covers the basic Latin range used by Italian, French and
 English (including the accented letters `à è é ì ò ù ç …`).
