@@ -85,6 +85,30 @@
     {% blocktranslate %}This page is informational and does not constitute legal advice, medical-legal opinion, or guarantee of outcome. Any simulation is indicative; the actual valuation depends on documents, expert reports, applicable law and judicial orientation.{% endblocktranslate %}
   </p>
 
+  {# -------- F-product-6-case-type-faqs: prudent FAQ section -------- #}
+  {% if landing.faq_items %}
+    <section aria-labelledby="case-type-faq-heading" class="mt-10 rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7">
+      <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "FAQ" %}</p>
+      <h2 id="case-type-faq-heading" class="mt-2 font-serif text-2xl text-ink-950">{% translate "Frequently asked questions" %}</h2>
+      <div class="mt-4 space-y-2">
+        {% for item in landing.faq_items %}
+          <details class="group rounded-2xl border border-stone2-200 bg-sand-50/40 px-4 py-3 open:bg-white">
+            <summary class="cursor-pointer list-none flex items-start gap-3 text-sm font-semibold text-ink-950 leading-snug">
+              <span class="mt-0.5 text-gold-600 group-open:rotate-45 transition-transform" aria-hidden="true">+</span>
+              <span>{{ item.question }}</span>
+            </summary>
+            <p class="mt-3 ps-7 text-sm text-ink-800 leading-relaxed">
+              {{ item.answer }}
+            </p>
+          </details>
+        {% endfor %}
+      </div>
+      <p class="mt-4 text-xs text-stone2-500 leading-relaxed">
+        {% blocktranslate %}These answers are informational. They do not replace a legal opinion specific to your case.{% endblocktranslate %}
+      </p>
+    </section>
+  {% endif %}
+
   {# -------- Useful pages footer -------- #}
   <nav aria-label="{% translate 'Useful pages' %}" class="mt-10 flex flex-wrap gap-3 text-sm">
     <a href="{% url 'core:case_types' %}" class="inline-flex items-center gap-2 px-4 py-2.5 min-h-10 rounded-full border border-stone2-200 text-ink-900 hover:bg-stone2-100 font-semibold">

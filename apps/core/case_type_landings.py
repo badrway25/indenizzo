@@ -45,6 +45,52 @@ from django.utils.translation import gettext_lazy as _
 
 
 @dataclass(frozen=True)
+class FAQItem:
+    """One FAQ entry rendered on a case-type landing.
+
+    Both strings are `gettext_lazy` so they resolve to the request
+    locale at render time. See
+    `docs/product/CASE_TYPE_FAQ_AUDIT_2026-05-12.md` for the
+    deontological guardrails.
+    """
+
+    question: str
+    answer: str
+
+
+# Max FAQ entries per landing — keeps the section compact on mobile
+# and forces the copy to stay focused. Enforced by the module-level
+# invariant at the bottom of this file.
+MAX_FAQ_ITEMS = 4
+
+
+# Universal FAQ items reused across every landing. Keeping them as
+# module-level constants guarantees the first FAQ ("is this a legal
+# opinion?") and the mandate FAQ ("does sending the form create an
+# engagement?") are literally identical across landings — tested.
+_FAQ_LEGAL_OPINION = FAQItem(
+    question=_("Questa simulazione è un parere legale?"),
+    answer=_(
+        "No. La simulazione è una valutazione indicativa basata su fonti "
+        "legali validate per la giurisdizione applicabile. Non sostituisce "
+        "un parere legale né una perizia medico-legale; la valutazione "
+        "effettiva dipende dai documenti, dalla perizia e dalla legge "
+        "applicabile al caso specifico."
+    ),
+)
+
+_FAQ_MANDATE = FAQItem(
+    question=_("Inviare il modulo crea un incarico professionale?"),
+    answer=_(
+        "No. L'invio del modulo richiede una verifica preliminare allo "
+        "Studio e non costituisce un incarico professionale. L'eventuale "
+        "conferimento dell'incarico avviene solo dopo un accordo scritto "
+        "separato tra cliente e Studio."
+    ),
+)
+
+
+@dataclass(frozen=True)
 class CaseTypeLanding:
     """One per-case-type SEO/product landing page.
 
@@ -88,6 +134,14 @@ class CaseTypeLanding:
     secondary_cta_label: str = ""
     secondary_cta_url_name: str = ""
     secondary_cta_url_kwargs: dict = field(default_factory=dict)
+
+    faq_items: Sequence[FAQItem] = field(default_factory=tuple)
+    """
+    F-product-6-case-type-faqs: prudent FAQ entries rendered as a
+    `<details>/<summary>` accordion at the bottom of the landing.
+    Capped at `MAX_FAQ_ITEMS` (4). See
+    `docs/product/CASE_TYPE_FAQ_AUDIT_2026-05-12.md`.
+    """
 
     def primary_cta_href(self) -> str:
         url = reverse(self.primary_cta_url_name, kwargs=self.primary_cta_url_kwargs)
@@ -153,6 +207,28 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
         primary_cta_url_name="cases:wizard_italy_road_accident",
         secondary_cta_label=_("Request a legal review instead"),
         secondary_cta_url_name="crm:contact",
+        faq_items=(
+            _FAQ_LEGAL_OPINION,
+            FAQItem(
+                question=_("Devo già avere tutti i documenti per chiedere una valutazione?"),
+                answer=_(
+                    "No. Si può iniziare con i documenti disponibili — verbale "
+                    "delle autorità o constat amiable, referti medici, "
+                    "eventuali corrispondenze con l'assicurazione. Lo Studio "
+                    "indica quali documenti mancano dopo la prima revisione."
+                ),
+            ),
+            FAQItem(
+                question=_("Ho già ricevuto un'offerta dall'assicurazione: posso chiedere una verifica?"),
+                answer=_(
+                    "Sì. Lo Studio può valutare l'offerta in via preliminare "
+                    "confrontandola con le fonti indicative validate per la "
+                    "giurisdizione applicabile. Si consiglia di non firmare "
+                    "alcuna transazione prima della verifica."
+                ),
+            ),
+            _FAQ_MANDATE,
+        ),
     ),
     CaseTypeLanding(
         slug="bodily-injury",
@@ -186,6 +262,28 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
         primary_cta_url_name="cases:wizard_italy_road_accident",
         secondary_cta_label=_("Request a legal review instead"),
         secondary_cta_url_name="crm:contact",
+        faq_items=(
+            _FAQ_LEGAL_OPINION,
+            FAQItem(
+                question=_("Quali documenti aiutano la valutazione del danno biologico?"),
+                answer=_(
+                    "Il referto medico-legale che attesta la percentuale di "
+                    "invalidità permanente, i certificati di durata della "
+                    "inabilità temporanea (totale o parziale) e la "
+                    "documentazione clinica del percorso terapeutico. La "
+                    "valutazione effettiva dipende da queste fonti."
+                ),
+            ),
+            FAQItem(
+                question=_("Se il percorso medico-legale è ancora in corso, posso comunque chiedere una valutazione?"),
+                answer=_(
+                    "Sì, ma la valutazione resta preliminare e potrà cambiare "
+                    "al consolidarsi del quadro medico-legale. Lo Studio "
+                    "indica le ipotesi e i documenti ancora mancanti."
+                ),
+            ),
+            _FAQ_MANDATE,
+        ),
     ),
     CaseTypeLanding(
         slug="insurance-offer-review",
@@ -222,6 +320,29 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
         primary_cta_url_name="crm:contact",
         secondary_cta_label=_("Run the indicative simulation first"),
         secondary_cta_url_name="cases:wizard_start",
+        faq_items=(
+            _FAQ_LEGAL_OPINION,
+            FAQItem(
+                question=_("Posso firmare l'offerta prima della verifica legale?"),
+                answer=_(
+                    "Si consiglia di non sottoscrivere alcuna transazione "
+                    "prima di una verifica legale. Una volta firmata, la "
+                    "maggior parte delle pretese ulteriori risulta preclusa: "
+                    "la revisione preliminare aiuta a evitare rinunce non "
+                    "informate."
+                ),
+            ),
+            FAQItem(
+                question=_("La revisione dell'offerta equivale ad accettarla?"),
+                answer=_(
+                    "No. La revisione è solo orientativa: lo Studio indica se "
+                    "l'offerta è in linea con il range indicativo delle fonti "
+                    "validate e suggerisce se accettare, negoziare o rifiutare. "
+                    "La decisione finale resta sempre del cliente."
+                ),
+            ),
+            _FAQ_MANDATE,
+        ),
     ),
     CaseTypeLanding(
         slug="work-injury",
@@ -257,6 +378,29 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
         primary_cta_url_name="crm:contact",
         secondary_cta_label=_("Open the simulation wizard"),
         secondary_cta_url_name="cases:wizard_start",
+        faq_items=(
+            _FAQ_LEGAL_OPINION,
+            FAQItem(
+                question=_("Se l'assicurazione obbligatoria (es. INAIL) copre già l'infortunio, ha senso una valutazione?"),
+                answer=_(
+                    "Sì. La copertura obbligatoria e l'eventuale "
+                    "responsabilità civile del datore di lavoro o di terzi "
+                    "sono profili distinti: la valutazione preliminare aiuta "
+                    "a individuare quanto potrebbe restare esigibile in via "
+                    "civilistica, oltre alla copertura obbligatoria."
+                ),
+            ),
+            FAQItem(
+                question=_("Quali documenti aiutano la valutazione di un infortunio sul lavoro?"),
+                answer=_(
+                    "La denuncia di infortunio, gli eventuali verbali "
+                    "ispettivi, la documentazione clinica e, quando "
+                    "disponibile, la documentazione di sicurezza relativa "
+                    "alla mansione (es. DVR, registri di formazione)."
+                ),
+            ),
+            _FAQ_MANDATE,
+        ),
     ),
     CaseTypeLanding(
         slug="medical-malpractice",
@@ -293,6 +437,28 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
         primary_cta_url_name="crm:contact",
         secondary_cta_label=_("Open the simulation wizard"),
         secondary_cta_url_name="cases:wizard_start",
+        faq_items=(
+            _FAQ_LEGAL_OPINION,
+            FAQItem(
+                question=_("Serve già una perizia medico-legale indipendente per chiedere la valutazione?"),
+                answer=_(
+                    "Non necessariamente in questa fase. Lo Studio aiuta a "
+                    "capire se commissionare una perizia indipendente è "
+                    "giustificato, e con quale ordine di costo, prima di "
+                    "qualsiasi avvio formale."
+                ),
+            ),
+            FAQItem(
+                question=_("Una perizia indipendente è sempre obbligatoria?"),
+                answer=_(
+                    "Non sempre. Dipende dalla documentazione clinica "
+                    "disponibile e dalla complessità del caso. Lo Studio "
+                    "valuta caso per caso prima di consigliare un esborso "
+                    "ulteriore."
+                ),
+            ),
+            _FAQ_MANDATE,
+        ),
     ),
     CaseTypeLanding(
         slug="death-of-relative",
@@ -329,6 +495,29 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
         primary_cta_url_name="crm:contact",
         secondary_cta_label=_("Open the simulation wizard"),
         secondary_cta_url_name="cases:wizard_start",
+        faq_items=(
+            _FAQ_LEGAL_OPINION,
+            FAQItem(
+                question=_("Quali familiari possono chiedere la valutazione?"),
+                answer=_(
+                    "La valutazione orientativa è disponibile per i "
+                    "familiari direttamente coinvolti dalla perdita. Lo "
+                    "Studio identifica caso per caso quali categorie di "
+                    "danno risultano applicabili in base al rapporto "
+                    "familiare documentato."
+                ),
+            ),
+            FAQItem(
+                question=_("Posso chiedere una verifica se è già in corso una trattativa con l'assicurazione?"),
+                answer=_(
+                    "Sì, è anzi consigliato. Una seconda opinione "
+                    "orientativa prima di accordi o sottoscrizioni aiuta a "
+                    "evitare rinunce non informate che potrebbero "
+                    "precludere ulteriori pretese."
+                ),
+            ),
+            _FAQ_MANDATE,
+        ),
     ),
     CaseTypeLanding(
         slug="foreigners-in-italy",
@@ -365,6 +554,27 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
         primary_cta_url_name="crm:contact",
         secondary_cta_label=_("Open the simulation wizard"),
         secondary_cta_url_name="cases:wizard_start",
+        faq_items=(
+            _FAQ_LEGAL_OPINION,
+            FAQItem(
+                question=_("In quale lingua posso comunicare con lo Studio?"),
+                answer=_(
+                    "Lo Studio gestisce italiano, francese, inglese e arabo. "
+                    "La documentazione clinica e procedurale italiana viene "
+                    "letta e tradotta nelle parti rilevanti per il caso."
+                ),
+            ),
+            FAQItem(
+                question=_("Devo necessariamente avviare la causa in Italia?"),
+                answer=_(
+                    "Non sempre. La giurisdizione competente dipende dai "
+                    "fatti, dalla legge applicabile e dai trattati: la "
+                    "valutazione preliminare include questo passo di triage "
+                    "prima di qualsiasi avvio formale."
+                ),
+            ),
+            _FAQ_MANDATE,
+        ),
     ),
     CaseTypeLanding(
         slug="cross-border-cases",
@@ -401,8 +611,45 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
         primary_cta_url_name="crm:contact",
         secondary_cta_label=_("Open the simulation wizard"),
         secondary_cta_url_name="cases:wizard_start",
+        faq_items=(
+            _FAQ_LEGAL_OPINION,
+            FAQItem(
+                question=_("Come si stabilisce quale legge si applica al caso?"),
+                answer=_(
+                    "Attraverso le regole di conflitto e i trattati "
+                    "internazionali rilevanti per il caso. Lo Studio "
+                    "individua il quadro applicabile prima di formulare una "
+                    "stima orientativa dell'esito."
+                ),
+            ),
+            FAQItem(
+                question=_("Lo Studio collabora con avvocati locali nei paesi coinvolti?"),
+                answer=_(
+                    "Sì. Quando l'esecuzione transfrontaliera richiede "
+                    "l'intervento di un legale locale, lo Studio si "
+                    "coordina con corrispondenti nei paesi rilevanti per "
+                    "il caso."
+                ),
+            ),
+            _FAQ_MANDATE,
+        ),
     ),
 )
+
+
+# ---------------------------------------------------------------------------
+# F-product-6-case-type-faqs: defensive module-level invariant.
+# ---------------------------------------------------------------------------
+#
+# Catches future drift if a landing accidentally grows beyond
+# `MAX_FAQ_ITEMS` (4) entries — the section would push the disclaimer
+# below the mobile fold. Raises at import, so any test run catches it
+# immediately.
+for _landing in LANDINGS:
+    assert len(_landing.faq_items) <= MAX_FAQ_ITEMS, (
+        f"Landing {_landing.slug!r} has {len(_landing.faq_items)} FAQ items; "
+        f"max is {MAX_FAQ_ITEMS} (see CASE_TYPE_FAQ_AUDIT_2026-05-12.md)."
+    )
 
 
 LANDINGS_BY_SLUG = {landing.slug: landing for landing in LANDINGS}
