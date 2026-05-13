@@ -416,3 +416,57 @@ def get_landing(slug: str) -> CaseTypeLanding | None:
 def all_slugs() -> tuple[str, ...]:
     """Tuple of all published landing slugs (stable order)."""
     return tuple(landing.slug for landing in LANDINGS)
+
+
+# ---------------------------------------------------------------------------
+# F-product-5-result-page-next-pages: case_type → recommended landings
+# ---------------------------------------------------------------------------
+#
+# Mapping from `CaseType` enum value to an ordered list of landing
+# slugs to surface on `/wizard/result/<uuid>/`. The result-page
+# view (`cases.views.wizard_result`) reads this and renders a
+# "Useful pages for your case" section. Capped to 3 recommendations
+# at render time to avoid distracting from the primary CTA.
+#
+# Codes that don't appear in the mapping receive an empty list →
+# the section is silently omitted on the result page.
+#
+# Profile-style landings (`foreigners-in-italy`, `cross-border-cases`,
+# `insurance-offer-review`) appear across several case-types because
+# they describe a user *situation*, not a case-type code.
+_RECOMMENDATIONS_BY_CASE_TYPE: dict[str, tuple[str, ...]] = {
+    _CODE_ROAD: ("bodily-injury", "insurance-offer-review", "cross-border-cases"),
+    _CODE_MEDICAL: ("medical-malpractice", "insurance-offer-review"),
+    _CODE_WORK: ("work-injury", "insurance-offer-review"),
+    _CODE_DEATH: ("death-of-relative", "cross-border-cases"),
+    "parental_loss": ("death-of-relative",),
+    _CODE_INT_INHERITANCE: ("cross-border-cases", "foreigners-in-italy"),
+    "inheritance_basic": ("cross-border-cases",),
+    _CODE_GENERIC: ("insurance-offer-review", "cross-border-cases"),
+    "patrimonial_damage": ("insurance-offer-review", "cross-border-cases"),
+}
+
+# Maximum landings rendered on the result page.
+RESULT_PAGE_RECOMMENDATION_LIMIT = 3
+
+
+def get_recommended_landings(case_type: str) -> tuple[CaseTypeLanding, ...]:
+    """Return the ordered tuple of recommended landings for a case_type.
+
+    Empty tuple when the case_type is unknown or unmapped — the
+    result-page template treats an empty list as "do not render the
+    recommendations section".
+
+    Capped at `RESULT_PAGE_RECOMMENDATION_LIMIT` (3) entries. Skips
+    any slug that does not resolve to a real landing — defensive
+    against future drift between the mapping and the LANDINGS tuple.
+    """
+    if not case_type:
+        return ()
+    slugs = _RECOMMENDATIONS_BY_CASE_TYPE.get(case_type, ())
+    out: list[CaseTypeLanding] = []
+    for slug in slugs[:RESULT_PAGE_RECOMMENDATION_LIMIT]:
+        landing = LANDINGS_BY_SLUG.get(slug)
+        if landing is not None:
+            out.append(landing)
+    return tuple(out)
