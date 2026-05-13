@@ -604,10 +604,63 @@ def case_types(request):
                 "public_status": get_country_public_status(rep_country, case_type.value),
             }
         )
+    # F-product-4-case-type-landings: surface the slug for each
+    # CaseType code if a per-case-type landing exists, so the hub
+    # cards can link to the deep page. Data-driven from
+    # `apps.core.case_type_landings.LANDINGS`.
+    from apps.core.case_type_landings import LANDINGS as _LANDINGS
+
+    landings_by_code: dict[str, str] = {}
+    for landing in _LANDINGS:
+        # First landing wins per code — for codes with multiple
+        # landings (e.g. road_accident has both `road-accident` and
+        # `bodily-injury`), the hub links to the more general one
+        # which is declared first.
+        landings_by_code.setdefault(landing.case_type_code, landing.slug)
+    for entry in case_types_view:
+        entry["landing_slug"] = landings_by_code.get(entry["code"], "")
+
     return render(
         request,
         "public/case_types.html",
-        {"case_types": case_types_view},
+        {
+            "case_types": case_types_view,
+            # F-product-4: surface the full landings list so the hub
+            # can also show the "profile-style" landings (foreigners
+            # in Italy, cross-border cases, insurance offer review)
+            # that don't map 1:1 to a CaseType code.
+            "extra_landings": [
+                landing for landing in _LANDINGS
+                if landing.case_type_code in {"", "generic_legal_assessment"}
+                or landing.slug not in landings_by_code.values()
+            ],
+        },
+    )
+
+
+@require_GET
+def case_type_landing(request, slug):
+    """F-product-4-case-type-landings: per-case-type landing page.
+
+    Looks up the slug in `apps.core.case_type_landings.LANDINGS`. If
+    unknown, returns 404. Renders a single shared template with the
+    landing's content. The page is public, indexable, and carries
+    hreflang via the global context processor allowlist.
+    """
+    from django.http import Http404
+
+    from apps.core.case_type_landings import get_landing
+
+    landing = get_landing(slug)
+    if landing is None:
+        raise Http404("Unknown case-type landing.")
+    return render(
+        request,
+        "public/case_type_landing.html",
+        {
+            "landing": landing,
+            "pexels_image": _pexels_hero(request, f"case_type_{slug}"),
+        },
     )
 
 

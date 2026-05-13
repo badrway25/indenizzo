@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% comment %}
+  F-product-4-case-type-landings: single template rendering every
+  per-case-type landing page. Data comes from
+  `apps.core.case_type_landings.LANDINGS` via the
+  `core.views.case_type_landing(request, slug)` view.
+
+  Deontological guardrails enforced in the data module + tested by
+  `apps/core/test_product_4_case_type_landings.py`:
+
+  - No EUR amounts in copy.
+  - No "scopri quanto ti spetta" / "pay only if you win" / etc.
+  - Every landing carries a primary CTA (wizard or contact with
+    `?case_type=<code>` prefill) AND a secondary CTA.
+  - Mandate notice + disclaimer banner rendered adjacent to CTAs.
+{% endcomment %}
+
+{% block title %}{% if landing.meta_title %}{{ landing.meta_title }}{% else %}{{ landing.h1 }}{% endif %} — {{ SITE_NAME }}{% endblock %}
+
+{% block meta_description %}{{ landing.meta_description }}{% endblock %}
+
+{% block content %}
+{% include "partials/_premium_hero_image.html" %}
+
+<section class="max-w-3xl mx-auto px-5 lg:px-8 py-16">
+  <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Case type" %}</p>
+  <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{{ landing.h1 }}</h1>
+  <p class="mt-4 text-lg text-ink-800 leading-relaxed">
+    {{ landing.intro }}
+  </p>
+
+  {# -------- When this applies -------- #}
+  {% if landing.when_it_applies %}
+    <div class="mt-10 rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7">
+      <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "When this applies" %}</p>
+      <h2 class="mt-2 font-serif text-2xl text-ink-950">{% translate "Typical situations" %}</h2>
+      <ul class="mt-4 space-y-3 text-sm text-ink-900 leading-relaxed">
+        {% for item in landing.when_it_applies %}
+          <li class="flex gap-3">
+            <span aria-hidden="true" class="mt-1 inline-block w-1.5 h-1.5 rounded-full bg-gold-500 shrink-0"></span>
+            <span>{{ item }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  {# -------- Documents to prepare (shared partial from PRODUCT-2) -------- #}
+  {% include "partials/_documents_to_prepare.html" with variant="result" %}
+
+  {# -------- What the Studio does -------- #}
+  {% if landing.what_studio_does %}
+    <div class="mt-8 rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7">
+      <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "What the Studio does" %}</p>
+      <h2 class="mt-2 font-serif text-2xl text-ink-950">{% translate "Preliminary legal assessment" %}</h2>
+      <ol class="mt-4 space-y-3 text-sm text-ink-900 leading-relaxed list-decimal list-inside">
+        {% for item in landing.what_studio_does %}
+          <li>{{ item }}</li>
+        {% endfor %}
+      </ol>
+      <p class="mt-4 text-xs text-stone2-500 leading-relaxed">
+        {% blocktranslate %}This is a preliminary review, not an automatic engagement. Sending a request via the form does not create a professional engagement; the Studio remains free to accept or decline the matter.{% endblocktranslate %}
+      </p>
+    </div>
+  {% endif %}
+
+  {# -------- Mandate notice (separation between simulation and engagement) -------- #}
+  {% include "partials/mandate_notice.html" %}
+
+  {# -------- CTAs -------- #}
+  <div class="mt-10 flex flex-wrap gap-3">
+    <a href="{{ landing.primary_cta_href }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
+      {{ landing.primary_cta_label }}
+      <span aria-hidden="true">→</span>
+    </a>
+    <a href="{{ landing.secondary_cta_href }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink-950/15 text-ink-950 hover:bg-stone2-100 font-semibold">
+      {{ landing.secondary_cta_label }}
+    </a>
+  </div>
+
+  {# -------- Disclaimer adjacent to CTAs -------- #}
+  <p class="mt-6 text-xs text-stone2-500 leading-relaxed">
+    {% blocktranslate %}This page is informational and does not constitute legal advice, medical-legal opinion, or guarantee of outcome. Any simulation is indicative; the actual valuation depends on documents, expert reports, applicable law and judicial orientation.{% endblocktranslate %}
+  </p>
+
+  {# -------- Useful pages footer -------- #}
+  <nav aria-label="{% translate 'Useful pages' %}" class="mt-10 flex flex-wrap gap-3 text-sm">
+    <a href="{% url 'core:case_types' %}" class="inline-flex items-center gap-2 px-4 py-2.5 min-h-10 rounded-full border border-stone2-200 text-ink-900 hover:bg-stone2-100 font-semibold">
+      {% translate "Back to all case types" %}
+    </a>
+    <a href="{% url 'core:methodology' %}" class="inline-flex items-center gap-2 px-4 py-2.5 min-h-10 rounded-full border border-stone2-200 text-ink-900 hover:bg-stone2-100 font-semibold">
+      {% translate "Read the methodology" %}
+    </a>
+    <a href="{% url 'core:privacy' %}" class="inline-flex items-center gap-2 px-4 py-2.5 min-h-10 rounded-full border border-stone2-200 text-ink-900 hover:bg-stone2-100 font-semibold">
+      {% translate "Privacy notice" %}
+    </a>
+    <a href="{% url 'core:disclaimer' %}" class="inline-flex items-center gap-2 px-4 py-2.5 min-h-10 rounded-full border border-stone2-200 text-ink-900 hover:bg-stone2-100 font-semibold">
+      {% translate "Open the disclaimer" %}
+    </a>
+  </nav>
+</section>
+{% endblock %}
