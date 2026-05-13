@@ -11,9 +11,20 @@ Pipeline gestita dallo staff Studio:
 
 from django.contrib import admin
 from django.utils import timezone
+from django.utils.html import format_html, format_html_join
 from django.utils.translation import gettext_lazy as _
 
 from .models import Lead, LeadEvent, LeadStatus, LeadWebhookDelivery
+
+
+# F-product-8-studio-lead-activity-timeline: short CSS color per
+# severity. Pure presentation — no JS, no behaviour.
+_SEVERITY_COLORS: dict[str, str] = {
+    "info": "#475569",
+    "success": "#15803d",
+    "warning": "#a16207",
+    "error": "#b91c1c",
+}
 
 
 class HasLinkedSimulationFilter(admin.SimpleListFilter):
@@ -137,6 +148,8 @@ class LeadAdmin(admin.ModelAdmin):
         "mandate_version",
         "mandate_source",
         "webhook_outbox_summary",
+        "next_staff_action_display",
+        "activity_timeline",
     )
 
     fieldsets = (
@@ -199,6 +212,20 @@ class LeadAdmin(admin.ModelAdmin):
             },
         ),
         (
+            _("Activity timeline"),
+            {
+                "fields": ("next_staff_action_display", "activity_timeline"),
+                "description": _(
+                    "Read-only chronological view aggregated from the Lead, "
+                    "its linked simulation, consent timestamps, lifecycle "
+                    "events, webhook outbox and mandate state. The 'next "
+                    "staff action' line is an operational hint derived from "
+                    "workflow flags only - it is not a legal opinion on the "
+                    "case."
+                ),
+            },
+        ),
+        (
             _("Webhook outbox (CRM)"),
             {
                 "classes": ("collapse",),
@@ -217,8 +244,14 @@ class LeadAdmin(admin.ModelAdmin):
         # F-product-7-crm-staff-lead-workflow: prefetch the outbox rows
         # so the per-row derived `webhook_status_display` does not hit
         # the DB once per list line.
+        # F-product-8-studio-lead-activity-timeline: also prefetch the
+        # lifecycle events and select_related the simulation so the
+        # activity_timeline detail-page render stays under the query
+        # budget when admin opens a row.
         qs = super().get_queryset(request)
-        return qs.prefetch_related("webhook_deliveries")
+        return qs.select_related("simulation").prefetch_related(
+            "webhook_deliveries", "events"
+        )
 
     def has_add_permission(self, request):
         # I lead nascono dal form pubblico, mai dall'admin.
@@ -251,6 +284,58 @@ class LeadAdmin(admin.ModelAdmin):
     @admin.display(description=_("webhook"))
     def webhook_status_display(self, obj: Lead) -> str:
         return obj.webhook_delivery_status_summary
+
+    @admin.display(description=_("Next staff action"))
+    def next_staff_action_display(self, obj: Lead) -> str:
+        """Conservative operational hint. See `apps.crm.timeline.compute_next_staff_action`."""
+        return obj.next_staff_action
+
+    @admin.display(description=_("Activity timeline"))
+    def activity_timeline(self, obj: Lead):
+        """Render the chronological timeline as a safe HTML list.
+
+        Implementation notes:
+
+        - Uses `format_html` + `format_html_join` so every interpolated
+          value passes through Django's auto-escape. No `mark_safe`
+          on user-supplied text.
+        - Severity colours come from a fixed enum-keyed dict — no
+          user input reaches the style attribute.
+        - No JavaScript, no buttons, no retry links. The page is a
+          read-only audit view.
+        """
+        from .timeline import build_lead_timeline
+
+        items = build_lead_timeline(obj)
+        if not items:
+            return format_html("<em>{}</em>", _("No activity yet."))
+
+        rows = format_html_join(
+            "",
+            (
+                "<li style=\"margin:0 0 6px 0; padding-left:8px; "
+                "border-left:3px solid {};\">"
+                "<div style=\"font-size:11px; color:#64748b;\">{} &middot; {}</div>"
+                "<div style=\"font-weight:600;\">{}</div>"
+                "<div style=\"font-size:12px; color:#334155;\">{}</div>"
+                "<div style=\"font-size:11px; color:#64748b; font-family:monospace;\">{}</div>"
+                "</li>"
+            ),
+            (
+                (
+                    _SEVERITY_COLORS.get(it.severity, "#64748b"),
+                    it.timestamp.strftime("%Y-%m-%d %H:%M"),
+                    it.category,
+                    it.label,
+                    it.description,
+                    it.source,
+                )
+                for it in items
+            ),
+        )
+        return format_html(
+            "<ul style=\"list-style:none; padding:0; margin:0;\">{}</ul>", rows
+        )
 
     @admin.display(description=_("Webhook deliveries"))
     def webhook_outbox_summary(self, obj: Lead) -> str:

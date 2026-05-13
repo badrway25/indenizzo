@@ -278,6 +278,19 @@ class Lead(models.Model):
         return self.simulation_id is not None
 
     @property
+    def next_staff_action(self) -> str:
+        """F-product-8-studio-lead-activity-timeline: short
+        operational hint for the Studio.
+
+        Never derives a legal opinion. The full logic + fixed-string
+        set lives in `apps.crm.timeline.compute_next_staff_action` so
+        the property itself is a thin delegation that does not get
+        in the way of admin rendering."""
+        from .timeline import compute_next_staff_action
+
+        return compute_next_staff_action(self)
+
+    @property
     def webhook_delivery_status_summary(self) -> str:
         """One-line status summary of this Lead's CRM webhook outbox.
 
