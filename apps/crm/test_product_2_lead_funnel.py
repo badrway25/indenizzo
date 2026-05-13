@@ -21,13 +21,11 @@ from __future__ import annotations
 
 import re
 import uuid
-from decimal import Decimal
 from pathlib import Path
 
 import pytest
 from django.test import Client
 
-from apps.calculators.enums import CaseType
 from apps.cases.models import Simulation
 from apps.crm.models import Lead
 

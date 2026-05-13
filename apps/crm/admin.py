@@ -16,7 +16,6 @@ from django.utils.translation import gettext_lazy as _
 
 from .models import Lead, LeadEvent, LeadStatus, LeadWebhookDelivery
 
-
 # F-product-8-studio-lead-activity-timeline: short CSS color per
 # severity. Pure presentation — no JS, no behaviour.
 _SEVERITY_COLORS: dict[str, str] = {

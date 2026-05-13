@@ -40,7 +40,7 @@ from django.conf import settings
 from django.db import transaction
 
 from apps.compliance.enums import PrivacyEventType
-from apps.compliance.services import get_request_meta, log_privacy_event
+from apps.compliance.services import log_privacy_event
 
 logger = logging.getLogger(__name__)
 

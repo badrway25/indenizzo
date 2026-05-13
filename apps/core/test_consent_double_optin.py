@@ -91,7 +91,6 @@ def _post_wizard_morocco(client: Client, **overrides) -> Any:
 
 from typing import Any  # noqa: E402
 
-
 # ---------------------------------------------------------------------------
 # Test 1: contact form senza consenso -> errore
 # ---------------------------------------------------------------------------
@@ -158,8 +157,8 @@ def test_contact_form_with_only_art6_fails():
 
 @pytest.mark.django_db
 def test_contact_form_with_both_consents_creates_lead_and_records():
-    from apps.crm.models import Lead
     from apps.compliance.models import ConsentRecord
+    from apps.crm.models import Lead
 
     resp = _post_contact(
         Client(),
@@ -191,8 +190,8 @@ def test_contact_form_with_both_consents_creates_lead_and_records():
 
 @pytest.mark.django_db
 def test_wizard_italy_without_consents_fails():
-    from apps.cases.models import Simulation
     from apps.cases.forms import ItalyRoadAccidentWizardForm
+    from apps.cases.models import Simulation
 
     resp = _post_wizard_italy(Client())
     assert resp.status_code == 200
@@ -299,8 +298,8 @@ def test_consent_checkboxes_are_not_preselected_on_wizard_italy():
     SPECIAL_CATEGORIES_NOTICE_VERSION="test-sc-v1",
 )
 def test_consent_versions_persisted_on_lead_and_simulation():
-    from apps.crm.models import Lead
     from apps.cases.models import Simulation
+    from apps.crm.models import Lead
 
     client = Client()
     _post_contact(client, privacy_accepted="on", special_categories_accepted="on")

@@ -30,7 +30,6 @@ What these tests guard:
 from __future__ import annotations
 
 import re
-import uuid
 from pathlib import Path
 
 import pytest
@@ -63,8 +62,8 @@ def test_audit_doc_exists():
 
 def test_recommendations_mapping_and_helper_importable():
     from apps.core.case_type_landings import (
-        RESULT_PAGE_RECOMMENDATION_LIMIT,
         _RECOMMENDATIONS_BY_CASE_TYPE,
+        RESULT_PAGE_RECOMMENDATION_LIMIT,
         get_recommended_landings,
     )
 
@@ -144,8 +143,8 @@ def test_every_recommendation_slug_resolves_to_a_real_landing():
     """Sync guard against future drift between
     `_RECOMMENDATIONS_BY_CASE_TYPE` and `LANDINGS`."""
     from apps.core.case_type_landings import (
-        LANDINGS_BY_SLUG,
         _RECOMMENDATIONS_BY_CASE_TYPE,
+        LANDINGS_BY_SLUG,
     )
 
     for case_type, slugs in _RECOMMENDATIONS_BY_CASE_TYPE.items():

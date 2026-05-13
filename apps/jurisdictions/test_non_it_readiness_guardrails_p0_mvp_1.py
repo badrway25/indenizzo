@@ -29,7 +29,6 @@ from datetime import date
 from pathlib import Path
 
 import pytest
-from django.core.checks import Error
 from django.test import override_settings
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -108,7 +107,7 @@ def _make_user(username: str = "studio_reviewer"):
 
 
 def _make_source(country, slug: str, status: str, reviewer=None):
-    from apps.legal_sources.enums import Reliability, SourceStatus, SourceType
+    from apps.legal_sources.enums import Reliability, SourceType
     from apps.legal_sources.models import LegalSource
 
     return LegalSource.objects.create(

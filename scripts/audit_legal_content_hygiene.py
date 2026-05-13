@@ -329,7 +329,7 @@ class CompiledRule:
     patterns: list[re.Pattern[str]] = field(default_factory=list)
 
     @classmethod
-    def build_all(cls) -> list["CompiledRule"]:
+    def build_all(cls) -> list[CompiledRule]:
         return [cls(rule=r, patterns=r.compile()) for r in RULES]
 
 

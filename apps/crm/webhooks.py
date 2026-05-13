@@ -46,8 +46,9 @@ import hmac
 import json
 import logging
 import secrets
+from collections.abc import Callable
 from datetime import datetime, timedelta
-from typing import Any, Callable
+from typing import Any
 from urllib.parse import urlparse
 
 from django.conf import settings
@@ -107,7 +108,7 @@ def compute_idempotency_key(lead, event_type: str) -> str:
     can dedupe by this key.
     """
     public_id = str(getattr(lead, "public_id", "")) or "anon"
-    seed = f"{public_id}:{event_type}".encode("utf-8")
+    seed = f"{public_id}:{event_type}".encode()
     return hashlib.sha256(seed).hexdigest()
 
 

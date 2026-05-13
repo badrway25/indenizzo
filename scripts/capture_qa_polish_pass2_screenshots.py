@@ -22,7 +22,6 @@ from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 
-
 DESKTOP_PAGES = [
     ("01_home_it_desktop.png", "/"),
     ("02_countries_desktop.png", "/countries/"),

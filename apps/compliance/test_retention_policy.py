@@ -21,7 +21,7 @@ Coprono lo scaffold della wide retention policy:
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone as dt_timezone
+from datetime import UTC, datetime, timedelta
 from io import StringIO
 
 import pytest
@@ -44,7 +44,6 @@ from apps.compliance.retention import (
     run_retention,
 )
 from apps.crm.models import Lead
-
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -338,7 +337,7 @@ def test_command_dry_run_prints_candidate_counts():
     RETENTION_AUDIT_LOG_DAYS=120,
 )
 def test_get_retention_cutoffs_uses_settings_days():
-    fixed_now = datetime(2026, 5, 10, 12, 0, 0, tzinfo=dt_timezone.utc)
+    fixed_now = datetime(2026, 5, 10, 12, 0, 0, tzinfo=UTC)
     cutoffs = get_retention_cutoffs(now=fixed_now)
     assert cutoffs.lead_days == 30
     assert cutoffs.simulation_days == 60

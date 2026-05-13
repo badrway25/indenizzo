@@ -21,12 +21,11 @@ Design choices documented in
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Iterable
 
 from django.utils.translation import gettext_lazy as _
-
 
 # Short-string severity / category enums — kept as plain strings so
 # the dataclass is not coupled to a Django enum that might be removed.

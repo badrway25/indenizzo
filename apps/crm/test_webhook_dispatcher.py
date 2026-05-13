@@ -31,7 +31,7 @@ retry e contratto del payload. Tutto l'HTTP e' iniettato via
 from __future__ import annotations
 
 import json
-from datetime import datetime, timedelta, timezone as dt_timezone
+from datetime import timedelta
 from io import StringIO
 from unittest.mock import patch
 
@@ -50,11 +50,9 @@ from apps.crm.webhooks import (
     compute_idempotency_key,
     constant_time_signature_check,
     dispatch_one,
-    dispatch_pending_webhooks,
     enqueue_lead_webhook,
     sign_payload,
 )
-
 
 # ---------------------------------------------------------------------------
 # Helpers

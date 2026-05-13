@@ -18,7 +18,6 @@ from django.test import override_settings
 
 from apps.crm.checks import check_lead_notification_recipients
 
-
 # ---------------------------------------------------------------------------
 # Scenario dev: DEBUG=True non disturba mai lo sviluppatore.
 # ---------------------------------------------------------------------------
