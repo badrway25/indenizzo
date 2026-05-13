@@ -1,0 +1,260 @@
+# -----------------------------------------------------------------------------
+# STAGING ENV TEMPLATE — Studio Legale Badrane LegalTech
+# -----------------------------------------------------------------------------
+#
+# Doc-side, git-tracked, safe template. ZERO real values, ZERO secrets.
+#
+# Usage:
+#   1. Copy this file to .env.staging at repo root (or to your secret store).
+#   2. Replace every <PLACEHOLDER> with a real value provided by Studio /
+#      DevOps. Never commit the populated file.
+#   3. Generate DJANGO_SECRET_KEY locally with:
+#         python -c "import secrets; print(secrets.token_urlsafe(64))"
+#   4. Pair the .env.staging with `docker compose -f docker-compose.staging.yml
+#      --env-file .env.staging up -d --build`.
+#
+# Note about .env.staging.example at repo root: that file exists locally
+# but is gitignored (see .gitignore line "!.env.example" whitelist — the
+# staging example is NOT whitelisted). This doc-side template is the
+# version of truth that everyone can read in a PR review.
+#
+# Cross-reference:
+#   docs/PRODUCTION_ENV_REQUIRED_VARS.md  — canonical env reference (per-var)
+#   docs/go_live/ENV_CONTRACT_GO_LIVE.md  — deploy-gate matrix
+#   docs/go_live/STAGING_DEPLOY_GATE_2026-05-13.md — go/no-go gate doc
+#   docs/go_live/POSTGRES_STAGING_RUNBOOK.md — Postgres provisioning
+#   docs/go_live/LEGAL_SIGNATURE_PACK_TODO.md — what Studio must sign
+#
+# -----------------------------------------------------------------------------
+
+# =============================================================================
+# 1. DJANGO CORE
+# =============================================================================
+# DEBUG must be False in staging. The system check guard (settings.py:65-69)
+# refuses to start the server if SECRET_KEY still has the "django-insecure-"
+# prefix when DEBUG=False.
+DJANGO_DEBUG=False
+
+# Generate locally — never reuse across environments.
+#   python -c "import secrets; print(secrets.token_urlsafe(64))"
+DJANGO_SECRET_KEY=<GENERATE_WITH_secrets.token_urlsafe_64>
+
+# CSV. Must include the public hostname behind the reverse proxy.
+DJANGO_ALLOWED_HOSTS=<staging.your-domain.example>
+
+# CSV. Required by Django >=4 for CSRF behind HTTPS reverse proxy.
+DJANGO_CSRF_TRUSTED_ORIGINS=https://<staging.your-domain.example>
+
+# Defaults to it. Override only if staging is targeted to another primary
+# language.
+LANGUAGE_CODE=it
+TIME_ZONE=Europe/Brussels
+
+# =============================================================================
+# 2. DATABASE — Postgres mandatory in staging
+# =============================================================================
+# Format: postgres://USER:PASSWORD@HOST:PORT/DBNAME
+# In docker-compose.staging.yml this is composed from the POSTGRES_* vars
+# below. Set DATABASE_URL directly only if the DB is external (managed
+# Postgres). Never commit the populated value.
+DATABASE_URL=postgres://<DB_USER>:<DB_PASSWORD>@<DB_HOST>:5432/<DB_NAME>
+
+# Used by the `db` service in docker-compose.staging.yml.
+POSTGRES_DB=badrane_staging
+POSTGRES_USER=badrane
+POSTGRES_PASSWORD=<DB_PASSWORD>
+
+# =============================================================================
+# 3. EMAIL (transactional notifications)
+# =============================================================================
+DJANGO_EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+DJANGO_DEFAULT_FROM_EMAIL=no-reply@<your-domain.example>
+DJANGO_EMAIL_SUBJECT_PREFIX=[Badrane LegalTech STAGING]
+
+# Provider-specific SMTP. Examples: Mailgun, SendGrid, AWS SES, Postmark.
+# Provider gives the values; do not invent.
+EMAIL_HOST=<smtp.provider.example>
+EMAIL_HOST_USER=<smtp_user_or_apikey>
+EMAIL_HOST_PASSWORD=<smtp_password_or_apikey_value>
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+
+# =============================================================================
+# 4. LEAD NOTIFICATION (P0 — blocks production via crm.E001)
+# =============================================================================
+# CSV of Studio mailboxes that should receive a notification when a new
+# Lead is created via /contact/. Cannot be empty in production.
+LEAD_NOTIFICATION_ENABLED=True
+LEAD_NOTIFICATION_TO_EMAILS=<staff@your-domain.example>
+
+# In staging keep async OFF unless a Celery worker + Redis broker are
+# part of the staging stack. Sync fallback works without Redis.
+LEAD_NOTIFICATION_ASYNC_ENABLED=False
+# CELERY_BROKER_URL=redis://redis:6379/0
+
+# =============================================================================
+# 5. STUDIO PROFESSIONAL IDENTIFICATION (P0 — blocks production via core.E001)
+# =============================================================================
+# All values come FROM the Studio. The dev never invents them.
+# See docs/go_live/LEGAL_SIGNATURE_PACK_TODO.md §6.
+STUDIO_LEAD_LAWYER_NAME=<Avv. Name Surname>
+STUDIO_BAR_ASSOCIATION=<Ordine degli Avvocati di City>
+STUDIO_BAR_REGISTRATION_NUMBER=<optional bar number>
+STUDIO_VAT_NUMBER=<IT12345678901>
+STUDIO_TAX_CODE=<optional CF>
+STUDIO_PEC_EMAIL=<studio@pec.your-provider.example>
+STUDIO_PHYSICAL_ADDRESS=<Via X 1, ZIP City>
+STUDIO_PROFESSIONAL_INSURANCE_INSURER=<Insurance Company>
+STUDIO_PROFESSIONAL_INSURANCE_POLICY=<policy number>
+STUDIO_PROFESSIONAL_INSURANCE_CEILING=<optional ceiling>
+
+# =============================================================================
+# 6. CSP (P0 — blocks production via core.E002 / core.E003)
+# =============================================================================
+CSP_ENABLED=True
+# Keep enforcing in staging once smoke tests pass. Use True only for a
+# limited dry-run window before strict enforcement.
+CSP_REPORT_ONLY=False
+# Optional violation reporting endpoint. Leave empty if unused.
+# CSP_REPORT_URI=https://csp-reports.<your-domain.example>/
+
+# =============================================================================
+# 7. CONSENT TEXT VERSIONS (P0 — blocks production via core.E004)
+# =============================================================================
+# Set only after Studio signs. Format: YYYY-MM-DD-final
+# Values that contain "working-copy" or "draft" cause the check to fail.
+PRIVACY_NOTICE_VERSION=<YYYY-MM-DD-final from Studio>
+SPECIAL_CATEGORIES_NOTICE_VERSION=<YYYY-MM-DD-final from Studio>
+
+# =============================================================================
+# 8. PRIVACY POLICY PAGE (P0 — blocks via core.E006)
+# =============================================================================
+PRIVACY_POLICY_VERSION=<YYYY-MM-DD-final from Studio>
+PRIVACY_POLICY_STATUS=signed
+PRIVACY_POLICY_SIGNED_AT=<YYYY-MM-DD>
+
+# =============================================================================
+# 9. DISCLAIMER PAGE (P0 — blocks via core.E007)
+# =============================================================================
+DISCLAIMER_VERSION=<YYYY-MM-DD-final from Studio>
+DISCLAIMER_STATUS=signed
+DISCLAIMER_SIGNED_AT=<YYYY-MM-DD>
+
+# =============================================================================
+# 10. MANDATE TEMPLATE (P0 — blocks via core.E008)
+# =============================================================================
+MANDATE_TEMPLATE_VERSION=<YYYY-MM-DD-final from Studio>
+MANDATE_TEMPLATE_STATUS=signed
+MANDATE_TEMPLATE_SIGNED_AT=<YYYY-MM-DD>
+REQUIRE_MANDATE_BEFORE_CASE_ACTIVATION=True
+
+# =============================================================================
+# 11. RETENTION POLICY (P0 — blocks via compliance.E001)
+# =============================================================================
+RETENTION_POLICY_VERSION=<YYYY-MM-DD-final from Studio>
+RETENTION_ENABLED=True
+# Recommended starting mode in staging is `anonymize` (anonymises PII,
+# preserves audit). Use `dry_run` only for the first run, then switch.
+RETENTION_MODE=anonymize
+# Values decided by Studio (DPO). These are scaffold defaults — Studio
+# signs the final numbers in the retention policy.
+RETENTION_LEAD_DAYS=365
+RETENTION_SIMULATION_DAYS=365
+RETENTION_CONSENT_RECORD_DAYS=1825
+RETENTION_AUDIT_LOG_DAYS=1825
+RETENTION_REQUIRE_SIGNED_VERSION=True
+
+# =============================================================================
+# 12. HTTPS / TRANSPORT HARDENING
+# =============================================================================
+DJANGO_SECURE_SSL_REDIRECT=True
+DJANGO_SESSION_COOKIE_SECURE=True
+DJANGO_CSRF_COOKIE_SECURE=True
+# 30 days in staging — bump to 31536000 (1 year) once stable.
+DJANGO_SECURE_HSTS_SECONDS=2592000
+DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS=True
+# Set to True only after the domain has shipped HSTS for >1 year.
+DJANGO_SECURE_HSTS_PRELOAD=False
+DJANGO_SECURE_REFERRER_POLICY=same-origin
+
+# =============================================================================
+# 13. ADMIN HARDENING
+# =============================================================================
+# Force TOTP for any /admin/ login. Requires django-otp + plugin to be
+# installed (already in requirements.txt, not in INSTALLED_APPS by default).
+# See LOCAL_PRODUCT_HARDENING_PASS5_MFA_ADMIN.md for the activation flow.
+ADMIN_MFA_REQUIRED=True
+
+# Brute-force detector (detection-only, no automatic lockout).
+STAFF_LOGIN_ALERTS_ENABLED=True
+STAFF_LOGIN_ALERT_WINDOW_SECONDS=900
+STAFF_LOGIN_ALERT_THRESHOLD=5
+STAFF_LOGIN_ALERT_COOLDOWN_SECONDS=3600
+STAFF_LOGIN_ALERT_EMAIL_ENABLED=True
+STAFF_LOGIN_ALERT_TO_EMAILS=<security@your-domain.example>
+
+# Audit retention (independent from Atto 5 — covers StaffAccessEvent +
+# StaffSecurityAlert only, not Lead/Simulation/ConsentRecord).
+STAFF_ACCESS_EVENT_RETENTION_DAYS=90
+STAFF_SECURITY_ALERT_RETENTION_DAYS=180
+STAFF_AUDIT_RETENTION_ENABLED=True
+# Keep True for the first staging week; flip to False to allow deletion.
+STAFF_AUDIT_RETENTION_DRY_RUN=True
+
+# =============================================================================
+# 14. RATE LIMITING (defense-in-depth in front of WAF/CDN)
+# =============================================================================
+PUBLIC_POST_RATE_LIMIT_ENABLED=True
+PUBLIC_POST_RATE_LIMIT_WINDOW_SECONDS=3600
+PUBLIC_POST_RATE_LIMIT_MAX_ATTEMPTS=20
+
+# =============================================================================
+# 15. SENTRY (P1 — strongly recommended)
+# =============================================================================
+# Empty DSN = no-op. Once the project is created in Sentry, populate
+# below. PII scrubber custom (apps/core/observability.py) redacts email,
+# phone, names, message, session/CSRF tokens server-side.
+SENTRY_DSN=<https://key@project.ingest.sentry.io/id>
+SENTRY_ENVIRONMENT=staging
+SENTRY_TRACES_SAMPLE_RATE=0.05
+SENTRY_PROFILES_SAMPLE_RATE=0.0
+SENTRY_SEND_DEFAULT_PII=False
+
+# =============================================================================
+# 16. CRM WEBHOOK (P1 — n8n / external CRM integration)
+# =============================================================================
+# Default OFF. Activate only after the n8n endpoint and the HMAC secret
+# are agreed with Studio. See docs/integrations/N8N_CRM_WEBHOOK.md.
+CRM_WEBHOOK_ENABLED=False
+# CRM_WEBHOOK_URL=https://n8n.<your-domain.example>/webhook/<path>
+# CRM_WEBHOOK_SECRET=<HMAC_SECRET_GENERATED_LOCALLY>
+CRM_WEBHOOK_TIMEOUT_SECONDS=10
+CRM_WEBHOOK_MAX_ATTEMPTS=5
+CRM_WEBHOOK_BACKOFF_SECONDS=300
+
+# =============================================================================
+# 17. PEXELS IMAGE FETCH (optional)
+# =============================================================================
+# Off by default in staging unless explicitly testing the hero rotation.
+PEXELS_ENABLED=False
+# PEXELS_API_KEY=<provider key>
+
+# =============================================================================
+# 18. PARENT SITE BRIDGE
+# =============================================================================
+SITE_NAME=Simulatore Risarcimenti Studio Legale Badrane
+SITE_DOMAIN=<staging.your-domain.example>
+PARENT_SITE_URL=https://international.studiolegalebadrane.it/
+
+# =============================================================================
+# 19. GUNICORN OVERRIDES (used by docker-compose.staging.yml only)
+# =============================================================================
+# GUNICORN_WORKERS=3
+# GUNICORN_TIMEOUT=60
+
+# -----------------------------------------------------------------------------
+# Final reminder: never commit the populated .env.staging file. Validate
+# the gate with:
+#     DJANGO_DEBUG=False python manage.py check --deploy
+# Expected: "System check identified no issues (0 silenced)."
+# -----------------------------------------------------------------------------
