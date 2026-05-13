@@ -18,9 +18,8 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from django.db import transaction
-
 from django.conf import settings
+from django.db import transaction
 
 from apps.cases.models import Simulation
 from apps.compliance.enums import PrivacyEventType
@@ -28,7 +27,6 @@ from apps.compliance.models import ConsentPurpose
 from apps.compliance.services import (
     get_request_meta,
     log_privacy_event,
-    record_consent,
     record_double_consent,
 )
 

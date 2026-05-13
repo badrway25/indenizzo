@@ -28,7 +28,6 @@ from django.utils import translation
 
 from apps.core.checks import check_studio_professional_identification
 
-
 # ---------------------------------------------------------------------------
 # Test isolation
 # ---------------------------------------------------------------------------

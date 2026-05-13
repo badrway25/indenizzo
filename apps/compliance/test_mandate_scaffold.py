@@ -24,7 +24,7 @@ richiesta in entrata e incarico):
 
 from __future__ import annotations
 
-from datetime import datetime, timezone as dt_timezone
+from datetime import UTC, datetime
 
 import pytest
 from django.test import Client, override_settings
@@ -39,7 +39,6 @@ from apps.compliance.mandate import (
 from apps.compliance.models import MandateAcceptance, PrivacyAuditEvent
 from apps.core.checks import check_mandate_template_signed_in_production
 from apps.crm.models import Lead, LeadStatus, MandateStatus
-
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -94,7 +93,7 @@ def test_simulation_has_no_mandate_fields():
 @pytest.mark.django_db
 def test_mark_mandate_signed_writes_denormalized_fields_and_acceptance():
     lead = _make_lead()
-    signed_at = datetime(2026, 9, 15, 12, 0, 0, tzinfo=dt_timezone.utc)
+    signed_at = datetime(2026, 9, 15, 12, 0, 0, tzinfo=UTC)
     acceptance = mark_mandate_signed(
         lead,
         version="2026-09-15-final",

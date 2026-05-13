@@ -24,7 +24,6 @@ from __future__ import annotations
 from django.conf import settings
 from django.core.checks import Error, Warning, register
 
-
 # Campi obbligatori per la conformita' deontologica P0:
 #   - chi e' l'avvocato responsabile;
 #   - dove e' iscritto;

@@ -760,7 +760,7 @@ def _build_csp_directives() -> dict:
     una baseline ragionevole per il sito reale (verificata in
     P0-CODICE-4 con browser live).
     """
-    from csp.constants import NONE, NONCE, SELF
+    from csp.constants import NONCE, NONE, SELF
 
     directives = {
         "default-src": env.list("CSP_DEFAULT_SRC", default=[SELF]) or [SELF],

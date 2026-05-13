@@ -85,8 +85,9 @@ def contact(request):
         # wizard. Failure-soft: malformed UUID (ValidationError),
         # unknown UUID (no row), or any DB hiccup must NOT break the
         # contact form — it opens blank instead.
-        from apps.cases.models import Simulation
         from django.core.exceptions import ValidationError
+
+        from apps.cases.models import Simulation
 
         try:
             linked_simulation = (

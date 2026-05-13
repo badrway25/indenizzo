@@ -26,6 +26,7 @@ from __future__ import annotations
 import logging
 import uuid
 
+from django.conf import settings
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import translation
@@ -33,10 +34,8 @@ from django.views.decorators.http import require_GET, require_http_methods
 
 from apps.calculators.enums import CaseType
 from apps.calculators.registry import list_available_calculators
-from django.conf import settings
-
 from apps.compliance.models import ConsentPurpose
-from apps.compliance.services import record_consent, record_double_consent
+from apps.compliance.services import record_double_consent
 from apps.core.public_status import get_country_public_status
 from apps.core.rate_limit import public_post_rate_limit
 

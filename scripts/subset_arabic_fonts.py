@@ -31,7 +31,6 @@ script is part of.
 from __future__ import annotations
 
 import io
-import re
 import sys
 from pathlib import Path
 
@@ -224,7 +223,7 @@ def main() -> int:
     print(f"Reading Arabic corpus from {REPO_ROOT}")
     keep = compute_keep_set()
     print(f"  keep-set size: {len(keep)} codepoints")
-    print(f"  requested unicode-range:")
+    print("  requested unicode-range:")
     print(f"    {format_unicode_range(keep)}")
 
     print(f"\nSubsetting {AMIRI_LIVE.relative_to(REPO_ROOT)}")
@@ -245,7 +244,7 @@ def main() -> int:
     font_out = TTFont(AMIRI_LIVE)
     actual_cmap = sorted(font_out.getBestCmap().keys())
     print(f"\nPost-subset cmap: {len(actual_cmap)} codepoints")
-    print(f"CSS @font-face unicode-range for fonts.css:")
+    print("CSS @font-face unicode-range for fonts.css:")
     print(f"  {format_unicode_range(set(actual_cmap))}")
     return 0
 

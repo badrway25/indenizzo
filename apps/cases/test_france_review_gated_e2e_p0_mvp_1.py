@@ -35,7 +35,6 @@ from __future__ import annotations
 import re
 
 import pytest
-from django.urls import reverse
 
 # Wording that must never appear on a public surface (mirrors the
 # ``public_status.py`` banned list).

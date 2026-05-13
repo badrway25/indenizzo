@@ -37,8 +37,8 @@ automatically. Add the URL + slug to the
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass, field
-from typing import Sequence
 
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _

@@ -19,10 +19,11 @@ class ComplianceConfig(AppConfig):
         # Auth signals → StaffAccessEvent (pass 8). L'import qui registra
         # i receiver `@receiver(user_logged_in/out/failed)`. Read-only:
         # mai blocca o altera il flow di autenticazione.
-        from . import signals  # noqa: F401
-
         # System check `compliance.E001` (F-p0-leg-4-retention): blocca
         # `manage.py check` in produzione se la retention policy non e'
         # firmata o `RETENTION_MODE` e' invalido. L'import registra il
         # check via decorator `@register("compliance")`.
-        from . import checks  # noqa: F401
+        from . import (
+            checks,  # noqa: F401
+            signals,  # noqa: F401
+        )

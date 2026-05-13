@@ -31,8 +31,6 @@ mtime.
 from __future__ import annotations
 
 import gzip
-import os
-import time
 from pathlib import Path
 
 from django.conf import settings

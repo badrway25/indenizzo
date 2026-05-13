@@ -35,7 +35,6 @@ from django.conf import settings
 from django.db import transaction
 from django.utils import timezone
 
-
 # Modalita' ammesse per la wide retention. Coerenti con
 # `RetentionRunLog.Mode.choices`.
 RETENTION_MODES = ("dry_run", "anonymize", "delete")

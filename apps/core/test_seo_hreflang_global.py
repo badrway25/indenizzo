@@ -23,13 +23,11 @@ https://developers.google.com/search/docs/specialty/international/localized-vers
 from __future__ import annotations
 
 import re
-import uuid
 from decimal import Decimal
 
 import pytest
 from django.test import Client
 from django.utils import translation
-
 
 # ---------------------------------------------------------------------------
 # Test isolation: reset i18n active language tra test.
