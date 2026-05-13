@@ -130,6 +130,12 @@ _GLOBAL_HREFLANG_VIEW_NAMES = frozenset(
         "core:privacy",
         "core:countries",
         "core:case_types",
+        # F-product-4-case-type-landings: per-case-type SEO landings
+        # under `/case-types/<slug>/`. Indexable, SEO-targeted,
+        # multilingue. Stessa view, kwargs `slug` diverso per
+        # landing — il builder accetta i kwargs e produce alternate
+        # URLs coerenti.
+        "core:case_type_landing",
         # country landings (gia' coperte dalla view, ma le includiamo
         # nella allowlist per documentare l'intento e per fallback)
         "core:country_italy",

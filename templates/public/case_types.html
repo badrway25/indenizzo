@@ -36,9 +36,44 @@
           <p class="mt-3 text-sm text-ink-800 leading-relaxed">
             {{ case.public_status.short_description }}
           </p>
+          {# F-product-4: link to the per-case-type landing page if one
+             exists for this case_type code. Cards without a landing
+             stay informational only. #}
+          {% if case.landing_slug %}
+            <a href="{% url 'core:case_type_landing' slug=case.landing_slug %}" class="mt-4 inline-flex items-center gap-2 text-sm text-gold-600 hover:text-gold-500 font-semibold">
+              {% translate "Read more" %} <span aria-hidden="true">→</span>
+            </a>
+          {% endif %}
         </article>
       {% endfor %}
     </div>
+
+    {# F-product-4: profile-style landings that do NOT map 1:1 to a
+       CaseType code (e.g. "foreigners in Italy", "cross-border
+       cases", "insurance offer review"). Surfaced as a separate
+       group so the hub is still a single navigation entry-point. #}
+    {% if extra_landings %}
+      <div class="mt-12">
+        <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Specific situations" %}</p>
+        <h2 class="mt-2 font-serif text-2xl text-ink-950">{% translate "Common entry points to a legal review" %}</h2>
+        <p class="mt-3 text-sm text-ink-800 leading-relaxed">
+          {% blocktranslate %}These pages do not describe a case type per se, but a typical situation a user may want to start from — e.g. an insurance offer to review, a cross-border element, or a status as a foreign citizen.{% endblocktranslate %}
+        </p>
+        <div class="mt-6 grid sm:grid-cols-2 gap-4">
+          {% for landing in extra_landings %}
+            <article class="bg-white border border-stone2-200 rounded-3xl p-6 shadow-card">
+              <h3 class="font-serif text-xl text-ink-950">{{ landing.h1 }}</h3>
+              {# meta_description deliberately not rendered on the
+                 hub: it's a long SEO blurb only meaningful inside
+                 each landing's <head>. The hub stays compact. #}
+              <a href="{% url 'core:case_type_landing' slug=landing.slug %}" class="mt-4 inline-flex items-center gap-2 text-sm text-gold-600 hover:text-gold-500 font-semibold">
+                {% translate "Read more" %} <span aria-hidden="true">→</span>
+              </a>
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
 
     <div class="mt-14 bg-sand-100 border border-stone2-200 rounded-3xl p-6">
       <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">{% translate "Coming next" %}</p>

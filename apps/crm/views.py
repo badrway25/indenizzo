@@ -102,6 +102,20 @@ def contact(request):
             if linked_simulation.case_type:
                 initial["case_type"] = linked_simulation.case_type
 
+    # F-product-4-case-type-landings: contact form opened from a
+    # case-type landing carries `?case_type=<code>` so the form's
+    # case-type dropdown is preselected. Only honoured when the
+    # value matches a known `CaseType` enum member (whitelisted
+    # against injection). Skipped if `?sim=` already set case_type.
+    if "case_type" not in initial:
+        requested_case_type = request.GET.get("case_type", "").strip()
+        if requested_case_type:
+            from apps.calculators.enums import CaseType
+
+            valid_codes = {choice[0] for choice in CaseType.choices}
+            if requested_case_type in valid_codes:
+                initial["case_type"] = requested_case_type
+
     if request.method == "POST":
         form = ContactForm(request.POST)
         if form.is_valid():
