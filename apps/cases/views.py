@@ -294,6 +294,16 @@ def wizard_result(request, public_id: uuid.UUID):
         case_type=case_type_value,
     )
 
+    # F-product-5-result-page-next-pages: resolve a small set of
+    # case-type landings to surface on the result page as soft
+    # "Useful pages for your case" links. Data-driven from
+    # `apps.core.case_type_landings._RECOMMENDATIONS_BY_CASE_TYPE`;
+    # empty tuple when the simulation's case_type is unmapped, which
+    # tells the template to silently omit the section.
+    from apps.core.case_type_landings import get_recommended_landings
+
+    recommended_landings = get_recommended_landings(case_type_value)
+
     return render(
         request,
         "public/wizard_result.html",
@@ -308,6 +318,7 @@ def wizard_result(request, public_id: uuid.UUID):
             "status_public_label": status_public_label,
             "public_status": public_status,
             "public_message": public_message,
+            "recommended_landings": recommended_landings,
         },
     )
 
