@@ -10,24 +10,28 @@
   <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Preliminary result" %}</h1>
 
   {# -------- Status box -------- #}
+  {# Range presentation: trailing zeros stripped via floatformat:"-2" (Decimal field has 4 places, irrelevant for integer EUR amounts at this scale). Mid cell gets visual emphasis because it is the working anchor referenced by the "Calculation basis" block below; the "Read how to read this range" link points readers to the explanation without forcing a tooltip. #}
   {% if has_estimate %}
     <div class="mt-8 rounded-3xl border border-ok-600/30 bg-ok-600/5 p-6">
       <p class="text-[11px] uppercase tracking-[0.18em] text-ok-600 font-semibold">{{ status_public_label }}</p>
-      <h2 class="mt-2 font-serif text-2xl text-ink-950">{% translate "Indicative range" %}</h2>
-      <dl class="mt-4 grid sm:grid-cols-3 gap-4">
+      <h2 id="result-range-heading" class="mt-2 font-serif text-2xl text-ink-950">{% translate "Indicative range" %}</h2>
+      <dl class="mt-4 grid sm:grid-cols-3 gap-4" role="group" aria-labelledby="result-range-heading">
         <div>
           <dt class="text-xs text-stone2-500 uppercase tracking-[0.12em]">{% translate "Min" %}</dt>
-          <dd class="mt-1 font-serif text-2xl text-ink-950">{{ simulation.estimated_min|default:"—" }} {{ simulation.currency }}</dd>
+          <dd class="mt-1 font-serif text-2xl text-ink-950">{{ simulation.estimated_min|floatformat:"-2"|default:"—" }} {{ simulation.currency }}</dd>
         </div>
-        <div>
-          <dt class="text-xs text-stone2-500 uppercase tracking-[0.12em]">{% translate "Mid" %}</dt>
-          <dd class="mt-1 font-serif text-2xl text-ink-950">{{ simulation.estimated_mid|default:"—" }} {{ simulation.currency }}</dd>
+        <div class="sm:border-x sm:border-ok-600/20 sm:px-4">
+          <dt class="text-[11px] uppercase tracking-[0.14em] text-gold-600 font-semibold">{% translate "Mid" %}</dt>
+          <dd class="mt-1 font-serif text-3xl text-ink-950 font-semibold">{{ simulation.estimated_mid|floatformat:"-2"|default:"—" }} {{ simulation.currency }}</dd>
         </div>
         <div>
           <dt class="text-xs text-stone2-500 uppercase tracking-[0.12em]">{% translate "Max" %}</dt>
-          <dd class="mt-1 font-serif text-2xl text-ink-950">{{ simulation.estimated_max|default:"—" }} {{ simulation.currency }}</dd>
+          <dd class="mt-1 font-serif text-2xl text-ink-950">{{ simulation.estimated_max|floatformat:"-2"|default:"—" }} {{ simulation.currency }}</dd>
         </div>
       </dl>
+      <p class="mt-4 text-xs text-ink-800">
+        <a href="#result-calculation-basis" class="underline decoration-gold-500/50 underline-offset-4 hover:decoration-gold-500">{% translate "How to read this range" %} <span aria-hidden="true">↓</span></a>
+      </p>
     </div>
   {% else %}
     <div class="mt-8">
@@ -86,7 +90,7 @@
     </div>
 
     {# -------- Calculation basis (premium UX, post-pass-official-source-automation) -------- #}
-    <div class="mt-8 rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7">
+    <div id="result-calculation-basis" class="mt-8 rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7 scroll-mt-8">
       <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Calculation basis" %}</p>
       <h3 class="mt-2 font-serif text-xl text-ink-950">{% translate "How to read this range" %}</h3>
       <dl class="mt-4 grid sm:grid-cols-3 gap-4 text-sm">
