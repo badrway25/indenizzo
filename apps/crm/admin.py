@@ -13,7 +13,31 @@ from django.contrib import admin
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from .models import Lead, LeadEvent
+from .models import Lead, LeadEvent, LeadStatus, LeadWebhookDelivery
+
+
+class HasLinkedSimulationFilter(admin.SimpleListFilter):
+    """F-product-7-crm-staff-lead-workflow: split list by funnel origin.
+
+    A Lead with `simulation_id is not None` came through the wizard
+    result-page CTA. Filtering on this lets the Studio focus on
+    qualified-funnel leads vs cold contact-form submissions."""
+
+    title = _("linked simulation")
+    parameter_name = "has_simulation"
+
+    def lookups(self, request, model_admin):
+        return (
+            ("1", _("Linked (from wizard funnel)")),
+            ("0", _("Not linked (cold contact)")),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == "1":
+            return queryset.filter(simulation__isnull=False)
+        if self.value() == "0":
+            return queryset.filter(simulation__isnull=True)
+        return queryset
 
 
 class _ReadOnlyAdminMixin:
@@ -45,12 +69,15 @@ class LeadAdmin(admin.ModelAdmin):
         "created_at",
         "full_name_display",
         "email",
-        "phone_number",
         "country",
         "case_type",
         "status",
         "mandate_status",
         "mandate_signed",
+        "double_consent_display",
+        "linked_simulation_display",
+        "source_label_display",
+        "webhook_status_display",
         "priority",
         "assigned_to",
     )
@@ -63,6 +90,9 @@ class LeadAdmin(admin.ModelAdmin):
         "case_type",
         "preferred_language",
         "assigned_to",
+        "privacy_consent_given",
+        "special_categories_consent_given",
+        HasLinkedSimulationFilter,
     )
     search_fields = (
         "public_id",
@@ -90,6 +120,23 @@ class LeadAdmin(admin.ModelAdmin):
         "utm_campaign",
         "created_at",
         "updated_at",
+        # F-product-7-crm-staff-lead-workflow: consent denormalised
+        # fields are an audit snapshot of `compliance.ConsentRecord`;
+        # staff must not flip them by hand.
+        "privacy_consent_given",
+        "privacy_consent_at",
+        "privacy_consent_version",
+        "special_categories_consent_given",
+        "special_categories_consent_at",
+        "special_categories_consent_version",
+        # F-product-7-crm-staff-lead-workflow: mandate timestamp /
+        # version / source are written by `apps.compliance.mandate`
+        # services. `mandate_status` + `mandate_signed` stay editable
+        # so the Studio can record acceptance through the admin row.
+        "mandate_signed_at",
+        "mandate_version",
+        "mandate_source",
+        "webhook_outbox_summary",
     )
 
     fieldsets = (
@@ -151,8 +198,27 @@ class LeadAdmin(admin.ModelAdmin):
                 )
             },
         ),
+        (
+            _("Webhook outbox (CRM)"),
+            {
+                "classes": ("collapse",),
+                "fields": ("webhook_outbox_summary",),
+                "description": _(
+                    "Read-only summary of the related LeadWebhookDelivery rows. "
+                    "Manage / inspect individual deliveries via the dedicated "
+                    "Lead webhook deliveries admin page."
+                ),
+            },
+        ),
         (_("Audit"), {"fields": ("created_at", "updated_at")}),
     )
+
+    def get_queryset(self, request):
+        # F-product-7-crm-staff-lead-workflow: prefetch the outbox rows
+        # so the per-row derived `webhook_status_display` does not hit
+        # the DB once per list line.
+        qs = super().get_queryset(request)
+        return qs.prefetch_related("webhook_deliveries")
 
     def has_add_permission(self, request):
         # I lead nascono dal form pubblico, mai dall'admin.
@@ -162,12 +228,57 @@ class LeadAdmin(admin.ModelAdmin):
     def full_name_display(self, obj: Lead) -> str:
         return obj.full_name
 
+    @admin.display(description=_("2x consent"), boolean=True)
+    def double_consent_display(self, obj: Lead) -> bool:
+        return obj.has_valid_double_consent
+
+    @admin.display(description=_("simulation"), boolean=True)
+    def linked_simulation_display(self, obj: Lead) -> bool:
+        return obj.has_linked_simulation
+
+    @admin.display(description=_("source"))
+    def source_label_display(self, obj: Lead) -> str:
+        """Short derived label: 'wizard' (simulation linked) vs
+        'case-type' (case-type landing referrer) vs 'contact' (default).
+        Computed from existing fields — no DB migration."""
+        if obj.simulation_id is not None:
+            return "wizard"
+        path = (obj.source_path or "").lower()
+        if "/case-types/" in path or "case_type=" in path:
+            return "case-type"
+        return "contact"
+
+    @admin.display(description=_("webhook"))
+    def webhook_status_display(self, obj: Lead) -> str:
+        return obj.webhook_delivery_status_summary
+
+    @admin.display(description=_("Webhook deliveries"))
+    def webhook_outbox_summary(self, obj: Lead) -> str:
+        """Multi-line summary of the related outbox rows, rendered in the
+        detail page. Each row reports the event type, status, attempts,
+        last status code and the audit-friendly target_url_domain."""
+        rows = list(
+            obj.webhook_deliveries.order_by("-created_at", "-pk")[:5]
+        )
+        if not rows:
+            return "-"
+        return "\n".join(
+            (
+                f"[{r.created_at:%Y-%m-%d %H:%M}] "
+                f"{r.event_type} status={r.status} "
+                f"attempts={r.attempts}/{r.max_attempts} "
+                f"http={r.last_status_code or '-'} "
+                f"target={r.target_url_domain or '-'}"
+            )
+            for r in rows
+        )
+
     @admin.action(description=_("Mark selected leads as Contacted"))
     def mark_as_contacted(self, request, queryset):
         now = timezone.now()
         count = 0
         for lead in queryset:
-            lead.status = Lead._meta.get_field("status").choices[1][0]  # 'contacted'
+            lead.status = LeadStatus.CONTACTED
             lead.contacted_at = lead.contacted_at or now
             lead.save(update_fields=["status", "contacted_at", "updated_at"])
             LeadEvent.objects.create(
@@ -215,3 +326,48 @@ class LeadEventAdmin(_ReadOnlyAdminMixin, admin.ModelAdmin):
     autocomplete_fields = ("lead",)
     readonly_fields = ("lead", "event_type", "message", "metadata", "created_at")
     date_hierarchy = "created_at"
+
+
+@admin.register(LeadWebhookDelivery)
+class LeadWebhookDeliveryAdmin(_ReadOnlyAdminMixin, admin.ModelAdmin):
+    """F-product-7-crm-staff-lead-workflow: read-only audit window into
+    the CRM webhook outbox. The dispatcher (management command
+    `dispatch_crm_webhooks`) owns this table; the admin exists so the
+    Studio can SEE pending / failed / dead deliveries without opening
+    a shell. CRUD is fully denied — re-firing happens via the
+    env-gated command, not via admin clicks."""
+
+    list_display = (
+        "created_at",
+        "lead",
+        "event_type",
+        "status",
+        "attempts",
+        "max_attempts",
+        "next_attempt_at",
+        "delivered_at",
+        "last_status_code",
+        "target_url_domain",
+    )
+    list_filter = ("status", "event_type")
+    search_fields = ("lead__public_id", "idempotency_key")
+    autocomplete_fields = ("lead",)
+    date_hierarchy = "created_at"
+    readonly_fields = (
+        "lead",
+        "event_type",
+        "payload_version",
+        "idempotency_key",
+        "target_url_domain",
+        "status",
+        "attempts",
+        "max_attempts",
+        "next_attempt_at",
+        "last_attempt_at",
+        "delivered_at",
+        "last_status_code",
+        "last_error",
+        "response_excerpt",
+        "created_at",
+        "updated_at",
+    )

@@ -251,6 +251,61 @@ class Lead(models.Model):
     def full_name(self) -> str:
         return f"{self.first_name} {self.last_name}".strip()
 
+    # ------------------------------------------------------------------
+    # F-product-7-crm-staff-lead-workflow: staff-facing derived helpers
+    # ------------------------------------------------------------------
+
+    @property
+    def has_valid_double_consent(self) -> bool:
+        """True when both GDPR consents are recorded with timestamps + versions.
+
+        Source-of-truth for legality is `compliance.ConsentRecord`; this
+        property checks the denormalised audit snapshot on the Lead row
+        so admin / templates can answer the question without a join.
+        """
+        return bool(
+            self.privacy_consent_given
+            and self.privacy_consent_at
+            and self.privacy_consent_version
+            and self.special_categories_consent_given
+            and self.special_categories_consent_at
+            and self.special_categories_consent_version
+        )
+
+    @property
+    def has_linked_simulation(self) -> bool:
+        """True when the Lead was created from the wizard funnel."""
+        return self.simulation_id is not None
+
+    @property
+    def webhook_delivery_status_summary(self) -> str:
+        """One-line status summary of this Lead's CRM webhook outbox.
+
+        Uses the most recently created `LeadWebhookDelivery` row as the
+        truth: a Lead usually has one delivery (the `lead.created`
+        event). Returns one of:
+
+        - ``"-"`` — no delivery row;
+        - ``"delivered"`` — most recent row is delivered;
+        - ``"dead"`` / ``"failed"`` — most recent row hit a terminal state;
+        - ``"pending(<attempts>/<max>)"`` — still retrying.
+
+        Designed to be cheap on a `prefetch_related("webhook_deliveries")`
+        queryset (see `LeadAdmin.get_queryset`).
+        """
+        deliveries = list(self.webhook_deliveries.all())
+        if not deliveries:
+            return "-"
+        deliveries.sort(
+            key=lambda d: (d.created_at or 0, d.pk),
+            reverse=True,
+        )
+        latest = deliveries[0]
+        status = latest.status
+        if status in ("pending", "sending"):
+            return f"pending({latest.attempts}/{latest.max_attempts})"
+        return status
+
 
 class LeadEvent(models.Model):
     """Lifecycle event di un Lead. Append-only."""
