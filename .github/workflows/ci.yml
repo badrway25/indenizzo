@@ -79,6 +79,15 @@ jobs:
       - name: Non-IT readiness audit
         run: python scripts/legal_data/audit_non_it_readiness.py
 
+      # i18n no-regression gate (C1). Measures REAL coverage: a string counts
+      # as translated only if its msgstr is non-empty AND not `#, fuzzy`
+      # (fuzzy = a guessed/stale translation that msgfmt skips, so the page
+      # renders English). Floors are set just below the honest real coverage,
+      # NOT the fuzzy-inflated number. Full legal translation remains a Studio
+      # deliverable; this gate prevents silent regression.
+      - name: i18n translation coverage gate
+        run: python scripts/check_po_coverage.py --min it=46 --min fr=35 --min ar=35
+
   production-checks:
     # P1-CI-1A. Runs `manage.py check` with DEBUG=False + simulated
     # signed env vars, so the production-only system checks
@@ -164,6 +173,17 @@ jobs:
 
       - name: Production-like Django system check
         run: python manage.py check
+
+      # Django deploy security audit (security.W004/W008/W009/W012/W016/
+      # W018/W020 …). Runs only here, under DEBUG=False with the signed
+      # placeholder env, so a regression in any hardening flag (SSL
+      # redirect, HSTS, secure cookies, SECRET_KEY strength, ALLOWED_HOSTS)
+      # fails CI instead of being caught only by the manual deploy gate.
+      # `--fail-level WARNING` makes it a hard gate; the single deliberate
+      # security.W021 (HSTS preload opt-in) is silenced in settings via
+      # SILENCED_SYSTEM_CHECKS.
+      - name: Production deploy security audit (check --deploy)
+        run: python manage.py check --deploy --fail-level WARNING
 
   lighthouse-desktop:
     name: Lighthouse desktop (perf / a11y / best / seo budgets)

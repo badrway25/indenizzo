@@ -51,7 +51,7 @@ def test_privacy_page_200_per_language(path):
     assert resp.status_code == 200, f"{path} -> {resp.status_code}"
     body = resp.content.decode("utf-8")
     # Working-copy banner visible by default in dev settings.
-    assert "data-legal-page=\"privacy\"" in body
+    assert 'data-legal-page="privacy"' in body
     assert "data-legal-status" in body
 
 
@@ -63,7 +63,7 @@ def test_disclaimer_page_200_per_language(path):
     resp = Client().get(path)
     assert resp.status_code == 200, f"{path} -> {resp.status_code}"
     body = resp.content.decode("utf-8")
-    assert "data-legal-page=\"disclaimer\"" in body
+    assert 'data-legal-page="disclaimer"' in body
     assert "data-legal-status" in body
 
 
@@ -101,7 +101,10 @@ def test_contact_consent_block_links_to_privacy_and_disclaimer():
 def test_privacy_page_shows_working_copy_banner_in_dev():
     body = Client().get("/privacy/").content.decode("utf-8")
     assert 'data-legal-status="working_copy"' in body
-    assert "Working copy" in body or "working copy" in body.lower()
+    # Localised label: "Working copy" (EN source) or "Bozza di lavoro" (IT,
+    # the default locale). The data-attribute above is the locale-independent
+    # proof; this keeps a human-readable presence check across locales.
+    assert "Working copy" in body or "Bozza di lavoro" in body
 
 
 @pytest.mark.django_db
@@ -146,10 +149,7 @@ def test_E006_fails_with_empty_version():
 )
 def test_E006_fails_when_signed_but_signed_at_missing():
     issues = check_privacy_policy_signed_in_production(app_configs=None)
-    assert any(
-        i.id == "core.E006" and "PRIVACY_POLICY_SIGNED_AT" in i.msg
-        for i in issues
-    )
+    assert any(i.id == "core.E006" and "PRIVACY_POLICY_SIGNED_AT" in i.msg for i in issues)
 
 
 @override_settings(
@@ -203,20 +203,18 @@ def test_csp_header_present_on_privacy_page():
     resp = Client().get("/privacy/")
     assert resp.status_code == 200
     # P0-CODICE-4: enforced CSP header.
-    assert (
-        "Content-Security-Policy" in resp.headers
-        or "content-security-policy" in {k.lower() for k in resp.headers.keys()}
-    )
+    assert "Content-Security-Policy" in resp.headers or "content-security-policy" in {
+        k.lower() for k in resp.headers.keys()
+    }
 
 
 @pytest.mark.django_db
 def test_csp_header_present_on_disclaimer_page():
     resp = Client().get("/disclaimer/")
     assert resp.status_code == 200
-    assert (
-        "Content-Security-Policy" in resp.headers
-        or "content-security-policy" in {k.lower() for k in resp.headers.keys()}
-    )
+    assert "Content-Security-Policy" in resp.headers or "content-security-policy" in {
+        k.lower() for k in resp.headers.keys()
+    }
 
 
 @pytest.mark.django_db

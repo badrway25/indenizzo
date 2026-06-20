@@ -37,12 +37,7 @@ from django.test import Client
 from django.utils import translation
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-AUDIT_DOC = (
-    REPO_ROOT
-    / "docs"
-    / "product"
-    / "RESULT_PAGE_NEXT_STEPS_AUDIT_2026-05-12.md"
-)
+AUDIT_DOC = REPO_ROOT / "docs" / "product" / "RESULT_PAGE_NEXT_STEPS_AUDIT_2026-05-12.md"
 
 
 # ---------------------------------------------------------------------------
@@ -105,8 +100,7 @@ def test_recommendations_per_case_type(case_type, expected_slugs):
     landings = get_recommended_landings(case_type)
     slugs = [landing.slug for landing in landings]
     assert slugs == expected_slugs, (
-        f"Recommendations for {case_type!r}: expected {expected_slugs}, "
-        f"got {slugs}"
+        f"Recommendations for {case_type!r}: expected {expected_slugs}, " f"got {slugs}"
     )
 
 
@@ -189,10 +183,14 @@ def _create_italy_simulation(client: Client) -> str:
 @pytest.mark.django_db
 def test_result_page_italy_road_accident_shows_recommendations(client):
     sim_id = _create_italy_simulation(client)
+    # Use the /en/ language-prefixed URL: the result route is under
+    # i18n_patterns(prefix_default_language=False), so a non-prefixed URL is
+    # always served in the default locale (it) regardless of Accept-Language.
+    # The header string "Useful pages for your case" is now translated in IT
+    # ("Pagine utili per il tuo caso"), so we assert it explicitly in English.
     body = client.get(
-        f"/wizard/result/{sim_id}/",
+        f"/en/wizard/result/{sim_id}/",
         HTTP_HOST="127.0.0.1",
-        HTTP_ACCEPT_LANGUAGE="en",
     ).content.decode("utf-8")
 
     # Recommendation section header.
@@ -211,12 +209,10 @@ def test_result_page_keeps_contact_cta_with_sim(client):
     """The primary CTA `?sim=<uuid>` must stay the strongest
     action on the page — recommendations are soft secondary links."""
     sim_id = _create_italy_simulation(client)
-    body = client.get(
-        f"/wizard/result/{sim_id}/", HTTP_HOST="127.0.0.1"
-    ).content.decode("utf-8")
-    assert f"/contact/?sim={sim_id}" in body, (
-        "Result page lost the contact CTA with ?sim= querystring"
-    )
+    body = client.get(f"/wizard/result/{sim_id}/", HTTP_HOST="127.0.0.1").content.decode("utf-8")
+    assert (
+        f"/contact/?sim={sim_id}" in body
+    ), "Result page lost the contact CTA with ?sim= querystring"
 
 
 # ---------------------------------------------------------------------------
@@ -249,9 +245,7 @@ def _create_france_simulation(client: Client) -> str:
 @pytest.mark.django_db
 def test_france_result_no_eur_amount_with_recommendations(client):
     sim_id = _create_france_simulation(client)
-    body = client.get(
-        f"/wizard/result/{sim_id}/", HTTP_HOST="127.0.0.1"
-    ).content.decode("utf-8")
+    body = client.get(f"/wizard/result/{sim_id}/", HTTP_HOST="127.0.0.1").content.decode("utf-8")
     # France stays review-gated — no EUR amount leaks even with
     # the new recommendations section.
     assert not re.search(
@@ -301,9 +295,11 @@ BANNED_PROMISE_PHRASES = (
 @pytest.mark.django_db
 def test_result_page_has_no_banned_phrases(client):
     sim_id = _create_italy_simulation(client)
-    body = client.get(
-        f"/wizard/result/{sim_id}/", HTTP_HOST="127.0.0.1"
-    ).content.decode("utf-8").lower()
+    body = (
+        client.get(f"/wizard/result/{sim_id}/", HTTP_HOST="127.0.0.1")
+        .content.decode("utf-8")
+        .lower()
+    )
     leaks = [p for p in BANNED_PROMISE_PHRASES if p in body]
     assert not leaks, f"Result page leaks banned phrases: {leaks}"
 
@@ -316,9 +312,7 @@ def test_result_page_has_no_banned_phrases(client):
 @pytest.mark.django_db
 def test_result_page_still_noindex(client):
     sim_id = _create_italy_simulation(client)
-    body = client.get(
-        f"/wizard/result/{sim_id}/", HTTP_HOST="127.0.0.1"
-    ).content.decode("utf-8")
+    body = client.get(f"/wizard/result/{sim_id}/", HTTP_HOST="127.0.0.1").content.decode("utf-8")
     assert 'content="noindex, nofollow"' in body, (
         "Result page must remain noindex, nofollow — PRODUCT-5 must "
         "not regress the SEO posture of a parametric per-user page"
@@ -341,9 +335,7 @@ def test_result_page_omits_section_when_case_type_unmapped(client, monkeypatch):
     # always emits road_accident_bodily_injury.
     from apps.cases.models import Simulation
 
-    Simulation.objects.filter(public_id=sim_id).update(
-        case_type="__unmapped_for_test__"
-    )
+    Simulation.objects.filter(public_id=sim_id).update(case_type="__unmapped_for_test__")
     body = client.get(
         f"/wizard/result/{sim_id}/",
         HTTP_HOST="127.0.0.1",
@@ -366,9 +358,7 @@ def test_result_page_renders_arabic_rtl(client):
     translation in `finally:` to keep test isolation."""
     sim_id = _create_italy_simulation(client)
     try:
-        resp = client.get(
-            f"/ar/wizard/result/{sim_id}/", HTTP_HOST="127.0.0.1"
-        )
+        resp = client.get(f"/ar/wizard/result/{sim_id}/", HTTP_HOST="127.0.0.1")
         assert resp.status_code == 200
         body = resp.content.decode("utf-8")
         assert 'dir="rtl"' in body

@@ -37,9 +37,7 @@ from django.urls import reverse
 from django.utils import translation
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-AUDIT_DOC = (
-    REPO_ROOT / "docs" / "product" / "CASE_TYPE_LANDING_AUDIT_2026-05-12.md"
-)
+AUDIT_DOC = REPO_ROOT / "docs" / "product" / "CASE_TYPE_LANDING_AUDIT_2026-05-12.md"
 DATA_MODULE = REPO_ROOT / "apps" / "core" / "case_type_landings.py"
 TEMPLATE = REPO_ROOT / "templates" / "public" / "case_type_landing.html"
 
@@ -62,9 +60,7 @@ def test_data_module_and_template_exist():
 def test_data_module_has_at_least_8_landings():
     from apps.core.case_type_landings import LANDINGS
 
-    assert len(LANDINGS) >= 8, (
-        f"PRODUCT-4 ships 8 landings minimum, found {len(LANDINGS)}"
-    )
+    assert len(LANDINGS) >= 8, f"PRODUCT-4 ships 8 landings minimum, found {len(LANDINGS)}"
 
 
 # ---------------------------------------------------------------------------
@@ -81,8 +77,7 @@ def test_case_type_codes_are_valid_enum_members():
         if not landing.case_type_code:
             continue  # profile-style landings have no enum mapping
         assert landing.case_type_code in valid_codes, (
-            f"Landing {landing.slug!r} maps to unknown CaseType "
-            f"code {landing.case_type_code!r}"
+            f"Landing {landing.slug!r} maps to unknown CaseType " f"code {landing.case_type_code!r}"
         )
 
 
@@ -101,9 +96,7 @@ def test_case_types_hub_renders_200(client):
 def test_case_types_hub_links_to_each_landing(client):
     from apps.core.case_type_landings import all_slugs
 
-    body = client.get(
-        "/case-types/", HTTP_HOST="127.0.0.1"
-    ).content.decode("utf-8")
+    body = client.get("/case-types/", HTTP_HOST="127.0.0.1").content.decode("utf-8")
     for slug in all_slugs():
         href = f"/case-types/{slug}/"
         # At least one landing slug must appear on the hub (some
@@ -112,9 +105,7 @@ def test_case_types_hub_links_to_each_landing(client):
         # `all_slugs()` so at least the profile landings are linked).
         if href in body:
             return
-    pytest.fail(
-        "Hub does not link to any of the per-case-type landings"
-    )
+    pytest.fail("Hub does not link to any of the per-case-type landings")
 
 
 # ---------------------------------------------------------------------------
@@ -156,10 +147,13 @@ def test_landing_returns_200(client, slug):
     ],
 )
 def test_landing_has_load_bearing_content(client, slug):
+    # Use the /en/ language-prefixed URL: the landing route is under
+    # i18n_patterns(prefix_default_language=False), so a non-prefixed URL is
+    # always served in the default locale (it), regardless of Accept-Language.
+    # This test asserts the English chrome strings (now translated in IT).
     body = client.get(
-        f"/case-types/{slug}/",
+        f"/en/case-types/{slug}/",
         HTTP_HOST="127.0.0.1",
-        HTTP_ACCEPT_LANGUAGE="en",
     ).content.decode("utf-8")
     # Single <h1>.
     h1_count = body.count("<h1")
@@ -170,9 +164,7 @@ def test_landing_has_load_bearing_content(client, slug):
     # Primary + secondary CTA buttons present (anchor tags with the
     # standard CTA classes).
     cta_count = body.count('class="inline-flex items-center gap-2 px-5 py-3 rounded-full')
-    assert cta_count >= 2, (
-        f"{slug}: expected at least 2 styled CTA buttons, found {cta_count}"
-    )
+    assert cta_count >= 2, f"{slug}: expected at least 2 styled CTA buttons, found {cta_count}"
     # When-it-applies + What-Studio-does sections rendered.
     assert "When this applies" in body
     assert "What the Studio does" in body
@@ -189,9 +181,7 @@ def test_landing_has_load_bearing_content(client, slug):
 
 @pytest.mark.django_db
 def test_unknown_slug_returns_404(client):
-    resp = client.get(
-        "/case-types/this-slug-does-not-exist/", HTTP_HOST="127.0.0.1"
-    )
+    resp = client.get("/case-types/this-slug-does-not-exist/", HTTP_HOST="127.0.0.1")
     assert resp.status_code == 404
 
 
@@ -201,18 +191,14 @@ def test_unknown_slug_returns_404(client):
 
 
 @pytest.mark.django_db
-@pytest.mark.parametrize(
-    "slug", ["road-accident", "medical-malpractice", "death-of-relative"]
-)
+@pytest.mark.parametrize("slug", ["road-accident", "medical-malpractice", "death-of-relative"])
 def test_landing_is_indexable(client, slug):
-    body = client.get(
-        f"/case-types/{slug}/", HTTP_HOST="127.0.0.1"
-    ).content.decode("utf-8")
+    body = client.get(f"/case-types/{slug}/", HTTP_HOST="127.0.0.1").content.decode("utf-8")
     # The base template default is `index, follow` — the landing
     # must NOT override to noindex.
-    assert 'content="noindex' not in body, (
-        f"/case-types/{slug}/ must be indexable (no noindex meta)"
-    )
+    assert (
+        'content="noindex' not in body
+    ), f"/case-types/{slug}/ must be indexable (no noindex meta)"
     assert 'content="index, follow"' in body
 
 
@@ -250,9 +236,7 @@ BANNED_PROMISE_PHRASES = (
     ],
 )
 def test_landing_has_no_banned_phrases(client, slug):
-    body = client.get(
-        f"/case-types/{slug}/", HTTP_HOST="127.0.0.1"
-    ).content.decode("utf-8").lower()
+    body = client.get(f"/case-types/{slug}/", HTTP_HOST="127.0.0.1").content.decode("utf-8").lower()
     leaks = [p for p in BANNED_PROMISE_PHRASES if p in body]
     assert not leaks, f"/case-types/{slug}/ leaks banned phrases: {leaks}"
 
@@ -277,9 +261,7 @@ def test_landing_has_no_banned_phrases(client, slug):
     ],
 )
 def test_landing_does_not_leak_eur_amount(client, slug):
-    body = client.get(
-        f"/case-types/{slug}/", HTTP_HOST="127.0.0.1"
-    ).content.decode("utf-8")
+    body = client.get(f"/case-types/{slug}/", HTTP_HOST="127.0.0.1").content.decode("utf-8")
     assert not re.search(
         r"\b\d{1,3}(?:[ \xa0.,]\d{3})+\s*(?:€|EUR)", body
     ), f"/case-types/{slug}/ leaks an EUR amount"
@@ -299,16 +281,16 @@ def test_each_landing_cta_urls_are_valid(client):
         url = landing.primary_cta_href()
         assert url, f"{landing.slug}: empty primary CTA href"
         resp = client.get(url, HTTP_HOST="127.0.0.1")
-        assert resp.status_code == 200, (
-            f"{landing.slug}: primary CTA {url!r} returned {resp.status_code}"
-        )
+        assert (
+            resp.status_code == 200
+        ), f"{landing.slug}: primary CTA {url!r} returned {resp.status_code}"
         # secondary
         url = landing.secondary_cta_href()
         assert url, f"{landing.slug}: empty secondary CTA href"
         resp = client.get(url, HTTP_HOST="127.0.0.1")
-        assert resp.status_code == 200, (
-            f"{landing.slug}: secondary CTA {url!r} returned {resp.status_code}"
-        )
+        assert (
+            resp.status_code == 200
+        ), f"{landing.slug}: secondary CTA {url!r} returned {resp.status_code}"
 
 
 # ---------------------------------------------------------------------------
@@ -340,13 +322,11 @@ def test_contact_ignores_invalid_case_type_querystring(client):
         "/contact/?case_type=__not_a_real_enum_value__",
         HTTP_HOST="127.0.0.1",
     )
-    assert resp.status_code == 200, (
-        "Contact GET with garbage case_type must return 200, not 500"
-    )
+    assert resp.status_code == 200, "Contact GET with garbage case_type must return 200, not 500"
     body = resp.content.decode("utf-8")
-    assert "__not_a_real_enum_value__" not in body, (
-        "Garbage case_type value leaked into the rendered HTML"
-    )
+    assert (
+        "__not_a_real_enum_value__" not in body
+    ), "Garbage case_type value leaked into the rendered HTML"
 
 
 # ---------------------------------------------------------------------------
@@ -374,18 +354,14 @@ def test_france_review_gated_through_case_type_querystring(client):
 
 
 @pytest.mark.django_db
-@pytest.mark.parametrize(
-    "slug", ["road-accident", "medical-malpractice", "cross-border-cases"]
-)
+@pytest.mark.parametrize("slug", ["road-accident", "medical-malpractice", "cross-border-cases"])
 def test_landing_renders_arabic_rtl(client, slug):
     """`/ar/case-types/<slug>/` must return 200 with dir=rtl.
     Explicitly deactivates translation in `finally:` to prevent
     Django thread-local state leaking into subsequent tests
     (same fix pattern as PRODUCT-3)."""
     try:
-        resp = client.get(
-            f"/ar/case-types/{slug}/", HTTP_HOST="127.0.0.1"
-        )
+        resp = client.get(f"/ar/case-types/{slug}/", HTTP_HOST="127.0.0.1")
         assert resp.status_code == 200
         body = resp.content.decode("utf-8")
         assert 'dir="rtl"' in body

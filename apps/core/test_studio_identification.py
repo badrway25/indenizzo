@@ -84,12 +84,12 @@ def test_footer_renders_section_with_placeholder_when_empty(db):
     resp = Client().get("/")
     assert resp.status_code == 200
     html = resp.content.decode("utf-8")
-    assert "Professional identification" in html, (
-        "Sezione Professional identification mancante nel footer"
-    )
-    assert PLACEHOLDER_TEXT in html, (
-        "Placeholder visibile mancante quando le env var sono vuote"
-    )
+    # Locale-independent marker (the heading is translated: IT
+    # "Identificazione professionale"). The data-attribute proves the section.
+    assert (
+        "data-studio-identification" in html
+    ), "Sezione Professional identification mancante nel footer"
+    assert PLACEHOLDER_TEXT in html, "Placeholder visibile mancante quando le env var sono vuote"
 
 
 @override_settings(**EMPTY_STUDIO_FIELDS)
@@ -101,8 +101,7 @@ def test_footer_placeholder_appears_for_each_required_field(db):
     # del footer (5 dl items: lawyer/bar, vat, pec, address, insurance).
     placeholder_count = html.count(PLACEHOLDER_TEXT)
     assert placeholder_count >= 5, (
-        f"Atteso >=5 placeholder visibili (una per macro-area), "
-        f"trovate {placeholder_count}"
+        f"Atteso >=5 placeholder visibili (una per macro-area), " f"trovate {placeholder_count}"
     )
 
 
@@ -136,9 +135,9 @@ def test_footer_section_present_in_all_languages(path, db):
     html = resp.content.decode("utf-8")
     # La sezione header e' tradotta via gettext. Testiamo l'attributo
     # data-* del DOM, che e' invariante per lingua.
-    assert "data-studio-identification" in html, (
-        f"{path}: sezione Professional identification mancante"
-    )
+    assert (
+        "data-studio-identification" in html
+    ), f"{path}: sezione Professional identification mancante"
     # L'avvocato Test Foo deve apparire (independente da lingua).
     assert "Avv. Test Foo" in html, f"{path}: valore lawyer mancante"
 

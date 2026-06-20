@@ -35,9 +35,7 @@ import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 AUDIT_DOC = REPO_ROOT / "docs" / "product" / "WIZARD_MOBILE_UX_AUDIT_2026-05-12.md"
-PARTIAL = (
-    REPO_ROOT / "templates" / "public" / "_road_accident_wizard_form_fields.html"
-)
+PARTIAL = REPO_ROOT / "templates" / "public" / "_road_accident_wizard_form_fields.html"
 WIZARD_IT = REPO_ROOT / "templates" / "public" / "wizard_italy_road_accident.html"
 WIZARD_FR = REPO_ROOT / "templates" / "public" / "wizard_france_road_accident.html"
 WIZARD_BE = REPO_ROOT / "templates" / "public" / "wizard_belgium_road_accident.html"
@@ -76,17 +74,17 @@ def test_road_accident_wizards_include_shared_partial():
     NOT re-implement the fieldsets inline."""
     for wizard in (WIZARD_IT, WIZARD_FR, WIZARD_BE):
         text = wizard.read_text(encoding="utf-8")
-        assert "_road_accident_wizard_form_fields.html" in text, (
-            f"{wizard.name} must include the shared field-rendering partial"
-        )
+        assert (
+            "_road_accident_wizard_form_fields.html" in text
+        ), f"{wizard.name} must include the shared field-rendering partial"
         # And the inlined fieldsets that were there before must be
         # gone — no fieldset legend "About the accident" /
         # "Documented economic impact" should appear directly in
         # the wizard template (they're now in the partial as
         # "Essential information" + "Additional details").
-        assert "Documented economic impact" not in text, (
-            f"{wizard.name} still has inlined economic-impact fieldset"
-        )
+        assert (
+            "Documented economic impact" not in text
+        ), f"{wizard.name} still has inlined economic-impact fieldset"
 
 
 # ---------------------------------------------------------------------------
@@ -98,13 +96,11 @@ def _find_details_element_start(text: str) -> int:
     """Return the index of the real opening tag `<details ...>`,
     skipping any mention of `<details` inside `{% comment %}` blocks.
     Doc-comments in the partial mention the element by name."""
-    body = re.sub(
-        r"\{% comment %\}.*?\{% endcomment %\}", "", text, flags=re.DOTALL
-    )
+    body = re.sub(r"\{% comment %\}.*?\{% endcomment %\}", "", text, flags=re.DOTALL)
     offset_in_body = body.find("<details")
     assert offset_in_body >= 0, "partial must contain a real <details> element"
     # Translate back to the original-text offset.
-    return text.find(body[offset_in_body:offset_in_body + 30])
+    return text.find(body[offset_in_body : offset_in_body + 30])
 
 
 def test_essential_fields_outside_details_block():
@@ -114,15 +110,15 @@ def test_essential_fields_outside_details_block():
     text = PARTIAL.read_text(encoding="utf-8")
     details_idx = _find_details_element_start(text)
     head = text[:details_idx]
-    assert "form.accident_date" in head, (
-        "accident_date must be in the essential section, not in <details>"
-    )
-    assert "form.victim_age" in head, (
-        "victim_age must be in the essential section, not in <details>"
-    )
-    assert "form.permanent_disability_percentage" in head, (
-        "permanent_disability_percentage must be in the essential section"
-    )
+    assert (
+        "form.accident_date" in head
+    ), "accident_date must be in the essential section, not in <details>"
+    assert (
+        "form.victim_age" in head
+    ), "victim_age must be in the essential section, not in <details>"
+    assert (
+        "form.permanent_disability_percentage" in head
+    ), "permanent_disability_percentage must be in the essential section"
 
 
 def test_optional_fields_inside_details_block():
@@ -143,8 +139,7 @@ def test_optional_fields_inside_details_block():
         "form.fault_percentage",
     ):
         assert field in inside, (
-            f"{field} must live inside the <details> block "
-            "(collapsed by default)"
+            f"{field} must live inside the <details> block " "(collapsed by default)"
         )
 
 
@@ -178,13 +173,12 @@ def test_consents_outside_details_block(wizard_path):
 def test_italy_wizard_cta_is_sharpened():
     text = WIZARD_IT.read_text(encoding="utf-8")
     assert "Calculate indicative estimate" in text, (
-        "IT wizard must use the sharpened 'Calculate indicative "
-        "estimate' CTA"
+        "IT wizard must use the sharpened 'Calculate indicative " "estimate' CTA"
     )
     # The previous label must be gone.
-    assert "Run simulation" not in text, (
-        "IT wizard still references the legacy 'Run simulation' CTA"
-    )
+    assert (
+        "Run simulation" not in text
+    ), "IT wizard still references the legacy 'Run simulation' CTA"
 
 
 def test_france_and_belgium_cta_stays_review_gated():
@@ -270,9 +264,9 @@ def test_italy_wizard_submit_with_all_fields(client):
         HTTP_HOST="127.0.0.1",
         follow=False,
     )
-    assert resp.status_code == 302, (
-        f"IT wizard rejected full-fields submit (status={resp.status_code})"
-    )
+    assert (
+        resp.status_code == 302
+    ), f"IT wizard rejected full-fields submit (status={resp.status_code})"
 
 
 @pytest.mark.django_db
@@ -289,9 +283,7 @@ def test_italy_wizard_submit_without_consents_is_rejected(client):
         follow=False,
     )
     # Form re-renders with errors; status stays 200, not 302.
-    assert resp.status_code == 200, (
-        "Wizard accepted submit without consents — required gate broke"
-    )
+    assert resp.status_code == 200, "Wizard accepted submit without consents — required gate broke"
 
 
 # ---------------------------------------------------------------------------
@@ -309,7 +301,9 @@ def test_italy_wizard_submit_without_consents_is_rejected(client):
     ],
 )
 def test_wizard_renders_progressive_disclosure(client, url):
-    resp = client.get(url, HTTP_HOST="127.0.0.1", HTTP_ACCEPT_LANGUAGE="en")
+    # /en/ prefix: non-prefixed URLs render in the default locale (it). This
+    # test asserts the English legend/toggle strings (now translated in IT).
+    resp = client.get("/en" + url, HTTP_HOST="127.0.0.1")
     assert resp.status_code == 200
     body = resp.content.decode("utf-8")
     # The <details>/<summary> elements are rendered (native HTML).
@@ -330,12 +324,8 @@ def test_wizard_renders_progressive_disclosure(client, url):
 
 @pytest.mark.django_db
 def test_france_wizard_no_eur_amount_after_ux_refactor(client):
-    body = client.get(
-        "/wizard/fr/road-accident/", HTTP_HOST="127.0.0.1"
-    ).content.decode("utf-8")
-    assert not re.search(
-        r"\b\d{1,3}(?:[ \xa0.,]\d{3})+\s*(?:€|EUR)", body
-    ), (
+    body = client.get("/wizard/fr/road-accident/", HTTP_HOST="127.0.0.1").content.decode("utf-8")
+    assert not re.search(r"\b\d{1,3}(?:[ \xa0.,]\d{3})+\s*(?:€|EUR)", body), (
         "FR wizard leaks a EUR amount after the UX refactor — "
         "review-gated state must be preserved"
     )

@@ -42,9 +42,7 @@ from django.contrib import admin as django_admin
 from django.utils import timezone
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-AUDIT_DOC = (
-    REPO_ROOT / "docs" / "product" / "CRM_LEAD_ACTIVITY_TIMELINE_AUDIT_2026-05-12.md"
-)
+AUDIT_DOC = REPO_ROOT / "docs" / "product" / "CRM_LEAD_ACTIVITY_TIMELINE_AUDIT_2026-05-12.md"
 
 
 BANNED_PROMISE_PHRASES = (
@@ -129,11 +127,17 @@ def test_timeline_includes_linked_simulation(lead):
     lead.simulation = sim
     lead.save(update_fields=["simulation"])
 
-    items = build_lead_timeline(lead)
-    cats = [it.category for it in items]
-    assert "simulation" in cats
-    sim_item = next(it for it in items if it.category == "simulation")
-    assert "Simulation linked" in sim_item.label
+    from django.utils import translation
+
+    # The timeline label is localised (IT default: "Simulazione collegata").
+    # Build + assert under English to check the canonical label text; the
+    # category check below is locale-independent.
+    with translation.override("en"):
+        items = build_lead_timeline(lead)
+        cats = [it.category for it in items]
+        assert "simulation" in cats
+        sim_item = next(it for it in items if it.category == "simulation")
+        assert "Simulation linked" in str(sim_item.label)
 
 
 # ---------------------------------------------------------------------------
@@ -305,10 +309,7 @@ def test_timeline_does_not_leak_secret_url_or_pii(lead, settings):
     )
 
     items = build_lead_timeline(lead)
-    blob = "\n".join(
-        f"{it.label}|{it.description}|{it.source}|{it.metadata}"
-        for it in items
-    )
+    blob = "\n".join(f"{it.label}|{it.description}|{it.source}|{it.metadata}" for it in items)
 
     assert sentinel_secret not in blob
     assert "/v1/very/secret/path" not in blob
@@ -429,9 +430,9 @@ def test_next_staff_action_strings_have_no_banned_phrases():
     ]
     for s in candidates:
         for phrase in BANNED_PROMISE_PHRASES:
-            assert phrase not in s.lower(), (
-                f"next_staff_action string {s!r} leaks banned phrase {phrase!r}"
-            )
+            assert (
+                phrase not in s.lower()
+            ), f"next_staff_action string {s!r} leaks banned phrase {phrase!r}"
 
 
 # ---------------------------------------------------------------------------

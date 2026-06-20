@@ -360,7 +360,7 @@ def test_contact_has_next_steps_privacy_and_return_paths():
     assert ("Useful pages" in body) or ("Pagine utili" in body)
     assert ("Back to the wizard" in body) or ("Torna alla procedura guidata" in body)
     assert ("Read the methodology" in body) or ("Leggi la metodologia" in body)
-    assert ("Open the disclaimer" in body) or ("Apri il disclaimer" in body)
+    assert ("Open the disclaimer" in body) or ("Apri le avvertenze" in body)
 
 
 # ---------------------------------------------------------------------------

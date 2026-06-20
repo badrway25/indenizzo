@@ -41,8 +41,7 @@ AUDIT_DOC = REPO_ROOT / "docs" / "product" / "LEAD_FUNNEL_AUDIT_2026-05-12.md"
 def test_funnel_audit_doc_exists():
     assert AUDIT_DOC.exists()
     assert AUDIT_DOC.stat().st_size > 4000, (
-        "Audit doc must be substantive (P0/P1/P2 friction map + "
-        "recommendations), not a stub."
+        "Audit doc must be substantive (P0/P1/P2 friction map + " "recommendations), not a stub."
     )
 
 
@@ -73,9 +72,9 @@ def _create_italy_simulation(client: Client) -> Simulation:
         follow=False,
     )
     # Should redirect to /wizard/result/<uuid>/
-    assert resp.status_code == 302, (
-        f"Wizard POST did not redirect to result page (status={resp.status_code})"
-    )
+    assert (
+        resp.status_code == 302
+    ), f"Wizard POST did not redirect to result page (status={resp.status_code})"
     sim = Simulation.objects.order_by("-created_at").first()
     assert sim is not None, "Simulation was not persisted by wizard POST"
     return sim
@@ -124,9 +123,7 @@ def test_result_page_includes_documents_to_prepare(client):
 
 @pytest.mark.django_db
 def test_thank_you_includes_while_you_wait_block(client):
-    resp = client.get(
-        "/contact/thank-you/", HTTP_HOST="127.0.0.1", HTTP_ACCEPT_LANGUAGE="en"
-    )
+    resp = client.get("/contact/thank-you/", HTTP_HOST="127.0.0.1", HTTP_ACCEPT_LANGUAGE="en")
     assert resp.status_code == 200
     body = resp.content.decode("utf-8")
     # Thank-you variant has a different headline.
@@ -147,17 +144,19 @@ def test_thank_you_includes_while_you_wait_block(client):
 @pytest.mark.django_db
 def test_contact_get_with_sim_shows_banner_and_prefills(client):
     sim = _create_italy_simulation(client)
+    # /en/ prefix: the route is under i18n_patterns(prefix_default_language
+    # =False), so a non-prefixed URL renders in the default locale (it). This
+    # test asserts the English banner string (now translated in IT).
     resp = client.get(
-        f"/contact/?sim={sim.public_id}",
+        f"/en/contact/?sim={sim.public_id}",
         HTTP_HOST="127.0.0.1",
-        HTTP_ACCEPT_LANGUAGE="en",
     )
     assert resp.status_code == 200
     body = resp.content.decode("utf-8")
     # 3.a Banner is rendered.
-    assert "Connected to your simulation" in body, (
-        "Contact GET with valid ?sim= must show the confirmation banner"
-    )
+    assert (
+        "Connected to your simulation" in body
+    ), "Contact GET with valid ?sim= must show the confirmation banner"
     # 3.b Simulation public_id is shown in the banner copy.
     assert str(sim.public_id) in body
     # 3.c case_type is prefilled (we POSTed IT road-accident).
@@ -183,14 +182,12 @@ def test_contact_get_with_sim_shows_banner_and_prefills(client):
 @pytest.mark.django_db
 def test_contact_get_without_sim_has_no_banner(client):
     # Force English so the assertion isn't translation-dependent.
-    resp = client.get(
-        "/contact/", HTTP_HOST="127.0.0.1", HTTP_ACCEPT_LANGUAGE="en"
-    )
+    resp = client.get("/contact/", HTTP_HOST="127.0.0.1", HTTP_ACCEPT_LANGUAGE="en")
     assert resp.status_code == 200
     body = resp.content.decode("utf-8")
-    assert "Connected to your simulation" not in body, (
-        "Contact GET without ?sim= must NOT render the banner"
-    )
+    assert (
+        "Connected to your simulation" not in body
+    ), "Contact GET without ?sim= must NOT render the banner"
     # The contact form itself must still render (sanity check that we
     # didn't accidentally hide the wrong block).
     assert "id_first_name" in body
@@ -207,22 +204,18 @@ def test_contact_get_with_unknown_sim_does_not_500(client):
     # A well-formed UUID that resolves to no Simulation row.
     fake = uuid.uuid4()
     resp = client.get(f"/contact/?sim={fake}", HTTP_HOST="127.0.0.1")
-    assert resp.status_code == 200, (
-        "Contact GET with unknown sim must return 200, not 500"
-    )
+    assert resp.status_code == 200, "Contact GET with unknown sim must return 200, not 500"
     body = resp.content.decode("utf-8")
-    assert "Connected to your simulation" not in body, (
-        "Banner must be suppressed when ?sim= does not resolve"
-    )
+    assert (
+        "Connected to your simulation" not in body
+    ), "Banner must be suppressed when ?sim= does not resolve"
 
 
 @pytest.mark.django_db
 def test_contact_get_with_malformed_sim_does_not_500(client):
     # A garbage string — must not crash the Simulation query.
     resp = client.get("/contact/?sim=not-a-uuid", HTTP_HOST="127.0.0.1")
-    assert resp.status_code == 200, (
-        "Contact GET with malformed sim must return 200, not 500"
-    )
+    assert resp.status_code == 200, "Contact GET with malformed sim must return 200, not 500"
 
 
 # ---------------------------------------------------------------------------
@@ -251,14 +244,10 @@ def test_contact_post_links_lead_to_simulation(client):
         HTTP_HOST="127.0.0.1",
         follow=False,
     )
-    assert resp.status_code == 302, (
-        f"Contact POST did not redirect (status={resp.status_code})"
-    )
+    assert resp.status_code == 302, f"Contact POST did not redirect (status={resp.status_code})"
     lead = Lead.objects.order_by("-created_at").first()
     assert lead is not None
-    assert lead.simulation_id == sim.id, (
-        "Lead.simulation FK must be set to the linked simulation"
-    )
+    assert lead.simulation_id == sim.id, "Lead.simulation FK must be set to the linked simulation"
 
 
 # ---------------------------------------------------------------------------
@@ -268,9 +257,7 @@ def test_contact_post_links_lead_to_simulation(client):
 
 @pytest.mark.django_db
 def test_thank_you_doc_prep_does_not_leak_amounts(client):
-    body = client.get(
-        "/contact/thank-you/", HTTP_HOST="127.0.0.1"
-    ).content.decode("utf-8")
+    body = client.get("/contact/thank-you/", HTTP_HOST="127.0.0.1").content.decode("utf-8")
     # No formatted EUR amount anywhere on the thank-you page.
     assert not re.search(
         r"\b\d{1,3}(?:[ \xa0.,]\d{3})+\s*(?:€|EUR)", body
@@ -300,12 +287,8 @@ def test_contact_renders_rtl_for_arabic_locale(client):
 
 @pytest.mark.django_db
 def test_france_wizard_still_review_gated(client):
-    body = client.get(
-        "/wizard/fr/road-accident/", HTTP_HOST="127.0.0.1"
-    ).content.decode("utf-8")
-    assert not re.search(
-        r"\b\d{1,3}(?:[ \xa0.,]\d{3})+\s*(?:€|EUR)", body
-    ), (
+    body = client.get("/wizard/fr/road-accident/", HTTP_HOST="127.0.0.1").content.decode("utf-8")
+    assert not re.search(r"\b\d{1,3}(?:[ \xa0.,]\d{3})+\s*(?:€|EUR)", body), (
         "France wizard must remain review-gated — no EUR amount until "
         "the 4 Studio signatures arrive."
     )
