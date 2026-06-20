@@ -69,6 +69,21 @@ class CompensationDataset(models.Model):
         verbose_name=_("legal source"),
         help_text=_("Fonte legale da cui i dati sono estratti."),
     )
+    # H1-5: provenienza alla VERSIONE specifica della fonte (non solo al
+    # documento). Nullable per compatibilità con i dataset esistenti (oggi
+    # nessuno ha una versione collegata e non esistono LegalSourceVersion).
+    # Piano: rendere obbligatoria SOLO per i dataset approved/calculated in
+    # una fase successiva, dopo che lo Studio avrà creato le versioni e le
+    # avrà ancorate (vedi clean() per il vincolo di coerenza source==version.source).
+    source_version = models.ForeignKey(
+        "legal_sources.LegalSourceVersion",
+        on_delete=models.PROTECT,
+        related_name="compensation_datasets",
+        verbose_name=_("legal source version"),
+        null=True,
+        blank=True,
+        help_text=_("Versione specifica della fonte da cui i dati sono trascritti."),
+    )
     jurisdiction = models.ForeignKey(
         "jurisdictions.Jurisdiction",
         on_delete=models.PROTECT,
@@ -129,6 +144,20 @@ class CompensationDataset(models.Model):
             models.Index(fields=["jurisdiction", "case_type", "status"]),
             models.Index(fields=["country", "case_type", "status"]),
         ]
+        constraints = [
+            # H1-5: backstop DB della regola già in clean(). Non-ORM paths
+            # (bulk_create/update, SQL diretto, fixture) non chiamano clean();
+            # il DB rifiuta comunque un intervallo invertito. Validità aperta
+            # (valid_from o valid_to NULL) è legittima e NON viene rifiutata.
+            models.CheckConstraint(
+                name="compdataset_valid_to_gte_valid_from",
+                condition=(
+                    models.Q(valid_from__isnull=True)
+                    | models.Q(valid_to__isnull=True)
+                    | models.Q(valid_to__gte=models.F("valid_from"))
+                ),
+            ),
+        ]
 
     def __str__(self) -> str:
         return f"{self.name} [{self.status}]"
@@ -156,6 +185,21 @@ class CompensationDataset(models.Model):
         if self.valid_from and self.valid_to and self.valid_to < self.valid_from:
             raise ValidationError(
                 {"valid_to": _("`valid_to` must be greater than or equal to `valid_from`.")}
+            )
+        # H1-5: coerenza provenienza. Se è indicata una versione fonte, deve
+        # appartenere alla stessa LegalSource del dataset (niente provenienza
+        # incrociata su un'altra norma).
+        if (
+            self.source_version_id
+            and self.source_id
+            and self.source_version.source_id != self.source_id
+        ):
+            raise ValidationError(
+                {
+                    "source_version": _(
+                        "The source version must belong to the dataset's legal source."
+                    )
+                }
             )
 
     @property
@@ -244,6 +288,28 @@ class CompensationTableRow(models.Model):
         ordering = ["dataset", "age_min", "disability_min"]
         indexes = [
             models.Index(fields=["dataset", "row_type"]),
+        ]
+        constraints = [
+            # H1-5: backstop DB degli stessi invarianti di clean() — niente
+            # range invertiti su età e invalidità. NULL su un estremo = banda
+            # aperta, legittima. La non-negatività di età/invalidità è già
+            # garantita da PositiveIntegerField (CHECK >= 0 su PostgreSQL).
+            models.CheckConstraint(
+                name="comprow_age_max_gte_age_min",
+                condition=(
+                    models.Q(age_min__isnull=True)
+                    | models.Q(age_max__isnull=True)
+                    | models.Q(age_max__gte=models.F("age_min"))
+                ),
+            ),
+            models.CheckConstraint(
+                name="comprow_disability_max_gte_disability_min",
+                condition=(
+                    models.Q(disability_min__isnull=True)
+                    | models.Q(disability_max__isnull=True)
+                    | models.Q(disability_max__gte=models.F("disability_min"))
+                ),
+            ),
         ]
 
     def __str__(self) -> str:

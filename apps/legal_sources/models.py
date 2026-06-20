@@ -238,6 +238,16 @@ class LegalSourceVersion(models.Model):
                 fields=["source", "version_label"],
                 name="uniq_source_version_label",
             ),
+            # H1-5: una versione non può avere validità che si chiude prima di
+            # aprirsi. NULL su un estremo = validità aperta (legittima).
+            models.CheckConstraint(
+                name="lsv_valid_to_gte_valid_from",
+                condition=(
+                    models.Q(valid_from__isnull=True)
+                    | models.Q(valid_to__isnull=True)
+                    | models.Q(valid_to__gte=models.F("valid_from"))
+                ),
+            ),
         ]
 
     def __str__(self) -> str:
