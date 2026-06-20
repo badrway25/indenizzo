@@ -29,6 +29,20 @@
           <dd class="mt-1 font-serif text-2xl text-ink-950">{{ simulation.estimated_max|floatformat:"-2"|default:"—" }} {{ simulation.currency }}</dd>
         </div>
       </dl>
+      {# H2-2: livello di affidabilità della stima (confidence). #}
+      <div data-confidence="{{ simulation.confidence }}" class="mt-5 pt-4 border-t border-stone2-200">
+        <div class="flex items-center gap-2 flex-wrap">
+          <span class="text-[11px] uppercase tracking-[0.14em] text-stone2-500 font-semibold">{% translate "Confidence" %}</span>
+          {% if simulation.confidence == "high" %}
+            <span class="px-2.5 py-1 rounded-full text-xs font-semibold border border-ok-600 text-ok-600 bg-sand-100">{% translate "High" %}</span>
+          {% elif simulation.confidence == "low" %}
+            <span class="px-2.5 py-1 rounded-full text-xs font-semibold border border-gold-500 text-gold-700 bg-sand-100">{% translate "Low" %}</span>
+          {% else %}
+            <span class="px-2.5 py-1 rounded-full text-xs font-semibold border border-stone2-200 text-ink-800 bg-stone2-100">{% translate "Medium" %}</span>
+          {% endif %}
+        </div>
+        <p class="mt-2 text-xs text-ink-800 leading-relaxed">{% blocktranslate %}Indicative reliability of this estimate, based on the completeness of the data you provided and the coverage of the validated sources. It is not a probability of recovery.{% endblocktranslate %}</p>
+      </div>
       <p class="mt-4 text-xs text-ink-800">
         <a href="#result-calculation-basis" class="underline decoration-gold-500/50 underline-offset-4 hover:decoration-gold-500">{% translate "How to read this range" %} <span aria-hidden="true">↓</span></a>
       </p>
@@ -113,28 +127,62 @@
     </div>
   {% endif %}
 
-  {# F-product-2-funnel: generic document-prep checklist (reused
-     on the thank-you page). Rendered on BOTH the estimate path
-     and the review-gated path — the documents the Studio will
-     need are the same set in either case, and surfacing them
-     here helps users move forward while waiting for the reply. #}
+  {% comment %}
+    F-product-2-funnel: generic document-prep checklist (reused on the
+    thank-you page). Rendered on BOTH the estimate path and the
+    review-gated path — the documents the Studio will need are the same
+    set in either case, and surfacing them here helps users move forward
+    while waiting for the reply. (Was a multi-line {# #} comment, which
+    Django renders as literal text — converted to {% comment %}.)
+  {% endcomment %}
   {% include "partials/_documents_to_prepare.html" with variant="result" %}
 
   {% comment %}
-    Backend diagnostic arrays are intentionally NOT surfaced on the
-    public result page. The localised public-message block above
-    carries the user-facing copy. The raw arrays remain stored in the
-    Simulation output_data JSON for audit / debug only.
+    H2-2: the engine's `missing_documents` codes ARE now surfaced on the
+    calculated path, localised via apps.calculators.diagnostics
+    (`public_missing_documents`) in the "Missing documents" card below.
+    Other raw diagnostic arrays (unavailable-path internal warnings) stay
+    curated via the localised public-message block above; they remain in
+    output_data JSON for audit / debug.
   {% endcomment %}
 
   {% if assumptions and has_estimate %}
-    <div class="mt-8">
-      <h3 class="font-serif text-xl text-ink-950">{% translate "Assumptions" %}</h3>
+    <div class="mt-8 rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7">
+      <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Assumptions" %}</p>
+      <h3 class="mt-2 font-serif text-xl text-ink-950">{% translate "What this estimate assumes" %}</h3>
       <ul class="mt-3 space-y-2">
         {% for a in assumptions %}
-          <li class="text-sm text-ink-800 leading-relaxed">{{ a }}</li>
+          <li class="flex gap-3 text-sm text-ink-800 leading-relaxed">
+            <span aria-hidden="true" class="mt-1 inline-block w-1.5 h-1.5 rounded-full bg-gold-500"></span>
+            <span>{{ a }}</span>
+          </li>
         {% endfor %}
       </ul>
+    </div>
+  {% endif %}
+
+  {% comment %}
+    H2-2: engine `missing_documents` (localised). Empty on the calculated
+    happy path → explicit "none" note, consistent with the PDF report's
+    "no missing documents" section. Gated on has_estimate so the
+    unavailable path keeps its curated public-message copy.
+  {% endcomment %}
+  {% if has_estimate %}
+    <div data-testid="missing-documents" data-state="{% if public_missing_documents %}present{% else %}none{% endif %}" class="mt-8 rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7">
+      <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Missing documents" %}</p>
+      <h3 class="mt-2 font-serif text-xl text-ink-950">{% translate "What could refine this estimate" %}</h3>
+      {% if public_missing_documents %}
+        <ul class="mt-3 space-y-2">
+          {% for d in public_missing_documents %}
+            <li class="flex gap-3 text-sm text-ink-800 leading-relaxed">
+              <span aria-hidden="true" class="mt-1 inline-block w-1.5 h-1.5 rounded-full bg-gold-500"></span>
+              <span>{{ d }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="mt-3 text-sm text-ink-800 leading-relaxed">{% blocktranslate %}No missing elements were detected in the data you provided for this indicative estimate. A precise valuation still requires the documents listed above and a legal review by the Studio.{% endblocktranslate %}</p>
+      {% endif %}
     </div>
   {% endif %}
 

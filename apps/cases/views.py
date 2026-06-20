@@ -235,7 +235,6 @@ def wizard_result(request, public_id: uuid.UUID):
     warnings = output.get("warnings") or []
     missing_documents = output.get("missing_documents") or []
     assumptions = output.get("assumptions") or []
-    _ = missing_documents  # consumed by audit log / DB only
     legal_disclaimer = output.get("legal_disclaimer") or ""
 
     # The engine emits public-safe warnings (e.g. "min/max coincide",
@@ -257,7 +256,13 @@ def wizard_result(request, public_id: uuid.UUID):
     # Costruzione URL CTA verso il lead form già in F6.
     contact_url = reverse("crm:contact") + f"?sim={simulation.public_id}"
 
-    has_estimate = any(
+    # Difesa in profondità: gli importi si mostrano SOLO quando lo status è
+    # `calculated`, oltre a essere non-null. Oggi gli importi si persistono
+    # solo nel ramo CALCULATED, quindi il guard non cambia il comportamento
+    # corrente; protegge però contro una futura regressione in cui una
+    # Simulation non-`calculated` portasse comunque un `estimated_*`
+    # valorizzato (vedi audit invariante "no calcolo falso").
+    has_estimate = simulation.status == "calculated" and any(
         simulation.output_data.get(k) is not None
         for k in ("estimated_min", "estimated_mid", "estimated_max")
     )
@@ -269,6 +274,18 @@ def wizard_result(request, public_id: uuid.UUID):
 
     locale = (translation.get_language() or simulation.locale or "it").split("-", 1)[0]
     status_public_label = get_public_status_label(simulation.status, language=locale)
+
+    # H2-2 transparency: localise the engine's missing-document diagnostic
+    # codes for the public result page. `diagnostic_message` returns a
+    # localised, human-readable sentence per code (it/fr/ar); unknown codes
+    # fall back to the code itself. Empty on the calculated happy path — the
+    # template then renders an explicit "no missing elements" note (mirrors
+    # the PDF report's "no missing documents" section).
+    from apps.calculators.diagnostics import diagnostic_message
+
+    public_missing_documents = [
+        diagnostic_message(code, language=locale) for code in missing_documents
+    ]
 
     # Wire the centralised public status: the unavailable card on the
     # result page renders its CTA / disclaimer from this object so the
@@ -314,6 +331,7 @@ def wizard_result(request, public_id: uuid.UUID):
             "contact_url": contact_url,
             "has_estimate": has_estimate,
             "public_warnings": public_warnings,
+            "public_missing_documents": public_missing_documents,
             "status_public_label": status_public_label,
             "public_status": public_status,
             "public_message": public_message,

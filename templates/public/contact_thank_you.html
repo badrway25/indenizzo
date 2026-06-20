@@ -21,11 +21,12 @@
 
   {% include "partials/mandate_notice.html" %}
 
-  {# F-product-2-funnel: "what you can do while you wait" block —
-     generic, country-agnostic document-prep checklist. Same partial
-     used on the result page (variant="result"); here variant
-     "thank-you" yields a narrower centred card matching the
-     thank-you layout. #}
+  {% comment %}
+    F-product-2-funnel: "what you can do while you wait" block — generic,
+    country-agnostic document-prep checklist. Same partial used on the
+    result page (variant="result"); here variant "thank-you" yields a
+    narrower centred card matching the thank-you layout.
+  {% endcomment %}
   {% include "partials/_documents_to_prepare.html" with variant="thank-you" %}
 
   <div class="mt-10 flex flex-wrap gap-3 justify-center">

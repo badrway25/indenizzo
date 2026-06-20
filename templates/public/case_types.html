@@ -36,9 +36,11 @@
           <p class="mt-3 text-sm text-ink-800 leading-relaxed">
             {{ case.public_status.short_description }}
           </p>
-          {# F-product-4: link to the per-case-type landing page if one
-             exists for this case_type code. Cards without a landing
-             stay informational only. #}
+          {% comment %}
+            F-product-4: link to the per-case-type landing page if one
+            exists for this case_type code. Cards without a landing stay
+            informational only.
+          {% endcomment %}
           {% if case.landing_slug %}
             <a href="{% url 'core:case_type_landing' slug=case.landing_slug %}" class="mt-4 inline-flex items-center gap-2 text-sm text-gold-600 hover:text-gold-500 font-semibold">
               {% translate "Read more" %} <span aria-hidden="true">→</span>
@@ -48,10 +50,12 @@
       {% endfor %}
     </div>
 
-    {# F-product-4: profile-style landings that do NOT map 1:1 to a
-       CaseType code (e.g. "foreigners in Italy", "cross-border
-       cases", "insurance offer review"). Surfaced as a separate
-       group so the hub is still a single navigation entry-point. #}
+    {% comment %}
+      F-product-4: profile-style landings that do NOT map 1:1 to a
+      CaseType code (e.g. "foreigners in Italy", "cross-border cases",
+      "insurance offer review"). Surfaced as a separate group so the hub
+      is still a single navigation entry-point.
+    {% endcomment %}
     {% if extra_landings %}
       <div class="mt-12">
         <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Specific situations" %}</p>
@@ -63,9 +67,11 @@
           {% for landing in extra_landings %}
             <article class="bg-white border border-stone2-200 rounded-3xl p-6 shadow-card">
               <h3 class="font-serif text-xl text-ink-950">{{ landing.h1 }}</h3>
-              {# meta_description deliberately not rendered on the
-                 hub: it's a long SEO blurb only meaningful inside
-                 each landing's <head>. The hub stays compact. #}
+              {% comment %}
+                meta_description deliberately not rendered on the hub:
+                it's a long SEO blurb only meaningful inside each
+                landing's head. The hub stays compact.
+              {% endcomment %}
               <a href="{% url 'core:case_type_landing' slug=landing.slug %}" class="mt-4 inline-flex items-center gap-2 text-sm text-gold-600 hover:text-gold-500 font-semibold">
                 {% translate "Read more" %} <span aria-hidden="true">→</span>
               </a>
