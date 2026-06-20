@@ -1,6 +1,10 @@
 {% load i18n %}
 {# Language switcher tramite Django `set_language` view. Funziona via POST per #}
-{# rispettare CSRF; il fallback è un <select> nativo, accessibile da tastiera. #}
+{# rispettare CSRF; il <select> nativo è accessibile da tastiera.            #}
+{# L'auto-submit alla selezione è agganciato da uno <script> con nonce CSP:  #}
+{# niente attributi-handler inline (`on*=...`), perché `script-src 'self'     #}
+{# <nonce>` (senza unsafe-inline) li bloccherebbe in produzione, lasciando il #}
+{# selettore muto. Fallback senza JS: il bottone "Apply" nel <noscript>.      #}
 <form action="{% url 'set_language' %}" method="post" class="block" aria-label="{% translate 'Language switcher' %}">
   {% csrf_token %}
   <input name="next" type="hidden" value="{{ request.path }}">
@@ -8,7 +12,7 @@
   <select
     id="lang-switcher"
     name="language"
-    onchange="this.form.submit()"
+    data-autosubmit="true"
     class="bg-transparent text-sm text-ink-900 border border-stone2-200 rounded-full px-3 py-1.5 focus:border-gold-500 min-h-[40px]"
   >
     {% for code, label in AVAILABLE_LANGUAGES %}
@@ -19,3 +23,12 @@
     <button type="submit" class="ms-2 text-xs underline">{% translate "Apply" %}</button>
   </noscript>
 </form>
+<script nonce="{{ CSP_NONCE }}">
+  (function () {
+    var sel = document.getElementById("lang-switcher");
+    if (!sel || !sel.form) return;
+    sel.addEventListener("change", function () {
+      sel.form.submit();
+    });
+  })();
+</script>

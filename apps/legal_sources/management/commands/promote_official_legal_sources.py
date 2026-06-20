@@ -12,10 +12,15 @@ checks:
    this allow-list (Mornet, Gazette du Palais, Tableau Indicatif,
    Schryvers, Dintilhac, etc.) are refused even if a future block
    were spoofed in their notes.
-3. The source must carry a passing
-   ``[official_source_validation]`` block (i.e. the iter that
-   validated the file integrity must already have run with
-   ``--commit``).
+3. The source must PASS an in-process re-validation, recomputed at
+   promotion time by ``validate_official_legal_sources._validate_one``
+   (file SHA-256 + registry markers from the actual local file). The
+   editable ``[official_source_validation]`` block in
+   ``LegalSource.notes`` is NO LONGER trusted as the gate — any admin
+   could hand-edit it. Promotion re-derives the verdict from the file,
+   so a spoofed notes block alone cannot reach APPROVED. If the source
+   file is absent/unverifiable the re-validation is ``blocked`` and
+   promotion is refused (fail-closed).
 
 When all three pass, the command:
 
@@ -48,7 +53,6 @@ CLI::
 
 from __future__ import annotations
 
-import json
 from dataclasses import dataclass, field
 
 from django.contrib.auth import get_user_model
@@ -58,8 +62,9 @@ from django.db import transaction
 from apps.legal_sources.enums import SourceStatus
 from apps.legal_sources.models import LegalReview, LegalSource
 
-VALIDATION_BEGIN = "[official_source_validation] BEGIN"
-VALIDATION_END = "[official_source_validation] END"
+# Verdetto di validazione ricomputato in-process (no fiducia nel blocco
+# notes editabile): riusa la logica del comando di validazione.
+from .validate_official_legal_sources import _load_registry, _validate_one
 
 # Allow-list of slugs eligible for promotion. The IT decree is
 # already approved and is included here so a future re-run is a
@@ -100,18 +105,17 @@ class PromotionResult:
     blocking_reasons: list[str] = field(default_factory=list)
 
 
-def _extract_validation_block(notes: str) -> dict | None:
-    if VALIDATION_BEGIN not in notes:
-        return None
-    body = notes.split(VALIDATION_BEGIN, 1)[1].split(VALIDATION_END, 1)[0].strip()
-    try:
-        return json.loads(body)
-    except json.JSONDecodeError:
-        return None
+def _evaluate(src: LegalSource, registry: dict) -> PromotionResult:
+    """Return a planned action without writing anything.
 
-
-def _evaluate(src: LegalSource) -> PromotionResult:
-    """Return a planned action without writing anything."""
+    The validation verdict is RECOMPUTED in-process by
+    ``validate_official_legal_sources._validate_one`` (file SHA-256 +
+    registry markers from the real local file) instead of trusting the
+    ``[official_source_validation]`` block persisted in
+    ``LegalSource.notes`` — that block is an editable ``TextField`` any
+    admin could hand-craft. This closes the spoofable-promotion path: a
+    forged notes block alone can no longer reach ``APPROVED``.
+    """
     result = PromotionResult(slug=src.slug, previous_status=src.status)
 
     if src.slug in DENY_LIST_SLUGS:
@@ -133,33 +137,29 @@ def _evaluate(src: LegalSource) -> PromotionResult:
         result.reason = "source already approved; nothing to do"
         return result
 
-    validation = _extract_validation_block(src.notes or "")
-    if not validation:
-        result.blocking_reasons.append("no_official_source_validation_block")
+    # In-process re-validation from the actual file (fail-closed).
+    validation = _validate_one(src, registry.get(src.slug))
+    if validation.validation_status != "passed":
+        result.blocking_reasons.append(f"revalidation_status={validation.validation_status}")
         result.reason = (
-            "no [official_source_validation] block; run "
-            "`validate_official_legal_sources --commit` first"
+            f"in-process re-validation did not pass "
+            f"({validation.validation_status}): {validation.reason}"
         )
         return result
 
-    if validation.get("validation_status") != "passed":
-        result.blocking_reasons.append(f"validation_status={validation.get('validation_status')!r}")
-        result.reason = "validation block does not record validation_status=passed"
-        return result
-
-    if not validation.get("official_source_verified"):
+    if not validation.official_source_verified:
         result.blocking_reasons.append("official_source_verified_false")
-        result.reason = "validation block does not assert official_source_verified=true"
+        result.reason = "in-process re-validation did not assert official_source_verified"
         return result
 
-    if not validation.get("sha256_verified"):
+    if not validation.sha256_verified:
         result.blocking_reasons.append("sha256_verified_false")
-        result.reason = "validation block does not assert sha256_verified=true"
+        result.reason = "in-process re-validation did not assert sha256_verified"
         return result
 
     result.decision = "promote"
     result.new_status = str(SourceStatus.APPROVED)
-    result.reason = "eligible: official source verified + sha256 verified"
+    result.reason = "eligible: in-process re-validation passed (file sha256 + registry markers)"
     return result
 
 
@@ -225,6 +225,7 @@ class Command(BaseCommand):
         slug_filter = options.get("slug")
         comment = options.get("comment") or ""
 
+        registry = _load_registry()
         qs = LegalSource.objects.select_related("country").order_by("country__code", "slug")
         if slug_filter:
             qs = qs.filter(slug=slug_filter)
@@ -235,7 +236,7 @@ class Command(BaseCommand):
         skip_count = 0
 
         for src in qs:
-            plan = _evaluate(src)
+            plan = _evaluate(src, registry)
             results.append(plan)
 
             if plan.decision == "promote":

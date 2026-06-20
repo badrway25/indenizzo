@@ -127,6 +127,44 @@ def _make_staff_reviewer(username: str = "staff_reviewer"):
     )
 
 
+# Markers present in config/official_source_registry.json for the Badinter
+# law (``content_must_contain``); a file containing one of them passes the
+# in-process marker check.
+_BADINTER_MARKER = "5 juillet 1985 — accidents de la circulation"
+
+
+def _seed_with_verified_file(slug: str, *, country_code: str, tmp_path, marker_text: str):
+    """Seed a LegalSource with a REAL local file + an ``[official_sync]``-style
+    ``[manual_attach]`` provenance block, so that promote's in-process
+    re-validation (file SHA-256 + registry markers) actually passes.
+
+    This is the SECURE contract H-1 item 4 enforces: promotion re-derives the
+    verdict from the file, so a notes-only block is no longer enough.
+    """
+    import hashlib
+
+    file_path = tmp_path / f"{slug}.bin"
+    payload = (marker_text + " — fixture official document body").encode("utf-8")
+    file_path.write_bytes(payload)
+    sha = hashlib.sha256(payload).hexdigest()
+    block = {
+        "synced_at": "2026-05-06T12:00:00+00:00",
+        "registry_slug": slug,
+        "official_url": "https://example.org/" + slug,
+        "sha256": sha,
+        "size_bytes": len(payload),
+        "local_path": str(file_path),
+        "ingest_mode": "manual_attach",
+        "classification": "manual_attach_success",
+        "marker_check_passed": None,
+        "source_kind": "official_law",
+        "authority": "official",
+        "no_calculator_activation": True,
+    }
+    notes = "[manual_attach] BEGIN\n" + json.dumps(block, indent=2) + "\n[manual_attach] END\n"
+    return _seed_legal_source(slug, country_code=country_code, validation_block=notes)
+
+
 # ---------------------------------------------------------------------------
 # 1 — --reviewer-username required
 # ---------------------------------------------------------------------------
@@ -203,15 +241,17 @@ def test_inactive_reviewer_fails():
 
 
 @pytest.mark.django_db
-def test_allow_list_slug_with_passed_validation_promotes():
+def test_allow_list_slug_with_passed_validation_promotes(tmp_path):
     from apps.legal_sources.enums import SourceStatus
     from apps.legal_sources.models import LegalReview
 
     reviewer = _make_staff_reviewer()
-    src = _seed_legal_source(
+    # SECURE contract: a real file + provenance block, re-validated in-process.
+    src = _seed_with_verified_file(
         "fr-loi-badinter-1985",
         country_code="FR",
-        validation_block=_make_validation_block(),
+        tmp_path=tmp_path,
+        marker_text=_BADINTER_MARKER,
     )
     call_command(
         "promote_official_legal_sources",
@@ -230,6 +270,38 @@ def test_allow_list_slug_with_passed_validation_promotes():
     assert review.decision == LegalReview.Decision.APPROVE
     assert review.new_status == SourceStatus.APPROVED
     assert review.previous_status == SourceStatus.NEEDS_REVIEW
+
+
+@pytest.mark.django_db
+def test_spoofed_validation_block_without_file_does_not_promote():
+    """H-1 item 4: a hand-forged ``[official_source_validation]`` 'passed'
+    block in the notes, with NO real verifiable file, is no longer enough to
+    promote. The verdict is recomputed in-process from the file, so the
+    notes-only spoof is refused (fail-closed)."""
+    from apps.legal_sources.enums import SourceStatus
+    from apps.legal_sources.models import LegalReview
+
+    reviewer = _make_staff_reviewer()
+    src = _seed_legal_source(
+        "fr-loi-badinter-1985",
+        country_code="FR",
+        # Notes-only spoof: 'passed' block but local_path points to a file
+        # that does not exist -> in-process re-validation returns 'blocked'.
+        validation_block=_make_validation_block(),
+    )
+    call_command(
+        "promote_official_legal_sources",
+        "--reviewer-username",
+        reviewer.username,
+        "--commit",
+        "--slug",
+        src.slug,
+        stdout=StringIO(),
+    )
+    src.refresh_from_db()
+    assert src.status == SourceStatus.NEEDS_REVIEW
+    assert src.legal_reviewer_id is None
+    assert LegalReview.objects.filter(source=src).count() == 0
 
 
 # ---------------------------------------------------------------------------
@@ -346,15 +418,16 @@ def test_no_passing_validation_blocks_promotion():
 
 
 @pytest.mark.django_db
-def test_idempotent_rerun_does_not_duplicate_reviews():
+def test_idempotent_rerun_does_not_duplicate_reviews(tmp_path):
     from apps.legal_sources.enums import SourceStatus
     from apps.legal_sources.models import LegalReview
 
     reviewer = _make_staff_reviewer()
-    src = _seed_legal_source(
+    src = _seed_with_verified_file(
         "fr-loi-badinter-1985",
         country_code="FR",
-        validation_block=_make_validation_block(),
+        tmp_path=tmp_path,
+        marker_text=_BADINTER_MARKER,
     )
     for _ in range(3):
         call_command(

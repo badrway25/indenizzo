@@ -222,11 +222,14 @@ def _build_input(simulation: Simulation, labels, styles, lang: str) -> list[Any]
 def _build_result(simulation: Simulation, labels, styles) -> list[Any]:
     body: list[Any] = [Paragraph(labels["section_result"], styles["h2"])]
 
-    # Decisione di mostrare estimated_*: SOLO se almeno uno è non-null.
-    # Mai inventare la stima: se tutto è None, il report dichiara
+    # Decisione di mostrare estimated_*: SOLO se lo status è `calculated`
+    # E almeno uno dei valori è non-null. Mai inventare la stima: se lo
+    # status non è `calculated` (o tutto è None), il report dichiara
     # esplicitamente l'indisponibilità (REQ "Mai mostrare importi se
-    # estimated_min/mid/max sono null").
-    has_amount = any(
+    # estimated_min/mid/max sono null"). Il guard su status è difesa in
+    # profondità: lega la presentazione all'invariante "no calcolo falso",
+    # coerente con la result page web.
+    has_amount = simulation.status == "calculated" and any(
         v is not None
         for v in (simulation.estimated_min, simulation.estimated_mid, simulation.estimated_max)
     )

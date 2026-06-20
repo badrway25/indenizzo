@@ -218,6 +218,54 @@ DATABASES = {
 
 
 # ---------------------------------------------------------------------------
+# Caches — backend CONDIVISO obbligatorio in produzione.
+#
+# Il rate limiter pubblico (`apps/core/rate_limit.py`) e il rilevatore di
+# brute-force admin (`apps/compliance/staff_security.py`) usano
+# `django.core.cache.cache`. Senza un `CACHES` esplicito Django ripiega su
+# LocMemCache per-processo: con più worker gunicorn ogni worker conta i
+# tentativi in isolamento, moltiplicando di fatto il limite per il numero di
+# worker e azzerando i contatori a ogni restart.
+#
+# In produzione (DEBUG=False) usiamo Redis — già nello stack come broker
+# Celery — quando è disponibile un URL (`CACHE_URL`, fallback `REDIS_URL`).
+# In dev/test (o se nessun URL Redis è configurato) restiamo su LocMemCache
+# per non introdurre una dipendenza esterna. Quando lo staging guadagnerà il
+# servizio Redis (cfr. roadmap H3-3), basterà valorizzare `REDIS_URL`.
+# ---------------------------------------------------------------------------
+_SHARED_CACHE_URL = env("CACHE_URL", default=env("REDIS_URL", default=""))
+if not DEBUG and _SHARED_CACHE_URL:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": _SHARED_CACHE_URL,
+        }
+    }
+else:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+            "LOCATION": "badrane-legaltech-default",
+        }
+    }
+
+
+# ---------------------------------------------------------------------------
+# System checks volutamente silenziati.
+#
+# `security.W021` (SECURE_HSTS_PRELOAD non True) è una scelta deliberata: il
+# preload HSTS è opt-in e va richiesto esplicitamente solo quando il dominio
+# è pronto a essere inviato alla preload list del browser (vedi
+# `SECURE_HSTS_PRELOAD` più sotto). La silenziamo così che
+# `manage.py check --deploy --fail-level WARNING` possa essere un gate CI
+# rigido su TUTTI gli altri controlli di hardening (SSL redirect, HSTS,
+# cookie sicuri, SECRET_KEY, ALLOWED_HOSTS, ...). Per abilitare il preload:
+# `SECURE_HSTS_PRELOAD=True` e rimuovere questa riga.
+# ---------------------------------------------------------------------------
+SILENCED_SYSTEM_CHECKS = ["security.W021"]
+
+
+# ---------------------------------------------------------------------------
 # Auth
 # ---------------------------------------------------------------------------
 AUTH_USER_MODEL = "accounts.User"
@@ -322,15 +370,9 @@ STUDIO_VAT_NUMBER = env("STUDIO_VAT_NUMBER", default="")
 STUDIO_TAX_CODE = env("STUDIO_TAX_CODE", default="")
 STUDIO_PEC_EMAIL = env("STUDIO_PEC_EMAIL", default="")
 STUDIO_PHYSICAL_ADDRESS = env("STUDIO_PHYSICAL_ADDRESS", default="")
-STUDIO_PROFESSIONAL_INSURANCE_INSURER = env(
-    "STUDIO_PROFESSIONAL_INSURANCE_INSURER", default=""
-)
-STUDIO_PROFESSIONAL_INSURANCE_POLICY = env(
-    "STUDIO_PROFESSIONAL_INSURANCE_POLICY", default=""
-)
-STUDIO_PROFESSIONAL_INSURANCE_CEILING = env(
-    "STUDIO_PROFESSIONAL_INSURANCE_CEILING", default=""
-)
+STUDIO_PROFESSIONAL_INSURANCE_INSURER = env("STUDIO_PROFESSIONAL_INSURANCE_INSURER", default="")
+STUDIO_PROFESSIONAL_INSURANCE_POLICY = env("STUDIO_PROFESSIONAL_INSURANCE_POLICY", default="")
+STUDIO_PROFESSIONAL_INSURANCE_CEILING = env("STUDIO_PROFESSIONAL_INSURANCE_CEILING", default="")
 
 
 # ---------------------------------------------------------------------------
@@ -589,9 +631,7 @@ LOGGING = {
 # system check `core.E004` (`apps/core/checks.py`) blocca il deploy
 # in produzione finche' la versione contiene `working-copy` o `draft`.
 # ---------------------------------------------------------------------------
-PRIVACY_NOTICE_VERSION = env(
-    "PRIVACY_NOTICE_VERSION", default="working-copy-2026-05-10"
-)
+PRIVACY_NOTICE_VERSION = env("PRIVACY_NOTICE_VERSION", default="working-copy-2026-05-10")
 SPECIAL_CATEGORIES_NOTICE_VERSION = env(
     "SPECIAL_CATEGORIES_NOTICE_VERSION", default="working-copy-2026-05-10"
 )
@@ -639,9 +679,7 @@ CRM_WEBHOOK_PAYLOAD_VERSION = env("CRM_WEBHOOK_PAYLOAD_VERSION", default="v1")
 # versione del template e' working-copy/draft, lo status non e' `signed`,
 # o `REQUIRE_MANDATE_BEFORE_CASE_ACTIVATION` e' stato spento.
 # ---------------------------------------------------------------------------
-MANDATE_TEMPLATE_VERSION = env(
-    "MANDATE_TEMPLATE_VERSION", default="working-copy-2026-05-10"
-)
+MANDATE_TEMPLATE_VERSION = env("MANDATE_TEMPLATE_VERSION", default="working-copy-2026-05-10")
 MANDATE_TEMPLATE_STATUS = env("MANDATE_TEMPLATE_STATUS", default="working_copy")
 MANDATE_TEMPLATE_SIGNED_AT = env("MANDATE_TEMPLATE_SIGNED_AT", default="")
 REQUIRE_MANDATE_BEFORE_CASE_ACTIVATION = env.bool(
@@ -696,9 +734,7 @@ DISCLAIMER_SIGNED_AT = env("DISCLAIMER_SIGNED_AT", default="")
 #   ancora `working-copy-*` o `draft-*` o se `RETENTION_MODE` e' un
 #   valore invalido.
 # ---------------------------------------------------------------------------
-RETENTION_POLICY_VERSION = env(
-    "RETENTION_POLICY_VERSION", default="working-copy-2026-05-10"
-)
+RETENTION_POLICY_VERSION = env("RETENTION_POLICY_VERSION", default="working-copy-2026-05-10")
 RETENTION_ENABLED = env.bool("RETENTION_ENABLED", default=False)
 RETENTION_MODE = env("RETENTION_MODE", default="dry_run")
 RETENTION_LEAD_DAYS = env.int("RETENTION_LEAD_DAYS", default=365)
@@ -707,9 +743,7 @@ RETENTION_CONSENT_RECORD_DAYS = env.int("RETENTION_CONSENT_RECORD_DAYS", default
 RETENTION_AUDIT_LOG_DAYS = env.int("RETENTION_AUDIT_LOG_DAYS", default=1825)
 # In prod-like il go-live richiede una versione policy firmata. In dev
 # (DEBUG=True) il flag e' silenzioso.
-RETENTION_REQUIRE_SIGNED_VERSION = env.bool(
-    "RETENTION_REQUIRE_SIGNED_VERSION", default=True
-)
+RETENTION_REQUIRE_SIGNED_VERSION = env.bool("RETENTION_REQUIRE_SIGNED_VERSION", default=True)
 
 
 # ---------------------------------------------------------------------------

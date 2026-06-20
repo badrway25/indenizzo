@@ -217,6 +217,20 @@ class ItalyRoadAccidentBodilyInjuryCalculator(_ItalyPlaceholderCalculator):
                 missing_documents=[_diag.COMPENSATION_ROW_DISAMBIGUATION],
             )
 
+        # --- gate 9.5: la riga matchata DEVE avere il valore monetario.
+        # Fail-closed: una riga APPROVED con `point_value` NULL non deve
+        # produrre un CALCULATED 0 € (sarebbe un "calcolo falso" sottile).
+        # Vedi diagnostics.COMPENSATION_ROW_VALUE_MISSING.
+        if _row_amount_value_missing(match.row):
+            return self._build_result(
+                status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
+                sources=source_refs,
+                warnings=[
+                    _diag.diagnostic_to_internal_warning(_diag.COMPENSATION_ROW_VALUE_MISSING)
+                ],
+                missing_documents=[_diag.COMPENSATION_ROW_VALUE_MISSING],
+            )
+
         # --- step 10: calcolo vero (single-row rule) -------------------
         amount = apply_amount_rule(
             rule,
@@ -242,11 +256,19 @@ class ItalyRoadAccidentBodilyInjuryCalculator(_ItalyPlaceholderCalculator):
         ]
 
         assumptions = [
-            f"Formula applied: {formula.code} ({rule}).",
-            f"Source dataset: '{dataset.name}' (version " f"'{dataset.version_label or 'n/a'}').",
+            _diag.diagnostic_to_public_warning(
+                _diag.ITALY_ASSUMPTION_FORMULA_APPLIED,
+                context={"formula": formula.code, "rule": rule},
+            ),
+            _diag.diagnostic_to_public_warning(
+                _diag.ITALY_ASSUMPTION_SOURCE_DATASET,
+                context={"dataset": dataset.name, "version": dataset.version_label or "n/a"},
+            ),
         ]
         if fault_reduction_enabled and _has_value(input_data, "fault_percentage"):
-            assumptions.append("Fault reduction applied as declared by the formula.")
+            assumptions.append(
+                _diag.diagnostic_to_public_warning(_diag.ITALY_FAULT_REDUCTION_APPLIED)
+            )
 
         warnings_out: list[str] = [_diag.diagnostic_to_public_warning(_diag.ITALY_RANGE_COLLAPSED)]
 
@@ -354,6 +376,19 @@ class ItalyRoadAccidentBodilyInjuryCalculator(_ItalyPlaceholderCalculator):
                 )
             matches[kind] = m.row
 
+        # Fail-closed anche sul range: ognuna delle righe min/mid/max deve
+        # esporre il valore monetario. Una riga APPROVED con `point_value`
+        # NULL blocca il calcolo invece di produrre uno 0 € fittizio.
+        if any(_row_amount_value_missing(row) for row in matches.values()):
+            return self._build_result(
+                status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
+                sources=source_refs,
+                warnings=[
+                    _diag.diagnostic_to_internal_warning(_diag.COMPENSATION_ROW_VALUE_MISSING)
+                ],
+                missing_documents=[_diag.COMPENSATION_ROW_VALUE_MISSING],
+            )
+
         amounts = _apply(
             params["amount_rule"],
             row_min=matches["min"],
@@ -388,14 +423,22 @@ class ItalyRoadAccidentBodilyInjuryCalculator(_ItalyPlaceholderCalculator):
             )
         ]
         assumptions = [
-            f"Formula applied: {formula.code} ({params['amount_rule']}).",
-            (
-                f"Range dataset: '{range_dataset.name}' "
-                f"(version '{range_dataset.version_label}')."
+            _diag.diagnostic_to_public_warning(
+                _diag.ITALY_ASSUMPTION_FORMULA_APPLIED,
+                context={"formula": formula.code, "rule": params["amount_rule"]},
+            ),
+            _diag.diagnostic_to_public_warning(
+                _diag.ITALY_ASSUMPTION_RANGE_DATASET,
+                context={
+                    "dataset": range_dataset.name,
+                    "version": range_dataset.version_label,
+                },
             ),
         ]
         if fault_reduction_enabled and _has_value(input_data, "fault_percentage"):
-            assumptions.append("Fault reduction applied uniformly to min/mid/max.")
+            assumptions.append(
+                _diag.diagnostic_to_public_warning(_diag.ITALY_FAULT_REDUCTION_APPLIED_UNIFORM)
+            )
         warnings_out: list[str] = []
         for field in ("medical_expenses", "lost_income"):
             if _has_value(input_data, field):
@@ -463,6 +506,20 @@ class ItalyInheritanceBasicCalculator(_ItalyPlaceholderCalculator):
 # ---------------------------------------------------------------------------
 # helpers di modulo
 # ---------------------------------------------------------------------------
+
+
+def _row_amount_value_missing(row: Any) -> bool:
+    """True se la riga matchata non espone il valore monetario letto dalle
+    amount rule IT (``point_value``).
+
+    Guard fail-closed: un ``point_value`` NULL su una riga di un dataset
+    APPROVED deve produrre ``UNAVAILABLE_REQUIRES_LEGAL_VALIDATION``, MAI un
+    ``CALCULATED`` con importo 0 €. Le regole condivise in
+    ``apps.compensation.services`` fanno ancora il coalesce a ``Decimal(0)``
+    per gli engine inerti (FR/BE/MA/TN, privi di dati approved): questo
+    gate protegge la sola superficie pubblica, l'engine IT.
+    """
+    return getattr(row, "point_value", None) is None
 
 
 def _has_value(input_data: dict[str, Any], field: str) -> bool:

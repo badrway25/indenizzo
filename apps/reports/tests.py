@@ -356,3 +356,111 @@ def test_renderer_passes_simulation_status_in_metadata(italy_jurisdiction):
     report = generate_simulation_report(simulation)
     assert report.metadata.get("simulation_status") == simulation.status
     assert report.metadata.get("language_requested") == "it"
+
+
+# ---------------------------------------------------------------------------
+# PII-safe failure logging (GDPR): a render failure must NOT log a traceback
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_render_failure_logs_no_traceback_or_pii(italy_jurisdiction, monkeypatch, caplog):
+    """
+    Se `render_simulation_pdf_bytes` solleva, il service:
+    - NON deve propagare l'eccezione (ritorna un report `FAILED`);
+    - NON deve emettere un traceback (`exc_info`), perché i frame del
+      renderer contengono valori sensibili della Simulation (età,
+      reddito, invalidità) che il `RedactPIIFilter` non scruba;
+    - deve loggare solo la CLASSE dell'eccezione, mai `str(exc)`.
+
+    Regressione storica: `logger.exception(...)` emetteva il traceback
+    completo del PDF renderer nei log applicativi.
+    """
+    import logging as _logging
+
+    import apps.reports.services as services
+
+    pii_marker = "victim_age_37__lost_income_52000__SENSITIVE"
+
+    def _boom(*args, **kwargs):
+        raise RuntimeError(pii_marker)
+
+    monkeypatch.setattr(services, "render_simulation_pdf_bytes", _boom)
+    simulation = _make_simulation(
+        italy_jurisdiction,
+        input_data={"victim_age": 37, "lost_income": 52000},
+    )
+
+    with caplog.at_level(_logging.ERROR, logger="apps.reports.services"):
+        report = generate_simulation_report(simulation)
+
+    # 1. Il service non solleva: report FAILED, file vuoto.
+    assert report.status == SimulationReport.Status.FAILED
+
+    # 2. Esiste un record di log per il fallimento di rendering.
+    failure_records = [r for r in caplog.records if "render_failed" in r.getMessage()]
+    assert failure_records, "expected a render_failed log record"
+
+    # 3. Nessun traceback (exc_info/exc_text) e nessuna PII nel messaggio.
+    for record in failure_records:
+        assert record.exc_info is None, "render failure must not attach a traceback"
+        assert record.exc_text is None
+        message = record.getMessage()
+        assert pii_marker not in message
+        assert "RuntimeError" in message  # only the exception class is logged
+
+    # 4. Difesa in profondità: il marcatore PII non compare in alcun log.
+    assert pii_marker not in caplog.text
+
+    # 5. Il dettaglio tecnico resta disponibile per il triage in DB.
+    assert "RuntimeError" in report.error_message
+
+
+# ---------------------------------------------------------------------------
+# H-1 guard: il PDF mostra importi SOLO quando lo status è `calculated`
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_pdf_hides_amounts_when_status_not_calculated(italy_jurisdiction):
+    """
+    Difesa in profondità: se lo status NON è `calculated`, la sezione
+    importi del PDF non viene costruita anche se `estimated_*` è
+    valorizzato (stato incoerente). Test white-box su `_build_result`
+    (i content-stream reportlab sono compressi: una ricerca sui byte non
+    sarebbe affidabile).
+    """
+    from reportlab.platypus import Table
+
+    from apps.reports.labels import get_labels
+    from apps.reports.pdf_renderer import _build_result, _build_styles
+
+    simulation = _make_simulation(
+        italy_jurisdiction,
+        status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
+        estimated=(Decimal("99999.00"), Decimal("99999.00"), Decimal("99999.00")),
+    )
+    labels = get_labels("it")
+    flowables = _build_result(simulation, labels, _build_styles())
+
+    # Nessuna tabella importi costruita ...
+    assert not any(isinstance(f, Table) for f in flowables)
+    # ... e compare il paragrafo "nessuna stima".
+    assert any(getattr(f, "text", "") == labels["no_estimate"] for f in flowables)
+
+
+@pytest.mark.django_db
+def test_pdf_shows_amounts_when_calculated(italy_jurisdiction):
+    """Controllo positivo: status `calculated` + estimated → tabella importi."""
+    from reportlab.platypus import Table
+
+    from apps.reports.labels import get_labels
+    from apps.reports.pdf_renderer import _build_result, _build_styles
+
+    simulation = _make_simulation(
+        italy_jurisdiction,
+        status=CalculationStatus.CALCULATED.value,
+        estimated=(Decimal("1.00"), Decimal("1.00"), Decimal("1.00")),
+    )
+    flowables = _build_result(simulation, get_labels("it"), _build_styles())
+    assert any(isinstance(f, Table) for f in flowables)

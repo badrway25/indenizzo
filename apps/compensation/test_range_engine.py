@@ -408,6 +408,87 @@ def test_calculator_unavailable_when_mid_row_missing(base_dataset_approved, appr
     assert "compensation_row_match" in r.missing_documents
 
 
+# ---------------------------------------------------------------------------
+# H-1 fail-closed: una riga APPROVED con point_value NULL non deve produrre
+# un CALCULATED 0 € — deve degradare a UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.
+# ---------------------------------------------------------------------------
+
+
+def _make_single_row_formula(dataset: CompensationDataset) -> CalculationFormula:
+    """Approved single-row formula (point_value × disability%) sul base dataset."""
+    return CalculationFormula.objects.create(
+        dataset=dataset,
+        code="italy_single_row_stub",
+        name="Stub single-row formula",
+        expression_text="placeholder",
+        source_reference="placeholder",
+        parameters={
+            "engine": "italy_tun_point_value_v1",
+            "requires": ["victim_age", "permanent_disability_percentage"],
+            "row_match": ["victim_age", "permanent_disability_percentage"],
+            "amount_rule": "point_value_times_disability_percentage",
+            "fault_reduction": False,
+        },
+        status=DatasetStatus.APPROVED,
+    )
+
+
+@pytest.mark.django_db
+def test_single_row_unavailable_when_point_value_null(base_dataset_approved):
+    """Single-row: la riga base con point_value NULL → UNAVAILABLE, mai 0 €."""
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+
+    row = base_dataset_approved.rows.get(row_type="tun_biological_total_amount")
+    row.point_value = None
+    row.save(update_fields=["point_value"])
+    _make_single_row_formula(base_dataset_approved)
+
+    calc = ItalyRoadAccidentBodilyInjuryCalculator(language="it")
+    r = calc.compute({"victim_age": 0, "permanent_disability_percentage": 10})
+
+    assert r.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
+    assert "compensation_row_value_missing" in r.missing_documents
+    assert r.estimated_min is None
+    assert r.estimated_mid is None
+    assert r.estimated_max is None
+
+
+@pytest.mark.django_db
+def test_single_row_calculates_when_point_value_present(base_dataset_approved):
+    """Controllo positivo: con point_value valorizzato il calcolo procede."""
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+
+    _make_single_row_formula(base_dataset_approved)
+
+    calc = ItalyRoadAccidentBodilyInjuryCalculator(language="it")
+    r = calc.compute({"victim_age": 0, "permanent_disability_percentage": 10})
+
+    # base row point_value=1 (fixture) → CALCULATED, importo non-null.
+    assert r.status == CalculationStatus.CALCULATED.value
+    assert r.estimated_mid is not None
+
+
+@pytest.mark.django_db
+def test_range_unavailable_when_one_row_point_value_null(base_dataset_approved, approved_source):
+    """Range: se UNA delle righe min/mid/max ha point_value NULL → UNAVAILABLE."""
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+
+    moral = _make_moral_dataset(approved_source, status=DatasetStatus.APPROVED)
+    mid = moral.rows.get(row_type="tun_biological_moral_mid_total_amount")
+    mid.point_value = None
+    mid.save(update_fields=["point_value"])
+    _make_range_formula(base_dataset_approved)
+
+    calc = ItalyRoadAccidentBodilyInjuryCalculator(language="it")
+    r = calc.compute({"victim_age": 0, "permanent_disability_percentage": 10})
+
+    assert r.status == CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value
+    assert "compensation_row_value_missing" in r.missing_documents
+    assert r.estimated_min is None
+    assert r.estimated_mid is None
+    assert r.estimated_max is None
+
+
 @pytest.mark.django_db
 def test_calculator_unavailable_when_max_row_missing(base_dataset_approved, approved_source):
     from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
@@ -542,3 +623,56 @@ def test_single_row_rule_still_produces_equal_amounts(base_dataset_approved):
     # Fixture point_value=1 — verifichiamo solo che min == mid == max,
     # non il valore (regola d'oro: nessun reale TUN nei test).
     assert r.estimated_min == r.estimated_mid == r.estimated_max
+
+
+# ---------------------------------------------------------------------------
+# C1: le assumptions dell'engine IT passano dai codici diagnostici localizzati
+# (stesso modello di warnings/missing_documents), non da stringhe inline EN.
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_calculator_assumptions_are_localized_via_diagnostics(
+    base_dataset_approved, approved_source
+):
+    from django.utils import translation
+
+    from apps.calculators import diagnostics as diag
+    from apps.calculators.engines.italy import ItalyRoadAccidentBodilyInjuryCalculator
+
+    _make_moral_dataset(approved_source, status=DatasetStatus.APPROVED)
+    _make_range_formula(base_dataset_approved)
+
+    with translation.override("it"):
+        calc = ItalyRoadAccidentBodilyInjuryCalculator(language="it")
+        r = calc.compute(
+            {"victim_age": 0, "permanent_disability_percentage": 10, "fault_percentage": 50}
+        )
+
+    assert r.status == CalculationStatus.CALCULATED.value
+    joined = " || ".join(r.assumptions)
+
+    # Le assumptions sono ESATTAMENTE l'output del layer diagnostico (IT):
+    # se fossero ancora f-string inline EN non coinciderebbero con la versione
+    # tradotta del codice.
+    expected_formula = diag.diagnostic_message(
+        diag.ITALY_ASSUMPTION_FORMULA_APPLIED,
+        language="it",
+        context={"formula": "italy_art_138_tun_2025_base", "rule": "row_amount_range_direct"},
+    )
+    expected_range_ds = diag.diagnostic_message(
+        diag.ITALY_ASSUMPTION_RANGE_DATASET,
+        language="it",
+        context={"dataset": "TUN moral (test)", "version": "DPR-12-2025-MORAL"},
+    )
+    expected_fault = diag.diagnostic_message(
+        diag.ITALY_FAULT_REDUCTION_APPLIED_UNIFORM, language="it"
+    )
+    assert expected_formula in r.assumptions
+    assert expected_range_ds in r.assumptions
+    assert expected_fault in r.assumptions
+
+    # Il contesto è interpolato e non resta inline EN grezzo.
+    assert "italy_art_138_tun_2025_base" in joined
+    assert "Formula applied:" not in joined
+    assert "Range dataset:" not in joined

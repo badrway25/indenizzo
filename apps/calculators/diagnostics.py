@@ -51,6 +51,7 @@ FORMULA_RANGE_PARAMETERS_INCOMPLETE = "formula_range_parameters_incomplete"
 COMPENSATION_ROW_MATCH_MISSING = "compensation_row_match"
 COMPENSATION_ROW_DISAMBIGUATION = "compensation_row_disambiguation"
 COMPENSATION_RANGE_INCONSISTENT = "compensation_range_inconsistent"
+COMPENSATION_ROW_VALUE_MISSING = "compensation_row_value_missing"
 INHERITANCE_SHARE_SPEC_INVALID = "shares_spec_invalid"
 INHERITANCE_RULE_ACTIVATION_BLOCKED = "inheritance_rule_activation_blocked"
 APPLICABLE_LAW_REVIEW_REQUIRED = "applicable_law_review_required"
@@ -71,6 +72,12 @@ ITALY_RANGE_COLLAPSED = "italy_range_collapsed"
 ITALY_FIELD_NOT_AGGREGATED = "italy_field_not_aggregated"
 ITALY_FAULT_REDUCTION_APPLIED = "italy_fault_reduction_applied"
 ITALY_FAULT_REDUCTION_APPLIED_UNIFORM = "italy_fault_reduction_applied_uniform"
+# Assumptions (sostituiscono le stringhe inline inglesi nell'engine Italia;
+# stesso modello di warnings/missing_documents: codice + messaggio
+# localizzato con interpolazione di contesto).
+ITALY_ASSUMPTION_FORMULA_APPLIED = "italy_assumption_formula_applied"
+ITALY_ASSUMPTION_SOURCE_DATASET = "italy_assumption_source_dataset"
+ITALY_ASSUMPTION_RANGE_DATASET = "italy_assumption_range_dataset"
 
 # ---------------------------------------------------------------------------
 # Italy input-validation codes — emitted by the engine when the wizard
@@ -214,6 +221,16 @@ _REGISTRY: dict[str, _DiagnosticSpec] = {
             "the dataset before the range can be produced."
         ),
     ),
+    COMPENSATION_ROW_VALUE_MISSING: _DiagnosticSpec(
+        code=COMPENSATION_ROW_VALUE_MISSING,
+        message=_(
+            "The matched compensation row is missing its monetary value "
+            "(point_value is empty). The engine refuses to emit a 0 "
+            "amount as if it were calculated; a Studio reviewer must "
+            "complete the approved dataset before any estimate can be "
+            "produced."
+        ),
+    ),
     INHERITANCE_SHARE_SPEC_INVALID: _DiagnosticSpec(
         code=INHERITANCE_SHARE_SPEC_INVALID,
         message=_(
@@ -296,6 +313,22 @@ _REGISTRY: dict[str, _DiagnosticSpec] = {
     ITALY_FAULT_REDUCTION_APPLIED_UNIFORM: _DiagnosticSpec(
         code=ITALY_FAULT_REDUCTION_APPLIED_UNIFORM,
         message=_("A fault reduction was applied uniformly to the min, central " "and max values."),
+        public_safe=True,
+    ),
+    ITALY_ASSUMPTION_FORMULA_APPLIED: _DiagnosticSpec(
+        code=ITALY_ASSUMPTION_FORMULA_APPLIED,
+        # `{formula}` e `{rule}` sono interpolati dall'engine via ``context``.
+        message=_("Formula applied: {formula} ({rule})."),
+        public_safe=True,
+    ),
+    ITALY_ASSUMPTION_SOURCE_DATASET: _DiagnosticSpec(
+        code=ITALY_ASSUMPTION_SOURCE_DATASET,
+        message=_("Source dataset: {dataset} (version {version})."),
+        public_safe=True,
+    ),
+    ITALY_ASSUMPTION_RANGE_DATASET: _DiagnosticSpec(
+        code=ITALY_ASSUMPTION_RANGE_DATASET,
+        message=_("Range dataset: {dataset} (version {version})."),
         public_safe=True,
     ),
     ITALY_REQUIRED_INPUT_MISSING: _DiagnosticSpec(
@@ -503,6 +536,9 @@ __all__ = [
     "ITALY_FIELD_NOT_AGGREGATED",
     "ITALY_FAULT_REDUCTION_APPLIED",
     "ITALY_FAULT_REDUCTION_APPLIED_UNIFORM",
+    "ITALY_ASSUMPTION_FORMULA_APPLIED",
+    "ITALY_ASSUMPTION_SOURCE_DATASET",
+    "ITALY_ASSUMPTION_RANGE_DATASET",
     "ITALY_REQUIRED_INPUT_MISSING",
     "ITALY_FAULT_PERCENTAGE_OUT_OF_RANGE",
     "ITALY_INVALID_PERCENTAGE_INPUT",
@@ -523,6 +559,7 @@ __all__ = [
     "COMPENSATION_ROW_MATCH_MISSING",
     "COMPENSATION_ROW_DISAMBIGUATION",
     "COMPENSATION_RANGE_INCONSISTENT",
+    "COMPENSATION_ROW_VALUE_MISSING",
     "INHERITANCE_SHARE_SPEC_INVALID",
     "APPLICABLE_LAW_REVIEW_REQUIRED",
     "APPLICABLE_LAW_CONTEXT_MISSING",

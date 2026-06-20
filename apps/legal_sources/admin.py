@@ -35,6 +35,7 @@ class LegalSourceAttachmentInline(admin.TabularInline):
 class LegalReviewInline(admin.TabularInline):
     model = LegalReview
     extra = 0
+    can_delete = False
     fields = (
         "reviewer",
         "decision",
@@ -43,8 +44,21 @@ class LegalReviewInline(admin.TabularInline):
         "comment",
         "created_at",
     )
-    readonly_fields = ("created_at",)
-    autocomplete_fields = ("reviewer",)
+    # Append-only: l'inline è la STORIA in sola lettura delle decisioni di
+    # review. Le nuove review si registrano solo via la pagina dedicata
+    # `LegalReviewAdmin` (che forza `reviewer=request.user`) o via il comando
+    # di promozione — mai modificabili/cancellabili da qui.
+    readonly_fields = (
+        "reviewer",
+        "decision",
+        "previous_status",
+        "new_status",
+        "comment",
+        "created_at",
+    )
+
+    def has_add_permission(self, request, obj=None):
+        return False
 
 
 @admin.register(LegalSource)
@@ -137,6 +151,21 @@ class LegalSourceAttachmentAdmin(admin.ModelAdmin):
 
 @admin.register(LegalReview)
 class LegalReviewAdmin(admin.ModelAdmin):
+    """Registro append-only e non falsificabile delle decisioni di review.
+
+    Invarianti applicati al layer admin:
+
+    - **Non cancellabile** (`has_delete_permission=False`): una decisione di
+      validazione legale è un record immutabile per l'audit.
+    - **Righe esistenti congelate** (`has_change_permission=False` su `obj`):
+      decisione, statuti e reviewer non sono modificabili dopo la creazione.
+    - **Identità non falsificabile**: in creazione il `reviewer` è SEMPRE
+      forzato a `request.user`, mai scelto a mano.
+
+    L'auditlog (django-auditlog) resta come traccia detective; questo layer
+    aggiunge la prevenzione.
+    """
+
     list_display = (
         "source",
         "reviewer",
@@ -147,5 +176,49 @@ class LegalReviewAdmin(admin.ModelAdmin):
     )
     list_filter = ("decision", "new_status", "previous_status")
     search_fields = ("source__title", "comment", "reviewer__username")
-    autocomplete_fields = ("source", "reviewer")
+    autocomplete_fields = ("source",)
     readonly_fields = ("created_at",)
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        # Accesso al modulo / changelist / pagina di add consentito; le righe
+        # esistenti sono in sola lettura (congelate).
+        if obj is None:
+            return super().has_change_permission(request, obj)
+        return False
+
+    def get_fields(self, request, obj=None):
+        if obj is None:
+            # In creazione NON mostriamo `reviewer`: forzato in save_model.
+            return ("source", "decision", "previous_status", "new_status", "comment")
+        return (
+            "source",
+            "reviewer",
+            "decision",
+            "previous_status",
+            "new_status",
+            "comment",
+            "created_at",
+        )
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj is not None:
+            # Riga esistente: ogni campo è congelato.
+            return (
+                "source",
+                "reviewer",
+                "decision",
+                "previous_status",
+                "new_status",
+                "comment",
+                "created_at",
+            )
+        return ("created_at",)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            # Identità non falsificabile: il reviewer è l'utente loggato.
+            obj.reviewer = request.user
+        super().save_model(request, obj, form, change)

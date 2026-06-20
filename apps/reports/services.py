@@ -74,7 +74,18 @@ def generate_simulation_report(
     try:
         pdf_bytes = render_simulation_pdf_bytes(simulation, language=lang)
     except Exception as exc:  # rendering errors must NEVER 500 the user
-        logger.exception("reports.simulation_report.render_failed sim=%s", simulation.public_id)
+        # PII-safe logging: NON usare `logger.exception`/`exc_info` qui. Il
+        # traceback di `render_simulation_pdf_bytes` cammina i frame con i
+        # dati sensibili della Simulation (età, % invalidità, reddito, dati
+        # di decesso) e il `RedactPIIFilter` NON scruba l'`exc_info` (filtra
+        # solo `getMessage()`). Logghiamo quindi soltanto la classe
+        # dell'eccezione: il dettaglio tecnico completo resta in
+        # `SimulationReport.error_message` (DB access-controllato, auditlog).
+        logger.error(
+            "reports.simulation_report.render_failed sim=%s error=%s",
+            simulation.public_id,
+            exc.__class__.__name__,
+        )
         report = SimulationReport.objects.create(
             simulation=simulation,
             language=lang,
