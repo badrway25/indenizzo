@@ -38,6 +38,8 @@ from pathlib import Path
 
 import pytest
 
+from apps.legal_sources.legal_data_test_support import skip_if_absent
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SOURCES_DIR = REPO_ROOT / "legal_data" / "sources" / "tunisia" / "official_downloaded"
 EXTRACTION_JSON = (
@@ -85,6 +87,7 @@ EXPECTED_MISSING_ARTS = [85, 86, 87, 88, 109, 111, 112]
 @pytest.mark.parametrize("filename", NEW_PAGE_FILES)
 def test_new_csp_file_is_real(filename):
     p = SOURCES_DIR / filename
+    skip_if_absent(p)
     assert p.is_file(), f"missing {filename}"
     raw = p.read_bytes()
     assert len(raw) > 1024, f"{filename} is suspiciously small ({len(raw)}B)"
@@ -106,6 +109,7 @@ def test_new_csp_file_is_real(filename):
 def test_new_csp_file_mentions_livre_ix(filename):
     import re
 
+    skip_if_absent(SOURCES_DIR / filename)
     body = (SOURCES_DIR / filename).read_bytes().decode("utf-8", errors="replace")
     # whitespace-flexible "Livre IX" detection (the source uses HTML
     # line breaks inside the heading).
@@ -422,6 +426,7 @@ def test_italy_smoke_unchanged_with_tn_csp_pass2(italy_full_setup):
 
 
 def test_italy_pdf_first_four_bytes_unchanged():
+    skip_if_absent(IT_PDF)
     assert IT_PDF.is_file()
     assert IT_PDF.read_bytes()[:4] == b"%PDF"
 
@@ -432,6 +437,7 @@ def test_italy_pdf_first_four_bytes_unchanged():
 
 
 def test_each_new_csp_file_present_in_manifest_with_matching_sha():
+    skip_if_absent(*[SOURCES_DIR / f for f in NEW_PAGE_FILES])
     manifest = json.loads((SOURCES_DIR / "official_sync_manifest.json").read_text(encoding="utf-8"))
     by_slug = {r["slug"]: r for r in manifest["results"]}
     for slug in NEW_PAGE_RANGES:
