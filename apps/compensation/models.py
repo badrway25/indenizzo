@@ -157,14 +157,19 @@ class CompensationDataset(models.Model):
                     | models.Q(valid_to__gte=models.F("valid_from"))
                 ),
             ),
-            # NOTA (follow-up provenance): la regola "APPROVED richiede
-            # source_version" è enforced a livello applicativo in clean()
-            # (sotto), NON come CheckConstraint DB in questa fase. Un
-            # CheckConstraint scatterebbe su ogni `.create()` e romperebbe ~65
-            # fixture di test che creano dataset APPROVED sintetici senza
-            # versione fonte. Il vincolo DB è PIANIFICATO: va applicato in una
-            # fase dedicata dopo aver aggiornato quelle fixture a fornire una
-            # source_version. Vedi report H1-5 follow-up.
+            # H1-9: backstop DB della regola "APPROVED richiede source_version"
+            # (già in clean()). Same-table check (status + source_version_id):
+            # nessun join, valido come CheckConstraint su SQLite e PostgreSQL.
+            # draft / needs_review / deprecated possono restare senza versione;
+            # solo APPROVED la richiede. Le fixture di test che creano dataset
+            # APPROVED forniscono ora una LegalSourceVersion (test-only).
+            models.CheckConstraint(
+                name="compdataset_approved_requires_source_version",
+                condition=(
+                    ~models.Q(status=DatasetStatus.APPROVED)
+                    | models.Q(source_version__isnull=False)
+                ),
+            ),
         ]
 
     def __str__(self) -> str:

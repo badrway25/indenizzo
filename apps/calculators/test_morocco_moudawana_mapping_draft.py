@@ -444,6 +444,7 @@ def ma_synthetic_approved_db(db):
         CompensationDataset,
         DatasetStatus,
     )
+    from apps.compensation.test_fixtures import approved_source_version
     from apps.jurisdictions.models import (
         Country,
         Currency,
@@ -480,6 +481,7 @@ def ma_synthetic_approved_db(db):
     )
     ds = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=juris,
         country=morocco,
         case_type=CaseType.INTERNATIONAL_INHERITANCE.value,
@@ -600,6 +602,7 @@ def italy_full_setup(db):
         CompensationTableRow,
         DatasetStatus,
     )
+    from apps.compensation.test_fixtures import approved_source_version
     from apps.jurisdictions.models import (
         Country,
         Currency,
@@ -637,6 +640,7 @@ def italy_full_setup(db):
     )
     base_ds = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=juris,
         country=italy,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
@@ -656,6 +660,7 @@ def italy_full_setup(db):
     )
     moral_ds = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=juris,
         country=italy,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,

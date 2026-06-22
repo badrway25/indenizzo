@@ -29,6 +29,7 @@ from apps.compensation.models import (
     CompensationTableRow,
     DatasetStatus,
 )
+from apps.compensation.test_fixtures import approved_source_version
 from apps.jurisdictions.models import Country, Jurisdiction
 from apps.legal_sources.enums import SourceStatus, SourceType
 from apps.legal_sources.models import LegalSource, LegalSourceVersion
@@ -247,6 +248,7 @@ def test_formula_can_be_approved_when_dataset_is_approved(italy, italy_jurisdict
     src = _approved_source(italy, italy_jurisdiction)
     dataset = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=italy_jurisdiction,
         country=italy,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
@@ -727,6 +729,7 @@ def test_calculator_gate_level3_formula_draft(italy, italy_jurisdiction):
     src = _approved_source(italy, italy_jurisdiction)
     dataset = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=italy_jurisdiction,
         country=italy,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
@@ -763,6 +766,7 @@ def test_calculator_with_all_approved_but_unknown_engine_stays_unavailable(
     src = _approved_source(italy, italy_jurisdiction)
     dataset = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=italy_jurisdiction,
         country=italy,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
@@ -807,6 +811,7 @@ def _build_full_stack(
     src = _approved_source(italy, italy_jurisdiction)
     dataset = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=italy_jurisdiction,
         country=italy,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
@@ -1128,6 +1133,7 @@ def test_row_amount_direct_uses_cell_value_as_final_amount(italy, italy_jurisdic
     src = _approved_source(italy, italy_jurisdiction)
     dataset = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=italy_jurisdiction,
         country=italy,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
@@ -1182,6 +1188,7 @@ def test_row_amount_direct_applies_fault_reduction(italy, italy_jurisdiction):
     src = _approved_source(italy, italy_jurisdiction)
     dataset = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=italy_jurisdiction,
         country=italy,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
@@ -1262,6 +1269,7 @@ def test_dataset_with_future_valid_from_is_not_used(italy, italy_jurisdiction):
     src = _approved_source(italy, italy_jurisdiction)
     dataset = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=italy_jurisdiction,
         country=italy,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,

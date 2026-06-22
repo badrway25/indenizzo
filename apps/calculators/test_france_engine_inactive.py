@@ -91,6 +91,7 @@ def _seed_fr_approved(
         CompensationTableRow,
         DatasetStatus,
     )
+    from apps.compensation.test_fixtures import approved_source_version
     from apps.legal_sources.enums import Reliability, SourceStatus, SourceType
     from apps.legal_sources.models import LegalSource
 
@@ -111,6 +112,7 @@ def _seed_fr_approved(
     ds_status = dataset_status or DatasetStatus.APPROVED
     ds = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=juris,
         country=france,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
@@ -416,6 +418,7 @@ def italy_smoke_fr_engine(db, fr_jurisdiction):
         CompensationTableRow,
         DatasetStatus,
     )
+    from apps.compensation.test_fixtures import approved_source_version
     from apps.jurisdictions.models import Country, Currency, Jurisdiction, Language
     from apps.legal_sources.enums import Reliability, SourceStatus, SourceType
     from apps.legal_sources.models import LegalSource
@@ -445,6 +448,7 @@ def italy_smoke_fr_engine(db, fr_jurisdiction):
     )
     base_ds = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=juris,
         country=italy,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
@@ -464,6 +468,7 @@ def italy_smoke_fr_engine(db, fr_jurisdiction):
     )
     moral_ds = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=juris,
         country=italy,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,

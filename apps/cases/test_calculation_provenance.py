@@ -151,15 +151,60 @@ def test_calculated_simulation_saves_provenance():
 
 
 @pytest.mark.django_db
-def test_provenance_honest_when_source_version_absent():
-    """An approved dataset without a source version must NOT fake provenance."""
-    _setup(with_source_version=False)
-    sim = _calculate()
-    assert sim.status == CalculationStatus.CALCULATED.value
-    ds = sim.calculation_provenance["dataset"]
-    assert ds["source_version_present"] is False
-    assert ds["source_content_hash"] is None
-    assert ds["source_version_label"] == ""
+def test_provenance_builder_honest_when_source_version_absent(db):
+    """The provenance builder must report an absent source version honestly
+    (not fake a hash). Verified directly on a DRAFT dataset, since H1-9 now
+    forbids an APPROVED dataset without a source version at the DB level."""
+    from apps.calculators.provenance import build_calculation_provenance
+
+    italy = Country.objects.create(code="IT", code_alpha3="ITA", name="Italia")
+    lang = Language.objects.create(code="it", name="Italiano")
+    jur = Jurisdiction.objects.create(
+        country=italy,
+        code="IT-NATIONAL",
+        name="Italia",
+        legal_system=Jurisdiction.LegalSystem.CIVIL_LAW,
+    )
+    src = LegalSource.objects.create(
+        slug="it-honest",
+        title="x",
+        country=italy,
+        jurisdiction=jur,
+        language=lang,
+        source_type=SourceType.MINISTRY_DECREE,
+        status=SourceStatus.APPROVED,
+        publication_date=date(2025, 1, 1),
+    )
+    # DRAFT dataset legitimately has no source_version (allowed by H1-9).
+    draft = CompensationDataset.objects.create(
+        source=src,
+        jurisdiction=jur,
+        country=italy,
+        case_type=ROAD,
+        name="draft",
+        status=DatasetStatus.DRAFT,
+    )
+    row = CompensationTableRow.objects.create(
+        dataset=draft, age_min=35, age_max=35, point_value=Decimal("1")
+    )
+    formula = CalculationFormula.objects.create(
+        dataset=draft,
+        code="c",
+        name="f",
+        status=DatasetStatus.DRAFT,
+        parameters={"engine": "e", "amount_rule": "r"},
+    )
+    prov = build_calculation_provenance(
+        engine="e",
+        engine_version="v",
+        amount_rule="r",
+        dataset=draft,
+        formula=formula,
+        rows=[row],
+    )
+    assert prov["dataset"]["source_version_present"] is False
+    assert prov["dataset"]["source_content_hash"] is None
+    assert prov["dataset"]["source_version_label"] == ""
 
 
 @pytest.mark.django_db

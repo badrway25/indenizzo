@@ -291,6 +291,7 @@ def _seed_full_stack_with_moral_range(*, range_active: bool):
         CompensationTableRow,
         DatasetStatus,
     )
+    from apps.compensation.test_fixtures import approved_source_version
     from apps.jurisdictions.models import Country, Jurisdiction, Language
     from apps.legal_sources.enums import SourceStatus, SourceType
     from apps.legal_sources.models import LegalSource
@@ -316,6 +317,7 @@ def _seed_full_stack_with_moral_range(*, range_active: bool):
     )
     base = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=juris,
         country=italy,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
@@ -335,6 +337,7 @@ def _seed_full_stack_with_moral_range(*, range_active: bool):
     )
     moral = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=juris,
         country=italy,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,

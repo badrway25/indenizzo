@@ -385,6 +385,7 @@ def _build_italy_tun_stack(italy: Country):
         CompensationTableRow,
         DatasetStatus,
     )
+    from apps.compensation.test_fixtures import approved_source_version
     from apps.jurisdictions.models import Jurisdiction, Language
     from apps.legal_sources.enums import Reliability, SourceStatus, SourceType
     from apps.legal_sources.models import LegalSource
@@ -408,6 +409,7 @@ def _build_italy_tun_stack(italy: Country):
     )
     dataset = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=jurisdiction,
         country=italy,
         case_type="road_accident_bodily_injury",

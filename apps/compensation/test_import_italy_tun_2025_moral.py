@@ -29,6 +29,7 @@ from apps.compensation.models import (
     DatasetStatus,
     ExtractionLog,
 )
+from apps.compensation.test_fixtures import approved_source_version
 from apps.jurisdictions.models import Country, Jurisdiction, Language
 from apps.legal_sources.enums import SourceStatus, SourceType
 from apps.legal_sources.models import LegalSource
@@ -83,6 +84,7 @@ def base_dataset_with_rows(approved_tun_source) -> CompensationDataset:
     """
     dataset = CompensationDataset.objects.create(
         source=approved_tun_source,
+        source_version=approved_source_version(approved_tun_source),
         jurisdiction=approved_tun_source.jurisdiction,
         country=approved_tun_source.country,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
@@ -310,6 +312,7 @@ def test_command_refuses_when_moral_dataset_is_not_draft(
     """Difesa: se per qualche motivo il dataset moral è approved, il command si rifiuta."""
     CompensationDataset.objects.create(
         source=approved_tun_source,
+        source_version=approved_source_version(approved_tun_source),
         jurisdiction=italy_jurisdiction,
         country=italy,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
