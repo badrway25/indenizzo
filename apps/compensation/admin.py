@@ -57,7 +57,7 @@ class CompensationDatasetAdmin(admin.ModelAdmin):
     )
     list_filter = ("status", "case_type", "country", "jurisdiction", "source__status")
     search_fields = ("name", "version_label", "notes", "source__title")
-    autocomplete_fields = ("source", "jurisdiction", "country")
+    autocomplete_fields = ("source", "source_version", "jurisdiction", "country")
     readonly_fields = ("created_at", "updated_at")
     inlines = [CompensationTableRowInline, CalculationFormulaInline]
 
@@ -67,7 +67,12 @@ class CompensationDatasetAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {"fields": ("name", "version_label", "case_type", "status")}),
-        (_("Source & geography"), {"fields": ("source", "jurisdiction", "country")}),
+        # `source_version` è la provenienza alla versione fonte specifica:
+        # obbligatoria (clean()) per i dataset APPROVED.
+        (
+            _("Source & geography"),
+            {"fields": ("source", "source_version", "jurisdiction", "country")},
+        ),
         (_("Validity"), {"fields": ("valid_from", "valid_to")}),
         (_("Notes"), {"fields": ("notes",)}),
         (_("Audit"), {"fields": ("created_at", "updated_at")}),

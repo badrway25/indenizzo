@@ -157,6 +157,14 @@ class CompensationDataset(models.Model):
                     | models.Q(valid_to__gte=models.F("valid_from"))
                 ),
             ),
+            # NOTA (follow-up provenance): la regola "APPROVED richiede
+            # source_version" è enforced a livello applicativo in clean()
+            # (sotto), NON come CheckConstraint DB in questa fase. Un
+            # CheckConstraint scatterebbe su ogni `.create()` e romperebbe ~65
+            # fixture di test che creano dataset APPROVED sintetici senza
+            # versione fonte. Il vincolo DB è PIANIFICATO: va applicato in una
+            # fase dedicata dopo aver aggiornato quelle fixture a fornire una
+            # source_version. Vedi report H1-5 follow-up.
         ]
 
     def __str__(self) -> str:
@@ -178,6 +186,18 @@ class CompensationDataset(models.Model):
                         "status": _(
                             "Cannot mark dataset APPROVED while its legal source "
                             "is not APPROVED."
+                        )
+                    }
+                )
+            # H1-5 follow-up (provenance): un dataset APPROVED deve dichiarare
+            # la VERSIONE fonte da cui i numeri sono trascritti. draft /
+            # needs_review / deprecated possono restare senza versione.
+            if not self.source_version_id:
+                raise ValidationError(
+                    {
+                        "source_version": _(
+                            "An approved dataset must reference the legal source "
+                            "version it was transcribed from."
                         )
                     }
                 )
