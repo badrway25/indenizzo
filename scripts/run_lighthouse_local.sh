@@ -109,17 +109,32 @@ for entry in "${TARGETS[@]}"; do
   outfile="${OUT_DIR}/${label}-desktop.json"
   printf '\n[%s] %s\n' "${label}" "${url}"
 
-  npx --yes lighthouse@latest "${url}" \
-    --output=json \
-    --output-path="${outfile}" \
-    --preset=desktop \
-    --chrome-flags="--headless --no-sandbox" \
-    --only-categories=performance,accessibility,best-practices,seo \
-    --quiet \
-    >/dev/null 2>&1 || true
-
-  if [ ! -f "${outfile}" ]; then
-    echo "  FAILED: no JSON written. Aborting."
+  # H1-10: bounded retry around report COLLECTION only (transient Chrome /
+  # artifact launch flakes). The score GATE below is single-shot and never
+  # retried, so a real budget miss still fails. `--disable-dev-shm-usage` is the
+  # key CI-stability flag (the small default /dev/shm crashes headless Chrome).
+  lh_collected=0
+  for attempt in 1 2; do
+    rm -f "${outfile}"
+    npx --yes lighthouse@latest "${url}" \
+      --output=json \
+      --output-path="${outfile}" \
+      --preset=desktop \
+      --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage --disable-gpu" \
+      --only-categories=performance,accessibility,best-practices,seo \
+      --quiet \
+      >/dev/null 2>&1 || true
+    if [ -s "${outfile}" ] && python -c "import json,sys; sys.exit(0 if json.load(open('${outfile}',encoding='utf-8')).get('categories') else 1)" 2>/dev/null; then
+      [ "${attempt}" -gt 1 ] && echo "  [retry] valid Lighthouse report on attempt ${attempt} (transient Chrome/artifact flake absorbed)."
+      lh_collected=1
+      break
+    fi
+    echo "  [retry] attempt ${attempt}/2: no valid Lighthouse JSON (Chrome launch/artifact flake)."
+    pkill -f chrome >/dev/null 2>&1 || true
+    sleep 3
+  done
+  if [ "${lh_collected}" -ne 1 ]; then
+    echo "  FAILED: Lighthouse produced no valid report after 2 attempts (infrastructure flake). Aborting."
     exit 3
   fi
 
