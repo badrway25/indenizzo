@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-19 17:05+0200\n"
+"POT-Creation-Date: 2026-06-22 11:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -257,7 +257,8 @@ msgstr "طُبّق خفضٌ بسبب المساهمة في الخطأ وفق ا�
 
 msgid ""
 "A fault reduction was applied uniformly to the min, central and max values."
-msgstr "طُبّق خفضٌ بسبب المساهمة في الخطأ بشكلٍ موحَّد على القيم الدنيا والوسطى والقصوى."
+msgstr ""
+"طُبّق خفضٌ بسبب المساهمة في الخطأ بشكلٍ موحَّد على القيم الدنيا والوسطى والقصوى."
 
 #, python-brace-format
 msgid "Formula applied: {formula} ({rule})."
@@ -615,6 +616,9 @@ msgstr ""
 msgid "sources snapshot"
 msgstr ""
 
+msgid "calculation provenance"
+msgstr ""
+
 msgid "status"
 msgstr ""
 
@@ -847,6 +851,12 @@ msgstr ""
 msgid "Fonte legale da cui i dati sono estratti."
 msgstr ""
 
+msgid "legal source version"
+msgstr ""
+
+msgid "Versione specifica della fonte da cui i dati sono trascritti."
+msgstr ""
+
 msgid ""
 "Tipo di caso a cui il dataset si applica. Determina quale calculator può "
 "eventualmente leggerlo."
@@ -885,7 +895,15 @@ msgstr ""
 msgid "Cannot mark dataset APPROVED while its legal source is not APPROVED."
 msgstr ""
 
+msgid ""
+"An approved dataset must reference the legal source version it was "
+"transcribed from."
+msgstr ""
+
 msgid "`valid_to` must be greater than or equal to `valid_from`."
+msgstr ""
+
+msgid "The source version must belong to the dataset's legal source."
 msgstr ""
 
 msgid "dataset"
@@ -2777,9 +2795,6 @@ msgstr ""
 msgid "SHA-256 del contenuto canonico, per integrità."
 msgstr ""
 
-msgid "legal source version"
-msgstr ""
-
 msgid "legal source versions"
 msgstr ""
 
@@ -4464,6 +4479,28 @@ msgid ""
 "This simulation is indicative and does not constitute legal advice or "
 "guarantee of outcome."
 msgstr "هذه المحاكاة إرشادية ولا تعدّ رأيًا قانونيًا ولا ضمانًا للنتيجة."
+
+msgid "Calculation traceability"
+msgstr ""
+
+msgid "Tracked and reproducible calculation."
+msgstr ""
+
+msgid "Source version"
+msgstr ""
+
+#, fuzzy
+#| msgid "Sources of law"
+msgid "Source hash"
+msgstr "مصادر القانون"
+
+msgid "Engine version"
+msgstr ""
+
+#, fuzzy
+#| msgid "Calculated"
+msgid "Calculation date"
+msgstr "محسوب"
 
 #, fuzzy
 #| msgid "Useful pages"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-19 17:05+0200\n"
+"POT-Creation-Date: 2026-06-22 11:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -275,11 +275,15 @@ msgstr ""
 "cas."
 
 msgid "A fault reduction was applied as declared by the approved formula."
-msgstr "Une réduction pour partage de responsabilité a été appliquée conformément à la formule approuvée."
+msgstr ""
+"Une réduction pour partage de responsabilité a été appliquée conformément à "
+"la formule approuvée."
 
 msgid ""
 "A fault reduction was applied uniformly to the min, central and max values."
-msgstr "Une réduction pour partage de responsabilité a été appliquée uniformément aux valeurs minimale, centrale et maximale."
+msgstr ""
+"Une réduction pour partage de responsabilité a été appliquée uniformément "
+"aux valeurs minimale, centrale et maximale."
 
 #, python-brace-format
 msgid "Formula applied: {formula} ({rule})."
@@ -649,6 +653,9 @@ msgstr ""
 msgid "sources snapshot"
 msgstr ""
 
+msgid "calculation provenance"
+msgstr ""
+
 msgid "status"
 msgstr ""
 
@@ -897,6 +904,12 @@ msgstr ""
 msgid "Fonte legale da cui i dati sono estratti."
 msgstr ""
 
+msgid "legal source version"
+msgstr ""
+
+msgid "Versione specifica della fonte da cui i dati sono trascritti."
+msgstr ""
+
 msgid ""
 "Tipo di caso a cui il dataset si applica. Determina quale calculator può "
 "eventualmente leggerlo."
@@ -935,7 +948,15 @@ msgstr ""
 msgid "Cannot mark dataset APPROVED while its legal source is not APPROVED."
 msgstr ""
 
+msgid ""
+"An approved dataset must reference the legal source version it was "
+"transcribed from."
+msgstr ""
+
 msgid "`valid_to` must be greater than or equal to `valid_from`."
+msgstr ""
+
+msgid "The source version must belong to the dataset's legal source."
 msgstr ""
 
 msgid "dataset"
@@ -2844,9 +2865,6 @@ msgstr ""
 msgid "SHA-256 del contenuto canonico, per integrità."
 msgstr ""
 
-msgid "legal source version"
-msgstr ""
-
 msgid "legal source versions"
 msgstr ""
 
@@ -4614,6 +4632,28 @@ msgid ""
 msgstr ""
 "Cette simulation est indicative et ne constitue ni un avis juridique ni une "
 "garantie de résultat."
+
+msgid "Calculation traceability"
+msgstr ""
+
+msgid "Tracked and reproducible calculation."
+msgstr ""
+
+msgid "Source version"
+msgstr ""
+
+#, fuzzy
+#| msgid "Sources of law"
+msgid "Source hash"
+msgstr "Sources de droit"
+
+msgid "Engine version"
+msgstr ""
+
+#, fuzzy
+#| msgid "Calculated"
+msgid "Calculation date"
+msgstr "Calculé"
 
 #, fuzzy
 #| msgid "Useful pages"

@@ -236,6 +236,33 @@
     </p>
   </div>
 
+  {% comment %}
+    H1-8 — calculation provenance summary. Only rendered when the result is
+    calculated AND a provenance snapshot exists (historical simulations omit
+    it). Never dumps the raw provenance JSON; shows only the source version,
+    abbreviated content hash, engine version and calculation date.
+  {% endcomment %}
+  {% if provenance_summary %}
+  <div class="mt-6 rounded-2xl border border-stone2-200 bg-sand-50 p-6 text-sm" data-testid="calculation-provenance">
+    <p class="text-[11px] uppercase tracking-[0.16em] text-gold-600 font-semibold">{% translate "Calculation traceability" %}</p>
+    <p class="mt-2 text-stone2-700">{% translate "Tracked and reproducible calculation." %}</p>
+    <dl class="mt-3 grid gap-x-8 gap-y-2 sm:grid-cols-2 text-stone2-700">
+      {% if provenance_summary.source_version_label %}
+      <div class="flex justify-between gap-4"><dt class="text-stone2-500">{% translate "Source version" %}</dt><dd class="font-medium">{{ provenance_summary.source_version_label }}</dd></div>
+      {% endif %}
+      {% if provenance_summary.source_hash_short %}
+      <div class="flex justify-between gap-4"><dt class="text-stone2-500">{% translate "Source hash" %}</dt><dd class="font-mono text-xs">{{ provenance_summary.source_hash_short }}…</dd></div>
+      {% endif %}
+      {% if provenance_summary.engine_version %}
+      <div class="flex justify-between gap-4"><dt class="text-stone2-500">{% translate "Engine version" %}</dt><dd class="font-medium">{{ provenance_summary.engine_version }}</dd></div>
+      {% endif %}
+      {% if provenance_summary.calculated_date %}
+      <div class="flex justify-between gap-4"><dt class="text-stone2-500">{% translate "Calculation date" %}</dt><dd class="font-medium">{{ provenance_summary.calculated_date }}</dd></div>
+      {% endif %}
+    </dl>
+  </div>
+  {% endif %}
+
   {# F-p0-leg-2-mandate — separazione fra simulazione e incarico. #}
   {% include "partials/mandate_notice.html" %}
 
