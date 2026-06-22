@@ -78,6 +78,7 @@ def _seed_tn_source_and_dataset(
     """Seed an APPROVED TN LegalSource + CompensationDataset."""
     from apps.calculators.enums import CaseType
     from apps.compensation.models import CompensationDataset, DatasetStatus
+    from apps.compensation.test_fixtures import approved_source_version
     from apps.legal_sources.enums import Reliability, SourceStatus, SourceType
     from apps.legal_sources.models import LegalSource
 
@@ -97,6 +98,7 @@ def _seed_tn_source_and_dataset(
     )
     ds = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=juris,
         country=tunisia,
         case_type=CaseType.INTERNATIONAL_INHERITANCE.value,
@@ -478,6 +480,7 @@ def italy_smoke_tn_engine(db, tn_jurisdiction):
         CompensationTableRow,
         DatasetStatus,
     )
+    from apps.compensation.test_fixtures import approved_source_version
     from apps.jurisdictions.models import Country, Currency, Jurisdiction, Language
     from apps.legal_sources.enums import Reliability, SourceStatus, SourceType
     from apps.legal_sources.models import LegalSource
@@ -506,6 +509,7 @@ def italy_smoke_tn_engine(db, tn_jurisdiction):
     )
     base_ds = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=juris,
         country=italy,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
@@ -525,6 +529,7 @@ def italy_smoke_tn_engine(db, tn_jurisdiction):
     )
     moral_ds = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=juris,
         country=italy,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,

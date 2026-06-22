@@ -38,6 +38,7 @@ from apps.compensation.services import (
     get_approved_dataset_by_version_label,
     is_range_rule,
 )
+from apps.compensation.test_fixtures import approved_source_version
 from apps.jurisdictions.models import Country, Jurisdiction, Language
 from apps.legal_sources.enums import SourceStatus, SourceType
 from apps.legal_sources.models import LegalSource
@@ -192,6 +193,7 @@ def base_dataset_approved(approved_source) -> CompensationDataset:
     """Tabella 1 stub APPROVED with one fixture row (1 EUR)."""
     ds = CompensationDataset.objects.create(
         source=approved_source,
+        source_version=approved_source_version(approved_source),
         jurisdiction=approved_source.jurisdiction,
         country=approved_source.country,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
@@ -217,6 +219,7 @@ def _make_moral_dataset(
 ) -> CompensationDataset:
     ds = CompensationDataset.objects.create(
         source=source,
+        source_version=approved_source_version(source),
         jurisdiction=source.jurisdiction,
         country=source.country,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
@@ -511,6 +514,7 @@ def test_calculator_unavailable_when_range_non_monotone(base_dataset_approved, a
     # Build a moral dataset where mid < min (corrupted).
     moral = CompensationDataset.objects.create(
         source=approved_source,
+        source_version=approved_source_version(approved_source),
         jurisdiction=approved_source.jurisdiction,
         country=approved_source.country,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,

@@ -43,6 +43,7 @@ from pathlib import Path
 
 import pytest
 
+from apps.compensation.test_fixtures import approved_source_version
 from apps.legal_sources.legal_data_test_support import skip_if_absent
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -109,6 +110,7 @@ def _seed_ma_source_and_dataset(ma_jurisdiction, *, slug_suffix="default"):
     )
     ds = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=juris,
         country=morocco,
         case_type=CaseType.INTERNATIONAL_INHERITANCE.value,
@@ -432,6 +434,7 @@ def italy_full_setup(db):
     )
     base_ds = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=juris,
         country=italy,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
@@ -451,6 +454,7 @@ def italy_full_setup(db):
     )
     moral_ds = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=juris,
         country=italy,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,

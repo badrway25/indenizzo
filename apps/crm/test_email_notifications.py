@@ -86,6 +86,7 @@ def italy_smoke_stack(db):
         CompensationTableRow,
         DatasetStatus,
     )
+    from apps.compensation.test_fixtures import approved_source_version
     from apps.jurisdictions.models import Country, Currency, Jurisdiction, Language
     from apps.legal_sources.enums import SourceStatus, SourceType
     from apps.legal_sources.models import LegalSource
@@ -114,6 +115,7 @@ def italy_smoke_stack(db):
     )
     base_ds = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=juris,
         country=italy,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
@@ -133,6 +135,7 @@ def italy_smoke_stack(db):
     )
     moral_ds = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=juris,
         country=italy,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,

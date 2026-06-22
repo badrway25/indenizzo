@@ -80,6 +80,7 @@ def _seed_be_source_and_dataset(
     """
     from apps.calculators.enums import CaseType
     from apps.compensation.models import CompensationDataset, DatasetStatus
+    from apps.compensation.test_fixtures import approved_source_version
     from apps.legal_sources.enums import Reliability, SourceStatus, SourceType
     from apps.legal_sources.models import LegalSource
 
@@ -99,6 +100,7 @@ def _seed_be_source_and_dataset(
     )
     ds = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=juris,
         country=belgium,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
@@ -561,6 +563,7 @@ def italy_smoke_be_engine(db, be_jurisdiction):
         CompensationTableRow,
         DatasetStatus,
     )
+    from apps.compensation.test_fixtures import approved_source_version
     from apps.jurisdictions.models import Country, Currency, Jurisdiction, Language
     from apps.legal_sources.enums import Reliability, SourceStatus, SourceType
     from apps.legal_sources.models import LegalSource
@@ -589,6 +592,7 @@ def italy_smoke_be_engine(db, be_jurisdiction):
     )
     base_ds = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=juris,
         country=italy,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
@@ -608,6 +612,7 @@ def italy_smoke_be_engine(db, be_jurisdiction):
     )
     moral_ds = CompensationDataset.objects.create(
         source=src,
+        source_version=approved_source_version(src),
         jurisdiction=juris,
         country=italy,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
