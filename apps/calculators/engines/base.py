@@ -134,6 +134,7 @@ class BaseCalculator(ABC):
         warnings: list[str] | None = None,
         missing_documents: list[str] | None = None,
         confidence: str = ConfidenceLevel.LOW.value,
+        provenance: dict | None = None,
     ) -> CalculationResult:
         return CalculationResult(
             simulation_id=self.simulation_id,
@@ -151,6 +152,7 @@ class BaseCalculator(ABC):
             missing_documents=list(missing_documents or []),
             confidence=confidence,
             legal_disclaimer=self.get_disclaimer(),
+            provenance=provenance,
         )
 
 

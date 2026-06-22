@@ -54,11 +54,16 @@ from apps.legal_sources.models import LegalSource
 
 from .. import diagnostics as _diag
 from ..enums import CalculationStatus, CaseType, ConfidenceLevel
+from ..provenance import build_calculation_provenance
 from ..registry import register_calculator
 from ..schemas import BreakdownItem, CalculationResult, SourceRef
 from .base import BaseCalculator
 
 JURISDICTION_CODE_IT = "IT-NATIONAL"
+
+# H1-8: version tag of this engine's calculation logic, recorded in the
+# provenance snapshot. Bump when the calculation behaviour changes.
+ITALY_ENGINE_VERSION = "italy-1.0"
 
 
 class _ItalyPlaceholderCalculator(BaseCalculator):
@@ -283,6 +288,15 @@ class ItalyRoadAccidentBodilyInjuryCalculator(_ItalyPlaceholderCalculator):
                     )
                 )
 
+        provenance = build_calculation_provenance(
+            engine=str(formula.parameters.get("engine") or ""),
+            engine_version=ITALY_ENGINE_VERSION,
+            amount_rule=rule,
+            dataset=dataset,
+            formula=formula,
+            rows=[match.row],
+        )
+
         return self._build_result(
             status=CalculationStatus.CALCULATED.value,
             estimated_min=amount,
@@ -293,6 +307,7 @@ class ItalyRoadAccidentBodilyInjuryCalculator(_ItalyPlaceholderCalculator):
             assumptions=assumptions,
             warnings=warnings_out,
             confidence=ConfidenceLevel.MEDIUM.value,
+            provenance=provenance,
         )
 
     # ------------------------------------------------------------------
@@ -448,6 +463,16 @@ class ItalyRoadAccidentBodilyInjuryCalculator(_ItalyPlaceholderCalculator):
                         context={"field": field},
                     )
                 )
+        provenance = build_calculation_provenance(
+            engine=str(formula.parameters.get("engine") or ""),
+            engine_version=ITALY_ENGINE_VERSION,
+            amount_rule=str(params["amount_rule"]),
+            dataset=dataset,
+            formula=formula,
+            rows=[matches["min"], matches["mid"], matches["max"]],
+            range_dataset=range_dataset,
+        )
+
         return self._build_result(
             status=CalculationStatus.CALCULATED.value,
             estimated_min=amounts.min_amount,
@@ -458,6 +483,7 @@ class ItalyRoadAccidentBodilyInjuryCalculator(_ItalyPlaceholderCalculator):
             assumptions=assumptions,
             warnings=warnings_out,
             confidence=ConfidenceLevel.MEDIUM.value,
+            provenance=provenance,
         )
 
     # ------------------------------------------------------------------

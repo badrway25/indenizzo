@@ -91,6 +91,11 @@ class Simulation(models.Model):
     input_data = models.JSONField(_("input data"), default=dict, blank=True)
     output_data = models.JSONField(_("output data"), default=dict, blank=True)
     sources_snapshot = models.JSONField(_("sources snapshot"), default=list, blank=True)
+    # H1-8: deterministic, PII-safe provenance of the calculation (which dataset
+    # version / source version + content hash / formula / table rows produced the
+    # amounts). Populated only for CALCULATED simulations; `{}` otherwise and for
+    # historical simulations. Lets a stored estimate be audited and re-derived.
+    calculation_provenance = models.JSONField(_("calculation provenance"), default=dict, blank=True)
 
     status = models.CharField(
         _("status"),
