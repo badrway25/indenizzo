@@ -1,0 +1,67 @@
+# H1-10 — Provenance ops drift check (MANUAL ONLY).
+#
+# Runs `verify_calculation_provenance --all-calculated --fail-on-drift` to detect
+# whether the legal data underneath stored calculated simulations has drifted.
+# Read-only and PII-safe (the command never prints input_data / victim / health
+# data). This is NOT a per-PR gate: a fresh CI checkout has an empty DB.
+#
+# To check a REAL database, configure a repository or environment secret
+# `OPS_DATABASE_URL` (a read replica is recommended) and run this workflow from
+# the Actions tab. Without it, the job runs against an ephemeral empty DB and is
+# a documented no-op (0 simulations -> no drift). See
+# docs/ops/PROVENANCE_DRIFT_CHECK_RUNBOOK.md.
+#
+# It NEVER migrates a real DB: migrations run only on the empty-DB fallback.
+
+name: Provenance ops drift check
+
+on:
+  workflow_dispatch:
+    inputs:
+      acknowledge:
+        description: "Confirm you intend a read-only drift check (set OPS_DATABASE_URL for a real DB; empty DB = no-op)."
+        required: false
+        default: "yes"
+
+permissions:
+  contents: read
+
+jobs:
+  drift-check:
+    name: Provenance drift check (manual, read-only)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      DJANGO_SECRET_KEY: django-insecure-ops-drift-check-ephemeral
+      DJANGO_DEBUG: "false"
+      DJANGO_ALLOWED_HOSTS: 127.0.0.1,localhost
+      # Real check: set repo/environment secret OPS_DATABASE_URL. Empty -> sqlite.
+      DATABASE_URL: ${{ secrets.OPS_DATABASE_URL }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Prepare database
+        run: |
+          if [ -z "${DATABASE_URL}" ]; then
+            echo "::warning::OPS_DATABASE_URL not set — running against an ephemeral empty DB."
+            echo "::warning::Configure the secret + a real (read-replica) DB for a meaningful check. See docs/ops/PROVENANCE_DRIFT_CHECK_RUNBOOK.md."
+            python manage.py migrate --noinput --skip-checks
+          else
+            echo "Using a configured database (OPS_DATABASE_URL). NOT migrating it — read-only check only."
+          fi
+
+      - name: Provenance drift check (read-only, PII-safe)
+        run: |
+          python manage.py verify_calculation_provenance \
+            --all-calculated --fail-on-drift --format text --skip-checks
