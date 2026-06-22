@@ -179,10 +179,21 @@ def test_country_landing_og_image_is_absolute_url(path):
     assert og_image is not None
     # URL assoluto: deve iniziare con http:// o https://
     assert og_image.startswith(("http://", "https://")), f"og:image not absolute: {og_image!r}"
-    # Punta al file static placeholder OPPURE a una Pexels image cached
-    # localmente (pass premium-visual-i18n: quando il manifest ha una
-    # entry country_landing::<ISO>, og:image override sul file media).
-    assert ("og-country-default" in og_image) or ("/media/pexels/" in og_image)
+    # og:image è una risorsa OG valida. La logica reale
+    # (`apps.core.seo._resolve_og_image_static_path`) sceglie, in ordine:
+    #   1. la PNG country-specific `static/img/og/og-<slug>.png`,
+    #   2. il default `static/img/og/og-country-default.png`,
+    #   3. il fallback SVG `static/img/og-country-default.svg`,
+    # e in `_render_country_landing` può fare override su una Pexels image
+    # cached (`/media/pexels/...`) quando il media è presente. Su un checkout
+    # senza media Pexels (es. CI) si ricade sulla PNG static country-specific:
+    # accettiamo tutte queste forme valide, senza ipotizzare la presenza del
+    # media.
+    assert (
+        ("/static/img/og/" in og_image)  # country-specific or default PNG
+        or ("og-country-default" in og_image)  # default PNG or SVG fallback
+        or ("/media/pexels/" in og_image)  # Pexels override (media present)
+    ), f"og:image is not a recognised OG asset: {og_image!r}"
     # Coerenza twitter:image
     assert _meta_name(body, "twitter:image") == og_image
 

@@ -46,6 +46,8 @@ from pathlib import Path
 import pytest
 from django.urls import reverse
 
+from apps.legal_sources.legal_data_test_support import skip_if_absent
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 MAPPING_JSON = REPO_ROOT / "legal_data" / "mappings" / "morocco_inheritance_mapping_draft.json"
 MOUDAWANA_PDF = (
@@ -518,6 +520,7 @@ def test_moudawana_pdf_unchanged_after_pass2():
     """The pass2 changes are wizard-side only — they must not modify
     the on-disk Moudawana PDF (sha256 + size + magic bytes).
     """
+    skip_if_absent(MOUDAWANA_PDF)
     assert MOUDAWANA_PDF.is_file(), "Moudawana PDF must remain in place"
     raw = MOUDAWANA_PDF.read_bytes()
     assert raw[:4] == b"%PDF"

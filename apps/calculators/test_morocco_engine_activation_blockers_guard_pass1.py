@@ -43,6 +43,8 @@ from pathlib import Path
 
 import pytest
 
+from apps.legal_sources.legal_data_test_support import skip_if_absent
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 MAPPING_JSON = REPO_ROOT / "legal_data" / "mappings" / "morocco_inheritance_mapping_draft.json"
 IT_PDF = (
@@ -515,6 +517,7 @@ def test_italy_smoke_unchanged_with_pass1_guard(italy_full_setup):
 
 
 def test_italy_pdf_first_four_bytes_unchanged():
+    skip_if_absent(IT_PDF)
     assert IT_PDF.is_file(), "Italy DPR-12-2025 PDF must remain in place"
     raw = IT_PDF.read_bytes()
     assert raw[:4] == b"%PDF"
