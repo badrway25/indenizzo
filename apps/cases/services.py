@@ -272,6 +272,18 @@ def _apply_result_to_simulation(simulation: Simulation, result: CalculationResul
     simulation.estimated_min = _to_decimal(result.estimated_min)
     simulation.estimated_mid = _to_decimal(result.estimated_mid)
     simulation.estimated_max = _to_decimal(result.estimated_max)
+    # H1-8: persist calculation provenance ONLY for a genuine calculated result
+    # that carries a provenance snapshot. For any other status (unavailable /
+    # insufficient / error) the field stays `{}` — fail-closed, never fake
+    # provenance. `calculated_at` is stamped here (runtime), keeping the engine
+    # deterministic.
+    if result.status == CalculationStatus.CALCULATED.value and result.provenance:
+        simulation.calculation_provenance = {
+            **result.provenance,
+            "calculated_at": timezone.now().isoformat(),
+        }
+    else:
+        simulation.calculation_provenance = {}
 
 
 _INHERITANCE_CASE_TYPES = {"international_inheritance", "inheritance"}

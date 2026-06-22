@@ -320,6 +320,22 @@ def wizard_result(request, public_id: uuid.UUID):
 
     recommended_landings = get_recommended_landings(case_type_value)
 
+    # H1-8: compact, public-safe provenance summary. Only display-safe fields
+    # (source version label, abbreviated content hash, engine version, calc
+    # date) — never the raw JSON. Present only on the calculated path and only
+    # when a provenance snapshot exists (historical simulations omit it).
+    provenance = simulation.calculation_provenance or {}
+    provenance_summary = None
+    if has_estimate and provenance:
+        prov_dataset = provenance.get("dataset") or {}
+        content_hash = prov_dataset.get("source_content_hash") or ""
+        provenance_summary = {
+            "source_version_label": prov_dataset.get("source_version_label") or "",
+            "source_hash_short": content_hash[:12] if content_hash else "",
+            "engine_version": provenance.get("engine_version") or "",
+            "calculated_date": (provenance.get("calculated_at") or "")[:10],
+        }
+
     return render(
         request,
         "public/wizard_result.html",
@@ -336,6 +352,7 @@ def wizard_result(request, public_id: uuid.UUID):
             "public_status": public_status,
             "public_message": public_message,
             "recommended_landings": recommended_landings,
+            "provenance_summary": provenance_summary,
         },
     )
 

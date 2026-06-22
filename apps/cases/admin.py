@@ -88,6 +88,7 @@ class SimulationAdmin(admin.ModelAdmin):
         "input_data",
         "output_data",
         "sources_snapshot",
+        "calculation_provenance",
         "status",
         "confidence",
         "currency",
@@ -121,6 +122,7 @@ class SimulationAdmin(admin.ModelAdmin):
                     "estimated_max",
                     "output_data",
                     "sources_snapshot",
+                    "calculation_provenance",
                 )
             },
         ),

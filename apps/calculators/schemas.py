@@ -121,6 +121,13 @@ class CalculationResult:
     missing_documents: list[str] = field(default_factory=list)
     confidence: str = ConfidenceLevel.LOW.value
 
+    # H1-8: calculation-provenance snapshot (which dataset version / source
+    # version / hash / formula / rows produced the amounts). Deliberately kept
+    # OUT of `to_dict()`/`output_data`: it is persisted into the dedicated
+    # `Simulation.calculation_provenance` field by the service layer, so existing
+    # readers of `output_data` are unaffected. `None` for non-calculated results.
+    provenance: dict[str, Any] | None = None
+
     def to_dict(self) -> dict[str, Any]:
         return {
             "simulation_id": self.simulation_id,

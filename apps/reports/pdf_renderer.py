@@ -140,6 +140,7 @@ def render_simulation_pdf_bytes(simulation: Simulation, *, language: str | None 
     story.extend(_build_warnings(simulation, labels, styles))
     story.extend(_build_missing(simulation, labels, styles))
     story.extend(_build_assumptions(simulation, labels, styles))
+    story.extend(_build_provenance(simulation, labels, styles))
     story.append(PageBreak())
     story.extend(_build_disclaimer(simulation, labels, styles, lang))
     story.extend(_build_cta(simulation, labels, styles))
@@ -299,6 +300,36 @@ def _build_sources(simulation: Simulation, labels, styles) -> list[Any]:
             )
         body.append(Spacer(1, 3 * mm))
 
+    body.append(Spacer(1, 4 * mm))
+    return body
+
+
+def _build_provenance(simulation: Simulation, labels, styles) -> list[Any]:
+    """H1-8: a compact, read-only provenance section.
+
+    Rendered only for a calculated simulation that carries a provenance
+    snapshot (historical simulations omit it). Shows source version,
+    abbreviated content hash, engine version and calculation date — never the
+    raw JSON. Reads from stored data; never recomputes.
+    """
+    provenance = simulation.calculation_provenance or {}
+    if simulation.status != "calculated" or not provenance:
+        return []
+
+    dataset = provenance.get("dataset") or {}
+    content_hash = dataset.get("source_content_hash") or ""
+    rows = [
+        (labels["label_source_version"], dataset.get("source_version_label") or "—"),
+        (labels["label_source_hash"], (content_hash[:12] + "…") if content_hash else "—"),
+        (labels["label_engine_version"], provenance.get("engine_version") or "—"),
+        (labels["label_calc_date"], (provenance.get("calculated_at") or "")[:10] or "—"),
+    ]
+    body: list[Any] = [
+        Paragraph(labels["section_provenance"], styles["h2"]),
+        Paragraph(labels["provenance_tagline"], styles["body_muted"]),
+    ]
+    for label, value in rows:
+        body.append(Paragraph(f"<b>{_escape(label)}:</b> {_escape(str(value))}", styles["body"]))
     body.append(Spacer(1, 4 * mm))
     return body
 
