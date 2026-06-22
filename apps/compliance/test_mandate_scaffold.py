@@ -226,8 +226,7 @@ def test_E008_fails_when_status_not_signed():
 def test_E008_fails_when_require_flag_off():
     issues = check_mandate_template_signed_in_production(app_configs=None)
     assert any(
-        i.id == "core.E008" and "REQUIRE_MANDATE_BEFORE_CASE_ACTIVATION" in i.msg
-        for i in issues
+        i.id == "core.E008" and "REQUIRE_MANDATE_BEFORE_CASE_ACTIVATION" in i.msg for i in issues
     )
 
 
@@ -251,9 +250,10 @@ def test_E008_passes_with_signed_and_flag_on():
 def test_contact_thank_you_renders_mandate_notice():
     body = Client().get("/contact/thank-you/").content.decode("utf-8")
     assert "data-mandate-notice" in body
-    # The visible English label of the section, present even before
-    # translations are populated.
-    assert "Professional engagement" in body or "engagement" in body.lower()
+    # The mandate section renders its copy — locale-robust: the default IT page
+    # now translates "Professional engagement" -> "Incarico professionale"
+    # (C1 i18n), and the body mentions the engagement/incarico either way.
+    assert "incarico" in body.lower() or "engagement" in body.lower()
 
 
 @pytest.mark.django_db
