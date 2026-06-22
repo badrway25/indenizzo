@@ -31,7 +31,7 @@ from apps.compensation.models import (
 )
 from apps.jurisdictions.models import Country, Jurisdiction
 from apps.legal_sources.enums import SourceStatus, SourceType
-from apps.legal_sources.models import LegalSource
+from apps.legal_sources.models import LegalSource, LegalSourceVersion
 
 
 @pytest.fixture
@@ -112,8 +112,12 @@ def test_dataset_cannot_be_approved_if_source_is_not_approved(italy, italy_juris
 @pytest.mark.django_db
 def test_dataset_can_be_approved_when_source_is_approved(italy, italy_jurisdiction):
     src = _approved_source(italy, italy_jurisdiction)
+    # H1-5 follow-up: un dataset APPROVED deve dichiarare anche la versione
+    # fonte da cui i numeri sono trascritti.
+    version = LegalSourceVersion.objects.create(source=src, version_label="v1")
     dataset = CompensationDataset(
         source=src,
+        source_version=version,
         jurisdiction=italy_jurisdiction,
         country=italy,
         case_type=CaseType.ROAD_ACCIDENT_BODILY_INJURY.value,
