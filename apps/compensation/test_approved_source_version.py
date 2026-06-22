@@ -121,3 +121,57 @@ def test_source_version_fk_is_protected(approved_source):
     ds.save()
     with pytest.raises(ProtectedError):
         version.delete()
+
+
+# ---------------------------------------------------------------------------
+# H1-9: DB CheckConstraint (backstops clean() for non-ORM paths). `.create()`
+# bypasses clean(), so the DB itself must reject an approved dataset without a
+# source version.
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.django_db
+def test_db_rejects_approved_without_source_version(approved_source):
+    from django.db import IntegrityError, transaction
+
+    with pytest.raises(IntegrityError):
+        with transaction.atomic():
+            CompensationDataset.objects.create(
+                source=approved_source,
+                jurisdiction=approved_source.jurisdiction,
+                country=approved_source.country,
+                case_type=ROAD,
+                name="bad",
+                status=DatasetStatus.APPROVED,
+                source_version=None,
+            )
+
+
+@pytest.mark.django_db
+def test_db_accepts_draft_without_source_version(approved_source):
+    # draft / needs_review may stay without a version even via raw create().
+    CompensationDataset.objects.create(
+        source=approved_source,
+        jurisdiction=approved_source.jurisdiction,
+        country=approved_source.country,
+        case_type=ROAD,
+        name="draft",
+        status=DatasetStatus.DRAFT,
+        source_version=None,
+    )
+    assert CompensationDataset.objects.filter(status=DatasetStatus.DRAFT).count() == 1
+
+
+@pytest.mark.django_db
+def test_db_accepts_approved_with_source_version(approved_source):
+    version = LegalSourceVersion.objects.create(source=approved_source, version_label="v1")
+    CompensationDataset.objects.create(
+        source=approved_source,
+        jurisdiction=approved_source.jurisdiction,
+        country=approved_source.country,
+        case_type=ROAD,
+        name="ok",
+        status=DatasetStatus.APPROVED,
+        source_version=version,
+    )
+    assert CompensationDataset.objects.filter(status=DatasetStatus.APPROVED).count() == 1
