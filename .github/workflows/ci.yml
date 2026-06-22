@@ -73,6 +73,16 @@ jobs:
       - name: pytest
         run: pytest -q
 
+      # H1-8.2 provenance drift guard. Runs the real
+      # `verify_calculation_provenance` command (fail-closed) over a
+      # fixture-seeded canary: it fails if the IT canary stops reproducing
+      # (35/10/0 -> 26 268 / 27 353 / 28 439) or if the verifier stops
+      # detecting tampered legal data. Deterministic (no gitignored legal_data,
+      # no network, no PII) — verifies the engine, not the live approved DB
+      # (that is a periodic ops check; see the runbook).
+      - name: Provenance drift guard (canary)
+        run: pytest -q apps/cases/test_provenance_drift_guard.py
+
       - name: Deontological content hygiene (--strict)
         run: python scripts/audit_legal_content_hygiene.py --strict
 
