@@ -77,8 +77,20 @@ class SimulationAdmin(admin.ModelAdmin):
     inlines = [SimulationEventInline]
     actions = ("anonymize_selected",)
 
+    @admin.display(description=_("provenance verification"))
+    def provenance_verification(self, obj: Simulation) -> str:
+        """H1-8.1: read-only reproducibility status, computed on the detail
+        view only (never in list_display, to avoid per-row queries)."""
+        from .provenance_verifier import verify_simulation
+
+        res = verify_simulation(obj)
+        failed = [c["name"] for c in res["checks"] if not c["ok"]]
+        detail = f" — failed: {', '.join(failed)}" if failed else ""
+        return f"{res['status']}: {res['summary']}{detail}"
+
     readonly_fields = (
         "public_id",
+        "provenance_verification",
         "user",
         "session_key",
         "jurisdiction",
@@ -123,6 +135,7 @@ class SimulationAdmin(admin.ModelAdmin):
                     "output_data",
                     "sources_snapshot",
                     "calculation_provenance",
+                    "provenance_verification",
                 )
             },
         ),
