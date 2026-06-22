@@ -30,14 +30,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 HOME_HTML = REPO_ROOT / "templates" / "public" / "home.html"
 HERO_PARTIAL = REPO_ROOT / "templates" / "partials" / "_premium_hero_image.html"
 SETTINGS_PY = REPO_ROOT / "config" / "settings.py"
-COMPRESS_CMD = (
-    REPO_ROOT
-    / "apps"
-    / "core"
-    / "management"
-    / "commands"
-    / "compress_pexels_images.py"
-)
+COMPRESS_CMD = REPO_ROOT / "apps" / "core" / "management" / "commands" / "compress_pexels_images.py"
 VIEWS_PY = REPO_ROOT / "apps" / "core" / "views.py"
 RUNNER_DESKTOP = REPO_ROOT / "scripts" / "run_lighthouse_local.sh"
 RUNNER_MOBILE = REPO_ROOT / "scripts" / "run_lighthouse_mobile_local.sh"
@@ -127,9 +120,7 @@ def test_pexels_hero_returns_none_when_no_entry(tmp_path, settings, rf):
     assert result is None
 
 
-def test_pexels_hero_emits_webp_keys_only_when_files_exist(
-    tmp_path, settings, rf, monkeypatch
-):
+def test_pexels_hero_emits_webp_keys_only_when_files_exist(tmp_path, settings, rf, monkeypatch):
     """Stub `get_image_for_slot` to return a known entry; place / omit
     the WebP companions on disk; check `_pexels_hero`'s output."""
     settings.MEDIA_ROOT = str(tmp_path)
@@ -249,22 +240,31 @@ def test_csp_has_no_unsafe_inline_or_eval():
 
 @pytest.mark.django_db
 def test_home_renders_with_picture(client):
+    from apps.legal_sources.legal_data_test_support import skip_if_no_pexels_webp
+
+    # The hero <picture>/<img> markup is emitted only when the Pexels WebP
+    # companions exist on disk (gitignored media; absent on a fresh CI
+    # checkout — where the home renders no hero image at all). Skip the
+    # hero-markup assertions when the media is absent.
     resp = client.get("/", HTTP_HOST="127.0.0.1")
     assert resp.status_code == 200
     html = resp.content.decode("utf-8")
     assert 'dir="ltr"' in html
+    skip_if_no_pexels_webp()
     assert "<picture>" in html
-    # The <img> fallback must still be present (browsers without WebP
-    # — none in 2026, but the markup must not rely on JS).
+    # The <img> inside <picture> must not rely on JS.
     assert "<img " in html
 
 
 @pytest.mark.django_db
 def test_ar_home_renders_with_picture_and_rtl(client):
+    from apps.legal_sources.legal_data_test_support import skip_if_no_pexels_webp
+
     resp = client.get("/ar/", HTTP_HOST="127.0.0.1")
     assert resp.status_code == 200
     html = resp.content.decode("utf-8")
     assert 'dir="rtl"' in html
+    skip_if_no_pexels_webp()
     assert "<picture>" in html
 
 

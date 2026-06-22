@@ -45,6 +45,8 @@ from pathlib import Path
 
 import pytest
 
+from apps.legal_sources.legal_data_test_support import skip_if_absent
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 CSP_HTML = (
     REPO_ROOT
@@ -92,6 +94,7 @@ DIP_SIZE = 15424
 
 
 def test_csp_source_is_real_file_with_expected_sha():
+    skip_if_absent(CSP_HTML)
     assert CSP_HTML.is_file()
     raw = CSP_HTML.read_bytes()
     assert len(raw) == CSP_SIZE
@@ -105,6 +108,7 @@ def test_csp_source_is_real_file_with_expected_sha():
 
 
 def test_csp_body_contains_load_bearing_markers():
+    skip_if_absent(CSP_HTML)
     body = CSP_HTML.read_bytes().decode("utf-8", errors="replace")
     assert "Code du statut personnel" in body
     assert "Livre IX" in body
@@ -117,6 +121,7 @@ def test_csp_body_contains_load_bearing_markers():
 
 
 def test_dip_source_is_real_file_with_markers():
+    skip_if_absent(DIP_HTML)
     assert DIP_HTML.is_file()
     raw = DIP_HTML.read_bytes()
     assert len(raw) == DIP_SIZE
@@ -490,6 +495,7 @@ def test_italy_smoke_unchanged_with_tn_csp_pass1(italy_full_setup):
 
 
 def test_italy_pdf_first_four_bytes_unchanged():
+    skip_if_absent(IT_PDF)
     assert IT_PDF.is_file()
     assert IT_PDF.read_bytes()[:4] == b"%PDF"
 

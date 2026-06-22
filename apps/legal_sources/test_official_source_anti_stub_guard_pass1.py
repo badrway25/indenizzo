@@ -38,8 +38,19 @@ from pathlib import Path
 
 import pytest
 
+from apps.legal_sources.legal_data_test_support import skip_if_absent
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SOURCES_ROOT = REPO_ROOT / "legal_data" / "sources"
+
+# Sentinel for "the local legal_data download tree is present". These raw
+# official documents are gitignored, so on a fresh CI checkout the whole tree
+# is absent and the manifest-wide integrity checks would fail spuriously. When
+# the sentinel (the IT decree PDF, a canonical fetch_success file) is absent,
+# those checks skip instead.
+_DOWNLOAD_TREE_SENTINEL = (
+    SOURCES_ROOT / "italy" / "official_downloaded" / "it-dpr-12-2025-tun-danno-biologico.pdf"
+)
 
 # Anything ≤ this size is considered a stub when the manifest claims
 # ``fetch_success``. The smallest legitimate official document we
@@ -66,6 +77,7 @@ def test_no_fetch_success_manifest_entry_points_at_stub():
     file under that classification means a test or stub overwrote
     the real document.
     """
+    skip_if_absent(_DOWNLOAD_TREE_SENTINEL)
     offenders: list[str] = []
     for manifest_path in _iter_official_manifests():
         data = _read_manifest(manifest_path)
@@ -106,6 +118,7 @@ def test_fetch_success_manifest_sha_matches_file_on_disk():
     must match the recomputed sha of the file on disk. Drift means
     the file was overwritten without re-syncing the manifest.
     """
+    skip_if_absent(_DOWNLOAD_TREE_SENTINEL)
     offenders: list[str] = []
     for manifest_path in _iter_official_manifests():
         data = _read_manifest(manifest_path)
@@ -210,6 +223,7 @@ def test_tn_csp_livre_ix_is_real_file_after_pass1():
         / "official_downloaded"
         / ("tn-code-statut-personnel-livre-ix-succession.html")
     )
+    skip_if_absent(p)
     assert p.is_file()
     raw = p.read_bytes()
     assert len(raw) == 36183, f"unexpected size {len(raw)}"
@@ -223,6 +237,7 @@ def test_tn_csp_livre_ix_is_real_file_after_pass1():
 
 def test_tn_dip_loi_98_97_is_real_file_after_pass1():
     p = SOURCES_ROOT / "tunisia" / "official_downloaded" / "tn-code-dip-loi-98-97.html"
+    skip_if_absent(p)
     assert p.is_file()
     raw = p.read_bytes()
     assert len(raw) == 15424, f"unexpected size {len(raw)}"
