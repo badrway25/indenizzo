@@ -18,6 +18,7 @@ from django.views.decorators.http import require_GET
 
 from apps.calculators.enums import CaseType
 from apps.calculators.registry import list_available_calculators
+from apps.core.country_readiness import public_country_readiness
 from apps.core.public_status import get_country_public_status
 
 # Default case type used when surfacing a country's public status on
@@ -153,9 +154,7 @@ def robots_txt(request):
     - Sitemap puntato all'URL assoluto (lo sitemap framework Django
       e' montato fuori da i18n_patterns).
     """
-    sitemap_url = request.build_absolute_uri(
-        reverse("django.contrib.sitemaps.views.sitemap")
-    )
+    sitemap_url = request.build_absolute_uri(reverse("django.contrib.sitemaps.views.sitemap"))
     lines = ["User-agent: *"]
     lines.extend(f"Disallow: {path}" for path in _ROBOTS_DISALLOW_PATHS)
     lines.append("Allow: /contact/")
@@ -559,8 +558,25 @@ def countries(request):
         "public/countries.html",
         {
             "countries": countries_view,
+            # E1: leak-safe public readiness (Italy available; FR/BE/MA/TN in
+            # legal validation). Same data as the readiness.json endpoint.
+            "country_readiness": public_country_readiness(),
             "pexels_image": _pexels_hero(request, "countries_index"),
         },
+    )
+
+
+@require_GET
+def country_readiness_json(request):
+    """Public, leak-safe per-country readiness state (E1).
+
+    Italy is ``available``; FR/BE/MA/TN are ``legal_validation_in_progress``.
+    Contains no internal review detail (no hashes, paths, reviewer names, review
+    notes, raw legal text or status slugs) — only the public projection.
+    """
+    return JsonResponse(
+        {"countries": public_country_readiness()},
+        json_dumps_params={"ensure_ascii": False},
     )
 
 
@@ -630,7 +646,8 @@ def case_types(request):
             # in Italy, cross-border cases, insurance offer review)
             # that don't map 1:1 to a CaseType code.
             "extra_landings": [
-                landing for landing in _LANDINGS
+                landing
+                for landing in _LANDINGS
                 if landing.case_type_code in {"", "generic_legal_assessment"}
                 or landing.slug not in landings_by_code.values()
             ],

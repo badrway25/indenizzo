@@ -12,6 +12,8 @@ urlpatterns = [
     path("disclaimer/", views.disclaimer, name="disclaimer"),
     path("privacy/", views.privacy, name="privacy"),
     path("countries/", views.countries, name="countries"),
+    # E1: leak-safe public readiness state per country (JSON). No internal detail.
+    path("countries/readiness.json", views.country_readiness_json, name="country_readiness_json"),
     # Pass F-product-country-landing-seo-multilang: 5 landing per paese.
     path("countries/italy/", views.country_italy, name="country_italy"),
     path("countries/france/", views.country_france, name="country_france"),
