@@ -47,9 +47,12 @@ def _latest_review_map(slugs: list[str]) -> dict[str, Any]:
     from apps.legal_sources.models import LegalReview
 
     out: dict[str, Any] = {}
-    # one row per source: the most recent review wins (queryset already ordered)
-    for rev in LegalReview.objects.filter(source__slug__in=slugs).select_related(
-        "source", "reviewer"
+    # one row per source: the most recent review wins. Explicit -created_at,-pk
+    # ordering makes "latest" deterministic even on same-tick timestamps.
+    for rev in (
+        LegalReview.objects.filter(source__slug__in=slugs)
+        .select_related("source", "reviewer")
+        .order_by("-created_at", "-pk")
     ):
         out.setdefault(rev.source.slug, rev)  # first seen = latest (ordering)
     return out

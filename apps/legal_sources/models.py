@@ -187,11 +187,12 @@ class LegalSource(models.Model):
     def latest_review(self):
         """Most recent ``LegalReview`` for this source, or ``None``.
 
-        ``LegalReview`` is ordered ``-created_at`` (append-only), so ``first()``
-        is the latest decision. Read-only convenience for the readiness report
-        and admin; does not change any state.
+        Ordered ``-created_at, -pk``: the ``-pk`` tie-break makes "latest"
+        deterministic even when two reviews share an ``auto_now_add`` timestamp
+        (same tick). Read-only convenience for the readiness report and admin;
+        does not change any state.
         """
-        return self.reviews.first()
+        return self.reviews.order_by("-created_at", "-pk").first()
 
 
 class LegalSourceVersion(models.Model):
