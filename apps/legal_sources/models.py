@@ -183,6 +183,16 @@ class LegalSource(models.Model):
             return False
         return True
 
+    @property
+    def latest_review(self):
+        """Most recent ``LegalReview`` for this source, or ``None``.
+
+        ``LegalReview`` is ordered ``-created_at`` (append-only), so ``first()``
+        is the latest decision. Read-only convenience for the readiness report
+        and admin; does not change any state.
+        """
+        return self.reviews.first()
+
 
 class LegalSourceVersion(models.Model):
     """
