@@ -96,7 +96,7 @@ jobs:
       # NOT the fuzzy-inflated number. Full legal translation remains a Studio
       # deliverable; this gate prevents silent regression.
       - name: i18n translation coverage gate
-        run: python scripts/check_po_coverage.py --min it=56 --min fr=35 --min ar=35
+        run: python scripts/check_po_coverage.py --min it=56 --min fr=48 --min ar=48
 
   production-checks:
     # P1-CI-1A. Runs `manage.py check` with DEBUG=False + simulated
