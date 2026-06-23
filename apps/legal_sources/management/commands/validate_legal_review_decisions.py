@@ -108,6 +108,14 @@ class Command(BaseCommand):
                 "warning": sum(1 for f in findings if f["severity"] == "warning"),
             },
         }
+        # D5: non-invasive hint pointing to the attachment-alignment audit when a
+        # blocking finding exists (legacy approve without an attachment row). Does
+        # not change default behaviour or exit codes.
+        if report["totals"]["blocking"]:
+            report["hint"] = (
+                "Run `python manage.py audit_legacy_attachment_alignment "
+                "--format markdown` for the attachment-gap details and safe actions."
+            )
 
         fmt = options["format"]
         if fmt == "json":
@@ -158,6 +166,8 @@ def _render_text(report: dict) -> str:
         f"approved_without_version={len(inv['approved_datasets_without_source_version'])} "
         f"non_it_calc_ready={len(inv['non_italian_calculation_ready'])}"
     )
+    if report.get("hint"):
+        lines.append(f"hint: {report['hint']}")
     lines.append("")
     for f in report["findings"]:
         lines.append(f"  [{f['severity']}] {f['country']} {f['slug']} (decision={f['decision']})")
@@ -176,6 +186,9 @@ def _render_markdown(report: dict) -> str:
     lines.append(
         f"**Totals:** findings={t['findings']} · blocking={t['blocking']} · warning={t['warning']}"
     )
+    if report.get("hint"):
+        lines.append("")
+        lines.append(f"> {report['hint']}")
     lines.append("")
     lines.append("## Fail-closed invariants")
     lines.append(
