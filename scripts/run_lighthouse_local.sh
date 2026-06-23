@@ -113,6 +113,10 @@ for entry in "${TARGETS[@]}"; do
   # artifact launch flakes). The score GATE below is single-shot and never
   # retried, so a real budget miss still fails. `--disable-dev-shm-usage` is the
   # key CI-stability flag (the small default /dev/shm crashes headless Chrome).
+  # H1-10.1: also re-collect a *corrupted metric-zero* report (perf=0.00 with
+  # errored perf-metric audits while other categories are healthy), classified
+  # by scripts/lighthouse_score_guard.py. A real low/zero performance ("accept")
+  # is NEVER retried and the gate fails it honestly.
   lh_collected=0
   for attempt in 1 2; do
     rm -f "${outfile}"
@@ -124,18 +128,30 @@ for entry in "${TARGETS[@]}"; do
       --only-categories=performance,accessibility,best-practices,seo \
       --quiet \
       >/dev/null 2>&1 || true
-    if [ -s "${outfile}" ] && python -c "import json,sys; sys.exit(0 if json.load(open('${outfile}',encoding='utf-8')).get('categories') else 1)" 2>/dev/null; then
-      [ "${attempt}" -gt 1 ] && echo "  [retry] valid Lighthouse report on attempt ${attempt} (transient Chrome/artifact flake absorbed)."
+    verdict="$(python scripts/lighthouse_score_guard.py "${outfile}" 2>/dev/null || echo invalid)"
+    if [ "${verdict}" = "accept" ]; then
+      [ "${attempt}" -gt 1 ] && echo "  [retry] usable Lighthouse report on attempt ${attempt} (flake absorbed)."
       lh_collected=1
       break
     fi
-    echo "  [retry] attempt ${attempt}/2: no valid Lighthouse JSON (Chrome launch/artifact flake)."
+    if [ "${verdict}" = "retry" ]; then
+      echo "  [retry] attempt ${attempt}/2: suspicious performance=0.00 report (corrupt trace), re-collecting."
+    else
+      echo "  [retry] attempt ${attempt}/2: no valid Lighthouse JSON (Chrome launch/artifact flake)."
+    fi
     pkill -f chrome >/dev/null 2>&1 || true
     sleep 3
   done
   if [ "${lh_collected}" -ne 1 ]; then
-    echo "  FAILED: Lighthouse produced no valid report after 2 attempts (infrastructure flake). Aborting."
-    exit 3
+    # A (still corrupt-looking) JSON with categories is handed to the single-shot
+    # gate so a PERSISTENT perf=0.00 fails HONESTLY. Only a genuinely missing
+    # report aborts as an infrastructure flake.
+    if [ -s "${outfile}" ] && python -c "import json,sys; sys.exit(0 if json.load(open('${outfile}',encoding='utf-8')).get('categories') else 1)" 2>/dev/null; then
+      echo "  [gate] suspicious report persisted after retry — letting the gate judge it."
+    else
+      echo "  FAILED: Lighthouse produced no valid report after 2 attempts (infrastructure flake). Aborting."
+      exit 3
+    fi
   fi
 
   # Parse + gate via Python (already on PATH in this venv).
