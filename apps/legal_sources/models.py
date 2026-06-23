@@ -183,6 +183,17 @@ class LegalSource(models.Model):
             return False
         return True
 
+    @property
+    def latest_review(self):
+        """Most recent ``LegalReview`` for this source, or ``None``.
+
+        Ordered ``-created_at, -pk``: the ``-pk`` tie-break makes "latest"
+        deterministic even when two reviews share an ``auto_now_add`` timestamp
+        (same tick). Read-only convenience for the readiness report and admin;
+        does not change any state.
+        """
+        return self.reviews.order_by("-created_at", "-pk").first()
+
 
 class LegalSourceVersion(models.Model):
     """
