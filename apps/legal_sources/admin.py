@@ -66,12 +66,11 @@ class LegalSourceAdmin(admin.ModelAdmin):
     list_display = (
         "title",
         "country",
-        "jurisdiction",
         "source_type",
         "status",
-        "reliability",
+        "latest_review_decision",
+        "readiness_label",
         "publication_date",
-        "valid_until",
         "last_checked_at",
     )
     list_filter = (
@@ -94,6 +93,49 @@ class LegalSourceAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at")
     date_hierarchy = "publication_date"
     inlines = [LegalSourceVersionInline, LegalSourceAttachmentInline, LegalReviewInline]
+    actions = ["report_review_readiness_action"]
+
+    @admin.display(description=_("latest review"))
+    def latest_review_decision(self, obj):
+        review = obj.latest_review
+        return review.decision if review else "—"
+
+    @admin.display(description=_("readiness"))
+    def readiness_label(self, obj):
+        """Read-only, computed. Never marks anything calculation-ready itself."""
+        from apps.legal_sources.review_readiness import build_readiness_rows
+
+        rows = build_readiness_rows()
+        row = next((r for r in rows if r.slug == obj.slug), None)
+        if row is None:
+            return "—"
+        if row.calculation_ready:
+            return "calc-ready"
+        n = len(row.missing_steps)
+        return f"needs {n} step(s)"
+
+    @admin.action(description=_("Report review readiness (read-only, no changes)"))
+    def report_review_readiness_action(self, request, queryset):
+        """Surface the missing steps per selected source as admin messages.
+
+        Strictly read-only: creates no review, promotes nothing, activates no
+        calculator. Just shows the reviewer what is still missing.
+        """
+        from apps.legal_sources.review_readiness import build_readiness_rows
+
+        rows = {r.slug: r for r in build_readiness_rows()}
+        for source in queryset:
+            row = rows.get(source.slug)
+            if row is None:
+                continue
+            ready = "calculation-ready" if row.calculation_ready else "not calculation-ready"
+            steps = "; ".join(row.missing_steps) or "no missing steps"
+            self.message_user(
+                request,
+                f"{source.slug}: {ready}. Latest review: "
+                f"{row.latest_review_decision or '—'}. Missing: {steps}.",
+            )
+
     fieldsets = (
         (None, {"fields": ("title", "slug", "citation", "official_url")}),
         (
