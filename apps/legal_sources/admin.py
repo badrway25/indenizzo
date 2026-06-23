@@ -155,10 +155,11 @@ class LegalSourceAdmin(admin.ModelAdmin):
             item = classify_attachment_gap(source)
             if item is None:
                 continue
+            kind = f" · evidence={item.evidence_kind}" if item.evidence_kind != "none" else ""
             self.message_user(
                 request,
                 f"{source.slug}: {item.classification} "
-                f"[{item.strict_validator_impact}] — {item.recommended_action}",
+                f"[{item.strict_validator_impact}]{kind} — {item.recommended_action}",
             )
 
     @admin.action(description=_("Show Studio review batch summary (read-only, no changes)"))

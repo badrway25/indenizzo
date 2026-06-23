@@ -29,14 +29,26 @@ reviewer names or notes).
 
 ## 3. What the classifications mean
 
-- **`missing_attachment_row`** (registry candidate) — the documented official
-  source exists; attach the real file (see §5), then re-validate. *Blocking.*
+- **`ok_verified_disk_evidence`** (D6) — no attachment row, but a validated
+  `official_downloaded/` file whose hash matches the `[official_source_validation]`
+  marker (`validation_status=passed`). Recognised as real evidence; *not* a
+  blocker. `evidence_kind = verified_official_downloaded_file`.
+- **`missing_attachment_row`** (registry candidate) — no attachment row AND no
+  verified disk evidence. The recommended action carries the precise disk
+  sub-reason (e.g. *validation not 'passed'* or *on-disk hash does not match the
+  marker*). Attach/re-validate the real file (see §5). *Blocking.*
 - **`manual_review_required`** (not a registry candidate) — the Studio must
   source the official file before the approval can stand. *Blocking.*
 - **`missing_source_version`** — create a `LegalSourceVersion`. *Warning.*
 - **`hash_unavailable`** — run `validate_official_legal_sources` to compute/verify
   the SHA-256. *Blocking.*
 - **`ok`** — attachment + hash + version present; nothing to do.
+
+> **D6 / OPS-1 reality:** a present `[official_source_validation]` block does NOT
+> mean success. BE/TN currently have `validation_status=failed`; EU passed but its
+> on-disk file no longer hashes to the recorded marker (file drift). These stay
+> blocking *honestly* — re-run `validate_official_legal_sources` / re-source the
+> file. Never lower the bar to clear a finding.
 
 ## 4. What requires Studio intervention
 

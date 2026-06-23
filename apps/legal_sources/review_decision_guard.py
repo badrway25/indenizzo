@@ -86,7 +86,20 @@ def evaluate_legal_review_decision(source, decision: str) -> DecisionGuardResult
 
     if decision == DECISION_APPROVE:
         if not has_attach:
-            blocking.append("no official attachment — cannot approve an unattached source")
+            # D6: an approve with no attachment ROW is still coherent when the
+            # source carries verified disk evidence (a validated official_downloaded
+            # file whose hash matches the validation marker). Otherwise blocking.
+            from apps.legal_sources.verified_disk_evidence import evaluate_verified_disk_evidence
+
+            disk = evaluate_verified_disk_evidence(source)
+            if disk.has_verified_disk_evidence:
+                warnings.append(
+                    "no attachment row, but verified legacy disk evidence present "
+                    "(validated official_downloaded file) — document-level only"
+                )
+                summary += " · verified_disk_evidence=yes"
+            else:
+                blocking.append("no official attachment — cannot approve an unattached source")
         elif not has_hash:
             blocking.append("attachment is not hash-verified — verify the SHA-256 before approving")
         if not has_version:
