@@ -140,7 +140,26 @@ class LegalSourceAdmin(admin.ModelAdmin):
         "report_review_readiness_action",
         "show_evidence_checklist_action",
         "show_studio_review_batch_summary_action",
+        "show_attachment_alignment_action",
     ]
+
+    @admin.action(description=_("Show attachment alignment status (read-only, no changes)"))
+    def show_attachment_alignment_action(self, request, queryset):
+        """Summarise the attachment-alignment gap per selected source (read-only).
+
+        Attaches nothing, invents no hash, approves/promotes/activates nothing.
+        """
+        from apps.legal_sources.attachment_alignment import classify_attachment_gap
+
+        for source in queryset:
+            item = classify_attachment_gap(source)
+            if item is None:
+                continue
+            self.message_user(
+                request,
+                f"{source.slug}: {item.classification} "
+                f"[{item.strict_validator_impact}] — {item.recommended_action}",
+            )
 
     @admin.action(description=_("Show Studio review batch summary (read-only, no changes)"))
     def show_studio_review_batch_summary_action(self, request, queryset):
