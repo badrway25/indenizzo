@@ -93,7 +93,32 @@ class LegalSourceAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at")
     date_hierarchy = "publication_date"
     inlines = [LegalSourceVersionInline, LegalSourceAttachmentInline, LegalReviewInline]
-    actions = ["report_review_readiness_action", "show_evidence_checklist_action"]
+    actions = [
+        "report_review_readiness_action",
+        "show_evidence_checklist_action",
+        "show_studio_review_batch_summary_action",
+    ]
+
+    @admin.action(description=_("Show Studio review batch summary (read-only, no changes)"))
+    def show_studio_review_batch_summary_action(self, request, queryset):
+        """Summarise a Studio review batch for the selected sources' countries.
+
+        Read-only: builds the batch in memory and reports per-country counts as a
+        message. Writes no file, creates no LegalReview, promotes/approves/
+        activates nothing.
+        """
+        from apps.legal_sources.review_batch import build_review_batch
+
+        countries = sorted({s.country.code for s in queryset if s.country_id})
+        for cc in countries or [None]:
+            batch = build_review_batch(country=cc, include_ready=True)
+            t = batch["totals"]
+            self.message_user(
+                request,
+                f"{cc or 'ALL'} review batch: items={t['items']} "
+                f"candidates={t['candidates']} calculation_ready={t['calculation_ready']} "
+                "(read-only — record decisions in the back-office).",
+            )
 
     @admin.display(description=_("latest review"))
     def latest_review_decision(self, obj):
