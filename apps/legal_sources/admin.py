@@ -69,9 +69,9 @@ class LegalSourceAdmin(admin.ModelAdmin):
         "source_type",
         "status",
         "latest_review_decision",
+        "evidence_label",
         "readiness_label",
         "publication_date",
-        "last_checked_at",
     )
     list_filter = (
         "status",
@@ -93,12 +93,48 @@ class LegalSourceAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at", "updated_at")
     date_hierarchy = "publication_date"
     inlines = [LegalSourceVersionInline, LegalSourceAttachmentInline, LegalReviewInline]
-    actions = ["report_review_readiness_action"]
+    actions = ["report_review_readiness_action", "show_evidence_checklist_action"]
 
     @admin.display(description=_("latest review"))
     def latest_review_decision(self, obj):
         review = obj.latest_review
         return review.decision if review else "—"
+
+    @admin.display(description=_("evidence"))
+    def evidence_label(self, obj):
+        """Compact, read-only evidence summary computed from the row itself."""
+        has_attach = obj.attachments.exists()
+        has_hash = obj.attachments.exclude(sha256="").exists() if has_attach else False
+        has_version = obj.versions.exists()
+        parts = ["attach" if has_attach else "no-attach"]
+        if has_attach:
+            parts.append("hash" if has_hash else "no-hash")
+        parts.append("ver" if has_version else "no-ver")
+        return " · ".join(parts)
+
+    @admin.action(description=_("Show evidence checklist (read-only, no changes)"))
+    def show_evidence_checklist_action(self, request, queryset):
+        """Surface the evidence checklist per selected source as messages.
+
+        Read-only: reads attachment/hash/version/package/review state and the
+        fail-closed reason. Creates nothing, promotes nothing, activates nothing.
+        """
+        from apps.legal_sources.review_evidence import build_evidence_checklist
+
+        rows = {r.slug: r for r in build_evidence_checklist()}
+        for source in queryset:
+            row = rows.get(source.slug)
+            if row is None:
+                continue
+            pkg = row.review_package_path or "no package"
+            reason = row.never_calculation_ready_reason or "calculation-ready"
+            self.message_user(
+                request,
+                f"{source.slug}: attach={row.has_attachment} hash={row.attachment_hash_present} "
+                f"version={row.has_source_version} package={pkg} "
+                f"latest_review={row.latest_review_decision or '—'} "
+                f"ready_for_studio_review={row.ready_for_studio_review} | {reason}.",
+            )
 
     @admin.display(description=_("readiness"))
     def readiness_label(self, obj):

@@ -87,7 +87,12 @@ class Command(BaseCommand):
             path.write_text(rendered + "\n", encoding="utf-8")
             self.stdout.write(f"[ok] wrote {fmt} readiness report to {output}")
         else:
-            self.stdout.write(rendered)
+            # stdout may be a non-UTF-8 console (e.g. Windows cp1252); write
+            # defensively so markdown glyphs never crash the command.
+            try:
+                self.stdout.write(rendered)
+            except UnicodeEncodeError:
+                self.stdout.write(rendered.encode("ascii", "replace").decode("ascii"))
 
         # --- fail-closed guards (after reporting) -------------------------
         violations: list[str] = []
