@@ -1,7 +1,50 @@
-from django.contrib import admin
+from django import forms
+from django.contrib import admin, messages
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from .models import LegalReview, LegalSource, LegalSourceAttachment, LegalSourceVersion
+
+
+class LegalReviewAdminForm(forms.ModelForm):
+    """D4: manual LegalReview intake form with a fail-closed decision guard.
+
+    Validation lives here (not on the model) so the ORM-based promotion command
+    is unaffected. A clearly-incoherent ``approve`` (no attachment / unverified
+    hash) is BLOCKED; softer gaps surface as warnings in the admin after save.
+    No decision activates a calculation.
+    """
+
+    class Meta:
+        model = LegalReview
+        # The manual-intake fields only; `reviewer` is forced in save_model and
+        # `created_at` is audit. Matches LegalReviewAdmin.get_fields on create.
+        fields = ("source", "decision", "previous_status", "new_status", "comment")
+        help_texts = {
+            "decision": _(
+                "approve = the document is authenticated (NOT a calculation "
+                "activation) · request_changes = ask for fixes · reject = not "
+                "usable · reopen = resume a closed review. Record a clear comment."
+            ),
+        }
+
+    def clean(self):
+        cleaned = super().clean()
+        source = cleaned.get("source")
+        decision = cleaned.get("decision")
+        if source and decision:
+            from apps.legal_sources.review_decision_guard import (
+                evaluate_legal_review_decision,
+            )
+
+            result = evaluate_legal_review_decision(source, decision)
+            self._guard_result = result
+            if result.blocking_reasons:
+                raise ValidationError(
+                    _("Decision blocked (fix the evidence first): ")
+                    + "; ".join(result.blocking_reasons)
+                )
+        return cleaned
 
 
 class LegalSourceVersionInline(admin.TabularInline):
@@ -269,18 +312,58 @@ class LegalReviewAdmin(admin.ModelAdmin):
     aggiunge la prevenzione.
     """
 
+    form = LegalReviewAdminForm
     list_display = (
         "source",
-        "reviewer",
+        "review_country",
         "decision",
+        "review_evidence_status",
         "previous_status",
         "new_status",
         "created_at",
     )
-    list_filter = ("decision", "new_status", "previous_status")
+    list_filter = ("decision", "new_status", "previous_status", "source__country")
     search_fields = ("source__title", "comment", "reviewer__username")
     autocomplete_fields = ("source",)
     readonly_fields = ("created_at",)
+
+    @admin.display(description=_("country"))
+    def review_country(self, obj):
+        return obj.source.country.code if obj.source and obj.source.country_id else "—"
+
+    @admin.display(description=_("evidence"))
+    def review_evidence_status(self, obj):
+        """Compact, read-only evidence summary of the reviewed source."""
+        src = obj.source
+        if src is None:
+            return "—"
+        has_attach = src.attachments.exists()
+        has_hash = src.attachments.exclude(sha256="").exists() if has_attach else False
+        has_version = src.versions.exists()
+        parts = ["attach" if has_attach else "no-attach"]
+        if has_attach:
+            parts.append("hash" if has_hash else "no-hash")
+        parts.append("ver" if has_version else "no-ver")
+        return " · ".join(parts)
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            # Identità non falsificabile: il reviewer è l'utente loggato.
+            obj.reviewer = request.user
+        # D4: surface non-blocking decision warnings to the reviewer (the
+        # blocking ones were already raised in the form). Read-only check.
+        result = getattr(form, "_guard_result", None)
+        super().save_model(request, obj, form, change)
+        if result is not None:
+            for w in result.warnings:
+                self.message_user(request, f"{obj.source.slug}: {w}", level=messages.WARNING)
+            if result.decision == "approve":
+                self.message_user(
+                    request,
+                    "Recorded an approval at document level only — it does NOT "
+                    "activate any calculation.",
+                    level=messages.INFO,
+                )
 
     def has_delete_permission(self, request, obj=None):
         return False
@@ -319,9 +402,3 @@ class LegalReviewAdmin(admin.ModelAdmin):
                 "created_at",
             )
         return ("created_at",)
-
-    def save_model(self, request, obj, form, change):
-        if not change:
-            # Identità non falsificabile: il reviewer è l'utente loggato.
-            obj.reviewer = request.user
-        super().save_model(request, obj, form, change)
