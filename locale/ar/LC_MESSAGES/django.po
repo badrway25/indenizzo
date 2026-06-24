@@ -1247,13 +1247,11 @@ msgstr ""
 msgid "privacy audit events"
 msgstr ""
 
-#, fuzzy
-#| msgid "Work injury"
 msgid "Working copy"
-msgstr "إصابة عمل"
+msgstr "نسخة عمل"
 
 msgid "Signed"
-msgstr ""
+msgstr "موقّع"
 
 msgid "signed at"
 msgstr ""
@@ -2839,94 +2837,92 @@ msgid "Skip to content"
 msgstr "تخطّي إلى المحتوى"
 
 msgid "Documents to prepare"
-msgstr ""
+msgstr "المستندات المطلوب تحضيرها"
 
 msgid "While you wait for our reply"
-msgstr ""
+msgstr "في انتظار ردّنا"
 
 msgid "What the Studio will ask for"
-msgstr ""
+msgstr "ما سيطلبه المكتب"
 
 msgid ""
 "A written reply takes 3–5 working days. In the meantime, gathering the "
 "documents below speeds up the Studio's review and shortens the round-trip on "
 "follow-up questions."
-msgstr ""
+msgstr "يُرسَل ردّ مكتوب خلال 3 إلى 5 أيام عمل. وفي غضون ذلك، يؤدّي تجهيز المستندات أدناه إلى تسريع مراجعة المكتب وتقليل تبادل الأسئلة الإضافية."
 
 msgid ""
 "A lawyer reviewing your case will typically need the documents below. They "
 "are not required to submit the contact form — you can send them later by "
 "email once the Studio replies."
-msgstr ""
+msgstr "سيحتاج المحامي الذي يراجع ملفّك عادةً إلى المستندات أدناه. وهي ليست ضرورية لإرسال نموذج التواصل، إذ يمكنك إرسالها لاحقاً عبر البريد الإلكتروني بعد ردّ المكتب."
 
 msgid ""
 "Medical reports describing the injury, treatment received, and any permanent "
 "consequences. Hospital discharge letters, specialist reports, rehabilitation "
 "notes."
-msgstr ""
+msgstr "تقارير طبّية تصف الإصابة والعلاج المتلقّى وأيّ عواقب دائمة. رسائل الخروج من المستشفى، وتقارير الأخصائيين، وملاحظات إعادة التأهيل."
 
 msgid ""
 "Accident records: police report, road-accident statement (CAI / constat "
 "amiable), photographs, sketches, anything filed at the scene or with the "
 "authorities."
-msgstr ""
+msgstr "وثائق الحادث: محضر الشرطة، وبيان حادث الطريق (التصريح الودّي / CAI)، والصور، والرسوم التخطيطية، وكلّ ما قُدِّم في مكان الحادث أو لدى السلطات."
 
 msgid ""
 "Insurance correspondence: claim numbers, settlement offers received, refusal "
 "letters, communications with the third-party insurer. Save the originals, do "
 "not sign anything before review."
-msgstr ""
+msgstr "المراسلات مع شركات التأمين: أرقام المطالبات، وعروض التسوية المستلَمة، ورسائل الرفض، والمراسلات مع شركة تأمين الطرف الآخر. احتفظ بالنسخ الأصلية ولا توقّع على أيّ شيء قبل المراجعة."
 
 msgid ""
 "Proof of economic impact: payslips before/after, sick-leave certificates, "
 "invoices for medical expenses, transport, equipment, or domestic help."
-msgstr ""
+msgstr "إثبات الأثر الاقتصادي: قسائم الراتب قبل الحادث وبعده، وشهادات الإجازة المرضية، وفواتير المصاريف الطبّية والنقل والمعدّات أو المساعدة المنزلية."
 
 msgid ""
 "Identity and contact: a copy of your ID for the file, a phone number where "
 "the Studio can reach you, and the preferred language for the reply."
-msgstr ""
+msgstr "الهوية وبيانات التواصل: نسخة من وثيقة هويتك للملف، ورقم هاتف يمكن للمكتب التواصل معك عليه، واللغة المفضّلة للردّ."
 
 msgid ""
 "Witness contacts if anyone saw the events and is willing to confirm what "
 "happened — name and a way to reach them is enough at this stage."
-msgstr ""
+msgstr "بيانات الشهود إن وُجد من شاهد الوقائع وكان على استعداد لتأكيد ما حدث — يكفي في هذه المرحلة الاسم ووسيلة للتواصل معه."
 
 msgid ""
 "You don't need to send everything at once. The Studio will ask for what's "
 "missing once the case has been reviewed."
-msgstr ""
+msgstr "لا حاجة لإرسال كلّ شيء دفعة واحدة. سيطلب المكتب ما ينقص بعد مراجعة الملف."
 
 msgid "Module status"
 msgstr "الوحدة جاهزة"
 
 msgid "What this does"
-msgstr ""
+msgstr "ما الذي يقوم به هذا"
 
 msgid "What this does not do"
-msgstr ""
+msgstr "ما الذي لا يقوم به هذا"
 
 msgid "Next step"
-msgstr ""
+msgstr "الخطوة التالية"
 
 msgid "Public status"
 msgstr "الحالة العامة"
 
 msgid "Required consents"
-msgstr ""
+msgstr "الموافقات المطلوبة"
 
 msgid "Read the privacy notice"
 msgstr "اقرأ إشعار الخصوصية"
 
-#, fuzzy
-#| msgid "Read the full disclaimer"
 msgid "Read the disclaimer"
 msgstr "اقرأ إخلاء المسؤولية الكامل"
 
 msgid ""
 "Consent texts are working copies pending the Studio's legal sign-off. The "
 "platform is not in production."
-msgstr ""
+msgstr "نصوص الموافقة هي نسخ عمل في انتظار الاعتماد القانوني من المكتب. المنصّة ليست في طور التشغيل."
 
 msgid "Cookie notice"
 msgstr "إشعار ملفات تعريف الارتباط"
@@ -2998,47 +2994,43 @@ msgid "Institutional website"
 msgstr "الموقع المؤسسي"
 
 msgid "Professional identification"
-msgstr ""
+msgstr "التعريف المهني"
 
 msgid "Lead lawyer"
-msgstr ""
+msgstr "المحامي المسؤول"
 
-#, fuzzy
-#| msgid "Primary navigation"
 msgid "Bar association"
-msgstr "التنقل الرئيسي"
+msgstr "نقابة المحامين"
 
 msgid "no."
-msgstr ""
+msgstr "رقم"
 
-#, fuzzy
-#| msgid "Phone number"
 msgid "VAT number"
-msgstr "رقم الهاتف"
+msgstr "رقم ضريبة القيمة المضافة"
 
 msgid "Tax code"
-msgstr ""
+msgstr "الرمز الضريبي"
 
 msgid "Certified email (PEC)"
-msgstr ""
+msgstr "البريد الإلكتروني المعتمد (PEC)"
 
 msgid "Registered office"
-msgstr ""
+msgstr "المقرّ المسجَّل"
 
 msgid "Professional liability insurance"
-msgstr ""
+msgstr "تأمين المسؤولية المدنية المهنية"
 
 msgid "policy"
-msgstr ""
+msgstr "وثيقة"
 
 msgid "ceiling"
-msgstr ""
+msgstr "الحدّ الأقصى"
 
 msgid ""
 "This platform operates as a sub-domain of the Studio's institutional website "
 "and complies with the Italian forensic deontology rules on professional "
 "information."
-msgstr ""
+msgstr "تعمل هذه المنصّة كنطاق فرعي من الموقع المؤسسي للمكتب وتلتزم بقواعد آداب مهنة المحاماة المعمول بها في إيطاليا في ما يخصّ المعلومات المهنية."
 
 msgid "Indicative simulations. Not legal advice."
 msgstr "محاكاة إرشادية. لا تُعدّ رأيًا قانونيًا."
@@ -3047,7 +3039,7 @@ msgid "Primary navigation"
 msgstr "التنقل الرئيسي"
 
 msgid "Language switcher"
-msgstr ""
+msgstr "مبدّل اللغة"
 
 msgid "Choose language"
 msgstr "اختر اللغة"
@@ -3057,23 +3049,18 @@ msgstr "تطبيق"
 
 #, python-format
 msgid "Version: %(v)s"
-msgstr ""
+msgstr "الإصدار: %(v)s"
 
 #, python-format
 msgid "Signed on: %(d)s"
-msgstr ""
+msgstr "موقّع بتاريخ: %(d)s"
 
-#, fuzzy, python-format
-#| msgid ""
-#| "This text is a working version. The final wording will be reviewed and "
-#| "signed off by the Studio's legal team."
+#, python-format
 msgid ""
 "This %(l)s is a working copy. The final wording must be reviewed and signed "
 "by the Studio's legal team before going live. The platform is not in "
 "production."
-msgstr ""
-"هذا النصّ نسخة عمل. ستتمّ مراجعة الصياغة النهائية واعتمادها من قبل الفريق "
-"القانوني للمكتب."
+msgstr "هذا %(l)s هو نسخة عمل. يجب مراجعة الصياغة النهائية واعتمادها من الفريق القانوني للمكتب قبل النشر. المنصّة ليست في طور التشغيل."
 
 msgid "Professional engagement"
 msgstr "التوكيل المهني"
@@ -3125,41 +3112,31 @@ msgid ""
 "Fill in the essential details below to receive a first indicative "
 "assessment. You can add more details — they help the Studio's review but are "
 "not required."
-msgstr ""
+msgstr "املأ المعلومات الأساسية أدناه للحصول على تقييم أوّلي إرشادي. يمكنك إضافة مزيد من التفاصيل، فهي تساعد مراجعة المكتب لكنها ليست إلزامية."
 
 msgid "Essential information"
-msgstr ""
+msgstr "المعلومات الأساسية"
 
-#, fuzzy
-#| msgid "(optional)"
 msgid "Optional"
-msgstr "(اختياري)"
+msgstr "اختياري"
 
-#, fuzzy
-#| msgid "Additional context"
 msgid "Additional details"
-msgstr "سياق إضافي"
+msgstr "تفاصيل إضافية"
 
 msgid ""
 "Add what you know. None of these is required. They give the Studio a fuller "
 "picture for the manual review and may refine the indicative range when "
 "applicable."
-msgstr ""
+msgstr "أضِف ما تعرفه. لا شيء من ذلك إلزامي. تمنح هذه المعلومات المكتب صورة أوضح للمراجعة اليدوية وقد تحسّن النطاق الإرشادي عند الاقتضاء."
 
-#, fuzzy
-#| msgid "What this means"
 msgid "When this applies"
-msgstr "ماذا يعني هذا"
+msgstr "متى ينطبق ذلك"
 
-#, fuzzy
-#| msgid "family situation"
 msgid "Typical situations"
-msgstr "الوضع العائلي"
+msgstr "الحالات النموذجية"
 
-#, fuzzy
-#| msgid "Contact the Studio"
 msgid "What the Studio does"
-msgstr "تواصل مع المكتب"
+msgstr "ما يقوم به المكتب"
 
 msgid ""
 "This is a preliminary review, not an automatic engagement. Sending a request "
@@ -3194,10 +3171,8 @@ msgstr "العودة إلى جميع أنواع الحالات"
 msgid "Read the methodology"
 msgstr "اقرأ المنهجية"
 
-#, fuzzy
-#| msgid "Read the privacy notice"
 msgid "Privacy notice"
-msgstr "اقرأ إشعار الخصوصية"
+msgstr "إشعار الخصوصية"
 
 msgid "Open the disclaimer"
 msgstr "افتح إخلاء المسؤولية"
@@ -3225,23 +3200,19 @@ msgstr ""
 "المصادر القانونية ذات الصلة والتحقق منها لاختصاص قضائي مختار."
 
 msgid "Read more"
-msgstr ""
+msgstr "اقرأ المزيد"
 
-#, fuzzy
-#| msgid "family situation"
 msgid "Specific situations"
-msgstr "الوضع العائلي"
+msgstr "حالات خاصّة"
 
-#, fuzzy
-#| msgid "From your inputs to a Studio review"
 msgid "Common entry points to a legal review"
-msgstr "من إدخالاتك إلى مراجعة المكتب"
+msgstr "نقاط انطلاق شائعة نحو مراجعة قانونية"
 
 msgid ""
 "These pages do not describe a case type per se, but a typical situation a "
 "user may want to start from — e.g. an insurance offer to review, a cross-"
 "border element, or a status as a foreign citizen."
-msgstr ""
+msgstr "لا تصف هذه الصفحات نوع قضية بحدّ ذاته، بل حالة نموذجية قد يرغب المستخدم في الانطلاق منها — مثل عرض تأمين بحاجة إلى مراجعة، أو عنصر عابر للحدود، أو صفة مواطن أجنبي."
 
 msgid "Coming next"
 msgstr "قريبًا"
@@ -3259,7 +3230,7 @@ msgid ""
 "Tell us about your case in your own words. The Studio reviews each request "
 "manually before deciding whether and how it can help. Submitting this form "
 "does not create a professional engagement."
-msgstr ""
+msgstr "احكِ لنا عن حالتك بكلماتك الخاصة. يراجع المكتب كلّ طلب يدوياً قبل تحديد ما إذا كان بإمكانه المساعدة وكيف. لا يُنشئ إرسال هذا النموذج أيّ تكليف مهني."
 
 msgid ""
 "Tell us about your case in your own words. A member of the Studio will get "
@@ -3268,15 +3239,11 @@ msgstr ""
 "اشرح قضيتك بكلماتك. سيردّ عليك أحد أعضاء المكتب لتقييم ما إذا كان بإمكاننا "
 "مساعدتك وكيفية ذلك."
 
-#, fuzzy
-#| msgid "Simulation result"
 msgid "Simulation linked to this request"
-msgstr "نتيجة المحاكاة"
+msgstr "محاكاة مرتبطة بهذا الطلب"
 
-#, fuzzy
-#| msgid "Notes on the simulation"
 msgid "Connected to your simulation"
-msgstr "ملاحظات حول المحاكاة"
+msgstr "مرتبط بمحاكاتك"
 
 #, python-format
 msgid ""
@@ -3284,10 +3251,10 @@ msgid ""
 "class=\"font-mono text-xs\">%(sim_id)s</span>. The Studio will read your "
 "inputs and the cited sources together with your message — no need to retype "
 "them here."
-msgstr ""
+msgstr "قمنا بتعبئة البلد ونوع القضية مسبقاً انطلاقاً من المحاكاة <span class=\"font-mono text-xs\">%(sim_id)s</span>. سيقرأ المكتب البيانات التي أدخلتها والمصادر المذكورة مع رسالتك — لا حاجة لإعادة إدخالها هنا."
 
 msgid "What happens after you submit"
-msgstr ""
+msgstr "ماذا يحدث بعد الإرسال"
 
 msgid "What happens next"
 msgstr "ما الذي يحدث بعد ذلك"
@@ -3652,124 +3619,101 @@ msgstr "لا تصدر حاليًا أي تقديرات تلقائية إلى ح�
 msgid "Legal notice"
 msgstr "إشعار قانوني"
 
-#, fuzzy
-#| msgid "More information needed"
 msgid "1. Informational nature"
-msgstr "يلزم المزيد من المعلومات"
+msgstr "1. الطابع الإعلامي"
 
-#, fuzzy
-#| msgid ""
-#| "This platform offers indicative simulations of compensation and "
-#| "inheritance scenarios across multiple jurisdictions. Each simulation is "
-#| "based on legal sources catalogued and validated by our team."
 msgid ""
 "This platform offers indicative simulations of compensation and inheritance "
 "scenarios across multiple jurisdictions. The content is informational; it is "
 "not a binding legal evaluation of your case."
-msgstr ""
-"تقدّم هذه المنصة محاكاة إرشادية لسيناريوهات التعويض والميراث عبر عدة اختصاصات "
-"قضائية. تستند كل محاكاة إلى مصادر قانونية مفهرسة ومعتمدة من قبل فريقنا."
+msgstr "تقدّم هذه المنصّة محاكاات إرشادية لسيناريوهات التعويض والميراث عبر ولايات قضائية متعدّدة. المحتوى ذو طابع إعلامي؛ وهو لا يشكّل تقييماً قانونياً مُلزِماً لحالتك."
 
 msgid "2. No automated legal advice"
-msgstr ""
+msgstr "2. لا استشارة قانونية آلية"
 
 msgid ""
 "The simulations are produced by deterministic engines and reference tables. "
 "They do not constitute legal advice, do not replace a lawyer's evaluation "
 "and do not generate any professional duty of care from the Studio towards "
 "you."
-msgstr ""
+msgstr "تُنتَج المحاكاات بواسطة محرّكات حتمية وجداول مرجعية. وهي لا تشكّل استشارة قانونية، ولا تحلّ محلّ تقييم المحامي، ولا تنشئ أيّ التزام مهني بالعناية من جانب المكتب تجاهك."
 
 msgid "3. No guarantee of outcome"
-msgstr ""
+msgstr "3. لا ضمان للنتيجة"
 
-#, fuzzy
-#| msgid ""
-#| "A simulation is not legal advice, is not a medico-legal opinion and is "
-#| "not a guarantee of outcome. The actual evaluation of a case depends on "
-#| "documents, expert reports, liability assessment, applicable law, "
-#| "competent jurisdiction, case law and insurance practice."
 msgid ""
 "A simulation is not a guarantee of outcome. The actual evaluation of a case "
 "depends on documents, expert reports, liability assessment, applicable law, "
 "competent jurisdiction, case law and insurance practice."
-msgstr ""
-"المحاكاة ليست رأيًا قانونيًا ولا رأيًا طبيًا قانونيًا ولا ضمانًا للنتيجة. يعتمد "
-"التقييم الفعلي للقضية على المستندات والخبرات وتقدير المسؤولية والقانون "
-"الواجب التطبيق والاختصاص القضائي والاجتهاد القضائي والممارسات التأمينية."
+msgstr "المحاكاة ليست ضماناً للنتيجة. يعتمد التقييم الفعلي للملف على المستندات والخبرات وتقدير المسؤولية والقانون الواجب التطبيق والولاية القضائية المختصّة والاجتهاد القضائي وممارسات التأمين."
 
-#, fuzzy
-#| msgid "Indicative range"
 msgid "4. Indicative ranges only"
-msgstr "نطاق إرشادي"
+msgstr "4. نطاقات إرشادية فقط"
 
 msgid ""
 "When a result is shown, it is an indicative range based on legal sources "
 "catalogued and validated by our team. Where no validated calculator exists "
 "for a jurisdiction or case type, the platform explicitly states that the "
 "simulation is unavailable and requires legal validation."
-msgstr ""
+msgstr "عند عرض نتيجة، فهي نطاق إرشادي يستند إلى مصادر قانونية مفهرسة ومعتمدة من فريقنا. وفي حال عدم وجود حاسبة معتمدة لولاية قضائية أو نوع قضية، تذكر المنصّة صراحةً أنّ المحاكاة غير متاحة وتتطلّب تحقّقاً قانونياً."
 
 msgid "5. Sources and limits of the tables"
-msgstr ""
+msgstr "5. المصادر وحدود الجداول"
 
 msgid ""
 "Each simulation references the legal sources used (decrees, statutes, "
 "judicial guidelines). Tables and coefficients are linked to a publication "
 "date, an effective date and a validation status. Sources marked working-copy "
 "or under review are not used for public calculations."
-msgstr ""
+msgstr "تشير كلّ محاكاة إلى المصادر القانونية المستخدَمة (المراسيم والقوانين والتوجيهات القضائية). وترتبط الجداول والمعاملات بتاريخ نشر وتاريخ نفاذ وحالة اعتماد. ولا تُستخدَم المصادر الموسومة بـ«نسخة عمل» أو «قيد المراجعة» في الحسابات العامة."
 
 msgid "6. Engagement only by written agreement"
-msgstr ""
+msgstr "6. التكليف باتفاق مكتوب فقط"
 
 msgid ""
 "A professional engagement with the Studio arises only after a written "
 "agreement is signed. Submitting a simulation or a contact request through "
 "this platform does not, by itself, create a lawyer-client relationship."
-msgstr ""
+msgstr "لا ينشأ التكليف المهني مع المكتب إلا بعد توقيع اتفاق مكتوب. ولا يُنشئ إرسال محاكاة أو طلب تواصل عبر هذه المنصّة، بحدّ ذاته، علاقة محامٍ بعميل."
 
 msgid "7. Professional independence"
-msgstr ""
+msgstr "7. الاستقلال المهني"
 
 msgid ""
 "The Studio retains full professional independence. Simulation results, "
 "marketing material and CRM workflows do not affect the legal opinion the "
 "Studio will give in a signed engagement."
-msgstr ""
+msgstr "يحتفظ المكتب باستقلاله المهني الكامل. ولا تؤثّر نتائج المحاكاة والمواد التسويقية وسير عمل إدارة علاقات العملاء في الرأي القانوني الذي يقدّمه المكتب في إطار تكليف موقّع."
 
 msgid "8. Data and confidentiality"
-msgstr ""
+msgstr "8. البيانات والسرّية"
 
 msgid ""
 "Submitted data is processed under the privacy policy and the consents you "
 "give. Pre-engagement communications are treated with care, but full attorney-"
 "client privilege only applies after a signed engagement."
-msgstr ""
+msgstr "تُعالَج البيانات المُرسَلة وفقاً لسياسة الخصوصية وللموافقات التي تمنحها. وتُعامَل المراسلات السابقة على التكليف بعناية، غير أنّ السرّية المهنية الكاملة بين المحامي وموكّله لا تسري إلا بعد توقيع تكليف."
 
-#, fuzzy
-#| msgid "International inheritance review"
 msgid "9. International handling"
-msgstr "تحليل ميراث دولي"
+msgstr "9. معالجة العناصر الدولية"
 
 msgid ""
 "Where the platform addresses cross-border matters (Italy, France, Belgium, "
 "Morocco, Tunisia and EU regulation 650/2012), the international handling is "
 "informational and does not represent a delegated mandate by any institution."
-msgstr ""
+msgstr "عندما تتناول المنصّة مسائل عابرة للحدود (إيطاليا وفرنسا وبلجيكا والمغرب وتونس واللائحة (الاتحاد الأوروبي) 650/2012)، تكون معالجة العناصر الدولية ذات طابع إعلامي ولا تمثّل تكليفاً مفوَّضاً من أيّ جهة."
 
 #, python-format
 msgid "Disclaimer version: %(v)s."
-msgstr ""
+msgstr "إصدار إخلاء المسؤولية: %(v)s."
 
-#, fuzzy, python-format
-#| msgid "Status"
+#, python-format
 msgid "Status: %(s)s."
-msgstr "الحالة"
+msgstr "الحالة: %(s)s."
 
 #, python-format
 msgid "Signed on: %(d)s."
-msgstr ""
+msgstr "موقّع بتاريخ: %(d)s."
 
 #, python-format
 msgid "%(site)s — International compensation simulator"
@@ -3866,13 +3810,13 @@ msgstr ""
 "في أوروبا وشمال أفريقيا."
 
 msgid "Methodology — sources, validation and ranges"
-msgstr ""
+msgstr "المنهجية — المصادر والتحقّق والنطاقات"
 
 msgid ""
 "How we work: source-of-law catalogue, controlled validation lifecycle (draft "
 "→ approved), explicit \"calculation not available\" when no approved source "
 "exists, and transparent ranges with assumptions and confidence."
-msgstr ""
+msgstr "طريقة عملنا: فهرس مصادر القانون، ودورة تحقّق مُحكَمة (مسوّدة → معتمدة)، وذكر صريح لـ«الحساب غير متاح» عند عدم وجود مصدر معتمد، ونطاقات شفّافة مصحوبة بالفرضيات ومستوى الثقة."
 
 msgid "How we work"
 msgstr "طريقة عملنا"
@@ -3939,66 +3883,54 @@ msgstr ""
 "والمستندات الناقصة ومستوى الثقة (منخفض، متوسط، مرتفع). يُرفق إخلاء المسؤولية "
 "الكامل دائمًا."
 
-#, fuzzy
-#| msgid "Privacy"
 msgid "Privacy policy"
-msgstr "الخصوصية"
+msgstr "سياسة الخصوصية"
 
 msgid "Personal data"
 msgstr "البيانات الشخصية"
 
 msgid "1. Data controller"
-msgstr ""
+msgstr "1. المسؤول عن المعالجة"
 
 msgid ""
 "The data controller is the Studio Legale Internazionale Badrane (the "
 "\"Studio\"). The platform operates as a sub-domain of the Studio's "
 "institutional website and complies with the professional rules applicable to "
 "the legal profession."
-msgstr ""
+msgstr "المسؤول عن المعالجة هو Studio Legale Internazionale Badrane («المكتب»). تعمل المنصّة كنطاق فرعي من الموقع المؤسسي للمكتب وتلتزم بالقواعد المهنية المعمول بها في مهنة المحاماة."
 
 msgid "2. What we collect"
-msgstr ""
+msgstr "2. ما الذي نجمعه"
 
-#, fuzzy
-#| msgid ""
-#| "When you use the simulator we may collect: the inputs you provide for the "
-#| "simulation, the language and country you choose, technical metadata such "
-#| "as IP address and user agent, and the consents you grant."
 msgid ""
 "When you use the simulator or the contact form we may collect: the inputs "
 "you provide for the simulation, the language and country you choose, your "
 "name and email if you submit a contact request, the consents you grant, and "
 "technical metadata such as IP address, user agent and request path."
-msgstr ""
-"عند استخدام المحاكي، قد نجمع: المدخلات التي تقدّمها للمحاكاة، واللغة والبلد "
-"الذي تختاره، والبيانات التقنية مثل عنوان IP ووكيل المستخدم، والموافقات التي "
-"تمنحها."
+msgstr "عند استخدامك للمحاكي أو نموذج التواصل، قد نجمع: البيانات التي تقدّمها للمحاكاة، واللغة والبلد اللذين تختارهما، واسمك وبريدك الإلكتروني إن أرسلت طلب تواصل، والموافقات التي تمنحها، وبيانات وصفية تقنية مثل عنوان IP ووكيل المستخدم ومسار الطلب."
 
 msgid "3. Special categories (GDPR art. 9)"
-msgstr ""
+msgstr "3. الفئات الخاصة (المادة 9 من اللائحة العامة لحماية البيانات GDPR)"
 
 msgid ""
 "Some requests legitimately involve special categories of personal data — "
 "health data, family events, judicial proceedings. We process them only after "
 "you give explicit consent (GDPR art. 9.2.a) on a separate, dedicated "
 "checkbox, and only for the purpose of replying to your specific request."
-msgstr ""
+msgstr "تتعلّق بعض الطلبات بصورة مشروعة بفئات خاصة من البيانات الشخصية — بيانات صحّية، أحداث عائلية، إجراءات قضائية. ولا نعالجها إلا بعد منحك موافقة صريحة (المادة 9.2.أ من اللائحة) عبر خانة مخصّصة منفصلة، ولغرض الردّ على طلبك المحدّد فقط."
 
-#, fuzzy
-#| msgid "Legal basis"
 msgid "4. Legal bases"
-msgstr "الأساس القانوني"
+msgstr "4. الأسس القانونية"
 
 msgid ""
 "We process your data on the basis of: (a) your consent, for sending us the "
 "request; (b) pre-contractual measures (GDPR art. 6.1.b), to evaluate whether "
 "the Studio can take your case; (c) the Studio's legitimate interest, to keep "
 "audit trails of consent, technical and security events."
-msgstr ""
+msgstr "نعالج بياناتك استناداً إلى: (أ) موافقتك، لإرسال طلبك؛ (ب) تدابير سابقة للتعاقد (المادة 6.1.ب من اللائحة)، لتقييم ما إذا كان بإمكان المكتب تولّي ملفّك؛ (ج) المصلحة المشروعة للمكتب، للاحتفاظ بسجلّات تدقيق للموافقات والأحداث التقنية والأمنية."
 
 msgid "5. Retention"
-msgstr ""
+msgstr "5. مدة الاحتفاظ"
 
 msgid ""
 "Personal data is retained only for as long as needed for the purpose it was "
@@ -4006,26 +3938,20 @@ msgid ""
 "retention period the data is anonymized or deleted. The retention periods "
 "are documented internally and will be signed off by the Studio before go-"
 "live."
-msgstr ""
+msgstr "لا يُحتفَظ بالبيانات الشخصية إلا للمدة اللازمة للغرض الذي جُمِعت من أجله، وضمن المدد المنصوص عليها في سياسة الاحتفاظ لدينا. وبعد انقضاء مدة الاحتفاظ، تُجهَّل البيانات أو تُحذَف. وهذه المدد موثّقة داخلياً وسيعتمدها المكتب قبل الإطلاق."
 
 msgid "6. Your rights"
-msgstr ""
+msgstr "6. حقوقك"
 
-#, fuzzy
-#| msgid ""
-#| "You can request access, rectification, deletion or anonymization of your "
-#| "data at any time by contacting the Studio."
 msgid ""
 "You can request access, rectification, deletion, anonymization, restriction, "
 "portability and object to processing of your data at any time by contacting "
 "the Studio. You also have the right to lodge a complaint with your national "
 "data protection authority."
-msgstr ""
-"يمكنك طلب الوصول إلى بياناتك أو تصحيحها أو حذفها أو جعلها مجهولة الهوية في "
-"أي وقت بالتواصل مع المكتب."
+msgstr "يمكنك في أيّ وقت طلب الوصول إلى بياناتك وتصحيحها وحذفها وتجهيلها وتقييد معالجتها ونقلها والاعتراض على معالجتها، وذلك بالتواصل مع المكتب. ولك أيضاً الحق في تقديم شكوى إلى هيئة حماية البيانات الوطنية لديك."
 
 msgid "7. Sharing"
-msgstr ""
+msgstr "7. مشاركة البيانات"
 
 msgid ""
 "We do not sell personal data. We do not share it with third parties beyond "
@@ -4036,7 +3962,7 @@ msgstr ""
 "لتقديم خدماتنا القانونية والوفاء بالالتزامات القانونية."
 
 msgid "8. Consent versions used by the platform"
-msgstr ""
+msgstr "8. إصدارات الموافقات المستخدَمة في المنصّة"
 
 msgid ""
 "The platform records the version of the consent text shown to you at submit "
@@ -4044,20 +3970,20 @@ msgid ""
 "versions in use are referenced internally as the privacy notice version and "
 "the special-categories notice version (working copies until the Studio signs "
 "the final wording)."
-msgstr ""
+msgstr "تسجّل المنصّة إصدار نصّ الموافقة الذي عُرِض عليك لحظة الإرسال، كي يتمكّن المكتب من إثبات الصياغة التي وافقت عليها. والإصدارات المعتمدة حالياً يُشار إليها داخلياً بإصدار إشعار الخصوصية وإصدار إشعار الفئات الخاصة (نسخ عمل إلى حين اعتماد المكتب للصياغة النهائية)."
 
 msgid "9. Contact"
-msgstr ""
+msgstr "9. التواصل"
 
 msgid ""
 "For any privacy-related question, please contact the Studio through the "
 "contact page or by certified email (PEC) — see the professional "
 "identification section in the page footer."
-msgstr ""
+msgstr "لأيّ سؤال متعلّق بالخصوصية، يُرجى التواصل مع المكتب عبر صفحة التواصل أو عبر البريد الإلكتروني المعتمد (PEC) — راجع قسم التعريف المهني في تذييل الصفحة."
 
 #, python-format
 msgid "Privacy policy version: %(v)s."
-msgstr ""
+msgstr "إصدار سياسة الخصوصية: %(v)s."
 
 msgid "Too many requests"
 msgstr "طلبات أكثر من اللازم"
@@ -4147,9 +4073,7 @@ msgid ""
 "Indicative simulation wizard for road-accident bodily injury in Italy, based "
 "on the approved TUN 2025 dataset (D.P.R. 12/2025). The result is informative "
 "and does not constitute legal advice or guarantee any outcome."
-msgstr ""
-"محاكاة تعويض إرشادية لـ %(country)s، استنادًا إلى مصادر قانونية معتمدة. "
-"التقدير ذو طابع إعلامي ولا يضمن أي نتيجة."
+msgstr "محاكٍ إرشادي للضرر الجسدي الناتج عن حادث طريق في إيطاليا، يستند إلى مجموعة بيانات TUN 2025 المعتمدة (المرسوم D.P.R. 12/2025). النتيجة ذات طابع إعلامي ولا تشكّل استشارة قانونية ولا تضمن أيّ نتيجة."
 
 msgid ""
 "All fields below are optional. If you don't know a value, leave it empty. "
@@ -4229,10 +4153,8 @@ msgstr ""
 "التقييم الفعلي للقضية على المستندات والخبرات وتقدير المسؤولية والقانون "
 "الواجب التطبيق والاختصاص القضائي والاجتهاد القضائي والممارسات التأمينية."
 
-#, fuzzy
-#| msgid "Run an indicative simulation"
 msgid "Calculate indicative estimate"
-msgstr "تشغيل محاكاة إرشادية"
+msgstr "احسب التقدير الإرشادي"
 
 msgid "Morocco — international inheritance"
 msgstr "المغرب — ميراث دولي"
@@ -4296,7 +4218,7 @@ msgstr ""
 "المصادر المعتمدة. وهي ليست احتمالاً للحصول على التعويض."
 
 msgid "How to read this range"
-msgstr ""
+msgstr "كيف تقرأ هذا النطاق"
 
 msgid "What this means"
 msgstr "ماذا يعني هذا"
@@ -4347,7 +4269,7 @@ msgstr ""
 msgid ""
 "Gather the documents listed below before contacting the Studio — it speeds "
 "up the review and shortens follow-up questions."
-msgstr ""
+msgstr "اجمع المستندات المذكورة أدناه قبل التواصل مع المكتب — فذلك يسرّع المراجعة ويقلّل الأسئلة الإضافية."
 
 msgid ""
 "Keep the simulation ID below — the Studio uses it to retrieve the exact "
@@ -4357,22 +4279,22 @@ msgstr ""
 "ذاتها لهذه التنفيذة."
 
 msgid "Calculation basis"
-msgstr ""
+msgstr "أساس الحساب"
 
 msgid ""
 "Lower bound of the indicative range based on the approved dataset and the "
 "conservative interpretation of fault and disability."
-msgstr ""
+msgstr "الحدّ الأدنى للنطاق الإرشادي، استناداً إلى مجموعة البيانات المعتمدة والتفسير المتحفّظ للمسؤولية ونسبة العجز."
 
 msgid ""
 "Central reference value used as the working anchor in negotiations or "
 "judicial reasoning."
-msgstr ""
+msgstr "القيمة المرجعية الوسطى، المستخدَمة كنقطة ارتكاز في المفاوضات أو التسبيب القضائي."
 
 msgid ""
 "Upper bound of the indicative range based on the approved dataset and the "
 "most favourable interpretation supported by sources."
-msgstr ""
+msgstr "الحدّ الأقصى للنطاق الإرشادي، استناداً إلى مجموعة البيانات المعتمدة والتفسير الأكثر مواتاةً الذي تدعمه المصادر."
 
 msgid ""
 "Amounts are derived from validated legal sources cited below. They are "
@@ -4416,7 +4338,7 @@ msgstr "المصادر القانونية المُستشهد بها"
 
 #, python-format
 msgid "Open official source: %(title)s (opens in a new tab)"
-msgstr ""
+msgstr "افتح المصدر الرسمي: %(title)s (يُفتَح في علامة تبويب جديدة)"
 
 msgid "Open official source"
 msgstr "افتح المصدر الرسمي"
@@ -4427,40 +4349,34 @@ msgid ""
 msgstr "هذه المحاكاة إرشادية ولا تعدّ رأيًا قانونيًا ولا ضمانًا للنتيجة."
 
 msgid "Calculation traceability"
-msgstr ""
+msgstr "إمكانية تتبّع الحساب"
 
 msgid "Tracked and reproducible calculation."
-msgstr ""
+msgstr "حساب متتبَّع وقابل لإعادة الإنتاج."
 
 msgid "Source version"
-msgstr ""
+msgstr "إصدار المصدر"
 
-#, fuzzy
-#| msgid "Sources of law"
 msgid "Source hash"
-msgstr "مصادر القانون"
+msgstr "بصمة المصدر"
 
 msgid "Engine version"
-msgstr ""
+msgstr "إصدار المحرّك"
 
-#, fuzzy
-#| msgid "Calculated"
 msgid "Calculation date"
-msgstr "محسوب"
+msgstr "تاريخ الحساب"
 
-#, fuzzy
-#| msgid "Useful pages"
 msgid "Useful pages for your case"
-msgstr "صفحات مفيدة"
+msgstr "صفحات مفيدة لملفّك"
 
 msgid "Read more before requesting a review"
-msgstr ""
+msgstr "اقرأ المزيد قبل طلب المراجعة"
 
 msgid ""
 "These pages describe the kinds of cases the Studio handles and what to "
 "prepare. They are informational; they do not replace the legal review you "
 "can request below."
-msgstr ""
+msgstr "تصف هذه الصفحات أنواع القضايا التي يتولّاها المكتب وما ينبغي تحضيره. وهي ذات طابع إعلامي؛ ولا تحلّ محلّ المراجعة القانونية التي يمكنك طلبها أدناه."
 
 msgid "Simulation ID"
 msgstr "معرّف المحاكاة"
@@ -4600,3 +4516,16 @@ msgstr "تُقدِّر هذه المحاكاة الضرر البيولوجي ا�
 
 msgid "It does not model temporary disability, personalisation, income loss or other items beyond the above. Those require a manual review by the Studio."
 msgstr "لا تُقدِّر العجز المؤقت أو التخصيص أو فقدان الدخل أو بنودًا أخرى تتجاوز ما سبق. تتطلب هذه مراجعة يدوية من المكتب."
+
+
+msgid "Simulation progress"
+msgstr "تقدّم المحاكاة"
+
+msgid "Country & case"
+msgstr "البلد ونوع القضية"
+
+msgid "Your details"
+msgstr "بياناتك"
+
+msgid "Result"
+msgstr "النتيجة"

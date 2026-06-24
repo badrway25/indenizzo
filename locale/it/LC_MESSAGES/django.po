@@ -1295,7 +1295,7 @@ msgid "Working copy"
 msgstr "Bozza di lavoro"
 
 msgid "Signed"
-msgstr ""
+msgstr "Firmato"
 
 msgid "signed at"
 msgstr ""
@@ -2874,63 +2874,63 @@ msgid "Skip to content"
 msgstr "Vai al contenuto"
 
 msgid "Documents to prepare"
-msgstr ""
+msgstr "Documenti da preparare"
 
 msgid "While you wait for our reply"
-msgstr ""
+msgstr "Mentre attendi la nostra risposta"
 
 msgid "What the Studio will ask for"
-msgstr ""
+msgstr "Cosa chiederà lo Studio"
 
 msgid ""
 "A written reply takes 3–5 working days. In the meantime, gathering the "
 "documents below speeds up the Studio's review and shortens the round-trip on "
 "follow-up questions."
-msgstr ""
+msgstr "Una risposta scritta richiede 3–5 giorni lavorativi. Nel frattempo, raccogliere i documenti elencati di seguito velocizza l'esame da parte dello Studio e riduce gli scambi necessari per eventuali chiarimenti."
 
 msgid ""
 "A lawyer reviewing your case will typically need the documents below. They "
 "are not required to submit the contact form — you can send them later by "
 "email once the Studio replies."
-msgstr ""
+msgstr "Un avvocato che esamina il tuo caso avrà di norma bisogno dei documenti elencati di seguito. Non sono necessari per inviare il modulo di contatto: puoi trasmetterli in un secondo momento via email, una volta ricevuta la risposta dello Studio."
 
 msgid ""
 "Medical reports describing the injury, treatment received, and any permanent "
 "consequences. Hospital discharge letters, specialist reports, rehabilitation "
 "notes."
-msgstr ""
+msgstr "Referti medici che descrivono la lesione, le cure ricevute ed eventuali postumi permanenti. Lettere di dimissione ospedaliera, relazioni specialistiche, note riabilitative."
 
 msgid ""
 "Accident records: police report, road-accident statement (CAI / constat "
 "amiable), photographs, sketches, anything filed at the scene or with the "
 "authorities."
-msgstr ""
+msgstr "Documentazione del sinistro: verbale delle forze dell'ordine, constatazione amichevole di incidente (modulo CAI), fotografie, schizzi e ogni atto raccolto sul luogo o depositato presso le autorità."
 
 msgid ""
 "Insurance correspondence: claim numbers, settlement offers received, refusal "
 "letters, communications with the third-party insurer. Save the originals, do "
 "not sign anything before review."
-msgstr ""
+msgstr "Corrispondenza con le assicurazioni: numeri di sinistro, offerte di risarcimento ricevute, lettere di diniego, comunicazioni con la compagnia della controparte. Conserva gli originali e non firmare nulla prima di una valutazione."
 
 msgid ""
 "Proof of economic impact: payslips before/after, sick-leave certificates, "
 "invoices for medical expenses, transport, equipment, or domestic help."
-msgstr ""
+msgstr "Prova dell'impatto economico: buste paga prima e dopo l'evento, certificati di malattia, fatture per spese mediche, trasporti, ausili o assistenza domestica."
 
 msgid ""
 "Identity and contact: a copy of your ID for the file, a phone number where "
 "the Studio can reach you, and the preferred language for the reply."
-msgstr ""
+msgstr "Identità e contatti: una copia del documento d'identità per il fascicolo, un recapito telefonico al quale lo Studio possa raggiungerti e la lingua preferita per la risposta."
 
 msgid ""
 "Witness contacts if anyone saw the events and is willing to confirm what "
 "happened — name and a way to reach them is enough at this stage."
-msgstr ""
+msgstr "Recapiti dei testimoni, se qualcuno ha assistito ai fatti ed è disposto a confermarli: in questa fase sono sufficienti il nome e un modo per contattarli."
 
 msgid ""
 "You don't need to send everything at once. The Studio will ask for what's "
 "missing once the case has been reviewed."
-msgstr ""
+msgstr "Non è necessario inviare tutto subito. Lo Studio richiederà ciò che manca una volta esaminato il caso."
 
 msgid "Module status"
 msgstr "Modulo pronto"
@@ -3081,7 +3081,7 @@ msgid "Primary navigation"
 msgstr "Navigazione principale"
 
 msgid "Language switcher"
-msgstr ""
+msgstr "Selettore della lingua"
 
 msgid "Choose language"
 msgstr "Scegli la lingua"
@@ -3095,7 +3095,7 @@ msgstr "Versione: %(v)s"
 
 #, python-format
 msgid "Signed on: %(d)s"
-msgstr ""
+msgstr "Firmato il: %(d)s"
 
 #, python-format
 msgid ""
@@ -3312,10 +3312,10 @@ msgid ""
 "class=\"font-mono text-xs\">%(sim_id)s</span>. The Studio will read your "
 "inputs and the cited sources together with your message — no need to retype "
 "them here."
-msgstr ""
+msgstr "Abbiamo precompilato il paese e il tipo di caso a partire dalla simulazione <span class=\"font-mono text-xs\">%(sim_id)s</span>. Lo Studio leggerà i dati inseriti e le fonti citate insieme al tuo messaggio: non è necessario reinserirli qui."
 
 msgid "What happens after you submit"
-msgstr ""
+msgstr "Cosa succede dopo l'invio"
 
 msgid "What happens next"
 msgstr "Cosa succede ora"
@@ -3823,7 +3823,7 @@ msgstr ""
 
 #, python-format
 msgid "Disclaimer version: %(v)s."
-msgstr ""
+msgstr "Versione delle avvertenze: %(v)s."
 
 #, python-format
 msgid "Status: %(s)s."
@@ -3942,7 +3942,7 @@ msgid ""
 "How we work: source-of-law catalogue, controlled validation lifecycle (draft "
 "→ approved), explicit \"calculation not available\" when no approved source "
 "exists, and transparent ranges with assumptions and confidence."
-msgstr ""
+msgstr "Come lavoriamo: catalogo delle fonti normative, ciclo di validazione controllato (bozza → approvata), messaggio esplicito \"calcolo non disponibile\" quando non esiste una fonte approvata, e intervalli trasparenti con ipotesi e livello di affidabilità."
 
 msgid "How we work"
 msgstr "Come lavoriamo"
@@ -4244,9 +4244,7 @@ msgid ""
 "Indicative simulation wizard for road-accident bodily injury in Italy, based "
 "on the approved TUN 2025 dataset (D.P.R. 12/2025). The result is informative "
 "and does not constitute legal advice or guarantee any outcome."
-msgstr ""
-"Simulazione indicativa di risarcimento per %(country)s, basata su fonti "
-"legali approvate. La stima è informativa e mai una garanzia di risultato."
+msgstr "Simulatore indicativo per il danno biologico da incidente stradale in Italia, basato sul dataset approvato TUN 2025 (D.P.R. 12/2025). Il risultato è informativo e non costituisce consulenza legale né garantisce alcun esito."
 
 msgid ""
 "All fields below are optional. If you don't know a value, leave it empty. "
@@ -4536,7 +4534,7 @@ msgstr "Fonti legali citate"
 
 #, python-format
 msgid "Open official source: %(title)s (opens in a new tab)"
-msgstr ""
+msgstr "Apri la fonte ufficiale: %(title)s (si apre in una nuova scheda)"
 
 msgid "Open official source"
 msgstr "Apri fonte ufficiale"
@@ -4646,7 +4644,7 @@ msgid ""
 "If validated legal sources are available (today: Italy, road accident), the "
 "platform returns an indicative min/mid/max range. Otherwise it explicitly "
 "returns \"requires legal validation\" — no invented numbers."
-msgstr ""
+msgstr "Se sono disponibili fonti giuridiche validate (oggi: Italia, incidenti stradali), la piattaforma restituisce un intervallo indicativo minimo/medio/massimo. In caso contrario indica esplicitamente \"richiede validazione legale\": nessun importo inventato."
 
 msgid "Step 3"
 msgstr "Passo 3"
@@ -4720,3 +4718,16 @@ msgstr "Questa stima modella il danno biologico permanente e il danno morale per
 
 msgid "It does not model temporary disability, personalisation, income loss or other items beyond the above. Those require a manual review by the Studio."
 msgstr "Non modella l'invalidità temporanea, la personalizzazione, la perdita di reddito o altre voci oltre a quanto sopra. Questi richiedono una revisione manuale dello Studio."
+
+
+msgid "Simulation progress"
+msgstr "Avanzamento della simulazione"
+
+msgid "Country & case"
+msgstr "Paese e tipo di caso"
+
+msgid "Your details"
+msgstr "I tuoi dati"
+
+msgid "Result"
+msgstr "Risultato"
