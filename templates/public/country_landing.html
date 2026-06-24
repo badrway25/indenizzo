@@ -110,6 +110,8 @@
     </div>
   </section>
   {% endif %}
+  {# Drives the sticky conversion bar once the hero scrolls away. #}
+  <div data-sticky-cta-sentinel aria-hidden="true"></div>
 
   <!-- Hero 2-col (desktop) / 1-col (mobile) -->
   <section class="max-w-6xl mx-auto px-5 lg:px-8 pt-10 pb-14">
@@ -326,3 +328,5 @@
   </section>
 </article>
 {% endblock %}
+
+{% block sticky_cta %}{% include "partials/_sticky_cta.html" with sticky_show_calc=is_calculator_available sticky_calc_url=wizard_url_name %}{% endblock %}

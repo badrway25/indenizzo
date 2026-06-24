@@ -52,6 +52,15 @@
       {{ form.website }}
     </div>
 
+    {# Completeness meter (JS-only); optional fields, never gates submission. #}
+    <div class="wizard-progress" data-wizard-progress aria-label="{% translate 'Form completeness' %}">
+      <div class="wizard-progress__meta">
+        <span>{% translate "Completeness" %}<button type="button" class="tooltip-anchor" data-tooltip="{% translate 'The more details you provide, the more precise the indicative range. All fields stay optional.' %}" aria-label="{% translate 'What is this?' %}">?</button></span>
+        <span data-wizard-progress-label data-progress-template="{done}/{total}">0/0</span>
+      </div>
+      <div class="wizard-progress__track"><div class="wizard-progress__bar" data-wizard-progress-bar></div></div>
+    </div>
+
     {% if form.non_field_errors %}
       <div class="rounded-xl border border-red-300 bg-red-50 p-3 text-sm text-red-800">
         {{ form.non_field_errors }}

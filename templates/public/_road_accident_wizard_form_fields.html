@@ -51,7 +51,7 @@
   </div>
 
   <div>
-    <label for="{{ form.permanent_disability_percentage.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.permanent_disability_percentage.label }}</label>
+    <label for="{{ form.permanent_disability_percentage.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.permanent_disability_percentage.label }}</label><button type="button" class="tooltip-anchor" data-tooltip="{% translate 'Permanent impairment percentage, usually certified in a medical-legal report. Optional — leave it blank if you do not have it.' %}" aria-label="{% translate 'What is this?' %}">?</button>
     {{ form.permanent_disability_percentage }}
     {% if form.permanent_disability_percentage.help_text %}<p class="mt-1 text-xs text-stone2-500">{{ form.permanent_disability_percentage.help_text }}</p>{% endif %}
     {% for err in form.permanent_disability_percentage.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
@@ -75,7 +75,7 @@
     {# Temporary disability days. #}
     <div class="grid sm:grid-cols-2 gap-5">
       <div>
-        <label for="{{ form.total_temporary_disability_days.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.total_temporary_disability_days.label }}</label>
+        <label for="{{ form.total_temporary_disability_days.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.total_temporary_disability_days.label }}</label><button type="button" class="tooltip-anchor" data-tooltip="{% translate 'Days of total temporary inability to carry out daily activities, if certified by a doctor. Optional.' %}" aria-label="{% translate 'What is this?' %}">?</button>
         {{ form.total_temporary_disability_days }}
         {% if form.total_temporary_disability_days.help_text %}<p class="mt-1 text-xs text-stone2-500">{{ form.total_temporary_disability_days.help_text }}</p>{% endif %}
         {% for err in form.total_temporary_disability_days.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
@@ -106,7 +106,7 @@
 
     {# Fault percentage. #}
     <div>
-      <label for="{{ form.fault_percentage.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.fault_percentage.label }}</label>
+      <label for="{{ form.fault_percentage.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.fault_percentage.label }}</label><button type="button" class="tooltip-anchor" data-tooltip="{% translate 'Your assessed share of responsibility for the accident, if known. A higher share proportionally reduces the indicative estimate.' %}" aria-label="{% translate 'What is this?' %}">?</button>
       {{ form.fault_percentage }}
       {% if form.fault_percentage.help_text %}<p class="mt-1 text-xs text-stone2-500">{{ form.fault_percentage.help_text }}</p>{% endif %}
       {% for err in form.fault_percentage.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}

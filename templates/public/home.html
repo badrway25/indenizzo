@@ -103,6 +103,35 @@
       </div>
     </div>
   </section>
+  {# Drives the sticky conversion bar: it appears once the hero scrolls away. #}
+  <div data-sticky-cta-sentinel aria-hidden="true"></div>
+
+  {# -------- At-a-glance band (verifiable facts only — no fabricated KPIs) -------- #}
+  <section class="bg-white border-b border-stone2-100" aria-label="{% translate 'Platform at a glance' %}">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8 py-12">
+      <p class="text-center text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold" data-reveal>
+        {% translate "Built on evidence, not estimates" %}
+      </p>
+      <div class="stat-band mt-8">
+        <div class="stat-item" data-reveal data-reveal-delay="0">
+          <p class="stat-item__value">5</p>
+          <p class="stat-item__label">{% translate "Jurisdictions mapped" %}</p>
+        </div>
+        <div class="stat-item" data-reveal data-reveal-delay="80">
+          <p class="stat-item__value">4</p>
+          <p class="stat-item__label">{% translate "Languages" %}</p>
+        </div>
+        <div class="stat-item" data-reveal data-reveal-delay="160">
+          <p class="stat-item__value">{% translate "Official" %}</p>
+          <p class="stat-item__label">{% translate "Validated sources only" %}</p>
+        </div>
+        <div class="stat-item" data-reveal data-reveal-delay="240">
+          <p class="stat-item__value">0</p>
+          <p class="stat-item__label">{% translate "Invented figures" %}</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   {# -------- Country strip -------- #}
   <section class="bg-white border-y border-stone2-100">
@@ -117,6 +146,7 @@
       <div class="mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
         {% for country in mvp_countries %}
           <a href="{% if country.code == 'IT' %}{% url 'core:country_italy' %}{% elif country.code == 'FR' %}{% url 'core:country_france' %}{% elif country.code == 'BE' %}{% url 'core:country_belgium' %}{% elif country.code == 'MA' %}{% url 'core:country_morocco' %}{% elif country.code == 'TN' %}{% url 'core:country_tunisia' %}{% endif %}"
+             data-reveal data-reveal-delay="{% widthratio forloop.counter0 1 70 %}"
              class="group rounded-2xl border border-stone2-200 bg-sand-50 px-4 py-5 text-center hover:border-gold-400/60 hover:shadow-card transition">
             <p class="font-serif text-3xl text-ink-950 leading-none">{{ country.code }}</p>
             <p class="text-xs text-stone2-500 uppercase tracking-[0.14em] mt-2 group-hover:text-gold-600">{% translate country.name_key %}</p>
@@ -128,21 +158,21 @@
 
   {# -------- Methodology preview -------- #}
   <section class="max-w-7xl mx-auto px-5 lg:px-8 py-20 grid lg:grid-cols-3 gap-6">
-    <article class="bg-white border border-stone2-200 rounded-3xl p-7 shadow-card">
+    <article class="bg-white border border-stone2-200 rounded-3xl p-7 shadow-card" data-reveal data-reveal-delay="0">
       <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">01</p>
       <h3 class="mt-3 font-serif text-2xl text-ink-950">{% translate "Validated sources only" %}</h3>
       <p class="mt-2 text-sm text-ink-800 leading-relaxed">
         {% blocktranslate %}Every coefficient and figure used in a public calculation is tied to a legal source marked as approved by our team.{% endblocktranslate %}
       </p>
     </article>
-    <article class="bg-white border border-stone2-200 rounded-3xl p-7 shadow-card">
+    <article class="bg-white border border-stone2-200 rounded-3xl p-7 shadow-card" data-reveal data-reveal-delay="90">
       <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">02</p>
       <h3 class="mt-3 font-serif text-2xl text-ink-950">{% translate "Transparent ranges" %}</h3>
       <p class="mt-2 text-sm text-ink-800 leading-relaxed">
         {% blocktranslate %}You receive a minimum, a midpoint and a maximum, with the assumptions, the formulas and the missing documents clearly listed.{% endblocktranslate %}
       </p>
     </article>
-    <article class="bg-white border border-stone2-200 rounded-3xl p-7 shadow-card">
+    <article class="bg-white border border-stone2-200 rounded-3xl p-7 shadow-card" data-reveal data-reveal-delay="180">
       <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">03</p>
       <h3 class="mt-3 font-serif text-2xl text-ink-950">{% translate "Human review" %}</h3>
       <p class="mt-2 text-sm text-ink-800 leading-relaxed">
@@ -154,7 +184,7 @@
   {# -------- CTA -------- #}
   <section class="bg-ink-950 text-sand-50">
     <div class="max-w-7xl mx-auto px-5 lg:px-8 py-16 grid lg:grid-cols-2 gap-8 items-center">
-      <div>
+      <div data-reveal>
         <h2 class="font-serif text-3xl sm:text-4xl">{% translate "Ready for a real legal evaluation?" %}</h2>
         <p class="mt-3 text-sand-100/80 max-w-xl leading-relaxed">
           {% blocktranslate %}Our international team handles compensation, medical liability and cross-border inheritance matters across Europe and North Africa.{% endblocktranslate %}
@@ -166,3 +196,5 @@
     </div>
   </section>
 {% endblock %}
+
+{% block sticky_cta %}{% include "partials/_sticky_cta.html" with sticky_show_calc=True %}{% endblock %}

@@ -34,6 +34,27 @@ _REAL_LEGAL_DATA_ROOT = (Path(__file__).resolve().parent / "legal_data").resolve
 
 
 @pytest.fixture(autouse=True)
+def _isolate_media_root(tmp_path, settings):
+    """Redirect ``settings.MEDIA_ROOT`` to a per-test tmp dir.
+
+    Sibling guard to ``_isolate_legal_data_root``. Several tests create a
+    ``LegalSourceAttachment`` with a real ``SimpleUploadedFile``; without this
+    isolation Django's ``FileSystemStorage`` writes the bytes straight into the
+    repo's ``media/legal_sources/<pk>/`` tree and, because the storage appends a
+    random suffix on every collision, the files accumulate unbounded across runs
+    (the bug that left ~28k orphan PDFs / 54 MB on disk). Pointing ``MEDIA_ROOT``
+    at ``tmp_path`` keeps every test upload disposable and out of the repo. The
+    8 real DB-referenced attachments under the repo ``media/`` are untouched
+    because no test reads them — uploads are always self-seeded.
+    """
+    isolated_media = tmp_path / "media_isolated"
+    isolated_media.mkdir(parents=True, exist_ok=True)
+    settings.MEDIA_ROOT = str(isolated_media)
+    yield isolated_media
+    shutil.rmtree(isolated_media, ignore_errors=True)
+
+
+@pytest.fixture(autouse=True)
 def _isolate_legal_data_root(tmp_path, settings):
     """Redirect ``settings.LEGAL_DATA_ROOT`` to a per-test tmp dir.
 

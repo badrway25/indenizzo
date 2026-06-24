@@ -393,3 +393,250 @@ form [aria-invalid="true"] {
   .premium-btn { width: 100%; }
   .premium-btn-inline { width: auto; }
 }
+
+/* ==========================================================================
+   Behavioural layer (P3) — progressive enhancement.
+
+   Every interaction below is opt-in via a `data-*` hook and driven by the
+   single self-hosted `static/js/site.js` (CSP `script-src 'self'`). All of it
+   degrades gracefully: the pre-reveal hidden state is scoped to `.js`
+   (added in <head> only when scripting is on), and the global
+   prefers-reduced-motion block in base.html neutralises the transitions.
+   No inline style attributes are used (CSP `style-src` has no unsafe-inline);
+   dynamic values are set via the CSSOM from JS.
+   ========================================================================== */
+
+/* --- Scroll reveal (IntersectionObserver) ------------------------------- */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  will-change: opacity, transform;
+}
+.js [data-reveal].is-revealed { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal],
+  .js [data-reveal].is-revealed { opacity: 1; transform: none; transition: none; }
+}
+
+/* --- Light hero parallax (subtle, large-screen + motion only) ----------- */
+@media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
+  [data-parallax] { will-change: transform; }
+}
+
+/* --- Sticky conversion bar --------------------------------------------- */
+.sticky-cta {
+  position: fixed;
+  inset-inline: 0;
+  /* Sit ABOVE the cookie consent banner while it is visible (the cookie
+     script publishes its height as --cookie-banner-h on <html>), so the
+     bar never covers the consent controls. Drops to 0 once consent is given. */
+  bottom: var(--cookie-banner-h, 0px);
+  z-index: var(--ds-z-sticky);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--ds-border-soft);
+  box-shadow: 0 -8px 24px rgba(7, 23, 47, 0.08);
+  transform: translateY(110%);
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  padding: 0.7rem max(1rem, env(safe-area-inset-left)) calc(0.7rem + env(safe-area-inset-bottom));
+}
+.sticky-cta.is-visible { transform: translateY(0); }
+.sticky-cta.is-dismissed { display: none; }
+.sticky-cta__inner {
+  max-width: 64rem;
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+}
+.sticky-cta__copy { flex: 1 1 auto; min-width: 0; }
+.sticky-cta__title {
+  font-family: var(--ds-font-serif);
+  font-size: 1.05rem;
+  line-height: 1.2;
+  color: var(--ds-navy);
+}
+.sticky-cta__sub {
+  font-size: 0.78rem;
+  color: var(--ds-slate);
+  margin-top: 0.1rem;
+}
+.sticky-cta__actions { display: flex; gap: var(--ds-space-2); flex: 0 0 auto; }
+.sticky-cta__dismiss {
+  flex: 0 0 auto;
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--ds-radius-pill);
+  color: var(--ds-slate);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+.sticky-cta__dismiss:hover { background: rgba(7, 23, 47, 0.06); color: var(--ds-navy); }
+@media (prefers-reduced-motion: reduce) {
+  .sticky-cta { transition: none; }
+}
+@media (max-width: 640px) {
+  /* Drop the copy block so the two CTAs share the row cleanly at 390px. */
+  .sticky-cta__copy { display: none; }
+  .sticky-cta__actions { flex: 1 1 auto; }
+  .sticky-cta__actions .premium-btn { flex: 1 1 0; min-width: 0; padding-inline: 0.6rem; font-size: 0.85rem; }
+}
+
+/* --- Source drawer (off-canvas panel) ----------------------------------- */
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--ds-z-modal-backdrop);
+  background: rgba(7, 23, 47, 0.45);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.28s ease, visibility 0.28s ease;
+}
+.drawer-backdrop.is-open { opacity: 1; visibility: visible; }
+/* The drawer is a JS-only quick-access duplicate of the always-visible inline
+   source list — hidden entirely without JavaScript so nothing is lost. */
+.drawer { display: none; }
+.js .drawer {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-end: 0;
+  z-index: var(--ds-z-modal);
+  width: min(94vw, 30rem);
+  background: var(--ds-surface);
+  box-shadow: var(--ds-shadow-lg);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(105%);
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  visibility: hidden;
+}
+[dir="rtl"] .js .drawer { transform: translateX(-105%); }
+.js .drawer.is-open { transform: translateX(0); visibility: visible; }
+/* Hide the trigger/affordances unless JS is on. */
+.js-only { display: none !important; }
+.js .js-only { display: inline-flex !important; }
+.drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-3);
+  padding: var(--ds-space-5);
+  border-bottom: 1px solid var(--ds-border-soft);
+}
+.drawer__title { font-family: var(--ds-font-serif); font-size: 1.25rem; color: var(--ds-navy); }
+.drawer__body { padding: var(--ds-space-5); overflow-y: auto; flex: 1 1 auto; min-height: 0; }
+.drawer__close {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--ds-radius-pill);
+  border: 1px solid var(--ds-border-soft);
+  background: var(--ds-surface);
+  color: var(--ds-ink);
+  cursor: pointer;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+.drawer__close:hover { border-color: var(--ds-gold); color: var(--ds-navy); }
+body.has-drawer-open { overflow: hidden; }
+@media (prefers-reduced-motion: reduce) {
+  .drawer, .drawer-backdrop { transition: none; }
+}
+
+/* --- Tooltip (hover/focus, keyboard dismissable) ------------------------ */
+.tooltip-anchor {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-inline-start: 0.3rem;
+  border-radius: var(--ds-radius-pill);
+  border: 1px solid var(--ds-gold);
+  color: var(--ds-gold-strong);
+  background: transparent;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: help;
+  vertical-align: middle;
+}
+.tooltip-anchor:hover { background: var(--ds-gold); color: var(--ds-navy); }
+.tooltip-bubble {
+  position: absolute;
+  z-index: var(--ds-z-toast);
+  max-width: 18rem;
+  background: var(--ds-navy);
+  color: var(--ds-ivory);
+  border-radius: var(--ds-radius-md);
+  box-shadow: var(--ds-shadow-lg);
+  padding: var(--ds-space-3) var(--ds-space-4);
+  font-family: var(--ds-font-sans);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.16s ease;
+}
+.tooltip-bubble.is-open { opacity: 1; visibility: visible; }
+@media (prefers-reduced-motion: reduce) { .tooltip-bubble { transition: none; } }
+
+/* --- Wizard progress bar (JS-only: needs JS to compute completeness) ----- */
+.wizard-progress { display: none; gap: 0.4rem; }
+.js .wizard-progress { display: grid; }
+.wizard-progress__meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-family: var(--ds-font-sans);
+  font-size: 0.78rem;
+  color: var(--ds-slate);
+}
+.wizard-progress__meta strong { color: var(--ds-navy); font-weight: 600; }
+.wizard-progress__track {
+  height: 0.45rem;
+  border-radius: var(--ds-radius-pill);
+  background: var(--ds-sand);
+  overflow: hidden;
+}
+.wizard-progress__bar {
+  height: 100%;
+  width: 0;
+  border-radius: var(--ds-radius-pill);
+  background: linear-gradient(90deg, var(--ds-gold), var(--ds-gold-strong));
+  transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+[dir="rtl"] .wizard-progress__bar { background: linear-gradient(270deg, var(--ds-gold), var(--ds-gold-strong)); }
+@media (prefers-reduced-motion: reduce) { .wizard-progress__bar { transition: none; } }
+
+/* --- Honest "at a glance" stat band ------------------------------------- */
+.stat-band {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ds-space-4);
+}
+@media (min-width: 768px) { .stat-band { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.stat-item { text-align: center; }
+.stat-item__value {
+  font-family: var(--ds-font-serif);
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  line-height: 1;
+  color: var(--ds-navy);
+}
+.stat-item__label {
+  margin-top: 0.4rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ds-slate);
+}

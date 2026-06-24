@@ -13,6 +13,8 @@
     <p class="mt-4 text-lg text-ink-800 leading-relaxed">
       {% blocktranslate %}Our simulator is built on a single principle: no figure is shown to the public unless we can cite the legal source behind it. This page explains how we collect, validate and version those sources.{% endblocktranslate %}
     </p>
+    {# Drives the sticky conversion bar once the intro scrolls away. #}
+    <div data-sticky-cta-sentinel aria-hidden="true"></div>
 
     <div class="mt-12 grid sm:grid-cols-2 gap-5">
       <article class="bg-white border border-stone2-200 rounded-3xl p-6 lg:p-7 shadow-card">
@@ -55,3 +57,5 @@
     </div>
   </section>
 {% endblock %}
+
+{% block sticky_cta %}{% include "partials/_sticky_cta.html" with sticky_show_calc=True %}{% endblock %}
