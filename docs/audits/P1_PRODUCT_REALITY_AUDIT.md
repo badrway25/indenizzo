@@ -88,7 +88,7 @@ The mandatory disclaimer is present. **Must not be auto-calculated:** anything o
 - **MA** (`ma-code-famille-moudawana-fr-pdf`): inheritance domain; no dataset/formula mapping Moudawana articles to shares.
 - **TN** (`tn-code-statut-personnel-livre-ix-succession`, `tn-code-dip-loi-98-97`): approved sources but **no formula mapping** Livre IX articles to inheritance shares.
 - All four: confirmed **fail-closed** (`can_calculate=False`, `is_calculation_available=False`, engines return `unavailable_requires_legal_validation`).
-- **EU finding (OPS-2 confirmed):** `eu-regulation-650-2012-successions` — the `[official_sync]` block records a `.html` `local_path` that **does not exist**, while the on-disk file is `.xml`; `validate_official_legal_sources` returns `local_file_missing`; `official_sync_manifest.json` shows `fetch_failed`. **strict ALL stays exit 1.** Needs a controlled re-sync OR a surgical provenance `.html→.xml` fix + Studio confirmation that the `.xml` is the correct official file + revalidation. **Do not hand-edit the marker.**
+- **EU finding (corrected & worse than OPS-2 framed it):** `eu-regulation-650-2012-successions` — the `[official_sync]` block records a `.html` `local_path` that doesn't exist while the on-disk file is `.xml`; `validate_official_legal_sources` returns `local_file_missing`; `strict ALL` stays exit 1. **But the deeper problem:** the on-disk `.xml` is a **133-byte stub** (a EUR-Lex CELEX cellar URI, not the regulation text), and `official_sync_manifest.json` records `classification=fetch_failed` with `ConnectionError: simulated network error for tests` for all three EUR-Lex endpoints (HTML/XML/PDF). **The EU source was never genuinely downloaded — it is a test/dev placeholder.** Therefore a surgical provenance `.html→.xml` edit is **NOT** a valid fix (it would point to a stub). The only correct remedy is a **real controlled download of Regulation (EU) 650/2012 from EUR-Lex** (CELEX:32012R0650), Studio confirmation, then `validate_official_legal_sources --commit`. **Do not hand-edit the marker; do not treat the 133-byte file as the official source.** (This corrects the earlier OPS-2 "hash drift / path mismatch" framing.)
 
 ## 11. i18n/copywriting audit
 
@@ -104,7 +104,7 @@ CI Lighthouse-desktop passes first-try (H1-10.1 metric-zero guard prevents flake
 2. **i18n leaks** (EN/IT on FR/AR) + consent texts still draft — breaks trust and GDPR sign-off for non-IT markets.
 3. **Calculation scope is narrow & not independently legal-reviewed** — risk of users over-relying on a single-scenario estimate; temporal/personalization absent.
 4. **PDF report + retention/deletion + lead webhook are stubs** — the "report PDF / GDPR retention / CRM" promised flows don't fully work.
-5. **EU strict-ALL finding open** (provenance `.html`/`.xml`).
+5. **EU source is a 133-byte stub, not the regulation** — never genuinely fetched (manifest = `fetch_failed`, *simulated* network error). The `.html`/`.xml` provenance mismatch is secondary; a provenance edit would not fix it. Needs a real controlled EUR-Lex download (CELEX:32012R0650) before any cross-border inheritance work rests on it. strict ALL stays exit 1.
 6. **Provenance verifier never tested against real approved IT rows in CI** (fixture-seeded only); canary amounts hardcoded, not in an auditable config file.
 7. **Non-IT readiness audit + D1–D6 read-only/PII not CI-gated by default** (silent in DEBUG=true).
 8. **Wizard UX immaturity** (no stepper/loading/error states) lowers perceived premium and conversion.
