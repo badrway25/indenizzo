@@ -1,0 +1,395 @@
+/* ==========================================================================
+   Studio Legale Badrane — Premium Design System Foundation (P2).
+
+   Additive, reusable component layer loaded AFTER site.css. It does NOT
+   restyle existing pages: nothing here applies unless a `.premium-*`
+   class (or the global form-control enhancement) is used. site.css stays
+   the source of the Tailwind-subset utilities + base palette tokens.
+
+   Palette note: design-system tokens reconcile to the existing premium
+   palette (ink/gold/sand already in production and matching the brand
+   brief) for visual harmony, and ADD the semantic colors the project
+   lacked (teal, success, warning, error, slate). See
+   docs/audits/P2_PREMIUM_DESIGN_SYSTEM_FOUNDATION_PLAN.md.
+   ========================================================================== */
+
+:root {
+  /* --- brand (reconciled to existing site.css tokens) --- */
+  --ds-navy: var(--ink-950, #07172f);
+  --ds-navy-soft: var(--ink-900, #0c2046);
+  --ds-ink: var(--ink-800, #172e62);
+  --ds-gold: var(--gold-500, #b88336);
+  --ds-gold-strong: var(--gold-600, #9a6b21);
+  --ds-ivory: var(--sand-50, #faf6ef);
+  --ds-sand: var(--sand-100, #f3ece0);
+  --ds-surface: #ffffff;
+
+  /* --- new semantic colors --- */
+  --ds-teal: #2f6f73;
+  --ds-slate: #64748b;
+  --ds-success: #2f7d5c;
+  --ds-success-soft: #eaf3ee;
+  --ds-warning: #b7791f;
+  --ds-warning-soft: #fbf3e3;
+  --ds-error: #8a1f2d;
+  --ds-error-soft: #fbecee;
+  --ds-border-soft: rgba(15, 23, 42, 0.12);
+  --ds-border-strong: rgba(15, 23, 42, 0.2);
+
+  /* --- spacing scale --- */
+  --ds-space-1: 0.25rem;
+  --ds-space-2: 0.5rem;
+  --ds-space-3: 0.75rem;
+  --ds-space-4: 1rem;
+  --ds-space-5: 1.5rem;
+  --ds-space-6: 2rem;
+  --ds-space-7: 3rem;
+
+  /* --- radius scale --- */
+  --ds-radius-sm: 0.5rem;
+  --ds-radius-md: 0.75rem;
+  --ds-radius-lg: 1rem;
+  --ds-radius-xl: 1.5rem;
+  --ds-radius-pill: 9999px;
+
+  /* --- soft layered shadows (not heavy) --- */
+  --ds-shadow-sm: 0 1px 2px rgba(7, 23, 47, 0.06), 0 1px 3px rgba(7, 23, 47, 0.05);
+  --ds-shadow-md: 0 6px 18px rgba(7, 23, 47, 0.07), 0 2px 6px rgba(7, 23, 47, 0.05);
+  --ds-shadow-lg: 0 18px 48px rgba(7, 23, 47, 0.12), 0 6px 16px rgba(7, 23, 47, 0.06);
+
+  /* --- type scale --- */
+  --ds-font-serif: 'Cormorant Garamond', Georgia, serif;
+  --ds-font-sans: 'Inter', system-ui, sans-serif;
+
+  /* --- control geometry --- */
+  --ds-btn-h-sm: 2.25rem;
+  --ds-btn-h: 2.75rem;
+  --ds-btn-h-lg: 3.25rem;
+  --ds-touch-min: 44px;
+  --ds-focus-ring: 0 0 0 3px rgba(184, 131, 54, 0.45);
+
+  /* --- z-index --- */
+  --ds-z-dropdown: 1000;
+  --ds-z-sticky: 1010;
+  --ds-z-modal-backdrop: 1040;
+  --ds-z-modal: 1050;
+  --ds-z-toast: 1080;
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+.premium-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-space-2);
+  min-height: var(--ds-btn-h);
+  min-width: var(--ds-touch-min);
+  padding: 0 1.4rem;
+  border: 1px solid transparent;
+  border-radius: var(--ds-radius-pill);
+  font-family: var(--ds-font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.005em;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease,
+    box-shadow 0.18s ease, transform 0.18s ease;
+}
+.premium-btn:hover { transform: translateY(-1px); box-shadow: var(--ds-shadow-md); }
+.premium-btn:active { transform: translateY(0); box-shadow: var(--ds-shadow-sm); }
+.premium-btn:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+.premium-btn:disabled,
+.premium-btn[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  filter: grayscale(0.25);
+}
+.premium-btn svg { width: 1.05em; height: 1.05em; }
+
+.premium-btn-primary { background: var(--ds-navy); color: var(--ds-ivory); }
+.premium-btn-primary:hover { background: var(--ds-navy-soft); color: #fff; }
+.premium-btn-secondary { background: var(--ds-surface); color: var(--ds-navy); border-color: var(--ds-border-soft); }
+.premium-btn-secondary:hover { border-color: var(--ds-gold); color: var(--ds-navy); }
+.premium-btn-ghost { background: transparent; color: var(--ds-ink); }
+.premium-btn-ghost:hover { background: rgba(7, 23, 47, 0.05); box-shadow: none; }
+.premium-btn-gold { background: var(--ds-gold); color: var(--ds-navy); }
+.premium-btn-gold:hover { background: var(--ds-gold-strong); color: var(--ds-navy); }
+.premium-btn-danger { background: var(--ds-error); color: #fff; }
+.premium-btn-danger:hover { background: #74121f; color: #fff; }
+
+.premium-btn-sm { min-height: var(--ds-btn-h-sm); padding: 0 1rem; font-size: 0.85rem; }
+.premium-btn-lg { min-height: var(--ds-btn-h-lg); padding: 0 1.9rem; font-size: 1.02rem; }
+.premium-btn-block { display: flex; width: 100%; }
+
+/* ==========================================================================
+   Badges / status
+   ========================================================================== */
+.premium-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--ds-radius-pill);
+  border: 1px solid transparent;
+  font-family: var(--ds-font-sans);
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  white-space: nowrap;
+}
+.premium-badge::before { content: "●"; font-size: 0.62em; line-height: 1; }
+.premium-badge-success { background: var(--ds-success-soft); color: var(--ds-success); border-color: rgba(47, 125, 92, 0.25); }
+.premium-badge-warning { background: var(--ds-warning-soft); color: var(--ds-warning); border-color: rgba(183, 121, 31, 0.25); }
+.premium-badge-danger { background: var(--ds-error-soft); color: var(--ds-error); border-color: rgba(138, 31, 45, 0.25); }
+.premium-badge-muted { background: var(--ds-sand); color: var(--ds-ink); border-color: var(--ds-border-soft); }
+.country-status-badge,
+.calc-readiness-badge { display: inline-flex; align-items: center; gap: 0.4rem; }
+
+/* ==========================================================================
+   Cards
+   ========================================================================== */
+.premium-card {
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border-soft);
+  border-radius: var(--ds-radius-xl);
+  box-shadow: var(--ds-shadow-md);
+  overflow: hidden;
+}
+.premium-card-header { padding: var(--ds-space-5) var(--ds-space-5) 0; }
+.premium-card-body { padding: var(--ds-space-5); }
+.premium-metric-card {
+  background: linear-gradient(180deg, var(--ds-surface), var(--ds-ivory));
+  border: 1px solid var(--ds-border-soft);
+  border-radius: var(--ds-radius-lg);
+  padding: var(--ds-space-5);
+  box-shadow: var(--ds-shadow-sm);
+}
+.premium-provenance-card {
+  background: var(--ds-navy);
+  color: var(--ds-ivory);
+  border-radius: var(--ds-radius-lg);
+  padding: var(--ds-space-5);
+  box-shadow: var(--ds-shadow-md);
+}
+.premium-provenance-card a { color: var(--ds-gold); text-decoration: underline; }
+.premium-disclaimer-card {
+  background: var(--ds-sand);
+  border: 1px solid var(--ds-border-soft);
+  border-left: 3px solid var(--ds-gold);
+  border-radius: var(--ds-radius-md);
+  padding: var(--ds-space-4) var(--ds-space-5);
+  color: var(--ds-ink);
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+.premium-unavailable-card {
+  background: var(--ds-warning-soft);
+  border: 1px solid rgba(183, 121, 31, 0.3);
+  border-left: 4px solid var(--ds-warning);
+  border-radius: var(--ds-radius-lg);
+  padding: var(--ds-space-5);
+}
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+.premium-form { display: block; }
+.premium-form-section { display: grid; gap: var(--ds-space-2); margin-bottom: var(--ds-space-4); }
+.premium-input,
+.premium-select,
+.premium-textarea {
+  display: block;
+  width: 100%;
+  min-height: var(--ds-touch-min);
+  padding: 0.65rem 0.8rem;
+  background: var(--ds-ivory);
+  border: 1px solid var(--ds-border-soft);
+  border-radius: var(--ds-radius-md);
+  color: var(--ds-navy-soft);
+  font-family: var(--ds-font-sans);
+  transition: border-color 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease;
+}
+.premium-input:hover,
+.premium-select:hover,
+.premium-textarea:hover { border-color: var(--ds-border-strong); }
+.premium-input:focus,
+.premium-select:focus,
+.premium-textarea:focus {
+  outline: none;
+  background: var(--ds-surface);
+  border-color: var(--ds-gold);
+  box-shadow: var(--ds-focus-ring);
+}
+.premium-textarea { min-height: 8rem; resize: vertical; }
+.premium-help-text { font-size: 0.8rem; color: var(--ds-slate); line-height: 1.5; }
+.premium-field-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--ds-error);
+  line-height: 1.5;
+}
+.premium-field-error::before { content: "⚠"; line-height: 1.4; }
+
+/* Global premium enhancement of native controls — applies to every form
+   without touching Python widgets. Adds a gold focus glow + an error state
+   driven by aria-invalid, on top of the base styling already in site.css. */
+form input[type="text"]:focus,
+form input[type="number"]:focus,
+form input[type="email"]:focus,
+form input[type="tel"]:focus,
+form input[type="date"]:focus,
+form select:focus,
+form textarea:focus {
+  outline: none;
+  border-color: var(--ds-gold);
+  box-shadow: var(--ds-focus-ring);
+  background-color: var(--ds-surface);
+}
+form [aria-invalid="true"] {
+  border-color: var(--ds-error) !important;
+  background-color: var(--ds-error-soft);
+}
+
+/* ==========================================================================
+   Alerts
+   ========================================================================== */
+.premium-alert {
+  display: flex;
+  gap: var(--ds-space-3);
+  padding: var(--ds-space-4) var(--ds-space-5);
+  border-radius: var(--ds-radius-md);
+  border: 1px solid var(--ds-border-soft);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+.premium-alert-info { background: rgba(47, 111, 115, 0.08); border-color: rgba(47, 111, 115, 0.25); color: #1f4d50; }
+.premium-alert-warning { background: var(--ds-warning-soft); border-color: rgba(183, 121, 31, 0.3); color: var(--ds-warning); }
+
+/* ==========================================================================
+   Modal / toast / popover
+   ========================================================================== */
+.premium-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--ds-z-modal-backdrop);
+  background: rgba(7, 23, 47, 0.45);
+  backdrop-filter: blur(2px);
+}
+.premium-modal {
+  position: fixed;
+  z-index: var(--ds-z-modal);
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  width: min(92vw, 34rem);
+  background: var(--ds-surface);
+  border-radius: var(--ds-radius-xl);
+  box-shadow: var(--ds-shadow-lg);
+  padding: var(--ds-space-6);
+}
+.premium-toast {
+  position: fixed;
+  z-index: var(--ds-z-toast);
+  right: var(--ds-space-4);
+  bottom: var(--ds-space-4);
+  max-width: 22rem;
+  background: var(--ds-navy);
+  color: var(--ds-ivory);
+  border-radius: var(--ds-radius-md);
+  box-shadow: var(--ds-shadow-lg);
+  padding: var(--ds-space-3) var(--ds-space-4);
+  font-size: 0.875rem;
+}
+.premium-popover {
+  position: absolute;
+  z-index: var(--ds-z-dropdown);
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border-soft);
+  border-radius: var(--ds-radius-md);
+  box-shadow: var(--ds-shadow-md);
+  padding: var(--ds-space-3) var(--ds-space-4);
+  font-size: 0.85rem;
+}
+
+/* ==========================================================================
+   Wizard stepper
+   ========================================================================== */
+.premium-stepper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-2);
+  font-family: var(--ds-font-sans);
+}
+.premium-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.4rem 0.85rem 0.4rem 0.5rem;
+  border-radius: var(--ds-radius-pill);
+  border: 1px solid var(--ds-border-soft);
+  background: var(--ds-surface);
+  color: var(--ds-slate);
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.premium-step-index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: var(--ds-radius-pill);
+  background: var(--ds-sand);
+  color: var(--ds-slate);
+  font-size: 0.75rem;
+}
+.premium-step-active {
+  border-color: var(--ds-gold);
+  color: var(--ds-navy);
+  background: var(--ds-ivory);
+}
+.premium-step-active .premium-step-index { background: var(--ds-gold); color: var(--ds-navy); }
+.premium-step-complete { color: var(--ds-navy); }
+.premium-step-complete .premium-step-index { background: var(--ds-success); color: #fff; }
+.premium-step-disabled { opacity: 0.55; }
+.premium-step-separator { color: var(--ds-border-strong); }
+[dir="rtl"] .premium-step { padding: 0.4rem 0.5rem 0.4rem 0.85rem; }
+
+/* ==========================================================================
+   Layout helpers
+   ========================================================================== */
+.premium-container { max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+.premium-section { padding-block: clamp(2.5rem, 6vw, 5rem); }
+.premium-grid { display: grid; gap: var(--ds-space-5); }
+.premium-page-header { display: grid; gap: var(--ds-space-3); }
+.premium-hero-mini {
+  background: linear-gradient(160deg, var(--ds-navy), var(--ds-navy-soft));
+  color: var(--ds-ivory);
+  border-radius: var(--ds-radius-xl);
+  padding: clamp(1.5rem, 4vw, 2.75rem);
+}
+.premium-disclaimer-bar { position: relative; }
+.premium-disclaimer-bar::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--ds-gold);
+}
+
+@media (max-width: 640px) {
+  .premium-btn { width: 100%; }
+  .premium-btn-inline { width: auto; }
+}
