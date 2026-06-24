@@ -17,9 +17,24 @@ _PKG_DIR = Path(settings.BASE_DIR) / "docs" / "review_packages"
 _PACKAGE = _PKG_DIR / "PRESCRIPTION_STUDIO_REVIEW_PACKAGE_2026-06-24.md"
 _TEMPLATE = _PKG_DIR / "templates" / "prescription_review_decision_template.md"
 _CHECKLIST = _PKG_DIR / "prescription_review_checklist.csv"
+_CHECKLIST_YML = _PKG_DIR / "prescription_review_checklist.yml"
+_UNRESOLVED = _PKG_DIR / "PRESCRIPTION_UNRESOLVED_FOR_CHATGPT_2026-06-24.md"
 
-# numeric period presented as a term, e.g. "2 anni" / "3 years" — must NOT appear
-_PERIOD_RE = re.compile(r"\d+\s*(anni|anno|years?|ans?|mesi|mese|months?|giorni|giorno|days?)", re.IGNORECASE)
+# numeric period presented as a term, e.g. "2 anni" / "3 years" — must NOT appear.
+# Word-boundaries so the unit is a whole word (avoids matching "an" inside the
+# English "and" after an article number, e.g. "125 and 126").
+_PERIOD_RE = re.compile(
+    r"\b\d+\s*(anni|anno|years?|ans?|mesi|mese|months?|giorni|giorno|days?)\b", re.IGNORECASE
+)
+
+# F-source-validation-official status vocabulary — `approved_for_public_display`
+# is deliberately NOT in it (a verified official source is still not a public term).
+_ALLOWED_STATUSES = {
+    "source_verified_official",
+    "source_verified_official_procedure_only",
+    "unresolved_for_chatgpt_or_human_validation",
+    "rejected_unofficial",
+}
 
 
 def test_review_package_artifacts_present():
@@ -65,3 +80,31 @@ def test_review_package_states_read_only_and_no_public_activation():
     assert "manual_review_required" in text
     # the package must explicitly keep terms out of the public site
     assert "nessun termine" in text or "no public" in text
+
+
+# --- F-source-validation-official guards ------------------------------------
+
+def test_validation_record_never_approves_public_display():
+    """A verified official source must NEVER become an approved public term."""
+    for f in (_CHECKLIST_YML, _PACKAGE, _UNRESOLVED):
+        low = f.read_text("utf-8").lower()
+        assert "approved_for_public_display: true" not in low, f"{f.name}: approves public display"
+        assert "status: approved_for_public_display" not in low, f"{f.name}: status approves public display"
+    # the YAML carries the explicit guard flag
+    assert "approved_for_public_display: false" in _CHECKLIST_YML.read_text("utf-8").lower()
+
+
+def test_validation_statuses_are_in_vocabulary_and_non_numeric():
+    text = _CHECKLIST_YML.read_text("utf-8")
+    statuses = re.findall(r"^\s*status:\s*([a-z_]+)\s*$", text, re.MULTILINE)
+    assert statuses, "no per-source status entries found in the validation record"
+    for s in statuses:
+        assert s in _ALLOWED_STATUSES, f"unexpected validation status: {s}"
+    assert not _PERIOD_RE.search(text), "validation record must not state a numeric prescription term"
+
+
+def test_unresolved_file_present_and_non_numeric():
+    assert _UNRESOLVED.exists(), "unresolved-for-chatgpt file is missing"
+    raw = _UNRESOLVED.read_text("utf-8")
+    assert "unresolved" in raw.lower()
+    assert not _PERIOD_RE.search(raw), "unresolved file must not state a numeric prescription term"
