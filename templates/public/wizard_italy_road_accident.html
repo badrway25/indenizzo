@@ -14,6 +14,8 @@
     {% blocktranslate %}All fields below are optional. If you don't know a value, leave it empty. The simulation will not invent numbers: it produces an estimate only when validated legal sources are available, and otherwise returns an honest "requires legal validation" status.{% endblocktranslate %}
   </p>
 
+  <div class="mt-8">{% include "partials/_premium_stepper.html" with step=2 %}</div>
+
   <div class="mt-6 rounded-2xl border border-gold-400/40 bg-sand-100 px-5 py-4 text-sm text-ink-900 leading-relaxed">
     <strong class="font-semibold">{% translate "Important" %}.</strong>
     {% blocktranslate %}This wizard is informative. It does not replace a medical-legal report or a lawyer's opinion. It does not collect documents.{% endblocktranslate %}
@@ -76,7 +78,7 @@
       <p class="text-xs text-stone2-500 leading-relaxed">
         {% blocktranslate %}Submitting this form does not create a professional engagement.{% endblocktranslate %}
       </p>
-      <button type="submit" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
+      <button type="submit" class="premium-btn premium-btn-primary">
         {% translate "Calculate indicative estimate" %}
         <span aria-hidden="true">→</span>
       </button>

@@ -9,6 +9,8 @@
   <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Indicative simulation" %}</p>
   <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Preliminary result" %}</h1>
 
+  <div class="mt-8">{% include "partials/_premium_stepper.html" with step=3 %}</div>
+
   {# -------- Status box -------- #}
   {# Range presentation: trailing zeros stripped via floatformat:"-2" (Decimal field has 4 places, irrelevant for integer EUR amounts at this scale). Mid cell gets visual emphasis because it is the working anchor referenced by the "Calculation basis" block below; the "Read how to read this range" link points readers to the explanation without forcing a tooltip. #}
   {% if has_estimate %}

@@ -1,0 +1,26 @@
+{% load i18n %}
+{% comment %}
+  P2 premium wizard stepper. Caller passes `step` (1, 2 or 3):
+    1 = choose country/case  ·  2 = enter details  ·  3 = result.
+  Read-only progress indicator (the wizards are short single-page forms);
+  it gives the "where am I" affordance P1 flagged as missing. RTL-safe.
+{% endcomment %}
+<nav class="premium-stepper" aria-label="{% translate 'Simulation progress' %}">
+  <span class="premium-step {% if step == 1 %}premium-step-active{% elif step > 1 %}premium-step-complete{% endif %}"
+        {% if step == 1 %}aria-current="step"{% endif %}>
+    <span class="premium-step-index" aria-hidden="true">{% if step > 1 %}✓{% else %}1{% endif %}</span>
+    {% translate "Country & case" %}
+  </span>
+  <span class="premium-step-separator" aria-hidden="true">→</span>
+  <span class="premium-step {% if step == 2 %}premium-step-active{% elif step > 2 %}premium-step-complete{% else %}premium-step-disabled{% endif %}"
+        {% if step == 2 %}aria-current="step"{% endif %}>
+    <span class="premium-step-index" aria-hidden="true">{% if step > 2 %}✓{% else %}2{% endif %}</span>
+    {% translate "Your details" %}
+  </span>
+  <span class="premium-step-separator" aria-hidden="true">→</span>
+  <span class="premium-step {% if step == 3 %}premium-step-active{% else %}premium-step-disabled{% endif %}"
+        {% if step == 3 %}aria-current="step"{% endif %}>
+    <span class="premium-step-index" aria-hidden="true">3</span>
+    {% translate "Result" %}
+  </span>
+</nav>
