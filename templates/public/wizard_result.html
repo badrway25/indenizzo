@@ -127,6 +127,13 @@
         {% blocktranslate %}Amounts are derived from validated legal sources cited below. They are indicative: the actual valuation depends on documents, expert reports, applicable law, competent jurisdiction and judicial orientation. This page is not legal advice and does not guarantee any outcome.{% endblocktranslate %}
       </p>
     </div>
+
+    {# P3: honest scope-of-coverage card — what the engine models vs not. #}
+    <div class="premium-disclaimer-card mt-6" data-testid="coverage-and-limits">
+      <p class="text-[11px] uppercase tracking-[0.22em] text-gold-700 font-semibold">{% translate "Coverage and limits" %}</p>
+      <p class="mt-2">{% blocktranslate %}This estimate models permanent biological damage and moral damages by age band and disability percentage, with an optional fault reduction.{% endblocktranslate %}</p>
+      <p class="mt-2">{% blocktranslate %}It does not model temporary disability, personalisation, income loss or other items beyond the above. Those require a manual review by the Studio.{% endblocktranslate %}</p>
+    </div>
   {% endif %}
 
   {% comment %}
