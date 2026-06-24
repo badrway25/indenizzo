@@ -14,6 +14,12 @@
       {% blocktranslate %}We open one jurisdiction at a time, only after the underlying legal sources are verified. Each country first receives a preliminary legal assessment from the Studio; an indicative calculation is published only once the relevant national tables have been verified.{% endblocktranslate %}
     </p>
 
+    {# P3: fail-closed reassurance — frames "no amount" as a guarantee, not an error. #}
+    <div class="premium-alert premium-alert-info mt-6 max-w-3xl" role="note">
+      <span aria-hidden="true" class="font-semibold">✓</span>
+      <span>{% blocktranslate %}When a legal source is not yet validated, the simulator returns no amount — by design, never an invented figure.{% endblocktranslate %}</span>
+    </div>
+
     {# Mappa code → URL name della landing per paese (pass F-product-country-landing). #}
     <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {% for country in countries %}
