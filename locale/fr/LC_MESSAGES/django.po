@@ -4740,3 +4740,17 @@ msgstr ""
 "garantie de résultat. Les successions en Tunisie relèvent du Code du statut "
 "personnel, Livre IX : un calcul précis nécessite la revue du Cabinet sur le "
 "contexte réel du dossier."
+
+# P3 public UX redesign — added strings
+
+msgid "When a legal source is not yet validated, the simulator returns no amount — by design, never an invented figure."
+msgstr "Lorsqu'une source juridique n'est pas encore validée, le simulateur ne renvoie aucun montant — par conception, jamais un chiffre inventé."
+
+msgid "Coverage and limits"
+msgstr "Couverture et limites"
+
+msgid "This estimate models permanent biological damage and moral damages by age band and disability percentage, with an optional fault reduction."
+msgstr "Cette estimation modélise le préjudice biologique permanent et le préjudice moral par tranche d'âge et pourcentage d'invalidité, avec une réduction éventuelle pour faute."
+
+msgid "It does not model temporary disability, personalisation, income loss or other items beyond the above. Those require a manual review by the Studio."
+msgstr "Elle ne modélise pas l'incapacité temporaire, la personnalisation, la perte de revenus ni d'autres postes au-delà de ce qui précède. Ceux-ci nécessitent un examen manuel du Cabinet."

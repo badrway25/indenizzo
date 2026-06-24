@@ -4706,3 +4706,17 @@ msgstr ""
 "risultato. Le successioni in Tunisia seguono il Code du statut personnel, "
 "Libro IX: un calcolo preciso richiede la revisione dello Studio del contesto "
 "effettivo del caso."
+
+# P3 public UX redesign — added strings
+
+msgid "When a legal source is not yet validated, the simulator returns no amount — by design, never an invented figure."
+msgstr "Quando una fonte legale non è ancora validata, il simulatore non restituisce alcun importo — per scelta, mai una cifra inventata."
+
+msgid "Coverage and limits"
+msgstr "Copertura e limiti"
+
+msgid "This estimate models permanent biological damage and moral damages by age band and disability percentage, with an optional fault reduction."
+msgstr "Questa stima modella il danno biologico permanente e il danno morale per fascia di età e percentuale di invalidità, con un'eventuale riduzione per colpa."
+
+msgid "It does not model temporary disability, personalisation, income loss or other items beyond the above. Those require a manual review by the Studio."
+msgstr "Non modella l'invalidità temporanea, la personalizzazione, la perdita di reddito o altre voci oltre a quanto sopra. Questi richiedono una revisione manuale dello Studio."

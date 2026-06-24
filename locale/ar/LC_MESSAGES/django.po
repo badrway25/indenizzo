@@ -4586,3 +4586,17 @@ msgstr ""
 "المحاكاة إرشادية ولا تشكّل رأيًا قانونيًا ولا ضمانًا للنتيجة. تخضع المواريث في "
 "تونس لمجلة الأحوال الشخصية، الكتاب التاسع: يتطلّب الحساب الدقيق مراجعة المكتب "
 "لسياق القضية الفعلي."
+
+# P3 public UX redesign — added strings
+
+msgid "When a legal source is not yet validated, the simulator returns no amount — by design, never an invented figure."
+msgstr "عندما لا يكون المصدر القانوني مُتحقَّقًا منه بعد، لا يُرجِع المُحاكي أي مبلغ — بحكم التصميم، ولا يخترع رقمًا أبدًا."
+
+msgid "Coverage and limits"
+msgstr "النطاق والحدود"
+
+msgid "This estimate models permanent biological damage and moral damages by age band and disability percentage, with an optional fault reduction."
+msgstr "تُقدِّر هذه المحاكاة الضرر البيولوجي الدائم والضرر المعنوي حسب الفئة العمرية ونسبة العجز، مع خصم اختياري بسبب الخطأ."
+
+msgid "It does not model temporary disability, personalisation, income loss or other items beyond the above. Those require a manual review by the Studio."
+msgstr "لا تُقدِّر العجز المؤقت أو التخصيص أو فقدان الدخل أو بنودًا أخرى تتجاوز ما سبق. تتطلب هذه مراجعة يدوية من المكتب."

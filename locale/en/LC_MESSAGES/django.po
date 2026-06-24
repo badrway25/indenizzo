@@ -3664,3 +3664,17 @@ msgid ""
 "statut personnel, Livre IX: a precise computation requires Studio review of "
 "the actual case context."
 msgstr ""
+
+# P3 public UX redesign — added strings
+
+msgid "When a legal source is not yet validated, the simulator returns no amount — by design, never an invented figure."
+msgstr "When a legal source is not yet validated, the simulator returns no amount — by design, never an invented figure."
+
+msgid "Coverage and limits"
+msgstr "Coverage and limits"
+
+msgid "This estimate models permanent biological damage and moral damages by age band and disability percentage, with an optional fault reduction."
+msgstr "This estimate models permanent biological damage and moral damages by age band and disability percentage, with an optional fault reduction."
+
+msgid "It does not model temporary disability, personalisation, income loss or other items beyond the above. Those require a manual review by the Studio."
+msgstr "It does not model temporary disability, personalisation, income loss or other items beyond the above. Those require a manual review by the Studio."
