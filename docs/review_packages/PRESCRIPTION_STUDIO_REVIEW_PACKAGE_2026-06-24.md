@@ -47,6 +47,34 @@ Mappa caso → fonte → criticità: vedi §3 dell'audit (`...AUDIT_2026-06-24.m
 
 ---
 
+## 2bis. Official source validation pass — 2026-06-24
+
+> Esito della fase **F-source-validation-official**. Valida la **fonte
+> normativa** (esistenza/identità su sito ufficiale), **non** l'usabilità
+> pubblica di alcun termine. Record machine-readable:
+> `prescription_review_checklist.yml`. Voci non risolte:
+> `PRESCRIPTION_UNRESOLVED_FOR_CHATGPT_2026-06-24.md`. **Nessun termine
+> numerico** è stato estratto/registrato: i siti ufficiali (Normattiva, parte
+> di Gazzetta) sono JS-based, quindi i corpi degli articoli non sono estraibili
+> in automatico; l'identità degli strumenti e (dove l'indice ufficiale ha
+> caricato) l'esistenza degli articoli sono confermate.
+
+| Fonte | Esito | URL ufficiale | Limite | Prossimo passo (Studio) |
+|---|:---:|---|---|---|
+| **F1** Codice Civile — art. 2947 | `unresolved` | normattiva.it `regio.decreto:1942-03-16;262` · gazzettaufficiale.it `042U0262` | Gazzetta caricaArticolo = stato di caricamento JS; indice Normattiva troncato prima dell'art. 2947 | aprire manualmente l'art. 2947 su Normattiva / fonte ufficiale alternativa |
+| **F2** T.U. INAIL — art. 112 | `source_verified_official` | normattiva.it `presidente.repubblica:decreto:1965-06-30;1124` | corpo articolo non estratto (solo indice ufficiale: Capo V — Prestazioni) | aprire art. 112 + circolari INAIL su sospensione (Cass. SU 11928/2019) |
+| **F3** L. 24/2017 — art. 7 | `source_verified_official` | gazzettaufficiale.it `eli/id/2017/03/17/17G00041/sg` | legge confermata; corpo art. 7 non nell'estratto | aprire art. 7 + qualificazione contrattuale/extracontrattuale |
+| **F4** Cod. Consumo — artt. 125–126 | `source_verified_official` | normattiva.it `eli/id/2005/10/08/005G0232/CONSOLIDATED` | strumento + artt. 125/126 nell'indice ufficiale (Titolo II); corpi non estratti | aprire artt. 125–126 (prescrizione/decadenza) |
+| **F5** CAP — artt. 144–148 | `source_verified_official_procedure_only` | normattiva.it `eli/id/2005/10/13/005G0233` · ivass.it `Cap.pdf` | PDF IVASS compresso/non estraibile; CAP è fonte **procedurale**, non del termine | usare solo come procedura (offerta/azione diretta); prescrizione resta art. 2947 + caso |
+| **F6** Roma II — artt. 4/5/15/31/32 | `source_verified_official` | eur-lex.europa.eu `CELEX:32007R0864` | nessuno (testo estratto); art. 15 include «prescrizione e decadenza» nella *lex causae* | nessun termine numerico: i casi internazionali seguono la legge applicabile |
+
+**Sintesi**: 4 fonti `source_verified_official` (F2, F3, F4, F6), 1
+`source_verified_official_procedure_only` (F5), 1 `unresolved` (F1 — art. 2947).
+**Nessuna** fonte è `approved_for_public_display`; **nessun** termine numerico è
+pubblico o registrato come certo.
+
+---
+
 ## 3. Checklist per lo Studio (per ogni fonte)
 
 Compilare la riga corrispondente in `prescription_review_checklist.csv`

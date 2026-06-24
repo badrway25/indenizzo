@@ -1,0 +1,135 @@
+# Prescription source validation — machine-readable record
+# Phase: F-source-validation-official · 2026-06-24
+#
+# Records the OFFICIAL-SOURCE validation status of the prescription candidate
+# sources (F1-F6). This validates the *normative source* (instrument/article
+# existence on an official site), NOT the public usability of any term.
+#
+# HARD INVARIANTS (asserted by apps/core/test_prescription_review_package.py):
+#   - status NEVER becomes `approved_for_public_display`.
+#   - no numeric prescription term is recorded here (terms stay candidates in the
+#     audit, pending article-body validation by the Studio).
+#   - `source_verified_official` means "the official source/instrument is real
+#     and identifiable", NOT "the public site may show a term".
+#
+# status vocabulary:
+#   source_verified_official                 instrument identified + readable on an official site
+#   source_verified_official_procedure_only  official instrument verified, validated only for its procedural role
+#   unresolved_for_chatgpt_or_human_validation  official source not extractable in this pass (manual open needed)
+#   rejected_unofficial                      only non-official sources found (NOT used)
+# source_type: official_primary | official_secondary | unofficial_not_used
+
+meta:
+  phase: F-source-validation-official
+  date: "2026-06-24"
+  public_activation: none
+  approved_for_public_display: false
+  numeric_terms_recorded: false
+  note: >-
+    Official sites (Normattiva, parts of Gazzetta caricaArticolo) are
+    JavaScript-rendered; article bodies were often not extractable by an
+    automated fetch. Instrument identity and (where the official index loaded)
+    article existence were confirmed; article bodies/terms require a manual open
+    on the official portal by the Studio.
+
+sources:
+  - source_id: it-cc-prescription-2947
+    title: Codice Civile (R.D. 16 marzo 1942, n. 262)
+    ente: Stato / Normattiva · Gazzetta Ufficiale
+    article: "2947 (2943; 2945; 2946)"
+    scope: illeciti civili (tutti)
+    official_url: "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:regio.decreto:1942-03-16;262"
+    source_type: official_primary
+    status: unresolved_for_chatgpt_or_human_validation
+    reason: >-
+      Instrument confirmed official (R.D. 262/1942, Codice Civile, GU n.79 del
+      04-04-1942). The Gazzetta caricaArticolo page returned a "Gazzetta in fase
+      di caricamento" JS state; the Normattiva index loaded but was truncated
+      before art. 2947 (body JS-only). Article 2947 NOT confirmed from a readable
+      official source in this pass.
+    public_use_allowed: none
+    public_use_forbidden: any numeric prescription term; any "approved" public display
+
+  - source_id: it-inail-tu-1124-1965-art112
+    title: Testo Unico INAIL (D.P.R. 30 giugno 1965, n. 1124)
+    ente: Stato / INAIL · Normattiva
+    article: "112 (111)"
+    scope: infortunio sul lavoro / malattia professionale
+    official_url: "https://www.normattiva.it/uri-res/N2Ls?urn:nir:presidente.repubblica:decreto:1965-06-30;1124"
+    source_type: official_primary
+    status: source_verified_official
+    reason: >-
+      Instrument confirmed official (D.P.R. 1124/1965, T.U. INAIL). Article 112
+      confirmed present in the official Normattiva index (Capo V - Prestazioni,
+      with amendment history). Article body/term NOT extracted (JS); only the
+      official structure was readable.
+    public_use_allowed: none (source/scope verified only; not a public figure)
+    public_use_forbidden: any numeric term; equating INAIL prescription with civil/differential claim
+
+  - source_id: it-l-24-2017-gelli-art7
+    title: Legge 8 marzo 2017, n. 24 (Gelli-Bianco)
+    ente: Stato / Gazzetta Ufficiale
+    article: "7"
+    scope: responsabilità sanitaria (struttura/esercente)
+    official_url: "https://www.gazzettaufficiale.it/eli/id/2017/03/17/17G00041/sg"
+    source_type: official_primary
+    status: source_verified_official
+    reason: >-
+      Instrument confirmed official and readable on Gazzetta Ufficiale (L. 24/2017,
+      GU Serie Generale n.64 del 17-03-2017, ID 17G00041, in vigore 01/04/2017).
+      Art. 7 is the operative liability article; its body was not in the fetched
+      excerpt (requires opening the act). No term derivable (requires
+      contractual/extra-contractual qualification — see audit).
+    public_use_allowed: none (source verified; qualification is professional)
+    public_use_forbidden: a single public prescription term; auto-qualifying contractual vs extra-contractual
+
+  - source_id: it-dlgs-206-2005-consumo-art125-126
+    title: Codice del Consumo (D.Lgs. 6 settembre 2005, n. 206)
+    ente: Stato / Normattiva · Gazzetta Ufficiale
+    article: "125 (prescrizione); 126 (decadenza); 114-127"
+    scope: danno da prodotto difettoso
+    official_url: "https://www.normattiva.it/eli/id/2005/10/08/005G0232/CONSOLIDATED"
+    source_type: official_primary
+    status: source_verified_official
+    reason: >-
+      Instrument confirmed official (D.Lgs. 206/2005, Codice del Consumo,
+      consolidated on Normattiva). Articles 125 and 126 confirmed present in the
+      official index under "Titolo II - Responsabilità per danno da prodotti
+      difettosi". Article bodies/terms NOT extracted (JS); only the official TOC
+      was readable.
+    public_use_allowed: none (source/article existence verified only)
+    public_use_forbidden: any numeric prescription/decadenza term as public/approved
+
+  - source_id: it-dlgs-209-2005-cap
+    title: Codice delle Assicurazioni Private (D.Lgs. 7 settembre 2005, n. 209)
+    ente: Stato / IVASS · Normattiva · Gazzetta Ufficiale
+    article: "144; 145; 148 (138-139)"
+    scope: offerta assicurativa / RC auto (procedura, azione diretta)
+    official_url: "https://www.normattiva.it/eli/id/2005/10/13/005G0233/ORIGINAL"
+    source_type: official_primary
+    status: source_verified_official_procedure_only
+    reason: >-
+      Instrument unambiguously official and identifiable via multiple official
+      URLs (Gazzetta 005G0233, Normattiva eli/005G0233, IVASS Cap.pdf). The IVASS
+      PDF text layer was FlateDecode-compressed and not extractable; Normattiva is
+      JS. Validated for its PROCEDURAL role (offerta/azione diretta), NOT as the
+      direct source of an RC-auto prescription term — that follows art. 2947 c.c.
+      and the concrete case.
+    public_use_allowed: none (procedural source only)
+    public_use_forbidden: declaring CAP as the source of a public RC-auto prescription term
+
+  - source_id: eu-reg-864-2007-rome-ii
+    title: Regolamento (CE) 864/2007 (Roma II)
+    ente: UE / EUR-Lex
+    article: "4 (regola generale); 5 (prodotto); 15 (ambito legge applicabile); 31-32 (applicazione temporale)"
+    scope: casi internazionali / obbligazioni extracontrattuali
+    official_url: "https://eur-lex.europa.eu/legal-content/IT/TXT/?uri=CELEX:32007R0864"
+    source_type: official_primary
+    status: source_verified_official
+    reason: >-
+      Fully readable on EUR-Lex. Confirmed Reg. 864/2007 (Rome II); articles 4, 5,
+      15, 31 and 32 all present. Art. 15 expressly includes within the scope of the
+      applicable law "le norme di prescrizione e di decadenza" — i.e. prescription
+      follows the lex causae, so NO numeric term can be shown by the platform.
+    public_use_allowed: qualitative statement that international cases follow the applicable law (lex causae)
+    public_use_forbidden: any numeric prescription term for international cases
