@@ -11,7 +11,7 @@
 {% endcomment %}
 {% with placeholder="["|add:"da configurare prima del go-live]" %}
 <footer class="bg-sand-100 border-t border-stone2-200 mt-12">
-  <div class="max-w-7xl mx-auto px-5 lg:px-8 py-12 grid gap-10 lg:grid-cols-4">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 py-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
     <div class="lg:col-span-2">
       <div class="flex items-center gap-3">
         <span aria-hidden="true" class="w-9 h-9 rounded-full bg-ink-950 text-sand-50 flex items-center justify-center font-serif text-lg font-bold">B</span>
@@ -32,9 +32,23 @@
     <div>
       <h2 class="text-xs uppercase tracking-[0.18em] text-stone2-500 font-semibold mb-3">{% translate "Platform" %}</h2>
       <ul class="space-y-2 text-sm">
+        <li><a href="{% url 'cases:wizard_italy_road_accident' %}" class="text-ink-800 hover:text-ink-950">{% translate "Calculator" %}</a></li>
+        <li><a href="{% url 'core:how_it_works' %}" class="text-ink-800 hover:text-ink-950">{% translate "How it works" %}</a></li>
+        <li><a href="{% url 'core:services' %}" class="text-ink-800 hover:text-ink-950">{% translate "Services" %}</a></li>
         <li><a href="{% url 'core:countries' %}" class="text-ink-800 hover:text-ink-950">{% translate "Countries" %}</a></li>
         <li><a href="{% url 'core:case_types' %}" class="text-ink-800 hover:text-ink-950">{% translate "Case types" %}</a></li>
         <li><a href="{% url 'core:methodology' %}" class="text-ink-800 hover:text-ink-950">{% translate "Methodology" %}</a></li>
+        <li><a href="{% url 'core:faq' %}" class="text-ink-800 hover:text-ink-950">{% translate "FAQ" %}</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="text-xs uppercase tracking-[0.18em] text-stone2-500 font-semibold mb-3">{% translate "Studio" %}</h2>
+      <ul class="space-y-2 text-sm">
+        <li><a href="{% url 'core:about' %}" class="text-ink-800 hover:text-ink-950">{% translate "The Studio" %}</a></li>
+        <li><a href="{% url 'core:community' %}" class="text-ink-800 hover:text-ink-950">Ta3ouid</a></li>
+        <li><a href="{% url 'crm:contact' %}" class="text-ink-800 hover:text-ink-950">{% translate "Contact" %}</a></li>
+        <li><a href="{{ PARENT_SITE_URL }}" class="text-ink-800 hover:text-ink-950">{% translate "Institutional website" %}</a></li>
       </ul>
     </div>
 
@@ -43,7 +57,6 @@
       <ul class="space-y-2 text-sm">
         <li><a href="{% url 'core:disclaimer' %}" class="text-ink-800 hover:text-ink-950">{% translate "Disclaimer" %}</a></li>
         <li><a href="{% url 'core:privacy' %}" class="text-ink-800 hover:text-ink-950">{% translate "Privacy" %}</a></li>
-        <li><a href="{{ PARENT_SITE_URL }}" class="text-ink-800 hover:text-ink-950">{% translate "Institutional website" %}</a></li>
       </ul>
     </div>
   </div>

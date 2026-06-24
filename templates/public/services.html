@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Services — areas the Studio handles" %} — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}{% blocktranslate %}Areas handled by Studio Legale Badrane: road accidents, medical liability, workplace injury, loss of a relative, insurance-offer review and cross-border matters. Some are calculable from official sources; others require a preliminary assessment.{% endblocktranslate %}{% endblock %}
+{% block head_extra %}{% if canonical_url %}<link rel="canonical" href="{{ canonical_url }}">{% endif %}{% endblock %}
+
+{% block content %}
+<article class="bg-sand-50">
+  <nav class="max-w-7xl mx-auto px-5 lg:px-8 pt-6" aria-label="{% translate 'Breadcrumb' %}">
+    <ol class="flex flex-wrap items-center gap-2 text-xs text-stone2-500 list-none">
+      <li><a href="{% url 'core:home' %}" class="hover:text-ink-800">{% translate "Home" %}</a></li>
+      <li aria-hidden="true">/</li>
+      <li class="text-ink-800 font-medium">{% translate "Services" %}</li>
+    </ol>
+  </nav>
+
+  <header class="max-w-7xl mx-auto px-5 lg:px-8 pt-8 pb-2">
+    <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Services" %}</p>
+    <h1 class="mt-4 font-serif text-4xl sm:text-5xl text-ink-950 leading-tight">{% translate "Areas the Studio handles" %}</h1>
+    <p class="mt-5 max-w-2xl text-lg text-ink-800 leading-relaxed">
+      {% blocktranslate %}Each area shows whether an indicative estimate is available from an official validated source, or whether it needs a preliminary assessment. We never publish a figure we cannot tie to a source.{% endblocktranslate %}
+    </p>
+    <div data-sticky-cta-sentinel aria-hidden="true"></div>
+  </header>
+
+  <section class="max-w-7xl mx-auto px-5 lg:px-8 py-10">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {% for s in services %}
+        <article class="flex flex-col rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7" data-reveal data-reveal-delay="{% widthratio forloop.counter0 1 50 %}">
+          <span aria-hidden="true" class="w-12 h-12 rounded-2xl bg-sand-100 text-ink-950 flex items-center justify-center">{% include "partials/_icon.html" with name=s.icon %}</span>
+          <h2 class="mt-4 font-serif text-xl text-ink-950">{{ s.title }}</h2>
+          <p class="mt-2 text-sm text-ink-800 leading-relaxed flex-1">{{ s.body }}</p>
+          <p class="mt-4">
+            {% if s.calculable %}
+              <span class="premium-badge premium-badge-success">{% translate "Calculable with official source" %}</span>
+            {% else %}
+              <span class="premium-badge premium-badge-muted">{% translate "Preliminary assessment needed" %}</span>
+            {% endif %}
+          </p>
+          <a href="{% url s.cta_url_name %}" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold {% if s.calculable %}text-gold-700 hover:text-gold-600{% else %}text-ink-900 hover:text-ink-950{% endif %}">
+            {{ s.cta_label }} <span aria-hidden="true">→</span>
+          </a>
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="max-w-7xl mx-auto px-5 lg:px-8 pb-12">
+    <div class="rounded-3xl bg-ink-950 text-sand-50 p-7 lg:p-9 grid grid-cols-1 lg:grid-cols-2 gap-6 items-center" data-reveal>
+      <div>
+        <h2 class="font-serif text-2xl sm:text-3xl">{% translate "Not sure which applies to you?" %}</h2>
+        <p class="mt-3 text-sand-100/80 leading-relaxed">{% blocktranslate %}Describe your situation and the Studio will tell you, free of charge, whether and how it can help — without any obligation.{% endblocktranslate %}</p>
+      </div>
+      <div class="flex flex-wrap gap-3 lg:justify-end">
+        <a href="{% url 'crm:contact' %}" class="premium-btn premium-btn-gold">{% translate "Request a free assessment" %}</a>
+        <a href="{% url 'core:how_it_works' %}" class="premium-btn premium-btn-secondary">{% translate "How it works" %}</a>
+      </div>
+    </div>
+    <p class="mt-6 text-sm text-stone2-500 leading-relaxed max-w-3xl">{% blocktranslate %}Information on this page is indicative and does not constitute legal advice or a guarantee of outcome. A professional engagement begins only with a separate written agreement.{% endblocktranslate %}</p>
+  </section>
+</article>
+{% endblock %}
+
+{% block sticky_cta %}{% include "partials/_sticky_cta.html" with sticky_show_calc=True %}{% endblock %}

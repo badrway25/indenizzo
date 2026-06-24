@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-24 16:26+0200\n"
+"POT-Creation-Date: 2026-06-24 16:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2384,6 +2384,226 @@ msgstr ""
 "locale, lo Studio si coordina con corrispondenti nei paesi rilevanti per il "
 "caso."
 
+msgid "Indicative estimate in a few clicks"
+msgstr "Stima indicativa in pochi clic"
+
+msgid ""
+"Answer a short, optional set of questions. Where an official validated "
+"source exists, you immediately see an indicative min / mid / max range with "
+"the sources behind it."
+msgstr "Rispondi a una breve serie di domande facoltative. Dove esiste una fonte ufficiale validata, vedi immediatamente un intervallo indicativo min / mid / max con le fonti che lo sostengono."
+
+msgid "Share your documents"
+msgstr "Condividi i tuoi documenti"
+
+msgid ""
+"If you decide to go further, you send the relevant documents. None are "
+"required for the first orientation; the Studio asks for what it needs after "
+"reading the case."
+msgstr "Se decidi di proseguire, invii i documenti pertinenti. Nessuno è richiesto per il primo orientamento; lo Studio chiede ciò che gli serve dopo aver letto il caso."
+
+msgid "Free preliminary assessment"
+msgstr "Valutazione preliminare gratuita"
+
+msgid ""
+"A lawyer reviews your request manually and replies on whether and how the "
+"Studio can help. The preliminary assessment is free and without obligation."
+msgstr "Un avvocato esamina manualmente la tua richiesta e risponde se e come lo Studio può aiutarti. La valutazione preliminare è gratuita e senza impegno."
+
+msgid "Source and formula verification"
+msgstr "Verifica della fonte e della formula"
+
+msgid ""
+"When a calculation is available, it is checked against the official source "
+"and the approved formula. When it is not, we say so explicitly rather than "
+"invent a number."
+msgstr "Quando un calcolo è disponibile, viene verificato rispetto alla fonte ufficiale e alla formula approvata. Quando non lo è, lo diciamo esplicitamente anziché inventare un numero."
+
+msgid "Professional evaluation"
+msgstr "Valutazione professionale"
+
+msgid ""
+"Where appropriate, the Studio carries out a full legal evaluation — medical-"
+"legal aspects, liability, applicable law and competent jurisdiction."
+msgstr "Dove opportuno, lo Studio svolge una valutazione legale completa — aspetti medico-legali, responsabilità, legge applicabile e giurisdizione competente."
+
+msgid "Written engagement, only if you choose"
+msgstr "Incarico scritto, solo se lo scegli"
+
+msgid ""
+"A professional engagement begins solely with a separate written agreement. "
+"Fees follow the applicable rules and the forensic code of conduct."
+msgstr "Un incarico professionale ha inizio esclusivamente con un separato accordo scritto. I compensi seguono le regole applicabili e il codice deontologico forense."
+
+msgid "Road accident"
+msgstr "Incidente stradale"
+
+msgid ""
+"Bodily injury from a road accident. Where the case fits the official Tabella "
+"Unica Nazionale 2025, the platform produces an indicative range; otherwise "
+"the Studio reviews it."
+msgstr "Danno biologico da incidente stradale. Dove il caso rientra nella Tabella Unica Nazionale 2025 ufficiale, la piattaforma produce un intervallo indicativo; altrimenti lo Studio lo esamina."
+
+msgid "Calculate the estimate"
+msgstr "Calcola la stima"
+
+msgid "Medical liability"
+msgstr "Responsabilità medica"
+
+msgid ""
+"Suspected medical or healthcare malpractice. These cases hinge on expert "
+"evidence and are assessed by the Studio — no automatic figure is published."
+msgstr "Sospetta malpractice medica o sanitaria. Questi casi dipendono dalle perizie e vengono valutati dallo Studio — non viene pubblicato alcun importo automatico."
+
+msgid "Request a preliminary assessment"
+msgstr "Richiedi una valutazione preliminare"
+
+msgid "Workplace injury"
+msgstr "Infortunio sul lavoro"
+
+msgid ""
+"Accidents at work and occupational disease, including the differential "
+"beyond INAIL. Reviewed by the Studio; not automatically calculated today."
+msgstr "Infortuni sul lavoro e malattie professionali, incluso il differenziale oltre l'INAIL. Esaminati dallo Studio; ad oggi non calcolati automaticamente."
+
+msgid "Loss of a relative"
+msgstr "Perdita di un familiare"
+
+msgid ""
+"Death and loss-of-relationship damages for family members. A sensitive, fact-"
+"specific area handled directly by the Studio."
+msgstr "Danno da morte e danno da perdita del rapporto parentale per i familiari. Un ambito delicato, legato ai fatti specifici, seguito direttamente dallo Studio."
+
+msgid "Insurance / INAIL offer to check"
+msgstr "Offerta assicurativa / INAIL da verificare"
+
+msgid ""
+"You received a settlement or INAIL offer. The Studio can review whether it "
+"is adequate before you sign — do not accept a settlement without a "
+"professional review."
+msgstr "Hai ricevuto un'offerta transattiva o INAIL. Lo Studio può valutarne l'adeguatezza prima che tu firmi — non accettare una transazione senza un esame professionale."
+
+msgid "Have your offer reviewed"
+msgstr "Fai esaminare la tua offerta"
+
+msgid "Cross-border matters"
+msgstr "Questioni transfrontaliere"
+
+msgid ""
+"Cases with foreign elements — parties, assets or events abroad — including "
+"questions of applicable law and competent jurisdiction."
+msgstr "Casi con elementi di estraneità — parti, beni o eventi all'estero — comprese le questioni di legge applicabile e giurisdizione competente."
+
+msgid "Foreign nationals in Italy"
+msgstr "Cittadini stranieri in Italia"
+
+msgid ""
+"Assistance for foreign or non-resident clients who suffered harm in Italy, "
+"with multilingual support and remote handling."
+msgstr "Assistenza per clienti stranieri o non residenti che hanno subito un danno in Italia, con supporto multilingue e gestione a distanza."
+
+msgid "Foreign / consular documents"
+msgstr "Documenti esteri / consolari"
+
+msgid ""
+"Help with documentation produced abroad — translation, legalisation and "
+"consular formalities needed to support a claim."
+msgstr "Supporto per la documentazione prodotta all'estero — traduzione, legalizzazione e formalità consolari necessarie a sostenere una richiesta."
+
+msgid "Is the estimate binding?"
+msgstr "La stima è vincolante?"
+
+msgid ""
+"No. It is an indicative orientation based on validated official sources — "
+"not a quote, a verdict or a promise. The amount actually awarded depends on "
+"documents, expert reports, liability, the applicable law and the deciding "
+"court."
+msgstr "No. È un orientamento indicativo basato su fonti ufficiali validate — non un preventivo, una sentenza o una promessa. L'importo effettivamente riconosciuto dipende dai documenti, dalle perizie, dalla responsabilità, dalla legge applicabile e dal giudice competente."
+
+msgid "Can I calculate any case?"
+msgstr "Posso calcolare qualsiasi caso?"
+
+msgid ""
+"No. An automatic estimate appears only where an official, validated source "
+"and formula exist — today, road-accident bodily injury in Italy on the "
+"Tabella Unica Nazionale 2025. For everything else the platform asks for a "
+"preliminary assessment instead of inventing a number."
+msgstr "No. Una stima automatica appare solo dove esistono una fonte e una formula ufficiali e validate — ad oggi, il danno biologico da incidente stradale in Italia sulla Tabella Unica Nazionale 2025. Per tutto il resto la piattaforma richiede una valutazione preliminare anziché inventare un numero."
+
+msgid "Why are some countries not calculable?"
+msgstr "Perché alcuni paesi non sono calcolabili?"
+
+msgid ""
+"Because a figure is published only when the underlying legal source has been "
+"validated. For France, Belgium, Morocco and Tunisia the sources are "
+"catalogued but not yet validated, so no automatic amount is shown and the "
+"Studio reviews those cases manually."
+msgstr "Perché un importo viene pubblicato solo quando la fonte giuridica sottostante è stata validata. Per Francia, Belgio, Marocco e Tunisia le fonti sono catalogate ma non ancora validate, quindi non viene mostrato alcun importo automatico e lo Studio esamina quei casi manualmente."
+
+msgid "What documents are needed?"
+msgstr "Quali documenti servono?"
+
+msgid ""
+"For a first orientation, none. For a real assessment the Studio typically "
+"asks for medical records, accident or incident reports, insurance "
+"correspondence and proof of economic impact. A checklist is shown after each "
+"simulation."
+msgstr "Per un primo orientamento, nessuno. Per una valutazione effettiva lo Studio richiede di norma cartelle cliniche, verbali di incidente o sinistro, corrispondenza assicurativa e prova dell'impatto economico. Dopo ogni simulazione viene mostrata una checklist."
+
+msgid "I already received an offer — can I have it checked?"
+msgstr "Ho già ricevuto un'offerta — posso farla verificare?"
+
+msgid ""
+"Yes. The Studio can review an insurance or INAIL offer before you accept it. "
+"Do not sign a settlement before a professional review: reopening it "
+"afterwards can be difficult."
+msgstr "Sì. Lo Studio può esaminare un'offerta assicurativa o INAIL prima che tu la accetti. Non firmare una transazione prima di un esame professionale: riaprirla in seguito può essere difficile."
+
+msgid "Can I be assisted if I live abroad?"
+msgstr "Posso essere assistito se vivo all'estero?"
+
+msgid ""
+"Yes. The Studio handles cross-border matters and assists clients living "
+"outside Italy, in several languages. A preliminary assessment can be "
+"requested remotely."
+msgstr "Sì. Lo Studio segue questioni transfrontaliere e assiste clienti che vivono fuori dall'Italia, in diverse lingue. Una valutazione preliminare può essere richiesta da remoto."
+
+msgid "Is a medical-legal report needed?"
+msgstr "È necessaria una perizia medico-legale?"
+
+msgid ""
+"For permanent injury, a medical-legal assessment is usually decisive for the "
+"final valuation. The platform can produce an indicative range without it, "
+"but it does not replace the report."
+msgstr "Per i danni permanenti, una valutazione medico-legale è di norma decisiva per la quantificazione finale. La piattaforma può produrre un intervallo indicativo senza di essa, ma non sostituisce la perizia."
+
+msgid "Is the preliminary assessment free?"
+msgstr "La valutazione preliminare è gratuita?"
+
+msgid ""
+"The preliminary assessment of your request is free and without obligation. A "
+"professional engagement begins only with a separate written agreement."
+msgstr "La valutazione preliminare della tua richiesta è gratuita e senza impegno. Un incarico professionale ha inizio solo con un separato accordo scritto."
+
+msgid "Does this site replace legal advice?"
+msgstr "Questo sito sostituisce il parere legale?"
+
+msgid ""
+"No. It is an informational tool. It does not constitute legal or medical-"
+"legal advice and does not guarantee any outcome. For a binding opinion, "
+"request a professional evaluation."
+msgstr "No. È uno strumento informativo. Non costituisce parere legale o medico-legale e non garantisce alcun risultato. Per un parere vincolante, richiedi una valutazione professionale."
+
+msgid "How is my personal data handled?"
+msgstr "Come vengono trattati i miei dati personali?"
+
+msgid ""
+"Your data is processed only with your explicit consent, for the stated "
+"purpose, under the GDPR. Special-category data (health, income, family) is "
+"processed under art. 9 only after a dedicated consent. See the privacy "
+"notice for details."
+msgstr "I tuoi dati sono trattati solo con il tuo consenso esplicito, per la finalità indicata, ai sensi del GDPR. I dati di categoria particolare (salute, reddito, famiglia) sono trattati ai sensi dell'art. 9 solo dopo uno specifico consenso. Per i dettagli, consulta l'informativa sulla privacy."
+
 msgid "Indicative calculation available"
 msgstr "Calcolo indicativo disponibile"
 
@@ -3286,14 +3506,22 @@ msgid ""
 "Compensation claims are subject to time limits (in Italy, prescrizione) that "
 "vary by country, type of damage and the parties involved. Acting late can "
 "permanently bar a claim, however well-founded it is."
-msgstr "Le richieste di risarcimento sono soggette a termini (in Italia, la prescrizione) che variano per Paese, tipo di danno e soggetti coinvolti. Agire in ritardo può precludere definitivamente una richiesta, per quanto fondata."
+msgstr ""
+"Le richieste di risarcimento sono soggette a termini (in Italia, la "
+"prescrizione) che variano per Paese, tipo di danno e soggetti coinvolti. "
+"Agire in ritardo può precludere definitivamente una richiesta, per quanto "
+"fondata."
 
 msgid ""
 "This platform does not state or calculate limitation periods: they depend on "
 "the applicable law and the specific facts of your case. If your event is "
 "recent, or you are unsure of the deadline, ask the Studio to verify the term "
 "that applies before it expires."
-msgstr "Questa piattaforma non indica né calcola i termini di prescrizione: dipendono dalla legge applicabile e dai fatti specifici del tuo caso. Se l'evento è recente, o non sei sicuro del termine, chiedi allo Studio di verificare il termine applicabile prima che scada."
+msgstr ""
+"Questa piattaforma non indica né calcola i termini di prescrizione: "
+"dipendono dalla legge applicabile e dai fatti specifici del tuo caso. Se "
+"l'evento è recente, o non sei sicuro del termine, chiedi allo Studio di "
+"verificare il termine applicabile prima che scada."
 
 msgid "Ask the Studio to verify your deadline"
 msgstr "Chiedi allo Studio di verificare il tuo termine"
@@ -3316,9 +3544,6 @@ msgstr "Stima il tuo risarcimento"
 
 msgid "Indicative and source-based — not a guarantee of outcome."
 msgstr "Indicativa e basata su fonti — non è una garanzia di risultato."
-
-msgid "Calculate the estimate"
-msgstr "Calcola la stima"
 
 msgid "Free assessment"
 msgstr "Valutazione gratuita"
@@ -3393,6 +3618,15 @@ msgstr "Visita il sito istituzionale"
 msgid "Platform"
 msgstr "Piattaforma"
 
+msgid "Calculator"
+msgstr "Calcolatore"
+
+msgid "How it works"
+msgstr "Come funziona"
+
+msgid "Services"
+msgstr "Servizi"
+
 msgid "Countries"
 msgstr "Paesi"
 
@@ -3402,14 +3636,23 @@ msgstr "Tipi di caso"
 msgid "Methodology"
 msgstr "Metodologia"
 
+msgid "FAQ"
+msgstr "FAQ"
+
+msgid "Studio"
+msgstr "Studio"
+
+msgid "The Studio"
+msgstr "Lo Studio"
+
+msgid "Institutional website"
+msgstr "Sito istituzionale"
+
 msgid "Legal"
 msgstr "Legale"
 
 msgid "Disclaimer"
 msgstr "Avvertenze"
-
-msgid "Institutional website"
-msgstr "Sito istituzionale"
 
 msgid "Professional identification"
 msgstr "Identificazione professionale"
@@ -3458,9 +3701,6 @@ msgstr "Simulazioni indicative. Non costituiscono parere legale."
 
 msgid "Primary navigation"
 msgstr "Navigazione principale"
-
-msgid "Calculator"
-msgstr "Calcolatore"
 
 msgid "Language switcher"
 msgstr "Selettore della lingua"
@@ -3594,6 +3834,80 @@ msgstr ""
 "La quota di responsabilità a tuo carico per il sinistro, se nota. Una quota "
 "più alta riduce proporzionalmente la stima indicativa."
 
+msgid "The Studio — international approach and method"
+msgstr "Lo Studio — approccio internazionale e metodo"
+
+msgid ""
+"Studio Legale Internazionale Badrane: an international, multilingual "
+"practice with a transparent, source-based method for compensation and cross-"
+"border matters. Indicative estimates, free preliminary assessment, no "
+"guarantee of outcome."
+msgstr "Studio Legale Internazionale Badrane: uno studio internazionale e multilingue con un metodo trasparente, basato sulle fonti, per il risarcimento e le questioni transfrontaliere. Stime indicative, valutazione preliminare gratuita, nessuna garanzia di risultato."
+
+msgid "Breadcrumb"
+msgstr "Percorso"
+
+msgid "Home"
+msgstr "Home"
+
+msgid "An international practice with a transparent method"
+msgstr "Uno studio internazionale con un metodo trasparente"
+
+msgid ""
+"Studio Legale Internazionale Badrane assists people in compensation, "
+"inheritance and complex cross-border matters. This platform reflects how the "
+"Studio works: clear, source-based and prudent."
+msgstr "Lo Studio Legale Internazionale Badrane assiste le persone in materia di risarcimento, successioni e complesse questioni transfrontaliere. Questa piattaforma riflette il modo di lavorare dello Studio: chiaro, basato sulle fonti e prudente."
+
+msgid "International approach"
+msgstr "Approccio internazionale"
+
+msgid ""
+"Cross-border experience across Europe and North Africa, including questions "
+"of applicable law and competent jurisdiction when an event, party or asset "
+"is abroad."
+msgstr "Esperienza transfrontaliera tra Europa e Nord Africa, comprese le questioni di legge applicabile e giurisdizione competente quando un evento, una parte o un bene si trova all'estero."
+
+msgid "Multilingual assistance"
+msgstr "Assistenza multilingue"
+
+msgid ""
+"The platform and the Studio work in Italian, French, English and Arabic, so "
+"you can be assisted in the language you are most comfortable with — "
+"including remotely."
+msgstr "La piattaforma e lo Studio operano in italiano, francese, inglese e arabo, così puoi essere assistito nella lingua in cui ti senti più a tuo agio — anche da remoto."
+
+msgid "Transparent method"
+msgstr "Metodo trasparente"
+
+msgid ""
+"A figure is shown only when it can be tied to a validated official source. "
+"Where it cannot, we say so explicitly instead of inventing a number."
+msgstr "Un importo viene mostrato solo quando può essere collegato a una fonte ufficiale validata. Dove ciò non è possibile, lo diciamo esplicitamente anziché inventare un numero."
+
+msgid ""
+"A lawyer reviews your request at no cost and without obligation. A "
+"professional engagement begins only with a separate written agreement; there "
+"is no guarantee of outcome."
+msgstr "Un avvocato esamina la tua richiesta senza costi e senza impegno. Un incarico professionale ha inizio solo con un separato accordo scritto; non vi è alcuna garanzia di risultato."
+
+msgid "The firm's full profile"
+msgstr "Il profilo completo dello Studio"
+
+msgid ""
+"This platform is a sub-domain of the Studio's institutional website, where "
+"you will find the firm's complete profile and professional details."
+msgstr "Questa piattaforma è un sotto-dominio del sito istituzionale dello Studio, dove troverai il profilo completo e i dati professionali dello Studio."
+
+msgid "Request a free assessment"
+msgstr "Richiedi una valutazione gratuita"
+
+msgid ""
+"The professional identification details required by the forensic code of "
+"conduct are shown in the footer. This page does not constitute legal advice "
+"or a guarantee of outcome."
+msgstr "I dati identificativi professionali richiesti dal codice deontologico forense sono riportati nel footer. Questa pagina non costituisce parere legale né garanzia di risultato."
+
 msgid "When this applies"
 msgstr "Quando si applica"
 
@@ -3622,9 +3936,6 @@ msgstr ""
 "legale o garanzia di risultato. Qualsiasi simulazione è indicativa; la "
 "valutazione effettiva dipende dai documenti, dalle perizie, dalla legge "
 "applicabile e dagli orientamenti giudiziari."
-
-msgid "FAQ"
-msgstr "FAQ"
 
 msgid "Frequently asked questions"
 msgstr "Domande frequenti"
@@ -3703,6 +4014,66 @@ msgstr ""
 "Altri tipi di caso nella roadmap dello Studio includono danno da "
 "macrolesione, perdita di chance, diffamazione, danno scolastico/"
 "professionale e vacanza rovinata, ove giuridicamente percorribili."
+
+msgid "Ta3ouid — assistance for Arabic and French speakers"
+msgstr "Ta3ouid — assistenza per chi parla arabo e francese"
+
+msgid ""
+"Ta3ouid: clear, multilingual assistance for Arabic- and French-speaking "
+"people who suffered harm in Italy, including those living abroad. Free "
+"preliminary assessment, no promises, no guarantee of outcome."
+msgstr "Ta3ouid: assistenza chiara e multilingue per le persone di lingua araba e francese che hanno subito un danno in Italia, comprese quelle che vivono all'estero. Valutazione preliminare gratuita, nessuna promessa, nessuna garanzia di risultato."
+
+msgid "Community assistance"
+msgstr "Assistenza alla comunità"
+
+msgid "Harmed in Italy? You can ask for an assessment in your language."
+msgstr "Hai subito un danno in Italia? Puoi richiedere una valutazione nella tua lingua."
+
+msgid ""
+"If you or a relative suffered harm in Italy — a road accident, an injury at "
+"work, a medical matter — you can request a preliminary assessment even if "
+"you now live abroad. The Studio assists in Arabic, French, Italian and "
+"English."
+msgstr "Se tu o un familiare avete subito un danno in Italia — un incidente stradale, un infortunio sul lavoro, una questione medica — puoi richiedere una valutazione preliminare anche se ora vivi all'estero. Lo Studio assiste in arabo, francese, italiano e inglese."
+
+msgid "From anywhere"
+msgstr "Da ovunque"
+
+msgid ""
+"You do not need to be in Italy. A first assessment can be requested "
+"remotely, in your language."
+msgstr "Non è necessario trovarsi in Italia. Una prima valutazione può essere richiesta da remoto, nella tua lingua."
+
+msgid "Clear and prudent"
+msgstr "Chiaro e prudente"
+
+msgid ""
+"We explain plainly what can be estimated from official sources and what "
+"needs professional review. No promises."
+msgstr "Spieghiamo con chiarezza cosa può essere stimato da fonti ufficiali e cosa richiede un esame professionale. Nessuna promessa."
+
+msgid "Free first step"
+msgstr "Primo passo gratuito"
+
+msgid ""
+"The preliminary assessment is free and without obligation. An engagement "
+"begins only with a written agreement."
+msgstr "La valutazione preliminare è gratuita e senza impegno. Un incarico ha inizio solo con un accordo scritto."
+
+msgid "Tell us what happened"
+msgstr "Raccontaci cosa è accaduto"
+
+msgid ""
+"Send your request in your language. A lawyer will read it and reply on "
+"whether and how the Studio can help."
+msgstr "Invia la tua richiesta nella tua lingua. Un avvocato la leggerà e risponderà se e come lo Studio può aiutarti."
+
+msgid ""
+"The simulation is indicative and does not constitute legal or medical-legal "
+"advice nor a guarantee of outcome. A professional engagement begins only "
+"with a separate written agreement."
+msgstr "La simulazione è indicativa e non costituisce parere legale o medico-legale né garanzia di risultato. Un incarico professionale ha inizio solo con un separato accordo scritto."
 
 msgid ""
 "Tell us about your case in your own words. The Studio reviews each request "
@@ -3891,12 +4262,6 @@ msgstr ""
 "Valutazione legale preliminare per %(country)s: lo Studio esamina "
 "manualmente ogni caso e nessun importo automatico viene pubblicato prima che "
 "le fonti di quantificazione siano verificate."
-
-msgid "Breadcrumb"
-msgstr "Percorso"
-
-msgid "Home"
-msgstr "Home"
 
 msgid "Country page"
 msgstr "Pagina paese"
@@ -4265,6 +4630,39 @@ msgstr "Stato: %(s)s."
 msgid "Signed on: %(d)s."
 msgstr "Firmata il: %(d)s."
 
+msgid "FAQ — frequent questions on indicative compensation"
+msgstr "FAQ — domande frequenti sul risarcimento indicativo"
+
+msgid ""
+"Answers to common questions about indicative compensation estimates: whether "
+"they are binding, which cases are calculable, what documents are needed, and "
+"how your personal data is handled."
+msgstr "Risposte alle domande frequenti sulle stime indicative di risarcimento: se siano vincolanti, quali casi siano calcolabili, quali documenti servano e come vengano trattati i tuoi dati personali."
+
+msgid "Frequent questions"
+msgstr "Domande frequenti"
+
+msgid "Questions about indicative compensation"
+msgstr "Domande sul risarcimento indicativo"
+
+msgid ""
+"Prudent answers, with no promises and no invented figures. For anything "
+"specific to your case, ask the Studio for a free preliminary assessment."
+msgstr "Risposte prudenti, senza promesse e senza importi inventati. Per qualsiasi aspetto specifico del tuo caso, chiedi allo Studio una valutazione preliminare gratuita."
+
+msgid "Still have a question?"
+msgstr "Hai ancora una domanda?"
+
+msgid ""
+"A lawyer reads your request and replies. The preliminary assessment is free "
+"and without obligation."
+msgstr "Un avvocato legge la tua richiesta e risponde. La valutazione preliminare è gratuita e senza impegno."
+
+msgid ""
+"This page is informational and does not constitute legal advice or a "
+"guarantee of outcome."
+msgstr "Questa pagina è informativa e non costituisce parere legale né garanzia di risultato."
+
 #, python-format
 msgid "%(site)s — International compensation simulator"
 msgstr "%(site)s — Simulatore di risarcimento internazionale"
@@ -4381,6 +4779,32 @@ msgid ""
 msgstr ""
 "Il nostro team internazionale gestisce risarcimenti, responsabilità medica e "
 "successioni transfrontaliere in Europa e Nord Africa."
+
+msgid "How it works — from estimate to evaluation"
+msgstr "Come funziona — dalla stima alla valutazione"
+
+msgid ""
+"How the Studio Legale Badrane platform works: an indicative estimate in a "
+"few clicks from validated official sources, a free preliminary assessment, "
+"and a professional evaluation when you need one."
+msgstr "Come funziona la piattaforma dello Studio Legale Badrane: una stima indicativa in pochi clic da fonti ufficiali validate, una valutazione preliminare gratuita e una valutazione professionale quando ne hai bisogno."
+
+msgid "From an indicative estimate to a professional evaluation"
+msgstr "Da una stima indicativa a una valutazione professionale"
+
+msgid ""
+"A clear, prudent path: you start with an orientation, the Studio reviews "
+"your case, and a professional evaluation follows only where it adds value. "
+"No promises, no invented numbers."
+msgstr "Un percorso chiaro e prudente: si inizia con un orientamento, lo Studio esamina il tuo caso e una valutazione professionale segue solo dove apporta valore. Nessuna promessa, nessun numero inventato."
+
+msgid "Ready to start?"
+msgstr "Pronto a iniziare?"
+
+msgid ""
+"Run an indicative simulation now, or ask the Studio for a free preliminary "
+"assessment of your case."
+msgstr "Esegui ora una simulazione indicativa, oppure chiedi allo Studio una valutazione preliminare gratuita del tuo caso."
 
 msgid "Methodology — sources, validation and ranges"
 msgstr "Metodologia — fonti, validazione e intervalli"
@@ -4621,6 +5045,45 @@ msgid ""
 msgstr ""
 "Se hai bisogno di assistenza urgente, contatta direttamente lo Studio "
 "tramite il sito istituzionale."
+
+msgid "Services — areas the Studio handles"
+msgstr "Servizi — ambiti seguiti dallo Studio"
+
+msgid ""
+"Areas handled by Studio Legale Badrane: road accidents, medical liability, "
+"workplace injury, loss of a relative, insurance-offer review and cross-"
+"border matters. Some are calculable from official sources; others require a "
+"preliminary assessment."
+msgstr "Ambiti seguiti dallo Studio Legale Badrane: incidenti stradali, responsabilità medica, infortuni sul lavoro, perdita di un familiare, revisione dell'offerta assicurativa e questioni transfrontaliere. Alcuni sono calcolabili da fonti ufficiali; altri richiedono una valutazione preliminare."
+
+msgid "Areas the Studio handles"
+msgstr "Ambiti seguiti dallo Studio"
+
+msgid ""
+"Each area shows whether an indicative estimate is available from an official "
+"validated source, or whether it needs a preliminary assessment. We never "
+"publish a figure we cannot tie to a source."
+msgstr "Ogni ambito indica se è disponibile una stima indicativa da una fonte ufficiale validata, oppure se richiede una valutazione preliminare. Non pubblichiamo mai un importo che non possiamo collegare a una fonte."
+
+msgid "Calculable with official source"
+msgstr "Calcolabile con fonte ufficiale"
+
+msgid "Preliminary assessment needed"
+msgstr "Valutazione preliminare necessaria"
+
+msgid "Not sure which applies to you?"
+msgstr "Non sai con certezza quale riguardi il tuo caso?"
+
+msgid ""
+"Describe your situation and the Studio will tell you, free of charge, "
+"whether and how it can help — without any obligation."
+msgstr "Descrivi la tua situazione e lo Studio ti dirà, gratuitamente, se e come può aiutarti — senza alcun impegno."
+
+msgid ""
+"Information on this page is indicative and does not constitute legal advice "
+"or a guarantee of outcome. A professional engagement begins only with a "
+"separate written agreement."
+msgstr "Le informazioni in questa pagina sono indicative e non costituiscono parere legale né garanzia di risultato. Un incarico professionale ha inizio solo con un separato accordo scritto."
 
 msgid "Belgium — road accident bodily injury"
 msgstr "Belgio — danno biologico da incidente stradale"
@@ -5099,9 +5562,6 @@ msgstr ""
 "simulazione è indicativa: produrrà una stima solo se sono disponibili fonti "
 "legali validate — altrimenti restituisce uno stato chiaro \"richiede "
 "validazione legale\"."
-
-msgid "How it works"
-msgstr "Come funziona"
 
 msgid "From your inputs to a Studio review"
 msgstr "Dai tuoi dati alla revisione dello Studio"

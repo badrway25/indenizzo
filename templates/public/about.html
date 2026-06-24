@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "The Studio — international approach and method" %} — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}{% blocktranslate %}Studio Legale Internazionale Badrane: an international, multilingual practice with a transparent, source-based method for compensation and cross-border matters. Indicative estimates, free preliminary assessment, no guarantee of outcome.{% endblocktranslate %}{% endblock %}
+{% block head_extra %}{% if canonical_url %}<link rel="canonical" href="{{ canonical_url }}">{% endif %}{% endblock %}
+
+{% block content %}
+<article class="bg-sand-50">
+  <nav class="max-w-4xl mx-auto px-5 lg:px-8 pt-6" aria-label="{% translate 'Breadcrumb' %}">
+    <ol class="flex flex-wrap items-center gap-2 text-xs text-stone2-500 list-none">
+      <li><a href="{% url 'core:home' %}" class="hover:text-ink-800">{% translate "Home" %}</a></li>
+      <li aria-hidden="true">/</li>
+      <li class="text-ink-800 font-medium">{% translate "The Studio" %}</li>
+    </ol>
+  </nav>
+
+  <header class="max-w-4xl mx-auto px-5 lg:px-8 pt-8 pb-2">
+    <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Studio Legale Internazionale" %}</p>
+    <h1 class="mt-4 font-serif text-4xl sm:text-5xl text-ink-950 leading-tight">{% translate "An international practice with a transparent method" %}</h1>
+    <p class="mt-5 max-w-2xl text-lg text-ink-800 leading-relaxed">
+      {% blocktranslate %}Studio Legale Internazionale Badrane assists people in compensation, inheritance and complex cross-border matters. This platform reflects how the Studio works: clear, source-based and prudent.{% endblocktranslate %}
+    </p>
+  </header>
+
+  <section class="max-w-4xl mx-auto px-5 lg:px-8 py-10 grid grid-cols-1 sm:grid-cols-2 gap-5">
+    <article class="rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7" data-reveal data-reveal-delay="0">
+      <h2 class="font-serif text-xl text-ink-950">{% translate "International approach" %}</h2>
+      <p class="mt-2 text-sm text-ink-800 leading-relaxed">{% blocktranslate %}Cross-border experience across Europe and North Africa, including questions of applicable law and competent jurisdiction when an event, party or asset is abroad.{% endblocktranslate %}</p>
+    </article>
+    <article class="rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7" data-reveal data-reveal-delay="70">
+      <h2 class="font-serif text-xl text-ink-950">{% translate "Multilingual assistance" %}</h2>
+      <p class="mt-2 text-sm text-ink-800 leading-relaxed">{% blocktranslate %}The platform and the Studio work in Italian, French, English and Arabic, so you can be assisted in the language you are most comfortable with — including remotely.{% endblocktranslate %}</p>
+    </article>
+    <article class="rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7" data-reveal data-reveal-delay="0">
+      <h2 class="font-serif text-xl text-ink-950">{% translate "Transparent method" %}</h2>
+      <p class="mt-2 text-sm text-ink-800 leading-relaxed">{% blocktranslate %}A figure is shown only when it can be tied to a validated official source. Where it cannot, we say so explicitly instead of inventing a number.{% endblocktranslate %}</p>
+    </article>
+    <article class="rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7" data-reveal data-reveal-delay="70">
+      <h2 class="font-serif text-xl text-ink-950">{% translate "Free preliminary assessment" %}</h2>
+      <p class="mt-2 text-sm text-ink-800 leading-relaxed">{% blocktranslate %}A lawyer reviews your request at no cost and without obligation. A professional engagement begins only with a separate written agreement; there is no guarantee of outcome.{% endblocktranslate %}</p>
+    </article>
+  </section>
+
+  <section class="max-w-4xl mx-auto px-5 lg:px-8 pb-12">
+    <div class="rounded-3xl bg-ink-950 text-sand-50 p-7 lg:p-9 grid grid-cols-1 lg:grid-cols-2 gap-6 items-center" data-reveal>
+      <div>
+        <h2 class="font-serif text-2xl sm:text-3xl">{% translate "The firm's full profile" %}</h2>
+        <p class="mt-3 text-sand-100/80 leading-relaxed">{% blocktranslate %}This platform is a sub-domain of the Studio's institutional website, where you will find the firm's complete profile and professional details.{% endblocktranslate %}</p>
+      </div>
+      <div class="flex flex-wrap gap-3 lg:justify-end">
+        <a href="{{ PARENT_SITE_URL }}" class="premium-btn premium-btn-gold">{% translate "Visit institutional website" %} <span aria-hidden="true">↗</span></a>
+        <a href="{% url 'crm:contact' %}" class="premium-btn premium-btn-secondary">{% translate "Request a free assessment" %}</a>
+      </div>
+    </div>
+    <p class="mt-6 text-sm text-stone2-500 leading-relaxed max-w-3xl">{% blocktranslate %}The professional identification details required by the forensic code of conduct are shown in the footer. This page does not constitute legal advice or a guarantee of outcome.{% endblocktranslate %}</p>
+  </section>
+</article>
+{% endblock %}

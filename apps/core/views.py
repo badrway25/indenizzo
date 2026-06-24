@@ -10,6 +10,8 @@ Il wizard pubblico (F-wizard) e il lead form (F6) avranno view dedicate.
 
 from __future__ import annotations
 
+import json
+
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
@@ -18,6 +20,7 @@ from django.views.decorators.http import require_GET
 
 from apps.calculators.enums import CaseType
 from apps.calculators.registry import list_available_calculators
+from apps.core import public_pages
 from apps.core.country_readiness import public_country_readiness
 from apps.core.public_status import get_country_public_status
 
@@ -257,6 +260,94 @@ def disclaimer(request):
 @require_GET
 def privacy(request):
     return render(request, "public/privacy.html")
+
+
+@require_GET
+def how_it_works(request):
+    from apps.core.seo import build_canonical_url
+
+    return render(
+        request,
+        "public/how_it_works.html",
+        {
+            "steps": public_pages.HOW_IT_WORKS_STEPS,
+            "canonical_url": build_canonical_url(request),
+        },
+    )
+
+
+@require_GET
+def services(request):
+    from apps.core.seo import build_canonical_url
+
+    return render(
+        request,
+        "public/services.html",
+        {
+            "services": public_pages.SERVICES,
+            "canonical_url": build_canonical_url(request),
+        },
+    )
+
+
+@require_GET
+def faq(request):
+    """Public FAQ + FAQPage structured data.
+
+    The JSON-LD is built from the SAME `public_pages.FAQ_ITEMS` rendered on the
+    page (gettext_lazy resolved in the active language), so the structured data
+    can never drift from the visible answers. Plain text only — no HTML, no
+    invented figures.
+    """
+    from apps.core.seo import build_canonical_url
+
+    faq_jsonld = json.dumps(
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": str(item.question),
+                    "acceptedAnswer": {"@type": "Answer", "text": str(item.answer)},
+                }
+                for item in public_pages.FAQ_ITEMS
+            ],
+        },
+        ensure_ascii=False,
+    )
+    return render(
+        request,
+        "public/faq.html",
+        {
+            "faq_items": public_pages.FAQ_ITEMS,
+            "faq_jsonld": faq_jsonld,
+            "canonical_url": build_canonical_url(request),
+        },
+    )
+
+
+@require_GET
+def about(request):
+    from apps.core.seo import build_canonical_url
+
+    return render(
+        request,
+        "public/about.html",
+        {"canonical_url": build_canonical_url(request)},
+    )
+
+
+@require_GET
+def community(request):
+    """Arabic/French-speaking community landing (Ta3ouid). RTL-safe; prudent."""
+    from apps.core.seo import build_canonical_url
+
+    return render(
+        request,
+        "public/community.html",
+        {"canonical_url": build_canonical_url(request)},
+    )
 
 
 def _country_landing_context(country_code: str) -> dict:

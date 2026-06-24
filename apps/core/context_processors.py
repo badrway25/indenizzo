@@ -130,6 +130,12 @@ _GLOBAL_HREFLANG_VIEW_NAMES = frozenset(
         "core:privacy",
         "core:countries",
         "core:case_types",
+        # Workstream-3 content pages (indexable, multilingual).
+        "core:how_it_works",
+        "core:services",
+        "core:faq",
+        "core:about",
+        "core:community",
         # F-product-4-case-type-landings: per-case-type SEO landings
         # under `/case-types/<slug>/`. Indexable, SEO-targeted,
         # multilingue. Stessa view, kwargs `slug` diverso per

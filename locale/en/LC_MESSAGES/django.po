@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-24 16:26+0200\n"
+"POT-Creation-Date: 2026-06-24 16:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2083,6 +2083,226 @@ msgid ""
 "caso."
 msgstr ""
 
+msgid "Indicative estimate in a few clicks"
+msgstr ""
+
+msgid ""
+"Answer a short, optional set of questions. Where an official validated "
+"source exists, you immediately see an indicative min / mid / max range with "
+"the sources behind it."
+msgstr ""
+
+msgid "Share your documents"
+msgstr ""
+
+msgid ""
+"If you decide to go further, you send the relevant documents. None are "
+"required for the first orientation; the Studio asks for what it needs after "
+"reading the case."
+msgstr ""
+
+msgid "Free preliminary assessment"
+msgstr ""
+
+msgid ""
+"A lawyer reviews your request manually and replies on whether and how the "
+"Studio can help. The preliminary assessment is free and without obligation."
+msgstr ""
+
+msgid "Source and formula verification"
+msgstr ""
+
+msgid ""
+"When a calculation is available, it is checked against the official source "
+"and the approved formula. When it is not, we say so explicitly rather than "
+"invent a number."
+msgstr ""
+
+msgid "Professional evaluation"
+msgstr ""
+
+msgid ""
+"Where appropriate, the Studio carries out a full legal evaluation — medical-"
+"legal aspects, liability, applicable law and competent jurisdiction."
+msgstr ""
+
+msgid "Written engagement, only if you choose"
+msgstr ""
+
+msgid ""
+"A professional engagement begins solely with a separate written agreement. "
+"Fees follow the applicable rules and the forensic code of conduct."
+msgstr ""
+
+msgid "Road accident"
+msgstr ""
+
+msgid ""
+"Bodily injury from a road accident. Where the case fits the official Tabella "
+"Unica Nazionale 2025, the platform produces an indicative range; otherwise "
+"the Studio reviews it."
+msgstr ""
+
+msgid "Calculate the estimate"
+msgstr ""
+
+msgid "Medical liability"
+msgstr ""
+
+msgid ""
+"Suspected medical or healthcare malpractice. These cases hinge on expert "
+"evidence and are assessed by the Studio — no automatic figure is published."
+msgstr ""
+
+msgid "Request a preliminary assessment"
+msgstr ""
+
+msgid "Workplace injury"
+msgstr ""
+
+msgid ""
+"Accidents at work and occupational disease, including the differential "
+"beyond INAIL. Reviewed by the Studio; not automatically calculated today."
+msgstr ""
+
+msgid "Loss of a relative"
+msgstr ""
+
+msgid ""
+"Death and loss-of-relationship damages for family members. A sensitive, fact-"
+"specific area handled directly by the Studio."
+msgstr ""
+
+msgid "Insurance / INAIL offer to check"
+msgstr ""
+
+msgid ""
+"You received a settlement or INAIL offer. The Studio can review whether it "
+"is adequate before you sign — do not accept a settlement without a "
+"professional review."
+msgstr ""
+
+msgid "Have your offer reviewed"
+msgstr ""
+
+msgid "Cross-border matters"
+msgstr ""
+
+msgid ""
+"Cases with foreign elements — parties, assets or events abroad — including "
+"questions of applicable law and competent jurisdiction."
+msgstr ""
+
+msgid "Foreign nationals in Italy"
+msgstr ""
+
+msgid ""
+"Assistance for foreign or non-resident clients who suffered harm in Italy, "
+"with multilingual support and remote handling."
+msgstr ""
+
+msgid "Foreign / consular documents"
+msgstr ""
+
+msgid ""
+"Help with documentation produced abroad — translation, legalisation and "
+"consular formalities needed to support a claim."
+msgstr ""
+
+msgid "Is the estimate binding?"
+msgstr ""
+
+msgid ""
+"No. It is an indicative orientation based on validated official sources — "
+"not a quote, a verdict or a promise. The amount actually awarded depends on "
+"documents, expert reports, liability, the applicable law and the deciding "
+"court."
+msgstr ""
+
+msgid "Can I calculate any case?"
+msgstr ""
+
+msgid ""
+"No. An automatic estimate appears only where an official, validated source "
+"and formula exist — today, road-accident bodily injury in Italy on the "
+"Tabella Unica Nazionale 2025. For everything else the platform asks for a "
+"preliminary assessment instead of inventing a number."
+msgstr ""
+
+msgid "Why are some countries not calculable?"
+msgstr ""
+
+msgid ""
+"Because a figure is published only when the underlying legal source has been "
+"validated. For France, Belgium, Morocco and Tunisia the sources are "
+"catalogued but not yet validated, so no automatic amount is shown and the "
+"Studio reviews those cases manually."
+msgstr ""
+
+msgid "What documents are needed?"
+msgstr ""
+
+msgid ""
+"For a first orientation, none. For a real assessment the Studio typically "
+"asks for medical records, accident or incident reports, insurance "
+"correspondence and proof of economic impact. A checklist is shown after each "
+"simulation."
+msgstr ""
+
+msgid "I already received an offer — can I have it checked?"
+msgstr ""
+
+msgid ""
+"Yes. The Studio can review an insurance or INAIL offer before you accept it. "
+"Do not sign a settlement before a professional review: reopening it "
+"afterwards can be difficult."
+msgstr ""
+
+msgid "Can I be assisted if I live abroad?"
+msgstr ""
+
+msgid ""
+"Yes. The Studio handles cross-border matters and assists clients living "
+"outside Italy, in several languages. A preliminary assessment can be "
+"requested remotely."
+msgstr ""
+
+msgid "Is a medical-legal report needed?"
+msgstr ""
+
+msgid ""
+"For permanent injury, a medical-legal assessment is usually decisive for the "
+"final valuation. The platform can produce an indicative range without it, "
+"but it does not replace the report."
+msgstr ""
+
+msgid "Is the preliminary assessment free?"
+msgstr ""
+
+msgid ""
+"The preliminary assessment of your request is free and without obligation. A "
+"professional engagement begins only with a separate written agreement."
+msgstr ""
+
+msgid "Does this site replace legal advice?"
+msgstr ""
+
+msgid ""
+"No. It is an informational tool. It does not constitute legal or medical-"
+"legal advice and does not guarantee any outcome. For a binding opinion, "
+"request a professional evaluation."
+msgstr ""
+
+msgid "How is my personal data handled?"
+msgstr ""
+
+msgid ""
+"Your data is processed only with your explicit consent, for the stated "
+"purpose, under the GDPR. Special-category data (health, income, family) is "
+"processed under art. 9 only after a dedicated consent. See the privacy "
+"notice for details."
+msgstr ""
+
 msgid "Indicative calculation available"
 msgstr ""
 
@@ -2962,9 +3182,6 @@ msgstr ""
 msgid "Indicative and source-based — not a guarantee of outcome."
 msgstr ""
 
-msgid "Calculate the estimate"
-msgstr ""
-
 msgid "Free assessment"
 msgstr ""
 
@@ -3030,6 +3247,15 @@ msgstr ""
 msgid "Platform"
 msgstr ""
 
+msgid "Calculator"
+msgstr ""
+
+msgid "How it works"
+msgstr ""
+
+msgid "Services"
+msgstr ""
+
 msgid "Countries"
 msgstr ""
 
@@ -3039,13 +3265,22 @@ msgstr ""
 msgid "Methodology"
 msgstr ""
 
+msgid "FAQ"
+msgstr ""
+
+msgid "Studio"
+msgstr ""
+
+msgid "The Studio"
+msgstr ""
+
+msgid "Institutional website"
+msgstr ""
+
 msgid "Legal"
 msgstr ""
 
 msgid "Disclaimer"
-msgstr ""
-
-msgid "Institutional website"
 msgstr ""
 
 msgid "Professional identification"
@@ -3091,9 +3326,6 @@ msgid "Indicative simulations. Not legal advice."
 msgstr ""
 
 msgid "Primary navigation"
-msgstr ""
-
-msgid "Calculator"
 msgstr ""
 
 msgid "Language switcher"
@@ -3206,6 +3438,80 @@ msgid ""
 "share proportionally reduces the indicative estimate."
 msgstr ""
 
+msgid "The Studio — international approach and method"
+msgstr ""
+
+msgid ""
+"Studio Legale Internazionale Badrane: an international, multilingual "
+"practice with a transparent, source-based method for compensation and cross-"
+"border matters. Indicative estimates, free preliminary assessment, no "
+"guarantee of outcome."
+msgstr ""
+
+msgid "Breadcrumb"
+msgstr ""
+
+msgid "Home"
+msgstr ""
+
+msgid "An international practice with a transparent method"
+msgstr ""
+
+msgid ""
+"Studio Legale Internazionale Badrane assists people in compensation, "
+"inheritance and complex cross-border matters. This platform reflects how the "
+"Studio works: clear, source-based and prudent."
+msgstr ""
+
+msgid "International approach"
+msgstr ""
+
+msgid ""
+"Cross-border experience across Europe and North Africa, including questions "
+"of applicable law and competent jurisdiction when an event, party or asset "
+"is abroad."
+msgstr ""
+
+msgid "Multilingual assistance"
+msgstr ""
+
+msgid ""
+"The platform and the Studio work in Italian, French, English and Arabic, so "
+"you can be assisted in the language you are most comfortable with — "
+"including remotely."
+msgstr ""
+
+msgid "Transparent method"
+msgstr ""
+
+msgid ""
+"A figure is shown only when it can be tied to a validated official source. "
+"Where it cannot, we say so explicitly instead of inventing a number."
+msgstr ""
+
+msgid ""
+"A lawyer reviews your request at no cost and without obligation. A "
+"professional engagement begins only with a separate written agreement; there "
+"is no guarantee of outcome."
+msgstr ""
+
+msgid "The firm's full profile"
+msgstr ""
+
+msgid ""
+"This platform is a sub-domain of the Studio's institutional website, where "
+"you will find the firm's complete profile and professional details."
+msgstr ""
+
+msgid "Request a free assessment"
+msgstr ""
+
+msgid ""
+"The professional identification details required by the forensic code of "
+"conduct are shown in the footer. This page does not constitute legal advice "
+"or a guarantee of outcome."
+msgstr ""
+
 msgid "When this applies"
 msgstr ""
 
@@ -3226,9 +3532,6 @@ msgid ""
 "legal opinion, or guarantee of outcome. Any simulation is indicative; the "
 "actual valuation depends on documents, expert reports, applicable law and "
 "judicial orientation."
-msgstr ""
-
-msgid "FAQ"
 msgstr ""
 
 msgid "Frequently asked questions"
@@ -3294,6 +3597,66 @@ msgid ""
 "Additional case types on the Studio roadmap include catastrophic damage, "
 "loss of chance, defamation, school/professional damage and ruined holiday "
 "claims, where legally tractable."
+msgstr ""
+
+msgid "Ta3ouid — assistance for Arabic and French speakers"
+msgstr ""
+
+msgid ""
+"Ta3ouid: clear, multilingual assistance for Arabic- and French-speaking "
+"people who suffered harm in Italy, including those living abroad. Free "
+"preliminary assessment, no promises, no guarantee of outcome."
+msgstr ""
+
+msgid "Community assistance"
+msgstr ""
+
+msgid "Harmed in Italy? You can ask for an assessment in your language."
+msgstr ""
+
+msgid ""
+"If you or a relative suffered harm in Italy — a road accident, an injury at "
+"work, a medical matter — you can request a preliminary assessment even if "
+"you now live abroad. The Studio assists in Arabic, French, Italian and "
+"English."
+msgstr ""
+
+msgid "From anywhere"
+msgstr ""
+
+msgid ""
+"You do not need to be in Italy. A first assessment can be requested "
+"remotely, in your language."
+msgstr ""
+
+msgid "Clear and prudent"
+msgstr ""
+
+msgid ""
+"We explain plainly what can be estimated from official sources and what "
+"needs professional review. No promises."
+msgstr ""
+
+msgid "Free first step"
+msgstr ""
+
+msgid ""
+"The preliminary assessment is free and without obligation. An engagement "
+"begins only with a written agreement."
+msgstr ""
+
+msgid "Tell us what happened"
+msgstr ""
+
+msgid ""
+"Send your request in your language. A lawyer will read it and reply on "
+"whether and how the Studio can help."
+msgstr ""
+
+msgid ""
+"The simulation is indicative and does not constitute legal or medical-legal "
+"advice nor a guarantee of outcome. A professional engagement begins only "
+"with a separate written agreement."
 msgstr ""
 
 msgid ""
@@ -3440,12 +3803,6 @@ msgid ""
 "Preliminary legal assessment for %(country)s: the Studio reviews each case "
 "manually, and no automatic amount is published before the underlying "
 "quantification sources have been verified."
-msgstr ""
-
-msgid "Breadcrumb"
-msgstr ""
-
-msgid "Home"
 msgstr ""
 
 msgid "Country page"
@@ -3726,6 +4083,39 @@ msgstr ""
 msgid "Signed on: %(d)s."
 msgstr ""
 
+msgid "FAQ — frequent questions on indicative compensation"
+msgstr ""
+
+msgid ""
+"Answers to common questions about indicative compensation estimates: whether "
+"they are binding, which cases are calculable, what documents are needed, and "
+"how your personal data is handled."
+msgstr ""
+
+msgid "Frequent questions"
+msgstr ""
+
+msgid "Questions about indicative compensation"
+msgstr ""
+
+msgid ""
+"Prudent answers, with no promises and no invented figures. For anything "
+"specific to your case, ask the Studio for a free preliminary assessment."
+msgstr ""
+
+msgid "Still have a question?"
+msgstr ""
+
+msgid ""
+"A lawyer reads your request and replies. The preliminary assessment is free "
+"and without obligation."
+msgstr ""
+
+msgid ""
+"This page is informational and does not constitute legal advice or a "
+"guarantee of outcome."
+msgstr ""
+
 #, python-format
 msgid "%(site)s — International compensation simulator"
 msgstr ""
@@ -3822,6 +4212,32 @@ msgstr ""
 msgid ""
 "Our international team handles compensation, medical liability and cross-"
 "border inheritance matters across Europe and North Africa."
+msgstr ""
+
+msgid "How it works — from estimate to evaluation"
+msgstr ""
+
+msgid ""
+"How the Studio Legale Badrane platform works: an indicative estimate in a "
+"few clicks from validated official sources, a free preliminary assessment, "
+"and a professional evaluation when you need one."
+msgstr ""
+
+msgid "From an indicative estimate to a professional evaluation"
+msgstr ""
+
+msgid ""
+"A clear, prudent path: you start with an orientation, the Studio reviews "
+"your case, and a professional evaluation follows only where it adds value. "
+"No promises, no invented numbers."
+msgstr ""
+
+msgid "Ready to start?"
+msgstr ""
+
+msgid ""
+"Run an indicative simulation now, or ask the Studio for a free preliminary "
+"assessment of your case."
 msgstr ""
 
 msgid "Methodology — sources, validation and ranges"
@@ -3999,6 +4415,45 @@ msgstr ""
 msgid ""
 "If you need urgent assistance, please contact the Studio directly via the "
 "institutional website."
+msgstr ""
+
+msgid "Services — areas the Studio handles"
+msgstr ""
+
+msgid ""
+"Areas handled by Studio Legale Badrane: road accidents, medical liability, "
+"workplace injury, loss of a relative, insurance-offer review and cross-"
+"border matters. Some are calculable from official sources; others require a "
+"preliminary assessment."
+msgstr ""
+
+msgid "Areas the Studio handles"
+msgstr ""
+
+msgid ""
+"Each area shows whether an indicative estimate is available from an official "
+"validated source, or whether it needs a preliminary assessment. We never "
+"publish a figure we cannot tie to a source."
+msgstr ""
+
+msgid "Calculable with official source"
+msgstr ""
+
+msgid "Preliminary assessment needed"
+msgstr ""
+
+msgid "Not sure which applies to you?"
+msgstr ""
+
+msgid ""
+"Describe your situation and the Studio will tell you, free of charge, "
+"whether and how it can help — without any obligation."
+msgstr ""
+
+msgid ""
+"Information on this page is indicative and does not constitute legal advice "
+"or a guarantee of outcome. A professional engagement begins only with a "
+"separate written agreement."
 msgstr ""
 
 msgid "Belgium — road accident bodily injury"
@@ -4381,9 +4836,6 @@ msgid ""
 "simulation is indicative: it will only produce an estimate when validated "
 "legal sources are available — otherwise it returns a clear \"requires legal "
 "validation\" status."
-msgstr ""
-
-msgid "How it works"
 msgstr ""
 
 msgid "From your inputs to a Studio review"

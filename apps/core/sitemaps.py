@@ -63,6 +63,12 @@ class StaticSitemap(Sitemap):
         "core:methodology": 0.6,
         "core:case_types": 0.6,
         "cases:wizard_start": 0.6,
+        # Workstream-3 content pages.
+        "core:how_it_works": 0.7,
+        "core:services": 0.7,
+        "core:faq": 0.6,
+        "core:about": 0.5,
+        "core:community": 0.6,
         "core:privacy": 0.3,
         "core:disclaimer": 0.3,
     }

@@ -11,6 +11,14 @@ urlpatterns = [
     path("methodology/", views.methodology, name="methodology"),
     path("disclaimer/", views.disclaimer, name="disclaimer"),
     path("privacy/", views.privacy, name="privacy"),
+    # Workstream-3 public content pages (indexable, multilingual — see the
+    # hreflang allowlist in context_processors.py and StaticSitemap).
+    path("how-it-works/", views.how_it_works, name="how_it_works"),
+    path("services/", views.services, name="services"),
+    path("faq/", views.faq, name="faq"),
+    path("about/", views.about, name="about"),
+    # Arabic/French-speaking community landing (Ta3ouid).
+    path("ta3ouid/", views.community, name="community"),
     path("countries/", views.countries, name="countries"),
     # E1: leak-safe public readiness state per country (JSON). No internal detail.
     path("countries/readiness.json", views.country_readiness_json, name="country_readiness_json"),

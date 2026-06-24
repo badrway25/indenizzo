@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-24 16:26+0200\n"
+"POT-Creation-Date: 2026-06-24 16:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2254,6 +2254,226 @@ msgstr ""
 "نعم. عندما يستلزم التنفيذ العابر للحدود تدخّل محامٍ محلي، ينسّق المكتب مع "
 "مراسلين في الدول ذات الصلة بالحالة."
 
+msgid "Indicative estimate in a few clicks"
+msgstr "تقدير إرشادي بنقرات قليلة"
+
+msgid ""
+"Answer a short, optional set of questions. Where an official validated "
+"source exists, you immediately see an indicative min / mid / max range with "
+"the sources behind it."
+msgstr "أجب عن مجموعة قصيرة واختيارية من الأسئلة. وحيثما وُجد مصدر رسمي مُتحقَّق منه، ترى فورًا نطاقًا إرشاديًا min / mid / max مع المصادر التي يستند إليها."
+
+msgid "Share your documents"
+msgstr "شارك وثائقك"
+
+msgid ""
+"If you decide to go further, you send the relevant documents. None are "
+"required for the first orientation; the Studio asks for what it needs after "
+"reading the case."
+msgstr "إذا قررت المضيّ قُدمًا، تُرسل الوثائق ذات الصلة. ولا يُطلب أي منها للتوجيه الأولي؛ فالمكتب يطلب ما يحتاجه بعد قراءة الحالة."
+
+msgid "Free preliminary assessment"
+msgstr "تقييم أولي مجاني"
+
+msgid ""
+"A lawyer reviews your request manually and replies on whether and how the "
+"Studio can help. The preliminary assessment is free and without obligation."
+msgstr "يراجع محامٍ طلبك يدويًا ويردّ بشأن ما إذا كان المكتب يستطيع مساعدتك وكيف. التقييم الأولي مجاني ودون أي التزام."
+
+msgid "Source and formula verification"
+msgstr "التحقق من المصدر والصيغة"
+
+msgid ""
+"When a calculation is available, it is checked against the official source "
+"and the approved formula. When it is not, we say so explicitly rather than "
+"invent a number."
+msgstr "عندما يتوفر احتساب، يُراجَع في ضوء المصدر الرسمي والصيغة المعتمدة. وعندما لا يتوفر، نُصرّح بذلك صراحةً بدلاً من اختلاق رقم."
+
+msgid "Professional evaluation"
+msgstr "تقييم مهني"
+
+msgid ""
+"Where appropriate, the Studio carries out a full legal evaluation — medical-"
+"legal aspects, liability, applicable law and competent jurisdiction."
+msgstr "حيث يكون ذلك مناسبًا، يجري المكتب تقييمًا قانونيًا كاملاً — الجوانب الطبية القانونية، والمسؤولية، والقانون الواجب التطبيق، والاختصاص القضائي."
+
+msgid "Written engagement, only if you choose"
+msgstr "تعاقد كتابي، فقط إذا اخترت ذلك"
+
+msgid ""
+"A professional engagement begins solely with a separate written agreement. "
+"Fees follow the applicable rules and the forensic code of conduct."
+msgstr "لا يبدأ التعاقد المهني إلا باتفاق كتابي منفصل. وتخضع الأتعاب للقواعد المعمول بها ولمدوّنة آداب مهنة المحاماة."
+
+msgid "Road accident"
+msgstr "حادث طريق"
+
+msgid ""
+"Bodily injury from a road accident. Where the case fits the official Tabella "
+"Unica Nazionale 2025, the platform produces an indicative range; otherwise "
+"the Studio reviews it."
+msgstr "الضرر الجسدي الناتج عن حادث طريق. حيث تنطبق على الحالة Tabella Unica Nazionale 2025 الرسمية، تُنتج المنصة نطاقًا إرشاديًا؛ وإلا فإن المكتب يراجعها."
+
+msgid "Calculate the estimate"
+msgstr "احسب التقدير"
+
+msgid "Medical liability"
+msgstr "المسؤولية الطبية"
+
+msgid ""
+"Suspected medical or healthcare malpractice. These cases hinge on expert "
+"evidence and are assessed by the Studio — no automatic figure is published."
+msgstr "الاشتباه في خطأ طبي أو خطأ في الرعاية الصحية. تتوقف هذه الحالات على أدلة الخبرة ويقيّمها المكتب — ولا يُنشَر أي رقم آلي."
+
+msgid "Request a preliminary assessment"
+msgstr "اطلب تقييمًا أوليًا"
+
+msgid "Workplace injury"
+msgstr "إصابة العمل"
+
+msgid ""
+"Accidents at work and occupational disease, including the differential "
+"beyond INAIL. Reviewed by the Studio; not automatically calculated today."
+msgstr "حوادث العمل والأمراض المهنية، بما في ذلك الفارق التعويضي الزائد عن INAIL. يراجعها المكتب؛ ولا تُحتسب آليًا في الوقت الحالي."
+
+msgid "Loss of a relative"
+msgstr "فقدان أحد الأقارب"
+
+msgid ""
+"Death and loss-of-relationship damages for family members. A sensitive, fact-"
+"specific area handled directly by the Studio."
+msgstr "تعويضات الوفاة وفقدان العلاقة الأسرية لأفراد الأسرة. مجال حسّاس يرتبط بوقائع كل حالة على حدة، ويتولاه المكتب مباشرة."
+
+msgid "Insurance / INAIL offer to check"
+msgstr "عرض تأمين / INAIL يحتاج إلى مراجعة"
+
+msgid ""
+"You received a settlement or INAIL offer. The Studio can review whether it "
+"is adequate before you sign — do not accept a settlement without a "
+"professional review."
+msgstr "تلقّيت عرض تسوية أو عرض INAIL. يستطيع المكتب مراجعة ما إذا كان كافيًا قبل أن توقّع — لا تقبل تسوية دون مراجعة مهنية."
+
+msgid "Have your offer reviewed"
+msgstr "اطلب مراجعة العرض المُقدَّم إليك"
+
+msgid "Cross-border matters"
+msgstr "القضايا العابرة للحدود"
+
+msgid ""
+"Cases with foreign elements — parties, assets or events abroad — including "
+"questions of applicable law and competent jurisdiction."
+msgstr "الحالات ذات العناصر الأجنبية — أطراف أو أموال أو وقائع في الخارج — بما في ذلك مسائل القانون الواجب التطبيق والاختصاص القضائي."
+
+msgid "Foreign nationals in Italy"
+msgstr "الرعايا الأجانب في إيطاليا"
+
+msgid ""
+"Assistance for foreign or non-resident clients who suffered harm in Italy, "
+"with multilingual support and remote handling."
+msgstr "مساعدة للعملاء الأجانب أو غير المقيمين الذين تعرّضوا لضرر في إيطاليا، مع دعم متعدد اللغات ومعالجة عن بُعد."
+
+msgid "Foreign / consular documents"
+msgstr "الوثائق الأجنبية / القنصلية"
+
+msgid ""
+"Help with documentation produced abroad — translation, legalisation and "
+"consular formalities needed to support a claim."
+msgstr "مساعدة في الوثائق الصادرة في الخارج — الترجمة والتصديق والإجراءات القنصلية اللازمة لدعم المطالبة."
+
+msgid "Is the estimate binding?"
+msgstr "هل التقدير مُلزِم؟"
+
+msgid ""
+"No. It is an indicative orientation based on validated official sources — "
+"not a quote, a verdict or a promise. The amount actually awarded depends on "
+"documents, expert reports, liability, the applicable law and the deciding "
+"court."
+msgstr "لا. إنه توجيه إرشادي يستند إلى مصادر رسمية مُتحقَّق منها — وليس عرض سعر ولا حكمًا ولا وعدًا. والمبلغ المحكوم به فعليًا يتوقف على الوثائق وتقارير الخبراء والمسؤولية والقانون الواجب التطبيق والمحكمة التي تفصل في النزاع."
+
+msgid "Can I calculate any case?"
+msgstr "هل يمكنني احتساب أي حالة؟"
+
+msgid ""
+"No. An automatic estimate appears only where an official, validated source "
+"and formula exist — today, road-accident bodily injury in Italy on the "
+"Tabella Unica Nazionale 2025. For everything else the platform asks for a "
+"preliminary assessment instead of inventing a number."
+msgstr "لا. لا يظهر التقدير الآلي إلا حيث يوجد مصدر وصيغة رسميان مُتحقَّق منهما — وهو اليوم الضرر الجسدي الناتج عن حوادث الطرق في إيطاليا وفق Tabella Unica Nazionale 2025. وفيما عدا ذلك تطلب المنصة تقييمًا أوليًا بدلاً من اختلاق رقم."
+
+msgid "Why are some countries not calculable?"
+msgstr "لماذا لا تكون بعض الدول قابلة للاحتساب؟"
+
+msgid ""
+"Because a figure is published only when the underlying legal source has been "
+"validated. For France, Belgium, Morocco and Tunisia the sources are "
+"catalogued but not yet validated, so no automatic amount is shown and the "
+"Studio reviews those cases manually."
+msgstr "لأن أي رقم لا يُنشَر إلا بعد التحقق من المصدر القانوني الذي يستند إليه. ففي فرنسا وبلجيكا والمغرب وتونس، المصادر مُفهرسة لكنها لم يُتحقَّق منها بعد، ولذلك لا يُعرَض أي مبلغ آلي، ويراجع المكتب تلك الحالات يدويًا."
+
+msgid "What documents are needed?"
+msgstr "ما الوثائق المطلوبة؟"
+
+msgid ""
+"For a first orientation, none. For a real assessment the Studio typically "
+"asks for medical records, accident or incident reports, insurance "
+"correspondence and proof of economic impact. A checklist is shown after each "
+"simulation."
+msgstr "للتوجيه الأولي، لا حاجة إلى أي وثيقة. أما للتقييم الفعلي فيطلب المكتب عادةً السجلات الطبية، ومحاضر الحوادث أو الوقائع، والمراسلات مع شركة التأمين، وما يُثبت الأثر الاقتصادي. وتُعرَض قائمة مرجعية بعد كل محاكاة."
+
+msgid "I already received an offer — can I have it checked?"
+msgstr "تلقّيت بالفعل عرضًا — هل يمكنني الحصول على مراجعته؟"
+
+msgid ""
+"Yes. The Studio can review an insurance or INAIL offer before you accept it. "
+"Do not sign a settlement before a professional review: reopening it "
+"afterwards can be difficult."
+msgstr "نعم. يستطيع المكتب مراجعة عرض تأمين أو عرض INAIL قبل قبولك له. لا توقّع تسوية قبل مراجعة مهنية: فإعادة فتحها لاحقًا قد يكون صعبًا."
+
+msgid "Can I be assisted if I live abroad?"
+msgstr "هل يمكنني الحصول على المساعدة إذا كنت أقيم في الخارج؟"
+
+msgid ""
+"Yes. The Studio handles cross-border matters and assists clients living "
+"outside Italy, in several languages. A preliminary assessment can be "
+"requested remotely."
+msgstr "نعم. يتولى المكتب القضايا العابرة للحدود ويساعد العملاء المقيمين خارج إيطاليا، بعدة لغات. ويمكن طلب التقييم الأولي عن بُعد."
+
+msgid "Is a medical-legal report needed?"
+msgstr "هل يلزم تقرير طبي قانوني؟"
+
+msgid ""
+"For permanent injury, a medical-legal assessment is usually decisive for the "
+"final valuation. The platform can produce an indicative range without it, "
+"but it does not replace the report."
+msgstr "بالنسبة للضرر الدائم، يكون التقييم الطبي القانوني عادةً حاسمًا في التقدير النهائي. وتستطيع المنصة إنتاج نطاق إرشادي دونه، لكنها لا تحلّ محلّ التقرير."
+
+msgid "Is the preliminary assessment free?"
+msgstr "هل التقييم الأولي مجاني؟"
+
+msgid ""
+"The preliminary assessment of your request is free and without obligation. A "
+"professional engagement begins only with a separate written agreement."
+msgstr "التقييم الأولي لطلبك مجاني ودون أي التزام. ولا يبدأ التعاقد المهني إلا باتفاق كتابي منفصل."
+
+msgid "Does this site replace legal advice?"
+msgstr "هل يحلّ هذا الموقع محلّ الاستشارة القانونية؟"
+
+msgid ""
+"No. It is an informational tool. It does not constitute legal or medical-"
+"legal advice and does not guarantee any outcome. For a binding opinion, "
+"request a professional evaluation."
+msgstr "لا. إنها أداة معلوماتية. ولا تشكّل استشارة قانونية أو طبية قانونية ولا تضمن أي نتيجة. وللحصول على رأي مُلزِم، اطلب تقييمًا مهنيًا."
+
+msgid "How is my personal data handled?"
+msgstr "كيف تُعالَج بياناتي الشخصية؟"
+
+msgid ""
+"Your data is processed only with your explicit consent, for the stated "
+"purpose, under the GDPR. Special-category data (health, income, family) is "
+"processed under art. 9 only after a dedicated consent. See the privacy "
+"notice for details."
+msgstr "تُعالَج بياناتك فقط بموافقتك الصريحة، وللغرض المُعلَن، بموجب GDPR. أما البيانات ذات الفئة الخاصة (الصحة، الدخل، الأسرة) فلا تُعالَج بموجب المادة 9 إلا بعد موافقة مخصّصة. راجع إشعار الخصوصية للاطلاع على التفاصيل."
+
 msgid "Indicative calculation available"
 msgstr "حساب إرشادي متاح"
 
@@ -3136,14 +3356,20 @@ msgid ""
 "Compensation claims are subject to time limits (in Italy, prescrizione) that "
 "vary by country, type of damage and the parties involved. Acting late can "
 "permanently bar a claim, however well-founded it is."
-msgstr "تخضع مطالبات التعويض لمهل زمنية (تُسمّى في إيطاليا prescrizione) تختلف حسب البلد ونوع الضرر والأطراف المعنية. التأخر في التصرّف قد يُسقط المطالبة نهائيًا مهما كانت وجيهة."
+msgstr ""
+"تخضع مطالبات التعويض لمهل زمنية (تُسمّى في إيطاليا prescrizione) تختلف حسب "
+"البلد ونوع الضرر والأطراف المعنية. التأخر في التصرّف قد يُسقط المطالبة نهائيًا "
+"مهما كانت وجيهة."
 
 msgid ""
 "This platform does not state or calculate limitation periods: they depend on "
 "the applicable law and the specific facts of your case. If your event is "
 "recent, or you are unsure of the deadline, ask the Studio to verify the term "
 "that applies before it expires."
-msgstr "هذه المنصة لا تذكر ولا تحسب مهل التقادم: فهي تعتمد على القانون الواجب التطبيق وعلى وقائع قضيتك تحديدًا. إذا كان الحدث حديثًا، أو لم تكن متأكدًا من المهلة، فاطلب من المكتب التحقق من المهلة المطبّقة قبل انقضائها."
+msgstr ""
+"هذه المنصة لا تذكر ولا تحسب مهل التقادم: فهي تعتمد على القانون الواجب "
+"التطبيق وعلى وقائع قضيتك تحديدًا. إذا كان الحدث حديثًا، أو لم تكن متأكدًا من "
+"المهلة، فاطلب من المكتب التحقق من المهلة المطبّقة قبل انقضائها."
 
 msgid "Ask the Studio to verify your deadline"
 msgstr "اطلب من المكتب التحقق من المهلة الخاصة بك"
@@ -3166,9 +3392,6 @@ msgstr "قدّر تعويضك"
 
 msgid "Indicative and source-based — not a guarantee of outcome."
 msgstr "إرشادية ومستندة إلى مصادر — وليست ضمانًا للنتيجة."
-
-msgid "Calculate the estimate"
-msgstr "احسب التقدير"
 
 msgid "Free assessment"
 msgstr "تقييم مجاني"
@@ -3243,6 +3466,15 @@ msgstr "زيارة الموقع المؤسسي"
 msgid "Platform"
 msgstr "المنصة"
 
+msgid "Calculator"
+msgstr "الحاسبة"
+
+msgid "How it works"
+msgstr "كيف يعمل"
+
+msgid "Services"
+msgstr "الخدمات"
+
 msgid "Countries"
 msgstr "البلدان"
 
@@ -3252,14 +3484,23 @@ msgstr "أنواع القضايا"
 msgid "Methodology"
 msgstr "المنهجية"
 
+msgid "FAQ"
+msgstr "الأسئلة الشائعة"
+
+msgid "Studio"
+msgstr "المكتب"
+
+msgid "The Studio"
+msgstr "المكتب"
+
+msgid "Institutional website"
+msgstr "الموقع المؤسسي"
+
 msgid "Legal"
 msgstr "قانوني"
 
 msgid "Disclaimer"
 msgstr "إخلاء المسؤولية"
-
-msgid "Institutional website"
-msgstr "الموقع المؤسسي"
 
 msgid "Professional identification"
 msgstr "التعريف المهني"
@@ -3307,9 +3548,6 @@ msgstr "محاكاة إرشادية. لا تُعدّ رأيًا قانونيًا
 
 msgid "Primary navigation"
 msgstr "التنقل الرئيسي"
-
-msgid "Calculator"
-msgstr "الحاسبة"
 
 msgid "Language switcher"
 msgstr "مبدّل اللغة"
@@ -3436,6 +3674,80 @@ msgstr ""
 "حصتك من المسؤولية عن الحادث، إن كانت معروفة. كلما زادت الحصة انخفض التقدير "
 "الإرشادي تناسبيًا."
 
+msgid "The Studio — international approach and method"
+msgstr "المكتب — نهج ومنهجية دوليان"
+
+msgid ""
+"Studio Legale Internazionale Badrane: an international, multilingual "
+"practice with a transparent, source-based method for compensation and cross-"
+"border matters. Indicative estimates, free preliminary assessment, no "
+"guarantee of outcome."
+msgstr "Studio Legale Internazionale Badrane: ممارسة دولية متعددة اللغات بمنهجية شفّافة مستندة إلى المصادر في مسائل التعويض والقضايا العابرة للحدود. تقديرات إرشادية، وتقييم أولي مجاني، دون ضمان للنتيجة."
+
+msgid "Breadcrumb"
+msgstr "مسار التنقّل"
+
+msgid "Home"
+msgstr "الرئيسية"
+
+msgid "An international practice with a transparent method"
+msgstr "ممارسة دولية بمنهجية شفّافة"
+
+msgid ""
+"Studio Legale Internazionale Badrane assists people in compensation, "
+"inheritance and complex cross-border matters. This platform reflects how the "
+"Studio works: clear, source-based and prudent."
+msgstr "يساعد Studio Legale Internazionale Badrane الأشخاص في مسائل التعويض والميراث والقضايا المعقّدة العابرة للحدود. وتعكس هذه المنصة طريقة عمل المكتب: واضحة، ومستندة إلى المصادر، وحذِرة."
+
+msgid "International approach"
+msgstr "نهج دولي"
+
+msgid ""
+"Cross-border experience across Europe and North Africa, including questions "
+"of applicable law and competent jurisdiction when an event, party or asset "
+"is abroad."
+msgstr "خبرة في القضايا العابرة للحدود عبر أوروبا وشمال إفريقيا، بما في ذلك مسائل القانون الواجب التطبيق والاختصاص القضائي عندما تكون واقعة أو طرف أو مال في الخارج."
+
+msgid "Multilingual assistance"
+msgstr "مساعدة متعددة اللغات"
+
+msgid ""
+"The platform and the Studio work in Italian, French, English and Arabic, so "
+"you can be assisted in the language you are most comfortable with — "
+"including remotely."
+msgstr "تعمل المنصة والمكتب بالإيطالية والفرنسية والإنجليزية والعربية، بحيث يمكنك الحصول على المساعدة باللغة التي تشعر بأكبر قدر من الراحة معها — بما في ذلك عن بُعد."
+
+msgid "Transparent method"
+msgstr "منهجية شفّافة"
+
+msgid ""
+"A figure is shown only when it can be tied to a validated official source. "
+"Where it cannot, we say so explicitly instead of inventing a number."
+msgstr "لا يُعرَض أي رقم إلا إذا أمكن ربطه بمصدر رسمي مُتحقَّق منه. وحيث يتعذّر ذلك، نُصرّح بذلك صراحةً بدلاً من اختلاق رقم."
+
+msgid ""
+"A lawyer reviews your request at no cost and without obligation. A "
+"professional engagement begins only with a separate written agreement; there "
+"is no guarantee of outcome."
+msgstr "يراجع محامٍ طلبك دون مقابل ودون أي التزام. ولا يبدأ التعاقد المهني إلا باتفاق كتابي منفصل؛ دون ضمان للنتيجة."
+
+msgid "The firm's full profile"
+msgstr "الملف الكامل للمكتب"
+
+msgid ""
+"This platform is a sub-domain of the Studio's institutional website, where "
+"you will find the firm's complete profile and professional details."
+msgstr "هذه المنصة نطاق فرعي من الموقع المؤسسي للمكتب، حيث ستجد الملف الكامل للمكتب وبياناته المهنية."
+
+msgid "Request a free assessment"
+msgstr "اطلب تقييمًا مجانيًا"
+
+msgid ""
+"The professional identification details required by the forensic code of "
+"conduct are shown in the footer. This page does not constitute legal advice "
+"or a guarantee of outcome."
+msgstr "بيانات التعريف المهنية التي تقتضيها مدوّنة آداب مهنة المحاماة معروضة في التذييل. ولا تشكّل هذه الصفحة استشارة قانونية ولا ضمانًا للنتيجة."
+
 msgid "When this applies"
 msgstr "متى ينطبق ذلك"
 
@@ -3462,9 +3774,6 @@ msgstr ""
 "هذه الصفحة ذات طابع إعلامي ولا تُعدّ استشارة قانونية كاملة ولا رأياً طبياً شرعياً "
 "ولا ضماناً للنتيجة. وأي محاكاة هي إرشادية؛ ويتوقّف التقييم الفعلي على الوثائق "
 "وتقارير الخبراء والقانون الواجب التطبيق والتوجّهات القضائية."
-
-msgid "FAQ"
-msgstr "الأسئلة الشائعة"
 
 msgid "Frequently asked questions"
 msgstr "الأسئلة المتكرّرة"
@@ -3541,6 +3850,66 @@ msgstr ""
 "تشمل أنواع القضايا الأخرى في خارطة طريق المكتب: الأضرار الجسيمة، وضياع "
 "الفرصة، والقذف، والضرر المدرسي/المهني، وتلف العطلات، عندما تكون قانونياً "
 "قابلة للمتابعة."
+
+msgid "Ta3ouid — assistance for Arabic and French speakers"
+msgstr "Ta3ouid — مساعدة للناطقين بالعربية والفرنسية"
+
+msgid ""
+"Ta3ouid: clear, multilingual assistance for Arabic- and French-speaking "
+"people who suffered harm in Italy, including those living abroad. Free "
+"preliminary assessment, no promises, no guarantee of outcome."
+msgstr "Ta3ouid: مساعدة واضحة ومتعددة اللغات للناطقين بالعربية والفرنسية الذين تعرّضوا لضرر في إيطاليا، بمن فيهم المقيمون في الخارج. تقييم أولي مجاني، دون وعود، ودون ضمان للنتيجة."
+
+msgid "Community assistance"
+msgstr "مساعدة للجالية"
+
+msgid "Harmed in Italy? You can ask for an assessment in your language."
+msgstr "تعرّضت لضرر في إيطاليا؟ يمكنك طلب تقييم بلغتك."
+
+msgid ""
+"If you or a relative suffered harm in Italy — a road accident, an injury at "
+"work, a medical matter — you can request a preliminary assessment even if "
+"you now live abroad. The Studio assists in Arabic, French, Italian and "
+"English."
+msgstr "إذا تعرّضت أنت أو أحد أقاربك لضرر في إيطاليا — حادث طريق، أو إصابة عمل، أو مسألة طبية — يمكنك طلب تقييم أولي حتى لو كنت تقيم الآن في الخارج. يقدّم المكتب المساعدة بالعربية والفرنسية والإيطالية والإنجليزية."
+
+msgid "From anywhere"
+msgstr "من أي مكان"
+
+msgid ""
+"You do not need to be in Italy. A first assessment can be requested "
+"remotely, in your language."
+msgstr "لست بحاجة إلى أن تكون في إيطاليا. يمكن طلب تقييم أولي عن بُعد، بلغتك."
+
+msgid "Clear and prudent"
+msgstr "واضح وحَذِر"
+
+msgid ""
+"We explain plainly what can be estimated from official sources and what "
+"needs professional review. No promises."
+msgstr "نوضّح بصراحة ما يمكن تقديره من مصادر رسمية وما يحتاج إلى مراجعة مهنية. دون وعود."
+
+msgid "Free first step"
+msgstr "خطوة أولى مجانية"
+
+msgid ""
+"The preliminary assessment is free and without obligation. An engagement "
+"begins only with a written agreement."
+msgstr "التقييم الأولي مجاني ودون أي التزام. ولا يبدأ التعاقد إلا باتفاق كتابي."
+
+msgid "Tell us what happened"
+msgstr "أخبرنا بما حدث"
+
+msgid ""
+"Send your request in your language. A lawyer will read it and reply on "
+"whether and how the Studio can help."
+msgstr "أرسل طلبك بلغتك. سيقرأه محامٍ ويردّ بشأن ما إذا كان المكتب يستطيع مساعدتك وكيف."
+
+msgid ""
+"The simulation is indicative and does not constitute legal or medical-legal "
+"advice nor a guarantee of outcome. A professional engagement begins only "
+"with a separate written agreement."
+msgstr "المحاكاة إرشادية ولا تشكّل استشارة قانونية أو طبية قانونية ولا ضمانًا للنتيجة. ولا يبدأ التعاقد المهني إلا باتفاق كتابي منفصل."
 
 msgid ""
 "Tell us about your case in your own words. The Studio reviews each request "
@@ -3720,12 +4089,6 @@ msgid ""
 msgstr ""
 "تقييم قانوني أولي لـ %(country)s: يفحص المكتب كل ملف يدوياً ولا يُنشر أي مبلغ "
 "آلي قبل التحقق من مصادر التقدير المعنيّة."
-
-msgid "Breadcrumb"
-msgstr "مسار التنقّل"
-
-msgid "Home"
-msgstr "الرئيسية"
 
 msgid "Country page"
 msgstr "صفحة البلد"
@@ -4071,6 +4434,39 @@ msgstr "الحالة: %(s)s."
 msgid "Signed on: %(d)s."
 msgstr "موقّع بتاريخ: %(d)s."
 
+msgid "FAQ — frequent questions on indicative compensation"
+msgstr "الأسئلة الشائعة — أسئلة متكررة حول التعويض الإرشادي"
+
+msgid ""
+"Answers to common questions about indicative compensation estimates: whether "
+"they are binding, which cases are calculable, what documents are needed, and "
+"how your personal data is handled."
+msgstr "إجابات عن الأسئلة الشائعة حول التقديرات الإرشادية للتعويض: هل هي مُلزِمة، وأي الحالات قابلة للاحتساب، وما الوثائق المطلوبة، وكيف تُعالَج بياناتك الشخصية."
+
+msgid "Frequent questions"
+msgstr "أسئلة متكررة"
+
+msgid "Questions about indicative compensation"
+msgstr "أسئلة حول التعويض الإرشادي"
+
+msgid ""
+"Prudent answers, with no promises and no invented figures. For anything "
+"specific to your case, ask the Studio for a free preliminary assessment."
+msgstr "إجابات حذِرة، دون وعود ودون أرقام مُختلقة. ولأي أمر يخصّ حالتك تحديدًا، اطلب من المكتب تقييمًا أوليًا مجانيًا."
+
+msgid "Still have a question?"
+msgstr "لا يزال لديك سؤال؟"
+
+msgid ""
+"A lawyer reads your request and replies. The preliminary assessment is free "
+"and without obligation."
+msgstr "يقرأ محامٍ طلبك ويردّ عليك. التقييم الأولي مجاني ودون أي التزام."
+
+msgid ""
+"This page is informational and does not constitute legal advice or a "
+"guarantee of outcome."
+msgstr "هذه الصفحة معلوماتية ولا تشكّل استشارة قانونية ولا ضمانًا للنتيجة."
+
 #, python-format
 msgid "%(site)s — International compensation simulator"
 msgstr "%(site)s — محاكي التعويضات الدولي"
@@ -4179,6 +4575,32 @@ msgid ""
 msgstr ""
 "يتولى فريقنا الدولي قضايا التعويض والمسؤولية الطبية والميراث العابر للحدود "
 "في أوروبا وشمال أفريقيا."
+
+msgid "How it works — from estimate to evaluation"
+msgstr "كيف يعمل — من التقدير إلى التقييم"
+
+msgid ""
+"How the Studio Legale Badrane platform works: an indicative estimate in a "
+"few clicks from validated official sources, a free preliminary assessment, "
+"and a professional evaluation when you need one."
+msgstr "كيف تعمل منصة Studio Legale Badrane: تقدير إرشادي بنقرات قليلة استنادًا إلى مصادر رسمية مُتحقَّق منها، وتقييم أولي مجاني، وتقييم مهني عند الحاجة إليه."
+
+msgid "From an indicative estimate to a professional evaluation"
+msgstr "من تقدير إرشادي إلى تقييم مهني"
+
+msgid ""
+"A clear, prudent path: you start with an orientation, the Studio reviews "
+"your case, and a professional evaluation follows only where it adds value. "
+"No promises, no invented numbers."
+msgstr "مسار واضح وحَذِر: تبدأ بتوجيه أوّلي، ثم يراجع المكتب حالتك، ولا يأتي التقييم المهني إلا حيث يضيف قيمة فعلية. دون وعود، ودون أرقام مُختلقة."
+
+msgid "Ready to start?"
+msgstr "هل أنت مستعد للبدء؟"
+
+msgid ""
+"Run an indicative simulation now, or ask the Studio for a free preliminary "
+"assessment of your case."
+msgstr "أجرِ محاكاة إرشادية الآن، أو اطلب من المكتب تقييمًا أوليًا مجانيًا لحالتك."
 
 msgid "Methodology — sources, validation and ranges"
 msgstr "المنهجية — المصادر والتحقّق والنطاقات"
@@ -4404,6 +4826,45 @@ msgid ""
 msgstr ""
 "إذا كنت بحاجة إلى مساعدة عاجلة، يرجى التواصل مع المكتب مباشرة عبر الموقع "
 "المؤسسي."
+
+msgid "Services — areas the Studio handles"
+msgstr "الخدمات — المجالات التي يتولاها المكتب"
+
+msgid ""
+"Areas handled by Studio Legale Badrane: road accidents, medical liability, "
+"workplace injury, loss of a relative, insurance-offer review and cross-"
+"border matters. Some are calculable from official sources; others require a "
+"preliminary assessment."
+msgstr "المجالات التي يتولاها Studio Legale Badrane: حوادث الطرق، والمسؤولية الطبية، وإصابات العمل، وفقدان أحد الأقارب، ومراجعة عروض التأمين، والقضايا العابرة للحدود. بعضها قابل للاحتساب من مصادر رسمية؛ وبعضها الآخر يتطلب تقييمًا أوليًا."
+
+msgid "Areas the Studio handles"
+msgstr "المجالات التي يتولاها المكتب"
+
+msgid ""
+"Each area shows whether an indicative estimate is available from an official "
+"validated source, or whether it needs a preliminary assessment. We never "
+"publish a figure we cannot tie to a source."
+msgstr "يُبيّن كل مجال ما إذا كان هناك تقدير إرشادي متاح من مصدر رسمي مُتحقَّق منه، أو ما إذا كان يحتاج إلى تقييم أولي. ولا ننشر أبدًا رقمًا لا يمكننا ربطه بمصدر."
+
+msgid "Calculable with official source"
+msgstr "قابل للاحتساب بمصدر رسمي"
+
+msgid "Preliminary assessment needed"
+msgstr "يلزم تقييم أولي"
+
+msgid "Not sure which applies to you?"
+msgstr "غير متأكد أي منها ينطبق على حالتك؟"
+
+msgid ""
+"Describe your situation and the Studio will tell you, free of charge, "
+"whether and how it can help — without any obligation."
+msgstr "صِف وضعك وسيخبرك المكتب، مجانًا، بما إذا كان يستطيع مساعدتك وكيف — دون أي التزام."
+
+msgid ""
+"Information on this page is indicative and does not constitute legal advice "
+"or a guarantee of outcome. A professional engagement begins only with a "
+"separate written agreement."
+msgstr "المعلومات الواردة في هذه الصفحة إرشادية ولا تشكّل استشارة قانونية ولا ضمانًا للنتيجة. ولا يبدأ التعاقد المهني إلا باتفاق كتابي منفصل."
 
 msgid "Belgium — road accident bodily injury"
 msgstr "بلجيكا — أضرار جسدية من حادث طريق"
@@ -4852,9 +5313,6 @@ msgstr ""
 "اختر البلد ونوع القضية الأنسب لحالتك. المحاكاة إرشادية: لن تُنتج تقديرًا إلا "
 "إذا كانت المصادر القانونية المعتمدة متاحة — وإلا فإنها تُرجع حالة واضحة "
 "\"بحاجة إلى تحقق قانوني\"."
-
-msgid "How it works"
-msgstr "كيف يعمل"
 
 msgid "From your inputs to a Studio review"
 msgstr "من إدخالاتك إلى مراجعة المكتب"

@@ -128,6 +128,12 @@ INDEXABLE_PUBLIC_PATHS = [
     "/privacy/",
     "/countries/",
     "/case-types/",
+    # Workstream-3 content pages
+    "/how-it-works/",
+    "/services/",
+    "/faq/",
+    "/about/",
+    "/ta3ouid/",
     # country landings
     "/countries/italy/",
     "/countries/france/",
