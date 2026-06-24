@@ -14,7 +14,9 @@
     {% blocktranslate %}Pick the country and the case type that best fits your situation. The simulation is indicative: it will only produce an estimate when validated legal sources are available — otherwise it returns a clear "requires legal validation" status.{% endblocktranslate %}
   </p>
 
-  <div class="mt-10 grid sm:grid-cols-2 gap-5">
+  <div class="mt-8">{% include "partials/_premium_stepper.html" with step=1 %}</div>
+
+  <div class="mt-8 grid sm:grid-cols-2 gap-5">
     {% for option in options %}
       <article class="bg-white border border-stone2-200 rounded-3xl p-6 shadow-card flex flex-col">
         <div class="flex items-center justify-between">
