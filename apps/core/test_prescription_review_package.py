@@ -27,14 +27,32 @@ _PERIOD_RE = re.compile(
     r"\b\d+\s*(anni|anno|years?|ans?|mesi|mese|months?|giorni|giorno|days?)\b", re.IGNORECASE
 )
 
-# F-source-validation-official status vocabulary — `approved_for_public_display`
-# is deliberately NOT in it (a verified official source is still not a public term).
+# F-source-validation-official-hardening final status vocabulary (INTERNAL).
+# A verified official source is still NEVER a public term.
 _ALLOWED_STATUSES = {
-    "source_verified_official",
+    "source_verified_official_internal_only",
+    "source_verified_official_limited_scope",
     "source_verified_official_procedure_only",
-    "unresolved_for_chatgpt_or_human_validation",
-    "rejected_unofficial",
+    "not_found_in_official_sources",
+    "excluded_from_public_display",
 }
+# Forbidden as a FINAL status in the validation record.
+_FORBIDDEN_STATUSES = {
+    "manual_review_required",
+    "unresolved_for_chatgpt_or_human_validation",
+    "approved_for_public_display",
+    "public_approved",
+}
+# Tokens that must NEVER appear in a PUBLIC template (internal states / "to validate").
+_PUBLIC_FORBIDDEN_TOKENS = (
+    "manual_review_required",
+    "unresolved",
+    "da validare",
+    "in validazione",
+    "source_verified",
+    "approved_for_public_display",
+    "public_approved",
+)
 
 
 def test_review_package_artifacts_present():
@@ -75,36 +93,58 @@ def test_review_checklist_is_pending_and_non_numeric():
 
 
 def test_review_package_states_read_only_and_no_public_activation():
-    text = _PACKAGE.read_text("utf-8").lower()
-    assert "read-only" in text
-    assert "manual_review_required" in text
-    # the package must explicitly keep terms out of the public site
-    assert "nessun termine" in text or "no public" in text
+    low = _PACKAGE.read_text("utf-8").lower()
+    assert "read-only" in low
+    # hardened: validated internal-only, never a public-approval state
+    assert "source_verified_official_internal_only" in low
+    assert "approved_for_public_display: true" not in low
+    assert "public_approved: true" not in low
 
 
-# --- F-source-validation-official guards ------------------------------------
+# --- F-source-validation-official-hardening guards --------------------------
 
 def test_validation_record_never_approves_public_display():
     """A verified official source must NEVER become an approved public term."""
     for f in (_CHECKLIST_YML, _PACKAGE, _UNRESOLVED):
         low = f.read_text("utf-8").lower()
-        assert "approved_for_public_display: true" not in low, f"{f.name}: approves public display"
-        assert "status: approved_for_public_display" not in low, f"{f.name}: status approves public display"
-    # the YAML carries the explicit guard flag
-    assert "approved_for_public_display: false" in _CHECKLIST_YML.read_text("utf-8").lower()
+        for bad in (
+            "approved_for_public_display: true",
+            "status: approved_for_public_display",
+            "public_approved: true",
+            "status: public_approved",
+        ):
+            assert bad not in low, f"{f.name}: {bad!r}"
+    yml = _CHECKLIST_YML.read_text("utf-8").lower()
+    assert "approved_for_public_display: false" in yml
+    assert "public_approved: false" in yml
 
 
-def test_validation_statuses_are_in_vocabulary_and_non_numeric():
+def test_validation_statuses_are_in_hardened_vocabulary():
+    """Every per-source status uses the hardened internal vocabulary; none of the
+    forbidden final states (manual_review_required / unresolved / *approved) survive."""
     text = _CHECKLIST_YML.read_text("utf-8")
     statuses = re.findall(r"^\s*status:\s*([a-z_]+)\s*$", text, re.MULTILINE)
     assert statuses, "no per-source status entries found in the validation record"
     for s in statuses:
         assert s in _ALLOWED_STATUSES, f"unexpected validation status: {s}"
-    assert not _PERIOD_RE.search(text), "validation record must not state a numeric prescription term"
+        assert s not in _FORBIDDEN_STATUSES, f"forbidden final status survived: {s}"
 
 
-def test_unresolved_file_present_and_non_numeric():
+def test_no_internal_validation_state_in_public_templates():
+    """Internal validation states / "to validate" must NEVER reach a public template."""
+    roots = [
+        Path(settings.BASE_DIR) / "templates" / "public",
+        Path(settings.BASE_DIR) / "templates" / "partials",
+    ]
+    for root in roots:
+        for f in root.rglob("*.html"):
+            low = f.read_text("utf-8").lower()
+            for tok in _PUBLIC_FORBIDDEN_TOKENS:
+                assert tok not in low, f"{f.name}: public template contains internal token {tok!r}"
+
+
+def test_unresolved_file_documents_zero_not_found_and_is_non_numeric():
     assert _UNRESOLVED.exists(), "unresolved-for-chatgpt file is missing"
     raw = _UNRESOLVED.read_text("utf-8")
-    assert "unresolved" in raw.lower()
+    assert "not_found" in raw.lower()
     assert not _PERIOD_RE.search(raw), "unresolved file must not state a numeric prescription term"
