@@ -22,7 +22,7 @@ _OVERRIDES = _BASE / "config" / "pexels_image_overrides.json"
 _PEXELS = _BASE / "apps" / "core" / "pexels.py"
 _DOCS = _BASE / "docs" / "audits"
 
-_NEW_SLOTS = ("services_hero", "about_hero", "ta3ouid_hero")
+_NEW_SLOTS = ("services_hero", "about_hero", "ta3ouid_hero", "how_it_works_hero", "faq_hero")
 
 
 # --- 1. premium form design system ------------------------------------------
@@ -65,7 +65,8 @@ def test_no_pexels_api_key_committed():
     assert "NEVER contains the API key" in doc
 
 
-@pytest.mark.parametrize("tmpl", ["services.html", "about.html", "community.html"])
+@pytest.mark.parametrize("tmpl", ["services.html", "about.html", "community.html",
+                                  "how_it_works.html", "faq.html"])
 def test_section_pages_include_hero_partial(tmpl):
     """The section pages integrate the premium hero image (the partial renders a
     <picture> when the media exists; in an isolated-MEDIA test env it no-ops —
