@@ -371,11 +371,21 @@ def _run_italy_road_accident(request, form: ItalyRoadAccidentWizardForm) -> Simu
     (`simulation_processing` + `special_categories_processing`) e
     salviamo i campi denormalizzati sulla `Simulation`.
     """
+    # P8: route by permanent-disability percentage. Micropermanenti (1–9%) use the
+    # official art. 139 engine; 10%+ stay on the TUN art. 138 engine — so the TUN
+    # canary (35/10/0) is untouched. Only Italy routes; FR/BE stay fail-closed.
+    pct = form.cleaned_data.get("permanent_disability_percentage")
+    case_type = ITALY_ROAD_ACCIDENT_CASE_TYPE
+    try:
+        if pct is not None and 1 <= int(pct) <= 9:
+            case_type = CaseType.ROAD_ACCIDENT_MICROLESIONS.value
+    except (TypeError, ValueError):
+        pass
     return _run_road_accident_simulation(
         request=request,
         form=form,
         jurisdiction_code=ITALY_ROAD_ACCIDENT_JURISDICTION,
-        case_type=ITALY_ROAD_ACCIDENT_CASE_TYPE,
+        case_type=case_type,
         trigger="wizard_italy_road_accident",
         privacy_purpose_code=SIMULATION_CONSENT_PURPOSE_CODE,
         privacy_purpose_label="Italy road-accident simulation",

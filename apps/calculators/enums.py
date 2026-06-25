@@ -22,6 +22,17 @@ class CaseType(models.TextChoices):
         "road_accident_bodily_injury",
         _("Road accident — bodily injury"),
     )
+    # P8: official art. 139 CAP micropermanenti (1–9%) for road accidents.
+    ROAD_ACCIDENT_MICROLESIONS = (
+        "road_accident_microlesions",
+        _("Road accident — microlesions (art. 139)"),
+    )
+    # P8: medical-liability biological damage — tabular estimate only (L. 24/2017
+    # → art. 138/139 CAP). Never models fault, causal link or extra heads.
+    MEDICAL_LIABILITY_BIOLOGICAL = (
+        "medical_liability_biological_damage",
+        _("Medical liability — tabular biological damage"),
+    )
     MEDICAL_MALPRACTICE = "medical_malpractice", _("Medical malpractice")
     WORK_INJURY = "work_injury", _("Work injury")
     DEATH_COMPENSATION = "death_compensation", _("Death compensation")
