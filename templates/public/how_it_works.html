@@ -28,11 +28,11 @@
   </header>
 
   <section class="max-w-5xl mx-auto px-5 lg:px-8 py-12">
-    <ol class="relative space-y-5">
+    <ol class="premium-timeline">
       {% for step in steps %}
-        <li class="relative pl-16 sm:pl-20" data-reveal data-reveal-delay="{% widthratio forloop.counter0 1 70 %}">
-          <span aria-hidden="true" class="absolute inset-inline-start-0 top-0 w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-ink-950 text-gold-400 font-serif text-lg sm:text-xl flex items-center justify-center shadow-card">{{ step.index }}</span>
-          <div class="rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7">
+        <li class="premium-timeline__step" data-reveal data-reveal-delay="{% widthratio forloop.counter0 1 70 %}">
+          <span aria-hidden="true" class="premium-timeline__index">{{ step.index }}</span>
+          <div class="premium-timeline__card">
             <h2 class="font-serif text-xl sm:text-2xl text-ink-950">{{ step.title }}</h2>
             <p class="mt-2 text-sm sm:text-base text-ink-800 leading-relaxed">{{ step.body }}</p>
           </div>

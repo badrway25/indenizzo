@@ -26,22 +26,28 @@
 
   <section class="max-w-7xl mx-auto px-5 lg:px-8 py-10">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {% comment %} P4: premium service cards. data-reveal on the wrapper, data-tilt on the
+         inner card (desktop + motion only) so the entrance fade is not clobbered. The gold
+         top accent + gold icon tile mark calculable services; the s.calculable contract and
+         badge wording are unchanged. {% endcomment %}
       {% for s in services %}
-        <article class="flex flex-col rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7" data-reveal data-reveal-delay="{% widthratio forloop.counter0 1 50 %}">
-          <span aria-hidden="true" class="w-12 h-12 rounded-2xl bg-sand-100 text-ink-950 flex items-center justify-center">{% include "partials/_icon.html" with name=s.icon %}</span>
-          <h2 class="mt-4 font-serif text-xl text-ink-950">{{ s.title }}</h2>
-          <p class="mt-2 text-sm text-ink-800 leading-relaxed flex-1">{{ s.body }}</p>
-          <p class="mt-4">
-            {% if s.calculable %}
-              <span class="premium-badge premium-badge-success">{% translate "Calculable with official source" %}</span>
-            {% else %}
-              <span class="premium-badge premium-badge-muted">{% translate "Preliminary assessment needed" %}</span>
-            {% endif %}
-          </p>
-          <a href="{% url s.cta_url_name %}" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold {% if s.calculable %}text-gold-700 hover:text-gold-600{% else %}text-ink-900 hover:text-ink-950{% endif %}">
-            {{ s.cta_label }} <span aria-hidden="true">→</span>
-          </a>
-        </article>
+        <div data-reveal data-reveal-delay="{% widthratio forloop.counter0 1 50 %}">
+          <article class="premium-service-card h-full{% if s.calculable %} is-calculable{% endif %}" data-tilt="3">
+            <span aria-hidden="true" class="premium-icon-tile{% if s.calculable %} premium-icon-tile-gold{% endif %}">{% include "partials/_icon.html" with name=s.icon %}</span>
+            <h2 class="mt-4 font-serif text-xl text-ink-950">{{ s.title }}</h2>
+            <p class="mt-2 text-sm text-ink-800 leading-relaxed flex-1">{{ s.body }}</p>
+            <p class="mt-4">
+              {% if s.calculable %}
+                <span class="premium-badge premium-badge-success">{% translate "Calculable with official source" %}</span>
+              {% else %}
+                <span class="premium-badge premium-badge-muted">{% translate "Preliminary assessment needed" %}</span>
+              {% endif %}
+            </p>
+            <a href="{% url s.cta_url_name %}" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold {% if s.calculable %}text-gold-700 hover:text-gold-600{% else %}text-ink-900 hover:text-ink-950{% endif %}">
+              {{ s.cta_label }} <span class="cta-arrow" aria-hidden="true">→</span>
+            </a>
+          </article>
+        </div>
       {% endfor %}
     </div>
   </section>

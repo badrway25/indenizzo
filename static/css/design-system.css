@@ -640,3 +640,347 @@ body.has-drawer-open { overflow: hidden; }
   letter-spacing: 0.14em;
   color: var(--ds-slate);
 }
+
+/* ==========================================================================
+   P4 — Premium Visual Design, Motion & Public Experience Upgrade.
+
+   Additive elevation layer. Everything below is opt-in via a `.premium-*`
+   class or a `data-*` hook; nothing restyles base elements. CSP-safe (no
+   inline styles — dynamic values arrive through the CSSOM from site.js),
+   RTL-aware (logical properties + [dir="rtl"] counterparts) and every
+   transition is neutralised under prefers-reduced-motion.
+   ========================================================================== */
+
+:root {
+  /* deeper elevation rungs for premium floating surfaces */
+  --ds-shadow-xl: 0 28px 64px rgba(7, 23, 47, 0.16), 0 10px 24px rgba(7, 23, 47, 0.08);
+  --ds-shadow-2xl: 0 40px 96px rgba(7, 23, 47, 0.22), 0 16px 36px rgba(7, 23, 47, 0.1);
+  /* soft brand accents for veils / rings / spotlights */
+  --ds-gold-soft: rgba(184, 131, 54, 0.16);
+  --ds-gold-ring: rgba(184, 131, 54, 0.4);
+  --ds-hairline: rgba(255, 255, 255, 0.08);
+  /* shared premium easing */
+  --ds-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ds-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* --- Section rhythm variants -------------------------------------------- */
+.premium-section-tight { padding-block: clamp(1.75rem, 4vw, 3rem); }
+.premium-section-spacious { padding-block: clamp(3.5rem, 8vw, 7rem); }
+
+/* --- Eyebrow label (editorial kicker) ----------------------------------- */
+.premium-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--ds-font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--ds-gold-strong);
+}
+.premium-eyebrow::before {
+  content: "";
+  width: 1.6rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+/* --- Hero: layered veil + sober ledger pattern over the LCP image -------- */
+.premium-hero { position: relative; isolation: isolate; overflow: hidden; }
+/* Replaces a single flat 85% overlay: a directional dark wash that keeps the
+   photo legible PLUS a soft gold spotlight, so the hero reads with depth. */
+/* veil + pattern sit ABOVE the hero <img> child and BELOW the content layer;
+   ordering is by source position (img first, then veil/pattern, then the
+   relatively-positioned content), so no z-index is needed — a negative z-index
+   here would drop them behind the image. */
+.premium-hero__veil {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(115% 85% at 80% 12%, var(--ds-gold-soft), transparent 58%),
+    linear-gradient(152deg, rgba(7, 23, 47, 0.88) 0%, rgba(7, 23, 47, 0.68) 46%, rgba(12, 32, 70, 0.52) 100%);
+}
+/* Fine vertical "ledger" lines, masked to fade at the edges — evokes a legal
+   document without an image. Soft-light keeps it barely-there over the photo. */
+.premium-hero__pattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  mix-blend-mode: soft-light;
+  background-image: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0 1px, transparent 1px 84px);
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 26%, #000 74%, transparent);
+  mask-image: linear-gradient(180deg, transparent, #000 26%, #000 74%, transparent);
+}
+/* A hairline gold rule that anchors the hero foot. */
+.premium-hero__rule {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--ds-gold-ring), transparent);
+}
+
+/* --- Image frame (premium figure wrapper) ------------------------------- */
+.premium-image-frame {
+  position: relative;
+  border-radius: var(--ds-radius-xl);
+  overflow: hidden;
+  box-shadow: var(--ds-shadow-lg);
+  background: var(--ds-sand);
+  isolation: isolate;
+}
+.premium-image-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14), inset 0 0 0 2px rgba(7, 23, 47, 0.04);
+  pointer-events: none;
+}
+.premium-image-frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* --- Premium icon tile (used on cards / stats) -------------------------- */
+.premium-icon-tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--ds-radius-lg);
+  background: linear-gradient(160deg, var(--ds-surface), var(--ds-sand));
+  border: 1px solid var(--ds-border-soft);
+  box-shadow: var(--ds-shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  color: var(--ds-navy);
+}
+.premium-icon-tile svg { width: 1.4rem; height: 1.4rem; }
+.premium-icon-tile-gold {
+  background: linear-gradient(160deg, #fbf3e3, #f3ddb4);
+  border-color: var(--ds-gold-ring);
+  color: var(--ds-gold-strong);
+}
+
+/* --- Service card (hover-lift, calculable accent) ----------------------- */
+.premium-service-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border-soft);
+  border-radius: var(--ds-radius-xl);
+  box-shadow: var(--ds-shadow-sm);
+  padding: var(--ds-space-5);
+  overflow: hidden;
+  transition: transform 0.28s var(--ds-ease-out), box-shadow 0.28s var(--ds-ease-out),
+    border-color 0.28s var(--ds-ease-out);
+}
+/* Top accent rule appears on hover — gold for calculable, slate otherwise. */
+.premium-service-card::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 3px;
+  background: var(--ds-border-strong);
+  transform: scaleX(0);
+  transform-origin: inset-inline-start;
+  transition: transform 0.32s var(--ds-ease-out);
+}
+.premium-service-card.is-calculable::before { background: linear-gradient(90deg, var(--ds-gold), var(--ds-gold-strong)); }
+.premium-service-card:hover { transform: translateY(-4px); box-shadow: var(--ds-shadow-lg); border-color: var(--ds-border-strong); }
+.premium-service-card:hover::before { transform: scaleX(1); }
+.premium-service-card:focus-within { box-shadow: var(--ds-shadow-lg); }
+@media (prefers-reduced-motion: reduce) {
+  .premium-service-card { transition: none; }
+  .premium-service-card::before { transition: none; }
+  .premium-service-card:hover { transform: none; }
+}
+
+/* --- Stat card (framed, divider) ---------------------------------------- */
+.premium-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: var(--ds-space-5);
+  background: linear-gradient(180deg, var(--ds-surface), var(--ds-ivory));
+  border: 1px solid var(--ds-border-soft);
+  border-radius: var(--ds-radius-lg);
+  box-shadow: var(--ds-shadow-sm);
+  text-align: center;
+}
+.premium-stat__value {
+  font-family: var(--ds-font-serif);
+  font-size: clamp(2rem, 4.4vw, 2.85rem);
+  line-height: 1;
+  color: var(--ds-navy);
+}
+.premium-stat__label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ds-slate);
+}
+
+/* --- CTA block ---------------------------------------------------------- */
+.premium-cta {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(120% 140% at 85% 0%, rgba(184, 131, 54, 0.2), transparent 55%),
+    linear-gradient(150deg, var(--ds-navy), var(--ds-navy-soft));
+  color: var(--ds-ivory);
+  border-radius: var(--ds-radius-xl);
+}
+.premium-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.4;
+  mix-blend-mode: soft-light;
+  background-image: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 72px);
+}
+
+/* --- Premium timeline (how-it-works) ------------------------------------ */
+.premium-timeline {
+  position: relative;
+  display: grid;
+  gap: var(--ds-space-5);
+  list-style: none;
+  margin: 0;
+  padding-inline-start: 0;
+}
+.premium-timeline__step { position: relative; padding-inline-start: 4.25rem; }
+/* connector line runs through the index medallions, inline-start aligned */
+.premium-timeline__step::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 1.45rem;
+  top: 2.9rem;
+  bottom: -1.5rem;
+  width: 2px;
+  background: linear-gradient(180deg, var(--ds-gold-ring), transparent);
+}
+.premium-timeline__step:last-child::before { display: none; }
+.premium-timeline__index {
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--ds-radius-pill);
+  background: var(--ds-navy);
+  color: var(--ds-gold);
+  font-family: var(--ds-font-serif);
+  font-size: 1.3rem;
+  box-shadow: var(--ds-shadow-md), inset 0 0 0 1px rgba(184, 131, 54, 0.35);
+}
+.premium-timeline__card {
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border-soft);
+  border-radius: var(--ds-radius-lg);
+  box-shadow: var(--ds-shadow-sm);
+  padding: var(--ds-space-5);
+  transition: box-shadow 0.28s var(--ds-ease-out), transform 0.28s var(--ds-ease-out);
+}
+.premium-timeline__card:hover { box-shadow: var(--ds-shadow-md); transform: translateY(-2px); }
+@media (prefers-reduced-motion: reduce) {
+  .premium-timeline__card { transition: none; }
+  .premium-timeline__card:hover { transform: none; }
+}
+
+/* --- Wizard shell + premium source panel -------------------------------- */
+.premium-wizard-shell {
+  position: relative;
+  background: linear-gradient(180deg, var(--ds-surface), var(--ds-ivory));
+  border: 1px solid var(--ds-border-soft);
+  border-radius: var(--ds-radius-xl);
+  box-shadow: var(--ds-shadow-md);
+  overflow: hidden;
+}
+.premium-wizard-shell::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--ds-gold), var(--ds-gold-strong));
+}
+.premium-source-panel {
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border-soft);
+  border-inline-start: 3px solid var(--ds-gold);
+  border-radius: var(--ds-radius-lg);
+  box-shadow: var(--ds-shadow-sm);
+}
+
+/* --- FAQ / accordion polish (native <details>) -------------------------- */
+.premium-accordion { display: grid; gap: var(--ds-space-3); }
+.premium-accordion details {
+  border: 1px solid var(--ds-border-soft);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-surface);
+  box-shadow: var(--ds-shadow-sm);
+  overflow: hidden;
+  transition: border-color 0.2s var(--ds-ease-out), box-shadow 0.2s var(--ds-ease-out);
+}
+.premium-accordion details[open] { border-color: var(--ds-gold-ring); box-shadow: var(--ds-shadow-md); }
+.premium-accordion summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-4);
+  padding: var(--ds-space-4) var(--ds-space-5);
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--ds-font-serif);
+  font-size: 1.1rem;
+  color: var(--ds-navy);
+}
+.premium-accordion summary::-webkit-details-marker { display: none; }
+/* chevron drawn in CSS, rotates open/closed */
+.premium-accordion summary::after {
+  content: "";
+  flex: 0 0 auto;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-inline-end: 2px solid var(--ds-gold-strong);
+  border-block-end: 2px solid var(--ds-gold-strong);
+  transform: rotate(45deg);
+  transition: transform 0.24s var(--ds-ease-out);
+}
+.premium-accordion details[open] summary::after { transform: rotate(-135deg); }
+.premium-accordion .premium-accordion__body { padding: 0 var(--ds-space-5) var(--ds-space-5); }
+@media (prefers-reduced-motion: reduce) {
+  .premium-accordion details,
+  .premium-accordion summary::after { transition: none; }
+}
+
+/* --- Directional arrow that mirrors under RTL --------------------------- */
+.cta-arrow { display: inline-block; transition: transform 0.2s var(--ds-ease-out); }
+[dir="rtl"] .cta-arrow { transform: scaleX(-1); }
+.premium-btn:hover .cta-arrow { transform: translateX(2px); }
+[dir="rtl"] .premium-btn:hover .cta-arrow { transform: scaleX(-1) translateX(2px); }
+@media (prefers-reduced-motion: reduce) {
+  .cta-arrow,
+  .premium-btn:hover .cta-arrow { transition: none; transform: none; }
+  [dir="rtl"] .cta-arrow,
+  [dir="rtl"] .premium-btn:hover .cta-arrow { transform: scaleX(-1); }
+}
+
+/* --- Motion hooks: magnetic CTA + light 3D tilt (JS-driven, CSSOM) ------- */
+/* Both are desktop + motion-only (site.js bails on touch / reduced-motion);
+   the transform values are written via element.style from JS, never inline
+   HTML attributes, so the strict CSP style-src is respected. */
+.js [data-magnetic] { transition: transform 0.18s var(--ds-ease-out); will-change: transform; }
+.js [data-tilt] { transition: transform 0.2s var(--ds-ease-out); transform-style: preserve-3d; will-change: transform; }
+@media (prefers-reduced-motion: reduce) {
+  .js [data-magnetic],
+  .js [data-tilt] { transition: none; transform: none !important; }
+}

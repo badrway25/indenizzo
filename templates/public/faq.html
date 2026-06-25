@@ -28,15 +28,19 @@
   </header>
 
   <section class="max-w-3xl mx-auto px-5 lg:px-8 py-10">
-    <div class="space-y-3">
+    {% comment %} P4: premium accordion (native <details> — keyboard-accessible without JS).
+       data-reveal sits on the wrapper so the entrance fade is not clobbered by the
+       accordion's own border/shadow transition. The CSS chevron rotates on [open]. {% endcomment %}
+    <div class="premium-accordion">
       {% for item in faq_items %}
-        <details class="group rounded-2xl border border-stone2-200 bg-white shadow-card" data-reveal data-reveal-delay="{% widthratio forloop.counter0 1 40 %}">
-          <summary class="cursor-pointer select-none list-none px-5 sm:px-6 py-4 flex items-center justify-between gap-4 font-serif text-lg text-ink-950 hover:text-gold-700 rounded-2xl">
-            <span>{{ item.question }}</span>
-            <span aria-hidden="true" class="shrink-0 text-stone2-400 text-base transition-transform group-open:rotate-45">+</span>
-          </summary>
-          <div class="px-5 sm:px-6 pb-5 -mt-1 text-sm text-ink-800 leading-relaxed">{{ item.answer }}</div>
-        </details>
+        <div data-reveal data-reveal-delay="{% widthratio forloop.counter0 1 40 %}">
+          <details>
+            <summary class="hover:text-gold-700">
+              <span>{{ item.question }}</span>
+            </summary>
+            <div class="premium-accordion__body text-sm text-ink-800 leading-relaxed">{{ item.answer }}</div>
+          </details>
+        </div>
       {% endfor %}
     </div>
   </section>
