@@ -32,6 +32,12 @@ class Service:
     cta_label: str
     cta_url_name: str
     cta_kwargs: dict = field(default_factory=dict)
+    # P5: premium, fail-closed badge text (never a weak "preliminary assessment"
+    # label) + the governing official instrument shown as "Legal basis". The
+    # base_normativa value is a language-neutral legal citation (same in every
+    # locale) so it is intentionally NOT wrapped in gettext.
+    badge: str = ""
+    base_normativa: str = ""
 
 
 @dataclass(frozen=True)
@@ -58,31 +64,43 @@ HOW_IT_WORKS_STEPS = (
 
 
 # --- Services ---------------------------------------------------------------
+_BADGE_OFFICIAL = _("Official-source estimate")
+_BADGE_ASSISTED = _("Assisted legal pathway")
+_CTA_GUIDED = _("Request a guided analysis")
+
 SERVICES = (
     Service("road_accident", _("Road accident"),
             _("Bodily injury from a road accident. Where the case fits the official Tabella Unica Nazionale 2025, the platform produces an indicative range; otherwise the Studio reviews it."),
-            "car", True, _("Calculate the estimate"), "cases:wizard_italy_road_accident"),
+            "car", True, _("Calculate the estimate"), "cases:wizard_italy_road_accident",
+            badge=_BADGE_OFFICIAL, base_normativa="D.P.R. 12/2025 (TUN) · CAP D.Lgs. 209/2005"),
     Service("medical", _("Medical liability"),
             _("Suspected medical or healthcare malpractice. These cases hinge on expert evidence and are assessed by the Studio — no automatic figure is published."),
-            "stethoscope", False, _("Request a preliminary assessment"), "crm:contact"),
+            "stethoscope", False, _CTA_GUIDED, "crm:contact",
+            badge=_BADGE_ASSISTED, base_normativa="L. 24/2017 (Gelli) · artt. 1218, 2043 c.c."),
     Service("work_injury", _("Workplace injury"),
             _("Accidents at work and occupational disease, including the differential beyond INAIL. Reviewed by the Studio; not automatically calculated today."),
-            "hard-hat", False, _("Request a preliminary assessment"), "crm:contact"),
+            "hard-hat", False, _CTA_GUIDED, "crm:contact",
+            badge=_BADGE_ASSISTED, base_normativa="D.P.R. 1124/1965 (T.U. INAIL)"),
     Service("death", _("Loss of a relative"),
             _("Death and loss-of-relationship damages for family members. A sensitive, fact-specific area handled directly by the Studio."),
-            "heart", False, _("Request a preliminary assessment"), "crm:contact"),
+            "heart", False, _("Assisted pathway for relatives"), "crm:contact",
+            badge=_BADGE_ASSISTED, base_normativa="artt. 2043, 2059 c.c."),
     Service("insurance_offer", _("Insurance / INAIL offer to check"),
             _("You received a settlement or INAIL offer. The Studio can review whether it is adequate before you sign — do not accept a settlement without a professional review."),
-            "shield-check", False, _("Have your offer reviewed"), "crm:contact"),
+            "shield-check", False, _("Have your offer reviewed"), "crm:contact",
+            badge=_("Insurance procedure"), base_normativa="CAP D.Lgs. 209/2005, artt. 145, 148"),
     Service("international", _("Cross-border matters"),
             _("Cases with foreign elements — parties, assets or events abroad — including questions of applicable law and competent jurisdiction."),
-            "globe", False, _("Request a preliminary assessment"), "crm:contact"),
+            "globe", False, _("Frame the applicable law"), "crm:contact",
+            badge=_("Applicable law"), base_normativa="Reg. CE 864/2007 (Roma II)"),
     Service("foreigners", _("Foreign nationals in Italy"),
             _("Assistance for foreign or non-resident clients who suffered harm in Italy, with multilingual support and remote handling."),
-            "users", False, _("Request a preliminary assessment"), "crm:contact"),
+            "users", False, _CTA_GUIDED, "crm:contact",
+            badge=_BADGE_ASSISTED, base_normativa="Roma II · CAP/TUN (Italia)"),
     Service("documents", _("Foreign / consular documents"),
             _("Help with documentation produced abroad — translation, legalisation and consular formalities needed to support a claim."),
-            "document", False, _("Request a preliminary assessment"), "crm:contact"),
+            "document", False, _CTA_GUIDED, "crm:contact",
+            badge=_("Document analysis")),
 )
 
 

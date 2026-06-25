@@ -5696,3 +5696,33 @@ msgstr ""
 "garantie de résultat. Les successions en Tunisie relèvent du Code du statut "
 "personnel, Livre IX : un calcul précis nécessite la revue du Cabinet sur le "
 "contexte réel du dossier."
+
+msgid "Official-source estimate"
+msgstr "Estimation sur source officielle"
+
+msgid "Assisted legal pathway"
+msgstr "Parcours juridique accompagné"
+
+msgid "Request a guided analysis"
+msgstr "Demander une analyse guidée"
+
+msgid "Assisted pathway for relatives"
+msgstr "Parcours accompagné pour les proches"
+
+msgid "Insurance procedure"
+msgstr "Procédure d'assurance"
+
+msgid "Applicable law"
+msgstr "Loi applicable"
+
+msgid "Frame the applicable law"
+msgstr "Cadrer la loi applicable"
+
+msgid "Document analysis"
+msgstr "Analyse documentaire"
+
+msgid "Areas handled by Studio Legale Badrane: road accidents, medical liability, workplace injury, loss of a relative, insurance-offer review and cross-border matters. Some are calculable from official sources; the others follow a guided, source-based pathway."
+msgstr "Domaines traités par le Studio Legale Badrane : accidents de la route, responsabilité médicale, accidents du travail, perte d'un proche, vérification de l'offre d'assurance et affaires transfrontalières. Certains sont calculables à partir de sources officielles ; les autres suivent un parcours guidé fondé sur les sources."
+
+msgid "Each area shows its governing official source: where the law and the verified national tables allow it, you get an indicative estimate; otherwise, a guided, source-based pathway. We never publish a figure we cannot tie to a source."
+msgstr "Chaque domaine indique la source officielle qui le régit : lorsque la loi et les tableaux nationaux vérifiés le permettent, vous obtenez une estimation indicative ; sinon, un parcours guidé fondé sur les sources. Nous ne publions jamais un chiffre que nous ne pouvons pas rattacher à une source."

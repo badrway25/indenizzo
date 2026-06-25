@@ -5401,3 +5401,33 @@ msgstr ""
 "المحاكاة إرشادية ولا تشكّل رأيًا قانونيًا ولا ضمانًا للنتيجة. تخضع المواريث في "
 "تونس لمجلة الأحوال الشخصية، الكتاب التاسع: يتطلّب الحساب الدقيق مراجعة المكتب "
 "لسياق القضية الفعلي."
+
+msgid "Official-source estimate"
+msgstr "تقدير من مصدر رسمي"
+
+msgid "Assisted legal pathway"
+msgstr "مسار قانوني مرافَق"
+
+msgid "Request a guided analysis"
+msgstr "اطلب تحليلاً موجّهاً"
+
+msgid "Assisted pathway for relatives"
+msgstr "مسار مرافَق للأقارب"
+
+msgid "Insurance procedure"
+msgstr "الإجراء التأميني"
+
+msgid "Applicable law"
+msgstr "القانون الواجب التطبيق"
+
+msgid "Frame the applicable law"
+msgstr "تحديد القانون الواجب التطبيق"
+
+msgid "Document analysis"
+msgstr "تحليل الوثائق"
+
+msgid "Areas handled by Studio Legale Badrane: road accidents, medical liability, workplace injury, loss of a relative, insurance-offer review and cross-border matters. Some are calculable from official sources; the others follow a guided, source-based pathway."
+msgstr "المجالات التي يتولاها مكتب بدران للمحاماة: حوادث الطرق، المسؤولية الطبية، إصابات العمل، فقدان أحد الأقارب، مراجعة عرض التأمين والقضايا العابرة للحدود. بعضها قابل للتقدير من مصادر رسمية؛ والبعض الآخر يتبع مساراً موجّهاً مستنداً إلى المصادر."
+
+msgid "Each area shows its governing official source: where the law and the verified national tables allow it, you get an indicative estimate; otherwise, a guided, source-based pathway. We never publish a figure we cannot tie to a source."
+msgstr "يعرض كل مجال المصدر الرسمي الذي ينظّمه: حيث يسمح القانون والجداول الوطنية المعتمدة بذلك، تحصل على تقدير إرشادي؛ وإلا، مسار موجّه مستند إلى المصادر. لا ننشر أبداً رقماً لا يمكننا ربطه بمصدر."

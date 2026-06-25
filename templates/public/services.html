@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block title %}{% translate "Services — areas the Studio handles" %} — {{ SITE_NAME }}{% endblock %}
-{% block meta_description %}{% blocktranslate %}Areas handled by Studio Legale Badrane: road accidents, medical liability, workplace injury, loss of a relative, insurance-offer review and cross-border matters. Some are calculable from official sources; others require a preliminary assessment.{% endblocktranslate %}{% endblock %}
+{% block meta_description %}{% blocktranslate %}Areas handled by Studio Legale Badrane: road accidents, medical liability, workplace injury, loss of a relative, insurance-offer review and cross-border matters. Some are calculable from official sources; the others follow a guided, source-based pathway.{% endblocktranslate %}{% endblock %}
 {% block head_extra %}{% if canonical_url %}<link rel="canonical" href="{{ canonical_url }}">{% endif %}{% endblock %}
 
 {% block content %}
@@ -19,7 +19,7 @@
     <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Services" %}</p>
     <h1 class="mt-4 font-serif text-4xl sm:text-5xl text-ink-950 leading-tight">{% translate "Areas the Studio handles" %}</h1>
     <p class="mt-5 max-w-2xl text-lg text-ink-800 leading-relaxed">
-      {% blocktranslate %}Each area shows whether an indicative estimate is available from an official validated source, or whether it needs a preliminary assessment. We never publish a figure we cannot tie to a source.{% endblocktranslate %}
+      {% blocktranslate %}Each area shows its governing official source: where the law and the verified national tables allow it, you get an indicative estimate; otherwise, a guided, source-based pathway. We never publish a figure we cannot tie to a source.{% endblocktranslate %}
     </p>
     <div data-sticky-cta-sentinel aria-hidden="true"></div>
   </header>
@@ -38,11 +38,17 @@
             <p class="mt-2 text-sm text-ink-800 leading-relaxed flex-1">{{ s.body }}</p>
             <p class="mt-4">
               {% if s.calculable %}
-                <span class="premium-badge premium-badge-success">{% translate "Calculable with official source" %}</span>
+                <span class="premium-badge premium-badge-success">{{ s.badge }}</span>
               {% else %}
-                <span class="premium-badge premium-badge-muted">{% translate "Preliminary assessment needed" %}</span>
+                <span class="premium-badge premium-badge-muted">{{ s.badge }}</span>
               {% endif %}
             </p>
+            {% if s.base_normativa %}
+              <p class="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-0.5 text-[11px] leading-relaxed">
+                <span class="uppercase tracking-[0.14em] text-gold-700 font-semibold">{% translate "Legal basis" %}</span>
+                <span class="font-mono text-stone2-500">{{ s.base_normativa }}</span>
+              </p>
+            {% endif %}
             <a href="{% url s.cta_url_name %}" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold {% if s.calculable %}text-gold-700 hover:text-gold-600{% else %}text-ink-900 hover:text-ink-950{% endif %}">
               {{ s.cta_label }} <span class="cta-arrow" aria-hidden="true">→</span>
             </a>
