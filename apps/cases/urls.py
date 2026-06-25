@@ -14,6 +14,11 @@ urlpatterns = [
         name="wizard_italy_road_accident",
     ),
     path(
+        "wizard/it/medical-malpractice/",
+        views.wizard_italy_medical,
+        name="wizard_italy_medical",
+    ),
+    path(
         "wizard/fr/road-accident/",
         views.wizard_france_road_accident,
         name="wizard_france_road_accident",

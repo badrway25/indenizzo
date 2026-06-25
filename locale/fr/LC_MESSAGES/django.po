@@ -5735,3 +5735,33 @@ msgstr "Si votre dossier concerne plusieurs juridictions, comprend des biens à 
 
 msgid "Assisted legal pathway for %(country)s: the Studio reviews each case with the official sources, and an indicative amount is published only once the underlying quantification sources have been verified."
 msgstr "Parcours juridique accompagné pour %(country)s : le Studio examine chaque dossier avec les sources officielles, et un montant indicatif n'est publié qu'après la vérification des sources de quantification."
+
+msgid "Italy — medical biological damage"
+msgstr "Italie — dommage biologique de responsabilité médicale"
+
+msgid "Indicative wizard for the tabular biological damage from healthcare liability in Italy (L. 24/2017, artt. 138–139 CAP). It estimates only the tabular biological damage and does not assess medical fault, causation, loss of chance or patrimonial damage."
+msgstr "Assistant indicatif pour le dommage biologique tabulaire issu de la responsabilité médicale en Italie (L. 24/2017, art. 138–139 CAP). Il estime uniquement le dommage biologique tabulaire et n'évalue ni la faute médicale, ni le lien de causalité, ni la perte de chance, ni le dommage patrimonial."
+
+msgid "Healthcare-liability biological damage is liquidated with the same CAP tables (artt. 138–139) used for road accidents. This wizard estimates only that tabular biological damage from the disability percentage and the temporary-disability days you provide."
+msgstr "Le dommage biologique de responsabilité médicale est liquidé avec les mêmes tables CAP (art. 138–139) que les accidents de la route. Cet assistant estime uniquement ce dommage biologique tabulaire à partir du taux d'invalidité et des jours d'incapacité temporaire que vous indiquez."
+
+msgid "Scope of this estimate"
+msgstr "Portée de cette estimation"
+
+msgid "This estimate covers tabular biological damage only. It does not assess medical fault, causation, loss of chance, patrimonial damage or overall healthcare liability."
+msgstr "Cette estimation porte uniquement sur le dommage biologique tabulaire. Elle n'évalue pas la faute médicale, le lien de causalité, la perte de chance, le dommage patrimonial ou la responsabilité médicale globale."
+
+msgid "Produces an indicative range for the tabular biological damage under L. 24/2017 (artt. 138–139 CAP): 1–9% via the official art. 139 micro table, 10%+ via the approved Tabella Unica Nazionale 2025."
+msgstr "Produit une fourchette indicative pour le dommage biologique tabulaire au titre de la L. 24/2017 (art. 138–139 CAP) : 1–9 % via la table officielle art. 139 micro, 10 % et plus via la Tabella Unica Nazionale 2025 approuvée."
+
+msgid "It does not assess medical fault, causal link, loss of chance, patrimonial damage or overall healthcare liability, does not constitute legal or medical advice, and does not replace a medico-legal expert report."
+msgstr "Il n'évalue pas la faute médicale, le lien de causalité, la perte de chance, le dommage patrimonial ou la responsabilité médicale globale, ne constitue pas un avis juridique ou médical et ne remplace pas une expertise médico-légale."
+
+msgid "Submit to view the indicative range, download the PDF report, then request a legal review from the Studio to assess fault and the wider liability."
+msgstr "Envoyez pour voir la fourchette indicative, téléchargez le rapport PDF, puis demandez au Cabinet un examen juridique pour apprécier la faute et la responsabilité plus large."
+
+msgid "Calculator available — CAP artt. 138–139"
+msgstr "Calculateur disponible — art. 138–139 CAP"
+
+msgid "Produces an indicative range for the tabular biological damage under L. 24/2017 (artt. 138–139 CAP): 1 to 9 disability points via the official art. 139 micro table, 10 points and above via the approved Tabella Unica Nazionale 2025."
+msgstr "Produit une fourchette indicative pour le dommage biologique tabulaire au titre de la L. 24/2017 (art. 138–139 CAP) : de 1 à 9 points d'invalidité via la table officielle art. 139 micro, 10 points et plus via la Tabella Unica Nazionale 2025 approuvée."

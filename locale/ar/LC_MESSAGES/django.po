@@ -5440,3 +5440,33 @@ msgstr "إذا كانت حالتك تشمل عدّة ولايات قضائية �
 
 msgid "Assisted legal pathway for %(country)s: the Studio reviews each case with the official sources, and an indicative amount is published only once the underlying quantification sources have been verified."
 msgstr "مسار قانوني مرافَق لـ %(country)s: يفحص المكتب كل حالة بالاستناد إلى المصادر الرسمية، ولا يُنشر مبلغ إرشادي إلا بعد التحقّق من مصادر التقدير."
+
+msgid "Italy — medical biological damage"
+msgstr "إيطاليا — الضرر البيولوجي من المسؤولية الصحية"
+
+msgid "Indicative wizard for the tabular biological damage from healthcare liability in Italy (L. 24/2017, artt. 138–139 CAP). It estimates only the tabular biological damage and does not assess medical fault, causation, loss of chance or patrimonial damage."
+msgstr "أداة إرشادية للضرر البيولوجي الجدولي الناتج عن المسؤولية الصحية في إيطاليا (القانون 24/2017، المادتان 138–139 من قانون التأمين). تقدّر الضرر البيولوجي الجدولي فقط ولا تقيّم الخطأ الطبي أو علاقة السببية أو تفويت الفرصة أو الضرر المالي."
+
+msgid "Healthcare-liability biological damage is liquidated with the same CAP tables (artt. 138–139) used for road accidents. This wizard estimates only that tabular biological damage from the disability percentage and the temporary-disability days you provide."
+msgstr "يُصفّى الضرر البيولوجي للمسؤولية الصحية بالاستناد إلى الجداول نفسها (المادتان 138–139 من قانون التأمين) المستخدمة لحوادث الطرق. تقدّر هذه الأداة هذا الضرر البيولوجي الجدولي فقط انطلاقاً من نسبة العجز وأيام العجز المؤقت التي تدخلها."
+
+msgid "Scope of this estimate"
+msgstr "نطاق هذا التقدير"
+
+msgid "This estimate covers tabular biological damage only. It does not assess medical fault, causation, loss of chance, patrimonial damage or overall healthcare liability."
+msgstr "يقتصر هذا التقدير على الضرر البيولوجي الجدولي. ولا يقيّم الخطأ الطبي أو علاقة السببية أو تفويت الفرصة أو الضرر المالي أو المسؤولية الصحية الشاملة."
+
+msgid "Produces an indicative range for the tabular biological damage under L. 24/2017 (artt. 138–139 CAP): 1–9% via the official art. 139 micro table, 10%+ via the approved Tabella Unica Nazionale 2025."
+msgstr "يُنتج نطاقاً إرشادياً للضرر البيولوجي الجدولي بموجب القانون 24/2017 (المادتان 138–139 من قانون التأمين): من 1 إلى 9% عبر جدول المادة 139 الرسمي للأضرار الصغرى، ومن 10% فأكثر عبر الجدول الوطني الموحّد 2025 المعتمد."
+
+msgid "It does not assess medical fault, causal link, loss of chance, patrimonial damage or overall healthcare liability, does not constitute legal or medical advice, and does not replace a medico-legal expert report."
+msgstr "لا يقيّم الخطأ الطبي أو علاقة السببية أو تفويت الفرصة أو الضرر المالي أو المسؤولية الصحية الشاملة، ولا يشكّل استشارة قانونية أو طبية، ولا يحل محل تقرير خبرة طبية شرعية."
+
+msgid "Submit to view the indicative range, download the PDF report, then request a legal review from the Studio to assess fault and the wider liability."
+msgstr "أرسِل لعرض النطاق الإرشادي، ونزّل تقرير PDF، ثم اطلب من المكتب مراجعة قانونية لتقييم الخطأ والمسؤولية الأوسع."
+
+msgid "Calculator available — CAP artt. 138–139"
+msgstr "الآلة الحاسبة متاحة — المادتان 138–139 من قانون التأمين"
+
+msgid "Produces an indicative range for the tabular biological damage under L. 24/2017 (artt. 138–139 CAP): 1 to 9 disability points via the official art. 139 micro table, 10 points and above via the approved Tabella Unica Nazionale 2025."
+msgstr "يُنتج نطاقاً إرشادياً للضرر البيولوجي الجدولي بموجب القانون 24/2017 (المادتان 138–139 من قانون التأمين): من 1 إلى 9 نقاط عجز عبر جدول المادة 139 الرسمي للأضرار الصغرى، ومن 10 نقاط فأكثر عبر الجدول الوطني الموحّد 2025 المعتمد."

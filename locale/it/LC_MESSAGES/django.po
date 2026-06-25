@@ -5692,3 +5692,33 @@ msgstr "Se il tuo caso riguarda più giurisdizioni, include beni all'estero o il
 
 msgid "Assisted legal pathway for %(country)s: the Studio reviews each case with the official sources, and an indicative amount is published only once the underlying quantification sources have been verified."
 msgstr "Percorso legale assistito per %(country)s: lo Studio esamina ogni caso con le fonti ufficiali, e un importo indicativo viene pubblicato solo dopo la verifica delle fonti di quantificazione."
+
+msgid "Italy — medical biological damage"
+msgstr "Italia — danno biologico da responsabilità sanitaria"
+
+msgid "Indicative wizard for the tabular biological damage from healthcare liability in Italy (L. 24/2017, artt. 138–139 CAP). It estimates only the tabular biological damage and does not assess medical fault, causation, loss of chance or patrimonial damage."
+msgstr "Procedura indicativa per il danno biologico tabellare da responsabilità sanitaria in Italia (L. 24/2017, artt. 138–139 CAP). Stima solo il danno biologico tabellare e non valuta la colpa medica, il nesso causale, la perdita di chance o il danno patrimoniale."
+
+msgid "Healthcare-liability biological damage is liquidated with the same CAP tables (artt. 138–139) used for road accidents. This wizard estimates only that tabular biological damage from the disability percentage and the temporary-disability days you provide."
+msgstr "Il danno biologico da responsabilità sanitaria si liquida con le stesse tabelle CAP (artt. 138–139) usate per gli incidenti stradali. Questa procedura stima solo quel danno biologico tabellare a partire dalla percentuale di invalidità e dai giorni di inabilità temporanea che indichi."
+
+msgid "Scope of this estimate"
+msgstr "Ambito di questa stima"
+
+msgid "This estimate covers tabular biological damage only. It does not assess medical fault, causation, loss of chance, patrimonial damage or overall healthcare liability."
+msgstr "Questa stima riguarda il danno biologico tabellare. Non valuta colpa medica, nesso causale, perdita di chance, danno patrimoniale o responsabilità sanitaria complessiva."
+
+msgid "Produces an indicative range for the tabular biological damage under L. 24/2017 (artt. 138–139 CAP): 1–9% via the official art. 139 micro table, 10%+ via the approved Tabella Unica Nazionale 2025."
+msgstr "Produce un intervallo indicativo per il danno biologico tabellare ai sensi della L. 24/2017 (artt. 138–139 CAP): 1–9% con la tabella ufficiale art. 139 micro, dal 10% con la Tabella Unica Nazionale 2025 approvata."
+
+msgid "It does not assess medical fault, causal link, loss of chance, patrimonial damage or overall healthcare liability, does not constitute legal or medical advice, and does not replace a medico-legal expert report."
+msgstr "Non valuta la colpa medica, il nesso causale, la perdita di chance, il danno patrimoniale o la responsabilità sanitaria complessiva, non costituisce parere legale o medico e non sostituisce una perizia medico-legale."
+
+msgid "Submit to view the indicative range, download the PDF report, then request a legal review from the Studio to assess fault and the wider liability."
+msgstr "Invia per vedere l'intervallo indicativo, scarica il report PDF e poi richiedi allo Studio una revisione legale per valutare la colpa e la responsabilità più ampia."
+
+msgid "Calculator available — CAP artt. 138–139"
+msgstr "Calcolatore disponibile — artt. 138–139 CAP"
+
+msgid "Produces an indicative range for the tabular biological damage under L. 24/2017 (artt. 138–139 CAP): 1 to 9 disability points via the official art. 139 micro table, 10 points and above via the approved Tabella Unica Nazionale 2025."
+msgstr "Produce un intervallo indicativo per il danno biologico tabellare ai sensi della L. 24/2017 (artt. 138–139 CAP): da 1 a 9 punti di invalidità con la tabella ufficiale art. 139 micro, da 10 punti in su con la Tabella Unica Nazionale 2025 approvata."

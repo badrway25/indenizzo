@@ -59,6 +59,12 @@ BELGIUM_ROAD_ACCIDENT_CASE_TYPE = CaseType.ROAD_ACCIDENT_BODILY_INJURY.value
 MOROCCO_INHERITANCE_JURISDICTION = "MA-NATIONAL"
 TUNISIA_INHERITANCE_JURISDICTION = "TN-NATIONAL"
 INTERNATIONAL_INHERITANCE_CASE_TYPE = CaseType.INTERNATIONAL_INHERITANCE.value
+# P9 Fase C: Italy medical-liability biological damage shares the Italian
+# road-accident jurisdiction and reuses the same domain inputs (age,
+# permanent disability %, ITT days). The engine decides 1–9% → art. 139
+# micro vs ≥10% → TUN art. 138 internally.
+ITALY_MEDICAL_JURISDICTION = "IT-NATIONAL"
+ITALY_MEDICAL_CASE_TYPE = CaseType.MEDICAL_LIABILITY_BIOLOGICAL.value
 SIMULATION_CONSENT_PURPOSE_CODE = "simulation_processing"
 
 
@@ -216,6 +222,55 @@ def wizard_italy_road_accident(request):
 
 
 # ---------------------------------------------------------------------------
+# /wizard/it/medical-malpractice/  — danno biologico tabellare (L. 24/2017)
+# ---------------------------------------------------------------------------
+
+
+@public_post_rate_limit
+@require_http_methods(["GET", "POST"])
+def wizard_italy_medical(request):
+    """Italy medical-liability biological damage — tabular estimate only.
+
+    Reuses the road-accident input form (age, permanent disability %, ITT):
+    the engine routes 1–9% → art. 139 micro and ≥10% → TUN art. 138. The
+    public result page carries the mandatory scope disclaimer clarifying that
+    only tabular biological damage is estimated — never medical fault,
+    causation, loss of chance, patrimonial damage or overall liability.
+    """
+    if request.method == "POST":
+        form = ItalyRoadAccidentWizardForm(request.POST)
+        if form.is_valid():
+            if form.is_likely_bot:
+                logger.info("cases.wizard.dropped reason=honeypot path=%s", request.path)
+                return redirect(reverse("cases:wizard_start"))
+
+            simulation = _run_italy_medical(request, form)
+            return redirect(
+                reverse(
+                    "cases:wizard_result",
+                    kwargs={"public_id": str(simulation.public_id)},
+                )
+            )
+    else:
+        form = ItalyRoadAccidentWizardForm()
+
+    from apps.core.views import _pexels_hero
+
+    return render(
+        request,
+        "public/wizard_italy_medical.html",
+        {
+            "form": form,
+            "jurisdiction_code": ITALY_MEDICAL_JURISDICTION,
+            "case_type": ITALY_MEDICAL_CASE_TYPE,
+            "pexels_image": _pexels_hero(
+                request, "wizard_italy_medical_hero", country_code="IT"
+            ),
+        },
+    )
+
+
+# ---------------------------------------------------------------------------
 # /wizard/result/<uuid>/  — pagina risultato
 # ---------------------------------------------------------------------------
 
@@ -320,6 +375,20 @@ def wizard_result(request, public_id: uuid.UUID):
 
     recommended_landings = get_recommended_landings(case_type_value)
 
+    # P9 Fase C: medical-liability simulations carry a mandatory scope note
+    # clarifying that only the tabular biological damage is estimated — never
+    # medical fault, causation, loss of chance, patrimonial damage or overall
+    # healthcare liability. Shown on every medical result, estimate or not.
+    from django.utils.translation import gettext
+
+    medical_scope_note = ""
+    if case_type_value == ITALY_MEDICAL_CASE_TYPE:
+        medical_scope_note = gettext(
+            "This estimate covers tabular biological damage only. It does not "
+            "assess medical fault, causation, loss of chance, patrimonial "
+            "damage or overall healthcare liability."
+        )
+
     # H1-8: compact, public-safe provenance summary. Only display-safe fields
     # (source version label, abbreviated content hash, engine version, calc
     # date) — never the raw JSON. Present only on the calculated path and only
@@ -353,6 +422,7 @@ def wizard_result(request, public_id: uuid.UUID):
             "public_message": public_message,
             "recommended_landings": recommended_landings,
             "provenance_summary": provenance_summary,
+            "medical_scope_note": medical_scope_note,
         },
     )
 
@@ -389,6 +459,25 @@ def _run_italy_road_accident(request, form: ItalyRoadAccidentWizardForm) -> Simu
         trigger="wizard_italy_road_accident",
         privacy_purpose_code=SIMULATION_CONSENT_PURPOSE_CODE,
         privacy_purpose_label="Italy road-accident simulation",
+        default_locale="it",
+    )
+
+
+def _run_italy_medical(request, form: ItalyRoadAccidentWizardForm) -> Simulation:
+    """Run the medical-liability biological-damage estimate (L. 24/2017).
+
+    The case_type is always ``medical_liability_biological_damage``; the engine
+    sub-routes 1–9% (art. 139 micro) vs ≥10% (TUN art. 138) on its own, so the
+    view does not branch on the percentage (unlike the road wizard).
+    """
+    return _run_road_accident_simulation(
+        request=request,
+        form=form,
+        jurisdiction_code=ITALY_MEDICAL_JURISDICTION,
+        case_type=ITALY_MEDICAL_CASE_TYPE,
+        trigger="wizard_italy_medical",
+        privacy_purpose_code=SIMULATION_CONSENT_PURPOSE_CODE,
+        privacy_purpose_label="Italy medical biological-damage simulation",
         default_locale="it",
     )
 

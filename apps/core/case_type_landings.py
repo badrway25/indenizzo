@@ -433,10 +433,10 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
             _("Produces a preliminary indicative assessment of the recoverable categories of damage."),
             _("Recommends next steps and the documents you should gather for a complete review."),
         ),
-        primary_cta_label=_("Request a legal review"),
-        primary_cta_url_name="crm:contact",
-        secondary_cta_label=_("Open the simulation wizard"),
-        secondary_cta_url_name="cases:wizard_start",
+        primary_cta_label=_("Start indicative simulation"),
+        primary_cta_url_name="cases:wizard_italy_medical",
+        secondary_cta_label=_("Request a legal review instead"),
+        secondary_cta_url_name="crm:contact",
         faq_items=(
             _FAQ_LEGAL_OPINION,
             FAQItem(
