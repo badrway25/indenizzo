@@ -994,6 +994,127 @@ body.has-drawer-open { overflow: hidden; }
   [dir="rtl"] .premium-btn:hover .cta-arrow { transform: scaleX(-1); }
 }
 
+/* ==========================================================================
+   P6 — Premium form controls (native + CSS, accessible, RTL-aware).
+
+   Upgrades native inputs/selects/textareas site-wide without a heavy custom-
+   widget library: a gold focus glow, a custom dropdown chevron (the OS arrow is
+   replaced via `appearance: none` + an inline SVG background), refined borders
+   and a clear error state. Native semantics + keyboard + screen-reader behaviour
+   are preserved (this is progressive, not a JS re-implementation). The chevron
+   SVG is same-origin data URI — no network, CSP-safe.
+   ========================================================================== */
+
+/* Strong base for text-like controls. The [type] attribute selectors out-
+   specify the Tailwind-subset utility classes the wizard applies, so the
+   premium look wins without !important. */
+form input[type="text"],
+form input[type="number"],
+form input[type="email"],
+form input[type="tel"],
+form input[type="date"],
+form input[type="search"],
+form select,
+form textarea {
+  min-height: 2.85rem;
+  border-radius: var(--ds-radius-md);
+  border: 1px solid var(--ds-border-soft);
+  background-color: var(--ds-ivory);
+  color: var(--ds-navy-soft);
+  transition: border-color 0.18s var(--ds-ease-out), box-shadow 0.18s var(--ds-ease-out),
+    background-color 0.18s var(--ds-ease-out);
+}
+form input[type="text"]:hover,
+form input[type="number"]:hover,
+form input[type="email"]:hover,
+form input[type="tel"]:hover,
+form input[type="date"]:hover,
+form select:hover,
+form textarea:hover { border-color: var(--ds-border-strong); }
+
+/* Custom select chevron (replaces the OS arrow). RTL flips the side. */
+form select,
+.premium-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%239a6b21' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  padding-inline-end: 2.4rem;
+  cursor: pointer;
+}
+[dir="rtl"] form select,
+[dir="rtl"] .premium-select { background-position: left 0.85rem center; }
+form select::-ms-expand { display: none; }
+
+/* Error / invalid state (driven by aria-invalid or .has-error). */
+form [aria-invalid="true"],
+.premium-input.has-error,
+.premium-select.has-error,
+.premium-textarea.has-error {
+  border-color: var(--ds-error);
+  background-color: var(--ds-error-soft);
+}
+
+/* --- Premium form component classes ------------------------------------- */
+.premium-form { display: grid; gap: var(--ds-space-5); }
+.premium-field { display: grid; gap: 0.4rem; }
+.premium-label { font-size: 0.9rem; font-weight: 600; color: var(--ds-navy); }
+.premium-label .premium-label__opt { font-weight: 400; color: var(--ds-slate); font-size: 0.8rem; }
+.premium-help { font-size: 0.8rem; color: var(--ds-slate); line-height: 1.5; }
+.premium-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--ds-error);
+  line-height: 1.5;
+}
+.premium-error::before { content: "⚠"; line-height: 1.4; }
+.premium-success { font-size: 0.8rem; color: var(--ds-success); }
+.premium-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-3);
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Radio / choice card (e.g. case-type / country selection) */
+.premium-radio-card {
+  position: relative;
+  display: flex;
+  gap: var(--ds-space-3);
+  padding: var(--ds-space-4) var(--ds-space-5);
+  border: 1px solid var(--ds-border-soft);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-surface);
+  cursor: pointer;
+  transition: border-color 0.18s var(--ds-ease-out), box-shadow 0.18s var(--ds-ease-out),
+    transform 0.18s var(--ds-ease-out);
+}
+.premium-radio-card:hover { border-color: var(--ds-gold-ring); box-shadow: var(--ds-shadow-sm); }
+.premium-radio-card:focus-within { box-shadow: var(--ds-focus-ring); border-color: var(--ds-gold); }
+.premium-radio-card input { position: absolute; inset-inline-start: 0; top: 0; opacity: 0; }
+.premium-radio-card:has(input:checked) {
+  border-color: var(--ds-gold);
+  box-shadow: inset 0 0 0 1px var(--ds-gold);
+  background: var(--ds-ivory);
+}
+@media (prefers-reduced-motion: reduce) { .premium-radio-card { transition: none; } }
+
+/* Custom checkbox affordance (keeps the native input for a11y) */
+.premium-checkbox { display: flex; align-items: flex-start; gap: var(--ds-space-3); }
+.premium-checkbox input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 1.2rem;
+  height: 1.2rem;
+  min-height: 0;
+  accent-color: var(--ds-gold-strong);
+  margin-top: 0.15rem;
+}
+
 /* --- Motion hooks: magnetic CTA + light 3D tilt (JS-driven, CSSOM) ------- */
 /* Both are desktop + motion-only (site.js bails on touch / reduced-motion);
    the transform values are written via element.style from JS, never inline
