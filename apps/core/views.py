@@ -272,6 +272,7 @@ def how_it_works(request):
         {
             "steps": public_pages.HOW_IT_WORKS_STEPS,
             "canonical_url": build_canonical_url(request),
+            "pexels_image": _pexels_hero(request, "how_it_works_hero"),
         },
     )
 
@@ -324,6 +325,7 @@ def faq(request):
             "faq_items": public_pages.FAQ_ITEMS,
             "faq_jsonld": faq_jsonld,
             "canonical_url": build_canonical_url(request),
+            "pexels_image": _pexels_hero(request, "faq_hero"),
         },
     )
 

@@ -169,6 +169,9 @@ SITE_IMAGE_SLOTS: list[dict[str, Any]] = [
     {"purpose": "services_hero", "country": None, "query": "professional legal documents desk"},
     {"purpose": "about_hero", "country": None, "query": "law firm office interior"},
     {"purpose": "ta3ouid_hero", "country": None, "query": "Mediterranean architecture legal office"},
+    # P7: complete the content-page hero coverage.
+    {"purpose": "how_it_works_hero", "country": None, "query": "justice scales detail desk"},
+    {"purpose": "faq_hero", "country": None, "query": "law books shelves library"},
 ]
 
 

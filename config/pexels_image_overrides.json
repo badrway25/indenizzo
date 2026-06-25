@@ -148,6 +148,22 @@
       "approved_reason": "Neoclassical columned facade — Mediterranean institutional architecture, fits the Ta3ouid community landing.",
       "avoid_terms": ["beach", "tourism", "people group"],
       "editorial_notes": "Ta3ouid banner: Mediterranean/neoclassical institutional architecture."
+    },
+    "how_it_works_hero": {
+      "query": "justice scales detail desk",
+      "photo_id": 6077797,
+      "approved_visual": true,
+      "approved_reason": "Golden justice scales on a desk beside a laptop — symbolises method and balance. No people.",
+      "avoid_terms": ["smile", "handshake", "people group"],
+      "editorial_notes": "How-it-works banner: justice scales + desk, editorial."
+    },
+    "faq_hero": {
+      "query": "law books shelves library",
+      "photo_id": 37726703,
+      "approved_visual": true,
+      "approved_reason": "Cozy library bookshelves with ladder — authoritative legal-knowledge mood, no people.",
+      "avoid_terms": ["smile", "people group"],
+      "editorial_notes": "FAQ banner: law library bookshelves."
     }
   }
 }
