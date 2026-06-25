@@ -630,14 +630,14 @@ def test_wizard_start_links_to_france_scaffold():
     """La landing /wizard/ deve esporre il link al wizard FR scaffold.
 
     Pass-5 renamed the FR/BE/MA/TN status badge from "Legal sources
-    under review" to "Preliminary legal assessment". Either still
+    under review" to "Assisted legal pathway". Either still
     satisfies the contract (the cards are not marked "Module ready").
     """
     response = Client().get("/en/wizard/")
     assert response.status_code == 200
     body = response.content.decode("utf-8")
     assert "/en/wizard/fr/road-accident/" in body
-    assert ("Preliminary legal assessment" in body) or ("Legal sources under review" in body)
+    assert ("Assisted legal pathway" in body) or ("Legal sources under review" in body)
 
 
 @pytest.mark.django_db
@@ -648,11 +648,11 @@ def test_wizard_france_road_accident_get_returns_200():
     assert 'name="consent_simulation"' in body
     assert 'name="website"' in body
     # Pass-5 renamed the banner from "Module under legal validation" to
-    # the premium "Preliminary legal assessment" wording.
+    # the premium "Assisted legal pathway" wording.
     assert (
-        ("Preliminary legal assessment" in body)
+        ("Assisted legal pathway" in body)
         or ("Module under legal validation" in body)
-        or ("Valutazione legale preliminare" in body)
+        or ("Percorso legale assistito" in body)
     )
 
 
@@ -766,9 +766,9 @@ def test_wizard_belgium_road_accident_get_returns_200():
     assert 'name="consent_simulation"' in body
     assert 'name="website"' in body
     assert (
-        ("Preliminary legal assessment" in body)
+        ("Assisted legal pathway" in body)
         or ("Module under legal validation" in body)
-        or ("Valutazione legale preliminare" in body)
+        or ("Percorso legale assistito" in body)
     )
 
 

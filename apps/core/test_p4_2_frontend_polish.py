@@ -50,7 +50,7 @@ def test_countries_fail_closed_badges_present_no_calc_for_non_it():
     low = body.lower()
     # IT carries the calculation-available wording; the others an assessment label
     assert "calcolo indicativo" in low  # IT ok badge (it served unprefixed)
-    assert "valutazione legale preliminare" in low  # FR/BE assessment badge
+    assert "percorso legale assistito" in low  # FR/BE assessment badge
     # no grouped currency amount is published on the hub
     assert not _AMOUNT_RE.search(body)
 
@@ -66,7 +66,7 @@ def test_countries_fail_closed_in_french_and_arabic():
     assert 'dir="rtl"' in body
     # arabic assessment label present, no English residue
     assert "تقييم قانوني" in body
-    assert "Preliminary legal assessment" not in body
+    assert "Assisted legal pathway" not in body
 
 
 @pytest.mark.django_db

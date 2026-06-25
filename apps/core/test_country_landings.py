@@ -88,13 +88,13 @@ def test_italy_landing_has_wizard_cta():
 
 def test_france_landing_marked_under_review_and_no_calculated_claim():
     """Pass-5 renamed the public badge from "Legal sources under review"
-    to "Preliminary legal assessment". The contract is unchanged: the
+    to "Assisted legal pathway". The contract is unchanged: the
     page must mark France as scaffold-only and never expose the IT
     smoke amounts."""
 
     client = Client()
     body = client.get("/en/countries/france/").content.decode("utf-8")
-    assert ("Preliminary legal assessment" in body) or ("Legal sources under review" in body)
+    assert ("Assisted legal pathway" in body) or ("Legal sources under review" in body)
     # Verifica che NON ci siano i token degli importi IT smoke.
     for forbidden in ("26268", "27353", "28439"):
         assert forbidden not in body
@@ -107,11 +107,11 @@ def test_france_landing_marked_under_review_and_no_calculated_claim():
 
 def test_belgium_landing_under_review_and_no_amounts():
     """Pass-5 stripped "scaffold" wording from public templates and
-    renamed the badge to "Preliminary legal assessment"."""
+    renamed the badge to "Assisted legal pathway"."""
 
     client = Client()
     body = client.get("/en/countries/belgium/").content.decode("utf-8")
-    assert ("Preliminary legal assessment" in body) or ("Legal sources under review" in body)
+    assert ("Assisted legal pathway" in body) or ("Legal sources under review" in body)
     for forbidden in ("26268", "27353", "28439"):
         assert forbidden not in body
 

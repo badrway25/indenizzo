@@ -1488,8 +1488,8 @@ msgstr ""
 "dell'incarico avviene solo dopo un accordo scritto separato tra cliente e "
 "Studio."
 
-msgid "Road accident bodily injury — preliminary legal assessment"
-msgstr "Danno biologico da incidente stradale — valutazione legale preliminare"
+msgid "Road accident bodily injury — assisted legal pathway"
+msgstr "Danno biologico da incidente stradale — percorso legale assistito"
 
 msgid ""
 "Preliminary legal assessment of road-accident bodily injury claims, based on "
@@ -1606,8 +1606,8 @@ msgstr ""
 msgid "Bodily injury claims"
 msgstr "Richieste di danno alla persona"
 
-msgid "Bodily injury — preliminary legal assessment"
-msgstr "Danno biologico — valutazione legale preliminare"
+msgid "Bodily injury — assisted legal pathway"
+msgstr "Danno biologico — percorso legale assistito"
 
 msgid ""
 "Preliminary legal assessment of bodily injury claims (permanent disability, "
@@ -1708,8 +1708,8 @@ msgstr ""
 msgid "Insurance offer review"
 msgstr "Revisione dell'offerta assicurativa"
 
-msgid "Insurance offer review — preliminary legal assessment"
-msgstr "Verifica di un’offerta assicurativa — valutazione legale preliminare"
+msgid "Insurance offer review — assisted legal pathway"
+msgstr "Verifica di un’offerta assicurativa — percorso legale assistito"
 
 msgid ""
 "Preliminary review of insurance settlement offers in road-accident and "
@@ -1823,8 +1823,8 @@ msgstr ""
 "accettare, negoziare o rifiutare. La decisione finale resta sempre del "
 "cliente."
 
-msgid "Work injury — preliminary legal assessment"
-msgstr "Infortunio sul lavoro — valutazione legale preliminare"
+msgid "Work injury — assisted legal pathway"
+msgstr "Infortunio sul lavoro — percorso legale assistito"
 
 msgid ""
 "Preliminary legal assessment of work-injury claims and the interaction "
@@ -1944,8 +1944,8 @@ msgstr ""
 "documentazione clinica e, quando disponibile, la documentazione di sicurezza "
 "relativa alla mansione (es. DVR, registri di formazione)."
 
-msgid "Medical malpractice — preliminary legal assessment"
-msgstr "Responsabilità medica — valutazione legale preliminare"
+msgid "Medical malpractice — assisted legal pathway"
+msgstr "Responsabilità medica — percorso legale assistito"
 
 msgid ""
 "Preliminary legal assessment of medical-malpractice claims. The Studio "
@@ -2052,8 +2052,8 @@ msgstr ""
 msgid "Death of a relative"
 msgstr "Morte di un familiare"
 
-msgid "Death of a relative — preliminary legal assessment"
-msgstr "Decesso di un familiare — valutazione legale preliminare"
+msgid "Death of a relative — assisted legal pathway"
+msgstr "Decesso di un familiare — percorso legale assistito"
 
 msgid ""
 "Preliminary legal assessment of damage claims following the death of a "
@@ -2163,8 +2163,8 @@ msgstr ""
 msgid "Foreign citizens injured in Italy"
 msgstr "Cittadini stranieri lesi in Italia"
 
-msgid "Foreign citizens injured in Italy — preliminary legal assessment"
-msgstr "Cittadini stranieri lesi in Italia — valutazione legale preliminare"
+msgid "Foreign citizens injured in Italy — assisted legal pathway"
+msgstr "Cittadini stranieri lesi in Italia — percorso legale assistito"
 
 msgid ""
 "Preliminary legal assessment for foreign citizens who suffered a road-"
@@ -2276,8 +2276,8 @@ msgstr ""
 msgid "Cross-border cases"
 msgstr "Casi transfrontalieri"
 
-msgid "Cross-border legal cases — preliminary legal assessment"
-msgstr "Casi legali transfrontalieri — valutazione legale preliminare"
+msgid "Cross-border legal cases — assisted legal pathway"
+msgstr "Casi legali transfrontalieri — percorso legale assistito"
 
 msgid ""
 "Preliminary legal assessment of cases with cross-border elements: "
@@ -2626,11 +2626,11 @@ msgid "Request a Studio review of this case"
 msgstr "Richiedi allo Studio la revisione di questo caso"
 
 msgid ""
-"The Studio offers a preliminary legal assessment for this country: each case "
+"The Studio offers an assisted legal pathway for this country: each case "
 "is reviewed manually and no automatic amount is published before the "
 "underlying quantification sources have been verified."
 msgstr ""
-"Lo Studio offre per questo paese una valutazione legale preliminare: ogni "
+"Lo Studio offre per questo paese un percorso legale assistito: ogni "
 "caso è esaminato manualmente e nessun importo automatico viene pubblicato "
 "prima che le fonti di quantificazione siano verificate."
 
@@ -2640,8 +2640,8 @@ msgid ""
 "published before the case has been examined by a lawyer."
 msgstr ""
 
-msgid "Request a manual legal review"
-msgstr "Richiedi una revisione legale manuale"
+msgid "Request a dedicated legal review"
+msgstr "Richiedi una revisione legale dedicata"
 
 msgid ""
 "No automatic amount is shown before the quantification sources have been "
@@ -5683,3 +5683,12 @@ msgstr "Ambiti seguiti dallo Studio Legale Badrane: incidenti stradali, responsa
 
 msgid "Each area shows its governing official source: where the law and the verified national tables allow it, you get an indicative estimate; otherwise, a guided, source-based pathway. We never publish a figure we cannot tie to a source."
 msgstr "Ogni ambito indica la fonte ufficiale che lo regola: dove la legge e le tabelle nazionali verificate lo consentono, ottieni una stima indicativa; altrimenti, un percorso guidato basato sulle fonti. Non pubblichiamo mai una cifra che non possiamo collegare a una fonte."
+
+msgid "Dedicated legal review"
+msgstr "Esame legale dedicato"
+
+msgid "If your case spans multiple jurisdictions, includes foreign assets, or the country shows an \"Assisted legal pathway\" badge, the Studio reviews the file directly and proposes the next step."
+msgstr "Se il tuo caso riguarda più giurisdizioni, include beni all'estero o il paese mostra l'etichetta «Percorso legale assistito», lo Studio esamina il fascicolo direttamente e propone il passo successivo."
+
+msgid "Assisted legal pathway for %(country)s: the Studio reviews each case with the official sources, and an indicative amount is published only once the underlying quantification sources have been verified."
+msgstr "Percorso legale assistito per %(country)s: lo Studio esamina ogni caso con le fonti ufficiali, e un importo indicativo viene pubblicato solo dopo la verifica delle fonti di quantificazione."

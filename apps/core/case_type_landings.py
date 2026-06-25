@@ -177,7 +177,7 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
         slug="road-accident",
         case_type_code=_CODE_ROAD,
         h1=_("Road accident — bodily injury"),
-        meta_title=_("Road accident bodily injury — preliminary legal assessment"),
+        meta_title=_("Road accident bodily injury — assisted legal pathway"),
         meta_description=_(
             "Preliminary legal assessment of road-accident bodily injury claims, "
             "based on the Tabella Unica Nazionale 2025 in Italy and recognised "
@@ -234,7 +234,7 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
         slug="bodily-injury",
         case_type_code=_CODE_ROAD,
         h1=_("Bodily injury claims"),
-        meta_title=_("Bodily injury — preliminary legal assessment"),
+        meta_title=_("Bodily injury — assisted legal pathway"),
         meta_description=_(
             "Preliminary legal assessment of bodily injury claims (permanent "
             "disability, temporary disability, biological damage), based on "
@@ -289,7 +289,7 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
         slug="insurance-offer-review",
         case_type_code=_CODE_GENERIC,
         h1=_("Insurance offer review"),
-        meta_title=_("Insurance offer review — preliminary legal assessment"),
+        meta_title=_("Insurance offer review — assisted legal pathway"),
         meta_description=_(
             "Preliminary review of insurance settlement offers in road-accident "
             "and bodily-injury cases. The Studio compares the offer against "
@@ -348,7 +348,7 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
         slug="work-injury",
         case_type_code=_CODE_WORK,
         h1=_("Work injury"),
-        meta_title=_("Work injury — preliminary legal assessment"),
+        meta_title=_("Work injury — assisted legal pathway"),
         meta_description=_(
             "Preliminary legal assessment of work-injury claims and the "
             "interaction between mandatory insurance (e.g. INAIL in Italy) and "
@@ -406,7 +406,7 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
         slug="medical-malpractice",
         case_type_code=_CODE_MEDICAL,
         h1=_("Medical malpractice"),
-        meta_title=_("Medical malpractice — preliminary legal assessment"),
+        meta_title=_("Medical malpractice — assisted legal pathway"),
         meta_description=_(
             "Preliminary legal assessment of medical-malpractice claims. The "
             "Studio reviews the clinical documentation and identifies whether "
@@ -464,7 +464,7 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
         slug="death-of-relative",
         case_type_code=_CODE_DEATH,
         h1=_("Death of a relative"),
-        meta_title=_("Death of a relative — preliminary legal assessment"),
+        meta_title=_("Death of a relative — assisted legal pathway"),
         meta_description=_(
             "Preliminary legal assessment of damage claims following the death "
             "of a relative — loss of the parental / family relationship, "
@@ -523,7 +523,7 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
         slug="foreigners-in-italy",
         case_type_code=_CODE_GENERIC,
         h1=_("Foreign citizens injured in Italy"),
-        meta_title=_("Foreign citizens injured in Italy — preliminary legal assessment"),
+        meta_title=_("Foreign citizens injured in Italy — assisted legal pathway"),
         meta_description=_(
             "Preliminary legal assessment for foreign citizens who suffered a "
             "road-accident, work-injury or medical injury during a stay or "
@@ -580,7 +580,7 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
         slug="cross-border-cases",
         case_type_code=_CODE_INT_INHERITANCE,
         h1=_("Cross-border cases"),
-        meta_title=_("Cross-border legal cases — preliminary legal assessment"),
+        meta_title=_("Cross-border legal cases — assisted legal pathway"),
         meta_description=_(
             "Preliminary legal assessment of cases with cross-border elements: "
             "international inheritance (Morocco, Tunisia), road accidents "

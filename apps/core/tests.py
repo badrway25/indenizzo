@@ -464,13 +464,13 @@ def test_countries_page_shows_france_as_legal_sources_under_review():
     """Public /countries/ marks FR with the scaffold-only badge.
 
     Pass-5 renamed the badge from "Legal sources under review" to
-    "Preliminary legal assessment". Either still satisfies the
+    "Assisted legal pathway". Either still satisfies the
     contract that France is not marked as available.
     """
     response = Client().get("/en/countries/")
     assert response.status_code == 200
     body = response.content.decode("utf-8")
-    assert ("Preliminary legal assessment" in body) or ("Legal sources under review" in body)
+    assert ("Assisted legal pathway" in body) or ("Legal sources under review" in body)
 
 
 @pytest.mark.django_db
@@ -482,7 +482,7 @@ def test_wizard_start_page_offers_france_scaffold_link():
     assert "/en/wizard/fr/road-accident/" in body
     assert (
         ("Submit the case to the Studio" in body)
-        or ("Preliminary legal assessment" in body)
+        or ("Assisted legal pathway" in body)
         or ("Open scaffold wizard" in body)
         or ("Legal sources under review" in body)
     )
@@ -514,7 +514,7 @@ def test_countries_page_shows_belgium_as_legal_sources_under_review():
     assert response.status_code == 200
     body = response.content.decode("utf-8")
     # Both FR and BE are scaffold-only. Pass-5 renamed the badge.
-    badge_hits = body.count("Preliminary legal assessment") + body.count(
+    badge_hits = body.count("Assisted legal pathway") + body.count(
         "Legal sources under review"
     )
     assert badge_hits >= 2
@@ -556,12 +556,12 @@ def test_countries_page_shows_morocco_and_tunisia_as_legal_sources_under_review(
     assert response.status_code == 200
     body = response.content.decode("utf-8")
     # FR, BE, MA, TN all scaffold-only → 4 occurrences of a non-available badge.
-    # Pass-5 renamed the badge to "Preliminary legal assessment"; pass-6
+    # Pass-5 renamed the badge to "Assisted legal pathway"; pass-6
     # split MA/TN out into "International inheritance review" while
-    # keeping FR/BE on "Preliminary legal assessment". Either way, the
+    # keeping FR/BE on "Assisted legal pathway". Either way, the
     # 4 scaffolded countries must surface a non-available badge.
     badge_hits = (
-        body.count("Preliminary legal assessment")
+        body.count("Assisted legal pathway")
         + body.count("International inheritance review")
         + body.count("Legal sources under review")
     )
@@ -593,6 +593,6 @@ def test_case_types_page_marks_international_inheritance_as_scaffold():
     assert "international_inheritance" in body
     assert (
         ("International inheritance review" in body)
-        or ("Preliminary legal assessment" in body)
+        or ("Assisted legal pathway" in body)
         or ("Legal sources under review" in body)
     )

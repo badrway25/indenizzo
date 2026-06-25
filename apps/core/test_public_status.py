@@ -113,7 +113,7 @@ def test_countries_page_renders_public_status_badges():
     body = Client().get("/countries/").content.decode("utf-8")
     visible = _visible(body)
     assert "Calcolo indicativo disponibile" in visible
-    assert "Valutazione legale preliminare" in visible
+    assert "Percorso legale assistito" in visible
     assert "Analisi successoria internazionale" in visible
 
 
@@ -123,7 +123,7 @@ def test_wizard_start_renders_public_status_badges_and_ctas():
     visible = _visible(body)
     # Badges
     assert "Calcolo indicativo disponibile" in visible
-    assert "Valutazione legale preliminare" in visible
+    assert "Percorso legale assistito" in visible
     assert "Analisi successoria internazionale" in visible
     # Primary CTA per IT (calculation available).
     assert ("Avvia una simulazione indicativa" in visible) or (
@@ -199,8 +199,8 @@ HIGH_PRIORITY_EN = (
     "Next steps",
     "Useful pages",
     "indicative calculation is available",
-    "Preliminary legal assessment",
-    "Manual legal review",
+    "Assisted legal pathway",
+    "Dedicated legal review",
     "International inheritance review",
     "Studio reviews each",
     "Submit the case to the Studio",

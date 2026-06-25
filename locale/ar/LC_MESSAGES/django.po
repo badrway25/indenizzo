@@ -1441,8 +1441,8 @@ msgstr ""
 "تكليفاً مهنياً تلقائياً. ولا يتمّ إسناد التوكيل، عند الاقتضاء، إلا بعد اتفاق "
 "مكتوب منفصل بين العميل والمكتب."
 
-msgid "Road accident bodily injury — preliminary legal assessment"
-msgstr "الضرر الجسدي الناتج عن حادث طريق — تقييم قانوني أولي"
+msgid "Road accident bodily injury — assisted legal pathway"
+msgstr "الضرر الجسدي الناتج عن حادث طريق — مسار قانوني مرافَق"
 
 msgid ""
 "Preliminary legal assessment of road-accident bodily injury claims, based on "
@@ -1553,8 +1553,8 @@ msgstr ""
 msgid "Bodily injury claims"
 msgstr "مطالبات الضرر الجسدي"
 
-msgid "Bodily injury — preliminary legal assessment"
-msgstr "الضرر الجسدي — تقييم قانوني أولي"
+msgid "Bodily injury — assisted legal pathway"
+msgstr "الضرر الجسدي — مسار قانوني مرافَق"
 
 msgid ""
 "Preliminary legal assessment of bodily injury claims (permanent disability, "
@@ -1645,8 +1645,8 @@ msgstr ""
 msgid "Insurance offer review"
 msgstr "مراجعة عرض شركة التأمين"
 
-msgid "Insurance offer review — preliminary legal assessment"
-msgstr "مراجعة عرض التأمين — تقييم قانوني أولي"
+msgid "Insurance offer review — assisted legal pathway"
+msgstr "مراجعة عرض التأمين — مسار قانوني مرافَق"
 
 msgid ""
 "Preliminary review of insurance settlement offers in road-accident and "
@@ -1753,8 +1753,8 @@ msgstr ""
 "الإرشادي للمصادر الموثّقة والمعتمدة ويقترح القبول أو التفاوض أو الرفض. ويبقى "
 "القرار النهائي دائماً بيد العميل."
 
-msgid "Work injury — preliminary legal assessment"
-msgstr "إصابة عمل — تقييم قانوني أولي"
+msgid "Work injury — assisted legal pathway"
+msgstr "إصابة عمل — مسار قانوني مرافَق"
 
 msgid ""
 "Preliminary legal assessment of work-injury claims and the interaction "
@@ -1865,8 +1865,8 @@ msgstr ""
 "بلاغ الإصابة، وأي محاضر تفتيش، والوثائق السريرية، وعند توفّرها وثائق السلامة "
 "المتعلّقة بالمهمّة (مثل DVR، وسجلّات التدريب)."
 
-msgid "Medical malpractice — preliminary legal assessment"
-msgstr "المسؤولية الطبية — تقييم قانوني أولي"
+msgid "Medical malpractice — assisted legal pathway"
+msgstr "المسؤولية الطبية — مسار قانوني مرافَق"
 
 msgid ""
 "Preliminary legal assessment of medical-malpractice claims. The Studio "
@@ -1962,8 +1962,8 @@ msgstr ""
 msgid "Death of a relative"
 msgstr "وفاة أحد الأقارب"
 
-msgid "Death of a relative — preliminary legal assessment"
-msgstr "وفاة أحد الأقارب — تقييم قانوني أولي"
+msgid "Death of a relative — assisted legal pathway"
+msgstr "وفاة أحد الأقارب — مسار قانوني مرافَق"
 
 msgid ""
 "Preliminary legal assessment of damage claims following the death of a "
@@ -2058,8 +2058,8 @@ msgstr ""
 msgid "Foreign citizens injured in Italy"
 msgstr "المواطنون الأجانب المصابون في إيطاليا"
 
-msgid "Foreign citizens injured in Italy — preliminary legal assessment"
-msgstr "المواطنون الأجانب المصابون في إيطاليا — تقييم قانوني أولي"
+msgid "Foreign citizens injured in Italy — assisted legal pathway"
+msgstr "المواطنون الأجانب المصابون في إيطاليا — مسار قانوني مرافَق"
 
 msgid ""
 "Preliminary legal assessment for foreign citizens who suffered a road-"
@@ -2157,8 +2157,8 @@ msgstr ""
 msgid "Cross-border cases"
 msgstr "القضايا العابرة للحدود"
 
-msgid "Cross-border legal cases — preliminary legal assessment"
-msgstr "القضايا القانونية العابرة للحدود — تقييم قانوني أولي"
+msgid "Cross-border legal cases — assisted legal pathway"
+msgstr "القضايا القانونية العابرة للحدود — مسار قانوني مرافَق"
 
 msgid ""
 "Preliminary legal assessment of cases with cross-border elements: "
@@ -2495,11 +2495,11 @@ msgid "Request a Studio review of this case"
 msgstr "اطلب من المكتب مراجعة هذا الملف"
 
 msgid ""
-"The Studio offers a preliminary legal assessment for this country: each case "
+"The Studio offers an assisted legal pathway for this country: each case "
 "is reviewed manually and no automatic amount is published before the "
 "underlying quantification sources have been verified."
 msgstr ""
-"يقدّم المكتب لهذا البلد تقييماً قانونياً أولياً: تتم مراجعة كل ملف يدوياً ولا "
+"يقدّم المكتب لهذا البلد مساراً قانونياً مرافقاً: تتم مراجعة كل ملف يدوياً ولا "
 "يُنشر أي مبلغ آلي قبل التحقق من مصادر التقدير المعنيّة."
 
 msgid ""
@@ -2508,8 +2508,8 @@ msgid ""
 "published before the case has been examined by a lawyer."
 msgstr ""
 
-msgid "Request a manual legal review"
-msgstr "اطلب مراجعة قانونية يدوية"
+msgid "Request a dedicated legal review"
+msgstr "اطلب مراجعة قانونية مخصّصة"
 
 msgid ""
 "No automatic amount is shown before the quantification sources have been "
@@ -5431,3 +5431,12 @@ msgstr "المجالات التي يتولاها مكتب بدران للمحا�
 
 msgid "Each area shows its governing official source: where the law and the verified national tables allow it, you get an indicative estimate; otherwise, a guided, source-based pathway. We never publish a figure we cannot tie to a source."
 msgstr "يعرض كل مجال المصدر الرسمي الذي ينظّمه: حيث يسمح القانون والجداول الوطنية المعتمدة بذلك، تحصل على تقدير إرشادي؛ وإلا، مسار موجّه مستند إلى المصادر. لا ننشر أبداً رقماً لا يمكننا ربطه بمصدر."
+
+msgid "Dedicated legal review"
+msgstr "فحص قانوني مخصّص"
+
+msgid "If your case spans multiple jurisdictions, includes foreign assets, or the country shows an \"Assisted legal pathway\" badge, the Studio reviews the file directly and proposes the next step."
+msgstr "إذا كانت حالتك تشمل عدّة ولايات قضائية أو أصولاً في الخارج أو إذا أظهر البلد شارة «مسار قانوني مرافَق»، يفحص المكتب الملف مباشرةً ويقترح الخطوة التالية."
+
+msgid "Assisted legal pathway for %(country)s: the Studio reviews each case with the official sources, and an indicative amount is published only once the underlying quantification sources have been verified."
+msgstr "مسار قانوني مرافَق لـ %(country)s: يفحص المكتب كل حالة بالاستناد إلى المصادر الرسمية، ولا يُنشر مبلغ إرشادي إلا بعد التحقّق من مصادر التقدير."

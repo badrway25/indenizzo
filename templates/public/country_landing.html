@@ -35,7 +35,7 @@
 {% if is_calculator_available %}
 {% blocktranslate with country=country_name %}Indicative compensation simulation for {{ country }}, based on approved legal sources. The estimate is informative and never a guarantee of outcome.{% endblocktranslate %}
 {% else %}
-{% blocktranslate with country=country_name %}Preliminary legal assessment for {{ country }}: the Studio reviews each case manually, and no automatic amount is published before the underlying quantification sources have been verified.{% endblocktranslate %}
+{% blocktranslate with country=country_name %}Assisted legal pathway for {{ country }}: the Studio reviews each case with the official sources, and an indicative amount is published only once the underlying quantification sources have been verified.{% endblocktranslate %}
 {% endif %}
 {% endblock %}
 
