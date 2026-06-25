@@ -165,6 +165,10 @@ SITE_IMAGE_SLOTS: list[dict[str, Any]] = [
     },
     # Contact
     {"purpose": "contact_hero", "country": None, "query": "law office consultation"},
+    # P6: section heroes for the content pages that lacked an image.
+    {"purpose": "services_hero", "country": None, "query": "professional legal documents desk"},
+    {"purpose": "about_hero", "country": None, "query": "law firm office interior"},
+    {"purpose": "ta3ouid_hero", "country": None, "query": "Mediterranean architecture legal office"},
 ]
 
 

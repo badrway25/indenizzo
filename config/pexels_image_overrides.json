@@ -124,6 +124,30 @@
       "approved_reason": "Lawyers discussing with client in professional office — appropriate for contact page.",
       "avoid_terms": ["smile", "handshake stock"],
       "editorial_notes": "Office meeting room. Discreet, premium."
+    },
+    "services_hero": {
+      "query": "professional legal documents desk",
+      "photo_id": 8112185,
+      "approved_visual": true,
+      "approved_reason": "Lawyer's desk with justice statue, diploma, laptop and magnifying glass. Editorial, no people.",
+      "avoid_terms": ["smile", "handshake", "people group"],
+      "editorial_notes": "Services section banner: legal desk, documents, justice statue."
+    },
+    "about_hero": {
+      "query": "law firm office interior",
+      "photo_id": 6077091,
+      "approved_visual": true,
+      "approved_reason": "Classic study room with books, gavel and Lady Justice figurine. Authoritative, no people.",
+      "avoid_terms": ["smiling", "handshake", "people group"],
+      "editorial_notes": "About page banner: premium legal interior."
+    },
+    "ta3ouid_hero": {
+      "query": "Mediterranean architecture legal office",
+      "photo_id": 35870124,
+      "approved_visual": true,
+      "approved_reason": "Neoclassical columned facade — Mediterranean institutional architecture, fits the Ta3ouid community landing.",
+      "avoid_terms": ["beach", "tourism", "people group"],
+      "editorial_notes": "Ta3ouid banner: Mediterranean/neoclassical institutional architecture."
     }
   }
 }

@@ -286,6 +286,7 @@ def services(request):
         {
             "services": public_pages.SERVICES,
             "canonical_url": build_canonical_url(request),
+            "pexels_image": _pexels_hero(request, "services_hero"),
         },
     )
 
@@ -334,7 +335,10 @@ def about(request):
     return render(
         request,
         "public/about.html",
-        {"canonical_url": build_canonical_url(request)},
+        {
+            "canonical_url": build_canonical_url(request),
+            "pexels_image": _pexels_hero(request, "about_hero"),
+        },
     )
 
 
@@ -346,7 +350,10 @@ def community(request):
     return render(
         request,
         "public/community.html",
-        {"canonical_url": build_canonical_url(request)},
+        {
+            "canonical_url": build_canonical_url(request),
+            "pexels_image": _pexels_hero(request, "ta3ouid_hero"),
+        },
     )
 
 
