@@ -257,6 +257,57 @@
     );
   }
 
+  /* 7. Magnetic CTA -------------------------------------------------------
+   * A subtle pull of the element toward the cursor. Desktop + fine pointer
+   * only (skipped on touch and when the user prefers reduced motion). The
+   * transform is written through the CSSOM (element.style), never as an inline
+   * HTML attribute, so the strict CSP style-src is respected. */
+  function initMagnetic() {
+    if (prefersReduced) return;
+    if (!(window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches)) return;
+    var els = document.querySelectorAll("[data-magnetic]");
+    if (!els.length) return;
+    els.forEach(function (el) {
+      var strength = parseFloat(el.getAttribute("data-magnetic")) || 0.25;
+      var max = 8; // cap the displacement so it stays restrained
+      function move(e) {
+        var r = el.getBoundingClientRect();
+        var dx = (e.clientX - (r.left + r.width / 2)) * strength;
+        var dy = (e.clientY - (r.top + r.height / 2)) * strength;
+        dx = Math.max(-max, Math.min(max, dx));
+        dy = Math.max(-max, Math.min(max, dy));
+        el.style.transform = "translate(" + dx.toFixed(1) + "px," + dy.toFixed(1) + "px)";
+      }
+      function reset() { el.style.transform = ""; }
+      el.addEventListener("mousemove", move);
+      el.addEventListener("mouseleave", reset);
+    });
+  }
+
+  /* 8. Light 3D tilt ------------------------------------------------------
+   * A gentle perspective tilt of a card following the cursor. Same desktop /
+   * fine-pointer / reduced-motion guards as the magnetic effect. */
+  function initTilt() {
+    if (prefersReduced) return;
+    if (!(window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches)) return;
+    var els = document.querySelectorAll("[data-tilt]");
+    if (!els.length) return;
+    els.forEach(function (el) {
+      var maxDeg = parseFloat(el.getAttribute("data-tilt")) || 5;
+      function move(e) {
+        var r = el.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        var rx = (-py * maxDeg).toFixed(2);
+        var ry = (px * maxDeg).toFixed(2);
+        el.style.transform = "perspective(900px) rotateX(" + rx + "deg) rotateY(" + ry + "deg)";
+      }
+      function reset() { el.style.transform = ""; }
+      el.addEventListener("mousemove", move);
+      el.addEventListener("mouseleave", reset);
+    });
+  }
+
   ready(function () {
     initReveal();
     initStickyCta();
@@ -264,5 +315,7 @@
     initTooltips();
     initWizardProgress();
     initParallax();
+    initMagnetic();
+    initTilt();
   });
 })();
