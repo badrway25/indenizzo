@@ -895,6 +895,26 @@ body.has-drawer-open { overflow: hidden; }
   .premium-timeline__card:hover { transform: none; }
 }
 
+/* --- Country card placeholder header (no curated photo) ------------------
+   Gives image-less country cards (e.g. MA/TN) the same dark header band as the
+   photo cards — a navy gradient + soft gold spotlight + ledger pattern — so the
+   grid reads as one coherent set instead of "missing image". */
+.country-card__cover {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(120% 130% at 82% 14%, var(--ds-gold-soft), transparent 55%),
+    linear-gradient(150deg, var(--ds-navy), var(--ds-navy-soft));
+}
+.country-card__cover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  mix-blend-mode: soft-light;
+  background-image: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0 1px, transparent 1px 56px);
+}
+
 /* --- Wizard shell + premium source panel -------------------------------- */
 .premium-wizard-shell {
   position: relative;
