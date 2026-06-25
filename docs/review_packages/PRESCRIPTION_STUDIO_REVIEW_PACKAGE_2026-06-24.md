@@ -3,7 +3,7 @@
 **Iter**: F-prescription-studio-review-iter1 · 2026-06-24
 **Tipo**: pacchetto di review **read-only** per lo Studio — **preparatorio**
 **Base**: `docs/audits/PRESCRIPTION_LEGAL_SOURCE_READONLY_AUDIT_2026-06-24.md`
-**Stato fonti**: tutte `manual_review_required` — **nessuna `approved`**
+**Stato fonti**: validate **internal-only** (vedi §2bis hardening) — **nessuna `approved_for_public_display`**
 
 > ⚠️ Documento operativo interno. **Non** attiva alcuna `LegalSource`, **non**
 > rende pubblico alcun termine, **non** modifica il calcolatore. Serve allo
@@ -21,7 +21,8 @@ Allegati di questa fase:
 
 - Fase **preparatoria**: prepara la validazione, non la esegue.
 - **Nessun termine è pubblico** oggi e nessuno lo diventa con questo pacchetto.
-- **Nessuna fonte è `approved`**; tutte sono `manual_review_required`.
+- **Nessuna fonte è `approved_for_public_display`**; tutte sono validate
+  **internal-only** / **procedure-only** (§2bis hardening), mai pubbliche.
 - Serve **validazione professionale** dello Studio: testo vigente, articolo,
   ambito, decorrenza, eccezioni, idoneità alla pubblicazione, wording prudente.
 - Output atteso: per ogni fonte una decisione firmata (GO/NO-GO/NEEDS_MORE_RESEARCH)
@@ -34,44 +35,52 @@ Allegati di questa fase:
 > URL istituzionali; il **testo consolidato vigente** va aperto e verificato
 > manualmente dallo Studio (Normattiva è JS-based: non estraibile in automatico).
 
-| Codice candidato | Titolo | Ente/fonte | Articoli rilevanti | Ambito | URL da verificare | Rischio interpretativo | Stato | Decisione richiesta |
+> **Stato interno**: aggiornato dall'hardening pass (§2bis). Nessuno è
+> `manual_review_required`/`unresolved`/`approved_for_public_display`; la colonna
+> «Decisione Studio» (GO/NO-GO sull'eventuale uso futuro) resta `pending`.
+
+| Codice candidato | Titolo | Ente/fonte | Articoli rilevanti | Ambito | URL da verificare | Rischio | Stato interno (post-hardening) | Decisione Studio |
 |---|---|---|---|---|---|:---:|:---:|:---:|
-| `it-cc-prescription-2947` | Codice Civile (R.D. 16/03/1942 n. 262) | Stato / Normattiva · Gazzetta Ufficiale | 2947, 2935, 2941–2945, 2946 | tutti gli illeciti civili | normattiva.it urn `regio.decreto:1942-03-16;262` · gazzettaufficiale.it `042U0262` | **alto** (decorrenza, penale, interruzione) | `manual_review_required` | GO / NO-GO / NEEDS_MORE_RESEARCH |
-| `it-inail-tu-1124-1965-art112` | T.U. INAIL (D.P.R. 30/06/1965 n. 1124) | Stato / INAIL · Normattiva | 112 | infortunio sul lavoro / malattia prof. | normattiva.it urn `presidente.repubblica:decreto:1965-06-30;1124` | **alto** (sospensione in liquidazione, differenziale) | `manual_review_required` | GO / NO-GO / NEEDS_MORE_RESEARCH |
-| `it-l-24-2017-gelli-art7` | Legge 08/03/2017 n. 24 (Gelli-Bianco) | Stato / Gazzetta Ufficiale | 7 | responsabilità sanitaria | gazzettaufficiale.it (L. 24/2017) | **alto** (contrattuale vs extracontrattuale) | `manual_review_required` | GO / NO-GO / NEEDS_MORE_RESEARCH |
-| `it-dlgs-206-2005-consumo-art125-126` | Codice del Consumo (D.Lgs. 06/09/2005 n. 206) | Stato / Normattiva | 125, 126, 114–127 | danno da prodotto difettoso | normattiva.it `eli/id/2005/10/08/005G0232/CONSOLIDATED` | **medio** (doppio termine, dies a quo) | `manual_review_required` | GO / NO-GO / NEEDS_MORE_RESEARCH |
-| `it-dlgs-209-2005-cap` | Codice delle Assicurazioni Private (D.Lgs. 07/09/2005 n. 209) | Stato / IVASS · Normattiva | 144–145, 148, 138–139 | offerta assicurativa / RC auto | normattiva.it `eli/id/2005/10/13/005G0233` · ivass.it `Cap.pdf` | **medio** | `needs_review` *(già in repo come `it-dlgs-209-2005-cap-art-138-139`)* | GO / NO-GO / NEEDS_MORE_RESEARCH |
-| `eu-reg-864-2007-rome-ii` | Reg. (CE) 864/2007 (Roma II) | UE / EUR-Lex | art. su legge applicabile illecito | casi internazionali | EUR-Lex (manual_required) | **alto** (lex causae) | `manual_review_required` | GO / NO-GO / NEEDS_MORE_RESEARCH |
+| `it-cc-prescription-2947` | Codice Civile (R.D. 16/03/1942 n. 262) | Stato / Normattiva · Gazzetta Ufficiale | 2947, 2935, 2941–2945, 2946 | tutti gli illeciti civili | normattiva.it urn `regio.decreto:1942-03-16;262` · gazzettaufficiale.it `042U0262` | **alto** | `source_verified_official_internal_only` | pending |
+| `it-inail-tu-1124-1965-art112` | T.U. INAIL (D.P.R. 30/06/1965 n. 1124) | Stato / INAIL · Normattiva | 112 | infortunio sul lavoro / malattia prof. | normattiva.it urn `presidente.repubblica:decreto:1965-06-30;1124` | **alto** | `source_verified_official_limited_scope` | pending |
+| `it-l-24-2017-gelli-art7` | Legge 08/03/2017 n. 24 (Gelli-Bianco) | Stato / Gazzetta Ufficiale | 7 | responsabilità sanitaria | gazzettaufficiale.it (L. 24/2017) | **alto** | `source_verified_official_internal_only` | pending |
+| `it-dlgs-206-2005-consumo-art125-126` | Codice del Consumo (D.Lgs. 06/09/2005 n. 206) | Stato / Normattiva | 125, 126, 114–127 | danno da prodotto difettoso | normattiva.it `eli/id/2005/10/08/005G0232/CONSOLIDATED` | **medio** | `source_verified_official_internal_only` | pending |
+| `it-dlgs-209-2005-cap` | Codice delle Assicurazioni Private (D.Lgs. 07/09/2005 n. 209) | Stato / IVASS · Normattiva | 144–145, 148, 138–139 | offerta assicurativa / RC auto | normattiva.it `eli/id/2005/10/13/005G0233` · ivass.it `Cap.pdf` | **medio** | `source_verified_official_procedure_only` | pending |
+| `eu-reg-864-2007-rome-ii` | Reg. (CE) 864/2007 (Roma II) | UE / EUR-Lex | 4, 5, 15, 31, 32 | casi internazionali | eur-lex.europa.eu `CELEX:32007R0864` | **alto** | `source_verified_official_internal_only` | pending |
 
 Mappa caso → fonte → criticità: vedi §3 dell'audit (`...AUDIT_2026-06-24.md`).
 
 ---
 
-## 2bis. Official source validation pass — 2026-06-24
+## 2bis. Official hardening validation pass — 2026-06-24
 
-> Esito della fase **F-source-validation-official**. Valida la **fonte
-> normativa** (esistenza/identità su sito ufficiale), **non** l'usabilità
-> pubblica di alcun termine. Record machine-readable:
-> `prescription_review_checklist.yml`. Voci non risolte:
-> `PRESCRIPTION_UNRESOLVED_FOR_CHATGPT_2026-06-24.md`. **Nessun termine
-> numerico** è stato estratto/registrato: i siti ufficiali (Normattiva, parte
-> di Gazzetta) sono JS-based, quindi i corpi degli articoli non sono estraibili
-> in automatico; l'identità degli strumenti e (dove l'indice ufficiale ha
-> caricato) l'esistenza degli articoli sono confermate.
+> Esito della fase **F-source-validation-official-hardening**. Ogni fonte è
+> validata internamente da fonte ufficiale **oppure** esclusa: **nessuna voce
+> resta `unresolved`/`manual_review_required`**, e **0** voci
+> `not_found_in_official_sources` (tutte hanno fonte ufficiale). Gli stati sono
+> **solo interni** e l'usabilità pubblica è **sempre NO**. I termini nominali
+> sotto sono **interni** (mai pubblici, mai nel calcolatore), legati allo
+> strumento ufficiale, in attesa di conferma del testo consolidato da parte
+> dello Studio. Record machine-readable: `prescription_review_checklist.yml`.
+> I portali ufficiali italiani (Normattiva; Gazzetta caricaArticolo/detail) sono
+> JavaScript-rendered e il PDF IVASS è compresso: strumento e posizione articoli
+> confermati ufficialmente, corpi non auto-estraibili; EUR-Lex (F6) leggibile.
 
-| Fonte | Esito | URL ufficiale | Limite | Prossimo passo (Studio) |
-|---|:---:|---|---|---|
-| **F1** Codice Civile — art. 2947 | `unresolved` | normattiva.it `regio.decreto:1942-03-16;262` · gazzettaufficiale.it `042U0262` | Gazzetta caricaArticolo = stato di caricamento JS; indice Normattiva troncato prima dell'art. 2947 | aprire manualmente l'art. 2947 su Normattiva / fonte ufficiale alternativa |
-| **F2** T.U. INAIL — art. 112 | `source_verified_official` | normattiva.it `presidente.repubblica:decreto:1965-06-30;1124` | corpo articolo non estratto (solo indice ufficiale: Capo V — Prestazioni) | aprire art. 112 + circolari INAIL su sospensione (Cass. SU 11928/2019) |
-| **F3** L. 24/2017 — art. 7 | `source_verified_official` | gazzettaufficiale.it `eli/id/2017/03/17/17G00041/sg` | legge confermata; corpo art. 7 non nell'estratto | aprire art. 7 + qualificazione contrattuale/extracontrattuale |
-| **F4** Cod. Consumo — artt. 125–126 | `source_verified_official` | normattiva.it `eli/id/2005/10/08/005G0232/CONSOLIDATED` | strumento + artt. 125/126 nell'indice ufficiale (Titolo II); corpi non estratti | aprire artt. 125–126 (prescrizione/decadenza) |
-| **F5** CAP — artt. 144–148 | `source_verified_official_procedure_only` | normattiva.it `eli/id/2005/10/13/005G0233` · ivass.it `Cap.pdf` | PDF IVASS compresso/non estraibile; CAP è fonte **procedurale**, non del termine | usare solo come procedura (offerta/azione diretta); prescrizione resta art. 2947 + caso |
-| **F6** Roma II — artt. 4/5/15/31/32 | `source_verified_official` | eur-lex.europa.eu `CELEX:32007R0864` | nessuno (testo estratto); art. 15 include «prescrizione e decadenza» nella *lex causae* | nessun termine numerico: i casi internazionali seguono la legge applicabile |
+| Fonte | URL ufficiale | Articolo | Estratto/parafrasi (INTERNO) | Stato interno | Pubblico? | Motivo del NO pubblico |
+|---|---|---|---|:---:|:---:|---|
+| **F1** Cod. Civ. | normattiva.it `regio.decreto:1942-03-16;262` | 2947 | risarcimento danno = 5 anni; danno da circolazione = 2 anni; se reato con prescrizione penale più lunga → quella | `source_verified_official_internal_only` | **NO** | decorrenza (art. 2935), interruzione/sospensione, penale, conoscenza → non auto-determinabile dai soli input |
+| **F2** T.U. INAIL | normattiva.it `presidente.repubblica:decreto:1965-06-30;1124` | 112 | prestazioni INAIL = triennale; sospeso in liquidazione (Cass. SU 11928/2019) | `source_verified_official_limited_scope` | **NO** | ambito ristretto (solo prestazioni INAIL); il differenziale civile segue altre regole |
+| **F3** L. 24/2017 | gazzettaufficiale.it `eli/id/2017/03/17/17G00041/sg` | 7 | struttura → artt. 1218/1228 c.c. (contrattuale); esercente → art. 2043 c.c. (extracontrattuale, salvo obbligazione contrattuale) | `source_verified_official_internal_only` | **NO** | nessun termine unico: dipende dalla qualificazione del rapporto |
+| **F4** Cod. Consumo | normattiva.it `eli/id/2005/10/08/005G0232/CONSOLIDATED` | 125; 126 | prescrizione = 3 anni (dalla conoscenza); decadenza = 10 anni (dalla messa in circolazione) | `source_verified_official_internal_only` | **NO** | doppio termine con dies a quo legati alla conoscenza; nessun automatismo |
+| **F5** CAP | normattiva.it `eli/id/2005/10/13/005G0233` · ivass.it `Cap.pdf` | 144; 145; 148 | procedura (azione diretta / richiesta / offerta) — **non** il termine prescrizionale | `source_verified_official_procedure_only` | **NO** | fonte procedurale; il termine RC auto resta art. 2947 c.c. + caso |
+| **F6** Roma II | eur-lex.europa.eu `CELEX:32007R0864` | 4; 5; 15; 31; 32 | art. 15: «prescrizione e decadenza» nell'ambito della legge applicabile — nessun numero | `source_verified_official_internal_only` | **NO** | rinvio alla *lex causae*; nessun termine numerico |
 
-**Sintesi**: 4 fonti `source_verified_official` (F2, F3, F4, F6), 1
-`source_verified_official_procedure_only` (F5), 1 `unresolved` (F1 — art. 2947).
-**Nessuna** fonte è `approved_for_public_display`; **nessun** termine numerico è
-pubblico o registrato come certo.
+**Sintesi hardening**: 4 `source_verified_official_internal_only` (F1, F3, F4, F6),
+1 `source_verified_official_limited_scope` (F2), 1
+`source_verified_official_procedure_only` (F5). **0** voci `unresolved` o
+`not_found_in_official_sources`. **Nessuna** fonte è `approved_for_public_display`
+né `public_approved`; **tutti** i termini restano interni e **nessuno** è
+pubblico o usato dal calcolatore.
 
 ---
 
