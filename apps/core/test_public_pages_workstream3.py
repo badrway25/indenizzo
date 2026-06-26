@@ -115,14 +115,15 @@ def test_faq_jsonld_is_valid_and_complete(db):
 
 
 def test_services_calculability_mirrors_registry():
-    """Only Italy road-accident is calculable; everything else is preliminary."""
-    calculable = [s for s in public_pages.SERVICES if s.calculable]
-    assert len(calculable) == 1, "exactly one service must be calculable today"
-    assert calculable[0].key == "road_accident"
-    assert calculable[0].cta_url_name == "cases:wizard_italy_road_accident"
-    # Non-calculable services must route to the contact funnel, never a calculator.
+    """P13-FIX: road-accident, medical liability and insurance-offer are
+    calculable (approved engines), each routing to its wizard; everything else
+    routes to the contact funnel."""
+    calculable = {s.key for s in public_pages.SERVICES if s.calculable}
+    assert calculable == {"road_accident", "medical", "insurance_offer"}
     for s in public_pages.SERVICES:
-        if not s.calculable:
+        if s.calculable:
+            assert s.cta_url_name.startswith("cases:wizard"), f"{s.key} should route to a wizard"
+        else:
             assert s.cta_url_name == "crm:contact", f"{s.key} should route to contact"
 
 

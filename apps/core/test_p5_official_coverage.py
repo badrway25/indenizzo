@@ -48,39 +48,44 @@ def test_services_has_no_weak_label(path):
 @pytest.mark.django_db
 def test_services_shows_premium_badges_and_legal_basis():
     body = Client().get("/services/").content.decode("utf-8")
-    # premium area badges (IT served unprefixed)
-    assert "Stima da fonte ufficiale" in body          # calculable, official badge
-    assert "Percorso legale assistito" in body         # assisted, premium fail-closed
+    # P13-FIX: three distinct estimate-state badges + the guided badge (IT unprefixed)
+    assert "Stima da fonte ufficiale" in body                 # road: numeric estimate
+    assert "Stima tabellare del danno biologico" in body      # medical: tabular biological
+    assert "Confronto con fonte ufficiale" in body            # offer: comparison
+    assert "Percorso assistito con fonte ufficiale" in body   # guided
     # official "Legal basis" attribution + real instrument citations
     assert ("Base normativa" in body) or ("Base legale" in body)
     for citation in ("D.P.R. 12/2025", "L. 24/2017", "D.P.R. 1124/1965",
-                     "CAP D.Lgs. 209/2005", "Reg. CE 864/2007"):
+                     "D.Lgs. 209/2005", "Reg. CE 864/2007"):
         assert citation in body, f"missing official legal-basis citation {citation!r}"
 
 
 @pytest.mark.django_db
 def test_services_premium_labels_translated_fr_ar():
     fr = Client().get("/fr/services/").content.decode("utf-8")
-    assert "Parcours juridique accompagné" in fr      # "Assisted legal pathway" FR
+    assert "Parcours assisté fondé sur une source officielle" in fr  # guided FR
+    assert "Estimation tabellaire du dommage biologique" in fr        # medical estimate FR
     assert "Assisted legal pathway" not in fr          # no English leak
     ar = Client().get("/ar/services/")
     assert ar.status_code == 200
     body = ar.content.decode("utf-8")
     assert 'dir="rtl"' in body
-    assert "مسار قانوني مرافَق" in body                 # "Assisted legal pathway" AR
+    assert "مسار موجَّه يستند إلى مصدر رسمي" in body      # guided badge AR (P13-FIX)
     assert "Assisted legal pathway" not in body
 
 
 def test_services_fail_closed_exactly_one_calculable():
-    """Unchanged contract: only Italy road-accident is calculable; the premium
-    relabel did not flip any other service to calculable."""
-    calculable = [s for s in public_pages.SERVICES if s.calculable]
-    assert len(calculable) == 1
-    assert calculable[0].key == "road_accident"
-    assert calculable[0].badge  # has a premium badge
+    """P13-FIX contract: the three approved engines (road accident, medical
+    liability, insurance-offer) are calculable, each routing to its wizard;
+    everything else is a guided pathway routing to the contact funnel."""
+    calculable = {s.key for s in public_pages.SERVICES if s.calculable}
+    assert calculable == {"road_accident", "medical", "insurance_offer"}
     for s in public_pages.SERVICES:
-        if not s.calculable:
-            assert s.cta_url_name == "crm:contact"  # routes to the funnel, never a calc
+        if s.calculable:
+            assert s.cta_url_name.startswith("cases:wizard"), s.key
+            assert s.badge  # has a premium estimate badge
+        else:
+            assert s.cta_url_name == "crm:contact"  # guided → funnel, never a calc
 
 
 def test_service_base_normativa_is_official_instrument():
