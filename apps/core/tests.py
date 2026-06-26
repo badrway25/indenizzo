@@ -119,15 +119,18 @@ def test_countries_page_lists_mvp_countries():
 
 @pytest.mark.django_db
 def test_case_types_page_lists_taxonomy():
+    from django.utils import translation
+
+    from apps.core.public_labels import humanize
+
     response = Client().get(reverse("core:case_types"))
     body = response.content.decode("utf-8")
-    # Almeno questi codici della tassonomia REQ-4 devono apparire.
-    for code in (
-        "road_accident_bodily_injury",
-        "medical_malpractice",
-        "inheritance_basic",
-    ):
-        assert code in body
+    # P17: the page surfaces the premium human label for each taxonomy entry —
+    # never the raw enum code/slug.
+    with translation.override("it"):  # default unprefixed page renders in IT
+        for code in ("road_accident_bodily_injury", "medical_malpractice", "inheritance_basic"):
+            assert str(humanize(code)) in body, code
+            assert code not in body, f"raw slug {code} leaked"
 
 
 @pytest.mark.django_db
@@ -587,10 +590,14 @@ def test_case_types_page_marks_international_inheritance_as_scaffold():
     forward / backward compatibility.
     """
 
+    from apps.core.public_labels import humanize
+
     response = Client().get("/en/case-types/")
     assert response.status_code == 200
     body = response.content.decode("utf-8")
-    assert "international_inheritance" in body
+    # P17: the premium human label appears, never the raw enum code.
+    assert str(humanize("international_inheritance")) in body
+    assert "international_inheritance" not in body
     assert (
         ("International inheritance review" in body)
         or ("Assisted legal pathway" in body)
