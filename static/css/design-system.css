@@ -1125,3 +1125,96 @@ form [aria-invalid="true"],
   .js [data-magnetic],
   .js [data-tilt] { transition: none; transform: none !important; }
 }
+
+/* ==========================================================================
+   Premium components (P17) — cards, select chevron, readiness, sidebar
+   ========================================================================== */
+
+/* Elevated card with a subtle hover lift. Pair .premium-card-hover to opt in. */
+.premium-card {
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border-soft);
+  border-radius: var(--ds-radius-xl);
+  box-shadow: var(--ds-shadow-sm);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .premium-card-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--ds-shadow-md);
+    border-color: rgba(184, 131, 54, 0.4);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .premium-card { transition: none; }
+  .premium-card-hover:hover { transform: none; }
+}
+
+/* Icon medallion for card headers. */
+.icon-medallion {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 2.75rem; height: 2.75rem; border-radius: 9999px;
+  background: rgba(184, 131, 54, 0.12);
+  color: var(--ds-gold-strong);
+}
+
+/* Native <select> with a custom gold chevron (keeps full keyboard a11y). */
+.field-select {
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239a6b21' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  background-size: 1rem 1rem;
+  padding-right: 2.4rem;
+}
+[dir="rtl"] .field-select {
+  background-position: left 0.85rem center;
+  padding-right: 0.9rem;
+  padding-left: 2.4rem;
+}
+
+/* Documental-readiness meter (organisational signal — never a money figure). */
+.readiness-track { height: 0.5rem; border-radius: 9999px; background: var(--ds-border-soft); overflow: hidden; }
+.readiness-fill {
+  height: 100%; border-radius: 9999px;
+  background: linear-gradient(90deg, var(--ds-gold-strong), var(--ds-gold));
+  transition: width 0.4s ease;
+}
+@media (prefers-reduced-motion: reduce) { .readiness-fill { transition: none; } }
+
+/* Sticky sidebar on desktop for pre-check / result / guided. */
+@media (min-width: 1024px) {
+  .premium-sidebar-sticky { position: sticky; top: 6rem; }
+}
+
+/* Pre-check two-column layout: main + sticky sidebar (lg and up). */
+.precheck-layout { display: block; }
+@media (min-width: 1024px) {
+  .precheck-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 19rem;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  .precheck-layout > aside { margin-top: 0; }
+}
+
+/* Premium language-switcher select: globe (lead) + chevron (trail) as CSS
+   backgrounds — no absolute spans, CSP-safe, RTL-aware, full keyboard a11y. */
+.lang-switch-select {
+  appearance: none; -webkit-appearance: none;
+  background-color: var(--ds-sand, #faf7f1);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239a6b21' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20'/%3E%3Cpath d='M2 12h20'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat, no-repeat;
+  background-position: left 0.8rem center, right 0.8rem center;
+  background-size: 1rem 1rem, 1rem 1rem;
+  padding-left: 2.4rem;
+  padding-right: 2.4rem;
+  min-height: 40px;
+  cursor: pointer;
+}
+[dir="rtl"] .lang-switch-select {
+  background-position: right 0.8rem center, left 0.8rem center;
+}
