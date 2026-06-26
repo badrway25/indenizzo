@@ -367,7 +367,7 @@ def _country_landing_context(country_code: str) -> dict:
     Il calcolatore reale (se esiste) è dietro il CTA wizard.
 
     Convenzioni:
-    - `status_label`: badge mostrato nell'hero (Available / Under review).
+    - `status_label`: badge mostrato nell'hero (Available / Official guided pathway).
     - `is_calculator_available`: gates il messaggio "real range" vs "no estimate".
     - `wizard_url_name`: URL name del wizard CTA (può essere None se non c'è).
     - `legal_sources`: lista di tuple (slug, status) per la sezione Legal basis.
@@ -406,8 +406,8 @@ def _country_landing_context(country_code: str) -> dict:
             "country_name_key": "France",
             "case_type_key": "road_accident_bodily_injury",
             "is_calculator_available": False,
-            "status_label_key": "Legal sources under review",
-            "status_tone": "warn",
+            "status_label_key": "Official guided pathway",
+            "status_tone": "gold",
             "wizard_url_name": "cases:wizard_france_road_accident",
             "legal_sources": [
                 (
@@ -426,8 +426,8 @@ def _country_landing_context(country_code: str) -> dict:
             "country_name_key": "Belgium",
             "case_type_key": "road_accident_bodily_injury",
             "is_calculator_available": False,
-            "status_label_key": "Legal sources under review",
-            "status_tone": "warn",
+            "status_label_key": "Official guided pathway",
+            "status_tone": "gold",
             "wizard_url_name": "cases:wizard_belgium_road_accident",
             "legal_sources": [
                 ("Tableau Indicatif 2020 (édition Magistrats / Avocats)", "needs_review"),
@@ -443,8 +443,8 @@ def _country_landing_context(country_code: str) -> dict:
             "country_name_key": "Morocco",
             "case_type_key": "international_inheritance",
             "is_calculator_available": False,
-            "status_label_key": "Legal sources under review",
-            "status_tone": "warn",
+            "status_label_key": "Official guided pathway",
+            "status_tone": "gold",
             "wizard_url_name": "cases:wizard_morocco_inheritance",
             "legal_sources": [
                 ("Code de la famille — Moudawana, Loi n°70-03 (2004)", "needs_review"),
@@ -459,8 +459,8 @@ def _country_landing_context(country_code: str) -> dict:
             "country_name_key": "Tunisia",
             "case_type_key": "international_inheritance",
             "is_calculator_available": False,
-            "status_label_key": "Legal sources under review",
-            "status_tone": "warn",
+            "status_label_key": "Official guided pathway",
+            "status_tone": "gold",
             "wizard_url_name": "cases:wizard_tunisia_inheritance",
             "legal_sources": [
                 ("Code du statut personnel (CSP) — Livre IX «De la succession»", "needs_review"),
@@ -534,9 +534,9 @@ def _render_country_landing(request, country_code: str, view_name: str):
         ) % {"country": country_label}
     else:
         og_description = _(
-            "%(country)s legal sources are under Studio review. No automatic estimate "
-            "is currently issued; the wizard collects your request for a legal "
-            "review."
+            "%(country)s offers an assisted legal pathway grounded in official "
+            "sources. The wizard collects your request and the Studio replies "
+            "directly."
         ) % {"country": country_label}
     # Pexels hero image: lookup READ-ONLY del manifest. Niente chiamata
     # API live al render: solo file locali. Se assente → fallback
@@ -670,7 +670,7 @@ def countries(request):
 def country_readiness_json(request):
     """Public, leak-safe per-country readiness state (E1).
 
-    Italy is ``available``; FR/BE/MA/TN are ``legal_validation_in_progress``.
+    Italy is ``available``; FR/BE/MA/TN are ``official_guided_path``.
     Contains no internal review detail (no hashes, paths, reviewer names, review
     notes, raw legal text or status slugs) — only the public projection.
     """

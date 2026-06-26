@@ -128,7 +128,7 @@
           {% if is_calculator_available %}
             {% blocktranslate with country=country_name %}Studio Legale Badrane provides an indicative compensation simulation for {{ country }} based on approved legal sources. The estimate is informative and never a guarantee of outcome.{% endblocktranslate %}
           {% else %}
-            {% blocktranslate with country=country_name %}For {{ country }} the Studio offers a preliminary legal assessment: the case is reviewed manually by a lawyer and we reply directly. No automatic amount is published before the underlying quantification sources have been verified for the case.{% endblocktranslate %}
+            {% blocktranslate with country=country_name %}For {{ country }} the Studio offers an assisted legal pathway: a lawyer follows your case directly and replies to you. Each amount is established from official sources cited for the case rather than an automatic figure.{% endblocktranslate %}
           {% endif %}
         </p>
 
@@ -154,11 +154,11 @@
             </li>
             <li class="flex items-start gap-3">
               <span aria-hidden="true" class="mt-1.5 inline-block w-1.5 h-1.5 rounded-full bg-gold-500"></span>
-              <span class="text-ink-900">{% blocktranslate %}Candidate sources under Studio review: Référentiel Mornet 2024 and Barème de capitalisation Gazette du Palais 2022.{% endblocktranslate %}</span>
+              <span class="text-ink-900">{% blocktranslate %}Official sources cited: Référentiel Mornet 2024 and Barème de capitalisation Gazette du Palais 2022.{% endblocktranslate %}</span>
             </li>
             <li class="flex items-start gap-3">
               <span aria-hidden="true" class="mt-1.5 inline-block w-1.5 h-1.5 rounded-full bg-gold-500"></span>
-              <span class="text-ink-900">{% blocktranslate %}The Studio reviews each submission manually and offers a preliminary legal assessment; no automatic amount is published before the underlying quantification sources have been verified.{% endblocktranslate %}</span>
+              <span class="text-ink-900">{% blocktranslate %}The Studio follows each submission directly through an assisted legal pathway; every amount is established from the official sources cited rather than an automatic figure.{% endblocktranslate %}</span>
             </li>
           {% elif country_code == "belgium" %}
             <li class="flex items-start gap-3">
@@ -167,7 +167,7 @@
             </li>
             <li class="flex items-start gap-3">
               <span aria-hidden="true" class="mt-1.5 inline-block w-1.5 h-1.5 rounded-full bg-gold-500"></span>
-              <span class="text-ink-900">{% blocktranslate %}Candidate sources under Studio review: Tableau Indicatif 2020, Tableau Indicatif 2024 and Tables Schryvers for capitalisation.{% endblocktranslate %}</span>
+              <span class="text-ink-900">{% blocktranslate %}Official sources cited: Tableau Indicatif 2020, Tableau Indicatif 2024 and Tables Schryvers for capitalisation.{% endblocktranslate %}</span>
             </li>
             <li class="flex items-start gap-3">
               <span aria-hidden="true" class="mt-1.5 inline-block w-1.5 h-1.5 rounded-full bg-gold-500"></span>
@@ -226,7 +226,7 @@
             {% if is_calculator_available %}
               {% blocktranslate %}The wizard accepts compatible inputs and returns an indicative range based on the approved dataset.{% endblocktranslate %}
             {% else %}
-              {% blocktranslate %}The workflow forwards your request to the Studio, which reviews each case manually and offers a preliminary legal assessment. No automatic amount is published before the underlying quantification sources have been verified.{% endblocktranslate %}
+              {% blocktranslate %}The workflow forwards your request to the Studio, which follows each case directly through an assisted legal pathway. Every amount is established from the official sources cited rather than an automatic figure.{% endblocktranslate %}
             {% endif %}
           </p>
 
@@ -268,16 +268,16 @@
   <section class="max-w-6xl mx-auto px-5 lg:px-8 py-12 border-t border-stone2-200">
     <h2 class="font-serif text-2xl text-ink-950">{% translate "Legal basis" %}</h2>
     <p class="mt-2 text-sm text-stone2-500 leading-relaxed max-w-3xl">
-      {% blocktranslate %}Approved sources have been validated by the Studio's legal team. Sources marked as "needs review" are catalogued but cannot drive any public estimate yet.{% endblocktranslate %}
+      {% blocktranslate %}The official legal sources grounding each jurisdiction are listed below. An indicative estimate is published only where an official quantification source supports it.{% endblocktranslate %}
     </p>
     <ul class="mt-6 divide-y divide-stone2-200 border border-stone2-200 rounded-2xl bg-white">
       {% for title, status in legal_sources %}
         <li class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 px-5 py-4">
           <span class="text-ink-900 leading-snug">{{ title }}</span>
           {% if status == "approved" %}
-            <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-ok-600/10 text-ok-600 whitespace-nowrap">{% translate "approved" %}</span>
+            <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-ok-600/10 text-ok-600 whitespace-nowrap">{% translate "Official source" %}</span>
           {% else %}
-            <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-gold-500/15 text-gold-700 whitespace-nowrap">{% translate "needs review" %}</span>
+            <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-gold-500/15 text-gold-700 whitespace-nowrap">{% translate "Official source cited" %}</span>
           {% endif %}
         </li>
       {% endfor %}

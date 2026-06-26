@@ -8,7 +8,7 @@ internal review detail (hashes, file paths, reviewer names, review notes, raw
 legal text, D1/D2 readiness internals, or the internal status slug).
 
 `internal_reason` exists only for logs/tests; ``as_public_dict()`` deliberately
-omits it. Italy is available; FR/BE/MA/TN are ``legal_validation_in_progress``
+omits it. Italy is available; FR/BE/MA/TN are ``official_guided_path``
 (fail-closed) until the Studio approves their sources.
 """
 
@@ -26,7 +26,7 @@ from apps.core.public_status import (
 
 # Public 3-state surface (intentionally coarser than the internal status keys).
 PUBLIC_AVAILABLE = "available"
-PUBLIC_IN_VALIDATION = "legal_validation_in_progress"
+PUBLIC_IN_VALIDATION = "official_guided_path"
 PUBLIC_NOT_AVAILABLE = "not_available"
 
 # Supported countries and the representative case type used to resolve status.
