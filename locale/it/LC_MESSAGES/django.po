@@ -6581,3 +6581,9 @@ msgstr "Lo Studio segue anche ulteriori ambiti — danno da macrolesione, perdit
 msgid "The Studio also follows cases connected to Spain, Germany, Canada, Romania, Algeria and Egypt."
 msgstr "Lo Studio segue anche casi collegati a Spagna, Germania, Canada, Romania, Algeria ed Egitto."
 
+msgid "Multilingual assistance on official sources"
+msgstr "Assistenza multilingue su fonti ufficiali"
+
+msgid "Documental verification"
+msgstr "Verifica documentale"
+

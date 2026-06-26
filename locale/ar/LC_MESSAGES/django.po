@@ -6335,3 +6335,9 @@ msgstr "يتناول المكتب أيضاً مجالات أخرى — الضر�
 msgid "The Studio also follows cases connected to Spain, Germany, Canada, Romania, Algeria and Egypt."
 msgstr "يتابع المكتب أيضاً قضايا مرتبطة بإسبانيا وألمانيا وكندا ورومانيا والجزائر ومصر."
 
+msgid "Multilingual assistance on official sources"
+msgstr "مساعدة متعددة اللغات استناداً إلى مصادر رسمية"
+
+msgid "Documental verification"
+msgstr "تحقّق وثائقي"
+

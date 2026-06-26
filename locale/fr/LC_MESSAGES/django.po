@@ -6626,3 +6626,9 @@ msgstr "Le Cabinet traite également d'autres domaines — préjudice catastroph
 msgid "The Studio also follows cases connected to Spain, Germany, Canada, Romania, Algeria and Egypt."
 msgstr "Le Cabinet suit également des dossiers liés à l'Espagne, l'Allemagne, le Canada, la Roumanie, l'Algérie et l'Égypte."
 
+msgid "Multilingual assistance on official sources"
+msgstr "Assistance multilingue sur sources officielles"
+
+msgid "Documental verification"
+msgstr "Vérification documentaire"
+

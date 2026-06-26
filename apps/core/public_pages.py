@@ -74,6 +74,9 @@ _BADGE_GUIDED = _("Assisted path based on official sources")       # official_gu
 # reusing the pre-check / router msgids so the wording never diverges.
 _BADGE_PRECHECK = _("Documental pre-check with official sources")  # documental pre-check
 _BADGE_LAW = _("Applicable-law framing")                           # cross-border framing
+# P18: distinct badges so the guided services don't all read identically.
+_BADGE_MULTILINGUAL = _("Multilingual assistance on official sources")
+_BADGE_DOC_VERIFY = _("Documental verification")
 _CTA_GUIDED = _("Request a guided analysis")
 _CTA_PRECHECK = _("Start the pre-check")
 
@@ -106,11 +109,11 @@ SERVICES = (
     Service("foreigners", _("Foreign nationals in Italy"),
             _("Assistance for foreign or non-resident clients who suffered harm in Italy, with multilingual support and remote handling."),
             "users", False, _CTA_GUIDED, "crm:contact",
-            badge=_BADGE_GUIDED, base_normativa="Roma II · CAP/TUN (Italia)"),
+            badge=_BADGE_MULTILINGUAL, base_normativa="Roma II · CAP/TUN (Italia)"),
     Service("documents", _("Foreign / consular documents"),
             _("Help with documentation produced abroad — translation, legalisation and consular formalities needed to support a claim."),
             "document", False, _CTA_GUIDED, "crm:contact",
-            badge=_BADGE_GUIDED),
+            badge=_BADGE_DOC_VERIFY),
 )
 
 
