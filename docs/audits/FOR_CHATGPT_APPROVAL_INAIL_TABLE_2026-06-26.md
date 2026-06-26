@@ -126,3 +126,23 @@ and the public section stays a guided path until the values below are validated.
 
 Almeno un esempio ufficiale (grado, età → importo in capitale €) verificabile,
 asserito al centesimo, prima di attivare `inail_biological_damage_capital`.
+
+---
+
+## P12 — table search hardening (2026-06-26)
+
+Re-attempt to locate a clean, parseable PDF of the **value table** (not a form):
+
+- The current values = the **2019 table (Det. Pres. 2/2019 + D.M. 45/2019)**
+  revalued to **Delibera CdA 43 del 26/03/2025 (eff. 01/07/2025)**.
+- The INAIL portal page does not attach a downloadable value table; the only
+  table-named asset reachable was "Allegato 5" = MOD 16/TER (heirs form), already
+  hashed and ruled out.
+- OCR fallback is unavailable in this environment (no PDF→image rasterizer:
+  pdftoppm/gs/fitz missing; tesseract eng-only), so a scanned table could not be
+  processed even if located.
+
+**Therefore the values must be supplied/validated by ChatGPT/owner** (10 sample
+rows minimum: grado 6–15% × fascia d'età → importo €), then imported via
+`import_inail_biological_damage` with a canary. Public INAIL stays a guided path
+until then. Tracked in `CHATGPT_APPROVAL_QUEUE_2026-06-26.md` (row 3).
