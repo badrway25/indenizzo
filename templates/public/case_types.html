@@ -13,6 +13,11 @@
       {% blocktranslate %}We implement modules in depth, one at a time. Each case type is activated only after the relevant legal sources are catalogued and validated for the chosen jurisdiction.{% endblocktranslate %}
     </p>
 
+    {# P15: route to the country × category guided picker. #}
+    <a href="{% url 'core:guided_router' %}" class="mt-6 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
+      {% translate "Find your guided path" %} <span aria-hidden="true">→</span>
+    </a>
+
     <div class="mt-10 grid sm:grid-cols-2 gap-4">
       {% for case in case_types %}
         <article class="bg-white border border-stone2-200 rounded-3xl p-6 shadow-card">

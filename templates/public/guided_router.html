@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Find your guided path" %} — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}{% translate "Pick a country and a category: the platform routes you to the right path — an indicative estimate where an official table exists, or a documental pre-check otherwise. No amount is invented." %}{% endblock %}
+{% block head_extra %}{% if canonical_url %}<link rel="canonical" href="{{ canonical_url }}">{% endif %}{% endblock %}
+
+{% block content %}
+{% include "partials/_premium_hero_image.html" %}
+<section class="max-w-6xl mx-auto px-5 lg:px-8 py-16">
+  <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Guided router" %}</p>
+  <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Find your guided path" %}</h1>
+  <p class="mt-5 max-w-3xl text-lg text-ink-800 leading-relaxed">
+    {% blocktranslate %}Choose your country, then the category. Where an official table or formula is validated, you get an indicative estimate; otherwise the platform opens a documental pre-check on the official sources. No amount is invented.{% endblocktranslate %}
+  </p>
+
+  {# Step 1 — country chips (in-page anchors to each country block). #}
+  <nav class="mt-8 flex flex-wrap gap-2" aria-label="{% translate 'Choose a country' %}">
+    {% for group in country_groups %}
+      <a href="#guided-{{ group.country_code }}" class="inline-flex items-center gap-1.5 rounded-full border border-ink-950/15 bg-white px-4 py-2 text-sm font-semibold text-ink-950 hover:border-gold-500 hover:text-gold-700">
+        {% translate group.country_key %}
+      </a>
+    {% endfor %}
+  </nav>
+
+  {# Step 2 — per-country category cards, each routing to its destination. #}
+  {% for group in country_groups %}
+    <section id="guided-{{ group.country_code }}" class="mt-12 scroll-mt-24">
+      <h2 class="font-serif text-2xl text-ink-950">{% translate group.country_key %}</h2>
+      <div class="mt-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% for route in group.routes %}
+          <article class="flex flex-col rounded-2xl border border-stone2-200 bg-white p-5 shadow-card">
+            <h3 class="font-serif text-lg text-ink-950">{% translate route.category_key %}</h3>
+            <p class="mt-3">
+              {% if route.computes_amount %}
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-ok-600/10 text-ok-600 text-[10px] font-semibold uppercase tracking-[0.14em]"><span aria-hidden="true">●</span>{{ route.status_label }}</span>
+              {% else %}
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gold-500/15 text-gold-700 text-[10px] font-semibold uppercase tracking-[0.14em]"><span aria-hidden="true">●</span>{{ route.status_label }}</span>
+              {% endif %}
+            </p>
+            <p class="mt-3 text-sm text-stone2-500 leading-relaxed">
+              {% if route.computes_amount %}
+                {% translate "An indicative estimate is produced from the validated official source." %}
+              {% else %}
+                {% translate "No amount is produced: the path lists the official sources, the data and the documents to prepare." %}
+              {% endif %}
+            </p>
+            <div class="mt-4 pt-4 border-t border-stone2-200">
+              {% if route.url_kwargs.slug %}
+                <a href="{% url route.url_name slug=route.url_kwargs.slug %}" class="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-950 hover:text-gold-700">
+              {% else %}
+                <a href="{% url route.url_name %}" class="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-950 hover:text-gold-700">
+              {% endif %}
+                {% if route.computes_amount %}{% translate "Open the calculator" %}{% elif route.status == "applicable_law" %}{% translate "Frame the applicable law" %}{% else %}{% translate "Start the pre-check" %}{% endif %}
+                <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+  {% endfor %}
+
+  {# Mandatory no-amount disclaimer. #}
+  <p class="mt-12 text-xs text-stone2-500 leading-relaxed border-t border-stone2-200 pt-6">
+    {% translate "No amount is calculated without a verified official table or formula." %}
+  </p>
+</section>
+{% endblock %}

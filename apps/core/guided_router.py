@@ -1,0 +1,121 @@
+"""P15 — country × category guided router.
+
+A single, navigable entry point: the visitor picks a country, then a category,
+and the platform routes to the RIGHT destination for that pair — never a generic
+page and never an invented amount. The routing decision is data-driven and
+mirrors the live engines / pre-check flows:
+
+- ``estimate``        → an approved numeric engine exists (IT road accident).
+- ``tabular``         → an approved official table drives the figure (IT medical).
+- ``comparison``      → an approved engine reused to compare an offer (IT offer).
+- ``pre_check``       → official source but no table yet → documental pre-check.
+- ``guided``          → assisted path on official sources (no state table).
+- ``applicable_law``  → cross-border framing before any quantification.
+
+The status labels are the SAME gettext strings used by the estimate badges
+(P13) and the pre-check flows (P15), so the public wording never diverges.
+
+Cardinal rule: this router only *routes*. No amount, coefficient or table is
+computed here.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+
+from django.utils.translation import gettext_lazy as _
+
+# Routing statuses — reused verbatim from the estimate badges / pre-check labels.
+ESTIMATE = "estimate"
+TABULAR = "tabular"
+COMPARISON = "comparison"
+PRE_CHECK = "pre_check"
+GUIDED = "guided"
+APPLICABLE_LAW = "applicable_law"
+
+STATUS_LABEL = {
+    ESTIMATE: _("Estimate based on official sources"),
+    TABULAR: _("Official table-based biological damage estimate"),
+    COMPARISON: _("Comparison based on official sources"),
+    PRE_CHECK: _("Documental pre-check with official sources"),
+    GUIDED: _("Assisted path based on official sources"),
+    APPLICABLE_LAW: _("Applicable-law framing"),
+}
+
+# Whether the destination produces a real numeric range. Drives the
+# "what calculates / what does not" copy and guards against money leaks.
+COMPUTES_AMOUNT = {ESTIMATE, TABULAR, COMPARISON}
+
+
+@dataclass(frozen=True)
+class Route:
+    country_code: str  # ISO-2 or "INT"
+    country_key: str  # gettext country name
+    category_id: str  # locale-stable category key (matched by resolve())
+    category_key: str  # gettext category label (rendered)
+    status: str
+    url_name: str
+    url_kwargs: dict = field(default_factory=dict)
+
+    @property
+    def status_label(self):
+        return STATUS_LABEL[self.status]
+
+    @property
+    def computes_amount(self) -> bool:
+        return self.status in COMPUTES_AMOUNT
+
+
+# Order matters: Italy first (most live), then the official-source countries,
+# then the cross-border framing. Each row is grounded in a live engine or a
+# real pre-check flow — nothing aspirational.
+ROUTES: tuple[Route, ...] = (
+    Route("IT", _("Italy"), "road_accident", _("Road accident"), ESTIMATE,
+          "cases:wizard_italy_road_accident"),
+    Route("IT", _("Italy"), "medical_liability", _("Medical liability"), TABULAR,
+          "cases:wizard_italy_medical"),
+    Route("IT", _("Italy"), "insurance_offer", _("Insurance offer"), COMPARISON,
+          "cases:wizard_insurance_offer"),
+    Route("IT", _("Italy"), "work_injury", _("Work injury (INAIL)"), PRE_CHECK,
+          "core:precheck", {"slug": "inail"}),
+    Route("IT", _("Italy"), "loss_of_relative", _("Loss of a relative"), GUIDED,
+          "core:precheck", {"slug": "loss-of-relative"}),
+    Route("MA", _("Morocco"), "road_accident", _("Road accident"), PRE_CHECK,
+          "core:precheck", {"slug": "morocco-road-accident"}),
+    Route("TN", _("Tunisia"), "road_accident", _("Road accident"), PRE_CHECK,
+          "core:precheck", {"slug": "tunisia-road-accident"}),
+    Route("FR", _("France"), "road_accident", _("Road accident"), GUIDED,
+          "cases:wizard_france_road_accident"),
+    Route("BE", _("Belgium"), "road_accident", _("Road accident"), GUIDED,
+          "cases:wizard_belgium_road_accident"),
+    Route("INT", _("International"), "cross_border", _("Cross-border road accident"),
+          APPLICABLE_LAW, "core:precheck", {"slug": "international-road-accident"}),
+)
+
+
+def grouped_routes() -> list[dict]:
+    """Routes grouped by country, preserving declaration order — for the page."""
+    order: list[str] = []
+    by_country: dict[str, dict] = {}
+    for route in ROUTES:
+        if route.country_code not in by_country:
+            order.append(route.country_code)
+            by_country[route.country_code] = {
+                "country_code": route.country_code,
+                "country_key": route.country_key,
+                "routes": [],
+            }
+        by_country[route.country_code]["routes"].append(route)
+    return [by_country[code] for code in order]
+
+
+def resolve(country_code: str, category_id: str) -> Route | None:
+    """Resolve a (country, category) pair to its routing decision (or None).
+
+    ``category_id`` is the locale-stable category key (e.g. ``"road_accident"``),
+    so callers/tests resolve identically regardless of the active locale.
+    """
+    for route in ROUTES:
+        if route.country_code == country_code and route.category_id == category_id:
+            return route
+    return None

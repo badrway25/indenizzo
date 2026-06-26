@@ -319,6 +319,28 @@ def precheck(request, slug):
 
 
 @require_GET
+def guided_router(request):
+    """P15: country × category guided router.
+
+    A single navigable entry point — pick a country, then a category — that
+    routes to the right destination (live engine, tabular/comparison wizard or
+    documental pre-check). It only routes: no amount is computed here.
+    """
+    from apps.core.guided_router import grouped_routes
+    from apps.core.seo import build_canonical_url
+
+    return render(
+        request,
+        "public/guided_router.html",
+        {
+            "country_groups": grouped_routes(),
+            "canonical_url": build_canonical_url(request),
+            "pexels_image": _pexels_hero(request, "services_hero"),
+        },
+    )
+
+
+@require_GET
 def faq(request):
     """Public FAQ + FAQPage structured data.
 
