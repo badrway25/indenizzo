@@ -3213,7 +3213,7 @@ msgid "comment"
 msgstr ""
 
 msgid "legal review"
-msgstr ""
+msgstr "فحص قانوني"
 
 msgid "legal reviews"
 msgstr ""
@@ -5587,3 +5587,138 @@ msgstr "هل يجب أن أثبت عيب المنتج مسبقاً لطلب ال
 
 msgid "In questa fase no. Lo Studio aiuta a capire quali elementi servono per dimostrare il difetto e il nesso causale, e quali documenti raccogliere, prima di qualsiasi avvio formale."
 msgstr "ليس في هذه المرحلة. يساعد المكتب على فهم العناصر اللازمة لإثبات العيب وعلاقة السببية، والوثائق التي ينبغي جمعها، قبل أي إجراء رسمي."
+
+msgid "Official source"
+msgstr "مصدر رسمي"
+
+msgid "Official source cited"
+msgstr "مصدر رسمي مُستشهَد به"
+
+msgid "The official legal sources grounding each jurisdiction are listed below. An indicative estimate is published only where an official quantification source supports it."
+msgstr "المصادر القانونية الرسمية التي تستند إليها كل ولاية قضائية مذكورة أدناه. لا يُنشر تقدير إرشادي إلا حيث تدعمه مصادر رسمية للتقدير."
+
+msgid "%(country)s offers an assisted legal pathway grounded in official sources. The wizard collects your request and the Studio replies directly."
+msgstr "تتيح %(country)s مساراً قانونياً مصحوباً يستند إلى مصادر رسمية. يجمع المساعد طلبك ويردّ عليك المكتب مباشرةً."
+
+msgid "For %(country)s the Studio offers an assisted legal pathway: a lawyer follows your case directly and replies to you. Each amount is established from official sources cited for the case rather than an automatic figure."
+msgstr "بالنسبة إلى %(country)s يوفّر المكتب مساراً قانونياً مصحوباً: يتابع محامٍ قضيتك مباشرةً ويردّ عليك. يُحدَّد كل مبلغ استناداً إلى المصادر الرسمية المذكورة في القضية، وليس بقيمة آلية."
+
+msgid "Official sources cited: Référentiel Mornet 2024 and Barème de capitalisation Gazette du Palais 2022."
+msgstr "المصادر الرسمية المذكورة: Référentiel Mornet 2024 وBarème de capitalisation Gazette du Palais 2022."
+
+msgid "The Studio follows each submission directly through an assisted legal pathway; every amount is established from the official sources cited rather than an automatic figure."
+msgstr "يتابع المكتب كل طلب مباشرةً ضمن مسار قانوني مصحوب؛ ويُحدَّد كل مبلغ استناداً إلى المصادر الرسمية المذكورة، وليس بقيمة آلية."
+
+msgid "Official sources cited: Tableau Indicatif 2020, Tableau Indicatif 2024 and Tables Schryvers for capitalisation."
+msgstr "المصادر الرسمية المذكورة: Tableau Indicatif 2020 وTableau Indicatif 2024 وTables Schryvers للرسملة."
+
+msgid "The workflow forwards your request to the Studio, which follows each case directly through an assisted legal pathway. Every amount is established from the official sources cited rather than an automatic figure."
+msgstr "يحيل سير العمل طلبك إلى المكتب، الذي يتابع كل قضية مباشرةً ضمن مسار قانوني مصحوب. ويُحدَّد كل مبلغ استناداً إلى المصادر الرسمية المذكورة، وليس بقيمة آلية."
+
+msgid "Assisted legal pathway for road-accident bodily injury claims, based on the Tabella Unica Nazionale 2025 in Italy and recognised indicative references in France and Belgium. Indicative, not a guarantee of outcome."
+msgstr "مسار قانوني مرافَق لمطالبات الضرر الجسدي الناتج عن حوادث الطرق، يستند إلى Tabella Unica Nazionale 2025 في إيطاليا وإلى مراجع إرشادية معترف بها في فرنسا وبلجيكا. إرشادي، دون ضمان للنتيجة."
+
+msgid "If you were injured in a road accident as a driver, passenger, cyclist or pedestrian, the Studio reviews each case manually and produces an assisted legal pathway based on validated legal sources. No automatic figure is published before the underlying sources have been verified for your case."
+msgstr "إذا أُصبت في حادث طريق بصفتك سائقاً أو راكباً أو راكب دراجة أو راجلاً، يدرس المكتب كل حالة على حدة ويضع مساراً قانونياً مرافَقاً يستند إلى مصادر قانونية موثّقة ومعتمدة. ولا يُنشَر أي مبلغ تلقائي قبل التحقّق من المصادر ذات الصلة بحالتك."
+
+msgid "Assisted legal pathway for bodily injury claims (permanent disability, temporary disability, biological damage), based on the validated legal sources approved for the chosen jurisdiction. Indicative, not a guarantee of outcome."
+msgstr "مسار قانوني مرافَق لمطالبات الضرر الجسدي (العجز الدائم، والعجز المؤقت، والضرر البيولوجي)، يستند إلى المصادر القانونية الموثّقة والمعتمدة للاختصاص القضائي المختار. إرشادي، دون ضمان للنتيجة."
+
+msgid "Bodily injury — sometimes referred to as biological damage — covers temporary disability, permanent disability and the broader impact on your life from a documented injury. The Studio reviews each case manually using validated legal sources and produces an assisted legal pathway, not a binding evaluation."
+msgstr "يشمل الضرر الجسدي — الذي يُشار إليه أحياناً بالضرر البيولوجي — العجز المؤقت والعجز الدائم والأثر الأوسع على حياتك الناتج عن إصابة موثّقة. ويدرس المكتب كل حالة على حدة مستعيناً بمصادر قانونية موثّقة ومعتمدة، فيضع مساراً قانونياً مرافَقاً لا تقييماً مُلزماً."
+
+msgid "Assisted legal review of insurance settlement offers in road-accident and bodily-injury cases. The Studio compares the offer against validated indicative sources and highlights what is missing. Indicative, not a guarantee of outcome."
+msgstr "مراجعة قانونية مرافَقة لعروض التسوية المقدّمة من شركات التأمين في قضايا حوادث الطرق والضرر الجسدي. يقارن المكتب العرض بالمصادر الإرشادية الموثّقة والمعتمدة ويُبرز ما هو ناقص. إرشادي، دون ضمان للنتيجة."
+
+msgid "You received an offer from an insurance company but you are not sure whether it reflects what your case is worth. The Studio reviews each offer manually, compares it against validated indicative sources and gives you an assisted legal pathway towards whether to accept, negotiate or refuse. No professional engagement is created by this review."
+msgstr "تلقّيت عرضاً من شركة تأمين لكنك لست متأكداً مما إذا كان يعكس القيمة الفعلية لحالتك. يدرس المكتب كل عرض على حدة، ويقارنه بالمصادر الإرشادية الموثّقة والمعتمدة، ويقدّم لك مساراً قانونياً مرافَقاً لتقرّر القبول أو التفاوض أو الرفض. ولا تُنشئ هذه المراجعة أي تكليف مهني."
+
+msgid "Assisted legal pathway for work-injury claims and the interaction between mandatory insurance (e.g. INAIL in Italy) and additional civil liability. Indicative, not a guarantee of outcome."
+msgstr "مسار قانوني مرافَق لمطالبات التعويض عن إصابات العمل وللعلاقة بين التأمين الإلزامي (مثل INAIL في إيطاليا) والمسؤولية المدنية الإضافية. مؤشِّر فقط، وليس ضماناً للنتيجة."
+
+msgid "Work injuries combine mandatory work-insurance coverage (e.g. INAIL in Italy) with potential civil liability of the employer or third parties. The Studio reviews each case manually to identify what is covered by mandatory insurance, what may be claimed as additional damages, and how to document the case correctly. An assisted legal pathway is provided after that review."
+msgstr "تجمع إصابات العمل بين تغطية التأمين الإلزامي على العمل (مثل INAIL في إيطاليا) والمسؤولية المدنية المحتملة لصاحب العمل أو الغير. يراجع المكتب كل ملف يدوياً لتحديد ما يغطّيه التأمين الإلزامي، وما يمكن المطالبة به كأضرار إضافية، وكيفية توثيق الملف على نحوٍ سليم. ويُحدَّد مسار قانوني مرافَق عقب هذه المراجعة."
+
+msgid "Assisted legal pathway for medical-malpractice claims. The Studio reviews the clinical documentation and identifies whether a medico-legal expert assessment is the right next step. Indicative, not a guarantee of outcome."
+msgstr "مسار قانوني مرافَق لمطالبات التعويض عن المسؤولية الطبية. يدرس المكتب الوثائق السريرية ويحدّد ما إذا كانت الخبرة الطبية الشرعية هي الخطوة التالية المناسبة. مؤشِّر فقط، وليس ضماناً للنتيجة."
+
+msgid "Medical-malpractice cases require a clinical assessment of the treatment received and a legal assessment of whether a deviation from the standard of care has caused harm. The Studio reviews the available clinical documentation, identifies whether an independent medico-legal expert is the right next step, and produces an assisted legal pathway. This page is informational; it does not constitute a clinical or legal opinion."
+msgstr "تستلزم قضايا المسؤولية الطبية تقييماً سريرياً للعلاج المتلقَّى وتقييماً قانونياً لتحديد ما إذا كان الانحراف عن أصول المهنة قد سبّب ضرراً. يدرس المكتب الوثائق السريرية المتاحة، ويحدّد ما إذا كان اللجوء إلى خبير طبي شرعي مستقل هو الخطوة التالية المناسبة، ثم يضع مساراً قانونياً مرافَقاً. هذه الصفحة ذات طابع إعلامي ولا تشكّل رأياً سريرياً أو قانونياً."
+
+msgid "Assisted legal pathway for damage claims following the death of a relative — loss of the parental / family relationship, patrimonial damage, mandatory insurance coverage. Indicative, not a guarantee of outcome."
+msgstr "مسار قانوني مرافَق لمطالبات التعويض عقب وفاة أحد الأقارب — فقدان العلاقة الأبوية أو الأسرية، والضرر المالي، وتغطية التأمين الإلزامي. مؤشِّر فقط، وليس ضماناً للنتيجة."
+
+msgid "The death of a close relative may give rise to compensation for the loss of the parental or family relationship and for patrimonial damage suffered by the surviving family. The Studio reviews each case manually with the sensitivity it requires and produces an assisted legal pathway. The Studio does not publish any automatic figure before reading the documents."
+msgstr "قد تنشأ عن وفاة أحد الأقارب المقرَّبين تعويضات عن فقدان العلاقة الأبوية أو الأسرية وعن الضرر المالي الذي يلحق بالأسرة الباقية. يراجع المكتب كل ملف يدوياً بما يقتضيه من حسٍّ إنساني، ويضع مساراً قانونياً مرافَقاً. ولا ينشر المكتب أي مبلغ تلقائي قبل الاطّلاع على الوثائق."
+
+msgid "Assisted legal pathway for foreign citizens who suffered a road-accident, work-injury or medical injury during a stay or residence in Italy. Multilingual handling (IT / FR / EN / AR). Indicative, not a guarantee of outcome."
+msgstr "مسار قانوني مُرافَق للمواطنين الأجانب الذين تعرّضوا لحادث سير أو إصابة عمل أو ضرر طبّي أثناء إقامتهم أو سكنهم في إيطاليا. معالجة متعدّدة اللغات (IT / FR / EN / AR). إرشادي وليس ضماناً للنتيجة."
+
+msgid "Foreign citizens injured during a stay or residence in Italy face a specific procedural picture: notification to the Italian insurer, language barriers, evidence collection across countries. The Studio handles the case multilingually (Italian, French, English, Arabic) and produces an assisted legal pathway after reading the documents."
+msgstr "يواجه المواطنون الأجانب الذين يتعرّضون لضرر أثناء إقامتهم أو سكنهم في إيطاليا إطاراً إجرائياً خاصاً: إخطار شركة التأمين الإيطالية، والعوائق اللغوية، وجمع الأدلّة عبر عدّة بلدان. يتولّى المكتب معالجة القضية بعدّة لغات (الإيطالية والفرنسية والإنجليزية والعربية) ويحدّد مساراً قانونياً مُرافَقاً بعد الاطّلاع على المستندات."
+
+msgid "Assisted legal pathway for cases with cross-border elements: international inheritance (Morocco, Tunisia), road accidents abroad, and disputes involving parties in different countries. Indicative, not a guarantee of outcome."
+msgstr "مسار قانوني مُرافَق للقضايا ذات العناصر العابرة للحدود: المواريث الدولية (المغرب، تونس)، وحوادث السير في الخارج، والنزاعات التي تشمل أطرافاً في بلدان مختلفة. إرشادي وليس ضماناً للنتيجة."
+
+msgid "When a case involves parties or assets across multiple countries — a road accident abroad, an inheritance opened in another jurisdiction, a contract dispute under foreign law — the first step is identifying the applicable law and the competent court. The Studio reviews each case manually and produces an assisted legal pathway after that triage."
+msgstr "عندما تشمل القضية أطرافاً أو أموالاً في عدّة بلدان — حادث سير في الخارج، أو تركة فُتحت في ولاية قضائية أخرى، أو نزاع تعاقدي يخضع لقانون أجنبي — فإنّ الخطوة الأولى هي تحديد القانون الواجب التطبيق والمحكمة المختصّة. يدرس المكتب كلّ قضية على حِدة ويحدّد مساراً قانونياً مُرافَقاً عقب هذا الفرز."
+
+msgid "How we work: official sources catalogued and validated by our legal team, only validated official sources drive a public estimate, and transparent ranges with assumptions and confidence."
+msgstr "كيف نعمل: مصادر رسمية مُفهرَسة ومُعتمَدة من فريقنا القانوني، ولا يُغذّي التقدير العلني سوى المصادر الرسمية المُعتمَدة، مع نطاقات شفافة تتضمّن الفرضيات ومستوى الموثوقية."
+
+msgid "Validation by our legal team"
+msgstr "الاعتماد من فريقنا القانوني"
+
+msgid "Each official source is catalogued and validated by our legal team before it can influence anything public. Only validated official sources drive a public estimate; superseded sources are retired and replaced."
+msgstr "تُفهرَس كل مصدر رسمي ويُعتمَد من فريقنا القانوني قبل أن يؤثّر في أي محتوى علني. ولا يُغذّي التقدير العلني سوى المصادر الرسمية المُعتمَدة؛ أمّا المصادر المتجاوَزة فتُسحَب وتُستبدَل."
+
+msgid "catalogued"
+msgstr "مُفهرَسة"
+
+msgid "validated"
+msgstr "مُعتمَدة"
+
+msgid "retired"
+msgstr "مسحوبة"
+
+msgid "When an estimate needs the legal team"
+msgstr "عندما يتطلّب التقدير تدخّل الفريق القانوني"
+
+msgid "If no validated official source covers the jurisdiction or case type you select, the platform tells you so transparently. We do not invent a fallback figure. Instead, the section follows an assisted legal pathway and we invite you to request a human legal evaluation."
+msgstr "إذا لم يُغطِّ أيُّ مصدر رسمي مُعتمَد الاختصاص القضائي أو نوع القضية الذي تختاره، تُبلِغك المنصّة بذلك بشفافية. ولا نختلق رقمًا بديلًا. بل يتّبع هذا القسم مسارًا قانونيًا مُرافَقًا، وندعوك إلى طلب تقييم قانوني بشري."
+
+msgid "When a result is shown, it is an indicative range based on official sources catalogued and validated by our legal team; only validated official sources drive a public estimate. Where no validated calculator yet exists for a jurisdiction or case type, the platform clearly says so and the section follows an assisted legal pathway with our team."
+msgstr "عند عرض نتيجة، فإنها تكون نطاقًا إرشاديًا يستند إلى مصادر رسمية موثّقة ومعتمَدة من فريقنا القانوني؛ والمصادر الرسمية المعتمَدة وحدها هي التي تُغذّي التقدير العلني. وحيثما لا يوجد بعد حاسبة معتمَدة لولاية قضائية أو نوع قضية، تُبيّن المنصة ذلك بوضوح، ويتّبع هذا القسم مسارًا قانونيًا مصحوبًا مع فريقنا."
+
+msgid "Each simulation references the legal sources used (decrees, statutes, judicial guidelines). Tables and coefficients are linked to a publication date, an effective date and a validation status. Only official sources validated by our legal team drive a public calculation; sources still being catalogued are kept out of public estimates."
+msgstr "تُشير كل محاكاة إلى المصادر القانونية المستخدَمة (المراسيم والقوانين والتوجيهات القضائية). وترتبط الجداول والمعاملات بتاريخ نشر وتاريخ نفاذ وحالة اعتماد. والمصادر الرسمية المعتمَدة من فريقنا القانوني وحدها هي التي تُغذّي أي حساب علني؛ أما المصادر التي لا تزال قيد التوثيق فتبقى خارج التقديرات العلنية."
+
+msgid "France road-accident workflow: the Studio offers an assisted legal pathway based on the Loi Badinter, the Référentiel Mornet and the Gazette du Palais capitalisation tables. No automatic amount is published before these sources have been verified for the case."
+msgstr "مسار حوادث الطرق في فرنسا: يوفّر المكتب مساراً قانونياً مرافِقاً يستند إلى قانون باداντer (Loi Badinter) ومرجع مورنيه (Référentiel Mornet) وجداول الرسملة الخاصة بـ Gazette du Palais. لا يُنشر أي مبلغ تلقائي قبل التحقق من هذه المصادر بالنسبة للحالة."
+
+msgid "Belgium road-accident workflow: the Studio offers an assisted legal pathway based on the Loi du 21 novembre 1989, the Tableau Indicatif and the Tables Schryvers. No automatic amount is published before these tables have been verified for the case."
+msgstr "مسار حوادث الطرق في بلجيكا: يوفّر المكتب مساراً قانونياً مرافِقاً يستند إلى قانون 21 نوفمبر 1989 (Loi du 21 novembre 1989) والجدول الإرشادي (Tableau Indicatif) وجداول شرايفرس (Tables Schryvers). لا يُنشر أي مبلغ تلقائي قبل التحقق من هذه الجداول بالنسبة للحالة."
+
+msgid "All fields below are optional. If you don't know a value, leave it empty. The Studio reviews each case manually and offers an assisted legal pathway; no automatic amount is published before the underlying quantification sources have been verified for the case."
+msgstr "جميع الحقول أدناه اختيارية. إذا كنت لا تعرف قيمة ما، فاتركها فارغة. يراجع المكتب كل حالة يدوياً ويوفّر مساراً قانونياً مرافِقاً؛ ولا يُنشر أي مبلغ تلقائي قبل التحقق من مصادر التقدير الأساسية بالنسبة للحالة."
+
+msgid "what kind of cases the Studio handles and what to bring for an indicative review"
+msgstr "نوع القضايا التي يتولاها المكتب وما يجب إحضاره من أجل تقييم استرشادي"
+
+msgid "Produces an indicative assessment based on validated indicative sources for the relevant family relationships."
+msgstr "يقدّم تقييماً استرشادياً يستند إلى مصادر استرشادية مُعتمَدة بشأن العلاقات الأسرية ذات الصلة."
+
+msgid "The Studio handles the case multilingually (Italian, French, English, Arabic) and produces an indicative assessment after reading the documents."
+msgstr "يتولّى المكتب القضية بعدة لغات (الإيطالية والفرنسية والإنجليزية والعربية) ويقدّم تقييماً استرشادياً بعد الاطّلاع على المستندات."
+
+msgid "Produces an indicative assessment of recoverable damages under Italian indicative sources."
+msgstr "يقدّم تقييماً استرشادياً للأضرار القابلة للتعويض وفق المصادر الاسترشادية الإيطالية."
+
+msgid "Produces an indicative assessment of the most likely jurisdictional outcome."
+msgstr "يقدّم تقييماً استرشادياً للنتيجة القضائية الأكثر ترجيحاً."
+
+msgid "[IT FAQ string reworded] ...sono profili distinti: la valutazione indicativa aiuta a individuare quanto potrebbe restare esigibile in via civilistica, oltre alla copertura obbligatoria."
+msgstr "...فهي جوانب متمايزة: يساعد التقييم الاسترشادي على تحديد ما قد يبقى مستحقاً عبر الطريق المدني، إلى جانب التغطية الإلزامية."
+
+msgid "[IT FAQ string reworded] ...la valutazione indicativa include questo passo di triage prima di qualsiasi avvio formale."
+msgstr "...يتضمّن التقييم الاسترشادي خطوة الفرز هذه قبل أي مباشرة رسمية."
