@@ -56,6 +56,7 @@ class Route:
     status: str
     url_name: str
     url_kwargs: dict = field(default_factory=dict)
+    min_inputs: str = ""  # P16: the minimal data the visitor will need
 
     @property
     def status_label(self):
@@ -65,31 +66,50 @@ class Route:
     def computes_amount(self) -> bool:
         return self.status in COMPUTES_AMOUNT
 
+    @property
+    def cta_label(self):
+        """A direct CTA that reflects the actual destination (P16)."""
+        if self.computes_amount:
+            return _("Open the calculator")
+        if self.status == APPLICABLE_LAW:
+            return _("Frame the applicable law")
+        if self.url_name.startswith("cases:wizard"):
+            # France / Belgium → guided legal pathway (wizard with checklist).
+            return _("Check documents and liability")
+        return _("Start the pre-check")
+
 
 # Order matters: Italy first (most live), then the official-source countries,
 # then the cross-border framing. Each row is grounded in a live engine or a
 # real pre-check flow — nothing aspirational.
+# Shared minimal-input hints (bound the translation surface).
+_IN_ROAD_ENGINE = _("Injury percentage and accident details")
+_IN_ROAD_PRECHECK = _("Injury or death, incapacity and documents")
+_IN_ROAD_GUIDED = _("Accident details and supporting documents")
+
 ROUTES: tuple[Route, ...] = (
     Route("IT", _("Italy"), "road_accident", _("Road accident"), ESTIMATE,
-          "cases:wizard_italy_road_accident"),
+          "cases:wizard_italy_road_accident", min_inputs=_IN_ROAD_ENGINE),
     Route("IT", _("Italy"), "medical_liability", _("Medical liability"), TABULAR,
-          "cases:wizard_italy_medical"),
+          "cases:wizard_italy_medical", min_inputs=_("Medical-legal impairment percentage")),
     Route("IT", _("Italy"), "insurance_offer", _("Insurance offer"), COMPARISON,
-          "cases:wizard_insurance_offer"),
+          "cases:wizard_insurance_offer", min_inputs=_("The offer amount and the injury details")),
     Route("IT", _("Italy"), "work_injury", _("Work injury (INAIL)"), PRE_CHECK,
-          "core:precheck", {"slug": "inail"}),
+          "core:precheck", {"slug": "inail"}, min_inputs=_("Event date, impairment and documents")),
     Route("IT", _("Italy"), "loss_of_relative", _("Loss of a relative"), GUIDED,
-          "core:precheck", {"slug": "loss-of-relative"}),
+          "core:precheck", {"slug": "loss-of-relative"},
+          min_inputs=_("Relationship, cause of death and documents")),
     Route("MA", _("Morocco"), "road_accident", _("Road accident"), PRE_CHECK,
-          "core:precheck", {"slug": "morocco-road-accident"}),
+          "core:precheck", {"slug": "morocco-road-accident"}, min_inputs=_IN_ROAD_PRECHECK),
     Route("TN", _("Tunisia"), "road_accident", _("Road accident"), PRE_CHECK,
-          "core:precheck", {"slug": "tunisia-road-accident"}),
+          "core:precheck", {"slug": "tunisia-road-accident"}, min_inputs=_IN_ROAD_PRECHECK),
     Route("FR", _("France"), "road_accident", _("Road accident"), GUIDED,
-          "cases:wizard_france_road_accident"),
+          "cases:wizard_france_road_accident", min_inputs=_IN_ROAD_GUIDED),
     Route("BE", _("Belgium"), "road_accident", _("Road accident"), GUIDED,
-          "cases:wizard_belgium_road_accident"),
+          "cases:wizard_belgium_road_accident", min_inputs=_IN_ROAD_GUIDED),
     Route("INT", _("International"), "cross_border", _("Cross-border road accident"),
-          APPLICABLE_LAW, "core:precheck", {"slug": "international-road-accident"}),
+          APPLICABLE_LAW, "core:precheck", {"slug": "international-road-accident"},
+          min_inputs=_("The countries involved and the documents")),
 )
 
 
