@@ -75,3 +75,54 @@ At least one official worked example: e.g. *grado 10%, età X → indennizzo in
 capitale Y €*, asserted to the cent (mirrors `test_italy_art139_micro`).
 Until that canary is green the engine stays fail-closed and the public stays on
 the guided path.
+
+---
+
+## P11 — verified extraction evidence (2026-06-26)
+
+Genuine fetch+parse attempt (tools available in this env: pdfplumber, pdftotext,
+tesseract, pandas, PIL). Network to official sources confirmed reachable.
+
+**Authoritative current-table chain (verified via the INAIL portal):**
+
+- Original table: **D.M. Lavoro 12/07/2000** (GU 25/07/2000 n. 172, atto
+  `000A9926`) — applies to infortuni/MP dal 25/07/2000, gradi **6%–15%** in
+  capitale, **≥16%** in rendita.
+  - GU permalink: https://www.gazzettaufficiale.it/eli/id/2000/07/25/000A9926/sg
+- **Current table (in force):** *Nuova tabella di indennizzo del danno biologico
+  in capitale*, **Determinazione Presidenziale INAIL n. 2 del 09/01/2019**,
+  approvata con **D.M. Lavoro n. 45 del 23/04/2019** — sostituisce la tabella
+  del 2000, +~40%, assorbe le rivalutazioni straordinarie 2008 (8,68%) e 2014
+  (7,57%) = +16,25% cumulato.
+- **Latest revaluation:** **Delibera INAIL C.d.A. n. 43 del 26/03/2025**,
+  efficace **01/07/2025** (rivalutazione annuale).
+- Portal page (verified, no downloadable value table attached):
+  `.../prestazioni-economiche/indennizzo-in-capitale-per-la-menomazione-...html`
+
+**What was downloaded and hashed (kept OUT of the repo, in temp):**
+
+- `Allegato 5.pdf` from INAIL circolari — SHA256
+  `046b823c9a8b3ae8a05fb3d78f713f59739976143dd980d0ba61b8e317c245de` —
+  **identified as MOD 16/TER S.A. 2024 (modulo di calcolo agli eredi), NOT the
+  value table.** It references *"Importo dell'indennizzo da tabella"* but does
+  not contain the grado×età values.
+- The lavoro.gov.it decree mirror returned an HTML stub (179 B), not the PDF.
+
+**Conclusion:** the grado×età capital values are NOT published on the portal as
+a clean parseable file; the live values require the **2019 table revalued to the
+26/03/2025 delibera (eff. 01/07/2025)**. Extracting+verifying them
+cell-by-cell autonomously would risk false figures — so the engine stays unbuilt
+and the public section stays a guided path until the values below are validated.
+
+## Precise ask (so an engine can be built)
+
+> Fornisci la **tabella indennizzo danno biologico in capitale** vigente
+> (Det. Pres. INAIL 2/2019 + D.M. 45/2019, rivalutata alla Delibera CdA 43 del
+> 26/03/2025, eff. 01/07/2025): per ogni **grado 6–15%** e **fascia d'età**
+> l'importo in euro (specifica se il genere incide ancora o se è stato
+> unificato dal 2019). Indica la fonte/pagina di ciascuna riga.
+
+## Canary required
+
+Almeno un esempio ufficiale (grado, età → importo in capitale €) verificabile,
+asserito al centesimo, prima di attivare `inail_biological_damage_capital`.
