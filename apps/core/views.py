@@ -792,6 +792,8 @@ def country_readiness_json(request):
 
 @require_GET
 def case_types(request):
+    from apps.core.public_labels import humanize as humanize_case
+
     registered_pairs = list_available_calculators()
     pairs_by_case_type: dict[str, list[str]] = {}
     for j, c in registered_pairs:
@@ -825,6 +827,8 @@ def case_types(request):
             {
                 "code": case_type.value,
                 "label": case_type.label,
+                # P17: the public never sees the raw enum code — humanise it.
+                "display_label": humanize_case(case_type.value),
                 "available": registered and not all_scaffold,
                 "scaffold_only": all_scaffold,
                 "public_status": get_country_public_status(rep_country, case_type.value),
