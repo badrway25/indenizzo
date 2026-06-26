@@ -324,8 +324,8 @@ def test_italy_smoke_engine_preserves_pass2_contract(italy_smoke_qa_pass2):
         ("/wizard/ma/inheritance/", "Moudawana"),
         ("/wizard/tn/inheritance/", "Code du statut personnel"),
         # /methodology/ meta is now translated in IT; assert the Italian
-        # rendering of "controlled validation lifecycle".
-        ("/methodology/", "ciclo di validazione"),
+        # rendering of "official sources catalogued and validated".
+        ("/methodology/", "catalogate e validate"),
         # /contact/ meta is now translated in IT; "Studio" is the locale-stable
         # token present in both the EN source and the IT translation.
         ("/contact/", "Studio"),

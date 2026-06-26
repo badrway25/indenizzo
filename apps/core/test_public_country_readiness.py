@@ -59,7 +59,7 @@ def test_italy_is_available_and_can_calculate():
 @pytest.mark.parametrize("cc", ["FR", "BE", "MA", "TN"])
 def test_non_italian_in_validation_cannot_calculate(cc):
     r = get_country_readiness(cc)
-    assert r.public_status == "legal_validation_in_progress"
+    assert r.public_status == "official_guided_path"
     assert r.can_calculate is False
     assert r.manual_review_available is True
 
@@ -102,7 +102,7 @@ def test_readiness_json_endpoint():
     data = json.loads(body)
     by = {c["country_code"]: c for c in data["countries"]}
     assert by["IT"]["public_status"] == "available" and by["IT"]["can_calculate"] is True
-    assert by["FR"]["public_status"] == "legal_validation_in_progress"
+    assert by["FR"]["public_status"] == "official_guided_path"
     assert by["FR"]["can_calculate"] is False
     for tok in FORBIDDEN:
         assert tok not in body, f"leak {tok!r} in readiness.json"
