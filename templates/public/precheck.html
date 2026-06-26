@@ -7,214 +7,205 @@
 
 {% block content %}
 {% include "partials/_premium_hero_image.html" %}
-<section class="max-w-3xl mx-auto px-5 lg:px-8 py-16">
+<section class="max-w-6xl mx-auto px-5 lg:px-8 py-16">
   <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{{ flow.country_code }} · {% translate "Guided pre-check" %}</p>
   <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{{ flow.title }}</h1>
-
-  {# Status badge — pre-check / guided / applicable-law, never a weak label. #}
   <p class="mt-4">
     <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-500/15 text-gold-700 text-xs font-semibold uppercase tracking-[0.14em]">
       <span aria-hidden="true">●</span>{{ flow.status_label }}
     </span>
   </p>
+  <p class="mt-5 max-w-3xl text-lg text-ink-800 leading-relaxed">{{ flow.intro }}</p>
 
-  <p class="mt-5 text-lg text-ink-800 leading-relaxed">{{ flow.intro }}</p>
-
-  {# Official source chips. #}
-  {% if flow.official_sources %}
-    <div class="mt-6" aria-label="{% translate 'Official source basis' %}">
-      <p class="text-[11px] uppercase tracking-[0.18em] text-stone2-500 font-semibold">{% translate "Official source basis" %}</p>
-      <ul class="mt-2 flex flex-wrap gap-2">
-        {% for src in flow.official_sources %}
-          <li class="inline-flex items-center gap-1.5 rounded-full border border-gold-400/50 bg-sand-100 px-3 py-1 text-xs text-ink-900"><span aria-hidden="true" class="text-gold-600">§</span>{{ src }}</li>
-        {% endfor %}
-      </ul>
-    </div>
-  {% endif %}
-
-  {# --- Interactive pre-check form (P16). Posts to itself; stateless. --- #}
-  {% if flow.fields %}
-  <form method="post" class="mt-10" data-precheck-form aria-label="{% translate 'Pre-check questions' %}">
-    {% csrf_token %}
-    <div class="rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7">
-      <div class="flex items-baseline justify-between gap-4">
-        <div>
+  <div class="mt-10 precheck-layout">
+    {# ---- Main column: interactive form + guided result ---- #}
+    <div>
+      {% if flow.fields %}
+      <form method="post" data-precheck-form aria-label="{% translate 'Pre-check questions' %}">
+        {% csrf_token %}
+        <div class="premium-card p-6 lg:p-7">
           <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Guided questions" %}</p>
           <h2 class="mt-2 font-serif text-2xl text-ink-950">{% translate "Tell us about your case" %}</h2>
-        </div>
-      </div>
 
-      {# Completeness progress (JS-enhanced; harmless without JS). #}
-      <div class="mt-5" data-precheck-progress hidden>
-        <div class="flex items-center justify-between text-[11px] uppercase tracking-[0.16em] text-stone2-500 font-semibold">
-          <span>{% translate "Completeness" %}</span>
-          <span data-precheck-progress-label>0%</span>
-        </div>
-        <div class="mt-2 h-1.5 rounded-full bg-stone2-200 overflow-hidden">
-          <div class="h-full w-0 bg-gold-500 transition-all duration-300" data-precheck-progress-bar></div>
-        </div>
-      </div>
-
-      <div class="mt-6 space-y-5">
-        {% for item in form_fields %}
-          {% with f=item.field %}
-          <div class="precheck-field"
-               {% if f.show_if %}data-precheck-show-if="{{ f.show_if.0 }}:{{ f.show_if.1 }}" hidden{% endif %}>
-            <label class="block text-sm font-semibold text-ink-900" {% if f.type != 'radio' %}for="id_{{ f.id }}"{% endif %}>
-              {{ f.label }}{% if f.required %} <span class="text-gold-600" aria-hidden="true">*</span>{% endif %}
-            </label>
-
-            {% if f.type == 'select' %}
-              <select id="id_{{ f.id }}" name="{{ f.id }}" {% if f.required %}required{% endif %}
-                      class="mt-2 w-full rounded-xl border border-stone2-300 bg-sand-50 px-3.5 py-2.5 text-sm text-ink-900 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30 focus:outline-none">
-                <option value="">{% translate "Select…" %}</option>
-                {% for val, lbl in f.choices %}
-                  <option value="{{ val }}" {% if val == item.value %}selected{% endif %}>{{ lbl }}</option>
-                {% endfor %}
-              </select>
-
-            {% elif f.type == 'radio' %}
-              <div class="mt-2 flex flex-wrap gap-2" role="radiogroup" aria-label="{{ f.label }}">
-                {% for val, lbl in f.choices %}
-                  <label class="inline-flex items-center gap-2 rounded-full border border-stone2-300 bg-sand-50 px-4 py-2 text-sm text-ink-900 cursor-pointer hover:border-gold-500 has-[:checked]:border-gold-600 has-[:checked]:bg-gold-500/10 has-[:checked]:text-gold-700">
-                    <input type="radio" name="{{ f.id }}" value="{{ val }}" class="accent-gold-600" {% if val == item.value %}checked{% endif %} {% if f.required %}required{% endif %}>
-                    {{ lbl }}
-                  </label>
-                {% endfor %}
-              </div>
-
-            {% elif f.type == 'date' %}
-              <input type="date" id="id_{{ f.id }}" name="{{ f.id }}" value="{{ item.value }}" {% if f.required %}required{% endif %}
-                     class="mt-2 w-full rounded-xl border border-stone2-300 bg-sand-50 px-3.5 py-2.5 text-sm text-ink-900 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30 focus:outline-none">
-
-            {% elif f.type == 'number' %}
-              <input type="number" id="id_{{ f.id }}" name="{{ f.id }}" value="{{ item.value }}"
-                     {% if f.min_value is not None %}min="{{ f.min_value }}"{% endif %} {% if f.max_value is not None %}max="{{ f.max_value }}"{% endif %}
-                     {% if f.required %}required{% endif %} inputmode="numeric"
-                     class="mt-2 w-full rounded-xl border border-stone2-300 bg-sand-50 px-3.5 py-2.5 text-sm text-ink-900 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30 focus:outline-none">
-
-            {% else %}
-              <input type="text" id="id_{{ f.id }}" name="{{ f.id }}" value="{{ item.value }}" {% if f.required %}required{% endif %}
-                     class="mt-2 w-full rounded-xl border border-stone2-300 bg-sand-50 px-3.5 py-2.5 text-sm text-ink-900 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30 focus:outline-none">
-            {% endif %}
-
-            {% if f.help_text %}<p class="mt-1.5 text-xs text-stone2-500">{{ f.help_text }}</p>{% endif %}
+          {# Completeness progress (JS-enhanced; harmless without JS). #}
+          <div class="mt-5" data-precheck-progress hidden>
+            <div class="flex items-center justify-between text-[11px] uppercase tracking-[0.16em] text-stone2-500 font-semibold">
+              <span>{% translate "Completeness" %}</span><span data-precheck-progress-label>0%</span>
+            </div>
+            <div class="mt-2 readiness-track"><div class="readiness-fill w-0" data-precheck-progress-bar></div></div>
           </div>
-          {% endwith %}
-        {% endfor %}
-      </div>
 
-      <div class="mt-7 flex flex-wrap items-center gap-3">
-        <button type="submit" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
-          {% translate "Get my guided result" %} <span aria-hidden="true">→</span>
-        </button>
-        <p class="text-xs text-stone2-500">{% translate "Your answers are processed only to build this result and are not stored." %}</p>
-      </div>
-    </div>
-  </form>
-  {% endif %}
+          <div class="mt-6 space-y-5">
+            {% for item in form_fields %}
+              {% with f=item.field %}
+              <div class="precheck-field"
+                   {% if f.show_if %}data-precheck-show-if="{{ f.show_if.0 }}:{{ f.show_if.1 }}" hidden{% endif %}>
+                <label class="block text-sm font-semibold text-ink-900" {% if f.type != 'radio' %}for="id_{{ f.id }}"{% endif %}>
+                  {{ f.label }}{% if f.required %} <span class="text-gold-600" aria-hidden="true">*</span>{% endif %}
+                </label>
+                {% if f.type == 'select' %}
+                  <select id="id_{{ f.id }}" name="{{ f.id }}" {% if f.required %}required{% endif %}
+                          class="field-select mt-2 w-full rounded-xl border border-stone2-300 bg-sand-50 px-3.5 py-2.5 text-sm text-ink-900 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30 focus:outline-none">
+                    <option value="">{% translate "Select…" %}</option>
+                    {% for val, lbl in f.choices %}<option value="{{ val }}" {% if val == item.value %}selected{% endif %}>{{ lbl }}</option>{% endfor %}
+                  </select>
+                {% elif f.type == 'radio' %}
+                  <div class="mt-2 flex flex-wrap gap-2" role="radiogroup" aria-label="{{ f.label }}">
+                    {% for val, lbl in f.choices %}
+                      <label class="inline-flex items-center gap-2 rounded-full border border-stone2-300 bg-sand-50 px-4 py-2 text-sm text-ink-900 cursor-pointer hover:border-gold-500 has-[:checked]:border-gold-600 has-[:checked]:bg-gold-500/10 has-[:checked]:text-gold-700">
+                        <input type="radio" name="{{ f.id }}" value="{{ val }}" class="accent-gold-600" {% if val == item.value %}checked{% endif %} {% if f.required %}required{% endif %}>{{ lbl }}
+                      </label>
+                    {% endfor %}
+                  </div>
+                {% elif f.type == 'date' %}
+                  <input type="date" id="id_{{ f.id }}" name="{{ f.id }}" value="{{ item.value }}" {% if f.required %}required{% endif %}
+                         class="mt-2 w-full rounded-xl border border-stone2-300 bg-sand-50 px-3.5 py-2.5 text-sm text-ink-900 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30 focus:outline-none">
+                {% elif f.type == 'number' %}
+                  <input type="number" id="id_{{ f.id }}" name="{{ f.id }}" value="{{ item.value }}"
+                         {% if f.min_value is not None %}min="{{ f.min_value }}"{% endif %} {% if f.max_value is not None %}max="{{ f.max_value }}"{% endif %}
+                         {% if f.required %}required{% endif %} inputmode="numeric"
+                         class="mt-2 w-full rounded-xl border border-stone2-300 bg-sand-50 px-3.5 py-2.5 text-sm text-ink-900 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30 focus:outline-none">
+                {% else %}
+                  <input type="text" id="id_{{ f.id }}" name="{{ f.id }}" value="{{ item.value }}" {% if f.required %}required{% endif %}
+                         class="mt-2 w-full rounded-xl border border-stone2-300 bg-sand-50 px-3.5 py-2.5 text-sm text-ink-900 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30 focus:outline-none">
+                {% endif %}
+                {% if f.help_text %}<p class="mt-1.5 text-xs text-stone2-500">{{ f.help_text }}</p>{% endif %}
+              </div>
+              {% endwith %}
+            {% endfor %}
+          </div>
 
-  {# --- Personalised guided result (after POST) --- #}
-  {% if result %}
-  <section id="precheck-result" class="mt-8 scroll-mt-24 rounded-3xl border border-gold-400/60 bg-sand-100/70 shadow-card p-6 lg:p-7" aria-live="polite">
-    <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Your guided result" %}</p>
-
-    {# Completeness badge. #}
-    <p class="mt-3">
-      {% if result.completeness_tone == 'ok' %}
-        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ok-600/10 text-ok-600 text-xs font-semibold uppercase tracking-[0.14em]"><span aria-hidden="true">●</span>{{ result.completeness_label }}</span>
-      {% else %}
-        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-500/15 text-gold-700 text-xs font-semibold uppercase tracking-[0.14em]"><span aria-hidden="true">●</span>{{ result.completeness_label }}</span>
+          <div class="mt-7 flex flex-wrap items-center gap-3">
+            <button type="submit" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
+              {% translate "Get my guided result" %} <span aria-hidden="true">→</span>
+            </button>
+            <p class="text-xs text-stone2-500">{% translate "Your answers are processed only to build this result and are not stored." %}</p>
+          </div>
+        </div>
+      </form>
       {% endif %}
-    </p>
 
-    {# Guidance messages. #}
-    {% if result.messages %}
-      <ul class="mt-5 space-y-3">
-        {% for msg in result.messages %}
-          <li class="flex gap-3 text-sm text-ink-900 leading-relaxed"><span aria-hidden="true" class="mt-1 inline-block w-1.5 h-1.5 rounded-full bg-gold-500 shrink-0"></span><span>{{ msg }}</span></li>
-        {% endfor %}
-      </ul>
-    {% endif %}
+      {% if result %}
+      <section id="precheck-result" class="mt-8 scroll-mt-24 premium-card p-6 lg:p-7" aria-live="polite">
+        <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Your guided result" %}</p>
 
-    <div class="mt-6 grid sm:grid-cols-2 gap-5">
-      {# Missing documents / data. #}
-      <div>
-        <p class="text-[11px] uppercase tracking-[0.18em] text-stone2-500 font-semibold">{% translate "Still to prepare" %}</p>
-        {% if result.missing_documents %}
-          <ul class="mt-3 space-y-2 text-sm text-ink-900">
-            {% for doc in result.missing_documents %}
-              <li class="flex gap-2.5"><span aria-hidden="true" class="mt-0.5 text-gold-600">☐</span><span>{{ doc }}</span></li>
+        {# Documental readiness meter — organisational, never a money figure. #}
+        <div class="mt-4">
+          <div class="flex items-center justify-between text-[11px] uppercase tracking-[0.16em] text-stone2-500 font-semibold">
+            <span>{% translate "Documental readiness" %}</span><span>{{ result.readiness_pct }}%</span>
+          </div>
+          <div class="mt-2 readiness-track"><div class="readiness-fill w-0" data-readiness-fill="{{ result.readiness_pct }}"></div></div>
+          <p class="mt-2">
+            {% if result.completeness_tone == 'ok' %}
+              <span class="premium-badge premium-badge-success">{{ result.completeness_label }}</span>
+            {% else %}
+              <span class="premium-badge premium-badge-warning">{{ result.completeness_label }}</span>
+            {% endif %}
+          </p>
+        </div>
+
+        {% if result.messages %}
+          <ul class="mt-5 space-y-3">
+            {% for msg in result.messages %}
+              <li class="flex gap-3 text-sm text-ink-900 leading-relaxed"><span aria-hidden="true" class="mt-1 inline-block w-1.5 h-1.5 rounded-full bg-gold-500 shrink-0"></span><span>{{ msg }}</span></li>
             {% endfor %}
           </ul>
-        {% else %}
-          <p class="mt-3 text-sm text-ok-600">{% translate "No essential document is missing from your answers." %}</p>
         {% endif %}
-      </div>
 
-      {# Applicable official sources. #}
-      <div>
-        <p class="text-[11px] uppercase tracking-[0.18em] text-stone2-500 font-semibold">{% translate "Applicable official sources" %}</p>
+        {# Potential path + what unlocks a numeric estimate. #}
+        {% if result.potential_path %}
+        <div class="mt-6 rounded-2xl border border-gold-400/40 bg-white px-5 py-4">
+          <p class="text-[11px] uppercase tracking-[0.18em] text-gold-700 font-semibold">{% translate "Potential path" %}</p>
+          <p class="mt-1.5 text-sm text-ink-900 leading-relaxed">{{ result.potential_path }}</p>
+          {% if result.unlocking_data %}
+            <p class="mt-3 text-[11px] uppercase tracking-[0.18em] text-stone2-500 font-semibold">{% translate "What unlocks a numeric estimate" %}</p>
+            <ul class="mt-2 space-y-1.5 text-sm text-ink-900">
+              {% for u in result.unlocking_data %}<li class="flex gap-2.5"><span aria-hidden="true" class="mt-0.5 text-gold-600">→</span><span>{{ u }}</span></li>{% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        {# Missing documents/data. #}
+        <div class="mt-6">
+          <p class="text-[11px] uppercase tracking-[0.18em] text-stone2-500 font-semibold">{% translate "Still to prepare" %}</p>
+          {% if result.missing_documents %}
+            <ul class="mt-3 space-y-2 text-sm text-ink-900">
+              {% for doc in result.missing_documents %}<li class="flex gap-2.5"><span aria-hidden="true" class="mt-0.5 text-gold-600">☐</span><span>{{ doc }}</span></li>{% endfor %}
+            </ul>
+          {% else %}
+            <p class="mt-3 text-sm text-ok-600">{% translate "No essential document is missing from your answers." %}</p>
+          {% endif %}
+        </div>
+
+        {% if result.answered_summary %}
+          <details class="mt-6 rounded-2xl border border-stone2-200 bg-white px-5 py-3">
+            <summary class="text-sm font-semibold text-ink-900 cursor-pointer">{% translate "Summary of your answers" %}</summary>
+            <dl class="mt-3 grid sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
+              {% for label, value in result.answered_summary %}
+                <div class="flex justify-between gap-3 border-b border-stone2-100 pb-1.5"><dt class="text-stone2-500">{{ label }}</dt><dd class="text-ink-900 text-right">{{ value }}</dd></div>
+              {% endfor %}
+            </dl>
+          </details>
+        {% endif %}
+
+        <div class="mt-6 rounded-2xl border border-ink-950/10 bg-white px-5 py-4">
+          <p class="text-[11px] uppercase tracking-[0.18em] text-gold-700 font-semibold">{% translate "Recommended next step" %}</p>
+          <p class="mt-1.5 text-sm text-ink-900 leading-relaxed">{{ result.next_step }}</p>
+          <div class="mt-4">
+            {% if result.cta_kwargs.slug %}
+              <a href="{% url result.cta_url_name slug=result.cta_kwargs.slug %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">{{ result.cta_label }} <span aria-hidden="true">→</span></a>
+            {% else %}
+              <a href="{% url result.cta_url_name %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">{{ result.cta_label }} <span aria-hidden="true">→</span></a>
+            {% endif %}
+          </div>
+        </div>
+
+        <p class="mt-5 text-xs text-stone2-500 leading-relaxed">{% translate "This pre-check does not calculate an amount: it organises the data you need based on official sources." %}</p>
+      </section>
+      {% endif %}
+    </div>
+
+    {# ---- Premium sidebar: sources, documents, next step (sticky desktop) ---- #}
+    <aside class="mt-8 premium-sidebar-sticky space-y-5">
+      {% if flow.official_sources %}
+      <div class="premium-card p-5">
+        <div class="flex items-center gap-3">
+          <span class="icon-medallion">{% include "partials/_icon.html" with name="scale" icon_class="w-4 h-4" %}</span>
+          <h2 class="font-serif text-base text-ink-950">{% translate "Official sources" %}</h2>
+        </div>
         <ul class="mt-3 flex flex-wrap gap-2">
-          {% for src in result.applicable_sources %}
-            <li class="inline-flex items-center gap-1.5 rounded-full border border-gold-400/50 bg-white px-3 py-1 text-xs text-ink-900"><span aria-hidden="true" class="text-gold-600">§</span>{{ src }}</li>
+          {% for src in flow.official_sources %}
+            <li class="inline-flex items-center gap-1.5 rounded-full border border-gold-400/50 bg-sand-100 px-3 py-1 text-xs text-ink-900"><span aria-hidden="true" class="text-gold-600">§</span>{{ src }}</li>
           {% endfor %}
         </ul>
       </div>
-    </div>
+      {% endif %}
 
-    {# Answered summary. #}
-    {% if result.answered_summary %}
-      <details class="mt-6 rounded-2xl border border-stone2-200 bg-white px-5 py-3">
-        <summary class="text-sm font-semibold text-ink-900 cursor-pointer">{% translate "Summary of your answers" %}</summary>
-        <dl class="mt-3 grid sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
-          {% for label, value in result.answered_summary %}
-            <div class="flex justify-between gap-3 border-b border-stone2-100 pb-1.5">
-              <dt class="text-stone2-500">{{ label }}</dt>
-              <dd class="text-ink-900 text-right">{{ value }}</dd>
-            </div>
-          {% endfor %}
-        </dl>
-      </details>
-    {% endif %}
-
-    {# Next step + CTA. #}
-    <div class="mt-6 rounded-2xl border border-ink-950/10 bg-white px-5 py-4">
-      <p class="text-[11px] uppercase tracking-[0.18em] text-gold-700 font-semibold">{% translate "Recommended next step" %}</p>
-      <p class="mt-1.5 text-sm text-ink-900 leading-relaxed">{{ result.next_step }}</p>
-      <div class="mt-4">
-        {% if result.cta_kwargs.slug %}
-          <a href="{% url result.cta_url_name slug=result.cta_kwargs.slug %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">{{ result.cta_label }} <span aria-hidden="true">→</span></a>
-        {% else %}
-          <a href="{% url result.cta_url_name %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">{{ result.cta_label }} <span aria-hidden="true">→</span></a>
-        {% endif %}
+      {% if flow.documents %}
+      <div class="premium-card p-5">
+        <div class="flex items-center gap-3">
+          <span class="icon-medallion">{% include "partials/_icon.html" with name="list-checks" icon_class="w-4 h-4" %}</span>
+          <h2 class="font-serif text-base text-ink-950">{% translate "Documents to prepare" %}</h2>
+        </div>
+        <ul class="mt-3 space-y-2.5 text-sm text-ink-900 leading-relaxed">
+          {% for doc in flow.documents %}<li class="flex gap-2.5"><span aria-hidden="true" class="mt-0.5 text-gold-600">☐</span><span>{{ doc }}</span></li>{% endfor %}
+        </ul>
       </div>
-    </div>
+      {% endif %}
 
-    <p class="mt-5 text-xs text-stone2-500 leading-relaxed">
-      {% translate "This pre-check does not calculate an amount: it organises the data you need based on official sources." %}
-    </p>
-  </section>
-  {% endif %}
-
-  {# Reference: full document checklist for this flow. #}
-  {% if flow.documents %}
-    <div class="mt-8 rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7">
-      <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Documents needed" %}</p>
-      <ul class="mt-4 space-y-3 text-sm text-ink-900 leading-relaxed">
-        {% for doc in flow.documents %}
-          <li class="flex gap-3"><span aria-hidden="true" class="mt-0.5 text-gold-600">☐</span><span>{{ doc }}</span></li>
-        {% endfor %}
-      </ul>
-    </div>
-  {% endif %}
-
-  <div class="mt-6">
-    <a href="{% url 'core:services' %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink-950/15 text-ink-950 hover:bg-stone2-100 font-semibold">{% translate "Back to services" %}</a>
+      <div class="premium-card p-5">
+        <div class="flex items-center gap-3">
+          <span class="icon-medallion">{% include "partials/_icon.html" with name="arrow-right" icon_class="w-4 h-4" %}</span>
+          <h2 class="font-serif text-base text-ink-950">{% translate "Next step" %}</h2>
+        </div>
+        <p class="mt-3 text-sm text-stone2-500 leading-relaxed">{% translate "Answer the questions to get a guided result, then ask the Studio for a documental check on the official sources." %}</p>
+        <a href="{% url 'core:services' %}" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-ink-950 hover:text-gold-700">{% translate "Back to services" %} <span aria-hidden="true">→</span></a>
+      </div>
+    </aside>
   </div>
 
-  {# Mandatory no-amount disclaimer. #}
-  <p class="mt-6 text-xs text-stone2-500 leading-relaxed">
+  <p class="mt-10 text-xs text-stone2-500 leading-relaxed border-t border-stone2-200 pt-6">
     {% translate "No amount is calculated without a verified official table or formula." %}
   </p>
 </section>

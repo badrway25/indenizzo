@@ -60,6 +60,21 @@ _FOREIGN_DOCS = _("Foreign documents to be translated / legalised")
 _NS_DOCUMENTAL = _("Request a documental check from the Studio on the official sources above.")
 _NS_LAW = _("Request a cross-border framing of the applicable law and the competent court.")
 
+# Potential path — the official route this case would follow toward a figure.
+_PATH_INAIL = _("Official INAIL calculation, once the capital / annuity table is validated")
+_PATH_MA = _("Official Dahir / ACAPS barème (capital de référence), once validated")
+_PATH_TN = _("Official Code des assurances barème (loi 2005-86), once validated")
+_PATH_PARENTAL = _("Guided assessment of the parental / family damage")
+_PATH_LAW = _("Applicable-law framing under Rome II, before any quantification")
+
+# Data that would unlock a numeric estimate (honest — no figure is implied now).
+_UNLOCK_INAIL = _("A validated INAIL capital / annuity table for the indicated impairment")
+_UNLOCK_MA = _("A validated capital-de-référence table (Dahir / ACAPS)")
+_UNLOCK_TN = _("A validated Code des assurances barème (loi 2005-86)")
+_UNLOCK_LIABILITY = _("Established liability and the assessed permanent incapacity")
+_UNLOCK_PARENTAL = _("The documented family relationship and the established liability")
+_UNLOCK_LAW = _("Identification of the applicable law and the competent court")
+
 
 @dataclass(frozen=True)
 class PreCheckResult:
@@ -73,6 +88,9 @@ class PreCheckResult:
     cta_url_name: str = "crm:contact"
     cta_kwargs: dict = field(default_factory=dict)
     has_numeric_estimate: bool = False  # always False for these flows
+    readiness_pct: int = 0  # documental readiness, NOT a monetary figure
+    potential_path: str = ""  # the official route toward a figure
+    unlocking_data: tuple = ()  # what would unlock a numeric estimate
 
     @property
     def completeness_label(self):
@@ -103,6 +121,20 @@ def _completeness(present_flags):
     if any(present):
         return PARTIAL
     return INITIAL
+
+
+def _readiness(flow, answers):
+    """Documental readiness as a percentage of the applicable fields answered.
+
+    This is an organisational completeness signal, NOT a monetary estimate.
+    Conditional fields whose `show_if` is not met are excluded from the count.
+    """
+    applicable = [f for f in flow.fields
+                  if not (f.show_if and answers.get(f.show_if[0]) != f.show_if[1])]
+    if not applicable:
+        return 0
+    answered = sum(1 for f in applicable if (answers.get(f.id) or "").strip())
+    return round(answered / len(applicable) * 100)
 
 
 def _summary(flow, answers):
@@ -148,6 +180,9 @@ def _eval_inail(flow, answers):
         messages=tuple(messages),
         next_step=_NS_DOCUMENTAL,
         cta_label=flow.cta_label,
+        readiness_pct=_readiness(flow, answers),
+        potential_path=_PATH_INAIL,
+        unlocking_data=(_UNLOCK_INAIL, _UNLOCK_LIABILITY),
     )
 
 
@@ -181,10 +216,13 @@ def _eval_loss(flow, answers):
         cta_label=cta_label,
         cta_url_name=cta_url,
         cta_kwargs=cta_kwargs,
+        readiness_pct=_readiness(flow, answers),
+        potential_path=_PATH_PARENTAL,
+        unlocking_data=(_UNLOCK_PARENTAL,),
     )
 
 
-def _eval_road(flow, answers, ready_message):
+def _eval_road(flow, answers, ready_message, potential_path, unlock):
     """Shared logic for Morocco / Tunisia road-accident flows."""
     missing = []
     if not _yes(answers, "police_report"):
@@ -213,6 +251,9 @@ def _eval_road(flow, answers, ready_message):
         messages=tuple(messages),
         next_step=_NS_DOCUMENTAL,
         cta_label=flow.cta_label,
+        readiness_pct=_readiness(flow, answers),
+        potential_path=potential_path,
+        unlocking_data=(unlock, _UNLOCK_LIABILITY),
     )
 
 
@@ -235,6 +276,9 @@ def _eval_international(flow, answers):
         messages=tuple(messages),
         next_step=_NS_LAW,
         cta_label=flow.cta_label,
+        readiness_pct=_readiness(flow, answers),
+        potential_path=_PATH_LAW,
+        unlocking_data=(_UNLOCK_LAW,),
     )
 
 
@@ -245,9 +289,9 @@ def evaluate(flow, answers) -> PreCheckResult:
     if flow.slug == "loss-of-relative":
         return _eval_loss(flow, answers)
     if flow.slug == "morocco-road-accident":
-        return _eval_road(flow, answers, _M_MA_READY)
+        return _eval_road(flow, answers, _M_MA_READY, _PATH_MA, _UNLOCK_MA)
     if flow.slug == "tunisia-road-accident":
-        return _eval_road(flow, answers, _M_TN_READY)
+        return _eval_road(flow, answers, _M_TN_READY, _PATH_TN, _UNLOCK_TN)
     if flow.slug == "international-road-accident":
         return _eval_international(flow, answers)
     # Defensive fallback — should be unreachable (every flow is handled).
@@ -259,4 +303,5 @@ def evaluate(flow, answers) -> PreCheckResult:
         messages=(),
         next_step=_NS_DOCUMENTAL,
         cta_label=flow.cta_label,
+        readiness_pct=_readiness(flow, answers),
     )

@@ -366,6 +366,17 @@
     update();
   }
 
+  /* 10. Readiness fill (P17) -------------------------------------------------
+   * Sets the documental-readiness bar width from data-readiness-fill via the
+   * CSSOM (CSP forbids inline style attributes). No-op if the element absent. */
+  function initReadinessFill() {
+    var els = document.querySelectorAll("[data-readiness-fill]");
+    Array.prototype.forEach.call(els, function (el) {
+      var pct = parseInt(el.getAttribute("data-readiness-fill"), 10);
+      if (!isNaN(pct)) el.style.width = Math.max(0, Math.min(100, pct)) + "%";
+    });
+  }
+
   ready(function () {
     initReveal();
     initStickyCta();
@@ -376,5 +387,6 @@
     initMagnetic();
     initTilt();
     initPrecheckForm();
+    initReadinessFill();
   });
 })();
