@@ -5533,3 +5533,9 @@ msgstr "المبلغ الذي عرضه عليك المؤمّن، باليورو.
 
 msgid "Compare your offer now"
 msgstr "قارن عرضك الآن"
+
+msgid "We open one jurisdiction at a time, only after the underlying legal sources are verified. Each country first enters an assisted legal pathway with the Studio; an indicative calculation is published only once the relevant national tables have been verified."
+msgstr "نفتح ولاية قضائية واحدة في كل مرة، فقط بعد التحقّق من المصادر القانونية الأساسية. يدخل كل بلد أولاً في مسار قانوني مرافَق مع المكتب؛ ولا يُنشر حساب إرشادي إلا بعد التحقّق من الجداول الوطنية المطبَّقة."
+
+msgid "MVP coverage map for the Badrane simulator: Italy publishes an indicative calculation on the verified TUN 2025 dataset; France, Belgium, Morocco and Tunisia follow an assisted legal pathway with the Studio."
+msgstr "خريطة تغطية النسخة الأولية لمحاكي بدران: تنشر إيطاليا حساباً إرشادياً على مجموعة بيانات TUN 2025 المُتحقَّق منها؛ وتتبع فرنسا وبلجيكا والمغرب وتونس مساراً قانونياً مرافَقاً مع المكتب."

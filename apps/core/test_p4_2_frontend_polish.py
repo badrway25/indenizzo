@@ -58,14 +58,14 @@ def test_countries_fail_closed_badges_present_no_calc_for_non_it():
 @pytest.mark.django_db
 def test_countries_fail_closed_in_french_and_arabic():
     fr = Client().get("/fr/countries/").content.decode("utf-8").lower()
-    assert "évaluation" in fr or "preliminaire" in fr or "préliminaire" in fr
+    assert "accompagné" in fr  # "parcours juridique accompagné" (assisted pathway)
     assert "returns no amount" not in fr  # no English residue
     ar = Client().get("/ar/countries/")
     assert ar.status_code == 200
     body = ar.content.decode("utf-8")
     assert 'dir="rtl"' in body
-    # arabic assessment label present, no English residue
-    assert "تقييم قانوني" in body
+    # arabic assisted-pathway label present, no English residue
+    assert "مسار قانوني مرافَق" in body
     assert "Assisted legal pathway" not in body
 
 

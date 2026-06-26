@@ -5785,3 +5785,9 @@ msgstr "L'importo che l'assicuratore ti ha offerto, in euro."
 
 msgid "Compare your offer now"
 msgstr "Confronta ora la tua offerta"
+
+msgid "We open one jurisdiction at a time, only after the underlying legal sources are verified. Each country first enters an assisted legal pathway with the Studio; an indicative calculation is published only once the relevant national tables have been verified."
+msgstr "Apriamo una giurisdizione alla volta, solo dopo aver verificato le fonti normative di riferimento. Ogni paese avvia dapprima un percorso legale assistito con lo Studio; un calcolo indicativo viene pubblicato soltanto una volta verificate le tabelle nazionali applicabili."
+
+msgid "MVP coverage map for the Badrane simulator: Italy publishes an indicative calculation on the verified TUN 2025 dataset; France, Belgium, Morocco and Tunisia follow an assisted legal pathway with the Studio."
+msgstr "Mappa di copertura MVP del simulatore Badrane: l'Italia pubblica un calcolo indicativo sul dataset TUN 2025 verificato; Francia, Belgio, Marocco e Tunisia seguono un percorso legale assistito con lo Studio."
