@@ -81,7 +81,10 @@ def test_services_page_renders_four_distinct_badges():
 @pytest.fixture
 def italy_official_stack(db):
     from apps.compensation.models import (
-        CalculationFormula, CompensationDataset, CompensationTableRow, DatasetStatus,
+        CalculationFormula,
+        CompensationDataset,
+        CompensationTableRow,
+        DatasetStatus,
     )
     from apps.compensation.test_fixtures import approved_source_version
     from apps.jurisdictions.models import Country, Currency, Jurisdiction, Language

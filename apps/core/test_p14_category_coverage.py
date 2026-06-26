@@ -8,10 +8,10 @@ an approved engine may publish a euro/MAD/TND estimate.
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 import pytest
-import re
 from django.conf import settings
 from django.test import Client
 
