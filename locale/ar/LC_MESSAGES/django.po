@@ -5776,3 +5776,187 @@ msgstr "المسؤولية المدنية والتأمين"
 
 msgid "International succession"
 msgstr "الميراث الدولي"
+
+msgid "Documental pre-check with official sources"
+msgstr "تحقّق وثائقي مسبق بالاستناد إلى مصدر رسمي"
+
+msgid "Applicable-law framing"
+msgstr "تحديد القانون الواجب التطبيق"
+
+msgid "Date of the event"
+msgstr "تاريخ الحادث"
+
+msgid "Age of the person involved"
+msgstr "عمر الشخص المعني"
+
+msgid "Estimated impairment degree, if assessed"
+msgstr "نسبة العجز المقدّرة، إن جرى تقييمها"
+
+msgid "Established liability and any insurance offer received"
+msgstr "المسؤولية الثابتة وأي عرض تأميني تم تلقّيه"
+
+msgid "Income or economic impact, where relevant"
+msgstr "الدخل أو الأثر الاقتصادي، عند الاقتضاء"
+
+msgid "Eligible family members, in case of death"
+msgstr "أفراد الأسرة المستحقّون، في حال الوفاة"
+
+msgid "Relationship with the victim and cohabitation"
+msgstr "العلاقة بالضحية والإقامة المشتركة"
+
+msgid "Whether the vehicle is insured and the insurer"
+msgstr "ما إذا كانت المركبة مؤمَّنة وشركة التأمين"
+
+msgid "Country and place of the event"
+msgstr "بلد ومكان الحادث"
+
+msgid "Medical-legal report or impairment certificate"
+msgstr "تقرير طبي-قانوني أو شهادة عجز"
+
+msgid "Accident or police report (constat amiable, PV, CAI)"
+msgstr "محضر الحادث أو تقرير الشرطة (constat amiable, PV, CAI)"
+
+msgid "Insurance correspondence and any settlement offer"
+msgstr "المراسلات التأمينية وأي عرض تسوية"
+
+msgid "Civil-status and family documents"
+msgstr "وثائق الحالة المدنية والعائلية"
+
+msgid "Proof of income or economic loss"
+msgstr "إثبات الدخل أو الخسارة الاقتصادية"
+
+msgid "INAIL notification and recognition documents"
+msgstr "بلاغ INAIL ووثائق الاعتراف"
+
+msgid "Request the documental check"
+msgstr "اطلب التحقّق الوثائقي"
+
+msgid "No amount is calculated without a verified official table or formula."
+msgstr "لا يُحتسب أي مبلغ دون جدول أو صيغة رسمية موثّقة."
+
+msgid "INAIL work injury — documental pre-check"
+msgstr "إصابة عمل INAIL — تحقّق وثائقي مسبق"
+
+msgid "Work-injury indemnity combines the mandatory INAIL biological-damage table with any civil-liability differential. Prepare the data below; the automatic INAIL figure activates once the official table is imported and verified."
+msgstr "يجمع تعويض إصابة العمل بين جدول INAIL الإلزامي للضرر البيولوجي وأي فارق في المسؤولية المدنية. جهّز البيانات أدناه؛ يُفعَّل المبلغ التلقائي لـINAIL بمجرد استيراد الجدول الرسمي والتحقّق منه."
+
+msgid "Whether INAIL has already recognised the case"
+msgstr "ما إذا كانت INAIL قد اعترفت بالحالة"
+
+msgid "Any annuity or capital already paid by INAIL"
+msgstr "أي إيراد أو رأس مال سبق أن دفعته INAIL"
+
+msgid "Loss of a relative — documental pre-check"
+msgstr "فقدان أحد الأقارب — تحقّق وثائقي مسبق"
+
+msgid "The loss of a close relative may give rise to compensation for the parental/family relationship and patrimonial damage. There is no state table, so the Studio frames it on the official sources and the documents below — no automatic figure is published."
+msgstr "قد يترتّب على فقدان أحد الأقارب المقرّبين تعويض عن العلاقة الأبوية/العائلية وعن الضرر المالي. لا يوجد جدول قانوني، لذا يؤطّر المكتب الحالة استناداً إلى المصادر الرسمية والوثائق أدناه — ولا يُنشر أي مبلغ تلقائي."
+
+msgid "Cause of death and any established liability"
+msgstr "سبب الوفاة وأي مسؤولية ثابتة"
+
+msgid "Road accident in Morocco — documental pre-check"
+msgstr "حادث سير في المغرب — تحقّق وثائقي مسبق"
+
+msgid "Road-accident compensation in Morocco follows the Dahir 1984 method (capital de référence × taux d'incapacité × taux de responsabilité). Prepare the data below; no MAD amount is shown until the official capital-de-référence table is validated."
+msgstr "يتّبع التعويض عن حوادث السير في المغرب منهجية ظهير 1984 (رأس المال المرجعي × نسبة العجز × نسبة المسؤولية). جهّز البيانات أدناه؛ لا يُعرض أي مبلغ بالدرهم المغربي إلى أن يتم التحقّق من جدول رأس المال المرجعي الرسمي."
+
+msgid "Injury or death"
+msgstr "إصابة أو وفاة"
+
+msgid "Road accident in Tunisia — documental pre-check"
+msgstr "حادث سير في تونس — تحقّق وثائقي مسبق"
+
+msgid "Road-accident compensation in Tunisia follows the binding loi 2005-86 barème (Code des assurances, Titre V). Prepare the data below; no TND amount is shown until that barème is validated."
+msgstr "يتّبع التعويض عن حوادث السير في تونس الجدول الإلزامي للقانون 2005-86 (مجلة التأمين، الباب الخامس). جهّز البيانات أدناه؛ لا يُعرض أي مبلغ بالدينار التونسي إلى أن يتم التحقّق من ذلك الجدول."
+
+msgid "Cross-border road accident — applicable-law framing"
+msgstr "حادث سير عابر للحدود — تحديد القانون الواجب التطبيق"
+
+msgid "When the accident has foreign elements, the first step is identifying the applicable law and the competent court under Rome II, before any quantification. No amount is produced at this stage."
+msgstr "عندما يتضمّن الحادث عناصر أجنبية، فإن الخطوة الأولى هي تحديد القانون الواجب التطبيق والمحكمة المختصة وفق لائحة روما الثانية، قبل أي تقدير. لا يُنتَج أي مبلغ في هذه المرحلة."
+
+msgid "Country of residence of the parties"
+msgstr "بلد إقامة الأطراف"
+
+msgid "Insurer and country of the vehicle"
+msgstr "شركة التأمين وبلد المركبة"
+
+msgid "Whether proceedings are open abroad"
+msgstr "ما إذا كانت هناك إجراءات قائمة في الخارج"
+
+msgid "Foreign documents to be translated / legalised"
+msgstr "وثائق أجنبية يجب ترجمتها / تصديقها"
+
+msgid "Insurance offer"
+msgstr "عرض التأمين"
+
+msgid "Work injury (INAIL)"
+msgstr "إصابة عمل (INAIL)"
+
+msgid "International"
+msgstr "دولي"
+
+msgid "Cross-border road accident"
+msgstr "حادث سير عابر للحدود"
+
+msgid "Guided pre-check"
+msgstr "تحقّق مسبق موجَّه"
+
+msgid "Data to verify"
+msgstr "بيانات يجب التحقّق منها"
+
+msgid "What to prepare"
+msgstr "ما ينبغي تحضيره"
+
+msgid "Documents needed"
+msgstr "الوثائق المطلوبة"
+
+msgid "Back to services"
+msgstr "العودة إلى الخدمات"
+
+msgid "Gather the data and documents above, then ask the Studio for a documental check. A lawyer reviews the file on the official sources and replies on the next step."
+msgstr "اجمع البيانات والوثائق الواردة أعلاه، ثم اطلب من المكتب إجراء تحقّق وثائقي. يراجع محامٍ الملف استناداً إلى المصادر الرسمية ويردّ بشأن الخطوة التالية."
+
+msgid "Find your guided path"
+msgstr "اعثر على مسارك الموجَّه"
+
+msgid "Pick a country and a category: the platform routes you to the right path — an indicative estimate where an official table exists, or a documental pre-check otherwise. No amount is invented."
+msgstr "اختر بلداً وفئة: توجّهك المنصّة إلى المسار الصحيح — تقدير إرشادي حيث يوجد جدول رسمي، وإلا فتحقّق وثائقي مسبق. لا يُختلَق أي مبلغ."
+
+msgid "Guided router"
+msgstr "موجِّه الإحالة"
+
+msgid "An indicative estimate is produced from the validated official source."
+msgstr "يُنتَج تقدير إرشادي انطلاقاً من المصدر الرسمي الموثّق."
+
+msgid "No amount is produced: the path lists the official sources, the data and the documents to prepare."
+msgstr "لا يُنتَج أي مبلغ: يسرد المسار المصادر الرسمية والبيانات والوثائق الواجب تحضيرها."
+
+msgid "Open the calculator"
+msgstr "افتح الآلة الحاسبة"
+
+msgid "Start the pre-check"
+msgstr "ابدأ التحقّق المسبق"
+
+msgid "Choose a country"
+msgstr "اختر بلداً"
+
+msgid "Choose your country, then the category. Where an official table or formula is validated, you get an indicative estimate; otherwise the platform opens a documental pre-check on the official sources. No amount is invented."
+msgstr "اختر بلدك، ثم الفئة. حيث يكون هناك جدول أو صيغة رسمية موثّقة، تحصل على تقدير إرشادي؛ وإلا فتفتح المنصّة تحقّقاً وثائقياً مسبقاً على المصادر الرسمية. لا يُختلَق أي مبلغ."
+
+msgid "Start the INAIL pre-check"
+msgstr "ابدأ التحقّق المسبق لـINAIL"
+
+msgid "Start the documental pre-check"
+msgstr "ابدأ التحقّق الوثائقي المسبق"
+
+msgid "Start the accident pre-check"
+msgstr "ابدأ التحقّق المسبق للحادث"
+
+msgid "Start the death pre-check"
+msgstr "ابدأ التحقّق المسبق للوفاة"
+
+msgid "Check the documents needed"
+msgstr "تحقّق من الوثائق المطلوبة"
+

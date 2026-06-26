@@ -6022,3 +6022,187 @@ msgstr "Responsabilità civile e assicurazione"
 
 msgid "International succession"
 msgstr "Successione internazionale"
+
+msgid "Documental pre-check with official sources"
+msgstr "Pre-check documentale con fonte ufficiale"
+
+msgid "Applicable-law framing"
+msgstr "Inquadramento della legge applicabile"
+
+msgid "Date of the event"
+msgstr "Data dell'evento"
+
+msgid "Age of the person involved"
+msgstr "Età della persona coinvolta"
+
+msgid "Estimated impairment degree, if assessed"
+msgstr "Grado di menomazione stimato, se accertato"
+
+msgid "Established liability and any insurance offer received"
+msgstr "Responsabilità accertata ed eventuale offerta assicurativa ricevuta"
+
+msgid "Income or economic impact, where relevant"
+msgstr "Reddito o impatto economico, ove rilevante"
+
+msgid "Eligible family members, in case of death"
+msgstr "Familiari aventi diritto, in caso di decesso"
+
+msgid "Relationship with the victim and cohabitation"
+msgstr "Rapporto con la vittima e convivenza"
+
+msgid "Whether the vehicle is insured and the insurer"
+msgstr "Se il veicolo è assicurato e la compagnia assicurativa"
+
+msgid "Country and place of the event"
+msgstr "Paese e luogo dell'evento"
+
+msgid "Medical-legal report or impairment certificate"
+msgstr "Relazione medico-legale o certificato di menomazione"
+
+msgid "Accident or police report (constat amiable, PV, CAI)"
+msgstr "Verbale di incidente o rapporto di polizia (constat amiable, PV, CAI)"
+
+msgid "Insurance correspondence and any settlement offer"
+msgstr "Corrispondenza assicurativa ed eventuale offerta transattiva"
+
+msgid "Civil-status and family documents"
+msgstr "Documenti di stato civile e di famiglia"
+
+msgid "Proof of income or economic loss"
+msgstr "Prova del reddito o della perdita economica"
+
+msgid "INAIL notification and recognition documents"
+msgstr "Denuncia INAIL e documenti di riconoscimento"
+
+msgid "Request the documental check"
+msgstr "Richiedi la verifica documentale"
+
+msgid "No amount is calculated without a verified official table or formula."
+msgstr "Nessun importo viene calcolato senza una tabella o formula ufficiale verificata."
+
+msgid "INAIL work injury — documental pre-check"
+msgstr "Infortunio sul lavoro INAIL — pre-check documentale"
+
+msgid "Work-injury indemnity combines the mandatory INAIL biological-damage table with any civil-liability differential. Prepare the data below; the automatic INAIL figure activates once the official table is imported and verified."
+msgstr "L'indennizzo da infortunio sul lavoro combina la tabella obbligatoria INAIL del danno biologico con l'eventuale differenziale di responsabilità civile. Prepara i dati qui sotto; l'importo automatico INAIL si attiva una volta importata e verificata la tabella ufficiale."
+
+msgid "Whether INAIL has already recognised the case"
+msgstr "Se l'INAIL ha già riconosciuto il caso"
+
+msgid "Any annuity or capital already paid by INAIL"
+msgstr "Eventuale rendita o capitale già erogato dall'INAIL"
+
+msgid "Loss of a relative — documental pre-check"
+msgstr "Perdita di un familiare — pre-check documentale"
+
+msgid "The loss of a close relative may give rise to compensation for the parental/family relationship and patrimonial damage. There is no state table, so the Studio frames it on the official sources and the documents below — no automatic figure is published."
+msgstr "La perdita di un familiare stretto può dare luogo al risarcimento per il rapporto parentale/familiare e al danno patrimoniale. Non esiste una tabella di legge, quindi lo Studio inquadra il caso sulle fonti ufficiali e sui documenti qui sotto — nessun importo automatico viene pubblicato."
+
+msgid "Cause of death and any established liability"
+msgstr "Causa del decesso ed eventuale responsabilità accertata"
+
+msgid "Road accident in Morocco — documental pre-check"
+msgstr "Incidente stradale in Marocco — pre-check documentale"
+
+msgid "Road-accident compensation in Morocco follows the Dahir 1984 method (capital de référence × taux d'incapacité × taux de responsabilité). Prepare the data below; no MAD amount is shown until the official capital-de-référence table is validated."
+msgstr "Il risarcimento da incidente stradale in Marocco segue il metodo del Dahir 1984 (capital de référence × taux d'incapacité × taux de responsabilité). Prepara i dati qui sotto; nessun importo in MAD viene mostrato finché la tabella ufficiale del capital de référence non è validata."
+
+msgid "Injury or death"
+msgstr "Lesione o decesso"
+
+msgid "Road accident in Tunisia — documental pre-check"
+msgstr "Incidente stradale in Tunisia — pre-check documentale"
+
+msgid "Road-accident compensation in Tunisia follows the binding loi 2005-86 barème (Code des assurances, Titre V). Prepare the data below; no TND amount is shown until that barème is validated."
+msgstr "Il risarcimento da incidente stradale in Tunisia segue il barème vincolante della loi 2005-86 (Code des assurances, Titre V). Prepara i dati qui sotto; nessun importo in TND viene mostrato finché quel barème non è validato."
+
+msgid "Cross-border road accident — applicable-law framing"
+msgstr "Incidente stradale transfrontaliero — inquadramento della legge applicabile"
+
+msgid "When the accident has foreign elements, the first step is identifying the applicable law and the competent court under Rome II, before any quantification. No amount is produced at this stage."
+msgstr "Quando l'incidente presenta elementi di estraneità, il primo passo è individuare la legge applicabile e il giudice competente secondo il Regolamento Roma II, prima di qualsiasi quantificazione. In questa fase non viene prodotto alcun importo."
+
+msgid "Country of residence of the parties"
+msgstr "Paese di residenza delle parti"
+
+msgid "Insurer and country of the vehicle"
+msgstr "Assicuratore e paese del veicolo"
+
+msgid "Whether proceedings are open abroad"
+msgstr "Se sono pendenti procedimenti all'estero"
+
+msgid "Foreign documents to be translated / legalised"
+msgstr "Documenti stranieri da tradurre / legalizzare"
+
+msgid "Insurance offer"
+msgstr "Offerta assicurativa"
+
+msgid "Work injury (INAIL)"
+msgstr "Infortunio sul lavoro (INAIL)"
+
+msgid "International"
+msgstr "Internazionale"
+
+msgid "Cross-border road accident"
+msgstr "Incidente stradale transfrontaliero"
+
+msgid "Guided pre-check"
+msgstr "Pre-check guidato"
+
+msgid "Data to verify"
+msgstr "Dati da verificare"
+
+msgid "What to prepare"
+msgstr "Cosa preparare"
+
+msgid "Documents needed"
+msgstr "Documenti necessari"
+
+msgid "Back to services"
+msgstr "Torna ai servizi"
+
+msgid "Gather the data and documents above, then ask the Studio for a documental check. A lawyer reviews the file on the official sources and replies on the next step."
+msgstr "Raccogli i dati e i documenti qui sopra, poi richiedi allo Studio una verifica documentale. Un avvocato esamina la pratica sulle fonti ufficiali e risponde sul passo successivo."
+
+msgid "Find your guided path"
+msgstr "Trova il tuo percorso guidato"
+
+msgid "Pick a country and a category: the platform routes you to the right path — an indicative estimate where an official table exists, or a documental pre-check otherwise. No amount is invented."
+msgstr "Scegli un paese e una categoria: la piattaforma ti indirizza al percorso giusto — una stima indicativa dove esiste una tabella ufficiale, altrimenti un pre-check documentale. Nessun importo viene inventato."
+
+msgid "Guided router"
+msgstr "Instradamento guidato"
+
+msgid "An indicative estimate is produced from the validated official source."
+msgstr "Viene prodotta una stima indicativa a partire dalla fonte ufficiale validata."
+
+msgid "No amount is produced: the path lists the official sources, the data and the documents to prepare."
+msgstr "Non viene prodotto alcun importo: il percorso elenca le fonti ufficiali, i dati e i documenti da preparare."
+
+msgid "Open the calculator"
+msgstr "Apri il calcolatore"
+
+msgid "Start the pre-check"
+msgstr "Avvia il pre-check"
+
+msgid "Choose a country"
+msgstr "Scegli un paese"
+
+msgid "Choose your country, then the category. Where an official table or formula is validated, you get an indicative estimate; otherwise the platform opens a documental pre-check on the official sources. No amount is invented."
+msgstr "Scegli il tuo paese, poi la categoria. Dove una tabella o formula ufficiale è validata, ottieni una stima indicativa; altrimenti la piattaforma apre un pre-check documentale sulle fonti ufficiali. Nessun importo viene inventato."
+
+msgid "Start the INAIL pre-check"
+msgstr "Avvia il pre-check INAIL"
+
+msgid "Start the documental pre-check"
+msgstr "Avvia il pre-check documentale"
+
+msgid "Start the accident pre-check"
+msgstr "Avvia il pre-check incidente"
+
+msgid "Start the death pre-check"
+msgstr "Avvia il pre-check decesso"
+
+msgid "Check the documents needed"
+msgstr "Verifica i documenti necessari"
+
