@@ -23,7 +23,8 @@
   {# Range presentation: trailing zeros stripped via floatformat:"-2" (Decimal field has 4 places, irrelevant for integer EUR amounts at this scale). Mid cell gets visual emphasis because it is the working anchor referenced by the "Calculation basis" block below; the "Read how to read this range" link points readers to the explanation without forcing a tooltip. #}
   {% if has_estimate %}
     <div class="mt-8 rounded-3xl border border-ok-600/30 bg-ok-600/5 p-6">
-      <p class="text-[11px] uppercase tracking-[0.18em] text-ok-600 font-semibold">{{ status_public_label }}</p>
+      {# P13-FIX: badge reflects which approved engine produced the estimate. #}
+      <p class="text-[11px] uppercase tracking-[0.18em] text-ok-600 font-semibold">{% if estimate_badge %}{{ estimate_badge }}{% else %}{{ status_public_label }}{% endif %}</p>
       <h2 id="result-range-heading" class="mt-2 font-serif text-2xl text-ink-950">{% translate "Indicative range" %}</h2>
       <dl class="mt-4 grid sm:grid-cols-3 gap-4" role="group" aria-labelledby="result-range-heading">
         <div>

@@ -442,6 +442,18 @@ def wizard_result(request, public_id: uuid.UUID):
     # against the indicative range (pure arithmetic on the official estimate).
     offer_comparison = _build_offer_comparison(simulation, has_estimate)
 
+    # P13-FIX: the public estimate badge reflects WHICH approved engine produced
+    # the result, so the result page distinguishes the three estimate states
+    # (not just road accident). Empty on the no-estimate path.
+    estimate_badge = ""
+    if has_estimate:
+        if case_type_value == ITALY_MEDICAL_CASE_TYPE:
+            estimate_badge = gettext("Official table-based biological damage estimate")
+        elif offer_comparison is not None:
+            estimate_badge = gettext("Comparison based on official sources")
+        else:
+            estimate_badge = gettext("Estimate based on official sources")
+
     # H1-8: compact, public-safe provenance summary. Only display-safe fields
     # (source version label, abbreviated content hash, engine version, calc
     # date) — never the raw JSON. Present only on the calculated path and only
@@ -477,6 +489,7 @@ def wizard_result(request, public_id: uuid.UUID):
             "provenance_summary": provenance_summary,
             "medical_scope_note": medical_scope_note,
             "offer_comparison": offer_comparison,
+            "estimate_badge": estimate_badge,
         },
     )
 

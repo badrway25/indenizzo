@@ -64,43 +64,47 @@ HOW_IT_WORKS_STEPS = (
 
 
 # --- Services ---------------------------------------------------------------
-_BADGE_OFFICIAL = _("Official-source estimate")
-_BADGE_ASSISTED = _("Assisted legal pathway")
+# P13-FIX: four distinct PUBLIC estimate states, each tied to an approved
+# engine where one exists — the estimate badge is NOT limited to road-accident.
+_BADGE_OFFICIAL = _("Estimate based on official sources")          # numeric_estimate_approved
+_BADGE_TABULAR = _("Official table-based biological damage estimate")  # tabular_biological_damage_approved
+_BADGE_OFFER = _("Comparison based on official sources")           # offer_comparison_approved
+_BADGE_GUIDED = _("Assisted path based on official sources")       # official_guided_path_approved
 _CTA_GUIDED = _("Request a guided analysis")
 
 SERVICES = (
     Service("road_accident", _("Road accident"),
-            _("Bodily injury from a road accident. Where the case fits the official Tabella Unica Nazionale 2025, the platform produces an indicative range; otherwise the Studio reviews it."),
+            _("Bodily injury from a road accident. Micro-permanent 1–9% on art. 139 CAP and macro 10–100% on the Tabella Unica Nazionale 2025 produce an indicative estimate when the data is compatible."),
             "car", True, _("Calculate the estimate"), "cases:wizard_italy_road_accident",
-            badge=_BADGE_OFFICIAL, base_normativa="D.P.R. 12/2025 (TUN) · CAP D.Lgs. 209/2005"),
+            badge=_BADGE_OFFICIAL, base_normativa="art. 139 CAP · D.P.R. 12/2025 (TUN) · D.Lgs. 209/2005"),
     Service("medical", _("Medical liability"),
-            _("Suspected medical or healthcare malpractice. These cases hinge on expert evidence and are assessed by the Studio — no automatic figure is published."),
-            "stethoscope", False, _CTA_GUIDED, "crm:contact",
-            badge=_BADGE_ASSISTED, base_normativa="L. 24/2017 (Gelli) · artt. 1218, 2043 c.c."),
+            _("When the injury is quantified medico-legally, the platform produces a tabular biological-damage estimate (1–9% art. 139, 10–100% TUN). It does not assess fault, causation or overall healthcare liability."),
+            "stethoscope", True, _("Calculate the tabular estimate"), "cases:wizard_italy_medical",
+            badge=_BADGE_TABULAR, base_normativa="L. 24/2017 (Gelli) · artt. 138–139 CAP"),
     Service("work_injury", _("Workplace injury"),
-            _("Accidents at work and occupational disease, including the differential beyond INAIL. Reviewed by the Studio; not automatically calculated today."),
+            _("Accidents at work and occupational disease, including the differential beyond INAIL. The Studio frames it on the official sources; an automatic figure follows once the INAIL table is imported."),
             "hard-hat", False, _CTA_GUIDED, "crm:contact",
-            badge=_BADGE_ASSISTED, base_normativa="D.P.R. 1124/1965 (T.U. INAIL)"),
+            badge=_BADGE_GUIDED, base_normativa="D.P.R. 1124/1965 (T.U. INAIL)"),
     Service("death", _("Loss of a relative"),
             _("Death and loss-of-relationship damages for family members. A sensitive, fact-specific area handled directly by the Studio."),
             "heart", False, _("Assisted pathway for relatives"), "crm:contact",
-            badge=_BADGE_ASSISTED, base_normativa="artt. 2043, 2059 c.c."),
-    Service("insurance_offer", _("Insurance / INAIL offer to check"),
-            _("You received a settlement or INAIL offer. The Studio can review whether it is adequate before you sign — do not accept a settlement without a professional review."),
-            "shield-check", False, _("Have your offer reviewed"), "crm:contact",
-            badge=_("Insurance procedure"), base_normativa="CAP D.Lgs. 209/2005, artt. 145, 148"),
+            badge=_BADGE_GUIDED, base_normativa="artt. 2043, 2059 c.c."),
+    Service("insurance_offer", _("Insurance offer to check"),
+            _("If the offer concerns an injury compatible with art. 139 micro-permanent or the TUN, the platform compares the proposed amount against the official tabular estimate and shows the deviation."),
+            "shield-check", True, _("Compare your offer"), "cases:wizard_insurance_offer",
+            badge=_BADGE_OFFER, base_normativa="art. 139 CAP · TUN · CAP artt. 145, 148"),
     Service("international", _("Cross-border matters"),
             _("Cases with foreign elements — parties, assets or events abroad — including questions of applicable law and competent jurisdiction."),
             "globe", False, _("Frame the applicable law"), "crm:contact",
-            badge=_("Applicable law"), base_normativa="Reg. CE 864/2007 (Roma II)"),
+            badge=_BADGE_GUIDED, base_normativa="Reg. CE 864/2007 (Roma II)"),
     Service("foreigners", _("Foreign nationals in Italy"),
             _("Assistance for foreign or non-resident clients who suffered harm in Italy, with multilingual support and remote handling."),
             "users", False, _CTA_GUIDED, "crm:contact",
-            badge=_BADGE_ASSISTED, base_normativa="Roma II · CAP/TUN (Italia)"),
+            badge=_BADGE_GUIDED, base_normativa="Roma II · CAP/TUN (Italia)"),
     Service("documents", _("Foreign / consular documents"),
             _("Help with documentation produced abroad — translation, legalisation and consular formalities needed to support a claim."),
             "document", False, _CTA_GUIDED, "crm:contact",
-            badge=_("Document analysis")),
+            badge=_BADGE_GUIDED),
 )
 
 
@@ -109,7 +113,7 @@ FAQ_ITEMS = (
     Faq(_("Is the estimate binding?"),
         _("No. It is an indicative orientation based on validated official sources — not a quote, a verdict or a promise. The amount actually awarded depends on documents, expert reports, liability, the applicable law and the deciding court.")),
     Faq(_("Can I calculate any case?"),
-        _("No. An automatic estimate appears only where an official, validated source and formula exist — today, road-accident bodily injury in Italy on the Tabella Unica Nazionale 2025. For everything else the platform asks for a preliminary assessment instead of inventing a number.")),
+        _("An automatic estimate appears where an official validated source and formula exist: today, road-accident bodily injury (art. 139 micro-permanent and the TUN), the tabular biological-damage estimate for healthcare liability, and the insurance-offer comparison. For everything else the platform follows an assisted pathway on official sources instead of inventing a number.")),
     Faq(_("Why are some countries not calculable?"),
         _("Because a figure is published only when the underlying legal source has been validated. For France, Belgium, Morocco and Tunisia the sources are catalogued but not yet validated, so no automatic amount is shown and the Studio reviews those cases manually.")),
     Faq(_("What documents are needed?"),
