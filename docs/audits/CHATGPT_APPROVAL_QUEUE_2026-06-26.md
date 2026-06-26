@@ -74,3 +74,25 @@ référentiels non statali → guided path definitivo, nessuna stima. See
 | 3 | INAIL | chain verified; values not machine-readable | EUR | provide grado×età table |
 | 4 | Belgium | no state barème | — | none (final) |
 | 5 | France | no state barème | — | none (final) |
+
+---
+
+## P14 — what each approval unlocks (category × country)
+
+The matrix `CATEGORY_COUNTRY_OFFICIAL_ESTIMATE_MATRIX_2026-06-26.md` maps every
+country × category to an estimate state. Each pending approval below unlocks a
+SET of categories/countries — not a single page:
+
+| Approval | Country | Categories it unlocks | Data needed | Canary |
+|---|---|---|---|---|
+| INAIL capital table (D.M. 45/2019, riv. 2025) | Italy | work-injury (numeric); strengthens road/medical differential | grado 6–15% × età → € | 1 official worked row |
+| Morocco capital-de-référence table (Dahir annex) | Morocco | road-injury, road-death, bodily damage, ayants-droit (all numeric) — coefficients already extracted | capital de référence (âge × revenu) | 346 500 × 20% × 50% = 34 650 MAD |
+| Tunisia barème (Code des assurances Titre V) | Tunisia | road-injury, road-death, bodily damage (numeric) | revenu de référence, coeff. âge, IPP, décès | 1 official worked row |
+| Death/parental table | Italy | loss-of-relative numeric (currently guided) | a state/ministerial table (none today) | — |
+| France / Belgium | FR/BE | none — no state barème (guided is final) | — | — |
+
+Until a row is APPROVED, the corresponding public categories stay `pre_check`
+(structured documental collection, official sources cited) or `guided` — never a
+weak label, never an invented amount. Morocco and Tunisia already expose their
+multi-category coverage publicly on the country pages with the official source
+chips above.
