@@ -88,7 +88,7 @@ SERVICES = (
             badge=_BADGE_TABULAR, base_normativa="L. 24/2017 (Gelli) · artt. 138–139 CAP"),
     Service("work_injury", _("Workplace injury"),
             _("Accidents at work and occupational disease, including the differential beyond INAIL. The Studio frames it on the official sources; an automatic figure follows once the INAIL table is imported."),
-            "hard-hat", False, _CTA_PRECHECK, "core:precheck", {"slug": "inail"},
+            "hard-hat", False, _("Start the INAIL pre-check"), "core:precheck", {"slug": "inail"},
             badge=_BADGE_PRECHECK, base_normativa="D.P.R. 1124/1965 (T.U. INAIL)"),
     Service("death", _("Loss of a relative"),
             _("Death and loss-of-relationship damages for family members. A sensitive, fact-specific area handled directly by the Studio."),
