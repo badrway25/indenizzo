@@ -143,6 +143,15 @@ class CaseTypeLanding:
     `docs/product/CASE_TYPE_FAQ_AUDIT_2026-05-12.md`.
     """
 
+    official_basis: Sequence[str] = field(default_factory=tuple)
+    """
+    P10: official normative basis shown as public source chips, so every
+    section reads as an "official guided path" with a visible legal source.
+    These are language-neutral legal citations (law / decree identifiers),
+    NOT translatable copy and NOT computed amounts — they name the official
+    source, never invent a figure. Required on every landing (tested).
+    """
+
     def primary_cta_href(self) -> str:
         url = reverse(self.primary_cta_url_name, kwargs=self.primary_cta_url_kwargs)
         # Append `?case_type=<code>` querystring if the primary CTA
@@ -176,6 +185,10 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
     CaseTypeLanding(
         slug="road-accident",
         case_type_code=_CODE_ROAD,
+        official_basis=(
+            "D.P.R. 12/2025 — Tabella Unica Nazionale",
+            "artt. 138–139 Cod. Assicurazioni (D.Lgs. 209/2005)",
+        ),
         h1=_("Road accident — bodily injury"),
         meta_title=_("Road accident bodily injury — assisted legal pathway"),
         meta_description=_(
@@ -233,6 +246,10 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
     CaseTypeLanding(
         slug="bodily-injury",
         case_type_code=_CODE_ROAD,
+        official_basis=(
+            "D.P.R. 12/2025 — Tabella Unica Nazionale",
+            "artt. 138–139 Cod. Assicurazioni (D.Lgs. 209/2005)",
+        ),
         h1=_("Bodily injury claims"),
         meta_title=_("Bodily injury — assisted legal pathway"),
         meta_description=_(
@@ -288,6 +305,11 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
     CaseTypeLanding(
         slug="insurance-offer-review",
         case_type_code=_CODE_GENERIC,
+        official_basis=(
+            "D.P.R. 12/2025 — Tabella Unica Nazionale",
+            "artt. 138–139 Cod. Assicurazioni (D.Lgs. 209/2005)",
+            "IVASS — vigilanza assicurativa",
+        ),
         h1=_("Insurance offer review"),
         meta_title=_("Insurance offer review — assisted legal pathway"),
         meta_description=_(
@@ -347,6 +369,11 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
     CaseTypeLanding(
         slug="work-injury",
         case_type_code=_CODE_WORK,
+        official_basis=(
+            "D.P.R. 1124/1965 — Testo Unico INAIL",
+            "D.Lgs. 38/2000 (art. 13) — danno biologico INAIL",
+            "D.M. 12/07/2000 — tabelle indennizzo INAIL",
+        ),
         h1=_("Work injury"),
         meta_title=_("Work injury — assisted legal pathway"),
         meta_description=_(
@@ -405,6 +432,10 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
     CaseTypeLanding(
         slug="medical-malpractice",
         case_type_code=_CODE_MEDICAL,
+        official_basis=(
+            "L. 24/2017 (Gelli-Bianco)",
+            "artt. 138–139 Cod. Assicurazioni (D.Lgs. 209/2005)",
+        ),
         h1=_("Medical malpractice"),
         meta_title=_("Medical malpractice — assisted legal pathway"),
         meta_description=_(
@@ -463,6 +494,10 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
     CaseTypeLanding(
         slug="death-of-relative",
         case_type_code=_CODE_DEATH,
+        official_basis=(
+            "artt. 2043, 2059 Cod. Civile",
+            "art. 1223 Cod. Civile — danno patrimoniale",
+        ),
         h1=_("Death of a relative"),
         meta_title=_("Death of a relative — assisted legal pathway"),
         meta_description=_(
@@ -522,6 +557,10 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
     CaseTypeLanding(
         slug="foreigners-in-italy",
         case_type_code=_CODE_GENERIC,
+        official_basis=(
+            "D.P.R. 12/2025 — Tabella Unica Nazionale",
+            "Reg. (CE) 864/2007 — Roma II (legge applicabile)",
+        ),
         h1=_("Foreign citizens injured in Italy"),
         meta_title=_("Foreign citizens injured in Italy — assisted legal pathway"),
         meta_description=_(
@@ -579,6 +618,10 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
     CaseTypeLanding(
         slug="cross-border-cases",
         case_type_code=_CODE_INT_INHERITANCE,
+        official_basis=(
+            "Reg. (CE) 864/2007 — Roma II (obbligazioni extracontrattuali)",
+            "Reg. (UE) 650/2012 — successioni internazionali",
+        ),
         h1=_("Cross-border cases"),
         meta_title=_("Cross-border legal cases — assisted legal pathway"),
         meta_description=_(
@@ -629,6 +672,56 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
                     "l'intervento di un legale locale, lo Studio si "
                     "coordina con corrispondenti nei paesi rilevanti per "
                     "il caso."
+                ),
+            ),
+            _FAQ_MANDATE,
+        ),
+    ),
+    CaseTypeLanding(
+        slug="product-liability",
+        case_type_code=_CODE_GENERIC,
+        official_basis=(
+            "artt. 114–127 Cod. del Consumo (D.Lgs. 206/2005)",
+            "Direttiva 85/374/CEE — prodotti difettosi",
+        ),
+        h1=_("Defective product liability"),
+        meta_title=_("Defective product — official guided pathway"),
+        meta_description=_(
+            "Official guided pathway for harm caused by a defective product, "
+            "under the Italian Consumer Code (artt. 114–127, D.Lgs. 206/2005) "
+            "and Directive 85/374/EEC. Document-led analysis, not an automatic "
+            "figure."
+        ),
+        intro=_(
+            "When a defective product causes injury or damage, liability is "
+            "governed by the Italian Consumer Code (artt. 114–127) and "
+            "Directive 85/374/EEC. The Studio reviews the documentation, frames "
+            "the case against these official sources and indicates the next "
+            "steps. No automatic figure is published before the file is read."
+        ),
+        when_it_applies=(
+            _("A product caused injury or property damage that you believe is due to a defect, not to misuse."),
+            _("You can identify the product, the manufacturer or importer, and roughly when the harm occurred."),
+            _("You hold at least basic documentation: purchase proof, photos, medical or technical reports."),
+        ),
+        what_studio_does=(
+            _("Frames the case under artt. 114–127 of the Consumer Code and Directive 85/374/EEC, identifying the liable party."),
+            _("Reviews the documentation and indicates what is missing to establish the defect and the causal link."),
+            _("Explains the recoverable categories of damage and the next steps — without any automatic engagement."),
+        ),
+        primary_cta_label=_("Request a guided review"),
+        primary_cta_url_name="crm:contact",
+        secondary_cta_label=_("Read the methodology"),
+        secondary_cta_url_name="core:methodology",
+        faq_items=(
+            _FAQ_LEGAL_OPINION,
+            FAQItem(
+                question=_("Devo già provare il difetto del prodotto per chiedere una valutazione?"),
+                answer=_(
+                    "In questa fase no. Lo Studio aiuta a capire quali "
+                    "elementi servono per dimostrare il difetto e il nesso "
+                    "causale, e quali documenti raccogliere, prima di "
+                    "qualsiasi avvio formale."
                 ),
             ),
             _FAQ_MANDATE,

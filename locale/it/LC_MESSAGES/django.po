@@ -5791,3 +5791,45 @@ msgstr "Apriamo una giurisdizione alla volta, solo dopo aver verificato le fonti
 
 msgid "MVP coverage map for the Badrane simulator: Italy publishes an indicative calculation on the verified TUN 2025 dataset; France, Belgium, Morocco and Tunisia follow an assisted legal pathway with the Studio."
 msgstr "Mappa di copertura MVP del simulatore Badrane: l'Italia pubblica un calcolo indicativo sul dataset TUN 2025 verificato; Francia, Belgio, Marocco e Tunisia seguono un percorso legale assistito con lo Studio."
+
+msgid "Official source basis"
+msgstr "Base normativa ufficiale"
+
+msgid "Defective product liability"
+msgstr "Responsabilità da prodotto difettoso"
+
+msgid "Defective product — official guided pathway"
+msgstr "Prodotto difettoso — percorso assistito con fonte ufficiale"
+
+msgid "Official guided pathway for harm caused by a defective product, under the Italian Consumer Code (artt. 114–127, D.Lgs. 206/2005) and Directive 85/374/EEC. Document-led analysis, not an automatic figure."
+msgstr "Percorso assistito con fonte ufficiale per i danni causati da un prodotto difettoso, ai sensi del Codice del Consumo (artt. 114–127, D.Lgs. 206/2005) e della Direttiva 85/374/CEE. Analisi guidata sui documenti, non una cifra automatica."
+
+msgid "When a defective product causes injury or damage, liability is governed by the Italian Consumer Code (artt. 114–127) and Directive 85/374/EEC. The Studio reviews the documentation, frames the case against these official sources and indicates the next steps. No automatic figure is published before the file is read."
+msgstr "Quando un prodotto difettoso provoca lesioni o danni, la responsabilità è regolata dal Codice del Consumo (artt. 114–127) e dalla Direttiva 85/374/CEE. Lo Studio esamina la documentazione, inquadra il caso sulla base di queste fonti ufficiali e indica i passi successivi. Nessuna cifra automatica viene pubblicata prima della lettura del fascicolo."
+
+msgid "A product caused injury or property damage that you believe is due to a defect, not to misuse."
+msgstr "Un prodotto ha causato lesioni o danni a cose che ritieni dovuti a un difetto, non a un uso improprio."
+
+msgid "You can identify the product, the manufacturer or importer, and roughly when the harm occurred."
+msgstr "Puoi identificare il prodotto, il produttore o l'importatore e, all'incirca, quando si è verificato il danno."
+
+msgid "You hold at least basic documentation: purchase proof, photos, medical or technical reports."
+msgstr "Disponi almeno di documentazione di base: prova d'acquisto, foto, referti medici o tecnici."
+
+msgid "Frames the case under artt. 114–127 of the Consumer Code and Directive 85/374/EEC, identifying the liable party."
+msgstr "Inquadra il caso ai sensi degli artt. 114–127 del Codice del Consumo e della Direttiva 85/374/CEE, individuando il soggetto responsabile."
+
+msgid "Reviews the documentation and indicates what is missing to establish the defect and the causal link."
+msgstr "Esamina la documentazione e indica cosa manca per accertare il difetto e il nesso causale."
+
+msgid "Explains the recoverable categories of damage and the next steps — without any automatic engagement."
+msgstr "Spiega le categorie di danno risarcibili e i passi successivi — senza alcun incarico automatico."
+
+msgid "Request a guided review"
+msgstr "Richiedi un'analisi guidata"
+
+msgid "It does not model temporary disability, personalisation, income loss or other items beyond the above. Those require a document review by the Studio."
+msgstr "Non modella l'inabilità temporanea, la personalizzazione, la perdita di reddito o altre voci oltre a quanto sopra. Questi richiedono una verifica documentale dello Studio."
+
+msgid "Add what you know. None of these is required. They give the Studio a fuller picture for the document review and may refine the indicative range when applicable."
+msgstr "Aggiungi ciò che sai. Nessuno di questi campi è obbligatorio. Danno allo Studio un quadro più completo per la verifica documentale e possono affinare l'intervallo indicativo, quando applicabile."
