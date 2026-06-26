@@ -308,6 +308,64 @@
     });
   }
 
+  /* 9. Interactive pre-check form (P16) -------------------------------------
+   * Progressive enhancement for /precheck/<slug>/: reveals conditional fields
+   * (data-precheck-show-if="name:value") and tracks a live completeness bar.
+   * No-JS fallback: every field stays visible and the form still submits. */
+  function initPrecheckForm() {
+    var form = document.querySelector("[data-precheck-form]");
+    if (!form) return;
+    var progress = form.querySelector("[data-precheck-progress]");
+    var bar = form.querySelector("[data-precheck-progress-bar]");
+    var label = form.querySelector("[data-precheck-progress-label]");
+    if (progress) progress.hidden = false;
+
+    function answered(wrapper) {
+      var radios = wrapper.querySelectorAll("input[type=radio]");
+      if (radios.length) return Array.prototype.some.call(radios, function (r) { return r.checked; });
+      var sel = wrapper.querySelector("select");
+      if (sel) return String(sel.value || "").trim() !== "";
+      var inp = wrapper.querySelector("input, textarea");
+      if (inp) return String(inp.value || "").trim() !== "";
+      return false;
+    }
+
+    function applyConditionals() {
+      var conds = form.querySelectorAll("[data-precheck-show-if]");
+      Array.prototype.forEach.call(conds, function (el) {
+        var spec = (el.getAttribute("data-precheck-show-if") || "").split(":");
+        var name = spec[0];
+        var want = spec[1];
+        var current = "";
+        var checked = form.querySelector("input[name='" + name + "']:checked");
+        if (checked) {
+          current = checked.value;
+        } else {
+          var ctrl = form.querySelector("select[name='" + name + "'], input[name='" + name + "']");
+          if (ctrl) current = ctrl.value || "";
+        }
+        el.hidden = current !== want;
+      });
+    }
+
+    function update() {
+      applyConditionals();
+      var wrappers = Array.prototype.filter.call(
+        form.querySelectorAll(".precheck-field"),
+        function (w) { return !w.hidden; }
+      );
+      if (!wrappers.length) return;
+      var done = wrappers.filter(answered).length;
+      var pct = Math.round((done / wrappers.length) * 100);
+      if (bar) bar.style.width = pct + "%";
+      if (label) label.textContent = pct + "%";
+    }
+
+    form.addEventListener("input", update);
+    form.addEventListener("change", update);
+    update();
+  }
+
   ready(function () {
     initReveal();
     initStickyCta();
@@ -317,5 +375,6 @@
     initParallax();
     initMagnetic();
     initTilt();
+    initPrecheckForm();
   });
 })();

@@ -1,14 +1,17 @@
-"""P15 — guided documental pre-check flows for non-numeric sections.
+"""P15/P16 — guided documental pre-check flows for non-numeric sections.
 
-Where no approved engine exists but an official source does, the public must get
-a CONCRETE guided pre-check (not a roadmap, not a weak label): the official
-sources, exactly which data and documents to prepare, the next step and a CTA —
-and NEVER an amount. Single source of truth (gettext_lazy), rendered by
-`templates/public/precheck.html` via `core.views.precheck(request, slug)`.
+Where no approved engine exists but an official source does, the public gets a
+CONCRETE interactive pre-check (P16): a premium mini-form whose answers produce a
+personalised guided result — completeness, missing documents, the applicable
+official source, the next step and a contextual CTA — and NEVER an amount.
 
-Cardinal rule: no amount/coefficient is computed or shown here. The estimate
-activates only once the relevant official table is imported and canary-green
-(tracked in the approval queue).
+Single source of truth (gettext_lazy), rendered by `templates/public/precheck.html`
+via `core.views.precheck(request, slug)`. The decision logic lives in
+`apps/core/precheck_engine.py` (kept separate so the form schema and the result
+reasoning evolve independently).
+
+Cardinal rule: no amount/coefficient is computed or shown here. A numeric estimate
+activates only once the relevant official table is imported and canary-green.
 """
 
 from __future__ import annotations
@@ -51,6 +54,41 @@ _CTA_PRECHECK = _("Request the documental check")
 _CTA_LAW = _("Frame the applicable law")
 _DISCLAIMER = _("No amount is calculated without a verified official table or formula.")
 
+# --- Interactive form schema (P16) ------------------------------------------
+# Shared choice sets to bound the translation surface.
+_YES = _("Yes")
+_NO = _("No")
+_UNKNOWN = _("I don't know")
+_YESNO = (("yes", _YES), ("no", _NO))
+_YESNO_UNK = (("yes", _YES), ("no", _NO), ("unknown", _UNKNOWN))
+
+
+@dataclass(frozen=True)
+class PreCheckField:
+    """One question in an interactive pre-check form.
+
+    `type` ∈ {select, date, number, text, radio, checkbox}. `choices` is a tuple
+    of (value, gettext_label) for select/radio. `privacy` documents the
+    sensitivity (low/medium/high) — nothing is persisted, but the level drives
+    the on-page note and keeps us honest about what we ask. `show_if` reveals the
+    field only when another field equals a value (progressive disclosure).
+    """
+
+    id: str
+    label: str
+    type: str
+    required: bool = False
+    choices: tuple = ()
+    help_text: str = ""
+    privacy: str = "low"
+    min_value: int | None = None
+    max_value: int | None = None
+    show_if: tuple | None = None  # (field_id, value)
+
+    @property
+    def is_choice(self) -> bool:
+        return self.type in ("select", "radio")
+
 
 @dataclass(frozen=True)
 class PreCheckFlow:
@@ -64,10 +102,110 @@ class PreCheckFlow:
     documents: tuple = field(default_factory=tuple)
     cta_label: str = ""
     cta_url_name: str = "crm:contact"
+    fields: tuple = field(default_factory=tuple)  # P16 interactive form
 
     @property
     def status_label(self):
         return STATUS_LABEL.get(self.status, STATUS_LABEL[STATUS_GUIDED])
+
+
+# --- Per-flow field schemas -------------------------------------------------
+_INAIL_FIELDS = (
+    PreCheckField("event_date", _("Date of the event"), "date", required=True, privacy="low"),
+    PreCheckField("age", _("Age at the time of the event"), "number", required=True,
+                  min_value=0, max_value=120, privacy="low"),
+    PreCheckField("impairment_pct", _("Estimated impairment percentage"), "number",
+                  min_value=0, max_value=100, privacy="medium",
+                  help_text=_("Enter the percentage only if a doctor has assessed it.")),
+    PreCheckField("inail_recognised", _("Has INAIL already recognised the case?"), "radio",
+                  choices=_YESNO, privacy="low"),
+    PreCheckField("benefit_received", _("Have you already received an annuity or capital from INAIL?"),
+                  "radio", choices=_YESNO, privacy="medium"),
+    PreCheckField("medical_cert", _("Is a medical-legal certificate available?"), "radio",
+                  choices=_YESNO, privacy="low"),
+    PreCheckField("employer_docs", _("Are the INAIL notification / employer documents available?"),
+                  "radio", choices=_YESNO, privacy="low"),
+    PreCheckField("third_party_liability",
+                  _("Is there possible third-party or employer liability?"), "radio",
+                  choices=_YESNO, privacy="low"),
+)
+
+_LOSS_FIELDS = (
+    PreCheckField("country", _("Country"), "select", required=True, privacy="low",
+                  choices=(("IT", _("Italy")), ("FR", _("France")), ("BE", _("Belgium")),
+                           ("MA", _("Morocco")), ("TN", _("Tunisia")), ("other", _("Other country")))),
+    PreCheckField("death_cause", _("Cause of death"), "select", privacy="medium",
+                  choices=(("road_accident", _("Road accident")), ("medical", _("Medical event")),
+                           ("work", _("Workplace event")), ("other", _("Other cause")))),
+    PreCheckField("relationship", _("Relationship with the victim"), "select", privacy="medium",
+                  choices=(("spouse", _("Spouse or partner")), ("child", _("Child")),
+                           ("parent", _("Parent")), ("sibling", _("Sibling")), ("other", _("Other relative")))),
+    PreCheckField("cohabitation", _("Did you live with the victim?"), "radio",
+                  choices=_YESNO, privacy="medium"),
+    PreCheckField("victim_age", _("Age of the victim"), "number", min_value=0, max_value=120, privacy="low"),
+    PreCheckField("family_age", _("Age of the family member"), "number", min_value=0, max_value=120, privacy="low"),
+    PreCheckField("liability_established", _("Has liability been established?"), "radio",
+                  choices=_YESNO, privacy="low"),
+    PreCheckField("offer_received", _("Has an insurance offer been received?"), "radio",
+                  choices=_YESNO, privacy="low"),
+    PreCheckField("civil_docs", _("Are the civil-status documents available?"), "radio",
+                  choices=_YESNO, privacy="low"),
+)
+
+_MOROCCO_FIELDS = (
+    PreCheckField("injury_or_death", _("Injury or death"), "radio", required=True, privacy="medium",
+                  choices=(("injury", _("Injury")), ("death", _("Death")))),
+    PreCheckField("event_date", _("Date of the event"), "date", privacy="low"),
+    PreCheckField("place", _("Place / city"), "text", privacy="low"),
+    PreCheckField("vehicle_insured", _("Is the vehicle insured?"), "select",
+                  choices=_YESNO_UNK, privacy="low"),
+    PreCheckField("liability_estimate", _("Estimated liability"), "select", privacy="low",
+                  choices=(("full", _("Fully the other party")), ("partial", _("Shared")),
+                           ("none", _("Not the other party")), ("unknown", _("I don't know")))),
+    PreCheckField("ipp_known", _("Is the permanent-incapacity rate (IPP) known?"), "radio",
+                  choices=_YESNO, privacy="medium"),
+    PreCheckField("income_documentable", _("Is income documentable?"), "radio",
+                  choices=_YESNO, privacy="medium"),
+    PreCheckField("heirs", _("Are there eligible family members?"), "radio", choices=_YESNO,
+                  privacy="medium", show_if=("injury_or_death", "death")),
+    PreCheckField("police_report", _("Is the police report / constat available?"), "radio",
+                  choices=_YESNO, privacy="low"),
+    PreCheckField("medical_cert", _("Is a medical certificate available?"), "radio",
+                  choices=_YESNO, privacy="low"),
+)
+
+_TUNISIA_FIELDS = (
+    PreCheckField("injury_or_death", _("Injury or death"), "radio", required=True, privacy="medium",
+                  choices=(("injury", _("Injury")), ("death", _("Death")))),
+    PreCheckField("event_date", _("Date of the event"), "date", privacy="low"),
+    PreCheckField("insurer_identified", _("Is the insurer identified?"), "radio",
+                  choices=_YESNO, privacy="low"),
+    PreCheckField("ipp_known", _("Is the permanent-incapacity rate (IPP) known?"), "radio",
+                  choices=_YESNO, privacy="medium"),
+    PreCheckField("income_documentable", _("Is income documentable?"), "radio",
+                  choices=_YESNO, privacy="medium"),
+    PreCheckField("heirs", _("Are there eligible family members?"), "radio", choices=_YESNO,
+                  privacy="medium", show_if=("injury_or_death", "death")),
+    PreCheckField("police_report", _("Is the police report (PV / constat) available?"), "radio",
+                  choices=_YESNO, privacy="low"),
+    PreCheckField("medical_cert", _("Is a medical certificate available?"), "radio",
+                  choices=_YESNO, privacy="low"),
+)
+
+_INTERNATIONAL_FIELDS = (
+    PreCheckField("event_country", _("Country where the event happened"), "text", required=True, privacy="low"),
+    PreCheckField("residence_country", _("Country of residence of the injured party"), "text", privacy="low"),
+    PreCheckField("insurer_country", _("Country of the insurer"), "text", privacy="low"),
+    PreCheckField("damage_type", _("Type of damage"), "select", privacy="medium",
+                  choices=(("injury", _("Personal injury")), ("death", _("Death")),
+                           ("property", _("Property damage")))),
+    PreCheckField("contract_present", _("Is there a contract or insurance policy?"), "radio",
+                  choices=_YESNO, privacy="low"),
+    PreCheckField("foreign_docs", _("Are there documents in a foreign language?"), "radio",
+                  choices=_YESNO, privacy="low"),
+    PreCheckField("translation_needed", _("Is a translation needed?"), "radio",
+                  choices=_YESNO, privacy="low"),
+)
 
 
 PRECHECK_FLOWS: tuple[PreCheckFlow, ...] = (
@@ -89,6 +227,7 @@ PRECHECK_FLOWS: tuple[PreCheckFlow, ...] = (
                      _("Any annuity or capital already paid by INAIL")),
         documents=(_DOC_INAIL, _DOC_MEDICAL, _DOC_INSURANCE),
         cta_label=_CTA_PRECHECK,
+        fields=_INAIL_FIELDS,
     ),
     PreCheckFlow(
         slug="loss-of-relative",
@@ -107,6 +246,7 @@ PRECHECK_FLOWS: tuple[PreCheckFlow, ...] = (
                      _D_LIABILITY),
         documents=(_DOC_CIVIL, _DOC_MEDICAL, _DOC_INSURANCE),
         cta_label=_CTA_PRECHECK,
+        fields=_LOSS_FIELDS,
     ),
     PreCheckFlow(
         slug="morocco-road-accident",
@@ -125,6 +265,7 @@ PRECHECK_FLOWS: tuple[PreCheckFlow, ...] = (
                      _D_IMPAIRMENT, _D_INCOME, _D_HEIRS),
         documents=(_DOC_INSURANCE, _DOC_ACCIDENT, _DOC_MEDICAL, _DOC_CIVIL),
         cta_label=_CTA_PRECHECK,
+        fields=_MOROCCO_FIELDS,
     ),
     PreCheckFlow(
         slug="tunisia-road-accident",
@@ -143,6 +284,7 @@ PRECHECK_FLOWS: tuple[PreCheckFlow, ...] = (
                      _D_IMPAIRMENT, _D_INCOME, _D_HEIRS),
         documents=(_DOC_INSURANCE, _DOC_ACCIDENT, _DOC_MEDICAL, _DOC_CIVIL),
         cta_label=_CTA_PRECHECK,
+        fields=_TUNISIA_FIELDS,
     ),
     PreCheckFlow(
         slug="international-road-accident",
@@ -163,6 +305,7 @@ PRECHECK_FLOWS: tuple[PreCheckFlow, ...] = (
         documents=(_DOC_ACCIDENT, _DOC_INSURANCE,
                    _("Foreign documents to be translated / legalised")),
         cta_label=_CTA_LAW,
+        fields=_INTERNATIONAL_FIELDS,
     ),
 )
 

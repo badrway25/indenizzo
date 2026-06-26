@@ -16,7 +16,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
-from django.views.decorators.http import require_GET
+from django.views.decorators.http import require_GET, require_http_methods
 
 from apps.calculators.enums import CaseType
 from apps.calculators.registry import list_available_calculators
@@ -292,12 +292,15 @@ def services(request):
     )
 
 
-@require_GET
+@require_http_methods(["GET", "POST"])
 def precheck(request, slug):
-    """P15: guided documental pre-check for a non-numeric section.
+    """P15/P16: interactive guided documental pre-check for a non-numeric section.
 
-    Renders the official sources, the data/documents to prepare and the next
-    step — never an amount (no engine here). 404 for an unknown slug.
+    GET renders the premium mini-form. POST evaluates the answers in memory
+    (stateless, GDPR-light — nothing is persisted) and renders a personalised
+    guided result: completeness, missing documents, applicable official sources,
+    contextual messages and a CTA. Never an amount (no approved engine here).
+    404 for an unknown slug.
     """
     from django.http import Http404
 
@@ -307,11 +310,24 @@ def precheck(request, slug):
     flow = get_precheck(slug)
     if flow is None:
         raise Http404("Unknown pre-check flow")
+
+    answers = {}
+    result = None
+    if request.method == "POST":
+        # Collect only the known field ids — ignore anything else in POST.
+        answers = {f.id: request.POST.get(f.id, "").strip() for f in flow.fields}
+
+    # Render-ready fields: pair each field with its submitted value so the
+    # template can repopulate without a dict-lookup template filter.
+    form_fields = [{"field": f, "value": answers.get(f.id, "")} for f in flow.fields]
+
     return render(
         request,
         "public/precheck.html",
         {
             "flow": flow,
+            "form_fields": form_fields,
+            "result": result,
             "canonical_url": build_canonical_url(request),
             "pexels_image": _pexels_hero(request, "services_hero"),
         },
