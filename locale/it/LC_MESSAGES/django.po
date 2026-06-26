@@ -6485,3 +6485,99 @@ msgstr "Avvia il pre-check Dahir / ACAPS"
 msgid "Start the Code des assurances pre-check"
 msgstr "Avvia il pre-check Code des assurances"
 
+msgid "Road accident with injuries"
+msgstr "Incidente stradale con lesioni"
+
+msgid "Road accident — minor injuries"
+msgstr "Incidente stradale — lesioni lievi"
+
+msgid "Healthcare liability"
+msgstr "Responsabilità sanitaria"
+
+msgid "Healthcare liability — biological damage"
+msgstr "Responsabilità sanitaria — danno biologico"
+
+msgid "Compensation for a death"
+msgstr "Risarcimento da decesso"
+
+msgid "Loss of the parental bond"
+msgstr "Perdita del rapporto parentale"
+
+msgid "Economic loss"
+msgstr "Danno patrimoniale"
+
+msgid "Defective product"
+msgstr "Prodotto difettoso"
+
+msgid "Insurance-offer check"
+msgstr "Verifica offerta assicurativa"
+
+msgid "Succession"
+msgstr "Successione"
+
+msgid "Road accident in Morocco"
+msgstr "Incidente stradale in Marocco"
+
+msgid "Road accident in Tunisia"
+msgstr "Incidente stradale in Tunisia"
+
+msgid "Cross-border accident"
+msgstr "Incidente transfrontaliero"
+
+msgid "Legal assessment"
+msgstr "Valutazione legale"
+
+msgid "Official INAIL calculation, once the capital / annuity table is validated"
+msgstr "Calcolo ufficiale INAIL, una volta validata la tabella di capitale / rendita"
+
+msgid "Official Dahir / ACAPS barème (capital de référence), once validated"
+msgstr "Barème ufficiale Dahir / ACAPS (capital de référence), una volta validato"
+
+msgid "Official Code des assurances barème (loi 2005-86), once validated"
+msgstr "Barème ufficiale del Code des assurances (loi 2005-86), una volta validato"
+
+msgid "Guided assessment of the parental / family damage"
+msgstr "Valutazione guidata del danno parentale / familiare"
+
+msgid "Applicable-law framing under Rome II, before any quantification"
+msgstr "Inquadramento della legge applicabile secondo Roma II, prima di ogni quantificazione"
+
+msgid "A validated INAIL capital / annuity table for the indicated impairment"
+msgstr "Una tabella INAIL di capitale / rendita validata per la menomazione indicata"
+
+msgid "A validated capital-de-référence table (Dahir / ACAPS)"
+msgstr "Una tabella capital de référence validata (Dahir / ACAPS)"
+
+msgid "A validated Code des assurances barème (loi 2005-86)"
+msgstr "Un barème del Code des assurances validato (loi 2005-86)"
+
+msgid "Established liability and the assessed permanent incapacity"
+msgstr "Responsabilità accertata e incapacità permanente valutata"
+
+msgid "The documented family relationship and the established liability"
+msgstr "Il rapporto familiare documentato e la responsabilità accertata"
+
+msgid "Identification of the applicable law and the competent court"
+msgstr "Individuazione della legge applicabile e del giudice competente"
+
+msgid "Documental readiness"
+msgstr "Prontezza documentale"
+
+msgid "Potential path"
+msgstr "Percorso potenziale"
+
+msgid "What unlocks a numeric estimate"
+msgstr "Cosa sblocca una stima numerica"
+
+msgid "Official sources"
+msgstr "Fonti ufficiali"
+
+msgid "Answer the questions to get a guided result, then ask the Studio for a documental check on the official sources."
+msgstr "Rispondi alle domande per ottenere un risultato guidato, poi richiedi allo Studio una verifica documentale sulle fonti ufficiali."
+
+msgid "The Studio also handles further areas — catastrophic injury, loss of chance, defamation, school or professional harm and ruined-holiday claims — where they are legally tractable."
+msgstr "Lo Studio segue anche ulteriori ambiti — danno da macrolesione, perdita di chance, diffamazione, danno scolastico o professionale e vacanza rovinata — ove giuridicamente percorribili."
+
+msgid "The Studio also follows cases connected to Spain, Germany, Canada, Romania, Algeria and Egypt."
+msgstr "Lo Studio segue anche casi collegati a Spagna, Germania, Canada, Romania, Algeria ed Egitto."
+

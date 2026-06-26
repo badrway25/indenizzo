@@ -6239,3 +6239,99 @@ msgstr "ابدأ التحقّق المسبق ظهير / ACAPS"
 msgid "Start the Code des assurances pre-check"
 msgstr "ابدأ التحقّق المسبق لمجلة التأمين"
 
+msgid "Road accident with injuries"
+msgstr "حادث سير مع إصابات"
+
+msgid "Road accident — minor injuries"
+msgstr "حادث سير — إصابات طفيفة"
+
+msgid "Healthcare liability"
+msgstr "المسؤولية الطبية"
+
+msgid "Healthcare liability — biological damage"
+msgstr "المسؤولية الطبية — الضرر البيولوجي"
+
+msgid "Compensation for a death"
+msgstr "التعويض عن الوفاة"
+
+msgid "Loss of the parental bond"
+msgstr "فقدان الرابطة الأبوية"
+
+msgid "Economic loss"
+msgstr "الضرر المالي"
+
+msgid "Defective product"
+msgstr "منتج معيب"
+
+msgid "Insurance-offer check"
+msgstr "التحقّق من عرض التأمين"
+
+msgid "Succession"
+msgstr "الإرث"
+
+msgid "Road accident in Morocco"
+msgstr "حادث سير في المغرب"
+
+msgid "Road accident in Tunisia"
+msgstr "حادث سير في تونس"
+
+msgid "Cross-border accident"
+msgstr "حادث عابر للحدود"
+
+msgid "Legal assessment"
+msgstr "تقييم قانوني"
+
+msgid "Official INAIL calculation, once the capital / annuity table is validated"
+msgstr "حساب INAIL الرسمي، بمجرد التحقّق من جدول رأس المال / الإيراد"
+
+msgid "Official Dahir / ACAPS barème (capital de référence), once validated"
+msgstr "جدول ظهير / ACAPS الرسمي (رأس المال المرجعي)، بمجرد التحقّق منه"
+
+msgid "Official Code des assurances barème (loi 2005-86), once validated"
+msgstr "جدول مجلة التأمين الرسمي (القانون 2005-86)، بمجرد التحقّق منه"
+
+msgid "Guided assessment of the parental / family damage"
+msgstr "تقييم موجَّه للضرر الأبوي / العائلي"
+
+msgid "Applicable-law framing under Rome II, before any quantification"
+msgstr "تحديد القانون الواجب التطبيق وفق روما الثانية، قبل أي تقدير"
+
+msgid "A validated INAIL capital / annuity table for the indicated impairment"
+msgstr "جدول INAIL مُوثَّق لرأس المال / الإيراد للعجز المُحدَّد"
+
+msgid "A validated capital-de-référence table (Dahir / ACAPS)"
+msgstr "جدول رأس المال المرجعي مُوثَّق (ظهير / ACAPS)"
+
+msgid "A validated Code des assurances barème (loi 2005-86)"
+msgstr "جدول مجلة التأمين مُوثَّق (القانون 2005-86)"
+
+msgid "Established liability and the assessed permanent incapacity"
+msgstr "المسؤولية الثابتة والعجز الدائم المُقيَّم"
+
+msgid "The documented family relationship and the established liability"
+msgstr "العلاقة العائلية الموثَّقة والمسؤولية الثابتة"
+
+msgid "Identification of the applicable law and the competent court"
+msgstr "تحديد القانون الواجب التطبيق والمحكمة المختصة"
+
+msgid "Documental readiness"
+msgstr "الجاهزية الوثائقية"
+
+msgid "Potential path"
+msgstr "المسار المحتمل"
+
+msgid "What unlocks a numeric estimate"
+msgstr "ما الذي يفتح إمكانية تقدير رقمي"
+
+msgid "Official sources"
+msgstr "المصادر الرسمية"
+
+msgid "Answer the questions to get a guided result, then ask the Studio for a documental check on the official sources."
+msgstr "أجب عن الأسئلة للحصول على نتيجة موجَّهة، ثم اطلب من المكتب تحقّقاً وثائقياً استناداً إلى المصادر الرسمية."
+
+msgid "The Studio also handles further areas — catastrophic injury, loss of chance, defamation, school or professional harm and ruined-holiday claims — where they are legally tractable."
+msgstr "يتناول المكتب أيضاً مجالات أخرى — الضرر الجسيم، وفقدان الفرصة، والتشهير، والضرر الدراسي أو المهني، والإجازة المُفسَدة — حيثما كانت قابلة للتقاضي قانوناً."
+
+msgid "The Studio also follows cases connected to Spain, Germany, Canada, Romania, Algeria and Egypt."
+msgstr "يتابع المكتب أيضاً قضايا مرتبطة بإسبانيا وألمانيا وكندا ورومانيا والجزائر ومصر."
+
