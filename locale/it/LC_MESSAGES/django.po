@@ -6206,3 +6206,282 @@ msgstr "Avvia il pre-check decesso"
 msgid "Check the documents needed"
 msgstr "Verifica i documenti necessari"
 
+msgid "Yes"
+msgstr "Sì"
+
+msgid "No"
+msgstr "No"
+
+msgid "I don't know"
+msgstr "Non lo so"
+
+msgid "Age at the time of the event"
+msgstr "Età al momento dell'evento"
+
+msgid "Estimated impairment percentage"
+msgstr "Percentuale di menomazione stimata"
+
+msgid "Enter the percentage only if a doctor has assessed it."
+msgstr "Inserisci la percentuale solo se è stata accertata da un medico."
+
+msgid "Has INAIL already recognised the case?"
+msgstr "L'INAIL ha già riconosciuto il caso?"
+
+msgid "Have you already received an annuity or capital from INAIL?"
+msgstr "Hai già ricevuto una rendita o un capitale dall'INAIL?"
+
+msgid "Is a medical-legal certificate available?"
+msgstr "È disponibile un certificato medico-legale?"
+
+msgid "Are the INAIL notification / employer documents available?"
+msgstr "Sono disponibili la denuncia INAIL / i documenti del datore?"
+
+msgid "Is there possible third-party or employer liability?"
+msgstr "Esiste una possibile responsabilità di terzi o del datore di lavoro?"
+
+msgid "Other country"
+msgstr "Altro paese"
+
+msgid "Cause of death"
+msgstr "Causa del decesso"
+
+msgid "Medical event"
+msgstr "Evento medico"
+
+msgid "Workplace event"
+msgstr "Evento sul lavoro"
+
+msgid "Other cause"
+msgstr "Altra causa"
+
+msgid "Relationship with the victim"
+msgstr "Rapporto con la vittima"
+
+msgid "Spouse or partner"
+msgstr "Coniuge o convivente"
+
+msgid "Child"
+msgstr "Figlio/a"
+
+msgid "Parent"
+msgstr "Genitore"
+
+msgid "Sibling"
+msgstr "Fratello/Sorella"
+
+msgid "Other relative"
+msgstr "Altro familiare"
+
+msgid "Did you live with the victim?"
+msgstr "Convivevi con la vittima?"
+
+msgid "Age of the victim"
+msgstr "Età della vittima"
+
+msgid "Age of the family member"
+msgstr "Età del familiare"
+
+msgid "Has liability been established?"
+msgstr "La responsabilità è stata accertata?"
+
+msgid "Has an insurance offer been received?"
+msgstr "È stata ricevuta un'offerta assicurativa?"
+
+msgid "Are the civil-status documents available?"
+msgstr "Sono disponibili i documenti di stato civile?"
+
+msgid "Injury"
+msgstr "Lesione"
+
+msgid "Death"
+msgstr "Decesso"
+
+msgid "Place / city"
+msgstr "Luogo / città"
+
+msgid "Is the vehicle insured?"
+msgstr "Il veicolo è assicurato?"
+
+msgid "Estimated liability"
+msgstr "Responsabilità stimata"
+
+msgid "Fully the other party"
+msgstr "Interamente della controparte"
+
+msgid "Shared"
+msgstr "Concorsuale"
+
+msgid "Not the other party"
+msgstr "Non della controparte"
+
+msgid "Is the permanent-incapacity rate (IPP) known?"
+msgstr "Il grado di incapacità permanente (IPP) è noto?"
+
+msgid "Is income documentable?"
+msgstr "Il reddito è documentabile?"
+
+msgid "Are there eligible family members?"
+msgstr "Ci sono familiari aventi diritto?"
+
+msgid "Is the police report / constat available?"
+msgstr "È disponibile il verbale / constat?"
+
+msgid "Is a medical certificate available?"
+msgstr "È disponibile un certificato medico?"
+
+msgid "Is the insurer identified?"
+msgstr "L'assicuratore è identificato?"
+
+msgid "Is the police report (PV / constat) available?"
+msgstr "È disponibile il verbale (PV / constat)?"
+
+msgid "Country where the event happened"
+msgstr "Paese in cui è avvenuto l'evento"
+
+msgid "Country of residence of the injured party"
+msgstr "Paese di residenza del danneggiato"
+
+msgid "Country of the insurer"
+msgstr "Paese dell'assicuratore"
+
+msgid "Type of damage"
+msgstr "Tipo di danno"
+
+msgid "Personal injury"
+msgstr "Danno alla persona"
+
+msgid "Property damage"
+msgstr "Danno a cose"
+
+msgid "Is there a contract or insurance policy?"
+msgstr "Esiste un contratto o una polizza assicurativa?"
+
+msgid "Are there documents in a foreign language?"
+msgstr "Ci sono documenti in lingua straniera?"
+
+msgid "Is a translation needed?"
+msgstr "È necessaria una traduzione?"
+
+msgid "Essential documents present"
+msgstr "Documenti essenziali presenti"
+
+msgid "Partial documents"
+msgstr "Documenti parziali"
+
+msgid "Initial document collection needed"
+msgstr "Prima raccolta documentale necessaria"
+
+msgid "Estimated impairment in the 6–15% band: the INAIL capital indemnity table is the candidate basis — it activates once the official table is validated."
+msgstr "Menomazione stimata nella fascia 6–15%: la tabella INAIL di indennizzo in capitale è la base candidata — si attiva una volta validata la tabella ufficiale."
+
+msgid "Estimated impairment above 15%: this points to a possible INAIL annuity and requires a dedicated INAIL analysis."
+msgstr "Menomazione stimata superiore al 15%: indica una possibile rendita INAIL e richiede un'analisi INAIL dedicata."
+
+msgid "Possible third-party or employer liability: the civil-liability differential beyond INAIL should be assessed."
+msgstr "Possibile responsabilità di terzi o del datore: va valutato il danno differenziale di responsabilità civile oltre l'INAIL."
+
+msgid "Italy, road accident with an offer received: a comparison between the insurance offer and a documental valuation is recommended."
+msgstr "Italia, incidente stradale con offerta ricevuta: si consiglia un confronto tra l'offerta assicurativa e una valutazione documentale."
+
+msgid "Foreign country involved: framing the applicable law (cross-border) is the recommended first step."
+msgstr "Paese estero coinvolto: il primo passo consigliato è l'inquadramento della legge applicabile (caso transfrontaliero)."
+
+msgid "Key data available (incapacity, income, liability): the file is ready for the future application of the Dahir / ACAPS barème once it is validated."
+msgstr "Dati chiave disponibili (incapacità, reddito, responsabilità): la pratica è pronta per la futura applicazione del barème Dahir / ACAPS una volta validato."
+
+msgid "Key data available (incapacity, income): the file is ready for the future application of the Code des assurances barème once it is validated."
+msgstr "Dati chiave disponibili (incapacità, reddito): la pratica è pronta per la futura applicazione del barème del Code des assurances una volta validato."
+
+msgid "Under Rome II the applicable law is, as a rule, that of the country where the damage occurred — to be confirmed against the specific facts."
+msgstr "Secondo il Regolamento Roma II la legge applicabile è, di regola, quella del paese in cui si è verificato il danno — da confermare alla luce dei fatti specifici."
+
+msgid "Foreign-language documents will need certified translation / legalisation before the cross-border analysis."
+msgstr "I documenti in lingua straniera necessiteranno di traduzione asseverata / legalizzazione prima dell'analisi transfrontaliera."
+
+msgid "A cross-border analysis of jurisdiction and applicable law is the recommended next step."
+msgstr "Il passo successivo consigliato è un'analisi transfrontaliera della giurisdizione e della legge applicabile."
+
+msgid "Permanent-incapacity (IPP) assessment"
+msgstr "Valutazione dell'incapacità permanente (IPP)"
+
+msgid "Request a documental check from the Studio on the official sources above."
+msgstr "Richiedi allo Studio una verifica documentale sulle fonti ufficiali qui sopra."
+
+msgid "Request a cross-border framing of the applicable law and the competent court."
+msgstr "Richiedi un inquadramento transfrontaliero della legge applicabile e del giudice competente."
+
+msgid "Check documents and liability"
+msgstr "Verifica documenti e responsabilità"
+
+msgid "Injury percentage and accident details"
+msgstr "Percentuale di lesione e dati dell'incidente"
+
+msgid "Injury or death, incapacity and documents"
+msgstr "Lesione o decesso, incapacità e documenti"
+
+msgid "Accident details and supporting documents"
+msgstr "Dati dell'incidente e documenti di supporto"
+
+msgid "Medical-legal impairment percentage"
+msgstr "Percentuale di menomazione medico-legale"
+
+msgid "The offer amount and the injury details"
+msgstr "L'importo dell'offerta e i dati della lesione"
+
+msgid "Event date, impairment and documents"
+msgstr "Data dell'evento, menomazione e documenti"
+
+msgid "Relationship, cause of death and documents"
+msgstr "Rapporto, causa del decesso e documenti"
+
+msgid "The countries involved and the documents"
+msgstr "I paesi coinvolti e i documenti"
+
+msgid "Guided questions"
+msgstr "Domande guidate"
+
+msgid "Tell us about your case"
+msgstr "Raccontaci il tuo caso"
+
+msgid "Select…"
+msgstr "Seleziona…"
+
+msgid "Get my guided result"
+msgstr "Ottieni il mio risultato guidato"
+
+msgid "Your answers are processed only to build this result and are not stored."
+msgstr "Le tue risposte vengono elaborate solo per costruire questo risultato e non vengono salvate."
+
+msgid "Your guided result"
+msgstr "Il tuo risultato guidato"
+
+msgid "Still to prepare"
+msgstr "Ancora da preparare"
+
+msgid "No essential document is missing from your answers."
+msgstr "Dalle tue risposte non manca alcun documento essenziale."
+
+msgid "Applicable official sources"
+msgstr "Fonti ufficiali applicabili"
+
+msgid "Summary of your answers"
+msgstr "Riepilogo delle tue risposte"
+
+msgid "Recommended next step"
+msgstr "Prossimo passo consigliato"
+
+msgid "This pre-check does not calculate an amount: it organises the data you need based on official sources."
+msgstr "Questo pre-check non calcola un importo: organizza i dati necessari sulla base di fonti ufficiali."
+
+msgid "Pre-check questions"
+msgstr "Domande del pre-check"
+
+msgid "You'll need"
+msgstr "Ti serviranno"
+
+msgid "Start the Dahir / ACAPS pre-check"
+msgstr "Avvia il pre-check Dahir / ACAPS"
+
+msgid "Start the Code des assurances pre-check"
+msgstr "Avvia il pre-check Code des assurances"
+

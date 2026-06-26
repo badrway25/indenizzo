@@ -5960,3 +5960,282 @@ msgstr "ابدأ التحقّق المسبق للوفاة"
 msgid "Check the documents needed"
 msgstr "تحقّق من الوثائق المطلوبة"
 
+msgid "Yes"
+msgstr "نعم"
+
+msgid "No"
+msgstr "لا"
+
+msgid "I don't know"
+msgstr "لا أعرف"
+
+msgid "Age at the time of the event"
+msgstr "العمر وقت الحادث"
+
+msgid "Estimated impairment percentage"
+msgstr "نسبة العجز المقدّرة"
+
+msgid "Enter the percentage only if a doctor has assessed it."
+msgstr "أدخل النسبة فقط إذا قام طبيب بتقييمها."
+
+msgid "Has INAIL already recognised the case?"
+msgstr "هل اعترفت INAIL بالحالة بالفعل؟"
+
+msgid "Have you already received an annuity or capital from INAIL?"
+msgstr "هل تلقّيت بالفعل إيراداً أو رأس مال من INAIL؟"
+
+msgid "Is a medical-legal certificate available?"
+msgstr "هل تتوفّر شهادة طبية-قانونية؟"
+
+msgid "Are the INAIL notification / employer documents available?"
+msgstr "هل تتوفّر بلاغ INAIL / وثائق صاحب العمل؟"
+
+msgid "Is there possible third-party or employer liability?"
+msgstr "هل توجد مسؤولية محتملة لطرف ثالث أو لصاحب العمل؟"
+
+msgid "Other country"
+msgstr "بلد آخر"
+
+msgid "Cause of death"
+msgstr "سبب الوفاة"
+
+msgid "Medical event"
+msgstr "حدث طبي"
+
+msgid "Workplace event"
+msgstr "حدث في مكان العمل"
+
+msgid "Other cause"
+msgstr "سبب آخر"
+
+msgid "Relationship with the victim"
+msgstr "العلاقة بالضحية"
+
+msgid "Spouse or partner"
+msgstr "الزوج أو الشريك"
+
+msgid "Child"
+msgstr "ابن/ابنة"
+
+msgid "Parent"
+msgstr "أحد الوالدين"
+
+msgid "Sibling"
+msgstr "أخ أو أخت"
+
+msgid "Other relative"
+msgstr "قريب آخر"
+
+msgid "Did you live with the victim?"
+msgstr "هل كنت تعيش مع الضحية؟"
+
+msgid "Age of the victim"
+msgstr "عمر الضحية"
+
+msgid "Age of the family member"
+msgstr "عمر القريب"
+
+msgid "Has liability been established?"
+msgstr "هل تم إثبات المسؤولية؟"
+
+msgid "Has an insurance offer been received?"
+msgstr "هل تم تلقّي عرض تأمين؟"
+
+msgid "Are the civil-status documents available?"
+msgstr "هل تتوفّر وثائق الحالة المدنية؟"
+
+msgid "Injury"
+msgstr "إصابة"
+
+msgid "Death"
+msgstr "وفاة"
+
+msgid "Place / city"
+msgstr "المكان / المدينة"
+
+msgid "Is the vehicle insured?"
+msgstr "هل المركبة مؤمَّنة؟"
+
+msgid "Estimated liability"
+msgstr "المسؤولية المقدّرة"
+
+msgid "Fully the other party"
+msgstr "بالكامل على الطرف الآخر"
+
+msgid "Shared"
+msgstr "مشتركة"
+
+msgid "Not the other party"
+msgstr "ليست على الطرف الآخر"
+
+msgid "Is the permanent-incapacity rate (IPP) known?"
+msgstr "هل نسبة العجز الدائم (IPP) معروفة؟"
+
+msgid "Is income documentable?"
+msgstr "هل يمكن إثبات الدخل؟"
+
+msgid "Are there eligible family members?"
+msgstr "هل يوجد أفراد أسرة مستحقّون؟"
+
+msgid "Is the police report / constat available?"
+msgstr "هل يتوفّر المحضر / constat؟"
+
+msgid "Is a medical certificate available?"
+msgstr "هل تتوفّر شهادة طبية؟"
+
+msgid "Is the insurer identified?"
+msgstr "هل تم تحديد شركة التأمين؟"
+
+msgid "Is the police report (PV / constat) available?"
+msgstr "هل يتوفّر المحضر (PV / constat)؟"
+
+msgid "Country where the event happened"
+msgstr "البلد الذي وقع فيه الحادث"
+
+msgid "Country of residence of the injured party"
+msgstr "بلد إقامة المتضرّر"
+
+msgid "Country of the insurer"
+msgstr "بلد شركة التأمين"
+
+msgid "Type of damage"
+msgstr "نوع الضرر"
+
+msgid "Personal injury"
+msgstr "ضرر جسدي"
+
+msgid "Property damage"
+msgstr "ضرر مادي"
+
+msgid "Is there a contract or insurance policy?"
+msgstr "هل يوجد عقد أو وثيقة تأمين؟"
+
+msgid "Are there documents in a foreign language?"
+msgstr "هل توجد وثائق بلغة أجنبية؟"
+
+msgid "Is a translation needed?"
+msgstr "هل الترجمة ضرورية؟"
+
+msgid "Essential documents present"
+msgstr "الوثائق الأساسية متوفّرة"
+
+msgid "Partial documents"
+msgstr "وثائق جزئية"
+
+msgid "Initial document collection needed"
+msgstr "يلزم جمع أولي للوثائق"
+
+msgid "Estimated impairment in the 6–15% band: the INAIL capital indemnity table is the candidate basis — it activates once the official table is validated."
+msgstr "العجز المقدّر ضمن نطاق 6–15%: جدول INAIL للتعويض الرأسمالي هو الأساس المرشّح — يُفعَّل بمجرد التحقّق من الجدول الرسمي."
+
+msgid "Estimated impairment above 15%: this points to a possible INAIL annuity and requires a dedicated INAIL analysis."
+msgstr "العجز المقدّر يتجاوز 15%: يشير ذلك إلى إيراد INAIL محتمل ويتطلّب تحليلاً مخصّصاً من INAIL."
+
+msgid "Possible third-party or employer liability: the civil-liability differential beyond INAIL should be assessed."
+msgstr "مسؤولية محتملة لطرف ثالث أو لصاحب العمل: ينبغي تقييم فارق المسؤولية المدنية بما يتجاوز INAIL."
+
+msgid "Italy, road accident with an offer received: a comparison between the insurance offer and a documental valuation is recommended."
+msgstr "إيطاليا، حادث سير مع تلقّي عرض: يُوصى بمقارنة بين عرض التأمين والتقييم الوثائقي."
+
+msgid "Foreign country involved: framing the applicable law (cross-border) is the recommended first step."
+msgstr "بلد أجنبي معني: الخطوة الأولى المُوصى بها هي تحديد القانون الواجب التطبيق (عابر للحدود)."
+
+msgid "Key data available (incapacity, income, liability): the file is ready for the future application of the Dahir / ACAPS barème once it is validated."
+msgstr "البيانات الأساسية متوفّرة (العجز، الدخل، المسؤولية): الملف جاهز للتطبيق المستقبلي لجدول ظهير / ACAPS بمجرد التحقّق منه."
+
+msgid "Key data available (incapacity, income): the file is ready for the future application of the Code des assurances barème once it is validated."
+msgstr "البيانات الأساسية متوفّرة (العجز، الدخل): الملف جاهز للتطبيق المستقبلي لجدول مجلة التأمين بمجرد التحقّق منه."
+
+msgid "Under Rome II the applicable law is, as a rule, that of the country where the damage occurred — to be confirmed against the specific facts."
+msgstr "وفق لائحة روما الثانية، يكون القانون الواجب التطبيق، كقاعدة عامة، قانون البلد الذي وقع فيه الضرر — على أن يُؤكَّد في ضوء الوقائع المحدّدة."
+
+msgid "Foreign-language documents will need certified translation / legalisation before the cross-border analysis."
+msgstr "ستحتاج الوثائق بلغة أجنبية إلى ترجمة مُصدّقة / تصديق قبل التحليل العابر للحدود."
+
+msgid "A cross-border analysis of jurisdiction and applicable law is the recommended next step."
+msgstr "الخطوة التالية المُوصى بها هي تحليل عابر للحدود للاختصاص القضائي والقانون الواجب التطبيق."
+
+msgid "Permanent-incapacity (IPP) assessment"
+msgstr "تقييم العجز الدائم (IPP)"
+
+msgid "Request a documental check from the Studio on the official sources above."
+msgstr "اطلب من المكتب تحقّقاً وثائقياً استناداً إلى المصادر الرسمية أعلاه."
+
+msgid "Request a cross-border framing of the applicable law and the competent court."
+msgstr "اطلب تأطيراً عابراً للحدود للقانون الواجب التطبيق وللمحكمة المختصة."
+
+msgid "Check documents and liability"
+msgstr "تحقّق من الوثائق والمسؤولية"
+
+msgid "Injury percentage and accident details"
+msgstr "نسبة الإصابة وتفاصيل الحادث"
+
+msgid "Injury or death, incapacity and documents"
+msgstr "إصابة أو وفاة، العجز والوثائق"
+
+msgid "Accident details and supporting documents"
+msgstr "تفاصيل الحادث والوثائق الداعمة"
+
+msgid "Medical-legal impairment percentage"
+msgstr "نسبة العجز الطبي-القانوني"
+
+msgid "The offer amount and the injury details"
+msgstr "مبلغ العرض وتفاصيل الإصابة"
+
+msgid "Event date, impairment and documents"
+msgstr "تاريخ الحادث، العجز والوثائق"
+
+msgid "Relationship, cause of death and documents"
+msgstr "العلاقة وسبب الوفاة والوثائق"
+
+msgid "The countries involved and the documents"
+msgstr "البلدان المعنية والوثائق"
+
+msgid "Guided questions"
+msgstr "أسئلة موجَّهة"
+
+msgid "Tell us about your case"
+msgstr "أخبرنا عن حالتك"
+
+msgid "Select…"
+msgstr "اختر…"
+
+msgid "Get my guided result"
+msgstr "احصل على نتيجتي الموجَّهة"
+
+msgid "Your answers are processed only to build this result and are not stored."
+msgstr "تُعالَج إجاباتك فقط لإنشاء هذه النتيجة ولا يتم تخزينها."
+
+msgid "Your guided result"
+msgstr "نتيجتك الموجَّهة"
+
+msgid "Still to prepare"
+msgstr "ما تبقّى لتحضيره"
+
+msgid "No essential document is missing from your answers."
+msgstr "وفق إجاباتك، لا ينقص أي مستند أساسي."
+
+msgid "Applicable official sources"
+msgstr "المصادر الرسمية المنطبقة"
+
+msgid "Summary of your answers"
+msgstr "ملخّص إجاباتك"
+
+msgid "Recommended next step"
+msgstr "الخطوة التالية المُوصى بها"
+
+msgid "This pre-check does not calculate an amount: it organises the data you need based on official sources."
+msgstr "هذا التحقّق المسبق لا يحتسب مبلغاً: بل ينظّم البيانات اللازمة استناداً إلى مصادر رسمية."
+
+msgid "Pre-check questions"
+msgstr "أسئلة التحقّق المسبق"
+
+msgid "You'll need"
+msgstr "ستحتاج إلى"
+
+msgid "Start the Dahir / ACAPS pre-check"
+msgstr "ابدأ التحقّق المسبق ظهير / ACAPS"
+
+msgid "Start the Code des assurances pre-check"
+msgstr "ابدأ التحقّق المسبق لمجلة التأمين"
+
