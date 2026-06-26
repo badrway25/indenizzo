@@ -6049,3 +6049,21 @@ msgstr "Accidents du travail et maladie professionnelle, y compris le différent
 
 msgid "An automatic estimate appears where an official validated source and formula exist: today, road-accident bodily injury (art. 139 micro-permanent and the TUN), the tabular biological-damage estimate for healthcare liability, and the insurance-offer comparison. For everything else the platform follows an assisted pathway on official sources instead of inventing a number."
 msgstr "Une estimation automatique apparaît là où existent une source et une formule officielles et validées : à ce jour, le dommage corporel issu d'un accident de la route (micro-permanentes art. 139 et TUN), l'estimation tabulaire du dommage biologique pour la responsabilité médicale et la comparaison de l'offre d'assurance. Pour tout le reste, la plateforme suit un parcours accompagné fondé sur les sources officielles au lieu d'inventer un chiffre."
+
+msgid "Categories covered"
+msgstr "Catégories couvertes"
+
+msgid "%(country)s is handled across several categories, each grounded in its own official source. An indicative amount is published only where an official quantification source supports it; otherwise the category follows an assisted pathway on those sources."
+msgstr "%(country)s est traité sur plusieurs catégories, chacune fondée sur sa propre source officielle. Un montant indicatif n'est publié que lorsqu'une source officielle de quantification le soutient ; sinon la catégorie suit un parcours assisté sur ces sources."
+
+msgid "Road accidents and bodily injury"
+msgstr "Accidents de la route et dommage corporel"
+
+msgid "Death and eligible family members"
+msgstr "Décès et ayants droit"
+
+msgid "Civil liability and insurance"
+msgstr "Responsabilité civile et assurance"
+
+msgid "International succession"
+msgstr "Succession internationale"

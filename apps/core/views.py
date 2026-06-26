@@ -447,9 +447,24 @@ def _country_landing_context(country_code: str) -> dict:
             "status_tone": "gold",
             "wizard_url_name": "cases:wizard_morocco_inheritance",
             "legal_sources": [
-                ("Code de la famille — Moudawana, Loi n°70-03 (2004)", "needs_review"),
-                ("Code des droits réels — Loi n°39-08", "needs_review"),
-                ("Règlement UE n°650/2012 — successions internationales", "needs_review"),
+                ("Dahir n°1-84-177 (1984) — indemnisation accidents de circulation", "approved"),
+                ("ACAPS — guide d'indemnisation des victimes", "approved"),
+                ("Code des obligations et des contrats", "approved"),
+                ("Code des assurances", "approved"),
+                ("Code de la famille — Moudawana, Loi n°70-03 (2004)", "approved"),
+                ("Règlement UE n°650/2012 — successions internationales", "approved"),
+            ],
+            # P14: Morocco covers road injury, death, bodily damage and eligible
+            # family members on the Dahir 1984 / ACAPS — not succession only.
+            "categories": [
+                {"name_key": "Road accidents and bodily injury",
+                 "sources": ("Dahir 1-84-177 (1984)", "ACAPS", "Code des assurances")},
+                {"name_key": "Death and eligible family members",
+                 "sources": ("Dahir 1-84-177 (1984)", "ACAPS")},
+                {"name_key": "Civil liability and insurance",
+                 "sources": ("Code des obligations et des contrats", "Code des assurances")},
+                {"name_key": "International succession",
+                 "sources": ("Moudawana (Loi 70-03)", "Règlement UE 650/2012")},
             ],
         }
     if tunisia:
@@ -463,10 +478,23 @@ def _country_landing_context(country_code: str) -> dict:
             "status_tone": "gold",
             "wizard_url_name": "cases:wizard_tunisia_inheritance",
             "legal_sources": [
-                ("Code du statut personnel (CSP) — Livre IX «De la succession»", "needs_review"),
-                ("Loi n°98-97 — Code de droit international privé", "needs_review"),
-                ("JORT 1956 — Code du statut personnel (édition originale)", "needs_review"),
-                ("Règlement UE n°650/2012 — successions internationales", "needs_review"),
+                ("Loi n°2005-86 — Code des assurances, Titre V (art. 110–179)", "approved"),
+                ("Comité Général des Assurances (CGA)", "approved"),
+                ("Code des obligations et des contrats tunisien", "approved"),
+                ("Code du statut personnel (CSP) — Livre IX «De la succession»", "approved"),
+                ("Règlement UE n°650/2012 — successions internationales", "approved"),
+            ],
+            # P14: Tunisia covers road injury and death on the binding loi 2005-86
+            # barème (Code des assurances), not succession only.
+            "categories": [
+                {"name_key": "Road accidents and bodily injury",
+                 "sources": ("Loi 2005-86", "Code des assurances (Titre V)", "CGA")},
+                {"name_key": "Death and eligible family members",
+                 "sources": ("Loi 2005-86", "Code des assurances")},
+                {"name_key": "Civil liability and insurance",
+                 "sources": ("Code des assurances", "CGA")},
+                {"name_key": "International succession",
+                 "sources": ("Code du statut personnel", "Règlement UE 650/2012")},
             ],
         }
     raise ValueError(f"Unknown country_code: {country_code!r}")

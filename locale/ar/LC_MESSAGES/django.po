@@ -5758,3 +5758,21 @@ msgstr "حوادث العمل والأمراض المهنية، بما في ذل
 
 msgid "An automatic estimate appears where an official validated source and formula exist: today, road-accident bodily injury (art. 139 micro-permanent and the TUN), the tabular biological-damage estimate for healthcare liability, and the insurance-offer comparison. For everything else the platform follows an assisted pathway on official sources instead of inventing a number."
 msgstr "يظهر التقدير التلقائي حيثما توافرت مصادر وصيغ رسمية ومُعتمدة: حالياً، الضرر الجسدي الناتج عن حادث سير (العاهات الدائمة الصغرى وفق art. 139 والـ TUN)، والتقدير الجدولي للضرر البيولوجي في المسؤولية الصحية، ومقارنة العرض التأميني. أمّا في سائر الحالات فتتّبع المنصّة مساراً مصحوباً يستند إلى المصادر الرسمية بدلاً من اختلاق رقم."
+
+msgid "Categories covered"
+msgstr "الفئات المغطّاة"
+
+msgid "%(country)s is handled across several categories, each grounded in its own official source. An indicative amount is published only where an official quantification source supports it; otherwise the category follows an assisted pathway on those sources."
+msgstr "تُعالَج %(country)s عبر عدّة فئات، تستند كلٌّ منها إلى مصدرها الرسمي. ولا يُنشر مبلغ إرشادي إلا حيث يدعمه مصدر رسمي للتقدير؛ وإلا تتّبع الفئة مساراً مصحوباً على تلك المصادر."
+
+msgid "Road accidents and bodily injury"
+msgstr "حوادث الطرق والضرر الجسدي"
+
+msgid "Death and eligible family members"
+msgstr "الوفاة وذوو الحقوق"
+
+msgid "Civil liability and insurance"
+msgstr "المسؤولية المدنية والتأمين"
+
+msgid "International succession"
+msgstr "الميراث الدولي"
