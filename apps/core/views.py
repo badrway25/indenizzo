@@ -305,6 +305,7 @@ def precheck(request, slug):
     from django.http import Http404
 
     from apps.core.precheck import get_precheck
+    from apps.core.precheck_engine import evaluate
     from apps.core.seo import build_canonical_url
 
     flow = get_precheck(slug)
@@ -316,6 +317,7 @@ def precheck(request, slug):
     if request.method == "POST":
         # Collect only the known field ids — ignore anything else in POST.
         answers = {f.id: request.POST.get(f.id, "").strip() for f in flow.fields}
+        result = evaluate(flow, answers)
 
     # Render-ready fields: pair each field with its submitted value so the
     # template can repopulate without a dict-lookup template filter.

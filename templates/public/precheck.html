@@ -114,6 +114,89 @@
   </form>
   {% endif %}
 
+  {# --- Personalised guided result (after POST) --- #}
+  {% if result %}
+  <section id="precheck-result" class="mt-8 scroll-mt-24 rounded-3xl border border-gold-400/60 bg-sand-100/70 shadow-card p-6 lg:p-7" aria-live="polite">
+    <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Your guided result" %}</p>
+
+    {# Completeness badge. #}
+    <p class="mt-3">
+      {% if result.completeness_tone == 'ok' %}
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ok-600/10 text-ok-600 text-xs font-semibold uppercase tracking-[0.14em]"><span aria-hidden="true">●</span>{{ result.completeness_label }}</span>
+      {% else %}
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-500/15 text-gold-700 text-xs font-semibold uppercase tracking-[0.14em]"><span aria-hidden="true">●</span>{{ result.completeness_label }}</span>
+      {% endif %}
+    </p>
+
+    {# Guidance messages. #}
+    {% if result.messages %}
+      <ul class="mt-5 space-y-3">
+        {% for msg in result.messages %}
+          <li class="flex gap-3 text-sm text-ink-900 leading-relaxed"><span aria-hidden="true" class="mt-1 inline-block w-1.5 h-1.5 rounded-full bg-gold-500 shrink-0"></span><span>{{ msg }}</span></li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <div class="mt-6 grid sm:grid-cols-2 gap-5">
+      {# Missing documents / data. #}
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.18em] text-stone2-500 font-semibold">{% translate "Still to prepare" %}</p>
+        {% if result.missing_documents %}
+          <ul class="mt-3 space-y-2 text-sm text-ink-900">
+            {% for doc in result.missing_documents %}
+              <li class="flex gap-2.5"><span aria-hidden="true" class="mt-0.5 text-gold-600">☐</span><span>{{ doc }}</span></li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="mt-3 text-sm text-ok-600">{% translate "No essential document is missing from your answers." %}</p>
+        {% endif %}
+      </div>
+
+      {# Applicable official sources. #}
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.18em] text-stone2-500 font-semibold">{% translate "Applicable official sources" %}</p>
+        <ul class="mt-3 flex flex-wrap gap-2">
+          {% for src in result.applicable_sources %}
+            <li class="inline-flex items-center gap-1.5 rounded-full border border-gold-400/50 bg-white px-3 py-1 text-xs text-ink-900"><span aria-hidden="true" class="text-gold-600">§</span>{{ src }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    {# Answered summary. #}
+    {% if result.answered_summary %}
+      <details class="mt-6 rounded-2xl border border-stone2-200 bg-white px-5 py-3">
+        <summary class="text-sm font-semibold text-ink-900 cursor-pointer">{% translate "Summary of your answers" %}</summary>
+        <dl class="mt-3 grid sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
+          {% for label, value in result.answered_summary %}
+            <div class="flex justify-between gap-3 border-b border-stone2-100 pb-1.5">
+              <dt class="text-stone2-500">{{ label }}</dt>
+              <dd class="text-ink-900 text-right">{{ value }}</dd>
+            </div>
+          {% endfor %}
+        </dl>
+      </details>
+    {% endif %}
+
+    {# Next step + CTA. #}
+    <div class="mt-6 rounded-2xl border border-ink-950/10 bg-white px-5 py-4">
+      <p class="text-[11px] uppercase tracking-[0.18em] text-gold-700 font-semibold">{% translate "Recommended next step" %}</p>
+      <p class="mt-1.5 text-sm text-ink-900 leading-relaxed">{{ result.next_step }}</p>
+      <div class="mt-4">
+        {% if result.cta_kwargs.slug %}
+          <a href="{% url result.cta_url_name slug=result.cta_kwargs.slug %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">{{ result.cta_label }} <span aria-hidden="true">→</span></a>
+        {% else %}
+          <a href="{% url result.cta_url_name %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">{{ result.cta_label }} <span aria-hidden="true">→</span></a>
+        {% endif %}
+      </div>
+    </div>
+
+    <p class="mt-5 text-xs text-stone2-500 leading-relaxed">
+      {% translate "This pre-check does not calculate an amount: it organises the data you need based on official sources." %}
+    </p>
+  </section>
+  {% endif %}
+
   {# Reference: full document checklist for this flow. #}
   {% if flow.documents %}
     <div class="mt-8 rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7">
