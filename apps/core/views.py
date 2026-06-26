@@ -293,6 +293,32 @@ def services(request):
 
 
 @require_GET
+def precheck(request, slug):
+    """P15: guided documental pre-check for a non-numeric section.
+
+    Renders the official sources, the data/documents to prepare and the next
+    step — never an amount (no engine here). 404 for an unknown slug.
+    """
+    from django.http import Http404
+
+    from apps.core.precheck import get_precheck
+    from apps.core.seo import build_canonical_url
+
+    flow = get_precheck(slug)
+    if flow is None:
+        raise Http404("Unknown pre-check flow")
+    return render(
+        request,
+        "public/precheck.html",
+        {
+            "flow": flow,
+            "canonical_url": build_canonical_url(request),
+            "pexels_image": _pexels_hero(request, "services_hero"),
+        },
+    )
+
+
+@require_GET
 def faq(request):
     """Public FAQ + FAQPage structured data.
 

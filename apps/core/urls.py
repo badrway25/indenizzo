@@ -29,6 +29,8 @@ urlpatterns = [
     path("countries/morocco/", views.country_morocco, name="country_morocco"),
     path("countries/tunisia/", views.country_tunisia, name="country_tunisia"),
     path("case-types/", views.case_types, name="case_types"),
+    # P15: guided documental pre-check flows for non-numeric sections.
+    path("precheck/<slug:slug>/", views.precheck, name="precheck"),
     # F-product-4-case-type-landings: per-case-type SEO/product
     # landings. Slug is resolved against `apps.core.case_type_landings.LANDINGS`;
     # an unknown slug returns 404 (no DB lookup). See

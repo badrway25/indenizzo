@@ -142,6 +142,10 @@ _GLOBAL_HREFLANG_VIEW_NAMES = frozenset(
         # landing — il builder accetta i kwargs e produce alternate
         # URLs coerenti.
         "core:case_type_landing",
+        # P15: the guided documental pre-check flows (slug-parametric, like
+        # case_type_landing). Indicizzabili, multilingua — il builder accetta
+        # i kwargs `slug`.
+        "core:precheck",
         # country landings (gia' coperte dalla view, ma le includiamo
         # nella allowlist per documentare l'intento e per fallback)
         "core:country_italy",

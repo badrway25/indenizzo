@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{ flow.title }} — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}{{ flow.intro }}{% endblock %}
+{% block head_extra %}{% if canonical_url %}<link rel="canonical" href="{{ canonical_url }}">{% endif %}{% endblock %}
+
+{% block content %}
+{% include "partials/_premium_hero_image.html" %}
+<section class="max-w-3xl mx-auto px-5 lg:px-8 py-16">
+  <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{{ flow.country_code }} · {% translate "Guided pre-check" %}</p>
+  <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{{ flow.title }}</h1>
+
+  {# Status badge — pre-check / guided / applicable-law, never a weak label. #}
+  <p class="mt-4">
+    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-500/15 text-gold-700 text-xs font-semibold uppercase tracking-[0.14em]">
+      <span aria-hidden="true">●</span>{{ flow.status_label }}
+    </span>
+  </p>
+
+  <p class="mt-5 text-lg text-ink-800 leading-relaxed">{{ flow.intro }}</p>
+
+  {# Official source chips. #}
+  {% if flow.official_sources %}
+    <div class="mt-6" aria-label="{% translate 'Official source basis' %}">
+      <p class="text-[11px] uppercase tracking-[0.18em] text-stone2-500 font-semibold">{% translate "Official source basis" %}</p>
+      <ul class="mt-2 flex flex-wrap gap-2">
+        {% for src in flow.official_sources %}
+          <li class="inline-flex items-center gap-1.5 rounded-full border border-gold-400/50 bg-sand-100 px-3 py-1 text-xs text-ink-900"><span aria-hidden="true" class="text-gold-600">§</span>{{ src }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  {# Data to verify. #}
+  {% if flow.data_points %}
+    <div class="mt-10 rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7">
+      <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Data to verify" %}</p>
+      <h2 class="mt-2 font-serif text-2xl text-ink-950">{% translate "What to prepare" %}</h2>
+      <ul class="mt-4 space-y-3 text-sm text-ink-900 leading-relaxed">
+        {% for item in flow.data_points %}
+          <li class="flex gap-3"><span aria-hidden="true" class="mt-1 inline-block w-1.5 h-1.5 rounded-full bg-gold-500 shrink-0"></span><span>{{ item }}</span></li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  {# Documents checklist. #}
+  {% if flow.documents %}
+    <div class="mt-6 rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7">
+      <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Documents needed" %}</p>
+      <ul class="mt-4 space-y-3 text-sm text-ink-900 leading-relaxed">
+        {% for doc in flow.documents %}
+          <li class="flex gap-3"><span aria-hidden="true" class="mt-0.5 text-gold-600">☐</span><span>{{ doc }}</span></li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  {# Next steps + CTA. #}
+  <div class="mt-8 rounded-2xl border border-gold-400/50 bg-sand-100 px-5 py-4 text-sm text-ink-900 leading-relaxed" role="note">
+    <strong class="font-semibold">{% translate "Next step" %}.</strong>
+    {% blocktranslate %}Gather the data and documents above, then ask the Studio for a documental check. A lawyer reviews the file on the official sources and replies on the next step.{% endblocktranslate %}
+  </div>
+
+  <div class="mt-6 flex flex-wrap gap-3">
+    <a href="{% url flow.cta_url_name %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
+      {{ flow.cta_label }} <span aria-hidden="true">→</span>
+    </a>
+    <a href="{% url 'core:services' %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink-950/15 text-ink-950 hover:bg-stone2-100 font-semibold">{% translate "Back to services" %}</a>
+  </div>
+
+  {# Mandatory no-amount disclaimer. #}
+  <p class="mt-6 text-xs text-stone2-500 leading-relaxed">
+    {% translate "No amount is calculated without a verified official table or formula." %}
+  </p>
+</section>
+{% endblock %}
