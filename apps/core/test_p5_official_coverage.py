@@ -85,7 +85,9 @@ def test_services_fail_closed_exactly_one_calculable():
             assert s.cta_url_name.startswith("cases:wizard"), s.key
             assert s.badge  # has a premium estimate badge
         else:
-            assert s.cta_url_name == "crm:contact"  # guided → funnel, never a calc
+            # P15: guided / pre-check services route to the contact funnel OR a
+            # documental pre-check flow — never a calculator wizard.
+            assert s.cta_url_name in ("crm:contact", "core:precheck"), s.key
 
 
 def test_service_base_normativa_is_official_instrument():

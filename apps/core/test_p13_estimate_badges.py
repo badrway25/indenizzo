@@ -44,13 +44,19 @@ def test_each_estimate_state_has_a_distinct_badge():
     assert by_key["road_accident"] == "Estimate based on official sources"
     assert by_key["medical"] == "Official table-based biological damage estimate"
     assert by_key["insurance_offer"] == "Comparison based on official sources"
-    assert by_key["work_injury"] == "Assisted path based on official sources"
-    # all four estimate states are present and distinct
+    # P15: work injury is now a documental pre-check; death stays a guided path;
+    # international is reframed as applicable-law framing.
+    assert by_key["work_injury"] == "Documental pre-check with official sources"
+    assert by_key["death"] == "Assisted path based on official sources"
+    assert by_key["international"] == "Applicable-law framing"
+    # all estimate/guided states are present and distinct
     assert {
         "Estimate based on official sources",
         "Official table-based biological damage estimate",
         "Comparison based on official sources",
         "Assisted path based on official sources",
+        "Documental pre-check with official sources",
+        "Applicable-law framing",
     } <= badges
 
 

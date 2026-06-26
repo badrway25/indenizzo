@@ -124,7 +124,9 @@ def test_services_calculability_mirrors_registry():
         if s.calculable:
             assert s.cta_url_name.startswith("cases:wizard"), f"{s.key} should route to a wizard"
         else:
-            assert s.cta_url_name == "crm:contact", f"{s.key} should route to contact"
+            # P15: non-calculable services route to the contact funnel OR a
+            # documental pre-check flow — never a calculator wizard.
+            assert s.cta_url_name in ("crm:contact", "core:precheck"), f"{s.key} routes wrong"
 
 
 def test_new_pages_are_indexable_and_in_nav(db):
