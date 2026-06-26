@@ -398,10 +398,11 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
             _("Provides an assisted legal pathway of the additional damages potentially recoverable."),
             _("Indicates next steps and missing documents — without any automatic engagement."),
         ),
-        primary_cta_label=_("Request a legal review"),
-        primary_cta_url_name="crm:contact",
-        secondary_cta_label=_("Open the simulation wizard"),
-        secondary_cta_url_name="cases:wizard_start",
+        primary_cta_label=_("Start the INAIL pre-check"),
+        primary_cta_url_name="core:precheck",
+        primary_cta_url_kwargs={"slug": "inail"},
+        secondary_cta_label=_("Request a legal review instead"),
+        secondary_cta_url_name="crm:contact",
         faq_items=(
             _FAQ_LEGAL_OPINION,
             FAQItem(
@@ -523,10 +524,11 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
             _("Indicates next steps, missing documents and the alternatives available to the family."),
             _("Handles the matter with the discretion the case requires."),
         ),
-        primary_cta_label=_("Request a legal review"),
-        primary_cta_url_name="crm:contact",
-        secondary_cta_label=_("Open the simulation wizard"),
-        secondary_cta_url_name="cases:wizard_start",
+        primary_cta_label=_("Start the documental pre-check"),
+        primary_cta_url_name="core:precheck",
+        primary_cta_url_kwargs={"slug": "loss-of-relative"},
+        secondary_cta_label=_("Request a legal review instead"),
+        secondary_cta_url_name="crm:contact",
         faq_items=(
             _FAQ_LEGAL_OPINION,
             FAQItem(
@@ -647,8 +649,9 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
             _("Produces an indicative assessment of the most likely jurisdictional outcome."),
             _("Recommends a structured next step — without any automatic engagement."),
         ),
-        primary_cta_label=_("Request a cross-border legal review"),
-        primary_cta_url_name="crm:contact",
+        primary_cta_label=_("Frame the applicable law"),
+        primary_cta_url_name="core:precheck",
+        primary_cta_url_kwargs={"slug": "international-road-accident"},
         secondary_cta_label=_("Open the simulation wizard"),
         secondary_cta_url_name="cases:wizard_start",
         faq_items=(

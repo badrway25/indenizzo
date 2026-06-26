@@ -70,7 +70,12 @@ _BADGE_OFFICIAL = _("Estimate based on official sources")          # numeric_est
 _BADGE_TABULAR = _("Official table-based biological damage estimate")  # tabular_biological_damage_approved
 _BADGE_OFFER = _("Comparison based on official sources")           # offer_comparison_approved
 _BADGE_GUIDED = _("Assisted path based on official sources")       # official_guided_path_approved
+# P15: two further public states, differentiating the non-numeric services and
+# reusing the pre-check / router msgids so the wording never diverges.
+_BADGE_PRECHECK = _("Documental pre-check with official sources")  # documental pre-check
+_BADGE_LAW = _("Applicable-law framing")                           # cross-border framing
 _CTA_GUIDED = _("Request a guided analysis")
+_CTA_PRECHECK = _("Start the pre-check")
 
 SERVICES = (
     Service("road_accident", _("Road accident"),
@@ -83,11 +88,11 @@ SERVICES = (
             badge=_BADGE_TABULAR, base_normativa="L. 24/2017 (Gelli) · artt. 138–139 CAP"),
     Service("work_injury", _("Workplace injury"),
             _("Accidents at work and occupational disease, including the differential beyond INAIL. The Studio frames it on the official sources; an automatic figure follows once the INAIL table is imported."),
-            "hard-hat", False, _CTA_GUIDED, "crm:contact",
-            badge=_BADGE_GUIDED, base_normativa="D.P.R. 1124/1965 (T.U. INAIL)"),
+            "hard-hat", False, _CTA_PRECHECK, "core:precheck", {"slug": "inail"},
+            badge=_BADGE_PRECHECK, base_normativa="D.P.R. 1124/1965 (T.U. INAIL)"),
     Service("death", _("Loss of a relative"),
             _("Death and loss-of-relationship damages for family members. A sensitive, fact-specific area handled directly by the Studio."),
-            "heart", False, _("Assisted pathway for relatives"), "crm:contact",
+            "heart", False, _("Assisted pathway for relatives"), "core:precheck", {"slug": "loss-of-relative"},
             badge=_BADGE_GUIDED, base_normativa="artt. 2043, 2059 c.c."),
     Service("insurance_offer", _("Insurance offer to check"),
             _("If the offer concerns an injury compatible with art. 139 micro-permanent or the TUN, the platform compares the proposed amount against the official tabular estimate and shows the deviation."),
@@ -95,8 +100,9 @@ SERVICES = (
             badge=_BADGE_OFFER, base_normativa="art. 139 CAP · TUN · CAP artt. 145, 148"),
     Service("international", _("Cross-border matters"),
             _("Cases with foreign elements — parties, assets or events abroad — including questions of applicable law and competent jurisdiction."),
-            "globe", False, _("Frame the applicable law"), "crm:contact",
-            badge=_BADGE_GUIDED, base_normativa="Reg. CE 864/2007 (Roma II)"),
+            "globe", False, _("Frame the applicable law"), "core:precheck",
+            {"slug": "international-road-accident"},
+            badge=_BADGE_LAW, base_normativa="Reg. CE 864/2007 (Roma II)"),
     Service("foreigners", _("Foreign nationals in Italy"),
             _("Assistance for foreign or non-resident clients who suffered harm in Italy, with multilingual support and remote handling."),
             "users", False, _CTA_GUIDED, "crm:contact",

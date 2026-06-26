@@ -506,13 +506,21 @@ def _country_landing_context(country_code: str) -> dict:
             # family members on the Dahir 1984 / ACAPS — not succession only.
             "categories": [
                 {"name_key": "Road accidents and bodily injury",
-                 "sources": ("Dahir 1-84-177 (1984)", "ACAPS", "Code des assurances")},
+                 "sources": ("Dahir 1-84-177 (1984)", "ACAPS", "Code des assurances"),
+                 "cta_slug": "morocco-road-accident",
+                 "cta_label": "Start the accident pre-check"},
                 {"name_key": "Death and eligible family members",
-                 "sources": ("Dahir 1-84-177 (1984)", "ACAPS")},
+                 "sources": ("Dahir 1-84-177 (1984)", "ACAPS"),
+                 "cta_slug": "morocco-road-accident",
+                 "cta_label": "Start the death pre-check"},
                 {"name_key": "Civil liability and insurance",
-                 "sources": ("Code des obligations et des contrats", "Code des assurances")},
+                 "sources": ("Code des obligations et des contrats", "Code des assurances"),
+                 "cta_slug": "morocco-road-accident",
+                 "cta_label": "Check the documents needed"},
                 {"name_key": "International succession",
-                 "sources": ("Moudawana (Loi 70-03)", "Règlement UE 650/2012")},
+                 "sources": ("Moudawana (Loi 70-03)", "Règlement UE 650/2012"),
+                 "cta_slug": "international-road-accident",
+                 "cta_label": "Frame the applicable law"},
             ],
         }
     if tunisia:
@@ -536,13 +544,21 @@ def _country_landing_context(country_code: str) -> dict:
             # barème (Code des assurances), not succession only.
             "categories": [
                 {"name_key": "Road accidents and bodily injury",
-                 "sources": ("Loi 2005-86", "Code des assurances (Titre V)", "CGA")},
+                 "sources": ("Loi 2005-86", "Code des assurances (Titre V)", "CGA"),
+                 "cta_slug": "tunisia-road-accident",
+                 "cta_label": "Start the accident pre-check"},
                 {"name_key": "Death and eligible family members",
-                 "sources": ("Loi 2005-86", "Code des assurances")},
+                 "sources": ("Loi 2005-86", "Code des assurances"),
+                 "cta_slug": "tunisia-road-accident",
+                 "cta_label": "Start the death pre-check"},
                 {"name_key": "Civil liability and insurance",
-                 "sources": ("Code des assurances", "CGA")},
+                 "sources": ("Code des assurances", "CGA"),
+                 "cta_slug": "tunisia-road-accident",
+                 "cta_label": "Check the documents needed"},
                 {"name_key": "International succession",
-                 "sources": ("Code du statut personnel", "Règlement UE 650/2012")},
+                 "sources": ("Code du statut personnel", "Règlement UE 650/2012"),
+                 "cta_slug": "international-road-accident",
+                 "cta_label": "Frame the applicable law"},
             ],
         }
     raise ValueError(f"Unknown country_code: {country_code!r}")

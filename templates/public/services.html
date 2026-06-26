@@ -50,7 +50,11 @@
                 <span class="font-mono text-stone2-500">{{ s.base_normativa }}</span>
               </p>
             {% endif %}
-            <a href="{% url s.cta_url_name %}" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold {% if s.calculable %}text-gold-700 hover:text-gold-600{% else %}text-ink-900 hover:text-ink-950{% endif %}">
+            {% if s.cta_kwargs.slug %}
+              <a href="{% url s.cta_url_name slug=s.cta_kwargs.slug %}" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold {% if s.calculable %}text-gold-700 hover:text-gold-600{% else %}text-ink-900 hover:text-ink-950{% endif %}">
+            {% else %}
+              <a href="{% url s.cta_url_name %}" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold {% if s.calculable %}text-gold-700 hover:text-gold-600{% else %}text-ink-900 hover:text-ink-950{% endif %}">
+            {% endif %}
               {{ s.cta_label }} <span class="cta-arrow" aria-hidden="true">→</span>
             </a>
           </article>
