@@ -5722,3 +5722,39 @@ msgstr "...فهي جوانب متمايزة: يساعد التقييم الاس�
 
 msgid "[IT FAQ string reworded] ...la valutazione indicativa include questo passo di triage prima di qualsiasi avvio formale."
 msgstr "...يتضمّن التقييم الاسترشادي خطوة الفرز هذه قبل أي مباشرة رسمية."
+
+msgid "Estimate based on official sources"
+msgstr "تقدير يستند إلى مصدر رسمي"
+
+msgid "Official table-based biological damage estimate"
+msgstr "تقدير الضرر البيولوجي وفق الجداول الرسمية"
+
+msgid "Comparison based on official sources"
+msgstr "مقارنة تستند إلى مصدر رسمي"
+
+msgid "Assisted path based on official sources"
+msgstr "مسار موجَّه يستند إلى مصدر رسمي"
+
+msgid "Calculate the tabular estimate"
+msgstr "احسب التقدير الجدولي"
+
+msgid "Compare your offer"
+msgstr "قارن عرضك"
+
+msgid "Insurance offer to check"
+msgstr "عرض تأمين بحاجة إلى تحقّق"
+
+msgid "Bodily injury from a road accident. Micro-permanent 1–9% on art. 139 CAP and macro 10–100% on the Tabella Unica Nazionale 2025 produce an indicative estimate when the data is compatible."
+msgstr "الضرر الجسدي الناتج عن حادث طريق. تُنتج الأضرار الدائمة الصغرى 1–9% وفق المادة 139 من قانون التأمين (CAP) والأضرار الدائمة الكبرى 10–100% وفق Tabella Unica Nazionale 2025 تقديرًا إرشاديًا عندما تكون البيانات متوافقة."
+
+msgid "When the injury is quantified medico-legally, the platform produces a tabular biological-damage estimate (1–9% art. 139, 10–100% TUN). It does not assess fault, causation or overall healthcare liability."
+msgstr "عندما تُقدَّر الإصابة طبياً وقانونياً، تُنتج المنصّة تقديراً جدولياً للضرر البيولوجي (1–9% art. 139، 10–100% TUN). وهي لا تُقيّم الخطأ ولا العلاقة السببية ولا المسؤولية الصحية الإجمالية."
+
+msgid "If the offer concerns an injury compatible with art. 139 micro-permanent or the TUN, the platform compares the proposed amount against the official tabular estimate and shows the deviation."
+msgstr "إذا كان العرض يتعلّق بإصابة متوافقة مع العاهات الدائمة الصغرى وفق art. 139 أو مع الـ TUN، تقارن المنصّة المبلغ المقترح بالتقدير الجدولي الرسمي وتُظهر الفارق."
+
+msgid "Accidents at work and occupational disease, including the differential beyond INAIL. The Studio frames it on the official sources; an automatic figure follows once the INAIL table is imported."
+msgstr "حوادث العمل والأمراض المهنية، بما في ذلك الضرر التفاضلي الزائد عن الـ INAIL. يؤطّره المكتب استناداً إلى المصادر الرسمية؛ ويتبع ذلك تقدير تلقائي بمجرد استيراد جدول INAIL."
+
+msgid "An automatic estimate appears where an official validated source and formula exist: today, road-accident bodily injury (art. 139 micro-permanent and the TUN), the tabular biological-damage estimate for healthcare liability, and the insurance-offer comparison. For everything else the platform follows an assisted pathway on official sources instead of inventing a number."
+msgstr "يظهر التقدير التلقائي حيثما توافرت مصادر وصيغ رسمية ومُعتمدة: حالياً، الضرر الجسدي الناتج عن حادث سير (العاهات الدائمة الصغرى وفق art. 139 والـ TUN)، والتقدير الجدولي للضرر البيولوجي في المسؤولية الصحية، ومقارنة العرض التأميني. أمّا في سائر الحالات فتتّبع المنصّة مساراً مصحوباً يستند إلى المصادر الرسمية بدلاً من اختلاق رقم."

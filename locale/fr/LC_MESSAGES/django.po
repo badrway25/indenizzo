@@ -6013,3 +6013,39 @@ msgstr "...ce sont des aspects distincts : l'évaluation indicative aide à dét
 
 msgid "[IT FAQ string reworded] ...la valutazione indicativa include questo passo di triage prima di qualsiasi avvio formale."
 msgstr "...l'évaluation indicative comprend cette étape de tri préalable à toute ouverture formelle."
+
+msgid "Estimate based on official sources"
+msgstr "Estimation fondée sur une source officielle"
+
+msgid "Official table-based biological damage estimate"
+msgstr "Estimation tabellaire du dommage biologique"
+
+msgid "Comparison based on official sources"
+msgstr "Comparaison fondée sur une source officielle"
+
+msgid "Assisted path based on official sources"
+msgstr "Parcours assisté fondé sur une source officielle"
+
+msgid "Calculate the tabular estimate"
+msgstr "Calculer l'estimation tabellaire"
+
+msgid "Compare your offer"
+msgstr "Comparez votre offre"
+
+msgid "Insurance offer to check"
+msgstr "Offre d'assurance à vérifier"
+
+msgid "Bodily injury from a road accident. Micro-permanent 1–9% on art. 139 CAP and macro 10–100% on the Tabella Unica Nazionale 2025 produce an indicative estimate when the data is compatible."
+msgstr "Dommage corporel résultant d'un accident de la route. Les micro-permanentes 1–9 % sur l'art. 139 CAP et les macro-permanentes 10–100 % sur la Tabella Unica Nazionale 2025 produisent une estimation indicative lorsque les données sont compatibles."
+
+msgid "When the injury is quantified medico-legally, the platform produces a tabular biological-damage estimate (1–9% art. 139, 10–100% TUN). It does not assess fault, causation or overall healthcare liability."
+msgstr "Lorsque la lésion est quantifiée sur le plan médico-légal, la plateforme produit une estimation tabulaire du dommage biologique (1–9 % art. 139, 10–100 % TUN). Elle n'apprécie ni la faute, ni le lien de causalité, ni la responsabilité médicale globale."
+
+msgid "If the offer concerns an injury compatible with art. 139 micro-permanent or the TUN, the platform compares the proposed amount against the official tabular estimate and shows the deviation."
+msgstr "Si l'offre porte sur une lésion compatible avec les micro-permanentes de l'art. 139 ou avec la TUN, la plateforme compare le montant proposé à l'estimation tabulaire officielle et indique l'écart."
+
+msgid "Accidents at work and occupational disease, including the differential beyond INAIL. The Studio frames it on the official sources; an automatic figure follows once the INAIL table is imported."
+msgstr "Accidents du travail et maladie professionnelle, y compris le différentiel au-delà de l'INAIL. Le Cabinet l'encadre à partir des sources officielles ; une estimation automatique suivra une fois la table INAIL importée."
+
+msgid "An automatic estimate appears where an official validated source and formula exist: today, road-accident bodily injury (art. 139 micro-permanent and the TUN), the tabular biological-damage estimate for healthcare liability, and the insurance-offer comparison. For everything else the platform follows an assisted pathway on official sources instead of inventing a number."
+msgstr "Une estimation automatique apparaît là où existent une source et une formule officielles et validées : à ce jour, le dommage corporel issu d'un accident de la route (micro-permanentes art. 139 et TUN), l'estimation tabulaire du dommage biologique pour la responsabilité médicale et la comparaison de l'offre d'assurance. Pour tout le reste, la plateforme suit un parcours accompagné fondé sur les sources officielles au lieu d'inventer un chiffre."
