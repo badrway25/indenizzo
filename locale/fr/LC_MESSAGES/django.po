@@ -5765,3 +5765,66 @@ msgstr "Calculateur disponible — art. 138–139 CAP"
 
 msgid "Produces an indicative range for the tabular biological damage under L. 24/2017 (artt. 138–139 CAP): 1 to 9 disability points via the official art. 139 micro table, 10 points and above via the approved Tabella Unica Nazionale 2025."
 msgstr "Produit une fourchette indicative pour le dommage biologique tabulaire au titre de la L. 24/2017 (art. 138–139 CAP) : de 1 à 9 points d'invalidité via la table officielle art. 139 micro, 10 points et plus via la Tabella Unica Nazionale 2025 approuvée."
+
+msgid "Italy — insurance offer comparison"
+msgstr "Italie — comparaison de l'offre d'assurance"
+
+msgid "Compare an insurer's settlement offer against the indicative biological-damage estimate from the approved Italian sources (TUN 2025 and art. 139 CAP). Indicative comparison only — it does not replace the full analysis of the case."
+msgstr "Comparez l'offre transactionnelle d'un assureur à l'estimation indicative du dommage biologique issue des sources italiennes approuvées (TUN 2025 et art. 139 CAP). Comparaison indicative uniquement — elle ne remplace pas l'analyse complète du dossier."
+
+msgid "Compare an insurance offer"
+msgstr "Comparer une offre d'assurance"
+
+msgid "Enter the offer you received and the basic facts of the injury. We compute the indicative tabular estimate from the approved official sources and show how the offer compares to it."
+msgstr "Saisissez l'offre reçue et les éléments essentiels de la lésion. Nous calculons l'estimation tabulaire indicative à partir des sources officielles approuvées et montrons comment l'offre se situe par rapport à elle."
+
+msgid "Indicative tabular comparison based on official sources. It does not replace the full analysis of the case."
+msgstr "Comparaison tabulaire indicative fondée sur des sources officielles. Elle ne remplace pas l'analyse complète du dossier."
+
+msgid "Compares your offer against the indicative biological-damage range computed from the approved Italian sources (art. 139 CAP for minor disability, Tabella Unica Nazionale 2025 for higher disability)."
+msgstr "Compare votre offre à la fourchette indicative du dommage biologique calculée à partir des sources italiennes approuvées (art. 139 CAP pour les invalidités mineures, Tabella Unica Nazionale 2025 pour les invalidités plus importantes)."
+
+msgid "It does not value patrimonial damage, personalisation or the wider claim, does not constitute legal advice, and does not replace the full analysis of the case by a lawyer."
+msgstr "Il n'évalue pas le dommage patrimonial, la personnalisation ou la demande dans son ensemble, ne constitue pas un avis juridique et ne remplace pas l'analyse complète du dossier par un avocat."
+
+msgid "Submit to see the indicative range, your offer and the deviation, then request a legal review before accepting or refusing any settlement."
+msgstr "Envoyez pour voir la fourchette indicative, votre offre et l'écart, puis demandez un examen juridique avant d'accepter ou de refuser toute transaction."
+
+msgid "Comparison available — official Italian sources"
+msgstr "Comparaison disponible — sources officielles italiennes"
+
+msgid "Compare with the official estimate"
+msgstr "Comparer à l'estimation officielle"
+
+msgid "Offer comparison"
+msgstr "Comparaison de l'offre"
+
+msgid "Your offer"
+msgstr "Votre offre"
+
+msgid "Central indicative estimate"
+msgstr "Estimation indicative centrale"
+
+msgid "Your offer is about %(pct)s below the central indicative estimate."
+msgstr "Votre offre est environ %(pct)s en dessous de l'estimation indicative centrale."
+
+msgid "Your offer is about %(pct)s above the central indicative estimate."
+msgstr "Votre offre est environ %(pct)s au-dessus de l'estimation indicative centrale."
+
+msgid "Below the indicative range"
+msgstr "En dessous de la fourchette indicative"
+
+msgid "Above the indicative range"
+msgstr "Au-dessus de la fourchette indicative"
+
+msgid "Within the indicative range"
+msgstr "Dans la fourchette indicative"
+
+msgid "Settlement offer received (EUR)"
+msgstr "Offre transactionnelle reçue (EUR)"
+
+msgid "The amount the insurer has offered you, in euro."
+msgstr "Le montant que l'assureur vous a proposé, en euros."
+
+msgid "Compare your offer now"
+msgstr "Comparez votre offre maintenant"

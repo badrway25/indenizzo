@@ -316,10 +316,10 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
             _("Indicates whether the offer is in line, below, or significantly below the indicative range — and what is missing."),
             _("Recommends the next step — accept, negotiate, refuse — without any automatic engagement."),
         ),
-        primary_cta_label=_("Request a legal review of your offer"),
-        primary_cta_url_name="crm:contact",
-        secondary_cta_label=_("Run the indicative simulation first"),
-        secondary_cta_url_name="cases:wizard_start",
+        primary_cta_label=_("Compare your offer now"),
+        primary_cta_url_name="cases:wizard_insurance_offer",
+        secondary_cta_label=_("Request a legal review of your offer"),
+        secondary_cta_url_name="crm:contact",
         faq_items=(
             _FAQ_LEGAL_OPINION,
             FAQItem(

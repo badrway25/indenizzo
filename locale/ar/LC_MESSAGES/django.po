@@ -5470,3 +5470,66 @@ msgstr "الآلة الحاسبة متاحة — المادتان 138–139 من
 
 msgid "Produces an indicative range for the tabular biological damage under L. 24/2017 (artt. 138–139 CAP): 1 to 9 disability points via the official art. 139 micro table, 10 points and above via the approved Tabella Unica Nazionale 2025."
 msgstr "يُنتج نطاقاً إرشادياً للضرر البيولوجي الجدولي بموجب القانون 24/2017 (المادتان 138–139 من قانون التأمين): من 1 إلى 9 نقاط عجز عبر جدول المادة 139 الرسمي للأضرار الصغرى، ومن 10 نقاط فأكثر عبر الجدول الوطني الموحّد 2025 المعتمد."
+
+msgid "Italy — insurance offer comparison"
+msgstr "إيطاليا — مقارنة عرض التأمين"
+
+msgid "Compare an insurer's settlement offer against the indicative biological-damage estimate from the approved Italian sources (TUN 2025 and art. 139 CAP). Indicative comparison only — it does not replace the full analysis of the case."
+msgstr "قارن العرض التصالحي لشركة التأمين بالتقدير الإرشادي للضرر البيولوجي المستند إلى المصادر الإيطالية المعتمدة (الجدول الوطني الموحّد 2025 والمادة 139 من قانون التأمين). مقارنة إرشادية فقط — لا تحل محل التحليل الكامل للملف."
+
+msgid "Compare an insurance offer"
+msgstr "قارن عرض تأمين"
+
+msgid "Enter the offer you received and the basic facts of the injury. We compute the indicative tabular estimate from the approved official sources and show how the offer compares to it."
+msgstr "أدخِل العرض الذي تلقّيته والوقائع الأساسية للإصابة. نحسب التقدير الجدولي الإرشادي من المصادر الرسمية المعتمدة ونبيّن كيف يقارن العرض به."
+
+msgid "Indicative tabular comparison based on official sources. It does not replace the full analysis of the case."
+msgstr "مقارنة جدولية إرشادية تستند إلى مصادر رسمية. لا تحل محل التحليل الكامل للملف."
+
+msgid "Compares your offer against the indicative biological-damage range computed from the approved Italian sources (art. 139 CAP for minor disability, Tabella Unica Nazionale 2025 for higher disability)."
+msgstr "يقارن عرضك بالنطاق الإرشادي للضرر البيولوجي المحسوب من المصادر الإيطالية المعتمدة (المادة 139 من قانون التأمين للعجز الطفيف، والجدول الوطني الموحّد 2025 للعجز الأكبر)."
+
+msgid "It does not value patrimonial damage, personalisation or the wider claim, does not constitute legal advice, and does not replace the full analysis of the case by a lawyer."
+msgstr "لا يقيّم الضرر المالي أو التخصيص أو المطالبة في مجملها، ولا يشكّل استشارة قانونية، ولا يحل محل التحليل الكامل للملف من قبل محامٍ."
+
+msgid "Submit to see the indicative range, your offer and the deviation, then request a legal review before accepting or refusing any settlement."
+msgstr "أرسِل لرؤية النطاق الإرشادي وعرضك والفارق، ثم اطلب مراجعة قانونية قبل قبول أي تسوية أو رفضها."
+
+msgid "Comparison available — official Italian sources"
+msgstr "المقارنة متاحة — مصادر إيطالية رسمية"
+
+msgid "Compare with the official estimate"
+msgstr "قارن بالتقدير الرسمي"
+
+msgid "Offer comparison"
+msgstr "مقارنة العرض"
+
+msgid "Your offer"
+msgstr "عرضك"
+
+msgid "Central indicative estimate"
+msgstr "التقدير الإرشادي المركزي"
+
+msgid "Your offer is about %(pct)s below the central indicative estimate."
+msgstr "عرضك أقل بنحو %(pct)s من التقدير الإرشادي المركزي."
+
+msgid "Your offer is about %(pct)s above the central indicative estimate."
+msgstr "عرضك أعلى بنحو %(pct)s من التقدير الإرشادي المركزي."
+
+msgid "Below the indicative range"
+msgstr "أقل من النطاق الإرشادي"
+
+msgid "Above the indicative range"
+msgstr "أعلى من النطاق الإرشادي"
+
+msgid "Within the indicative range"
+msgstr "ضمن النطاق الإرشادي"
+
+msgid "Settlement offer received (EUR)"
+msgstr "العرض التصالحي المستلَم (يورو)"
+
+msgid "The amount the insurer has offered you, in euro."
+msgstr "المبلغ الذي عرضه عليك المؤمّن، باليورو."
+
+msgid "Compare your offer now"
+msgstr "قارن عرضك الآن"

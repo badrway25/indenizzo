@@ -252,6 +252,32 @@ class BelgiumRoadAccidentWizardForm(ItalyRoadAccidentWizardForm):
         return value or "BE"
 
 
+class InsuranceOfferComparisonForm(ItalyRoadAccidentWizardForm):
+    """Italy — compare an insurer's settlement offer against the official
+    tabular biological-damage estimate.
+
+    Same domain inputs as the road-accident wizard plus a required
+    ``offer_amount`` (the figure the insurer proposed). The estimate itself
+    is produced by the approved engine; the comparison is pure arithmetic on
+    that estimate and the user-supplied offer — no invented legal data.
+    """
+
+    offer_amount = forms.DecimalField(
+        label=_("Settlement offer received (EUR)"),
+        required=True,
+        min_value=MONEY_MIN,
+        max_value=MONEY_MAX,
+        decimal_places=2,
+        help_text=_("The amount the insurer has offered you, in euro."),
+    )
+
+    def to_input_data(self) -> dict[str, Any]:
+        data = super().to_input_data()
+        offer = self.cleaned_data.get("offer_amount")
+        data["offer_amount"] = str(offer) if offer is not None else None
+        return data
+
+
 class InternationalInheritanceWizardForm(forms.Form):
     """
     Form scaffold per le successioni internazionali (MA, TN).

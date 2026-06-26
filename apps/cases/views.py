@@ -42,6 +42,7 @@ from apps.core.rate_limit import public_post_rate_limit
 from .forms import (
     BelgiumRoadAccidentWizardForm,
     FranceRoadAccidentWizardForm,
+    InsuranceOfferComparisonForm,
     InternationalInheritanceWizardForm,
     ItalyRoadAccidentWizardForm,
 )
@@ -271,6 +272,53 @@ def wizard_italy_medical(request):
 
 
 # ---------------------------------------------------------------------------
+# /wizard/it/offer-comparison/  — confronto offerta assicurativa
+# ---------------------------------------------------------------------------
+
+
+@public_post_rate_limit
+@require_http_methods(["GET", "POST"])
+def wizard_insurance_offer(request):
+    """Compare an insurer's settlement offer against the official tabular estimate.
+
+    Reuses the approved Italian biological-damage engine (art. 139 micro for
+    1–9%, TUN art. 138 for 10%+) for the estimate, then the result page shows
+    a pure-arithmetic comparison of the offer against that indicative range.
+    """
+    if request.method == "POST":
+        form = InsuranceOfferComparisonForm(request.POST)
+        if form.is_valid():
+            if form.is_likely_bot:
+                logger.info("cases.wizard.dropped reason=honeypot path=%s", request.path)
+                return redirect(reverse("cases:wizard_start"))
+
+            simulation = _run_insurance_offer(request, form)
+            return redirect(
+                reverse(
+                    "cases:wizard_result",
+                    kwargs={"public_id": str(simulation.public_id)},
+                )
+            )
+    else:
+        form = InsuranceOfferComparisonForm()
+
+    from apps.core.views import _pexels_hero
+
+    return render(
+        request,
+        "public/wizard_insurance_offer.html",
+        {
+            "form": form,
+            "jurisdiction_code": ITALY_ROAD_ACCIDENT_JURISDICTION,
+            "case_type": ITALY_ROAD_ACCIDENT_CASE_TYPE,
+            "pexels_image": _pexels_hero(
+                request, "wizard_insurance_offer_hero", country_code="IT"
+            ),
+        },
+    )
+
+
+# ---------------------------------------------------------------------------
 # /wizard/result/<uuid>/  — pagina risultato
 # ---------------------------------------------------------------------------
 
@@ -389,6 +437,11 @@ def wizard_result(request, public_id: uuid.UUID):
             "damage or overall healthcare liability."
         )
 
+    # P9 Fase D: insurance-offer comparison. When the wizard carried an
+    # ``offer_amount`` and the engine produced an estimate, compare the offer
+    # against the indicative range (pure arithmetic on the official estimate).
+    offer_comparison = _build_offer_comparison(simulation, has_estimate)
+
     # H1-8: compact, public-safe provenance summary. Only display-safe fields
     # (source version label, abbreviated content hash, engine version, calc
     # date) — never the raw JSON. Present only on the calculated path and only
@@ -423,6 +476,7 @@ def wizard_result(request, public_id: uuid.UUID):
             "recommended_landings": recommended_landings,
             "provenance_summary": provenance_summary,
             "medical_scope_note": medical_scope_note,
+            "offer_comparison": offer_comparison,
         },
     )
 
@@ -430,6 +484,50 @@ def wizard_result(request, public_id: uuid.UUID):
 # ---------------------------------------------------------------------------
 # helpers
 # ---------------------------------------------------------------------------
+
+
+def _build_offer_comparison(simulation, has_estimate: bool) -> dict | None:
+    """Compare a persisted ``offer_amount`` against the indicative estimate.
+
+    Pure arithmetic on the official estimate and the user-supplied offer — no
+    invented legal data. Returns ``None`` when there is no offer or no
+    estimate, so the result template silently omits the comparison block.
+    """
+    from decimal import Decimal, InvalidOperation
+
+    offer_raw = (simulation.input_data or {}).get("offer_amount")
+    if not offer_raw or not has_estimate:
+        return None
+    try:
+        offer = Decimal(str(offer_raw))
+    except (InvalidOperation, TypeError):
+        return None
+
+    mid = simulation.estimated_mid
+    low = simulation.estimated_min
+    high = simulation.estimated_max
+    if mid is None or mid <= 0:
+        return None
+
+    deviation_pct = ((offer - mid) / mid * Decimal(100)).quantize(Decimal("0.1"))
+    if low is not None and offer < low:
+        verdict = "below"
+    elif high is not None and offer > high:
+        verdict = "above"
+    else:
+        verdict = "within"
+    return {
+        "offer": offer,
+        "estimate_min": low,
+        "estimate_mid": mid,
+        "estimate_max": high,
+        "deviation_pct": deviation_pct,
+        # Pre-formatted with the "%" sign so the template placeholder is not
+        # followed by a literal "%", which would break blocktranslate's
+        # %-interpolation at render time.
+        "deviation_display": f"{abs(deviation_pct)}%",
+        "verdict": verdict,
+    }
 
 
 def _run_italy_road_accident(request, form: ItalyRoadAccidentWizardForm) -> Simulation:
@@ -478,6 +576,32 @@ def _run_italy_medical(request, form: ItalyRoadAccidentWizardForm) -> Simulation
         trigger="wizard_italy_medical",
         privacy_purpose_code=SIMULATION_CONSENT_PURPOSE_CODE,
         privacy_purpose_label="Italy medical biological-damage simulation",
+        default_locale="it",
+    )
+
+
+def _run_insurance_offer(request, form: InsuranceOfferComparisonForm) -> Simulation:
+    """Run the official tabular estimate behind the insurance-offer comparison.
+
+    Same percentage routing as the road wizard (1–9% → art. 139 micro, else
+    TUN art. 138). The user's ``offer_amount`` rides along in ``input_data``
+    (the engine ignores it) so the result page can compare it to the estimate.
+    """
+    pct = form.cleaned_data.get("permanent_disability_percentage")
+    case_type = ITALY_ROAD_ACCIDENT_CASE_TYPE
+    try:
+        if pct is not None and 1 <= int(pct) <= 9:
+            case_type = CaseType.ROAD_ACCIDENT_MICROLESIONS.value
+    except (TypeError, ValueError):
+        pass
+    return _run_road_accident_simulation(
+        request=request,
+        form=form,
+        jurisdiction_code=ITALY_ROAD_ACCIDENT_JURISDICTION,
+        case_type=case_type,
+        trigger="wizard_insurance_offer",
+        privacy_purpose_code=SIMULATION_CONSENT_PURPOSE_CODE,
+        privacy_purpose_label="Italy insurance offer comparison",
         default_locale="it",
     )
 
