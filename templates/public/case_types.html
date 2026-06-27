@@ -6,6 +6,11 @@
 {% block meta_description %}{% blocktranslate %}Modular taxonomy of case types: each module is activated only when the underlying legal sources for the chosen jurisdiction are catalogued and validated by the Studio.{% endblocktranslate %}{% endblock %}
 
 {% block content %}
+  {% comment %} P24: real photographic hero with a readable navy/bronze overlay. {% endcomment %}
+  {% translate "Modular taxonomy" as hero_eyebrow %}
+  {% translate "Case types we cover" as hero_title %}
+  {% include "partials/_premium_hero_image.html" with hero_eyebrow=hero_eyebrow hero_title=hero_title %}
+
   <section class="max-w-5xl mx-auto px-5 lg:px-8 py-16">
     {% comment %}
       Premium hero band — frames the taxonomy intro as an authoritative,

@@ -1,34 +1,29 @@
 {% load i18n %}
 {% comment %}
-  Premium hero image partial.
+  Premium hero image partial (P24: text-over-image).
 
-  Iter base: F-product-premium-visual-i18n-pass1.
-  Pass 2: refined sizing + subtle ink overlay per dare profondità
-  visiva senza nascondere troppo il contenuto della foto.
-
-  Renderizza un'immagine "hero" sopra il contenuto principale di
-  una pagina pubblica. NIENTE attribution visibile (quella resta
-  solo nel manifest interno, vedi pass "no-caption-live-server").
+  Renders a real photograph as the backdrop of a secondary-page hero, with a
+  navy→bronze overlay (`.premium-hero-overlay`) dark enough to keep any copy
+  legible. The image lives behind the overlay via `.premium-hero-image`
+  (absolute, object-cover, slow-zoom motion under prefers-reduced-motion:
+  no-preference).
 
   Input context:
-  - pexels_image  -> dict con almeno {"src", "alt"}.
+  - pexels_image -> dict con almeno {"src", "alt"} (None => non renderizza nulla).
 
-  Se `pexels_image` è None / non passato, il partial NON renderizza
-  nulla: il template chiamante manterrà il fallback che già esiste.
+  Optional include args (set per-page with `{% include … with %}`):
+  - hero_eyebrow -> short kicker rendered above the title
+  - hero_title   -> large editorial line OVER the image (a styled <p>, NOT a
+                    heading, so the page keeps a single real <h1> below and
+                    heading order is preserved)
+  - hero_lead    -> one-line supporting sentence
 
-  Nota: la home page ha un hero "image-as-backdrop" custom (il testo
-  va SOPRA l'immagine via overlay scuro). Questo partial è per le
-  pagine secondarie dove l'immagine fa solo da banner editoriale.
+  Senza i tre arg opzionali il partial resta un banner fotografico (immagine +
+  overlay leggibile) come nelle pagine che non hanno testo hero dedicato.
 {% endcomment %}
 {% if pexels_image %}
 <section class="max-w-7xl mx-auto px-5 lg:px-8 pt-8">
-  {% comment %}
-    P2-IMG-1: secondary hero is below-the-fold (loading="lazy") and
-    is not the LCP element on its pages — but it is still ~100 KiB
-    uncompressed. Same <picture> wrapping as the home hero so WebP
-    savings apply consistently.
-  {% endcomment %}
-  <figure class="relative isolate rounded-3xl overflow-hidden shadow-card">
+  <figure class="premium-hero-image-wrap h-52 sm:h-64 lg:h-80 shadow-card">
     <picture>
       {% if pexels_image.webp_src_mobile %}<source media="(max-width: 640px)" type="image/webp" srcset="{{ pexels_image.webp_src_mobile }}">{% endif %}
       {% if pexels_image.webp_src %}<source type="image/webp" srcset="{{ pexels_image.webp_src }}">{% endif %}
@@ -37,11 +32,22 @@
         alt="{{ pexels_image.alt }}"
         width="1280"
         height="640"
-        class="w-full h-52 sm:h-64 lg:h-80 object-cover"
+        class="premium-hero-image"
         loading="lazy"
         decoding="async">
     </picture>
-    <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-tr from-ink-950/30 via-ink-950/0 to-ink-950/0"></div>
+    <div aria-hidden="true" class="premium-hero-overlay"></div>
+    <div class="premium-hero-content h-full flex flex-col justify-end p-6 sm:p-8">
+      {% if hero_eyebrow %}
+        <p class="premium-rise text-[11px] uppercase tracking-[0.22em] text-gold-400 font-semibold">{{ hero_eyebrow }}</p>
+      {% endif %}
+      {% if hero_title %}
+        <p class="premium-rise-2 mt-3 font-serif text-3xl sm:text-4xl lg:text-5xl text-sand-50 leading-tight max-w-3xl">{{ hero_title }}</p>
+      {% endif %}
+      {% if hero_lead %}
+        <p class="premium-rise-3 mt-3 text-sm text-sand-50 leading-relaxed max-w-2xl">{{ hero_lead }}</p>
+      {% endif %}
+    </div>
   </figure>
 </section>
 {% endif %}

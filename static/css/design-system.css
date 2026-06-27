@@ -1317,3 +1317,123 @@ li.inline-flex.rounded-full {
   .premium-btn::after { display: none; }
   .premium-source-chip { transition: none; }
 }
+
+/* ==========================================================================
+   Elegant background imagery + refined motion (P24)
+   Real photographs sit BEHIND a navy/bronze overlay so text stays legible;
+   the compositional classes host a same-origin <img> (no CSS-baked URL, so no
+   CSP url() to whitelist). Every motion rule is gated by prefers-reduced-motion.
+   ========================================================================== */
+
+/* --- Hero / panel: text over a real image ------------------------------- */
+.premium-hero-image-wrap,
+.premium-visual-panel {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: var(--premium-radius-xl);
+}
+.premium-hero-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+}
+/* Navy → bronze wash: the photo stays VISIBLE through a light top, while the
+   gradient deepens toward the bottom where the copy sits (justify-end) so the
+   text keeps AA contrast. A faint side wash adds the warm legal tone. */
+.premium-hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(7, 23, 47, 0.12) 0%, rgba(7, 23, 47, 0.22) 44%, rgba(7, 23, 47, 0.76) 100%),
+    linear-gradient(100deg, rgba(7, 23, 47, 0.34) 0%, rgba(7, 23, 47, 0.00) 56%, rgba(154, 107, 33, 0.16) 100%);
+}
+.premium-hero-content { position: relative; z-index: 2; }
+
+/* --- Image card: a card whose header is a real photo -------------------- */
+.premium-image-card { position: relative; overflow: hidden; isolation: isolate; }
+.premium-image-card__media { position: relative; overflow: hidden; }
+.premium-image-card__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.premium-image-card__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(7, 23, 47, 0) 36%, rgba(7, 23, 47, 0.58) 100%);
+}
+
+/* --- Photographic texture backgrounds ----------------------------------- */
+/* The page drops a faint, same-origin <img class="premium-bg-media"> in as the
+   first child; a tinted ::before keeps overlaid copy readable. Content is put
+   on a `relative z-10` wrapper by the template. */
+.premium-bg-legal,
+.premium-bg-architecture,
+.premium-bg-documents {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.premium-bg-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  opacity: 0.20;
+}
+.premium-bg-legal::before,
+.premium-bg-architecture::before,
+.premium-bg-documents::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.premium-bg-legal::before { background: linear-gradient(135deg, rgba(7, 23, 47, 0.93), rgba(10, 24, 48, 0.88)); }
+.premium-bg-architecture::before { background: linear-gradient(135deg, rgba(7, 23, 47, 0.90), rgba(91, 125, 110, 0.34)); }
+.premium-bg-documents::before { background: linear-gradient(135deg, rgba(10, 24, 48, 0.90), rgba(154, 107, 33, 0.30)); }
+
+/* --- Refined motion ----------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes premium-rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes premium-slow-zoom {
+    from { transform: scale(1.001); }
+    to { transform: scale(1.075); }
+  }
+  @keyframes premium-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+
+  /* Hero copy rises on load; helper classes stagger siblings. */
+  .premium-rise { animation: premium-rise 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) both; }
+  .premium-rise-2 { animation: premium-rise 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) 0.09s both; }
+  .premium-rise-3 { animation: premium-rise 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) 0.18s both; }
+
+  /* Background photo drifts in a very slow, alternating zoom (compositor-only). */
+  .premium-hero-image,
+  .premium-bg-media { animation: premium-slow-zoom 22s ease-in-out alternate infinite; will-change: transform; }
+
+  /* Subtle floating accent for an emblem/medallion. */
+  .premium-float { animation: premium-float 6.5s ease-in-out infinite; will-change: transform; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .premium-rise,
+  .premium-rise-2,
+  .premium-rise-3,
+  .premium-hero-image,
+  .premium-bg-media,
+  .premium-float { animation: none !important; }
+}

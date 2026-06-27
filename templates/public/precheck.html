@@ -6,7 +6,7 @@
 {% block head_extra %}{% if canonical_url %}<link rel="canonical" href="{{ canonical_url }}">{% endif %}{% endblock %}
 
 {% block content %}
-{% include "partials/_premium_hero_image.html" %}
+{% include "partials/_premium_hero_image.html" with hero_title=flow.title %}
 <section class="max-w-6xl mx-auto px-5 lg:px-8 py-16">
   <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{{ flow.country_code }} · {% translate "Guided pre-check" %}</p>
   <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{{ flow.title }}</h1>

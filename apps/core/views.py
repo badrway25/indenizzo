@@ -255,6 +255,8 @@ def home(request):
             "case_types_count": len(PUBLIC_CASE_TYPES),
             "home_prechecks": home_prechecks,
             "pexels_image": _pexels_hero(request, "home_hero"),
+            # P24: a distinct, heavily-tinted photo behind the closing CTA band.
+            "pexels_texture": _pexels_hero(request, "methodology_hero"),
         },
     )
 
@@ -872,6 +874,8 @@ def case_types(request):
         "public/case_types.html",
         {
             "case_types": case_types_view,
+            # P24: a real photographic hero for the case-types hub.
+            "pexels_image": _pexels_hero(request, "services_hero"),
             # F-product-4: surface the full landings list so the hub
             # can also show the "profile-style" landings (foreigners
             # in Italy, cross-border cases, insurance offer review)

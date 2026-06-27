@@ -470,11 +470,16 @@ def wizard_result(request, public_id: uuid.UUID):
             "calculated_date": (provenance.get("calculated_at") or "")[:10],
         }
 
+    # P24: a calm photographic hero for the result page (deferred import keeps
+    # the cases ↔ core view modules free of an import cycle at load time).
+    from apps.core.views import _pexels_hero
+
     return render(
         request,
         "public/wizard_result.html",
         {
             "simulation": simulation,
+            "pexels_image": _pexels_hero(request, "methodology_hero"),
             "sources": sources,
             "assumptions": assumptions,
             "legal_disclaimer": legal_disclaimer,
