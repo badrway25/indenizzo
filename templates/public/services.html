@@ -25,9 +25,9 @@
     <div data-sticky-cta-sentinel aria-hidden="true"></div>
   </header>
 
-  {# P22: services grouped into clear sections (estimates / comparison /
+  {% comment %} P22: services grouped into clear sections (estimates / comparison /
      pre-checks / cross-border) so the page reads as a structured offer, not a
-     flat list. Each card keeps the s.calculable contract + badge wording. #}
+     flat list. Each card keeps the s.calculable contract + badge wording. {% endcomment %}
   {% for grp in service_groups %}
   <section class="max-w-7xl mx-auto px-5 lg:px-8 {% if forloop.first %}py-10{% else %}pb-10{% endif %}">
     <div class="flex items-center gap-3" data-reveal>
