@@ -6410,3 +6410,117 @@ msgstr "القانون الواجب التطبيق، المساعدة متعدد
 msgid "Micro-permanent injuries on art. 139 and macro injuries on the Tabella Unica Nazionale 2025."
 msgstr "إصابات دائمة صغرى وفق المادة 139 وإصابات كبرى وفق الجدول الوطني الموحّد 2025."
 
+msgid "Where the simulator can help today"
+msgstr "حيث يمكن للمحاكي مساعدتك اليوم"
+
+msgid "What you get"
+msgstr "ما الذي تحصل عليه"
+
+msgid "Estimate or pre-check?"
+msgstr "تقدير أم تحقّق مسبق؟"
+
+msgid "Indicative estimate"
+msgstr "تقدير إرشادي"
+
+msgid "Documental pre-check"
+msgstr "تحقّق وثائقي مسبق"
+
+msgid "How we choose the source"
+msgstr "كيف نختار المصدر"
+
+msgid "We open one jurisdiction at a time and only after its official sources are verified. Each country offers either an indicative estimate or an assisted, source-based pathway with the Studio."
+msgstr "نفتح ولاية قضائية واحدة في كل مرة، وفقط بعد التحقّق من مصادرها الرسمية. يوفّر كل بلد إما تقديراً إرشادياً أو مساراً موجَّهاً يستند إلى المصادر، مع المكتب."
+
+msgid "Available where a validated official table backs the calculation. You receive an indicative figure with its sources and assumptions."
+msgstr "متاح حيث يدعم جدول رسمي موثّق الحساب. تحصل على رقم إرشادي مع مصادره وفرضياته."
+
+msgid "The official source is identified while its table is being verified. The path lists the documents and data the Studio needs to assess your file."
+msgstr "يُحدَّد المصدر الرسمي بينما يجري التحقّق من جدوله. يسرد المسار الوثائق والبيانات التي يحتاجها المكتب لتقييم ملفك."
+
+msgid "For cross-border matters, the Studio frames which jurisdiction and which law govern your case before any figure is considered."
+msgstr "في القضايا العابرة للحدود، يحدّد المكتب أي ولاية قضائية وأي قانون يحكم قضيتك قبل النظر في أي رقم."
+
+msgid "For each jurisdiction we start from the official national source and publish an estimate only once its table is verified by the Studio. Until then the country stays on the assisted pathway — never on an invented figure."
+msgstr "لكل ولاية قضائية، ننطلق من المصدر الوطني الرسمي ولا ننشر تقديراً إلا بعد التحقّق من جدوله من قِبل المكتب. حتى ذلك الحين يبقى البلد على المسار الموجَّه — لا على رقم مُختلَق أبداً."
+
+msgid "Country dossier"
+msgstr "ملف البلد"
+
+msgid "Guided coverage"
+msgstr "التغطية الموجَّهة"
+
+msgid "What the assisted pathway covers"
+msgstr "ما يغطّيه المسار الموجَّه"
+
+msgid "Liability"
+msgstr "المسؤولية"
+
+msgid "We establish who is responsible and on what legal grounds before any quantification begins."
+msgstr "نحدّد من المسؤول وعلى أي أساس قانوني قبل بدء أي تقدير كمّي."
+
+msgid "Insurance"
+msgstr "التأمين"
+
+msgid "We map the insurers and guarantees involved and how they bear on the claim."
+msgstr "نحدّد شركات التأمين والضمانات المعنية وأثرها على المطالبة."
+
+msgid "Bodily injury"
+msgstr "الضرر الجسدي"
+
+msgid "We read medical findings against the official heads of damage for the jurisdiction."
+msgstr "نقرأ النتائج الطبية في ضوء بنود الضرر الرسمية للولاية القضائية."
+
+msgid "Offer review"
+msgstr "مراجعة العرض"
+
+msgid "We examine any insurer offer against the cited sources and the documented losses."
+msgstr "نفحص أي عرض من شركة التأمين مقابل المصادر المذكورة والخسائر الموثّقة."
+
+msgid "We identify the applicable law and competent jurisdiction for cross-border files."
+msgstr "نحدّد القانون الواجب التطبيق والمحكمة المختصة للملفات العابرة للحدود."
+
+msgid "Provenance"
+msgstr "المصدر"
+
+msgid "Applicable legal basis"
+msgstr "الأساس القانوني المنطبق"
+
+msgid "Each position on this page is anchored to one of the official sources cited below. Nothing is published without a source to support it."
+msgstr "كل موقف في هذه الصفحة مرتبط بأحد المصادر الرسمية المذكورة أدناه. لا يُنشر شيء دون مصدر يدعمه."
+
+msgid "Assisted path"
+msgstr "مسار موجَّه"
+
+msgid "When it applies"
+msgstr "متى تنطبق"
+
+msgid "A guided, source-based pathway: the Studio reviews your situation, names the official legal basis and prepares the documents that a serious assessment requires."
+msgstr "مسار موجَّه يستند إلى المصادر: يراجع المكتب وضعك، ويحدّد الأساس القانوني الرسمي، ويُعدّ الوثائق التي يتطلّبها تقييم جادّ."
+
+msgid "We read your answers and organise the file."
+msgstr "نقرأ إجاباتك وننظّم الملف."
+
+msgid "We cite the applicable official sources — no invented number."
+msgstr "نستشهد بالمصادر الرسمية المنطبقة — دون أي رقم مُختلَق."
+
+msgid "You get a readiness result and a clear next step."
+msgstr "تحصل على نتيجة جاهزية وخطوة تالية واضحة."
+
+msgid "Gather the documents listed above."
+msgstr "اجمع الوثائق المذكورة أعلاه."
+
+msgid "Send the file to the Studio for a documental check on the official sources."
+msgstr "أرسل الملف إلى المكتب لإجراء تحقّق وثائقي على المصادر الرسمية."
+
+msgid "A lawyer reviews it and replies on the next step."
+msgstr "يراجعه محامٍ ويردّ بشأن الخطوة التالية."
+
+msgid "An indicative range from the validated official sources, with the assumptions and limits set out below."
+msgstr "نطاق إرشادي من المصادر الرسمية الموثّقة، مع الفرضيات والحدود المبيّنة أدناه."
+
+msgid "A focused overview of how Studio Legale Badrane handles matters connected to %(country)s, with every position grounded in the official sources cited below."
+msgstr "نظرة مركّزة على كيفية تعامل مكتب بادران القانوني مع القضايا المرتبطة بـ%(country)s، مع استناد كل موقف إلى المصادر الرسمية المذكورة أدناه."
+
+msgid "For %(country)s a lawyer follows the file directly across these dimensions, each grounded in the official sources cited for the case rather than an automatic figure."
+msgstr "بالنسبة لـ%(country)s، يتابع محامٍ الملف مباشرةً عبر هذه الأبعاد، كلٌّ منها مستند إلى المصادر الرسمية المذكورة للقضية بدلاً من رقم تلقائي."
+

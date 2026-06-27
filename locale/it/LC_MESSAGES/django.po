@@ -6656,3 +6656,117 @@ msgstr "Legge applicabile, assistenza multilingue e documenti consolari."
 msgid "Micro-permanent injuries on art. 139 and macro injuries on the Tabella Unica Nazionale 2025."
 msgstr "Lesioni micropermanenti su art. 139 e macrolesioni sulla Tabella Unica Nazionale 2025."
 
+msgid "Where the simulator can help today"
+msgstr "Dove il simulatore può aiutarti oggi"
+
+msgid "What you get"
+msgstr "Cosa ottieni"
+
+msgid "Estimate or pre-check?"
+msgstr "Stima o pre-check?"
+
+msgid "Indicative estimate"
+msgstr "Stima indicativa"
+
+msgid "Documental pre-check"
+msgstr "Pre-check documentale"
+
+msgid "How we choose the source"
+msgstr "Come scegliamo la fonte"
+
+msgid "We open one jurisdiction at a time and only after its official sources are verified. Each country offers either an indicative estimate or an assisted, source-based pathway with the Studio."
+msgstr "Apriamo una giurisdizione alla volta e solo dopo aver verificato le sue fonti ufficiali. Ogni paese offre una stima indicativa oppure un percorso assistito basato sulle fonti, con lo Studio."
+
+msgid "Available where a validated official table backs the calculation. You receive an indicative figure with its sources and assumptions."
+msgstr "Disponibile dove una tabella ufficiale validata sostiene il calcolo. Ricevi un valore indicativo con le sue fonti e ipotesi."
+
+msgid "The official source is identified while its table is being verified. The path lists the documents and data the Studio needs to assess your file."
+msgstr "La fonte ufficiale è individuata mentre la sua tabella è in fase di verifica. Il percorso elenca i documenti e i dati che servono allo Studio per valutare la pratica."
+
+msgid "For cross-border matters, the Studio frames which jurisdiction and which law govern your case before any figure is considered."
+msgstr "Per i casi transfrontalieri, lo Studio inquadra quale giurisdizione e quale legge regolano il caso prima di considerare qualsiasi importo."
+
+msgid "For each jurisdiction we start from the official national source and publish an estimate only once its table is verified by the Studio. Until then the country stays on the assisted pathway — never on an invented figure."
+msgstr "Per ogni giurisdizione partiamo dalla fonte nazionale ufficiale e pubblichiamo una stima solo dopo che la sua tabella è stata verificata dallo Studio. Fino ad allora il paese resta sul percorso assistito — mai su un importo inventato."
+
+msgid "Country dossier"
+msgstr "Dossier paese"
+
+msgid "Guided coverage"
+msgstr "Copertura guidata"
+
+msgid "What the assisted pathway covers"
+msgstr "Cosa copre il percorso assistito"
+
+msgid "Liability"
+msgstr "Responsabilità"
+
+msgid "We establish who is responsible and on what legal grounds before any quantification begins."
+msgstr "Stabiliamo chi è responsabile e su quali basi giuridiche prima di iniziare qualsiasi quantificazione."
+
+msgid "Insurance"
+msgstr "Assicurazione"
+
+msgid "We map the insurers and guarantees involved and how they bear on the claim."
+msgstr "Mappiamo gli assicuratori e le garanzie coinvolti e il loro impatto sulla richiesta."
+
+msgid "Bodily injury"
+msgstr "Danno alla persona"
+
+msgid "We read medical findings against the official heads of damage for the jurisdiction."
+msgstr "Leggiamo gli accertamenti medici alla luce delle voci di danno ufficiali della giurisdizione."
+
+msgid "Offer review"
+msgstr "Verifica dell'offerta"
+
+msgid "We examine any insurer offer against the cited sources and the documented losses."
+msgstr "Esaminiamo ogni offerta dell'assicuratore rispetto alle fonti citate e alle perdite documentate."
+
+msgid "We identify the applicable law and competent jurisdiction for cross-border files."
+msgstr "Individuiamo la legge applicabile e il giudice competente per le pratiche transfrontaliere."
+
+msgid "Provenance"
+msgstr "Provenienza"
+
+msgid "Applicable legal basis"
+msgstr "Base normativa applicabile"
+
+msgid "Each position on this page is anchored to one of the official sources cited below. Nothing is published without a source to support it."
+msgstr "Ogni posizione di questa pagina è ancorata a una delle fonti ufficiali citate sotto. Nulla viene pubblicato senza una fonte a supporto."
+
+msgid "Assisted path"
+msgstr "Percorso assistito"
+
+msgid "When it applies"
+msgstr "Quando si applica"
+
+msgid "A guided, source-based pathway: the Studio reviews your situation, names the official legal basis and prepares the documents that a serious assessment requires."
+msgstr "Un percorso guidato basato sulle fonti: lo Studio esamina la tua situazione, indica la base normativa ufficiale e prepara i documenti che una valutazione seria richiede."
+
+msgid "We read your answers and organise the file."
+msgstr "Leggiamo le tue risposte e organizziamo la pratica."
+
+msgid "We cite the applicable official sources — no invented number."
+msgstr "Citiamo le fonti ufficiali applicabili — nessun numero inventato."
+
+msgid "You get a readiness result and a clear next step."
+msgstr "Ottieni un risultato di prontezza e un passo successivo chiaro."
+
+msgid "Gather the documents listed above."
+msgstr "Raccogli i documenti elencati sopra."
+
+msgid "Send the file to the Studio for a documental check on the official sources."
+msgstr "Invia la pratica allo Studio per una verifica documentale sulle fonti ufficiali."
+
+msgid "A lawyer reviews it and replies on the next step."
+msgstr "Un avvocato lo esamina e risponde sul passo successivo."
+
+msgid "An indicative range from the validated official sources, with the assumptions and limits set out below."
+msgstr "Un intervallo indicativo dalle fonti ufficiali validate, con le ipotesi e i limiti indicati sotto."
+
+msgid "A focused overview of how Studio Legale Badrane handles matters connected to %(country)s, with every position grounded in the official sources cited below."
+msgstr "Una panoramica mirata di come lo Studio Legale Badrane tratta le pratiche collegate a %(country)s, con ogni posizione fondata sulle fonti ufficiali citate sotto."
+
+msgid "For %(country)s a lawyer follows the file directly across these dimensions, each grounded in the official sources cited for the case rather than an automatic figure."
+msgstr "Per %(country)s un avvocato segue direttamente la pratica su queste dimensioni, ciascuna fondata sulle fonti ufficiali citate per il caso anziché su un importo automatico."
+

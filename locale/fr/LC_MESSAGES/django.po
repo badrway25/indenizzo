@@ -6701,3 +6701,117 @@ msgstr "Loi applicable, assistance multilingue et documents consulaires."
 msgid "Micro-permanent injuries on art. 139 and macro injuries on the Tabella Unica Nazionale 2025."
 msgstr "Blessures micro-permanentes sur l'art. 139 et macro-lésions sur la Tabella Unica Nazionale 2025."
 
+msgid "Where the simulator can help today"
+msgstr "Là où le simulateur peut vous aider aujourd'hui"
+
+msgid "What you get"
+msgstr "Ce que vous obtenez"
+
+msgid "Estimate or pre-check?"
+msgstr "Estimation ou pré-vérification ?"
+
+msgid "Indicative estimate"
+msgstr "Estimation indicative"
+
+msgid "Documental pre-check"
+msgstr "Pré-vérification documentaire"
+
+msgid "How we choose the source"
+msgstr "Comment nous choisissons la source"
+
+msgid "We open one jurisdiction at a time and only after its official sources are verified. Each country offers either an indicative estimate or an assisted, source-based pathway with the Studio."
+msgstr "Nous ouvrons une juridiction à la fois, uniquement après vérification de ses sources officielles. Chaque pays propose soit une estimation indicative, soit un parcours assisté fondé sur les sources, avec le Cabinet."
+
+msgid "Available where a validated official table backs the calculation. You receive an indicative figure with its sources and assumptions."
+msgstr "Disponible là où une table officielle validée soutient le calcul. Vous recevez un chiffre indicatif avec ses sources et hypothèses."
+
+msgid "The official source is identified while its table is being verified. The path lists the documents and data the Studio needs to assess your file."
+msgstr "La source officielle est identifiée pendant que sa table est en cours de vérification. Le parcours énumère les documents et les données dont le Cabinet a besoin pour évaluer votre dossier."
+
+msgid "For cross-border matters, the Studio frames which jurisdiction and which law govern your case before any figure is considered."
+msgstr "Pour les affaires transfrontalières, le Cabinet détermine quelle juridiction et quelle loi régissent votre dossier avant d'envisager tout chiffre."
+
+msgid "For each jurisdiction we start from the official national source and publish an estimate only once its table is verified by the Studio. Until then the country stays on the assisted pathway — never on an invented figure."
+msgstr "Pour chaque juridiction, nous partons de la source nationale officielle et ne publions une estimation qu'une fois sa table vérifiée par le Cabinet. Jusque-là, le pays reste sur le parcours assisté — jamais sur un chiffre inventé."
+
+msgid "Country dossier"
+msgstr "Dossier pays"
+
+msgid "Guided coverage"
+msgstr "Couverture guidée"
+
+msgid "What the assisted pathway covers"
+msgstr "Ce que couvre le parcours assisté"
+
+msgid "Liability"
+msgstr "Responsabilité"
+
+msgid "We establish who is responsible and on what legal grounds before any quantification begins."
+msgstr "Nous établissons qui est responsable et sur quels fondements juridiques avant toute quantification."
+
+msgid "Insurance"
+msgstr "Assurance"
+
+msgid "We map the insurers and guarantees involved and how they bear on the claim."
+msgstr "Nous identifions les assureurs et garanties concernés et leur incidence sur la demande."
+
+msgid "Bodily injury"
+msgstr "Dommage corporel"
+
+msgid "We read medical findings against the official heads of damage for the jurisdiction."
+msgstr "Nous interprétons les constats médicaux au regard des postes de préjudice officiels de la juridiction."
+
+msgid "Offer review"
+msgstr "Examen de l'offre"
+
+msgid "We examine any insurer offer against the cited sources and the documented losses."
+msgstr "Nous examinons toute offre de l'assureur au regard des sources citées et des pertes documentées."
+
+msgid "We identify the applicable law and competent jurisdiction for cross-border files."
+msgstr "Nous identifions la loi applicable et la juridiction compétente pour les dossiers transfrontaliers."
+
+msgid "Provenance"
+msgstr "Provenance"
+
+msgid "Applicable legal basis"
+msgstr "Base légale applicable"
+
+msgid "Each position on this page is anchored to one of the official sources cited below. Nothing is published without a source to support it."
+msgstr "Chaque position de cette page est ancrée à l'une des sources officielles citées ci-dessous. Rien n'est publié sans une source à l'appui."
+
+msgid "Assisted path"
+msgstr "Parcours assisté"
+
+msgid "When it applies"
+msgstr "Quand elle s'applique"
+
+msgid "A guided, source-based pathway: the Studio reviews your situation, names the official legal basis and prepares the documents that a serious assessment requires."
+msgstr "Un parcours guidé fondé sur les sources : le Cabinet examine votre situation, nomme la base légale officielle et prépare les documents qu'une évaluation sérieuse exige."
+
+msgid "We read your answers and organise the file."
+msgstr "Nous lisons vos réponses et organisons le dossier."
+
+msgid "We cite the applicable official sources — no invented number."
+msgstr "Nous citons les sources officielles applicables — aucun chiffre inventé."
+
+msgid "You get a readiness result and a clear next step."
+msgstr "Vous obtenez un résultat de préparation et une étape suivante claire."
+
+msgid "Gather the documents listed above."
+msgstr "Rassemblez les documents énumérés ci-dessus."
+
+msgid "Send the file to the Studio for a documental check on the official sources."
+msgstr "Envoyez le dossier au Cabinet pour une vérification documentaire sur les sources officielles."
+
+msgid "A lawyer reviews it and replies on the next step."
+msgstr "Un avocat l'examine et répond sur l'étape suivante."
+
+msgid "An indicative range from the validated official sources, with the assumptions and limits set out below."
+msgstr "Une fourchette indicative à partir des sources officielles validées, avec les hypothèses et les limites exposées ci-dessous."
+
+msgid "A focused overview of how Studio Legale Badrane handles matters connected to %(country)s, with every position grounded in the official sources cited below."
+msgstr "Un aperçu ciblé de la manière dont le Studio Legale Badrane traite les affaires liées à %(country)s, chaque position étant fondée sur les sources officielles citées ci-dessous."
+
+msgid "For %(country)s a lawyer follows the file directly across these dimensions, each grounded in the official sources cited for the case rather than an automatic figure."
+msgstr "Pour %(country)s, un avocat suit directement le dossier sur ces dimensions, chacune fondée sur les sources officielles citées pour l'affaire plutôt que sur un chiffre automatique."
+
