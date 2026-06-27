@@ -117,6 +117,35 @@ SERVICES = (
 )
 
 
+# --- P22: ordered service sections for the redesigned /services/ page --------
+SERVICE_GROUPS = (
+    ("calculable", _("Calculable estimates"),
+     _("An indicative range from a validated official table or formula.")),
+    ("comparison", _("Insurance-offer comparison"),
+     _("Measure a settlement offer against the official tabular estimate.")),
+    ("precheck", _("Documental pre-checks"),
+     _("Official source, but no validated table yet — we organise the file.")),
+    ("crossborder", _("Cross-border and foreign clients"),
+     _("Applicable law, multilingual assistance and consular documents.")),
+)
+_SERVICE_GROUP_OF = {
+    "road_accident": "calculable", "medical": "calculable",
+    "insurance_offer": "comparison",
+    "work_injury": "precheck", "death": "precheck",
+    "international": "crossborder", "foreigners": "crossborder", "documents": "crossborder",
+}
+
+
+def grouped_services():
+    """Services partitioned into ordered, labelled sections for /services/."""
+    out = []
+    for key, label, intro in SERVICE_GROUPS:
+        items = [s for s in SERVICES if _SERVICE_GROUP_OF.get(s.key) == key]
+        if items:
+            out.append({"label": label, "intro": intro, "services": items})
+    return out
+
+
 # --- FAQ (platform-level, prudent) ------------------------------------------
 FAQ_ITEMS = (
     Faq(_("Is the estimate binding?"),

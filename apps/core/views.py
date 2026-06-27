@@ -302,6 +302,7 @@ def services(request):
         "public/services.html",
         {
             "services": public_pages.SERVICES,
+            "service_groups": public_pages.grouped_services(),
             "canonical_url": build_canonical_url(request),
             "pexels_image": _pexels_hero(request, "services_hero"),
         },
