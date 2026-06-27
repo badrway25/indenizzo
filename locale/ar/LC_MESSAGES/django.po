@@ -6341,3 +6341,72 @@ msgstr "مساعدة متعددة اللغات استناداً إلى مصاد�
 msgid "Documental verification"
 msgstr "تحقّق وثائقي"
 
+msgid "Available estimates"
+msgstr "التقديرات المتاحة"
+
+msgid "What you can estimate today"
+msgstr "ما يمكنك تقديره اليوم"
+
+msgid "Where an official source and a validated table exist, the simulator produces an indicative min–mid–max range with the sources behind it."
+msgstr "حيث توجد مصدر رسمي وجدول موثّق، يُنتج المحاكي نطاقاً إرشادياً (الأدنى–المتوسط–الأقصى) مع المصادر الداعمة."
+
+msgid "Micro-permanent 1–9% on art. 139 and macro 10–100% on the Tabella Unica Nazionale 2025."
+msgstr "إصابة دائمة صغرى 1–9% وفق المادة 139، وكبرى 10–100% وفق الجدول الوطني الموحّد 2025."
+
+msgid "When the injury is quantified medico-legally, the platform returns a tabular biological-damage estimate."
+msgstr "عندما تُقدَّر الإصابة طبياً-قانونياً، تُرجع المنصّة تقديراً جدولياً للضرر البيولوجي."
+
+msgid "Compare a settlement offer against the official tabular estimate and see the deviation."
+msgstr "قارن عرض التسوية بالتقدير الجدولي الرسمي وانظر إلى الفارق."
+
+msgid "Guided pre-checks"
+msgstr "تحقّقات مسبقة موجَّهة"
+
+msgid "When a validated table is not yet available"
+msgstr "عندما لا يتوفّر بعد جدول موثّق"
+
+msgid "Where an official source exists but the table is still being validated, a documental pre-check organises your data and cites the applicable sources — never an invented amount."
+msgstr "حيث توجد مصدر رسمي لكن الجدول ما زال قيد التحقّق، ينظّم التحقّق الوثائقي بياناتك ويستشهد بالمصادر المنطبقة — دون أي مبلغ مُختلَق."
+
+msgid "Choose the category"
+msgstr "اختر الفئة"
+
+msgid "Get your path: estimate or documental pre-check"
+msgstr "احصل على مسارك: تقدير أو تحقّق وثائقي"
+
+msgid "Step 1 — your country"
+msgstr "الخطوة 1 — بلدك"
+
+msgid "How the guided router works"
+msgstr "كيف يعمل الموجِّه الموجَّه"
+
+msgid "Choose your country"
+msgstr "اختر بلدك"
+
+msgid "Calculable estimates"
+msgstr "تقديرات قابلة للحساب"
+
+msgid "An indicative range from a validated official table or formula."
+msgstr "نطاق إرشادي من جدول أو صيغة رسمية موثّقة."
+
+msgid "Insurance-offer comparison"
+msgstr "مقارنة عرض التأمين"
+
+msgid "Measure a settlement offer against the official tabular estimate."
+msgstr "قِس عرض التسوية مقابل التقدير الجدولي الرسمي."
+
+msgid "Documental pre-checks"
+msgstr "تحقّقات وثائقية مسبقة"
+
+msgid "Official source, but no validated table yet — we organise the file."
+msgstr "مصدر رسمي، لكن لا يوجد جدول موثّق بعد — ننظّم الملف."
+
+msgid "Cross-border and foreign clients"
+msgstr "القضايا العابرة للحدود والعملاء الأجانب"
+
+msgid "Applicable law, multilingual assistance and consular documents."
+msgstr "القانون الواجب التطبيق، المساعدة متعددة اللغات والوثائق القنصلية."
+
+msgid "Micro-permanent injuries on art. 139 and macro injuries on the Tabella Unica Nazionale 2025."
+msgstr "إصابات دائمة صغرى وفق المادة 139 وإصابات كبرى وفق الجدول الوطني الموحّد 2025."
+

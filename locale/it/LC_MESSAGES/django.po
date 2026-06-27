@@ -6587,3 +6587,72 @@ msgstr "Assistenza multilingue su fonti ufficiali"
 msgid "Documental verification"
 msgstr "Verifica documentale"
 
+msgid "Available estimates"
+msgstr "Stime disponibili"
+
+msgid "What you can estimate today"
+msgstr "Cosa puoi stimare oggi"
+
+msgid "Where an official source and a validated table exist, the simulator produces an indicative min–mid–max range with the sources behind it."
+msgstr "Dove esistono una fonte ufficiale e una tabella validata, il simulatore produce un intervallo indicativo min–medio–max con le fonti a supporto."
+
+msgid "Micro-permanent 1–9% on art. 139 and macro 10–100% on the Tabella Unica Nazionale 2025."
+msgstr "Micropermanente 1–9% su art. 139 e macro 10–100% sulla Tabella Unica Nazionale 2025."
+
+msgid "When the injury is quantified medico-legally, the platform returns a tabular biological-damage estimate."
+msgstr "Quando la lesione è quantificata in sede medico-legale, la piattaforma restituisce una stima tabellare del danno biologico."
+
+msgid "Compare a settlement offer against the official tabular estimate and see the deviation."
+msgstr "Confronta un'offerta transattiva con la stima tabellare ufficiale e osserva lo scostamento."
+
+msgid "Guided pre-checks"
+msgstr "Pre-check guidati"
+
+msgid "When a validated table is not yet available"
+msgstr "Quando una tabella validata non è ancora disponibile"
+
+msgid "Where an official source exists but the table is still being validated, a documental pre-check organises your data and cites the applicable sources — never an invented amount."
+msgstr "Dove esiste una fonte ufficiale ma la tabella è ancora in fase di verifica, un pre-check documentale organizza i tuoi dati e cita le fonti applicabili — mai un importo inventato."
+
+msgid "Choose the category"
+msgstr "Scegli la categoria"
+
+msgid "Get your path: estimate or documental pre-check"
+msgstr "Ottieni il tuo percorso: stima o pre-check documentale"
+
+msgid "Step 1 — your country"
+msgstr "Passo 1 — il tuo paese"
+
+msgid "How the guided router works"
+msgstr "Come funziona l'instradamento guidato"
+
+msgid "Choose your country"
+msgstr "Scegli il tuo paese"
+
+msgid "Calculable estimates"
+msgstr "Stime calcolabili"
+
+msgid "An indicative range from a validated official table or formula."
+msgstr "Un intervallo indicativo da una tabella o formula ufficiale validata."
+
+msgid "Insurance-offer comparison"
+msgstr "Confronto dell'offerta assicurativa"
+
+msgid "Measure a settlement offer against the official tabular estimate."
+msgstr "Misura un'offerta transattiva rispetto alla stima tabellare ufficiale."
+
+msgid "Documental pre-checks"
+msgstr "Pre-check documentali"
+
+msgid "Official source, but no validated table yet — we organise the file."
+msgstr "Fonte ufficiale, ma nessuna tabella validata ancora — organizziamo la pratica."
+
+msgid "Cross-border and foreign clients"
+msgstr "Casi transfrontalieri e clienti esteri"
+
+msgid "Applicable law, multilingual assistance and consular documents."
+msgstr "Legge applicabile, assistenza multilingue e documenti consolari."
+
+msgid "Micro-permanent injuries on art. 139 and macro injuries on the Tabella Unica Nazionale 2025."
+msgstr "Lesioni micropermanenti su art. 139 e macrolesioni sulla Tabella Unica Nazionale 2025."
+
