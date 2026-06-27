@@ -17,6 +17,22 @@
   </p>
   <p class="mt-5 max-w-3xl text-lg text-ink-800 leading-relaxed">{{ flow.intro }}</p>
 
+  {# P23: "what we'll do with your data" — frames the pre-check before the form. #}
+  <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3" data-reveal>
+    <div class="premium-card flex items-start gap-3 p-4">
+      <span aria-hidden="true" class="icon-medallion shrink-0">{% include "partials/_icon.html" with name="list-checks" icon_class="w-5 h-5" %}</span>
+      <span class="text-sm text-ink-900 leading-snug">{% translate "We read your answers and organise the file." %}</span>
+    </div>
+    <div class="premium-card flex items-start gap-3 p-4">
+      <span aria-hidden="true" class="icon-medallion shrink-0">{% include "partials/_icon.html" with name="scale" icon_class="w-5 h-5" %}</span>
+      <span class="text-sm text-ink-900 leading-snug">{% translate "We cite the applicable official sources — no invented number." %}</span>
+    </div>
+    <div class="premium-card flex items-start gap-3 p-4">
+      <span aria-hidden="true" class="icon-medallion shrink-0">{% include "partials/_icon.html" with name="arrow-right" icon_class="w-5 h-5" %}</span>
+      <span class="text-sm text-ink-900 leading-snug">{% translate "You get a readiness result and a clear next step." %}</span>
+    </div>
+  </div>
+
   <div class="mt-10 precheck-layout">
     {# ---- Main column: interactive form + guided result ---- #}
     <div>
@@ -148,6 +164,22 @@
             </dl>
           </details>
         {% endif %}
+
+        {# P23: a short "next steps" timeline framing the path forward. #}
+        <ol class="mt-6 space-y-3">
+          <li class="flex items-start gap-3">
+            <span aria-hidden="true" class="icon-medallion shrink-0 font-serif text-sm text-gold-700">1</span>
+            <span class="text-sm text-ink-900 leading-snug pt-1.5">{% translate "Gather the documents listed above." %}</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span aria-hidden="true" class="icon-medallion shrink-0 font-serif text-sm text-gold-700">2</span>
+            <span class="text-sm text-ink-900 leading-snug pt-1.5">{% translate "Send the file to the Studio for a documental check on the official sources." %}</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span aria-hidden="true" class="icon-medallion shrink-0 font-serif text-sm text-gold-700">3</span>
+            <span class="text-sm text-ink-900 leading-snug pt-1.5">{% translate "A lawyer reviews it and replies on the next step." %}</span>
+          </li>
+        </ol>
 
         <div class="mt-6 rounded-2xl border border-ink-950/10 bg-white px-5 py-4">
           <p class="text-[11px] uppercase tracking-[0.18em] text-gold-700 font-semibold">{% translate "Recommended next step" %}</p>
