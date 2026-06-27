@@ -142,7 +142,10 @@ def test_case_types_page_marks_italy_modules_as_available():
     response = Client().get("/en/case-types/")
     body = response.content.decode("utf-8")
     assert (
-        ("Indicative calculation available" in body)
+        # P24: calculable Italian families now read as a direct estimate badge.
+        ("Estimate based on official sources" in body)
+        or ("Official table-based biological damage estimate" in body)
+        or ("Indicative calculation available" in body)
         or ("Module ready" in body)
         or ("module ready" in body.lower())
     )
@@ -599,7 +602,9 @@ def test_case_types_page_marks_international_inheritance_as_scaffold():
     assert str(humanize("international_inheritance")) in body
     assert "international_inheritance" not in body
     assert (
-        ("International inheritance review" in body)
+        # P24: the international-inheritance card now reads as cross-border framing.
+        ("Applicable-law framing" in body)
+        or ("International inheritance review" in body)
         or ("Assisted legal pathway" in body)
         or ("Legal sources under review" in body)
     )
