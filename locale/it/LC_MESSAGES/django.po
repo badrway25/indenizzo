@@ -3963,7 +3963,7 @@ msgid "Open the disclaimer"
 msgstr "Apri le avvertenze"
 
 msgid "Case types we cover"
-msgstr "I paesi che copriamo"
+msgstr "I tipi di caso che copriamo"
 
 msgid ""
 "Modular taxonomy of case types: each module is activated only when the "
@@ -6770,3 +6770,39 @@ msgstr "Una panoramica mirata di come lo Studio Legale Badrane tratta le pratich
 msgid "For %(country)s a lawyer follows the file directly across these dimensions, each grounded in the official sources cited for the case rather than an automatic figure."
 msgstr "Per %(country)s un avvocato segue direttamente la pratica su queste dimensioni, ciascuna fondata sulle fonti ufficiali citate per il caso anziché su un importo automatico."
 
+
+msgid "Indicative estimate of bodily injury on the official national tables, with its sources and assumptions."
+msgstr "Stima indicativa del danno alla persona sulle tabelle ufficiali nazionali, con fonti e ipotesi."
+
+msgid "A tabular biological-damage estimate when the injury is quantified medico-legally — it does not rule on fault."
+msgstr "Una stima tabellare del danno biologico quando la lesione è quantificata in sede medico-legale: non si pronuncia sulla colpa."
+
+msgid "Measures a settlement offer against the official tabular estimate and shows the deviation."
+msgstr "Confronta un'offerta transattiva con la stima tabellare ufficiale e mostra lo scostamento."
+
+msgid "We identify the official INAIL source and list the records your file needs before any assessment."
+msgstr "Individuiamo la fonte ufficiale INAIL ed elenchiamo i documenti necessari alla pratica prima di ogni valutazione."
+
+msgid "A guided reading of the loss-of-relationship damage, parameter by parameter, on the facts of the case."
+msgstr "Una lettura guidata del danno da perdita del rapporto parentale, parametro per parametro, sui fatti del caso."
+
+msgid "Documental verification of the file and the heirs before the Studio frames a loss-of-life claim."
+msgstr "Verifica documentale del fascicolo e degli eredi prima che lo Studio imposti una richiesta da decesso."
+
+msgid "Documental verification of income and economic losses before a patrimonial claim is framed."
+msgstr "Verifica documentale dei redditi e delle perdite economiche prima di impostare una richiesta patrimoniale."
+
+msgid "Indicative calculation of the statutory shares on the applicable succession rules."
+msgstr "Calcolo indicativo delle quote di legittima secondo le regole successorie applicabili."
+
+msgid "Applicable-law framing: which jurisdiction and which law govern a cross-border estate."
+msgstr "Inquadramento della legge applicabile: quale giurisdizione e quale legge regolano una successione transfrontaliera."
+
+msgid "An assisted pathway on official sources: the Studio reviews the file and proposes the next step."
+msgstr "Un percorso assistito su fonti ufficiali: lo Studio esamina il fascicolo e propone il passo successivo."
+
+msgid "Jurisdiction"
+msgstr "Giurisdizione"
+
+msgid "Guided assessment"
+msgstr "Valutazione guidata"

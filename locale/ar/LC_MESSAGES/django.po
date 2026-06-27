@@ -3800,7 +3800,7 @@ msgid "Open the disclaimer"
 msgstr "افتح إخلاء المسؤولية"
 
 msgid "Case types we cover"
-msgstr "البلدان التي نغطّيها"
+msgstr "أنواع القضايا التي نغطّيها"
 
 msgid ""
 "Modular taxonomy of case types: each module is activated only when the "
@@ -6524,3 +6524,39 @@ msgstr "نظرة مركّزة على كيفية تعامل مكتب بادران
 msgid "For %(country)s a lawyer follows the file directly across these dimensions, each grounded in the official sources cited for the case rather than an automatic figure."
 msgstr "بالنسبة لـ%(country)s، يتابع محامٍ الملف مباشرةً عبر هذه الأبعاد، كلٌّ منها مستند إلى المصادر الرسمية المذكورة للقضية بدلاً من رقم تلقائي."
 
+
+msgid "Indicative estimate of bodily injury on the official national tables, with its sources and assumptions."
+msgstr "تقدير إرشادي للضرر الجسدي استناداً إلى الجداول الوطنية الرسمية، مع مصادره وافتراضاته."
+
+msgid "A tabular biological-damage estimate when the injury is quantified medico-legally — it does not rule on fault."
+msgstr "تقدير جدولي للضرر البيولوجي عند تحديد الإصابة طبياً-قانونياً، ولا يفصل في المسؤولية."
+
+msgid "Measures a settlement offer against the official tabular estimate and shows the deviation."
+msgstr "يقارن عرض التسوية بالتقدير الجدولي الرسمي ويُظهر الفارق."
+
+msgid "We identify the official INAIL source and list the records your file needs before any assessment."
+msgstr "نحدد المصدر الرسمي لمعهد INAIL ونُدرج المستندات التي يحتاجها ملفك قبل أي تقييم."
+
+msgid "A guided reading of the loss-of-relationship damage, parameter by parameter, on the facts of the case."
+msgstr "قراءة موجّهة لضرر فقدان العلاقة الأسرية، معياراً تلو الآخر، بحسب وقائع القضية."
+
+msgid "Documental verification of the file and the heirs before the Studio frames a loss-of-life claim."
+msgstr "تحقّق مستندي من الملف والورثة قبل أن يصوغ المكتب مطالبة بسبب الوفاة."
+
+msgid "Documental verification of income and economic losses before a patrimonial claim is framed."
+msgstr "تحقّق مستندي من الدخل والخسائر الاقتصادية قبل صياغة مطالبة مالية."
+
+msgid "Indicative calculation of the statutory shares on the applicable succession rules."
+msgstr "حساب إرشادي للأنصبة الإرثية وفق قواعد الميراث المطبّقة."
+
+msgid "Applicable-law framing: which jurisdiction and which law govern a cross-border estate."
+msgstr "تأطير القانون الواجب التطبيق: أي اختصاص قضائي وأي قانون يحكم تركة عابرة للحدود."
+
+msgid "An assisted pathway on official sources: the Studio reviews the file and proposes the next step."
+msgstr "مسار مصحوب يستند إلى مصادر رسمية: يفحص المكتب الملف ويقترح الخطوة التالية."
+
+msgid "Jurisdiction"
+msgstr "الاختصاص القضائي"
+
+msgid "Guided assessment"
+msgstr "تقييم موجّه"

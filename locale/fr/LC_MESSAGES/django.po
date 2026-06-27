@@ -3979,7 +3979,7 @@ msgid "Open the disclaimer"
 msgstr "Ouvrir l’avertissement"
 
 msgid "Case types we cover"
-msgstr "Les pays que nous couvrons"
+msgstr "Les types de dossiers que nous couvrons"
 
 msgid ""
 "Modular taxonomy of case types: each module is activated only when the "
@@ -6815,3 +6815,39 @@ msgstr "Un aperçu ciblé de la manière dont le Studio Legale Badrane traite le
 msgid "For %(country)s a lawyer follows the file directly across these dimensions, each grounded in the official sources cited for the case rather than an automatic figure."
 msgstr "Pour %(country)s, un avocat suit directement le dossier sur ces dimensions, chacune fondée sur les sources officielles citées pour l'affaire plutôt que sur un chiffre automatique."
 
+
+msgid "Indicative estimate of bodily injury on the official national tables, with its sources and assumptions."
+msgstr "Estimation indicative du préjudice corporel sur les barèmes nationaux officiels, avec ses sources et hypothèses."
+
+msgid "A tabular biological-damage estimate when the injury is quantified medico-legally — it does not rule on fault."
+msgstr "Une estimation tabellaire du préjudice biologique lorsque la lésion est quantifiée sur le plan médico-légal — elle ne statue pas sur la faute."
+
+msgid "Measures a settlement offer against the official tabular estimate and shows the deviation."
+msgstr "Compare une offre de règlement à l'estimation tabellaire officielle et affiche l'écart."
+
+msgid "We identify the official INAIL source and list the records your file needs before any assessment."
+msgstr "Nous identifions la source officielle INAIL et listons les pièces nécessaires à votre dossier avant toute évaluation."
+
+msgid "A guided reading of the loss-of-relationship damage, parameter by parameter, on the facts of the case."
+msgstr "Une lecture guidée du préjudice d'affection, paramètre par paramètre, sur les faits de l'affaire."
+
+msgid "Documental verification of the file and the heirs before the Studio frames a loss-of-life claim."
+msgstr "Vérification documentaire du dossier et des héritiers avant que le Cabinet ne cadre une demande pour décès."
+
+msgid "Documental verification of income and economic losses before a patrimonial claim is framed."
+msgstr "Vérification documentaire des revenus et des pertes économiques avant de cadrer une demande patrimoniale."
+
+msgid "Indicative calculation of the statutory shares on the applicable succession rules."
+msgstr "Calcul indicatif des parts successorales selon les règles de succession applicables."
+
+msgid "Applicable-law framing: which jurisdiction and which law govern a cross-border estate."
+msgstr "Cadrage de la loi applicable : quelle juridiction et quelle loi régissent une succession transfrontalière."
+
+msgid "An assisted pathway on official sources: the Studio reviews the file and proposes the next step."
+msgstr "Un parcours accompagné sur sources officielles : le Cabinet examine le dossier et propose l'étape suivante."
+
+msgid "Jurisdiction"
+msgstr "Juridiction"
+
+msgid "Guided assessment"
+msgstr "Évaluation guidée"
