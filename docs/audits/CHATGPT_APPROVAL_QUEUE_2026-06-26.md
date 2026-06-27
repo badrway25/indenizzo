@@ -96,3 +96,27 @@ Until a row is APPROVED, the corresponding public categories stay `pre_check`
 weak label, never an invented amount. Morocco and Tunisia already expose their
 multi-category coverage publicly on the country pages with the official source
 chips above.
+
+---
+
+## P21 — estimate-expansion re-evaluation (no engine activated)
+
+Re-checked every candidate against the cardinal rule (no amount without a
+validated official table/formula). **No engine could be activated in this
+session** — the missing inputs below are the only blocks, and each maps to the
+intelligent public readiness already shown on the pre-check result (the
+`potential_path` + `what unlocks a numeric estimate` block), so the public never
+sees a bare "blocked" state.
+
+| Candidate | Precise block (single missing input) | Public readiness shown today |
+|---|---|---|
+| INAIL (work injury) | machine-readable **grado 6–15% × età → € capital** table (D.M. 45/2019 + riv. 2025); annuity for >15% needs the rendita coefficient | "Official INAIL calculation, once the capital/annuity table is validated" + unlock = the validated table for the entered impairment |
+| Morocco road | **capital-de-référence** annex (âge × revenu) — the responsibility/IPP coefficients are already extracted | "Official Dahir/ACAPS barème (capital de référence), once validated" + unlock = the validated capital-de-référence table |
+| Tunisia road | **Code des assurances Titre V barème** (revenu de référence, coeff. âge, IPP, décès) — sources unreachable from here | "Official Code des assurances barème (loi 2005-86), once validated" + unlock = the validated barème |
+| Italy loss-of-relative | **no state/ministerial table exists**; Milano/Roma tables are court *prassi*, not state law → must stay a guided parental-damage assessment, not a numeric engine | "Guided assessment of the parental/family damage" + unlock = documented relationship + established liability |
+| France / Belgium | **no state barème** (Badinter = liability; Dintilhac/Mornet/Tableau Indicatif = non-state référentiels) → guided is final | guided legal pathway (documents + liability) |
+
+Conclusion: the three currency engines (MAD/TND/€-INAIL) remain **candidate**,
+gated on one official table each; loss-of-relative and FR/BE are **final guided**
+(no state quantum source exists). The public surface already expresses this as
+readiness, not as a block — no change to the cardinal guardrail.
