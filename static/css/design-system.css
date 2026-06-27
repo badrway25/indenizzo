@@ -1218,3 +1218,102 @@ form [aria-invalid="true"],
 [dir="rtl"] .lang-switch-select {
   background-position: right 0.8rem center, left 0.8rem center;
 }
+
+/* ==========================================================================
+   Premium 2026 visual direction (P21)
+   Additive depth, richer tokens, and discreet motion applied AFTER the base
+   component layer (later cascade wins). No new dependency, CSP-safe, and every
+   motion rule degrades under prefers-reduced-motion.
+   ========================================================================== */
+:root {
+  --premium-ink: #0a1830;
+  --premium-navy: #07172f;
+  --premium-ivory: #faf6ee;
+  --premium-gold: #b88336;
+  --premium-bronze: #9a6b21;
+  --premium-sage: #5b7d6e;
+  --premium-border: rgba(15, 23, 42, 0.10);
+  --premium-border-gold: rgba(184, 131, 54, 0.32);
+  --premium-shadow-soft: 0 2px 10px rgba(7, 23, 47, 0.05), 0 10px 30px rgba(7, 23, 47, 0.05);
+  --premium-shadow-lift: 0 12px 30px rgba(7, 23, 47, 0.10), 0 28px 64px rgba(7, 23, 47, 0.10);
+  --premium-radius-lg: 1.1rem;
+  --premium-radius-xl: 1.6rem;
+  --premium-gradient-legal: radial-gradient(120% 120% at 0% 0%, rgba(184, 131, 54, 0.07), transparent 46%), radial-gradient(120% 120% at 100% 0%, rgba(91, 125, 110, 0.06), transparent 42%);
+  --premium-gradient-gold: linear-gradient(135deg, var(--premium-gold), var(--premium-bronze));
+}
+
+/* Whole-page warmth: a fixed, behind-everything mesh so sections gain depth
+   without any layout shift (pointer-events none, z-index -1). */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(62% 48% at 88% -6%, rgba(184, 131, 54, 0.055), transparent 60%),
+    radial-gradient(52% 42% at -4% 102%, rgba(47, 111, 115, 0.045), transparent 56%);
+}
+
+/* Cards — gradient surface, gold-tinted hairline on hover, richer soft shadow. */
+.premium-card,
+.premium-service-card {
+  background-color: #ffffff;
+  background-image: linear-gradient(180deg, #ffffff 0%, var(--ds-ivory) 100%);
+  box-shadow: var(--premium-shadow-soft);
+}
+.premium-card-hover:hover,
+.premium-service-card:hover { box-shadow: var(--premium-shadow-lift); }
+@media (hover: hover) and (pointer: fine) {
+  .premium-card-hover:hover { border-color: var(--premium-border-gold); }
+}
+
+/* Icon medallion — soft gold radial with an inner ring. */
+.premium-icon-tile,
+.icon-medallion {
+  background: radial-gradient(120% 120% at 30% 18%, rgba(184, 131, 54, 0.20), rgba(184, 131, 54, 0.07));
+  box-shadow: inset 0 0 0 1px rgba(184, 131, 54, 0.24);
+  color: var(--premium-bronze);
+}
+.premium-icon-tile-gold {
+  background: radial-gradient(120% 120% at 30% 18%, rgba(184, 131, 54, 0.34), rgba(184, 131, 54, 0.14));
+}
+
+/* Badges — softer inner ring + roomier tracking, never Bootstrap-flat. */
+.premium-badge {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.07em;
+  padding-block: 0.28rem;
+}
+
+/* Source chips — gentle hover lift. */
+.premium-source-chip,
+li.inline-flex.rounded-full {
+  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .premium-source-chip:hover { border-color: var(--premium-border-gold); transform: translateY(-1px); }
+}
+
+/* Buttons — gold/navy depth + a discreet light sweep on hover. */
+.premium-btn { position: relative; overflow: hidden; }
+.premium-btn-gold { background-image: var(--premium-gradient-gold); }
+.premium-btn-primary { background-image: linear-gradient(180deg, var(--ds-navy-soft), var(--ds-navy)); }
+.premium-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 32%, rgba(255, 255, 255, 0.20) 50%, transparent 68%);
+  transform: translateX(-130%);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+}
+.premium-btn:hover::after { transform: translateX(130%); }
+
+/* Readiness fill — champagne sheen. */
+.readiness-fill { background-image: linear-gradient(90deg, var(--premium-bronze), var(--premium-gold) 60%, #d8b36a); }
+
+@media (prefers-reduced-motion: reduce) {
+  .premium-btn::after { display: none; }
+  .premium-source-chip { transition: none; }
+}
