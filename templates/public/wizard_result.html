@@ -5,11 +5,17 @@
 {% block meta_robots %}noindex, nofollow{% endblock %}
 
 {% block content %}
-<section class="max-w-3xl mx-auto px-5 lg:px-8 py-16">
-  <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Indicative simulation" %}</p>
-  <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Preliminary result" %}</h1>
-
-  <div class="mt-8">{% include "partials/_premium_stepper.html" with step=3 %}</div>
+{% comment %} P23: premium result shell — a navy hero band frames the preliminary
+   result before the indicative range, consistent with the redesigned pages. {% endcomment %}
+<section class="max-w-3xl mx-auto px-5 lg:px-8 pt-10">
+  <div class="premium-hero-mini">
+    <p class="premium-eyebrow">{% translate "Indicative simulation" %}</p>
+    <h1 class="mt-3 font-serif text-4xl text-sand-50 leading-tight">{% translate "Preliminary result" %}</h1>
+    <p class="mt-3 max-w-xl text-sand-50/85 leading-relaxed">{% translate "An indicative range from the validated official sources, with the assumptions and limits set out below." %}</p>
+  </div>
+</section>
+<section class="max-w-3xl mx-auto px-5 lg:px-8 pt-8 pb-16">
+  <div>{% include "partials/_premium_stepper.html" with step=3 %}</div>
 
   {# P9 Fase C: mandatory scope note for medical-liability simulations. #}
   {% if medical_scope_note %}

@@ -7,21 +7,40 @@
 
 {% block content %}
   <section class="max-w-5xl mx-auto px-5 lg:px-8 py-16">
-    <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Modular taxonomy" %}</p>
-    <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Case types" %}</h1>
-    <p class="mt-4 text-lg text-ink-800 leading-relaxed">
-      {% blocktranslate %}We implement modules in depth, one at a time. Each case type is activated only after the relevant legal sources are catalogued and validated for the chosen jurisdiction.{% endblocktranslate %}
-    </p>
+    {% comment %}
+      Premium hero band — frames the taxonomy intro as an authoritative,
+      navy-on-gold header while preserving the original eyebrow / h1 / intro
+      copy and the existing guided-router CTA below it.
+    {% endcomment %}
+    <div class="premium-hero-mini">
+      <p class="premium-eyebrow text-gold-600">{% translate "Modular taxonomy" %}</p>
+      <h1 class="mt-4 font-serif text-4xl text-sand-50 leading-tight">{% translate "Case types" %}</h1>
+      <p class="mt-4 text-lg text-sand-100 leading-relaxed">
+        {% blocktranslate %}We implement modules in depth, one at a time. Each case type is activated only after the relevant legal sources are catalogued and validated for the chosen jurisdiction.{% endblocktranslate %}
+      </p>
 
-    {# P15: route to the country × category guided picker. #}
-    <a href="{% url 'core:guided_router' %}" class="mt-6 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
-      {% translate "Find your guided path" %} <span aria-hidden="true">→</span>
-    </a>
+      {% comment %} P15: route to the country × category guided picker. {% endcomment %}
+      <a href="{% url 'core:guided_router' %}" class="mt-6 premium-btn premium-btn-gold">
+        {% translate "Find your guided path" %} <span aria-hidden="true">→</span>
+      </a>
+    </div>
 
-    <div class="mt-10 grid sm:grid-cols-2 gap-4">
+    {% comment %}
+      Legend — explains the three card states (indicative estimate /
+      documental pre-check / assisted path) using the shared premium-badge
+      palette, so the badges on each card below read at a glance.
+    {% endcomment %}
+    <div class="mt-10 flex flex-wrap items-center gap-3" aria-hidden="true">
+      <span class="premium-badge premium-badge-success">{% translate "Indicative estimate" %}</span>
+      <span class="premium-badge premium-badge-warning">{% translate "Documental pre-check" %}</span>
+      <span class="premium-badge premium-badge-muted">{% translate "Assisted path" %}</span>
+    </div>
+
+    <div class="mt-6 grid sm:grid-cols-2 gap-4">
       {% for case in case_types %}
-        <article class="bg-white border border-stone2-200 rounded-3xl p-6 shadow-card">
-          <div class="flex items-start justify-between gap-4">
+        <article class="premium-card premium-card-hover p-6">
+          <span aria-hidden="true" class="icon-medallion">{% include "partials/_icon.html" with name="scale" %}</span>
+          <div class="mt-4 flex items-start justify-between gap-4">
             <h2 class="font-serif text-xl text-ink-950">{{ case.display_label }}</h2>
             {% if case.public_status.badge_variant == "ok" %}
               <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-ok-600/10 text-ok-600 whitespace-nowrap">
