@@ -135,6 +135,72 @@
     </div>
   </section>
 
+  {# -------- What you can estimate today (live engines) -------- #}
+  <section class="max-w-7xl mx-auto px-5 lg:px-8 py-20">
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3" data-reveal>
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">{% translate "Available estimates" %}</p>
+        <h2 class="mt-2 font-serif text-3xl sm:text-4xl text-ink-950">{% translate "What you can estimate today" %}</h2>
+        <p class="mt-3 max-w-2xl text-base text-ink-800 leading-relaxed">{% blocktranslate %}Where an official source and a validated table exist, the simulator produces an indicative min–mid–max range with the sources behind it.{% endblocktranslate %}</p>
+      </div>
+      <a href="{% url 'core:guided_router' %}" class="text-sm text-ink-900 hover:text-gold-600 font-medium whitespace-nowrap">{% translate "Find your guided path" %} →</a>
+    </div>
+    <div class="mt-9 grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div data-reveal data-reveal-delay="0">
+        <article class="premium-service-card is-calculable h-full" data-tilt="3">
+          <span aria-hidden="true" class="premium-icon-tile premium-icon-tile-gold">{% include "partials/_icon.html" with name="car" %}</span>
+          <h3 class="mt-4 font-serif text-xl text-ink-950">{% translate "Road accident with injuries" %}</h3>
+          <p class="mt-2 text-sm text-ink-800 leading-relaxed flex-1">{% blocktranslate %}Micro-permanent injuries on art. 139 and macro injuries on the Tabella Unica Nazionale 2025.{% endblocktranslate %}</p>
+          <p class="mt-4"><span class="premium-badge premium-badge-success">{% translate "Estimate based on official sources" %}</span></p>
+          <a href="{% url 'cases:wizard_italy_road_accident' %}" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-gold-700 hover:text-gold-600">{% translate "Open the calculator" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+        </article>
+      </div>
+      <div data-reveal data-reveal-delay="90">
+        <article class="premium-service-card is-calculable h-full" data-tilt="3">
+          <span aria-hidden="true" class="premium-icon-tile premium-icon-tile-gold">{% include "partials/_icon.html" with name="stethoscope" %}</span>
+          <h3 class="mt-4 font-serif text-xl text-ink-950">{% translate "Healthcare liability" %}</h3>
+          <p class="mt-2 text-sm text-ink-800 leading-relaxed flex-1">{% blocktranslate %}When the injury is quantified medico-legally, the platform returns a tabular biological-damage estimate.{% endblocktranslate %}</p>
+          <p class="mt-4"><span class="premium-badge premium-badge-success">{% translate "Official table-based biological damage estimate" %}</span></p>
+          <a href="{% url 'cases:wizard_italy_medical' %}" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-gold-700 hover:text-gold-600">{% translate "Open the calculator" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+        </article>
+      </div>
+      <div data-reveal data-reveal-delay="180">
+        <article class="premium-service-card is-calculable h-full" data-tilt="3">
+          <span aria-hidden="true" class="premium-icon-tile premium-icon-tile-gold">{% include "partials/_icon.html" with name="shield-check" %}</span>
+          <h3 class="mt-4 font-serif text-xl text-ink-950">{% translate "Insurance-offer check" %}</h3>
+          <p class="mt-2 text-sm text-ink-800 leading-relaxed flex-1">{% blocktranslate %}Compare a settlement offer against the official tabular estimate and see the deviation.{% endblocktranslate %}</p>
+          <p class="mt-4"><span class="premium-badge premium-badge-success">{% translate "Comparison based on official sources" %}</span></p>
+          <a href="{% url 'cases:wizard_insurance_offer' %}" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-gold-700 hover:text-gold-600">{% translate "Open the calculator" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  {# -------- Documental pre-checks (no invented amount) -------- #}
+  <section class="bg-white border-y border-stone2-100">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8 py-20">
+      <div data-reveal>
+        <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">{% translate "Guided pre-checks" %}</p>
+        <h2 class="mt-2 font-serif text-3xl sm:text-4xl text-ink-950">{% translate "When a validated table is not yet available" %}</h2>
+        <p class="mt-3 max-w-2xl text-base text-ink-800 leading-relaxed">{% blocktranslate %}Where an official source exists but the table is still being validated, a documental pre-check organises your data and cites the applicable sources — never an invented amount.{% endblocktranslate %}</p>
+      </div>
+      <div class="mt-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% for pc in home_prechecks %}
+          <a href="{% url 'core:precheck' pc.slug %}" data-reveal data-reveal-delay="{% widthratio forloop.counter0 1 70 %}"
+             class="premium-card premium-card-hover group flex items-start gap-4 p-5">
+            <span aria-hidden="true" class="icon-medallion shrink-0">{% include "partials/_icon.html" with name=pc.icon icon_class="w-5 h-5" %}</span>
+            <span class="min-w-0">
+              <span class="block font-serif text-lg text-ink-950">{% translate pc.label %}</span>
+              <span class="mt-1 block text-xs uppercase tracking-[0.12em] text-gold-700 font-semibold">{% translate pc.badge %}</span>
+              <span class="mt-2 block text-sm text-stone2-500 group-hover:text-ink-800">{{ pc.source }}</span>
+            </span>
+          </a>
+        {% endfor %}
+      </div>
+      <a href="{% url 'core:guided_router' %}" class="mt-8 inline-flex items-center gap-2 premium-btn premium-btn-secondary">{% translate "Find your guided path" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
   {# -------- Country strip -------- #}
   <section class="bg-white border-y border-stone2-100">
     <div class="max-w-7xl mx-auto px-5 lg:px-8 py-14">

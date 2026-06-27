@@ -232,12 +232,28 @@ def _pexels_hero(request, purpose: str, country_code: str | None = None) -> dict
 
 @require_GET
 def home(request):
+    # P22: featured documental pre-checks for the home product section. The
+    # label/badge are gettext msgids (translated in-template); the source is a
+    # language-neutral citation rendered as-is.
+    home_prechecks = [
+        {"slug": "inail", "icon": "hard-hat", "label": "Work injury (INAIL)",
+         "badge": "Documental pre-check with official sources", "source": "D.P.R. 1124/1965 · D.M. 45/2019"},
+        {"slug": "morocco-road-accident", "icon": "car", "label": "Road accident in Morocco",
+         "badge": "Documental pre-check with official sources", "source": "Dahir 1-84-177 · ACAPS"},
+        {"slug": "tunisia-road-accident", "icon": "car", "label": "Road accident in Tunisia",
+         "badge": "Documental pre-check with official sources", "source": "Loi 2005-86 · CGA"},
+        {"slug": "loss-of-relative", "icon": "heart", "label": "Loss of a relative",
+         "badge": "Assisted path based on official sources", "source": "artt. 2043, 2059 c.c."},
+        {"slug": "international-road-accident", "icon": "globe", "label": "Cross-border accident",
+         "badge": "Applicable-law framing", "source": "Reg. CE 864/2007 (Roma II)"},
+    ]
     return render(
         request,
         "public/home.html",
         {
             "mvp_countries": MVP_COUNTRIES,
             "case_types_count": len(PUBLIC_CASE_TYPES),
+            "home_prechecks": home_prechecks,
             "pexels_image": _pexels_hero(request, "home_hero"),
         },
     )
