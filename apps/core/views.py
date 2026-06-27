@@ -809,6 +809,80 @@ def country_readiness_json(request):
     )
 
 
+# P24: a direct, premium card identity per case-type family. Returns
+# (badge, tone, description). Calculable families read as an estimate
+# (never a generic "assisted path"); the rest get a precise pre-check /
+# guided / applicable-law label. Each family carries its OWN one-line
+# description so the hub no longer repeats a single generic blurb on
+# every card. Badge msgids reuse the shared labels in public_pages.
+# tone: "ok" (green) for a real calculation, "gold" for a documental /
+# guided / cross-border path.
+def _case_card_status(case_value: str):
+    from django.utils.translation import gettext_lazy as _
+
+    cv = (case_value or "").lower()
+    if cv.startswith("road_accident"):
+        return (
+            _("Estimate based on official sources"),
+            "ok",
+            _("Indicative estimate of bodily injury on the official national tables, with its sources and assumptions."),
+        )
+    if cv.startswith("medical"):
+        return (
+            _("Official table-based biological damage estimate"),
+            "ok",
+            _("A tabular biological-damage estimate when the injury is quantified medico-legally — it does not rule on fault."),
+        )
+    if cv == "insurance_offer":
+        return (
+            _("Comparison based on official sources"),
+            "ok",
+            _("Measures a settlement offer against the official tabular estimate and shows the deviation."),
+        )
+    if cv == "work_injury":
+        return (
+            # Short badge (matches the page legend); the detail is in the line below.
+            _("Documental pre-check"),
+            "gold",
+            _("We identify the official INAIL source and list the records your file needs before any assessment."),
+        )
+    if cv == "parental_loss":
+        return (
+            _("Guided assessment"),
+            "gold",
+            _("A guided reading of the loss-of-relationship damage, parameter by parameter, on the facts of the case."),
+        )
+    if cv == "death_compensation":
+        return (
+            _("Documental verification"),
+            "gold",
+            _("Documental verification of the file and the heirs before the Studio frames a loss-of-life claim."),
+        )
+    if cv in ("patrimonial_damage", "product_liability"):
+        return (
+            _("Documental verification"),
+            "gold",
+            _("Documental verification of income and economic losses before a patrimonial claim is framed."),
+        )
+    if cv == "inheritance_basic":
+        return (
+            _("Estimate based on official sources"),
+            "ok",
+            _("Indicative calculation of the statutory shares on the applicable succession rules."),
+        )
+    if "inheritance" in cv:
+        return (
+            _("Applicable-law framing"),
+            "gold",
+            _("Applicable-law framing: which jurisdiction and which law govern a cross-border estate."),
+        )
+    return (
+        _("Assisted path based on official sources"),
+        "gold",
+        _("An assisted pathway on official sources: the Studio reviews the file and proposes the next step."),
+    )
+
+
 @require_GET
 def case_types(request):
     from apps.core.public_labels import humanize as humanize_case
@@ -842,6 +916,7 @@ def case_types(request):
         ]
         rep_jurisdiction = (non_scaffold or jurisdictions or [""])[0]
         rep_country = rep_jurisdiction.split("-", 1)[0] if rep_jurisdiction else ""
+        card_badge, card_tone, card_description = _case_card_status(case_type.value)
         case_types_view.append(
             {
                 "code": case_type.value,
@@ -851,6 +926,13 @@ def case_types(request):
                 "available": registered and not all_scaffold,
                 "scaffold_only": all_scaffold,
                 "public_status": get_country_public_status(rep_country, case_type.value),
+                # P24: a direct, non-repetitive card identity — calculable
+                # families read as an estimate (never a generic "assisted
+                # path"), and each card carries its own one-line description
+                # instead of a single shared status blurb.
+                "card_badge": card_badge,
+                "card_tone": card_tone,
+                "card_description": card_description,
             }
         )
     # F-product-4-case-type-landings: surface the slug for each

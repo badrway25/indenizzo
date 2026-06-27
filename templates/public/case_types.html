@@ -47,22 +47,21 @@
           <span aria-hidden="true" class="icon-medallion">{% include "partials/_icon.html" with name="scale" %}</span>
           <div class="mt-4 flex items-start justify-between gap-4">
             <h2 class="font-serif text-xl text-ink-950">{{ case.display_label }}</h2>
-            {% if case.public_status.badge_variant == "ok" %}
+            {% comment %} P24: badge wording/tone come from _case_card_status() in
+               views.py so a calculable family (road, medical, offer) reads as a
+               direct estimate/comparison label instead of a generic assisted tag. {% endcomment %}
+            {% if case.card_tone == "ok" %}
               <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-ok-600/10 text-ok-600 whitespace-nowrap">
-                {{ case.public_status.badge_label }}
-              </span>
-            {% elif case.public_status.badge_variant == "gold" %}
-              <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-gold-500/15 text-gold-700 whitespace-nowrap">
-                {{ case.public_status.badge_label }}
+                {{ case.card_badge }}
               </span>
             {% else %}
-              <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-sand-100 text-ink-900 border border-stone2-200 whitespace-nowrap">
-                {{ case.public_status.badge_label }}
+              <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-gold-500/15 text-gold-700 whitespace-nowrap">
+                {{ case.card_badge }}
               </span>
             {% endif %}
           </div>
           <p class="mt-3 text-sm text-ink-800 leading-relaxed">
-            {{ case.public_status.short_description }}
+            {{ case.card_description }}
           </p>
           {% comment %}
             F-product-4: link to the per-case-type landing page if one
