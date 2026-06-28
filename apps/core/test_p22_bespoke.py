@@ -41,15 +41,18 @@ def test_home_has_estimate_and_precheck_sections():
 @pytest.mark.django_db
 def test_services_is_grouped_into_sections():
     body = _get("/services/")
-    for group in ("Stime calcolabili", "Pre-check documentali",
+    # P26: 3 journey-selector groups (comparison merged into "Available estimates").
+    for group in ("Stime disponibili", "Pre-check documentali",
                   "Casi transfrontalieri e clienti esteri"):
         assert group in body, group
     # the grouping helper returns ordered, non-empty sections covering all 8 services
     from apps.core import public_pages
     groups = public_pages.grouped_services()
-    assert len(groups) == 4
+    assert len(groups) == 3
     covered = sum(len(g["services"]) for g in groups)
     assert covered == len(public_pages.SERVICES)
+    # each group now carries its own CTA
+    assert all(g["cta_label"] and g["cta_url_name"] for g in groups)
 
 
 # --- Guided router: cockpit stepper -----------------------------------------
