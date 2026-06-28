@@ -117,20 +117,23 @@ SERVICES = (
 )
 
 
-# --- P22: ordered service sections for the redesigned /services/ page --------
+# --- P22/P26: ordered service sections for the /services/ journey selector ----
+# (key, label, intro, cta_label, cta_url_name). P26 merges the single-card
+# "comparison" group into "Available estimates" and gives each group its own CTA.
 SERVICE_GROUPS = (
-    ("calculable", _("Calculable estimates"),
-     _("An indicative range from a validated official table or formula.")),
-    ("comparison", _("Insurance-offer comparison"),
-     _("Measure a settlement offer against the official tabular estimate.")),
+    ("calculable", _("Available estimates"),
+     _("An indicative range from a validated official table — or your settlement "
+       "offer compared against it."),
+     _("Start an estimate"), "core:guided_router"),
     ("precheck", _("Documental pre-checks"),
-     _("Official source, but no validated table yet — we organise the file.")),
+     _("Official source, but no validated table yet — we organise the file."),
+     _("Open a pre-check"), "core:guided_router"),
     ("crossborder", _("Cross-border and foreign clients"),
-     _("Applicable law, multilingual assistance and consular documents.")),
+     _("Applicable law, multilingual assistance and consular documents."),
+     _("Frame your case"), "crm:contact"),
 )
 _SERVICE_GROUP_OF = {
-    "road_accident": "calculable", "medical": "calculable",
-    "insurance_offer": "comparison",
+    "road_accident": "calculable", "medical": "calculable", "insurance_offer": "calculable",
     "work_injury": "precheck", "death": "precheck",
     "international": "crossborder", "foreigners": "crossborder", "documents": "crossborder",
 }
@@ -139,10 +142,11 @@ _SERVICE_GROUP_OF = {
 def grouped_services():
     """Services partitioned into ordered, labelled sections for /services/."""
     out = []
-    for key, label, intro in SERVICE_GROUPS:
+    for key, label, intro, cta_label, cta_url_name in SERVICE_GROUPS:
         items = [s for s in SERVICES if _SERVICE_GROUP_OF.get(s.key) == key]
         if items:
-            out.append({"label": label, "intro": intro, "services": items})
+            out.append({"label": label, "intro": intro, "services": items,
+                        "cta_label": cta_label, "cta_url_name": cta_url_name})
     return out
 
 
