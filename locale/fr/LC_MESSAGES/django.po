@@ -7688,3 +7688,117 @@ msgstr "Téléversez un document pour identifier le parcours : une estimation lo
 
 msgid "Upload your documents and the platform recognises the kind of document, links it to the official sources and the right path — an estimate where possible, a documental pre-check otherwise. No amount is invented and your file is never stored."
 msgstr "Téléversez vos documents et la plateforme reconnaît le type de document, le relie aux sources officielles et au bon parcours — une estimation lorsque c'est possible, sinon un pré-check documentaire. Aucun montant n'est inventé et votre fichier n'est jamais conservé."
+
+msgid "Event date"
+msgstr "Date de l'événement"
+
+msgid "Age at the event"
+msgstr "Âge au moment de l'événement"
+
+msgid "Permanent impairment"
+msgstr "Incapacité permanente"
+
+msgid "A settlement offer is present"
+msgstr "Une offre de règlement est présente"
+
+msgid "Proof of income is present"
+msgstr "Un justificatif de revenu est présent"
+
+msgid "An insurer is identified"
+msgstr "Un assureur est identifié"
+
+msgid "A family relationship is documented"
+msgstr "Un lien familial est documenté"
+
+msgid "A certified translation is needed"
+msgstr "Une traduction certifiée est nécessaire"
+
+msgid "yes"
+msgstr "oui"
+
+msgid "A medical report or impairment certificate"
+msgstr "Un rapport médical ou un certificat d'incapacité"
+
+msgid "The insurer's settlement offer, to compare it"
+msgstr "L'offre de règlement de l'assureur, pour la comparer"
+
+msgid "Proof of income, for the economic component"
+msgstr "Un justificatif de revenu, pour la composante économique"
+
+msgid "The accident report or constat"
+msgstr "Le constat ou le rapport d'accident"
+
+msgid "Your documents"
+msgstr "Vos documents"
+
+msgid "You can upload up to %(n)d documents at a time."
+msgstr "Vous pouvez téléverser jusqu'à %(n)d documents à la fois."
+
+msgid "Italian"
+msgstr "Italien"
+
+msgid "French"
+msgstr "Français"
+
+msgid "Arabic"
+msgstr "Arabe"
+
+msgid "Upload your documents"
+msgstr "Téléversez vos documents"
+
+msgid "Upload one or more documents to organise your dossier: an estimate where an official table allows it, a documental pre-check otherwise. Your files are analysed in memory and never stored."
+msgstr "Téléversez un ou plusieurs documents pour organiser votre dossier : une estimation lorsqu'un barème officiel le permet, sinon un pré-check documentaire. Vos fichiers sont analysés en mémoire et jamais conservés."
+
+msgid "Add one or more files. Each is recognised on its own, then combined into a single dossier with a recommended path. Files are analysed in memory and never stored."
+msgstr "Ajoutez un ou plusieurs fichiers. Chacun est reconnu individuellement, puis combiné en un dossier unique avec un parcours recommandé. Les fichiers sont analysés en mémoire et jamais conservés."
+
+msgid "Drag your files here or choose them"
+msgstr "Glissez vos fichiers ici ou choisissez-les"
+
+msgid "up to"
+msgstr "jusqu'à"
+
+msgid "files"
+msgstr "fichiers"
+
+msgid "A configured assistant may help read the documents; the files are not stored."
+msgstr "Un assistant configuré peut aider à lire les documents ; les fichiers ne sont pas conservés."
+
+msgid "Build the dossier"
+msgstr "Constituer le dossier"
+
+msgid "Your dossier"
+msgstr "Votre dossier"
+
+msgid "Documents recognised"
+msgstr "Documents reconnus"
+
+msgid "Offer comparison ready"
+msgstr "Comparaison d'offre disponible"
+
+msgid "Documents still useful"
+msgstr "Documents encore utiles"
+
+msgid "Language"
+msgstr "Langue"
+
+msgid "Continue on the path these documents point to, or send the whole dossier to the Studio."
+msgstr "Poursuivez sur le parcours indiqué par ces documents, ou envoyez l'ensemble du dossier au Cabinet."
+
+msgid "Your files"
+msgstr "Vos fichiers"
+
+msgid "Add your documents — PDF or images."
+msgstr "Ajoutez vos documents — PDF ou images."
+
+msgid "Each file is recognised and linked to official sources."
+msgstr "Chaque fichier est reconnu et relié aux sources officielles."
+
+msgid "You receive one dossier and a recommended path."
+msgstr "Vous recevez un dossier unique et un parcours recommandé."
+
+msgid "Files are analysed in memory and never stored. No amount is shown without a validated official source."
+msgstr "Les fichiers sont analysés en mémoire et jamais conservés. Aucun montant n'est affiché sans source officielle validée."
+
+msgid "Your files are processed only to build this result and are not stored."
+msgstr "Vos fichiers sont traités uniquement pour produire ce résultat et ne sont pas conservés."

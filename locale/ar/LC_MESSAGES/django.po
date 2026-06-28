@@ -7397,3 +7397,117 @@ msgstr "ارفع مستنداً للتعرّف على المسار: تقدير �
 
 msgid "Upload your documents and the platform recognises the kind of document, links it to the official sources and the right path — an estimate where possible, a documental pre-check otherwise. No amount is invented and your file is never stored."
 msgstr "ارفع مستنداتك وتتعرّف المنصّة على نوع المستند وتربطه بالمصادر الرسمية وبالمسار الصحيح — تقدير حيثما أمكن، وإلا تحقّق وثائقي مسبق. لا يُختلق أي مبلغ ولا يُخزَّن ملفك أبداً."
+
+msgid "Event date"
+msgstr "تاريخ الواقعة"
+
+msgid "Age at the event"
+msgstr "العمر وقت الواقعة"
+
+msgid "Permanent impairment"
+msgstr "العجز الدائم"
+
+msgid "A settlement offer is present"
+msgstr "يوجد عرض تسوية"
+
+msgid "Proof of income is present"
+msgstr "يوجد إثبات للدخل"
+
+msgid "An insurer is identified"
+msgstr "تم تحديد شركة تأمين"
+
+msgid "A family relationship is documented"
+msgstr "صلة قرابة موثّقة"
+
+msgid "A certified translation is needed"
+msgstr "مطلوب ترجمة معتمدة"
+
+msgid "yes"
+msgstr "نعم"
+
+msgid "A medical report or impairment certificate"
+msgstr "تقرير طبي أو شهادة عجز"
+
+msgid "The insurer's settlement offer, to compare it"
+msgstr "عرض التسوية من المؤمّن، لمقارنته"
+
+msgid "Proof of income, for the economic component"
+msgstr "إثبات الدخل، للمكوّن الاقتصادي"
+
+msgid "The accident report or constat"
+msgstr "محضر الحادث أو الـ constat"
+
+msgid "Your documents"
+msgstr "مستنداتك"
+
+msgid "You can upload up to %(n)d documents at a time."
+msgstr "يمكنك رفع حتى %(n)d مستندات في المرة الواحدة."
+
+msgid "Italian"
+msgstr "الإيطالية"
+
+msgid "French"
+msgstr "الفرنسية"
+
+msgid "Arabic"
+msgstr "العربية"
+
+msgid "Upload your documents"
+msgstr "ارفع مستنداتك"
+
+msgid "Upload one or more documents to organise your dossier: an estimate where an official table allows it, a documental pre-check otherwise. Your files are analysed in memory and never stored."
+msgstr "ارفع مستنداً واحداً أو أكثر لتنظيم ملفك: تقدير حيث يسمح جدول رسمي، وإلا تحقّق وثائقي مسبق. تُحلَّل الملفات في الذاكرة ولا تُخزَّن أبداً."
+
+msgid "Add one or more files. Each is recognised on its own, then combined into a single dossier with a recommended path. Files are analysed in memory and never stored."
+msgstr "أضف ملفاً واحداً أو أكثر. يتم التعرّف على كل ملف على حدة، ثم تُجمَّع في ملف واحد مع مسار موصى به. تُحلَّل الملفات في الذاكرة ولا تُخزَّن أبداً."
+
+msgid "Drag your files here or choose them"
+msgstr "اسحب ملفاتك هنا أو اخترها"
+
+msgid "up to"
+msgstr "حتى"
+
+msgid "files"
+msgstr "ملفات"
+
+msgid "A configured assistant may help read the documents; the files are not stored."
+msgstr "قد يساعد مساعد مُهيّأ في قراءة المستندات؛ ولا تُخزَّن الملفات."
+
+msgid "Build the dossier"
+msgstr "أنشئ الملف"
+
+msgid "Your dossier"
+msgstr "ملفك"
+
+msgid "Documents recognised"
+msgstr "المستندات المتعرَّف عليها"
+
+msgid "Offer comparison ready"
+msgstr "مقارنة العرض جاهزة"
+
+msgid "Documents still useful"
+msgstr "مستندات لا تزال مفيدة"
+
+msgid "Language"
+msgstr "اللغة"
+
+msgid "Continue on the path these documents point to, or send the whole dossier to the Studio."
+msgstr "تابع على المسار الذي تشير إليه هذه المستندات، أو أرسل الملف بالكامل إلى المكتب."
+
+msgid "Your files"
+msgstr "ملفاتك"
+
+msgid "Add your documents — PDF or images."
+msgstr "أضف مستنداتك — PDF أو صور."
+
+msgid "Each file is recognised and linked to official sources."
+msgstr "يتم التعرّف على كل ملف وربطه بالمصادر الرسمية."
+
+msgid "You receive one dossier and a recommended path."
+msgstr "تحصل على ملف واحد ومسار موصى به."
+
+msgid "Files are analysed in memory and never stored. No amount is shown without a validated official source."
+msgstr "تُحلَّل الملفات في الذاكرة ولا تُخزَّن أبداً. لا يُعرض أي مبلغ دون مصدر رسمي معتمد."
+
+msgid "Your files are processed only to build this result and are not stored."
+msgstr "تتم معالجة ملفاتك فقط لإنشاء هذه النتيجة ولا تُخزَّن."
