@@ -676,6 +676,21 @@ body { padding-bottom: var(--cookie-banner-h, 0px); }
   .shadow-card, .shadow, .shadow-sm { box-shadow: none; }
   a { color: var(--ink-900); text-decoration: underline; }
   .bg-ink-950, .bg-ink-900 { background: #fff !important; color: var(--ink-950) !important; }
+
+  /* P28: when the dossier "Print the summary" button is used, JS adds
+     .printing-dossier to <html> so ONLY the .dossier-print region prints —
+     a clean one-page summary without nav, hero, form or buttons. A plain
+     Ctrl+P (no class) keeps the basic reset above and prints the page. */
+  .printing-dossier body * { visibility: hidden; }
+  .printing-dossier .dossier-print,
+  .printing-dossier .dossier-print * { visibility: visible; }
+  .printing-dossier .dossier-print {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 0 8mm;
+  }
 }
 
 /* ----- F-p0-codice-4-csp: honeypot anti-bot utility (no inline style) ----- */

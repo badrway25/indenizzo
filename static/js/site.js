@@ -377,6 +377,59 @@
     });
   }
 
+  // P28: [data-print] → window.print(). Lets the dossier panel print the
+  // clean .dossier-print region via the @media print stylesheet.
+  function initPrint() {
+    var els = document.querySelectorAll("[data-print]");
+    Array.prototype.forEach.call(els, function (el) {
+      el.addEventListener("click", function (e) {
+        e.preventDefault();
+        var root = document.documentElement;
+        // Scope the print-isolation to this action so a plain Ctrl+P on any
+        // other page is unaffected by the dossier-only @media print rules.
+        root.classList.add("printing-dossier");
+        function cleanup() {
+          root.classList.remove("printing-dossier");
+          window.removeEventListener("afterprint", cleanup);
+        }
+        window.addEventListener("afterprint", cleanup);
+        window.print();
+        setTimeout(cleanup, 1500);
+      });
+    });
+  }
+
+  // P28: internal, privacy-safe logical events — NO external tracking. Names are
+  // pushed to window.__events (testable) and emitted as a CustomEvent so a future
+  // first-party analytics layer can subscribe. Driven by [data-event] hooks plus
+  // a couple of lifecycle signals on page load.
+  function logEvent(name, detail) {
+    if (!name) return;
+    window.__events = window.__events || [];
+    window.__events.push({ name: name, detail: detail || {} });
+    try {
+      document.dispatchEvent(new CustomEvent("app:event", { detail: { name: name, detail: detail || {} } }));
+    } catch (err) {
+      /* CustomEvent unsupported — the __events array still records it */
+    }
+  }
+
+  function initEvents() {
+    // Click-driven events (lead_started, dossier_printed, …).
+    document.addEventListener("click", function (e) {
+      var t = e.target.closest ? e.target.closest("[data-event]") : null;
+      if (t) logEvent(t.getAttribute("data-event"));
+    });
+    // Lifecycle events derived from what is on the page.
+    if (document.querySelector("[data-event-zone='dossier']")) {
+      var kind = document.querySelector("[data-result-kind]");
+      var rk = kind ? kind.getAttribute("data-result-kind") : "";
+      logEvent(rk === "estimate" || rk === "comparison" ? "estimate_completed" : "precheck_completed");
+    }
+    if (document.querySelector("[data-precheck-form]")) logEvent("precheck_started");
+    if (document.querySelector("[data-lead-form]")) logEvent("lead_form_view");
+  }
+
   ready(function () {
     initReveal();
     initStickyCta();
@@ -388,5 +441,7 @@
     initTilt();
     initPrecheckForm();
     initReadinessFill();
+    initPrint();
+    initEvents();
   });
 })();
