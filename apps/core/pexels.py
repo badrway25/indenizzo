@@ -172,6 +172,13 @@ SITE_IMAGE_SLOTS: list[dict[str, Any]] = [
     # P7: complete the content-page hero coverage.
     {"purpose": "how_it_works_hero", "country": None, "query": "justice scales detail desk"},
     {"purpose": "faq_hero", "country": None, "query": "law books shelves library"},
+    # P32: dedicated heroes for the P28-P31 platform pages (document intelligence,
+    # sources library, case types, dossier result, guided router).
+    {"purpose": "documents_hero", "country": None, "query": "organised legal documents desk dossier"},
+    {"purpose": "sources_hero", "country": None, "query": "law library archive official volumes"},
+    {"purpose": "case_types_hero", "country": None, "query": "law books justice scales detail"},
+    {"purpose": "result_hero", "country": None, "query": "premium legal report documents desk"},
+    {"purpose": "guided_hero", "country": None, "query": "consultation desk legal advisor documents"},
 ]
 
 

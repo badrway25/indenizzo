@@ -6,7 +6,11 @@
       "photo_id": 6077091,
       "approved_visual": true,
       "approved_reason": "Classic study room with shelves of books, a gavel, and Lady Justice figurine. No people, premium editorial mood.",
-      "avoid_terms": ["smiling", "handshake", "people group"],
+      "avoid_terms": [
+        "smiling",
+        "handshake",
+        "people group"
+      ],
       "editorial_notes": "Premium legal interior, books, light. Avoid generic people stock and gavel kitsch."
     },
     "countries_index": {
@@ -14,7 +18,10 @@
       "photo_id": 7876093,
       "approved_visual": true,
       "approved_reason": "Legal professional's workspace with Lady Justice statue, documents, laptop. Editorial neutral.",
-      "avoid_terms": ["smile", "handshake"],
+      "avoid_terms": [
+        "smile",
+        "handshake"
+      ],
       "editorial_notes": "Books + workspace, editorial, neutral mood."
     },
     "country_landing_IT": {
@@ -46,7 +53,10 @@
       "photo_id": 35786061,
       "approved_visual": true,
       "approved_reason": "Mausoleum of Mohammed V in Rabat — Moroccan institutional landmark, replaces wrong-country (Odense Denmark) photo.",
-      "avoid_terms": ["denmark", "europe"],
+      "avoid_terms": [
+        "denmark",
+        "europe"
+      ],
       "editorial_notes": "Was wrong-country (Odense Denmark). Force Rabat / Casablanca / Moroccan architectural identity. Avoid Denmark/Europe matches."
     },
     "country_landing_TN": {
@@ -54,7 +64,11 @@
       "photo_id": 35677445,
       "approved_visual": true,
       "approved_reason": "Real Tunisia government building — institutional architecture under clear sky.",
-      "avoid_terms": ["sidi bou said", "tourism", "blue door"],
+      "avoid_terms": [
+        "sidi bou said",
+        "tourism",
+        "blue door"
+      ],
       "editorial_notes": "Tunis institutional architecture. Avoid tourist Sidi Bou Said imagery."
     },
     "methodology_hero": {
@@ -62,7 +76,9 @@
       "photo_id": 48195,
       "approved_visual": true,
       "approved_reason": "Hand signing formal document with fountain pen — pure editorial documents mood, replaces duplicate of countries_index.",
-      "avoid_terms": ["lady justice"],
+      "avoid_terms": [
+        "lady justice"
+      ],
       "editorial_notes": "Documents + writing, editorial mood. Avoid duplicating countries_index Lady Justice photo."
     },
     "wizard_start_hero": {
@@ -71,9 +87,20 @@
       "approved_visual": true,
       "approved_reason": "Framed legal certificate + Lady Justice on desk, no people. Replaces 'bald lawyer' person-stock.",
       "avoid_terms": [
-        "face", "portrait", "smile", "person", "people",
-        "professionals", "discussion", "meeting", "team", "client",
-        "lawyer", "man", "woman", "group"
+        "face",
+        "portrait",
+        "smile",
+        "person",
+        "people",
+        "professionals",
+        "discussion",
+        "meeting",
+        "team",
+        "client",
+        "lawyer",
+        "man",
+        "woman",
+        "group"
       ],
       "editorial_notes": "Was 'bald man in office' then 'professionals discussion' — both still person-centric. Force empty desk / books / interior."
     },
@@ -106,7 +133,12 @@
       "photo_id": 28976477,
       "approved_visual": true,
       "approved_reason": "Historic Moroccan building with traditional architecture and flag — replaces 'divorce certificate' wrong-topic photo.",
-      "avoid_terms": ["divorce", "certificate", "wedding", "person"],
+      "avoid_terms": [
+        "divorce",
+        "certificate",
+        "wedding",
+        "person"
+      ],
       "editorial_notes": "Was 'man holding divorce certificate' — wrong topic AND person. Switch to architectural Moroccan historic building."
     },
     "wizard_tunisia_inheritance_hero_TN": {
@@ -114,7 +146,12 @@
       "photo_id": 35812446,
       "approved_visual": true,
       "approved_reason": "Roman amphitheater El Jem — historical institution, replaces Sidi Bou Said tourist landscape.",
-      "avoid_terms": ["sidi bou said", "beach", "tourism", "blue"],
+      "avoid_terms": [
+        "sidi bou said",
+        "beach",
+        "tourism",
+        "blue"
+      ],
       "editorial_notes": "Was Sidi Bou Said tourist landscape. Switch to institutional architecture."
     },
     "contact_hero": {
@@ -122,7 +159,10 @@
       "photo_id": 7841469,
       "approved_visual": true,
       "approved_reason": "Lawyers discussing with client in professional office — appropriate for contact page.",
-      "avoid_terms": ["smile", "handshake stock"],
+      "avoid_terms": [
+        "smile",
+        "handshake stock"
+      ],
       "editorial_notes": "Office meeting room. Discreet, premium."
     },
     "services_hero": {
@@ -130,7 +170,11 @@
       "photo_id": 8112185,
       "approved_visual": true,
       "approved_reason": "Lawyer's desk with justice statue, diploma, laptop and magnifying glass. Editorial, no people.",
-      "avoid_terms": ["smile", "handshake", "people group"],
+      "avoid_terms": [
+        "smile",
+        "handshake",
+        "people group"
+      ],
       "editorial_notes": "Services section banner: legal desk, documents, justice statue."
     },
     "about_hero": {
@@ -138,7 +182,11 @@
       "photo_id": 6077091,
       "approved_visual": true,
       "approved_reason": "Classic study room with books, gavel and Lady Justice figurine. Authoritative, no people.",
-      "avoid_terms": ["smiling", "handshake", "people group"],
+      "avoid_terms": [
+        "smiling",
+        "handshake",
+        "people group"
+      ],
       "editorial_notes": "About page banner: premium legal interior."
     },
     "ta3ouid_hero": {
@@ -146,7 +194,11 @@
       "photo_id": 35870124,
       "approved_visual": true,
       "approved_reason": "Neoclassical columned facade — Mediterranean institutional architecture, fits the Ta3ouid community landing.",
-      "avoid_terms": ["beach", "tourism", "people group"],
+      "avoid_terms": [
+        "beach",
+        "tourism",
+        "people group"
+      ],
       "editorial_notes": "Ta3ouid banner: Mediterranean/neoclassical institutional architecture."
     },
     "how_it_works_hero": {
@@ -154,7 +206,11 @@
       "photo_id": 6077797,
       "approved_visual": true,
       "approved_reason": "Golden justice scales on a desk beside a laptop — symbolises method and balance. No people.",
-      "avoid_terms": ["smile", "handshake", "people group"],
+      "avoid_terms": [
+        "smile",
+        "handshake",
+        "people group"
+      ],
       "editorial_notes": "How-it-works banner: justice scales + desk, editorial."
     },
     "faq_hero": {
@@ -162,8 +218,66 @@
       "photo_id": 37726703,
       "approved_visual": true,
       "approved_reason": "Cozy library bookshelves with ladder — authoritative legal-knowledge mood, no people.",
-      "avoid_terms": ["smile", "people group"],
+      "avoid_terms": [
+        "smile",
+        "people group"
+      ],
       "editorial_notes": "FAQ banner: law library bookshelves."
+    },
+    "documents_hero": {
+      "query": "lawyer desk justice statue documents",
+      "photo_id": 8112185,
+      "approved_visual": true,
+      "approved_reason": "Lawyer's desk with a Lady Justice statue, framed diploma and laptop. Dark editorial mood, no people. Ideal for the document-intelligence hero.",
+      "avoid_terms": [
+        "smiling",
+        "handshake"
+      ],
+      "editorial_notes": "Document intelligence flagship hero. Premium desk, no stock people, no gavel kitsch."
+    },
+    "sources_hero": {
+      "query": "grand library reading room arches",
+      "photo_id": 32008370,
+      "approved_visual": true,
+      "approved_reason": "Grand library interior with elegant arches and warm wood reading room. No people, institutional and premium.",
+      "avoid_terms": [
+        "tourist",
+        "crowd"
+      ],
+      "editorial_notes": "Official sources library hero. Grand architecture, books, warm light."
+    },
+    "case_types_hero": {
+      "query": "Lady Justice statue scales sword",
+      "photo_id": 9685285,
+      "approved_visual": true,
+      "approved_reason": "Striking Lady Justice statue (sword + scales), Dresden — dramatic, architectural, no people.",
+      "avoid_terms": [
+        "cheap gavel"
+      ],
+      "editorial_notes": "Case types hero. Justice symbolism without gavel kitsch."
+    },
+    "result_hero": {
+      "query": "neat desk binders documents dossier",
+      "photo_id": 10347152,
+      "approved_visual": true,
+      "approved_reason": "Neat office desk with binders, papers and coffee — clean flat-lay, no people, no charts implying amounts.",
+      "avoid_terms": [
+        "money",
+        "cash",
+        "charts"
+      ],
+      "editorial_notes": "Result/dossier hero. Organised dossier feel, neutral, no monetary implication."
+    },
+    "guided_hero": {
+      "query": "overhead desk laptop analysis documents",
+      "photo_id": 669610,
+      "approved_visual": true,
+      "approved_reason": "Overhead view of a tidy business desk with laptop and documents — analytical 'map your case' feel.",
+      "avoid_terms": [
+        "people group",
+        "selfie"
+      ],
+      "editorial_notes": "Guided router hero. Analytical, organised, minimal people."
     }
   }
 }
