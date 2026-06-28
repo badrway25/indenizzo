@@ -1,128 +1,218 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% translate "Upload a document" %} — {{ SITE_NAME }}{% endblock %}
-{% block meta_description %}{% translate "Upload a document to recognise the path: an estimate where an official table allows it, a documental pre-check otherwise. Your file is analysed in memory and never stored." %}{% endblock %}
+{% block title %}{% translate "Upload your documents" %} — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}{% translate "Upload one or more documents to organise your dossier: an estimate where an official table allows it, a documental pre-check otherwise. Your files are analysed in memory and never stored." %}{% endblock %}
 {% block head_extra %}{% if canonical_url %}<link rel="canonical" href="{{ canonical_url }}">{% endif %}<meta name="robots" content="noindex, follow">{% endblock %}
 
 {% block content %}
   {% translate "Document intelligence" as hero_eyebrow %}
-  {% translate "Upload a document" as hero_title %}
+  {% translate "Upload your documents" as hero_title %}
   {% include "partials/_premium_hero_image.html" with hero_eyebrow=hero_eyebrow hero_title=hero_title %}
 
-  <section class="max-w-5xl mx-auto px-5 lg:px-8 py-14">
-    <h1 class="font-serif text-3xl sm:text-4xl text-ink-950 leading-tight">{% translate "Upload a document" %}</h1>
-    <p class="mt-4 max-w-2xl text-lg text-ink-800 leading-relaxed">{% translate "Choose a PDF or an image. The file is analysed in memory and never stored." %}</p>
+  <section class="max-w-6xl mx-auto px-5 lg:px-8 py-14">
+    <div class="grid lg:grid-cols-3 gap-8 items-start">
 
-    {# ---- Upload form ---- #}
-    <form method="post" enctype="multipart/form-data" class="mt-8 premium-card p-6 lg:p-7" data-lead-form="document">
-      {% csrf_token %}
-      {% if form.non_field_errors %}<div class="mb-4 rounded-2xl border border-gold-400/60 bg-sand-100 px-4 py-3 text-sm text-ink-900">{{ form.non_field_errors }}</div>{% endif %}
+      {# ===== Main column ===== #}
+      <div class="lg:col-span-2 space-y-8">
+        <header>
+          <h1 class="font-serif text-3xl sm:text-4xl text-ink-950 leading-tight">{% translate "Upload your documents" %}</h1>
+          <p class="mt-4 max-w-2xl text-lg text-ink-800 leading-relaxed">{% translate "Add one or more files. Each is recognised on its own, then combined into a single dossier with a recommended path. Files are analysed in memory and never stored." %}</p>
+        </header>
 
-      <label for="id_document" class="block rounded-2xl border-2 border-dashed border-stone2-300 bg-sand-50 px-6 py-10 text-center cursor-pointer hover:border-gold-400 focus-within:border-gold-500" data-dropzone>
-        <span aria-hidden="true" class="icon-medallion mx-auto">{% include "partials/_icon.html" with name="document" %}</span>
-        <span class="mt-3 block font-serif text-lg text-ink-950">{% translate "Drag a file here or choose one" %}</span>
-        <span class="mt-1 block text-sm text-stone2-500">{% translate "PDF, JPEG, PNG or WebP" %} · {% translate "max" %} {{ max_mb }} MB</span>
-        <span class="mt-2 block text-sm font-semibold text-gold-700" data-dropzone-name></span>
-        <input id="id_document" name="document" type="file" accept=".pdf,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp" class="sr-only" required>
-      </label>
-      {% if form.document.errors %}<p class="mt-2 text-sm text-gold-700">{{ form.document.errors|striptags }}</p>{% endif %}
+        {# ---- Upload form ---- #}
+        <form method="post" enctype="multipart/form-data" class="premium-card p-6 lg:p-7" data-lead-form="document">
+          {% csrf_token %}
+          {% if form.non_field_errors %}<div class="mb-4 rounded-2xl border border-gold-400/60 bg-sand-100 px-4 py-3 text-sm text-ink-900">{{ form.non_field_errors }}</div>{% endif %}
 
-      <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label for="id_country" class="block text-sm font-semibold text-ink-900">{% translate "Country" %}</label>
-          <select id="id_country" name="country" class="field-select mt-1.5 w-full rounded-xl border border-stone2-300 bg-white px-3 py-2.5 text-sm">
-            {% for val, lbl in form.country.field.choices %}<option value="{{ val }}" {% if val == form.country.value %}selected{% endif %}>{{ lbl }}</option>{% endfor %}
-          </select>
-        </div>
-        <div>
-          <label for="id_category" class="block text-sm font-semibold text-ink-900">{% translate "Category" %}</label>
-          <select id="id_category" name="category" class="field-select mt-1.5 w-full rounded-xl border border-stone2-300 bg-white px-3 py-2.5 text-sm">
-            {% for val, lbl in form.category.field.choices %}<option value="{{ val }}" {% if val == form.category.value %}selected{% endif %}>{{ lbl }}</option>{% endfor %}
-          </select>
-        </div>
-      </div>
+          <label for="id_document" class="group block rounded-2xl border-2 border-dashed border-stone2-300 bg-sand-50 px-6 py-10 text-center cursor-pointer transition hover:border-gold-400 focus-within:border-gold-500" data-dropzone>
+            <span aria-hidden="true" class="icon-medallion mx-auto transition group-hover:scale-105">{% include "partials/_icon.html" with name="document" %}</span>
+            <span class="mt-3 block font-serif text-lg text-ink-950">{% translate "Drag your files here or choose them" %}</span>
+            <span class="mt-1 block text-sm text-stone2-500">{% translate "PDF, JPEG, PNG or WebP" %} · {% translate "max" %} {{ max_mb }} MB · {% translate "up to" %} {{ max_files }} {% translate "files" %}</span>
+            <span class="mt-2 block text-sm font-semibold text-gold-700" data-dropzone-name></span>
+            <span class="mt-4 flex flex-wrap justify-center gap-3" data-dropzone-previews></span>
+            <input id="id_document" name="document" type="file" multiple accept=".pdf,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp" class="sr-only" required>
+          </label>
+          {% if form.document.errors %}<p class="mt-2 text-sm text-gold-700">{{ form.document.errors|striptags }}</p>{% endif %}
 
-      <div aria-hidden="true" class="is-honeypot"><label for="id_website">{% translate "Website (do not fill)" %}</label>{{ form.website }}</div>
-
-      <label class="mt-5 flex items-start gap-3 text-sm text-ink-900 cursor-pointer">
-        <input type="checkbox" name="analysis_consent" class="mt-1 accent-gold-600" required>
-        <span>{% translate "I agree to the documental analysis to organise my dossier." %}{% if ai_enabled %} {% translate "The document may be analysed by a configured AI provider." %}{% endif %}</span>
-      </label>
-      {% if form.analysis_consent.errors %}<p class="mt-1 text-sm text-gold-700">{{ form.analysis_consent.errors|striptags }}</p>{% endif %}
-
-      <div class="mt-6 flex flex-wrap items-center gap-3">
-        <button type="submit" class="premium-btn premium-btn-primary" data-event="document_uploaded">{% translate "Analyse the document" %} <span aria-hidden="true">→</span></button>
-        <p class="text-xs text-stone2-500">{% translate "Your file is processed only to build this result and is not stored." %}</p>
-      </div>
-    </form>
-
-    {# ---- Recognition result ---- #}
-    {% if analysis %}
-    <section id="document-result" class="mt-8 space-y-5 premium-rise" aria-live="polite" data-event-zone="document">
-      <div class="premium-card p-6 lg:p-7">
-        <p class="text-[11px] uppercase tracking-[0.18em] text-gold-700 font-semibold">{% translate "Recognition result" %}</p>
-        <div class="mt-3 flex flex-col sm:flex-row sm:items-center gap-4">
-          <span aria-hidden="true" class="icon-medallion shrink-0">{% include "partials/_icon.html" with name="document" %}</span>
-          <div class="flex-1">
-            <h2 class="font-serif text-2xl text-ink-950 leading-tight">{{ analysis.document_type }}</h2>
-            <p class="mt-1 text-xs text-stone2-500">{{ filename }}{% if not ai_enabled %} · {% translate "Local documental recognition" %}{% endif %}</p>
+          <div class="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label for="id_country" class="block text-sm font-semibold text-ink-900">{% translate "Country" %}</label>
+              <select id="id_country" name="country" class="field-select mt-1.5 w-full rounded-xl border border-stone2-300 bg-white px-3 py-2.5 text-sm">
+                {% for val, lbl in form.country.field.choices %}<option value="{{ val }}" {% if val == form.country.value %}selected{% endif %}>{{ lbl }}</option>{% endfor %}
+              </select>
+            </div>
+            <div>
+              <label for="id_category" class="block text-sm font-semibold text-ink-900">{% translate "Category" %}</label>
+              <select id="id_category" name="category" class="field-select mt-1.5 w-full rounded-xl border border-stone2-300 bg-white px-3 py-2.5 text-sm">
+                {% for val, lbl in form.category.field.choices %}<option value="{{ val }}" {% if val == form.category.value %}selected{% endif %}>{{ lbl }}</option>{% endfor %}
+              </select>
+            </div>
+            <div>
+              <label for="id_language" class="block text-sm font-semibold text-ink-900">{% translate "Document language" %}</label>
+              <select id="id_language" name="language" class="field-select mt-1.5 w-full rounded-xl border border-stone2-300 bg-white px-3 py-2.5 text-sm">
+                {% for val, lbl in form.language.field.choices %}<option value="{{ val }}" {% if val == form.language.value %}selected{% endif %}>{{ lbl }}</option>{% endfor %}
+              </select>
+            </div>
           </div>
-          {% if analysis.confidence == 'strong' %}
-            <span class="premium-badge premium-badge-success">{{ analysis.confidence_label }}</span>
-          {% else %}
-            <span class="premium-badge premium-badge-warning">{{ analysis.confidence_label }}</span>
+
+          <div aria-hidden="true" class="is-honeypot"><label for="id_website">{% translate "Website (do not fill)" %}</label>{{ form.website }}</div>
+
+          <label class="mt-5 flex items-start gap-3 text-sm text-ink-900 cursor-pointer">
+            <input type="checkbox" name="analysis_consent" class="mt-1 accent-gold-600" required>
+            <span>{% translate "I agree to the documental analysis to organise my dossier." %}{% if ai_enabled %} {% translate "A configured assistant may help read the documents; the files are not stored." %}{% endif %}</span>
+          </label>
+          {% if form.analysis_consent.errors %}<p class="mt-1 text-sm text-gold-700">{{ form.analysis_consent.errors|striptags }}</p>{% endif %}
+
+          <div class="mt-6 flex flex-wrap items-center gap-3">
+            <button type="submit" class="premium-btn premium-btn-primary" data-event="document_uploaded">{% translate "Build the dossier" %} <span aria-hidden="true">→</span></button>
+            <p class="text-xs text-stone2-500">{% translate "Your files are processed only to build this result and are not stored." %}</p>
+          </div>
+        </form>
+
+        {# ---- Dossier result ---- #}
+        {% if dossier %}
+        <section id="document-result" class="space-y-6 premium-rise" aria-live="polite" data-event-zone="document">
+
+          {# Summary #}
+          <div class="premium-card p-6 lg:p-7">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+              <span aria-hidden="true" class="icon-medallion shrink-0">{% include "partials/_icon.html" with name="document" %}</span>
+              <div class="flex-1">
+                <p class="text-[11px] uppercase tracking-[0.18em] text-gold-700 font-semibold">{% translate "Your dossier" %}</p>
+                <h2 class="mt-1 font-serif text-2xl text-ink-950 leading-tight">{% translate "Documents recognised" %}: {{ dossier.document_count }}</h2>
+              </div>
+              {% if dossier.can_compare_offer %}<span class="premium-badge premium-badge-success">{% translate "Offer comparison ready" %}</span>{% endif %}
+            </div>
+
+            <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <p class="text-[11px] uppercase tracking-[0.16em] text-ok-600 font-semibold">{% translate "Recognised data" %}</p>
+                <ul class="mt-2 space-y-1.5 text-sm text-ink-900">
+                  {% if dossier.country %}<li class="flex gap-2"><span aria-hidden="true" class="text-ok-600">✓</span><span>{% translate "Country" %}: {{ dossier.country }}</span></li>{% endif %}
+                  {% for f in dossier.present_evidence %}<li class="flex gap-2"><span aria-hidden="true" class="text-ok-600">✓</span><span>{{ f }}</span></li>{% endfor %}
+                </ul>
+              </div>
+              <div>
+                <p class="text-[11px] uppercase tracking-[0.16em] text-gold-700 font-semibold">{% translate "What this enables" %}</p>
+                <ul class="mt-2 space-y-1.5 text-sm text-ink-900">
+                  {% for r in dossier.readiness_labels %}<li class="flex gap-2"><span aria-hidden="true" class="text-gold-600">•</span><span>{{ r }}</span></li>{% endfor %}
+                </ul>
+              </div>
+            </div>
+
+            {% if dossier.missing_documents %}
+            <div class="mt-6">
+              <p class="text-[11px] uppercase tracking-[0.16em] text-stone2-500 font-semibold">{% translate "Documents still useful" %}</p>
+              <ul class="mt-2 space-y-1.5 text-sm text-ink-800">
+                {% for m in dossier.missing_documents %}<li class="flex gap-2"><span aria-hidden="true" class="text-stone2-400">+</span><span>{{ m }}</span></li>{% endfor %}
+              </ul>
+            </div>
+            {% endif %}
+          </div>
+
+          {# Per-file cards #}
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {% for m in files_meta %}
+            <article class="premium-card p-5 flex flex-col gap-3 premium-rise">
+              <div class="flex items-start gap-3">
+                <span aria-hidden="true" class="shrink-0 grid place-items-center w-11 h-11 rounded-xl border border-gold-400/40 bg-sand-100 text-gold-700">
+                  {% if m.kind == 'image' %}{% include "partials/_icon.html" with name="image" %}{% else %}{% include "partials/_icon.html" with name="document" %}{% endif %}
+                </span>
+                <div class="min-w-0 flex-1">
+                  <p class="font-serif text-base text-ink-950 leading-snug truncate">{{ m.analysis.document_type }}</p>
+                  <p class="mt-0.5 text-xs text-stone2-500 truncate">{{ m.filename }} · {{ m.size|filesizeformat }}</p>
+                </div>
+                {% if m.analysis.confidence == 'strong' %}
+                  <span class="premium-badge premium-badge-success shrink-0">{{ m.analysis.confidence_label }}</span>
+                {% else %}
+                  <span class="premium-badge premium-badge-warning shrink-0">{{ m.analysis.confidence_label }}</span>
+                {% endif %}
+              </div>
+              {% if m.analysis.detected_pairs or m.analysis.language %}
+              <ul class="space-y-1 text-xs text-ink-800 border-t border-stone2-200 pt-3">
+                {% if m.analysis.language %}<li class="flex gap-2"><span aria-hidden="true" class="text-gold-600">•</span><span>{% translate "Language" %}: {{ m.analysis.language|upper }}</span></li>{% endif %}
+                {% for label, value in m.analysis.detected_pairs %}<li class="flex gap-2"><span aria-hidden="true" class="text-ok-600">✓</span><span>{{ label }}: {{ value }}</span></li>{% endfor %}
+              </ul>
+              {% endif %}
+            </article>
+            {% endfor %}
+          </div>
+
+          {# Connected official sources #}
+          {% if dossier.official_sources %}
+          <div class="premium-card p-6">
+            <p class="text-[11px] uppercase tracking-[0.18em] text-gold-700 font-semibold">{% translate "Connected official sources" %}</p>
+            <ul class="mt-3 flex flex-wrap gap-2">
+              {% for s in dossier.official_sources %}
+                <li><a href="{% url 'core:source_detail' slug=s.source_id %}" class="inline-flex items-center gap-1.5 rounded-full border border-gold-400/40 bg-sand-100 px-3 py-1 text-xs text-ink-900 transition hover:border-gold-500"><span aria-hidden="true" class="text-gold-600">§</span>{{ s.title }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
           {% endif %}
-        </div>
 
-        <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div>
-            <p class="text-[11px] uppercase tracking-[0.16em] text-ok-600 font-semibold">{% translate "Recognised data" %}</p>
-            <ul class="mt-2 space-y-1.5 text-sm text-ink-900">
-              {% if analysis.country %}<li class="flex gap-2"><span aria-hidden="true" class="text-ok-600">✓</span><span>{% translate "Country" %}: {{ analysis.country }}</span></li>{% endif %}
-              {% for f in analysis.extracted_fields %}<li class="flex gap-2"><span aria-hidden="true" class="text-ok-600">✓</span><span>{{ f }}</span></li>{% endfor %}
-            </ul>
+          {# Recommended path #}
+          <div class="premium-card p-6 lg:p-7">
+            <p class="text-[11px] uppercase tracking-[0.18em] text-gold-700 font-semibold">{% translate "Recommended path" %}</p>
+            <p class="mt-2 text-sm text-ink-900 leading-relaxed">{% translate "Continue on the path these documents point to, or send the whole dossier to the Studio." %}</p>
+            <div class="mt-4 flex flex-wrap items-center gap-3">
+              {% if dossier.recommended.0 %}
+                {% with url_name=dossier.recommended.0 kwargs=dossier.recommended.1 %}
+                  {% if kwargs.slug %}
+                    <a href="{% url url_name slug=kwargs.slug %}" class="premium-btn premium-btn-primary" data-event="document_path_opened">{{ dossier.recommended_label }} <span aria-hidden="true">→</span></a>
+                  {% else %}
+                    <a href="{% url url_name %}" class="premium-btn premium-btn-primary" data-event="document_path_opened">{{ dossier.recommended_label }} <span aria-hidden="true">→</span></a>
+                  {% endif %}
+                {% endwith %}
+              {% endif %}
+              <a href="{% url 'crm:contact' %}?flow=document&category={{ dossier.category|urlencode }}{% if dossier.country %}&country={{ dossier.country|urlencode }}{% endif %}&result_kind=pre_check&readiness=dossier_incomplete" class="premium-btn premium-btn-ghost" data-event="lead_started">{% translate "Send the dossier to the Studio" %}</a>
+            </div>
           </div>
-          <div>
-            <p class="text-[11px] uppercase tracking-[0.16em] text-gold-700 font-semibold">{% translate "What this enables" %}</p>
-            <ul class="mt-2 space-y-1.5 text-sm text-ink-900">
-              {% for r in analysis.readiness_labels %}<li class="flex gap-2"><span aria-hidden="true" class="text-gold-600">•</span><span>{{ r }}</span></li>{% endfor %}
-            </ul>
-          </div>
-        </div>
+
+          <p class="text-xs text-stone2-500 leading-relaxed max-w-2xl">{% translate "Document recognition helps organise the dossier and does not replace a legal assessment. No amount is generated without a validated official source." %}</p>
+        </section>
+        {% endif %}
       </div>
 
-      {% if analysis.official_sources %}
-      <div class="premium-card p-6">
-        <p class="text-[11px] uppercase tracking-[0.18em] text-gold-700 font-semibold">{% translate "Connected official sources" %}</p>
-        <ul class="mt-3 flex flex-wrap gap-2">
-          {% for s in analysis.official_sources %}
-            <li><a href="{% url 'core:source_detail' slug=s.source_id %}" class="inline-flex items-center gap-1.5 rounded-full border border-gold-400/40 bg-sand-100 px-3 py-1 text-xs text-ink-900 hover:border-gold-500"><span aria-hidden="true" class="text-gold-600">§</span>{{ s.title }}</a></li>
-          {% endfor %}
-        </ul>
-      </div>
-      {% endif %}
-
-      <div class="premium-card p-6 lg:p-7">
-        <p class="text-[11px] uppercase tracking-[0.18em] text-gold-700 font-semibold">{% translate "Recommended path" %}</p>
-        <p class="mt-2 text-sm text-ink-900 leading-relaxed">{% translate "Continue on the path this document points to, or send the dossier to the Studio." %}</p>
-        <div class="mt-4 flex flex-wrap items-center gap-3">
-          {% if analysis.recommended.0 %}
-            {% with url_name=analysis.recommended.0 kwargs=analysis.recommended.1 %}
+      {# ===== Sidebar ===== #}
+      <aside class="lg:sticky lg:top-24 self-start space-y-5">
+        {% if dossier %}
+        <div class="premium-card p-5">
+          <p class="text-[11px] uppercase tracking-[0.18em] text-gold-700 font-semibold">{% translate "Your files" %}</p>
+          <ul class="mt-3 space-y-2 text-sm text-ink-900">
+            {% for m in files_meta %}
+            <li class="flex items-center gap-2.5">
+              <span aria-hidden="true" class="shrink-0 grid place-items-center w-7 h-7 rounded-lg border border-gold-400/40 bg-sand-100 text-gold-700 text-xs">{% if m.kind == 'image' %}◫{% else %}§{% endif %}</span>
+              <span class="truncate">{{ m.filename }}</span>
+            </li>
+            {% endfor %}
+          </ul>
+          {% if dossier.recommended.0 %}
+          <div class="mt-4 border-t border-stone2-200 pt-4">
+            {% with url_name=dossier.recommended.0 kwargs=dossier.recommended.1 %}
               {% if kwargs.slug %}
-                <a href="{% url url_name slug=kwargs.slug %}" class="premium-btn premium-btn-primary" data-event="document_path_opened">{{ analysis.recommended_label }} <span aria-hidden="true">→</span></a>
+                <a href="{% url url_name slug=kwargs.slug %}" class="premium-btn premium-btn-primary w-full justify-center">{{ dossier.recommended_label }} <span aria-hidden="true">→</span></a>
               {% else %}
-                <a href="{% url url_name %}" class="premium-btn premium-btn-primary" data-event="document_path_opened">{{ analysis.recommended_label }} <span aria-hidden="true">→</span></a>
+                <a href="{% url url_name %}" class="premium-btn premium-btn-primary w-full justify-center">{{ dossier.recommended_label }} <span aria-hidden="true">→</span></a>
               {% endif %}
             {% endwith %}
+            <a href="{% url 'crm:contact' %}?flow=document&category={{ dossier.category|urlencode }}{% if dossier.country %}&country={{ dossier.country|urlencode }}{% endif %}&result_kind=pre_check&readiness=dossier_incomplete" class="mt-2 inline-flex w-full justify-center text-sm font-semibold text-ink-900 hover:text-gold-700">{% translate "Send the dossier to the Studio" %}</a>
+          </div>
           {% endif %}
-          <a href="{% url 'crm:contact' %}?flow=document&category={{ analysis.category|urlencode }}{% if analysis.country %}&country={{ analysis.country|urlencode }}{% endif %}&result_kind=pre_check&readiness=dossier_incomplete" class="premium-btn premium-btn-ghost" data-event="lead_started">{% translate "Send the dossier to the Studio" %}</a>
-          <a href="{% url 'core:documents_upload' %}" class="text-sm font-semibold text-ink-900 hover:text-gold-700 inline-flex items-center gap-1.5">{% translate "Upload another document" %} <span aria-hidden="true">→</span></a>
         </div>
-      </div>
+        {% endif %}
 
-      <p class="text-xs text-stone2-500 leading-relaxed max-w-2xl">{% translate "Document recognition helps organise the dossier and does not replace a legal assessment. No amount is generated without a validated official source." %}</p>
-    </section>
-    {% endif %}
+        <div class="premium-card p-5">
+          <p class="text-[11px] uppercase tracking-[0.18em] text-gold-700 font-semibold">{% translate "How it works" %}</p>
+          <ol class="mt-3 space-y-3 text-sm text-ink-800">
+            <li class="flex gap-2.5"><span aria-hidden="true" class="shrink-0 grid place-items-center w-6 h-6 rounded-full bg-ink-950 text-white text-xs font-semibold">1</span><span>{% translate "Add your documents — PDF or images." %}</span></li>
+            <li class="flex gap-2.5"><span aria-hidden="true" class="shrink-0 grid place-items-center w-6 h-6 rounded-full bg-ink-950 text-white text-xs font-semibold">2</span><span>{% translate "Each file is recognised and linked to official sources." %}</span></li>
+            <li class="flex gap-2.5"><span aria-hidden="true" class="shrink-0 grid place-items-center w-6 h-6 rounded-full bg-ink-950 text-white text-xs font-semibold">3</span><span>{% translate "You receive one dossier and a recommended path." %}</span></li>
+          </ol>
+          <p class="mt-4 text-xs text-stone2-500 leading-relaxed">{% translate "Files are analysed in memory and never stored. No amount is shown without a validated official source." %}</p>
+        </div>
+      </aside>
+
+    </div>
   </section>
 {% endblock %}

@@ -399,18 +399,38 @@
     });
   }
 
-  // P30: drag-&-drop dropzone — progressive enhancement over the file input.
-  // Shows the chosen file name; the file itself is never read here, only named.
+  // P30/P31: drag-&-drop dropzone — progressive enhancement over the file input.
+  // Lists the chosen file names and renders local image thumbnails for preview.
+  // Previews are built client-side via FileReader and are NEVER uploaded or saved
+  // beyond the actual form submission of the original files.
   function initDropzone() {
     var zones = document.querySelectorAll("[data-dropzone]");
     Array.prototype.forEach.call(zones, function (zone) {
       var input = zone.querySelector("input[type='file']");
       var nameEl = zone.querySelector("[data-dropzone-name]");
+      var previewEl = zone.querySelector("[data-dropzone-previews]");
       if (!input) return;
-      function showName() {
-        if (nameEl) nameEl.textContent = (input.files && input.files[0]) ? input.files[0].name : "";
+      function renderThumb(file) {
+        if (!previewEl || !file || !/^image\//.test(file.type) || !window.FileReader) return;
+        var reader = new FileReader();
+        reader.onload = function (ev) {
+          var img = document.createElement("img");
+          img.src = ev.target.result;          // data URL, stays in the browser
+          img.alt = file.name;
+          img.className = "dropzone-thumb";
+          previewEl.appendChild(img);
+        };
+        reader.readAsDataURL(file);
       }
-      input.addEventListener("change", showName);
+      function showFiles() {
+        var files = input.files;
+        if (previewEl) previewEl.textContent = "";
+        if (!files || !files.length) { if (nameEl) nameEl.textContent = ""; return; }
+        var names = [];
+        for (var i = 0; i < files.length; i++) { names.push(files[i].name); renderThumb(files[i]); }
+        if (nameEl) nameEl.textContent = names.join("  ·  ");
+      }
+      input.addEventListener("change", showFiles);
       ["dragenter", "dragover"].forEach(function (ev) {
         zone.addEventListener(ev, function (e) { e.preventDefault(); zone.classList.add("is-dragover"); });
       });
@@ -420,7 +440,7 @@
       zone.addEventListener("drop", function (e) {
         if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
           input.files = e.dataTransfer.files;
-          showName();
+          showFiles();
         }
       });
     });
