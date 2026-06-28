@@ -57,6 +57,7 @@ class Route:
     url_name: str
     url_kwargs: dict = field(default_factory=dict)
     min_inputs: str = ""  # P16: the minimal data the visitor will need
+    main_source: str = ""  # P25: the primary normative reference (preview)
 
     @property
     def status_label(self):
@@ -65,6 +66,13 @@ class Route:
     @property
     def computes_amount(self) -> bool:
         return self.status in COMPUTES_AMOUNT
+
+    @property
+    def est_time(self):
+        """P25: an honest, non-monetary indication of how long the path takes."""
+        if self.computes_amount:
+            return _("about 4–6 minutes")
+        return _("about 3–5 minutes")
 
     @property
     def cta_label(self):
@@ -89,27 +97,37 @@ _IN_ROAD_GUIDED = _("Accident details and supporting documents")
 
 ROUTES: tuple[Route, ...] = (
     Route("IT", _("Italy"), "road_accident", _("Road accident"), ESTIMATE,
-          "cases:wizard_italy_road_accident", min_inputs=_IN_ROAD_ENGINE),
+          "cases:wizard_italy_road_accident", min_inputs=_IN_ROAD_ENGINE,
+          main_source="art. 139 CAP · Tabella Unica Nazionale 2025"),
     Route("IT", _("Italy"), "medical_liability", _("Medical liability"), TABULAR,
-          "cases:wizard_italy_medical", min_inputs=_("Medical-legal impairment percentage")),
+          "cases:wizard_italy_medical", min_inputs=_("Medical-legal impairment percentage"),
+          main_source="L. 24/2017 · artt. 138–139 CAP"),
     Route("IT", _("Italy"), "insurance_offer", _("Insurance offer"), COMPARISON,
-          "cases:wizard_insurance_offer", min_inputs=_("The offer amount and the injury details")),
+          "cases:wizard_insurance_offer", min_inputs=_("The offer amount and the injury details"),
+          main_source="art. 139 CAP · Tabella Unica Nazionale 2025"),
     Route("IT", _("Italy"), "work_injury", _("Work injury (INAIL)"), PRE_CHECK,
-          "core:precheck", {"slug": "inail"}, min_inputs=_("Event date, impairment and documents")),
+          "core:precheck", {"slug": "inail"}, min_inputs=_("Event date, impairment and documents"),
+          main_source="D.P.R. 1124/1965 (T.U. INAIL)"),
     Route("IT", _("Italy"), "loss_of_relative", _("Loss of a relative"), GUIDED,
           "core:precheck", {"slug": "loss-of-relative"},
-          min_inputs=_("Relationship, cause of death and documents")),
+          min_inputs=_("Relationship, cause of death and documents"),
+          main_source="artt. 2043, 2059 Cod. Civile"),
     Route("MA", _("Morocco"), "road_accident", _("Road accident"), PRE_CHECK,
-          "core:precheck", {"slug": "morocco-road-accident"}, min_inputs=_IN_ROAD_PRECHECK),
+          "core:precheck", {"slug": "morocco-road-accident"}, min_inputs=_IN_ROAD_PRECHECK,
+          main_source="Dahir 1-84-177 · ACAPS"),
     Route("TN", _("Tunisia"), "road_accident", _("Road accident"), PRE_CHECK,
-          "core:precheck", {"slug": "tunisia-road-accident"}, min_inputs=_IN_ROAD_PRECHECK),
+          "core:precheck", {"slug": "tunisia-road-accident"}, min_inputs=_IN_ROAD_PRECHECK,
+          main_source="Loi 2005-86 (Code des assurances)"),
     Route("FR", _("France"), "road_accident", _("Road accident"), GUIDED,
-          "cases:wizard_france_road_accident", min_inputs=_IN_ROAD_GUIDED),
+          "cases:wizard_france_road_accident", min_inputs=_IN_ROAD_GUIDED,
+          main_source="Loi Badinter (loi 85-677)"),
     Route("BE", _("Belgium"), "road_accident", _("Road accident"), GUIDED,
-          "cases:wizard_belgium_road_accident", min_inputs=_IN_ROAD_GUIDED),
+          "cases:wizard_belgium_road_accident", min_inputs=_IN_ROAD_GUIDED,
+          main_source="Indicatieve tabel / Tableau indicatif"),
     Route("INT", _("International"), "cross_border", _("Cross-border road accident"),
           APPLICABLE_LAW, "core:precheck", {"slug": "international-road-accident"},
-          min_inputs=_("The countries involved and the documents")),
+          min_inputs=_("The countries involved and the documents"),
+          main_source="Reg. (CE) 864/2007 (Roma II)"),
 )
 
 
