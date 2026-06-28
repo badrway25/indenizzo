@@ -6560,3 +6560,207 @@ msgstr "الاختصاص القضائي"
 
 msgid "Guided assessment"
 msgstr "تقييم موجّه"
+
+msgid "Dossier ready for analysis"
+msgstr "الملف جاهز للتحليل"
+
+msgid "Documents to consolidate"
+msgstr "مستندات بحاجة إلى استكمال"
+
+msgid "Initial document collection"
+msgstr "جمع المستندات الأولي"
+
+msgid "Essential"
+msgstr "أساسية"
+
+msgid "Useful to strengthen the file"
+msgstr "مفيدة لتعزيز الملف"
+
+msgid "The essential records are in place; the Studio can review the file against the official sources."
+msgstr "المستندات الأساسية متوفرة: يمكن للمكتب فحص الملف استناداً إلى المصادر الرسمية."
+
+msgid "The core of the file is there; a few essential records still need to be gathered."
+msgstr "جوهر الملف موجود: ما زالت بعض المستندات الأساسية بحاجة إلى جمع."
+
+msgid "The case is framed; the essential records still need to be collected before a review."
+msgstr "تم تأطير القضية: ما زالت المستندات الأساسية بحاجة إلى جمع قبل المراجعة."
+
+msgid "Workplace injuries are indemnified on the INAIL tariff (D.P.R. 1124/1965): the figure follows the official table, not a free estimate."
+msgstr "تُعوَّض إصابات العمل وفق تعريفة INAIL (المرسوم 1124/1965): يتبع المبلغ الجدول الرسمي لا تقديراً حراً."
+
+msgid "Moroccan road-accident compensation is settled by the insurer on the Dahir 1-84-177 barème — the amount derives from the official capital de référence."
+msgstr "في المغرب تُسوّى تعويضات حوادث السير من قبل المؤمّن وفق جدول الظهير 1-84-177: يُشتق المبلغ من رأس المال المرجعي الرسمي."
+
+msgid "Tunisian road-accident compensation follows the Code des assurances (loi 2005-86) barème applied by the insurer."
+msgstr "في تونس تتبع تعويضات حوادث السير جدول مجلة التأمين (القانون 2005-86) الذي يطبّقه المؤمّن."
+
+msgid "Loss-of-relationship damage has no statutory table: Italian courts assess it case by case under artt. 2043 and 2059 of the Civil Code."
+msgstr "ضرر فقدان العلاقة الأسرية لا جدول قانوني له: تقدّره المحاكم الإيطالية حالة بحالة وفق المادتين 2043 و2059 من القانون المدني."
+
+msgid "Before any figure, Rome II decides which national law and which court govern a cross-border case."
+msgstr "قبل أي مبلغ، تحدد لائحة روما الثانية أي قانون وطني وأي محكمة تحكم القضية العابرة للحدود."
+
+msgid "We can map the file to the INAIL framework and to any differential beyond it."
+msgstr "يمكننا تأطير الملف ضمن إطار INAIL وأي فرق تعويضي يتجاوزه."
+
+msgid "The indemnity figure needs the validated INAIL capital / annuity table for the assessed impairment."
+msgstr "يتطلب مبلغ التعويض جدول INAIL المعتمد لرأس المال/الإيراد بحسب العجز المقدَّر."
+
+msgid "We can check the file against the structure the Dahir / ACAPS barème requires."
+msgstr "يمكننا فحص الملف وفق البنية التي يتطلبها جدول الظهير / ACAPS."
+
+msgid "The amount needs the validated capital-de-référence table and the assessed permanent incapacity."
+msgstr "يتطلب المبلغ جدول رأس المال المرجعي المعتمد والعجز الدائم المقدَّر."
+
+msgid "We can check the file against the structure the Code des assurances barème requires."
+msgstr "يمكننا فحص الملف وفق البنية التي يتطلبها جدول مجلة التأمين."
+
+msgid "The amount needs the validated barème (loi 2005-86) and the assessed permanent incapacity."
+msgstr "يتطلب المبلغ الجدول المعتمد (القانون 2005-86) والعجز الدائم المقدَّر."
+
+msgid "We can structure the parental-damage claim and weigh the relationship and the established liability."
+msgstr "يمكننا هيكلة المطالبة بضرر فقدان العلاقة وتقدير صلة القرابة والمسؤولية الثابتة."
+
+msgid "No statutory table fixes the amount: it depends on the deciding court and the documented relationship."
+msgstr "لا جدول قانوني يحدد المبلغ: يعتمد على المحكمة الناظرة وصلة القرابة الموثّقة."
+
+msgid "We can frame which law applies and which court is competent."
+msgstr "يمكننا تحديد القانون المنطبق والمحكمة المختصة."
+
+msgid "Any figure follows only once the governing law and the forum are settled."
+msgstr "أي مبلغ لا يأتي إلا بعد تحديد القانون المنطبق والمحكمة المختصة."
+
+msgid "Medical-legal report available"
+msgstr "تقرير طبي-قانوني متوفر"
+
+msgid "Medical-legal report still to obtain"
+msgstr "تقرير طبي-قانوني لم يُحصَّل بعد"
+
+msgid "INAIL recognition documented"
+msgstr "اعتراف INAIL موثّق"
+
+msgid "INAIL recognition documents to gather"
+msgstr "مستندات اعتراف INAIL بحاجة إلى جمع"
+
+msgid "Permanent incapacity assessed"
+msgstr "العجز الدائم مقدَّر"
+
+msgid "Permanent incapacity not yet assessed"
+msgstr "العجز الدائم لم يُقدَّر بعد"
+
+msgid "Income is documentable"
+msgstr "الدخل قابل للإثبات"
+
+msgid "Proof of income still to gather"
+msgstr "إثبات الدخل بحاجة إلى جمع"
+
+msgid "Liability is established"
+msgstr "المسؤولية ثابتة"
+
+msgid "Liability still to establish"
+msgstr "المسؤولية بحاجة إلى إثبات"
+
+msgid "Accident / police report available"
+msgstr "محضر الحادث متوفر"
+
+msgid "Accident / police report to obtain"
+msgstr "محضر الحادث بحاجة إلى الحصول عليه"
+
+msgid "Civil-status documents available"
+msgstr "وثائق الحالة المدنية متوفرة"
+
+msgid "Civil-status documents to gather"
+msgstr "وثائق الحالة المدنية بحاجة إلى جمع"
+
+msgid "Insurer identified"
+msgstr "شركة التأمين محددة"
+
+msgid "Insurer to identify"
+msgstr "شركة التأمين بحاجة إلى تحديد"
+
+msgid "Third-party / employer liability to pursue beyond INAIL"
+msgstr "مسؤولية الغير / صاحب العمل يمكن متابعتها بعد INAIL"
+
+msgid "An insurance offer was received — worth comparing"
+msgstr "تم استلام عرض تأميني — يستحق المقارنة"
+
+msgid "Family relationship indicated"
+msgstr "صلة القرابة مذكورة"
+
+msgid "Quantifies the permanent impairment that drives any indemnity."
+msgstr "يحدد العجز الدائم الذي يعتمد عليه أي تعويض."
+
+msgid "Establishes the INAIL recognition and the benefit already paid."
+msgstr "يثبت اعتراف INAIL والمنفعة المدفوعة بالفعل."
+
+msgid "Fixes the facts and the dynamics that found liability."
+msgstr "يثبّت الوقائع والديناميكية التي تؤسس المسؤولية."
+
+msgid "Identifies the insurer and any offer to weigh."
+msgstr "يحدد شركة التأمين وأي عرض يستحق التقييم."
+
+msgid "Supports the economic-loss component of the claim."
+msgstr "يدعم مكوّن الخسارة الاقتصادية في المطالبة."
+
+msgid "Proves the family relationship and the eligible relatives."
+msgstr "يثبت صلة القرابة وذوي الحقوق."
+
+msgid "Needed before a cross-border file can be assessed."
+msgstr "مطلوبة قبل أن يُمكن فحص ملف عابر للحدود."
+
+msgid "Country of the event indicated"
+msgstr "بلد الحادث مذكور"
+
+msgid "Country of the event to confirm"
+msgstr "بلد الحادث بحاجة إلى تأكيد"
+
+msgid "Country of residence indicated"
+msgstr "بلد الإقامة مذكور"
+
+msgid "Country of residence to confirm"
+msgstr "بلد الإقامة بحاجة إلى تأكيد"
+
+msgid "Dossier analysis"
+msgstr "تحليل الملف"
+
+msgid "Solid in your file"
+msgstr "نقاط قوية في ملفك"
+
+msgid "The strong points emerge once you complete the answers."
+msgstr "تظهر النقاط القوية بعد إكمال الإجابات."
+
+msgid "Points to verify"
+msgstr "نقاط بحاجة إلى تحقق"
+
+msgid "Nothing essential is flagged for attention."
+msgstr "لا يوجد عنصر أساسي يستدعي الانتباه."
+
+msgid "Legal path"
+msgstr "المسار القانوني"
+
+msgid "What we can assess now"
+msgstr "ما يمكننا تقييمه الآن"
+
+msgid "What is pending for a figure"
+msgstr "ما ينقص للوصول إلى مبلغ"
+
+msgid "Official route"
+msgstr "المسار الرسمي"
+
+msgid "Notes on your case"
+msgstr "ملاحظات حول قضيتك"
+
+msgid "Document checklist"
+msgstr "قائمة المستندات"
+
+msgid "Source"
+msgstr "المصدر"
+
+msgid "Time"
+msgstr "الوقت"
+
+msgid "about 4–6 minutes"
+msgstr "نحو 4–6 دقائق"
+
+msgid "about 3–5 minutes"
+msgstr "نحو 3–5 دقائق"

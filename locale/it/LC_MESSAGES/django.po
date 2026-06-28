@@ -6806,3 +6806,207 @@ msgstr "Giurisdizione"
 
 msgid "Guided assessment"
 msgstr "Valutazione guidata"
+
+msgid "Dossier ready for analysis"
+msgstr "Dossier pronto per l'analisi"
+
+msgid "Documents to consolidate"
+msgstr "Documenti da consolidare"
+
+msgid "Initial document collection"
+msgstr "Raccolta documentale iniziale"
+
+msgid "Essential"
+msgstr "Essenziali"
+
+msgid "Useful to strengthen the file"
+msgstr "Utili per rafforzare il dossier"
+
+msgid "The essential records are in place; the Studio can review the file against the official sources."
+msgstr "I documenti essenziali sono presenti: lo Studio può esaminare il fascicolo sulle fonti ufficiali."
+
+msgid "The core of the file is there; a few essential records still need to be gathered."
+msgstr "Il nucleo del fascicolo c'è: restano da raccogliere alcuni documenti essenziali."
+
+msgid "The case is framed; the essential records still need to be collected before a review."
+msgstr "Il caso è inquadrato: i documenti essenziali vanno ancora raccolti prima di un esame."
+
+msgid "Workplace injuries are indemnified on the INAIL tariff (D.P.R. 1124/1965): the figure follows the official table, not a free estimate."
+msgstr "Gli infortuni sul lavoro sono indennizzati sulla tariffa INAIL (D.P.R. 1124/1965): l'importo segue la tabella ufficiale, non una stima libera."
+
+msgid "Moroccan road-accident compensation is settled by the insurer on the Dahir 1-84-177 barème — the amount derives from the official capital de référence."
+msgstr "In Marocco il risarcimento da incidente stradale è liquidato dall'assicuratore sul barème del Dahir 1-84-177: l'importo deriva dal capital de référence ufficiale."
+
+msgid "Tunisian road-accident compensation follows the Code des assurances (loi 2005-86) barème applied by the insurer."
+msgstr "In Tunisia il risarcimento da incidente stradale segue il barème del Code des assurances (loi 2005-86) applicato dall'assicuratore."
+
+msgid "Loss-of-relationship damage has no statutory table: Italian courts assess it case by case under artt. 2043 and 2059 of the Civil Code."
+msgstr "Il danno da perdita del rapporto parentale non ha una tabella di legge: i giudici italiani lo valutano caso per caso ex artt. 2043 e 2059 c.c."
+
+msgid "Before any figure, Rome II decides which national law and which court govern a cross-border case."
+msgstr "Prima di qualsiasi importo, il Regolamento Roma II determina quale legge nazionale e quale giudice regolano un caso transfrontaliero."
+
+msgid "We can map the file to the INAIL framework and to any differential beyond it."
+msgstr "Possiamo inquadrare il fascicolo nel quadro INAIL e nell'eventuale differenziale oltre l'indennizzo."
+
+msgid "The indemnity figure needs the validated INAIL capital / annuity table for the assessed impairment."
+msgstr "L'importo dell'indennizzo richiede la tabella INAIL in capitale / rendita validata per la menomazione accertata."
+
+msgid "We can check the file against the structure the Dahir / ACAPS barème requires."
+msgstr "Possiamo verificare il fascicolo rispetto alla struttura richiesta dal barème Dahir / ACAPS."
+
+msgid "The amount needs the validated capital-de-référence table and the assessed permanent incapacity."
+msgstr "L'importo richiede la tabella del capital de référence validata e l'invalidità permanente accertata."
+
+msgid "We can check the file against the structure the Code des assurances barème requires."
+msgstr "Possiamo verificare il fascicolo rispetto alla struttura richiesta dal barème del Code des assurances."
+
+msgid "The amount needs the validated barème (loi 2005-86) and the assessed permanent incapacity."
+msgstr "L'importo richiede il barème validato (loi 2005-86) e l'invalidità permanente accertata."
+
+msgid "We can structure the parental-damage claim and weigh the relationship and the established liability."
+msgstr "Possiamo strutturare la richiesta per il danno parentale e ponderare il rapporto e la responsabilità accertata."
+
+msgid "No statutory table fixes the amount: it depends on the deciding court and the documented relationship."
+msgstr "Nessuna tabella di legge fissa l'importo: dipende dal giudice e dal rapporto documentato."
+
+msgid "We can frame which law applies and which court is competent."
+msgstr "Possiamo inquadrare quale legge si applica e quale giudice è competente."
+
+msgid "Any figure follows only once the governing law and the forum are settled."
+msgstr "Qualsiasi importo segue solo una volta definiti la legge applicabile e il foro competente."
+
+msgid "Medical-legal report available"
+msgstr "Relazione medico-legale disponibile"
+
+msgid "Medical-legal report still to obtain"
+msgstr "Relazione medico-legale ancora da ottenere"
+
+msgid "INAIL recognition documented"
+msgstr "Riconoscimento INAIL documentato"
+
+msgid "INAIL recognition documents to gather"
+msgstr "Documenti del riconoscimento INAIL da raccogliere"
+
+msgid "Permanent incapacity assessed"
+msgstr "Invalidità permanente accertata"
+
+msgid "Permanent incapacity not yet assessed"
+msgstr "Invalidità permanente non ancora accertata"
+
+msgid "Income is documentable"
+msgstr "Reddito documentabile"
+
+msgid "Proof of income still to gather"
+msgstr "Prova del reddito ancora da raccogliere"
+
+msgid "Liability is established"
+msgstr "Responsabilità accertata"
+
+msgid "Liability still to establish"
+msgstr "Responsabilità ancora da accertare"
+
+msgid "Accident / police report available"
+msgstr "Verbale / rapporto dell'incidente disponibile"
+
+msgid "Accident / police report to obtain"
+msgstr "Verbale / rapporto dell'incidente da ottenere"
+
+msgid "Civil-status documents available"
+msgstr "Documenti di stato civile disponibili"
+
+msgid "Civil-status documents to gather"
+msgstr "Documenti di stato civile da raccogliere"
+
+msgid "Insurer identified"
+msgstr "Assicuratore identificato"
+
+msgid "Insurer to identify"
+msgstr "Assicuratore da identificare"
+
+msgid "Third-party / employer liability to pursue beyond INAIL"
+msgstr "Responsabilità di terzi / datore da far valere oltre l'INAIL"
+
+msgid "An insurance offer was received — worth comparing"
+msgstr "È stata ricevuta un'offerta assicurativa — conviene confrontarla"
+
+msgid "Family relationship indicated"
+msgstr "Rapporto familiare indicato"
+
+msgid "Quantifies the permanent impairment that drives any indemnity."
+msgstr "Quantifica la menomazione permanente da cui dipende ogni indennizzo."
+
+msgid "Establishes the INAIL recognition and the benefit already paid."
+msgstr "Attesta il riconoscimento INAIL e la prestazione già erogata."
+
+msgid "Fixes the facts and the dynamics that found liability."
+msgstr "Fissa i fatti e la dinamica su cui si fonda la responsabilità."
+
+msgid "Identifies the insurer and any offer to weigh."
+msgstr "Individua l'assicuratore ed eventuali offerte da valutare."
+
+msgid "Supports the economic-loss component of the claim."
+msgstr "Sostiene la componente di danno economico della richiesta."
+
+msgid "Proves the family relationship and the eligible relatives."
+msgstr "Prova il rapporto familiare e gli aventi diritto."
+
+msgid "Needed before a cross-border file can be assessed."
+msgstr "Necessari prima di poter esaminare un fascicolo transfrontaliero."
+
+msgid "Country of the event indicated"
+msgstr "Paese dell'evento indicato"
+
+msgid "Country of the event to confirm"
+msgstr "Paese dell'evento da confermare"
+
+msgid "Country of residence indicated"
+msgstr "Paese di residenza indicato"
+
+msgid "Country of residence to confirm"
+msgstr "Paese di residenza da confermare"
+
+msgid "Dossier analysis"
+msgstr "Analisi del dossier"
+
+msgid "Solid in your file"
+msgstr "Punti solidi del fascicolo"
+
+msgid "The strong points emerge once you complete the answers."
+msgstr "I punti solidi emergono una volta completate le risposte."
+
+msgid "Points to verify"
+msgstr "Punti da verificare"
+
+msgid "Nothing essential is flagged for attention."
+msgstr "Nessun elemento essenziale richiede attenzione."
+
+msgid "Legal path"
+msgstr "Percorso legale"
+
+msgid "What we can assess now"
+msgstr "Cosa possiamo valutare ora"
+
+msgid "What is pending for a figure"
+msgstr "Cosa manca per un importo"
+
+msgid "Official route"
+msgstr "Via ufficiale"
+
+msgid "Notes on your case"
+msgstr "Note sul tuo caso"
+
+msgid "Document checklist"
+msgstr "Checklist dei documenti"
+
+msgid "Source"
+msgstr "Fonte"
+
+msgid "Time"
+msgstr "Tempo"
+
+msgid "about 4–6 minutes"
+msgstr "circa 4–6 minuti"
+
+msgid "about 3–5 minutes"
+msgstr "circa 3–5 minuti"
