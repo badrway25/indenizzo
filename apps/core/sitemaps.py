@@ -64,6 +64,9 @@ class StaticSitemap(Sitemap):
         "core:case_types": 0.6,
         # P15: country × category guided router — navigational pivot.
         "core:guided_router": 0.7,
+        # P29: official source library + smart search.
+        "core:sources": 0.7,
+        "core:search": 0.5,
         "cases:wizard_start": 0.6,
         # Workstream-3 content pages.
         "core:how_it_works": 0.7,

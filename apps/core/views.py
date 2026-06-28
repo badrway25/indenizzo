@@ -1094,6 +1094,120 @@ def case_type_landing(request, slug):
 
 
 # ---------------------------------------------------------------------------
+# P29 — Official source library + smart search
+# ---------------------------------------------------------------------------
+# Public, human filter labels (no slug). Category labels reuse humanize().
+_SOURCE_CATEGORY_LABELS = {
+    "road_accident": _("Road accident"),
+    "insurance_offer": _("Insurance offer"),
+    "medical": _("Medical liability"),
+    "work_injury": _("Workplace injury"),
+    "loss": _("Loss of a relative"),
+    "death": _("Loss of a relative"),
+    "patrimonial": _("Economic damage"),
+    "product": _("Defective product"),
+    "inheritance": _("Inheritance"),
+    "cross_border": _("Cross-border"),
+}
+_SOURCE_COUNTRY_LABELS = {
+    "IT": _("Italy"), "FR": _("France"), "BE": _("Belgium"),
+    "MA": _("Morocco"), "TN": _("Tunisia"), "EU": _("European Union"),
+}
+
+
+@require_GET
+def sources(request):
+    """Public official-source library with country / category / type / use filters."""
+    from apps.core import official_sources as official
+    from apps.core.seo import build_canonical_url
+
+    country = request.GET.get("country", "").strip()
+    category = request.GET.get("category", "").strip()
+    source_type = request.GET.get("type", "").strip()
+    unlock = request.GET.get("use", "").strip()
+
+    results = official.filter_sources(
+        country=country, category=category, source_type=source_type, unlock=unlock
+    )
+    facets = official.facets()
+    return render(
+        request,
+        "public/sources.html",
+        {
+            "sources": results,
+            "total": len(official.all_sources()),
+            "facets": facets,
+            "active": {"country": country, "category": category,
+                       "type": source_type, "use": unlock},
+            "country_labels": _SOURCE_COUNTRY_LABELS,
+            "category_labels": _SOURCE_CATEGORY_LABELS,
+            "type_labels": official.SOURCE_TYPE_LABEL,
+            "use_labels": official.UNLOCK_LABEL,
+            "canonical_url": build_canonical_url(request),
+            "pexels_image": _pexels_hero(request, "faq_hero"),
+        },
+    )
+
+
+@require_GET
+def source_detail(request, slug):
+    """Detail page for a single official source, with related platform links."""
+    from django.http import Http404
+
+    from apps.core import official_sources as official
+    from apps.core.seo import build_canonical_url
+
+    source = official.get_source(slug)
+    if source is None:
+        raise Http404("Unknown source.")
+
+    # Related platform links derived from the source's categories/country.
+    related = []
+    if "road_accident" in source.categories and source.country == "IT":
+        related.append((_("Open the road-accident estimate"),
+                        "cases:wizard_italy_road_accident", {}))
+    if "medical" in source.categories:
+        related.append((_("Open the medical estimate"), "cases:wizard_italy_medical", {}))
+    _precheck_for = {"MA": "morocco-road-accident", "TN": "tunisia-road-accident"}
+    if source.country in _precheck_for and "road_accident" in source.categories:
+        related.append((_("Open the documental pre-check"), "core:precheck",
+                        {"slug": _precheck_for[source.country]}))
+    if "work_injury" in source.categories:
+        related.append((_("Open the INAIL pre-check"), "core:precheck", {"slug": "inail"}))
+    return render(
+        request,
+        "public/source_detail.html",
+        {
+            "source": source,
+            "related": related,
+            "country_labels": _SOURCE_COUNTRY_LABELS,
+            "category_labels": _SOURCE_CATEGORY_LABELS,
+            "canonical_url": build_canonical_url(request),
+            "pexels_image": _pexels_hero(request, "methodology_hero"),
+        },
+    )
+
+
+@require_GET
+def search(request):
+    """Smart public search over estimates, pre-checks, countries, sources and pages."""
+    from apps.core import search_index
+    from apps.core.seo import build_canonical_url
+
+    query = request.GET.get("q", "").strip()
+    results = search_index.search(query) if query else []
+    return render(
+        request,
+        "public/search.html",
+        {
+            "query": query,
+            "results": results,
+            "canonical_url": build_canonical_url(request),
+        },
+    )
+
+
+# ---------------------------------------------------------------------------
 # Staff project status dashboard
 # ---------------------------------------------------------------------------
 

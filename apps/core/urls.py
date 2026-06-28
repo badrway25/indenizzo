@@ -29,6 +29,10 @@ urlpatterns = [
     path("countries/morocco/", views.country_morocco, name="country_morocco"),
     path("countries/tunisia/", views.country_tunisia, name="country_tunisia"),
     path("case-types/", views.case_types, name="case_types"),
+    # P29: official source library + smart public search (indexable, multilingual).
+    path("sources/", views.sources, name="sources"),
+    path("sources/<slug:slug>/", views.source_detail, name="source_detail"),
+    path("search/", views.search, name="search"),
     # P15: country × category guided router — pick country → category → route.
     path("guided/", views.guided_router, name="guided_router"),
     # P15: guided documental pre-check flows for non-numeric sections.

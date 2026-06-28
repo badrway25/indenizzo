@@ -147,6 +147,11 @@ _GLOBAL_HREFLANG_VIEW_NAMES = frozenset(
         # Indicizzabili, multilingua — il builder accetta i kwargs `slug`.
         "core:guided_router",
         "core:precheck",
+        # P29: official source library, per-source detail and smart search —
+        # indexable, multilingual (source_detail/search take a slug/query).
+        "core:sources",
+        "core:source_detail",
+        "core:search",
         # country landings (gia' coperte dalla view, ma le includiamo
         # nella allowlist per documentare l'intento e per fallback)
         "core:country_italy",

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load i18n core_extras %}
+
+{% block title %}{{ source.title }} — {% translate "Official source" %} — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}{{ source.summary }}{% endblock %}
+{% block head_extra %}{% if canonical_url %}<link rel="canonical" href="{{ canonical_url }}">{% endif %}{% endblock %}
+
+{% block content %}
+  {% include "partials/_premium_hero_image.html" with hero_eyebrow=source.institution hero_title=source.title %}
+
+  <section class="max-w-5xl mx-auto px-5 lg:px-8 py-14">
+    <nav class="text-xs text-stone2-500" aria-label="{% translate 'Breadcrumb' %}">
+      <a href="{% url 'core:sources' %}" class="hover:text-ink-800">{% translate "Official sources" %}</a>
+      <span aria-hidden="true"> / </span><span class="text-ink-800 font-medium">{{ source.title }}</span>
+    </nav>
+
+    <p class="mt-6 text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{{ source.source_type_label }}</p>
+    <h1 class="mt-3 font-serif text-3xl sm:text-4xl text-ink-950 leading-tight">{{ source.title }}</h1>
+    <p class="mt-4 max-w-2xl text-lg text-ink-800 leading-relaxed">{{ source.summary }}</p>
+
+    <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2 space-y-6">
+        <div class="premium-card p-6">
+          <p class="text-[11px] uppercase tracking-[0.18em] text-gold-700 font-semibold">{% translate "What this source unlocks" %}</p>
+          <ul class="mt-3 flex flex-wrap gap-2">
+            {% for u in source.unlock_labels %}<li class="inline-flex items-center rounded-full bg-sand-100 border border-stone2-200 px-3 py-1 text-sm text-ink-900">{{ u }}</li>{% endfor %}
+          </ul>
+          <p class="mt-4 text-sm text-ink-800 leading-relaxed">
+            {% if source.produces_estimate %}
+              {% blocktranslate %}This source backs an indicative monetary estimate on the platform.{% endblocktranslate %}
+            {% else %}
+              {% blocktranslate %}This source grounds a documental pre-check or the applicable-law framing — not a monetary figure.{% endblocktranslate %}
+            {% endif %}
+          </p>
+        </div>
+
+        {% if related %}
+          <div class="premium-card p-6">
+            <p class="text-[11px] uppercase tracking-[0.18em] text-gold-700 font-semibold">{% translate "Use this source on the platform" %}</p>
+            <div class="mt-3 flex flex-wrap gap-3">
+              {% for label, urlname, kwargs in related %}
+                {% if kwargs.slug %}
+                  <a href="{% url urlname slug=kwargs.slug %}" class="premium-btn premium-btn-ghost premium-btn-sm">{{ label }} →</a>
+                {% else %}
+                  <a href="{% url urlname %}" class="premium-btn premium-btn-ghost premium-btn-sm">{{ label }} →</a>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+
+      {# Sidebar: source card + access #}
+      <aside class="premium-sidebar-sticky space-y-5">
+        <div class="premium-card p-5">
+          <dl class="space-y-2.5 text-sm">
+            <div class="flex justify-between gap-3"><dt class="text-stone2-500">{% translate "Institution" %}</dt><dd class="text-ink-900 text-right">{{ source.institution }}</dd></div>
+            <div class="flex justify-between gap-3"><dt class="text-stone2-500">{% translate "Country" %}</dt><dd class="text-ink-900 text-right">{{ country_labels|dict_get:source.country }}</dd></div>
+            <div class="flex justify-between gap-3"><dt class="text-stone2-500">{% translate "Instrument" %}</dt><dd class="text-ink-900 text-right">{{ source.legal_instrument }}</dd></div>
+            {% if source.article_or_section %}<div class="flex justify-between gap-3"><dt class="text-stone2-500">{% translate "Section" %}</dt><dd class="text-ink-900 text-right">{{ source.article_or_section }}</dd></div>{% endif %}
+            {% if source.source_language %}<div class="flex justify-between gap-3"><dt class="text-stone2-500">{% translate "Document language" %}</dt><dd class="text-ink-900 text-right uppercase">{{ source.source_language }}</dd></div>{% endif %}
+          </dl>
+          <p class="mt-4 text-[11px] inline-flex items-center gap-1.5 text-stone2-500">
+            <span aria-hidden="true" class="inline-block w-1.5 h-1.5 rounded-full {% if source.pdf_available %}bg-ok-600{% else %}bg-gold-500{% endif %}"></span>{{ source.access_label }}{% if source.is_verified %} · {% translate "Verified document" %}{% endif %}
+          </p>
+          <div class="mt-4 flex flex-col gap-2.5">
+            {% if source.pdf_available and source.pdf_url %}
+              <a href="{{ source.pdf_url }}" target="_blank" rel="noopener noreferrer" class="premium-btn premium-btn-primary">{% translate "Download official PDF" %} <span aria-hidden="true">↗</span></a>
+            {% endif %}
+            {% if source.official_url %}
+              <a href="{{ source.official_url }}" target="_blank" rel="noopener noreferrer" class="premium-btn premium-btn-ghost">{% translate "Open official source" %} <span aria-hidden="true">↗</span></a>
+            {% else %}
+              <p class="text-sm text-stone2-500">{% translate "Source details available; consult the institution for the document." %}</p>
+            {% endif %}
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <p class="mt-10 text-xs text-stone2-500 leading-relaxed border-t border-stone2-200 pt-6 max-w-3xl">
+      {% blocktranslate %}Sources are used to orient the path; a monetary estimate is produced only when the underlying table or formula is validated.{% endblocktranslate %}
+    </p>
+  </section>
+{% endblock %}
