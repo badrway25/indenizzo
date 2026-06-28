@@ -7163,3 +7163,303 @@ msgstr "Le Cabinet vérifie ces documents et données au regard des sources offi
 
 msgid "Print the summary"
 msgstr "Imprimer le récapitulatif"
+
+msgid "Statutory micro-permanent road-injury scale (1–9%) for the indicative estimate."
+msgstr "Barème légal des micro-permanents en accident de la route (1–9 %) pour l'estimation indicative."
+
+msgid "National macro-injury table (10–100%) behind the road-accident estimate."
+msgstr "Barème national des macro-lésions (10–100 %) sous-jacent à l'estimation d'accident de la route."
+
+msgid "Healthcare-liability framework; the biological damage follows the official tables."
+msgstr "Cadre de la responsabilité médicale ; le préjudice biologique suit les barèmes officiels."
+
+msgid "The INAIL framework for workplace injury and occupational disease."
+msgstr "Le cadre INAIL pour l'accident du travail et la maladie professionnelle."
+
+msgid "Introduces the INAIL biological-damage indemnity (capital / annuity)."
+msgstr "Introduit l'indemnité INAIL du préjudice biologique (capital / rente)."
+
+msgid "The INAIL capital-indemnity table the work-injury figure will use once imported."
+msgstr "Le barème INAIL d'indemnité en capital que le montant d'accident du travail utilisera une fois importé."
+
+msgid "Civil liability and non-pecuniary damage, incl. loss of a relationship."
+msgstr "Responsabilité civile et préjudice extrapatrimonial, y compris la perte d'un lien."
+
+msgid "Measure of damages and equitable assessment for economic loss."
+msgstr "Mesure du dommage et appréciation équitable de la perte économique."
+
+msgid "Producer liability for defective products (no statutory monetary table)."
+msgstr "Responsabilité du producteur pour produits défectueux (aucun barème monétaire légal)."
+
+msgid "Moroccan road-accident compensation: the official capital-de-référence barème."
+msgstr "Indemnisation marocaine des accidents de la route : le barème officiel du capital de référence."
+
+msgid "The insurance authority's indemnification guidance applied by insurers."
+msgstr "Le guide d'indemnisation de l'autorité des assurances appliqué par les assureurs."
+
+msgid "General civil-liability basis for Moroccan compensation claims."
+msgstr "Base générale de responsabilité civile pour les demandes d'indemnisation au Maroc."
+
+msgid "The insurance code that governs how road-accident claims are settled."
+msgstr "Le code des assurances qui régit le règlement des demandes d'accident de la route."
+
+msgid "Family-law code, relevant to heirs and international successions."
+msgstr "Code de la famille, pertinent pour les héritiers et les successions internationales."
+
+msgid "The binding road-accident barème (incapacity, income, heirs)."
+msgstr "Le barème contraignant des accidents de la route (incapacité, revenu, héritiers)."
+
+msgid "The law that introduced the Title V road-accident compensation barème."
+msgstr "La loi qui a introduit le barème d'indemnisation des accidents de la route du Titre V."
+
+msgid "General civil-liability basis for Tunisian compensation claims."
+msgstr "Base générale de responsabilité civile pour les demandes d'indemnisation en Tunisie."
+
+msgid "The French road-accident compensation regime (no single state barème)."
+msgstr "Le régime français d'indemnisation des accidents de la route (pas de barème d'État unique)."
+
+msgid "The insurance code governing how road-accident claims are handled."
+msgstr "Le code des assurances régissant le traitement des demandes d'accident de la route."
+
+msgid "Compulsory motor-liability insurance and the compensation framework."
+msgstr "Assurance RC automobile obligatoire et cadre d'indemnisation."
+
+msgid "Reference figures used by practitioners — non-binding professional practice."
+msgstr "Valeurs de référence utilisées par les praticiens — pratique professionnelle non contraignante."
+
+msgid "Determines the law applicable to a cross-border non-contractual claim."
+msgstr "Détermine la loi applicable à une demande non contractuelle transfrontalière."
+
+msgid "Governs jurisdiction and applicable law for international successions."
+msgstr "Régit la compétence et la loi applicable aux successions internationales."
+
+msgid "Law"
+msgstr "Loi"
+
+msgid "Decree"
+msgstr "Décret"
+
+msgid "Official table"
+msgstr "Barème officiel"
+
+msgid "Insurance code"
+msgstr "Code des assurances"
+
+msgid "EU regulation"
+msgstr "Règlement UE"
+
+msgid "Administrative source"
+msgstr "Source administrative"
+
+msgid "Judicial practice (non-binding)"
+msgstr "Pratique judiciaire (non contraignante)"
+
+msgid "Tabular estimate"
+msgstr "Estimation tabellaire"
+
+msgid "Estimate"
+msgstr "Estimation"
+
+msgid "Pre-check"
+msgstr "Pré-check"
+
+msgid "Page"
+msgstr "Page"
+
+msgid "Start the estimate"
+msgstr "Lancer l'estimation"
+
+msgid "Open the pre-check"
+msgstr "Ouvrir le pré-check"
+
+msgid "Read the source"
+msgstr "Lire la source"
+
+msgid "Open the country"
+msgstr "Ouvrir le pays"
+
+msgid "Frame the case"
+msgstr "Cadrer le dossier"
+
+msgid "Official PDF available"
+msgstr "PDF officiel disponible"
+
+msgid "Source available online"
+msgstr "Source consultable en ligne"
+
+msgid "Source details available"
+msgstr "Fiche source disponible"
+
+msgid "Verified document"
+msgstr "Document vérifié"
+
+msgid "INAIL workplace injury"
+msgstr "Accident du travail INAIL"
+
+msgid "Cross-border accident — applicable law"
+msgstr "Accident transfrontalier — loi applicable"
+
+msgid "Indicative estimate on the official Italian tables."
+msgstr "Estimation indicative sur les barèmes officiels italiens."
+
+msgid "Tabular biological-damage estimate (Gelli law)."
+msgstr "Estimation tabellaire du préjudice biologique (loi Gelli)."
+
+msgid "Compare a settlement offer against the official estimate."
+msgstr "Comparez une offre de règlement à l'estimation officielle."
+
+msgid "Documental pre-check on the official sources."
+msgstr "Pré-check documentaire sur les sources officielles."
+
+msgid "Coverage, categories and official sources."
+msgstr "Couverture, catégories et sources officielles."
+
+msgid "Statutory shares and international successions."
+msgstr "Parts successorales et successions internationales."
+
+msgid "Producer liability — documental verification."
+msgstr "Responsabilité du producteur — vérification documentaire."
+
+msgid "Platform page."
+msgstr "Page de la plateforme."
+
+msgid "Official source library"
+msgstr "Bibliothèque des sources officielles"
+
+msgid "European Union"
+msgstr "Union européenne"
+
+msgid "Cross-border"
+msgstr "Transfrontalier"
+
+msgid "Open the road-accident estimate"
+msgstr "Ouvrir l'estimation d'accident"
+
+msgid "Open the medical estimate"
+msgstr "Ouvrir l'estimation médicale"
+
+msgid "Open the documental pre-check"
+msgstr "Ouvrir le pré-check documentaire"
+
+msgid "Open the INAIL pre-check"
+msgstr "Ouvrir le pré-check INAIL"
+
+msgid "Where every estimate comes from"
+msgstr "D'où vient chaque estimation"
+
+msgid "Search a country, a damage type or a source…"
+msgstr "Recherchez un pays, un type de préjudice ou une source…"
+
+msgid "Search the platform"
+msgstr "Rechercher sur la plateforme"
+
+msgid "Search"
+msgstr "Rechercher"
+
+msgid "Filter sources"
+msgstr "Filtrer les sources"
+
+msgid "Source type"
+msgstr "Type de source"
+
+msgid "Used for"
+msgstr "Utilisée pour"
+
+msgid "Reset"
+msgstr "Réinitialiser"
+
+msgid "Feeds an estimate"
+msgstr "Alimente une estimation"
+
+msgid "Source-based path"
+msgstr "Parcours sur sources"
+
+msgid "Institution"
+msgstr "Institution"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Download official PDF"
+msgstr "Télécharger le PDF officiel"
+
+msgid "Source details"
+msgstr "Fiche source"
+
+msgid "No source matches these filters."
+msgstr "Aucune source ne correspond à ces filtres."
+
+msgid "Reset filters"
+msgstr "Réinitialiser les filtres"
+
+msgid "Sources are used to orient the path; a monetary estimate is produced only when the underlying table or formula is validated."
+msgstr "Les sources orientent le parcours ; l'estimation monétaire n'est produite que lorsque le barème ou la formule sous-jacente est validé."
+
+msgid "What this source unlocks"
+msgstr "Ce que cette source permet"
+
+msgid "This source backs an indicative monetary estimate on the platform."
+msgstr "Cette source étaye une estimation monétaire indicative sur la plateforme."
+
+msgid "This source grounds a documental pre-check or the applicable-law framing — not a monetary figure."
+msgstr "Cette source fonde un pré-check documentaire ou le cadrage de la loi applicable — non un montant."
+
+msgid "Use this source on the platform"
+msgstr "Utiliser cette source sur la plateforme"
+
+msgid "Instrument"
+msgstr "Instrument"
+
+msgid "Section"
+msgstr "Section"
+
+msgid "Document language"
+msgstr "Langue du document"
+
+msgid "Source details available; consult the institution for the document."
+msgstr "Fiche source disponible ; pour le document, consultez l'institution."
+
+msgid "Find your way across the platform"
+msgstr "Trouvez votre chemin sur la plateforme"
+
+msgid "Search by country, damage type, an official source or a keyword — for example “incidente in Marocco”, “INAIL” or “Roma II”."
+msgstr "Recherchez par pays, type de préjudice, source officielle ou mot-clé — par exemple « accident au Maroc », « INAIL » ou « Rome II »."
+
+msgid "Nothing matched your search."
+msgstr "Aucun résultat pour votre recherche."
+
+msgid "Try a country, a damage type, or browse the guided path."
+msgstr "Essayez un pays, un type de préjudice ou parcourez le parcours guidé."
+
+msgid "Guided path"
+msgstr "Parcours guidé"
+
+msgid "Country, then category."
+msgstr "Pays, puis catégorie."
+
+msgid "Browse the library."
+msgstr "Parcourez la bibliothèque."
+
+msgid "Coverage by country."
+msgstr "Couverture par pays."
+
+msgid "Sources"
+msgstr "Sources"
+
+msgid "One platform"
+msgstr "Une seule plateforme"
+
+msgid "Search by country, damage or official source"
+msgstr "Recherchez par pays, préjudice ou source officielle"
+
+msgid "Estimate, pre-check or dossier"
+msgstr "Estimation, pré-check ou dossier"
+
+msgid "Category"
+msgstr "Catégorie"
+
+msgid "sources"
+msgstr "sources"
+
+msgid "results"
+msgstr "résultats"
