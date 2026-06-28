@@ -361,6 +361,16 @@ def precheck(request, slug):
     # template can repopulate without a dict-lookup template filter.
     form_fields = [{"field": f, "value": answers.get(f.id, "")} for f in flow.fields]
 
+    # P28: a unified dossier summary drives the "consolidate the dossier" panel,
+    # the print layout and the result-aware contact CTA. Built statelessly.
+    dossier = None
+    if result is not None:
+        from django.utils.translation import get_language
+
+        from apps.core.dossier import from_precheck
+
+        dossier = from_precheck(flow, result, get_language() or "")
+
     return render(
         request,
         "public/precheck.html",
@@ -368,6 +378,7 @@ def precheck(request, slug):
             "flow": flow,
             "form_fields": form_fields,
             "result": result,
+            "dossier": dossier,
             "canonical_url": build_canonical_url(request),
             "pexels_image": _pexels_hero(request, "services_hero"),
         },

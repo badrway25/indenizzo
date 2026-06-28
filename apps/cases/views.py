@@ -472,13 +472,29 @@ def wizard_result(request, public_id: uuid.UUID):
 
     # P24: a calm photographic hero for the result page (deferred import keeps
     # the cases ↔ core view modules free of an import cycle at load time).
+    # P28: a unified dossier summary drives the "consolidate the dossier" panel,
+    # the print layout and the result-aware contact CTA (?sim=…).
+    from django.utils.translation import get_language
+
+    from apps.core.dossier import from_estimate
     from apps.core.views import _pexels_hero
+
+    dossier = from_estimate(
+        simulation,
+        has_estimate=has_estimate,
+        sources=sources,
+        missing_documents=public_missing_documents,
+        offer_comparison=offer_comparison,
+        assumptions=assumptions,
+        language=get_language() or "",
+    )
 
     return render(
         request,
         "public/wizard_result.html",
         {
             "simulation": simulation,
+            "dossier": dossier,
             "pexels_image": _pexels_hero(request, "methodology_hero"),
             "sources": sources,
             "assumptions": assumptions,
