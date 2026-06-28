@@ -135,6 +135,29 @@
     </div>
   </section>
 
+  {# P29: platform search band — search by country, damage or official source. #}
+  <section class="max-w-7xl mx-auto px-5 lg:px-8 py-12">
+    <div class="rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-8" data-reveal>
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+        <div>
+          <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">{% translate "One platform" %}</p>
+          <h2 class="mt-2 font-serif text-2xl sm:text-3xl text-ink-950 leading-tight">{% translate "Search by country, damage or official source" %}</h2>
+        </div>
+        <form action="{% url 'core:search' %}" method="get" class="flex flex-wrap gap-2 lg:min-w-[24rem]" role="search">
+          <label for="home-search" class="sr-only">{% translate "Search a country, a damage type or a source…" %}</label>
+          <input id="home-search" name="q" type="search" aria-label="{% translate 'Search a country, a damage type or a source…' %}"
+                 class="flex-1 min-w-0 rounded-full border border-stone2-300 bg-sand-50 px-4 py-2.5 text-sm text-ink-900 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30 focus:outline-none">
+          <button type="submit" class="premium-btn premium-btn-primary">{% translate "Search" %}</button>
+        </form>
+      </div>
+      <div class="mt-5 flex flex-wrap gap-2.5 text-sm">
+        <a href="{% url 'core:guided_router' %}" class="inline-flex items-center gap-1.5 rounded-full border border-stone2-200 bg-sand-100 px-3.5 py-1.5 text-ink-900 hover:border-gold-400">{% translate "Estimate, pre-check or dossier" %}</a>
+        <a href="{% url 'core:sources' %}" class="inline-flex items-center gap-1.5 rounded-full border border-stone2-200 bg-sand-100 px-3.5 py-1.5 text-ink-900 hover:border-gold-400"><span aria-hidden="true" class="text-gold-600">§</span>{% translate "Official source library" %}</a>
+        <a href="{% url 'core:countries' %}" class="inline-flex items-center gap-1.5 rounded-full border border-stone2-200 bg-sand-100 px-3.5 py-1.5 text-ink-900 hover:border-gold-400">{% translate "Countries we cover" %}</a>
+      </div>
+    </div>
+  </section>
+
   {# -------- What you can estimate today (live engines) -------- #}
   <section class="max-w-7xl mx-auto px-5 lg:px-8 py-20">
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3" data-reveal>

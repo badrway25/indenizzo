@@ -21,6 +21,12 @@
       <a href="{% url 'core:faq' %}" class="px-3 py-2 rounded-full text-ink-800 hover:text-ink-950 hover:bg-stone2-100 hidden md:inline-flex">{% translate "FAQ" %}</a>
       <a href="{% url 'core:countries' %}" class="px-3 py-2 rounded-full text-ink-800 hover:text-ink-950 hover:bg-stone2-100 hidden lg:inline-flex">{% translate "Countries" %}</a>
       <a href="{% url 'core:case_types' %}" class="px-3 py-2 rounded-full text-ink-800 hover:text-ink-950 hover:bg-stone2-100 hidden lg:inline-flex">{% translate "Case types" %}</a>
+      {# P29: official source library — the platform's evidence layer. #}
+      <a href="{% url 'core:sources' %}" class="px-3 py-2 rounded-full text-ink-800 hover:text-ink-950 hover:bg-stone2-100 hidden lg:inline-flex">{% translate "Sources" %}</a>
+      {# P29: global search entry. #}
+      <a href="{% url 'core:search' %}" class="px-2.5 py-2 rounded-full text-ink-800 hover:text-ink-950 hover:bg-stone2-100 hidden md:inline-flex" aria-label="{% translate 'Search the platform' %}" title="{% translate 'Search the platform' %}">
+        <span aria-hidden="true">{% include "partials/_icon.html" with name="search" icon_class="w-4 h-4" %}</span>
+      </a>
     </nav>
 
     {% include "partials/language_switcher.html" %}
