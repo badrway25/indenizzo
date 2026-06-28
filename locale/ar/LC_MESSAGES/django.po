@@ -6764,3 +6764,72 @@ msgstr "نحو 4–6 دقائق"
 
 msgid "about 3–5 minutes"
 msgstr "نحو 3–5 دقائق"
+
+msgid "Relationship, cohabitation and liability"
+msgstr "صلة القرابة والمعاشرة والمسؤولية"
+
+msgid "Documentable income and economic loss"
+msgstr "الدخل والخسارة الاقتصادية القابلان للإثبات"
+
+msgid "Heirs and statutory shares"
+msgstr "الورثة والأنصبة القانونية"
+
+msgid "Countries involved and the assets"
+msgstr "البلدان المعنية والأصول"
+
+msgid "The facts of the case and the documents"
+msgstr "وقائع القضية والمستندات"
+
+msgid "Workplace"
+msgstr "العمل والإصابات"
+
+msgid "Family and bereavement"
+msgstr "الأسرة والوفاة"
+
+msgid "Economic damage"
+msgstr "الأضرار المالية"
+
+msgid "Inheritance"
+msgstr "الميراث"
+
+msgid "Road injuries and healthcare liability, estimated on the official tables."
+msgstr "إصابات الطرق والمسؤولية الطبية، مقدَّرة على الجداول الرسمية."
+
+msgid "Workplace injury and occupational disease on the INAIL sources."
+msgstr "إصابات العمل والأمراض المهنية وفق مصادر INAIL."
+
+msgid "Loss of a relative and loss-of-relationship damage, handled with care."
+msgstr "فقدان أحد الأقارب وضرر العلاقة الأسرية، يُعالجان بعناية."
+
+msgid "Income and economic losses, verified against the documents."
+msgstr "الدخل والخسائر الاقتصادية، مُتحقَّق منها على المستندات."
+
+msgid "Statutory shares, reserved portion and international successions."
+msgstr "الأنصبة القانونية والحصة المحفوظة والمواريث الدولية."
+
+msgid "An indicative range from a validated official table — or your settlement offer compared against it."
+msgstr "نطاق إرشادي من جدول رسمي معتمد — أو مقارنة عرض التسوية الخاص بك به."
+
+msgid "Start an estimate"
+msgstr "ابدأ تقديراً"
+
+msgid "Open a pre-check"
+msgstr "افتح تحقّقاً مسبقاً"
+
+msgid "Frame your case"
+msgstr "أطّر قضيتك"
+
+msgid "Select the type of damage"
+msgstr "اختر نوع الضرر"
+
+msgid "What kind of case is yours?"
+msgstr "ما نوع قضيتك؟"
+
+msgid "You'll provide"
+msgstr "ما ستقدّمه"
+
+msgid "Start this path"
+msgstr "ابدأ هذا المسار"
+
+msgid "See all areas"
+msgstr "عرض جميع المجالات"

@@ -7010,3 +7010,72 @@ msgstr "circa 4–6 minuti"
 
 msgid "about 3–5 minutes"
 msgstr "circa 3–5 minuti"
+
+msgid "Relationship, cohabitation and liability"
+msgstr "Rapporto, convivenza e responsabilità"
+
+msgid "Documentable income and economic loss"
+msgstr "Reddito e perdita economica documentabili"
+
+msgid "Heirs and statutory shares"
+msgstr "Eredi e quote di legittima"
+
+msgid "Countries involved and the assets"
+msgstr "Paesi coinvolti e beni"
+
+msgid "The facts of the case and the documents"
+msgstr "I fatti del caso e i documenti"
+
+msgid "Workplace"
+msgstr "Lavoro e infortuni"
+
+msgid "Family and bereavement"
+msgstr "Famiglia e decesso"
+
+msgid "Economic damage"
+msgstr "Danni patrimoniali"
+
+msgid "Inheritance"
+msgstr "Successioni"
+
+msgid "Road injuries and healthcare liability, estimated on the official tables."
+msgstr "Lesioni stradali e responsabilità sanitaria, stimate sulle tabelle ufficiali."
+
+msgid "Workplace injury and occupational disease on the INAIL sources."
+msgstr "Infortunio sul lavoro e malattia professionale sulle fonti INAIL."
+
+msgid "Loss of a relative and loss-of-relationship damage, handled with care."
+msgstr "Perdita di un familiare e danno parentale, trattati con discrezione."
+
+msgid "Income and economic losses, verified against the documents."
+msgstr "Redditi e perdite economiche, verificati sui documenti."
+
+msgid "Statutory shares, reserved portion and international successions."
+msgstr "Quote di legittima, riserva e successioni internazionali."
+
+msgid "An indicative range from a validated official table — or your settlement offer compared against it."
+msgstr "Un intervallo indicativo da una tabella ufficiale validata — o la tua offerta transattiva confrontata con essa."
+
+msgid "Start an estimate"
+msgstr "Avvia una stima"
+
+msgid "Open a pre-check"
+msgstr "Apri un pre-check"
+
+msgid "Frame your case"
+msgstr "Inquadra il tuo caso"
+
+msgid "Select the type of damage"
+msgstr "Seleziona il tipo di danno"
+
+msgid "What kind of case is yours?"
+msgstr "Di che tipo è il tuo caso?"
+
+msgid "You'll provide"
+msgstr "Cosa fornisci"
+
+msgid "Start this path"
+msgstr "Avvia questo percorso"
+
+msgid "See all areas"
+msgstr "Vedi tutte le aree"

@@ -7055,3 +7055,72 @@ msgstr "environ 4–6 minutes"
 
 msgid "about 3–5 minutes"
 msgstr "environ 3–5 minutes"
+
+msgid "Relationship, cohabitation and liability"
+msgstr "Lien, cohabitation et responsabilité"
+
+msgid "Documentable income and economic loss"
+msgstr "Revenu et perte économique documentables"
+
+msgid "Heirs and statutory shares"
+msgstr "Héritiers et parts successorales"
+
+msgid "Countries involved and the assets"
+msgstr "Pays concernés et biens"
+
+msgid "The facts of the case and the documents"
+msgstr "Les faits de l'affaire et les documents"
+
+msgid "Workplace"
+msgstr "Travail et accidents"
+
+msgid "Family and bereavement"
+msgstr "Famille et décès"
+
+msgid "Economic damage"
+msgstr "Préjudice patrimonial"
+
+msgid "Inheritance"
+msgstr "Successions"
+
+msgid "Road injuries and healthcare liability, estimated on the official tables."
+msgstr "Préjudices routiers et responsabilité médicale, estimés sur les barèmes officiels."
+
+msgid "Workplace injury and occupational disease on the INAIL sources."
+msgstr "Accident du travail et maladie professionnelle sur les sources INAIL."
+
+msgid "Loss of a relative and loss-of-relationship damage, handled with care."
+msgstr "Perte d'un proche et préjudice d'affection, traités avec discrétion."
+
+msgid "Income and economic losses, verified against the documents."
+msgstr "Revenus et pertes économiques, vérifiés sur les documents."
+
+msgid "Statutory shares, reserved portion and international successions."
+msgstr "Parts successorales, réserve et successions internationales."
+
+msgid "An indicative range from a validated official table — or your settlement offer compared against it."
+msgstr "Une fourchette indicative à partir d'un barème officiel validé — ou votre offre de règlement comparée à celui-ci."
+
+msgid "Start an estimate"
+msgstr "Lancer une estimation"
+
+msgid "Open a pre-check"
+msgstr "Ouvrir un pré-check"
+
+msgid "Frame your case"
+msgstr "Cadrez votre dossier"
+
+msgid "Select the type of damage"
+msgstr "Sélectionnez le type de préjudice"
+
+msgid "What kind of case is yours?"
+msgstr "De quel type est votre dossier ?"
+
+msgid "You'll provide"
+msgstr "Vous fournirez"
+
+msgid "Start this path"
+msgstr "Lancer ce parcours"
+
+msgid "See all areas"
+msgstr "Voir tous les domaines"
