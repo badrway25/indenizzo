@@ -7172,3 +7172,228 @@ msgstr "مصادر"
 
 msgid "results"
 msgstr "نتائج"
+
+msgid "Medical report"
+msgstr "تقرير طبي"
+
+msgid "Medical-legal certificate"
+msgstr "شهادة طبية-قانونية"
+
+msgid "Accident report"
+msgstr "محضر الحادث"
+
+msgid "INAIL decision"
+msgstr "قرار INAIL"
+
+msgid "Income document"
+msgstr "مستند الدخل"
+
+msgid "Civil-status document"
+msgstr "وثيقة الحالة المدنية"
+
+msgid "Accident report (constat / PV)"
+msgstr "محضر الحادث (constat / PV)"
+
+msgid "Insurance document (Morocco)"
+msgstr "مستند تأميني (المغرب)"
+
+msgid "Accident report (PV / constat)"
+msgstr "محضر الحادث (PV / constat)"
+
+msgid "Constat amiable"
+msgstr "محضر ودّي"
+
+msgid "Constat / accident report (Belgium)"
+msgstr "محضر حادث (بلجيكا)"
+
+msgid "Foreign / translated document"
+msgstr "مستند أجنبي / مترجم"
+
+msgid "Strong recognition"
+msgstr "تعرّف قوي"
+
+msgid "To confirm"
+msgstr "بحاجة إلى تأكيد"
+
+msgid "Data needs verification"
+msgstr "البيانات بحاجة إلى تحقق"
+
+msgid "An estimate may be possible"
+msgstr "قد يكون التقدير ممكناً"
+
+msgid "A tabular estimate may be possible"
+msgstr "قد يكون التقدير الجدولي ممكناً"
+
+msgid "An offer comparison may be possible"
+msgstr "قد تكون مقارنة العرض ممكنة"
+
+msgid "A documental pre-check applies"
+msgstr "ينطبق تحقّق وثائقي مسبق"
+
+msgid "Applicable-law framing applies"
+msgstr "ينطبق تأطير القانون الواجب التطبيق"
+
+msgid "The dossier needs more documents"
+msgstr "يحتاج الملف إلى مستندات إضافية"
+
+msgid "Injury / permanent-impairment evidence"
+msgstr "إثبات الإصابة / العجز الدائم"
+
+msgid "The insurer's settlement offer"
+msgstr "عرض التسوية من المؤمّن"
+
+msgid "Proof of income"
+msgstr "إثبات الدخل"
+
+msgid "Accident facts and liability"
+msgstr "وقائع الحادث والمسؤولية"
+
+msgid "INAIL recognition of the injury"
+msgstr "اعتراف INAIL بالإصابة"
+
+msgid "Family relationship / eligible relatives"
+msgstr "صلة القرابة / ذوو الحقوق"
+
+msgid "A foreign-authority or translated document"
+msgstr "مستند صادر عن سلطة أجنبية أو مترجم"
+
+msgid "Compare the insurance offer"
+msgstr "قارن عرض التأمين"
+
+msgid "Open the Morocco pre-check"
+msgstr "افتح التحقّق المسبق للمغرب"
+
+msgid "Open the Tunisia pre-check"
+msgstr "افتح التحقّق المسبق لتونس"
+
+msgid "Open the loss-of-relative pre-check"
+msgstr "افتح التحقّق المسبق لفقدان قريب"
+
+msgid "Find the right path"
+msgstr "اعثر على المسار الصحيح"
+
+msgid "Document to classify"
+msgstr "مستند بحاجة إلى تصنيف"
+
+msgid "Document content to review"
+msgstr "محتوى المستند بحاجة إلى مراجعة"
+
+msgid "Your document"
+msgstr "مستندك"
+
+msgid "PDF, JPEG, PNG or WebP."
+msgstr "PDF أو JPEG أو PNG أو WebP."
+
+msgid "PDF, JPEG, PNG or WebP"
+msgstr "PDF أو JPEG أو PNG أو WebP"
+
+msgid "I'm not sure"
+msgstr "لست متأكداً"
+
+msgid "Detect automatically"
+msgstr "اكتشاف تلقائي"
+
+msgid "I agree to the documental analysis to organise my dossier."
+msgstr "أوافق على التحليل الوثائقي لتنظيم ملفي."
+
+msgid "The file is too large (max %(mb)d MB)."
+msgstr "الملف كبير جداً (الحد الأقصى %(mb)d ميغابايت)."
+
+msgid "This file type is not supported. Upload a PDF or an image."
+msgstr "نوع الملف غير مدعوم. ارفع PDF أو صورة."
+
+msgid "max"
+msgstr "بحد أقصى"
+
+msgid "Document intelligence"
+msgstr "ذكاء المستندات"
+
+msgid "Prepare your dossier"
+msgstr "جهّز ملفك"
+
+msgid "Upload documents, recognise the path, consolidate the request."
+msgstr "ارفع المستندات، تعرّف على المسار، عزّز الطلب."
+
+msgid "From a document to the right path"
+msgstr "من مستند إلى المسار الصحيح"
+
+msgid "Upload a medical report, an insurance offer, an accident report or an INAIL decision. The platform recognises the kind of document, links it to the official sources and proposes the path — an estimate where an official table allows it, a documental pre-check otherwise."
+msgstr "ارفع تقريراً طبياً أو عرض تأمين أو محضر حادث أو قرار INAIL. تتعرّف المنصّة على نوع المستند وتربطه بالمصادر الرسمية وتقترح المسار — تقديراً حيث يسمح جدول رسمي، وإلا تحقّقاً وثائقياً مسبقاً."
+
+msgid "Upload your document — it is analysed in memory and never stored."
+msgstr "ارفع مستندك — يُحلَّل في الذاكرة ولا يُخزَّن أبداً."
+
+msgid "We recognise the type and link the official sources."
+msgstr "نتعرّف على النوع ونربط المصادر الرسمية."
+
+msgid "You get the recommended path and a dossier to consolidate."
+msgstr "تحصل على المسار الموصى به وملف لاستكماله."
+
+msgid "Upload a document"
+msgstr "ارفع مستنداً"
+
+msgid "How recognition is used"
+msgstr "كيف يُستخدم التعرّف"
+
+msgid "Document recognition helps organise the dossier — it does not replace a legal assessment."
+msgstr "يساعد التعرّف على المستندات في تنظيم الملف — ولا يحلّ محل التقييم القانوني."
+
+msgid "You can confirm or correct the data before sending anything."
+msgstr "يمكنك تأكيد البيانات أو تصحيحها قبل الإرسال."
+
+msgid "No amount is generated without a validated official source."
+msgstr "لا يُنشأ أي مبلغ دون مصدر رسمي معتمد."
+
+msgid "Choose a PDF or an image. The file is analysed in memory and never stored."
+msgstr "اختر PDF أو صورة. يُحلَّل الملف في الذاكرة ولا يُخزَّن أبداً."
+
+msgid "Drag a file here or choose one"
+msgstr "اسحب ملفاً هنا أو اختر واحداً"
+
+msgid "The document may be analysed by a configured AI provider."
+msgstr "قد يُحلَّل المستند بواسطة مزوّد ذكاء اصطناعي مُهيّأ."
+
+msgid "Analyse the document"
+msgstr "حلّل المستند"
+
+msgid "Your file is processed only to build this result and is not stored."
+msgstr "تتم معالجة ملفك فقط لإنشاء هذه النتيجة ولا يُخزَّن."
+
+msgid "Recognition result"
+msgstr "نتيجة التعرّف"
+
+msgid "Local documental recognition"
+msgstr "تعرّف وثائقي محلي"
+
+msgid "Recognised data"
+msgstr "البيانات المتعرَّف عليها"
+
+msgid "What this enables"
+msgstr "ما الذي يتيحه ذلك"
+
+msgid "Connected official sources"
+msgstr "المصادر الرسمية المرتبطة"
+
+msgid "Recommended path"
+msgstr "المسار الموصى به"
+
+msgid "Continue on the path this document points to, or send the dossier to the Studio."
+msgstr "تابع على المسار الذي يشير إليه هذا المستند، أو أرسل الملف إلى المكتب."
+
+msgid "Send the dossier to the Studio"
+msgstr "أرسل الملف إلى المكتب"
+
+msgid "Upload another document"
+msgstr "ارفع مستنداً آخر"
+
+msgid "Document recognition helps organise the dossier and does not replace a legal assessment. No amount is generated without a validated official source."
+msgstr "يساعد التعرّف على المستندات في تنظيم الملف ولا يحلّ محل التقييم القانوني. لا يُنشأ أي مبلغ دون مصدر رسمي معتمد."
+
+msgid "Documents"
+msgstr "المستندات"
+
+msgid "Upload a document to recognise the path: an estimate where an official table allows it, a documental pre-check otherwise. Your file is analysed in memory and never stored."
+msgstr "ارفع مستنداً للتعرّف على المسار: تقدير حيث يسمح جدول رسمي، وإلا تحقّق وثائقي مسبق. يُحلَّل ملفك في الذاكرة ولا يُخزَّن أبداً."
+
+msgid "Upload your documents and the platform recognises the kind of document, links it to the official sources and the right path — an estimate where possible, a documental pre-check otherwise. No amount is invented and your file is never stored."
+msgstr "ارفع مستنداتك وتتعرّف المنصّة على نوع المستند وتربطه بالمصادر الرسمية وبالمسار الصحيح — تقدير حيثما أمكن، وإلا تحقّق وثائقي مسبق. لا يُختلق أي مبلغ ولا يُخزَّن ملفك أبداً."

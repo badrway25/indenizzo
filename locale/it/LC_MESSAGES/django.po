@@ -7418,3 +7418,228 @@ msgstr "fonti"
 
 msgid "results"
 msgstr "risultati"
+
+msgid "Medical report"
+msgstr "Referto medico"
+
+msgid "Medical-legal certificate"
+msgstr "Certificato medico-legale"
+
+msgid "Accident report"
+msgstr "Verbale dell'incidente"
+
+msgid "INAIL decision"
+msgstr "Provvedimento INAIL"
+
+msgid "Income document"
+msgstr "Documento di reddito"
+
+msgid "Civil-status document"
+msgstr "Documento di stato civile"
+
+msgid "Accident report (constat / PV)"
+msgstr "Verbale dell'incidente (constat / PV)"
+
+msgid "Insurance document (Morocco)"
+msgstr "Documento assicurativo (Marocco)"
+
+msgid "Accident report (PV / constat)"
+msgstr "Verbale dell'incidente (PV / constat)"
+
+msgid "Constat amiable"
+msgstr "Constat amiable"
+
+msgid "Constat / accident report (Belgium)"
+msgstr "Constat / verbale (Belgio)"
+
+msgid "Foreign / translated document"
+msgstr "Documento estero / tradotto"
+
+msgid "Strong recognition"
+msgstr "Riconoscimento forte"
+
+msgid "To confirm"
+msgstr "Da confermare"
+
+msgid "Data needs verification"
+msgstr "Serve verifica dei dati"
+
+msgid "An estimate may be possible"
+msgstr "Una stima potrebbe essere possibile"
+
+msgid "A tabular estimate may be possible"
+msgstr "Una stima tabellare potrebbe essere possibile"
+
+msgid "An offer comparison may be possible"
+msgstr "Un confronto dell'offerta potrebbe essere possibile"
+
+msgid "A documental pre-check applies"
+msgstr "Si applica un pre-check documentale"
+
+msgid "Applicable-law framing applies"
+msgstr "Si applica l'inquadramento della legge applicabile"
+
+msgid "The dossier needs more documents"
+msgstr "Il dossier richiede altri documenti"
+
+msgid "Injury / permanent-impairment evidence"
+msgstr "Prova della lesione / invalidità permanente"
+
+msgid "The insurer's settlement offer"
+msgstr "L'offerta transattiva dell'assicuratore"
+
+msgid "Proof of income"
+msgstr "Prova del reddito"
+
+msgid "Accident facts and liability"
+msgstr "Fatti dell'incidente e responsabilità"
+
+msgid "INAIL recognition of the injury"
+msgstr "Riconoscimento INAIL dell'infortunio"
+
+msgid "Family relationship / eligible relatives"
+msgstr "Rapporto familiare / aventi diritto"
+
+msgid "A foreign-authority or translated document"
+msgstr "Un documento di autorità estera o tradotto"
+
+msgid "Compare the insurance offer"
+msgstr "Confronta l'offerta assicurativa"
+
+msgid "Open the Morocco pre-check"
+msgstr "Apri il pre-check Marocco"
+
+msgid "Open the Tunisia pre-check"
+msgstr "Apri il pre-check Tunisia"
+
+msgid "Open the loss-of-relative pre-check"
+msgstr "Apri il pre-check perdita familiare"
+
+msgid "Find the right path"
+msgstr "Trova il percorso giusto"
+
+msgid "Document to classify"
+msgstr "Documento da classificare"
+
+msgid "Document content to review"
+msgstr "Contenuto del documento da esaminare"
+
+msgid "Your document"
+msgstr "Il tuo documento"
+
+msgid "PDF, JPEG, PNG or WebP."
+msgstr "PDF, JPEG, PNG o WebP."
+
+msgid "PDF, JPEG, PNG or WebP"
+msgstr "PDF, JPEG, PNG o WebP"
+
+msgid "I'm not sure"
+msgstr "Non sono sicuro"
+
+msgid "Detect automatically"
+msgstr "Rileva automaticamente"
+
+msgid "I agree to the documental analysis to organise my dossier."
+msgstr "Acconsento all'analisi documentale per organizzare il mio dossier."
+
+msgid "The file is too large (max %(mb)d MB)."
+msgstr "Il file è troppo grande (max %(mb)d MB)."
+
+msgid "This file type is not supported. Upload a PDF or an image."
+msgstr "Tipo di file non supportato. Carica un PDF o un'immagine."
+
+msgid "max"
+msgstr "max"
+
+msgid "Document intelligence"
+msgstr "Intelligenza documentale"
+
+msgid "Prepare your dossier"
+msgstr "Prepara il tuo dossier"
+
+msgid "Upload documents, recognise the path, consolidate the request."
+msgstr "Carica documenti, riconosci il percorso, consolida la richiesta."
+
+msgid "From a document to the right path"
+msgstr "Da un documento al percorso giusto"
+
+msgid "Upload a medical report, an insurance offer, an accident report or an INAIL decision. The platform recognises the kind of document, links it to the official sources and proposes the path — an estimate where an official table allows it, a documental pre-check otherwise."
+msgstr "Carica un referto medico, un'offerta assicurativa, un verbale d'incidente o un provvedimento INAIL. La piattaforma riconosce il tipo di documento, lo collega alle fonti ufficiali e propone il percorso — una stima dove una tabella ufficiale lo consente, altrimenti un pre-check documentale."
+
+msgid "Upload your document — it is analysed in memory and never stored."
+msgstr "Carica il tuo documento — viene analizzato in memoria e mai conservato."
+
+msgid "We recognise the type and link the official sources."
+msgstr "Riconosciamo il tipo e colleghiamo le fonti ufficiali."
+
+msgid "You get the recommended path and a dossier to consolidate."
+msgstr "Ottieni il percorso consigliato e un dossier da consolidare."
+
+msgid "Upload a document"
+msgstr "Carica un documento"
+
+msgid "How recognition is used"
+msgstr "Come viene usato il riconoscimento"
+
+msgid "Document recognition helps organise the dossier — it does not replace a legal assessment."
+msgstr "Il riconoscimento documentale aiuta a ordinare il dossier — non sostituisce la valutazione legale."
+
+msgid "You can confirm or correct the data before sending anything."
+msgstr "Puoi confermare o correggere i dati prima di inviare."
+
+msgid "No amount is generated without a validated official source."
+msgstr "Nessun importo viene generato senza una fonte ufficiale validata."
+
+msgid "Choose a PDF or an image. The file is analysed in memory and never stored."
+msgstr "Scegli un PDF o un'immagine. Il file viene analizzato in memoria e mai conservato."
+
+msgid "Drag a file here or choose one"
+msgstr "Trascina un file qui o scegline uno"
+
+msgid "The document may be analysed by a configured AI provider."
+msgstr "Il documento può essere analizzato da un fornitore AI configurato."
+
+msgid "Analyse the document"
+msgstr "Analizza il documento"
+
+msgid "Your file is processed only to build this result and is not stored."
+msgstr "Il tuo file viene elaborato solo per costruire questo risultato e non viene conservato."
+
+msgid "Recognition result"
+msgstr "Risultato del riconoscimento"
+
+msgid "Local documental recognition"
+msgstr "Riconoscimento documentale locale"
+
+msgid "Recognised data"
+msgstr "Dati riconosciuti"
+
+msgid "What this enables"
+msgstr "Cosa consente"
+
+msgid "Connected official sources"
+msgstr "Fonti ufficiali collegate"
+
+msgid "Recommended path"
+msgstr "Percorso consigliato"
+
+msgid "Continue on the path this document points to, or send the dossier to the Studio."
+msgstr "Prosegui sul percorso indicato da questo documento, oppure invia il dossier allo Studio."
+
+msgid "Send the dossier to the Studio"
+msgstr "Invia il dossier allo Studio"
+
+msgid "Upload another document"
+msgstr "Carica un altro documento"
+
+msgid "Document recognition helps organise the dossier and does not replace a legal assessment. No amount is generated without a validated official source."
+msgstr "Il riconoscimento documentale aiuta a ordinare il dossier e non sostituisce la valutazione legale. Nessun importo viene generato senza una fonte ufficiale validata."
+
+msgid "Documents"
+msgstr "Documenti"
+
+msgid "Upload a document to recognise the path: an estimate where an official table allows it, a documental pre-check otherwise. Your file is analysed in memory and never stored."
+msgstr "Carica un documento per riconoscere il percorso: una stima dove una tabella ufficiale lo consente, altrimenti un pre-check documentale. Il file viene analizzato in memoria e mai conservato."
+
+msgid "Upload your documents and the platform recognises the kind of document, links it to the official sources and the right path — an estimate where possible, a documental pre-check otherwise. No amount is invented and your file is never stored."
+msgstr "Carica i tuoi documenti e la piattaforma riconosce il tipo di documento, lo collega alle fonti ufficiali e al percorso giusto — una stima dove possibile, altrimenti un pre-check documentale. Nessun importo è inventato e il file non viene mai conservato."
