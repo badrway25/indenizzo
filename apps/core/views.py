@@ -16,6 +16,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_GET, require_http_methods
 
 from apps.calculators.enums import CaseType
@@ -44,6 +45,24 @@ MVP_COUNTRIES = [
     {"code": "MA", "name_key": "Morocco"},
     {"code": "TN", "name_key": "Tunisia"},
 ]
+
+# P26: per-country coverage for the redesigned countries hub — the main
+# categories (so no country reads as inheritance-only) and the primary
+# normative reference. Categories reuse already-translated labels; main_source
+# is a language-neutral citation, never an amount.
+_COUNTRY_COVERAGE = {
+    "IT": {"categories": [_("Road accident"), _("Medical liability"),
+                          _("Workplace injury"), _("Loss of a relative"), _("Inheritance")],
+           "main_source": "art. 139 CAP · Tabella Unica Nazionale 2025"},
+    "FR": {"categories": [_("Road accident")],
+           "main_source": "Loi Badinter (loi 85-677)"},
+    "BE": {"categories": [_("Road accident")],
+           "main_source": "Indicatieve tabel / Tableau indicatif"},
+    "MA": {"categories": [_("Road accident"), _("Inheritance")],
+           "main_source": "Dahir 1-84-177 · ACAPS"},
+    "TN": {"categories": [_("Road accident"), _("Inheritance")],
+           "main_source": "Loi 2005-86 (Code des assurances)"},
+}
 
 # Case type publici (sottoinsieme della tassonomia REQ-4).
 # Il flag `available` è derivato dal registry F4: se nessun calculator è
@@ -770,6 +789,7 @@ def countries(request):
                 "src": request.build_absolute_uri(media_url_for_entry(country_image_entry)),
                 "alt": country_image_entry.get("alt") or country["name_key"],
             }
+        coverage = _COUNTRY_COVERAGE.get(country["code"], {})
         countries_view.append(
             {
                 **country,
@@ -780,6 +800,10 @@ def countries(request):
                     country["code"],
                     _COUNTRY_DEFAULT_CASE_TYPE.get(country["code"]),
                 ),
+                # P26: real coverage categories (no country is inheritance-only)
+                # + the primary normative reference, for the richer hub card.
+                "categories": coverage.get("categories", []),
+                "main_source": coverage.get("main_source", ""),
             }
         )
     return render(
