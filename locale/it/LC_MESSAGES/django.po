@@ -7079,3 +7079,42 @@ msgstr "Avvia questo percorso"
 
 msgid "See all areas"
 msgstr "Vedi tutte le aree"
+
+msgid "Estimate calculated"
+msgstr "Stima calcolata"
+
+msgid "Comparison completed"
+msgstr "Confronto completato"
+
+msgid "This summary is indicative and does not constitute legal advice or a guarantee of outcome. The actual assessment depends on the documents, the applicable law and the competent court."
+msgstr "Il riepilogo è indicativo e non costituisce parere legale né garanzia di risultato. La valutazione effettiva dipende dai documenti, dalla legge applicabile e dal giudice competente."
+
+msgid "Send the summary to the Studio"
+msgstr "Invia il riepilogo allo Studio"
+
+msgid "Back to the guided path"
+msgstr "Torna al percorso guidato"
+
+msgid "Consolidate the dossier"
+msgstr "Consolida il dossier"
+
+msgid "Data already available"
+msgstr "Dati già disponibili"
+
+msgid "Documents to add"
+msgstr "Documenti da integrare"
+
+msgid "Complete the answers to populate this."
+msgstr "Completa le risposte per popolare questa sezione."
+
+msgid "Nothing essential is missing."
+msgstr "Non manca nulla di essenziale."
+
+msgid "Applicable sources"
+msgstr "Fonti applicabili"
+
+msgid "The Studio verifies these documents and data against the official sources, then proposes the next step."
+msgstr "Lo Studio verifica questi documenti e dati sulle fonti ufficiali e propone il passo successivo."
+
+msgid "Print the summary"
+msgstr "Stampa il riepilogo"

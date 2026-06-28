@@ -7124,3 +7124,42 @@ msgstr "Lancer ce parcours"
 
 msgid "See all areas"
 msgstr "Voir tous les domaines"
+
+msgid "Estimate calculated"
+msgstr "Estimation calculée"
+
+msgid "Comparison completed"
+msgstr "Comparaison terminée"
+
+msgid "This summary is indicative and does not constitute legal advice or a guarantee of outcome. The actual assessment depends on the documents, the applicable law and the competent court."
+msgstr "Ce récapitulatif est indicatif et ne constitue ni un avis juridique ni une garantie de résultat. L'évaluation réelle dépend des documents, de la loi applicable et du tribunal compétent."
+
+msgid "Send the summary to the Studio"
+msgstr "Envoyer le récapitulatif au Cabinet"
+
+msgid "Back to the guided path"
+msgstr "Retour au parcours guidé"
+
+msgid "Consolidate the dossier"
+msgstr "Consolidez le dossier"
+
+msgid "Data already available"
+msgstr "Données déjà disponibles"
+
+msgid "Documents to add"
+msgstr "Documents à compléter"
+
+msgid "Complete the answers to populate this."
+msgstr "Complétez les réponses pour remplir cette section."
+
+msgid "Nothing essential is missing."
+msgstr "Rien d'essentiel ne manque."
+
+msgid "Applicable sources"
+msgstr "Sources applicables"
+
+msgid "The Studio verifies these documents and data against the official sources, then proposes the next step."
+msgstr "Le Cabinet vérifie ces documents et données au regard des sources officielles, puis propose l'étape suivante."
+
+msgid "Print the summary"
+msgstr "Imprimer le récapitulatif"

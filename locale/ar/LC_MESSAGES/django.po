@@ -6833,3 +6833,42 @@ msgstr "ابدأ هذا المسار"
 
 msgid "See all areas"
 msgstr "عرض جميع المجالات"
+
+msgid "Estimate calculated"
+msgstr "تم احتساب التقدير"
+
+msgid "Comparison completed"
+msgstr "اكتملت المقارنة"
+
+msgid "This summary is indicative and does not constitute legal advice or a guarantee of outcome. The actual assessment depends on the documents, the applicable law and the competent court."
+msgstr "هذا الملخّص إرشادي ولا يشكّل استشارة قانونية ولا ضماناً للنتيجة. يعتمد التقييم الفعلي على المستندات والقانون المنطبق والمحكمة المختصة."
+
+msgid "Send the summary to the Studio"
+msgstr "أرسل الملخّص إلى المكتب"
+
+msgid "Back to the guided path"
+msgstr "العودة إلى المسار الموجّه"
+
+msgid "Consolidate the dossier"
+msgstr "عزّز الملف"
+
+msgid "Data already available"
+msgstr "البيانات المتوفرة بالفعل"
+
+msgid "Documents to add"
+msgstr "مستندات بحاجة إلى إضافة"
+
+msgid "Complete the answers to populate this."
+msgstr "أكمل الإجابات لملء هذا القسم."
+
+msgid "Nothing essential is missing."
+msgstr "لا ينقص شيء أساسي."
+
+msgid "Applicable sources"
+msgstr "المصادر المنطبقة"
+
+msgid "The Studio verifies these documents and data against the official sources, then proposes the next step."
+msgstr "يتحقّق المكتب من هذه المستندات والبيانات وفق المصادر الرسمية ثم يقترح الخطوة التالية."
+
+msgid "Print the summary"
+msgstr "اطبع الملخّص"
