@@ -699,3 +699,13 @@ body { padding-bottom: var(--cookie-banner-h, 0px); }
 /* P30: document dropzone drag-over cue (set by site.js initDropzone). */
 .is-dragover { border-color: var(--gold-500); background: var(--ivory); }
 
+/* P31: client-side image thumbnails in the dropzone (FileReader data URLs). */
+.dropzone-thumb {
+  width: 3.5rem;
+  height: 3.5rem;
+  object-fit: cover;
+  border-radius: 0.6rem;
+  border: 1px solid var(--gold-400, #c9a86a);
+  box-shadow: 0 2px 8px rgba(20, 24, 40, 0.12);
+}
+
