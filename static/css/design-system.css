@@ -122,6 +122,36 @@
 .premium-btn-gold:hover { background: var(--ds-gold-strong); color: var(--ds-navy); }
 .premium-btn-danger { background: var(--ds-error); color: #fff; }
 .premium-btn-danger:hover { background: #74121f; color: #fff; }
+/* P32: secondary for use over a dark hero / photo overlay (sand text, hairline). */
+.premium-btn-on-dark {
+  background: rgba(250, 246, 239, 0.08);
+  color: var(--ds-ivory);
+  border-color: rgba(250, 246, 239, 0.32);
+}
+.premium-btn-on-dark:hover { background: rgba(250, 246, 239, 0.16); color: #fff; border-color: rgba(250, 246, 239, 0.5); }
+
+/* P32: chip — intentionally distinct from a CTA (filters, quick-links). */
+.premium-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--ds-radius-pill);
+  border: 1px solid var(--ds-border-soft);
+  background: var(--ds-sand);
+  color: var(--ds-ink);
+  font-family: var(--ds-font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.2;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  transition: border-color 0.18s ease, background-color 0.18s ease, transform 0.18s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .premium-chip:hover { border-color: var(--ds-gold); transform: translateY(-1px); }
+}
 
 .premium-btn-sm { min-height: var(--ds-btn-h-sm); padding: 0 1rem; font-size: 0.85rem; }
 .premium-btn-lg { min-height: var(--ds-btn-h-lg); padding: 0 1.9rem; font-size: 1.02rem; }
@@ -142,9 +172,14 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  white-space: nowrap;
+  /* P32: tolerate long translated labels (IT/FR/AR) instead of clipping. */
+  white-space: normal;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  text-align: center;
+  line-height: 1.25;
 }
-.premium-badge::before { content: "●"; font-size: 0.62em; line-height: 1; }
+.premium-badge::before { content: "●"; font-size: 0.62em; line-height: 1; flex-shrink: 0; }
 .premium-badge-success { background: var(--ds-success-soft); color: var(--ds-success); border-color: rgba(47, 125, 92, 0.25); }
 .premium-badge-warning { background: var(--ds-warning-soft); color: var(--ds-warning); border-color: rgba(183, 121, 31, 0.25); }
 .premium-badge-danger { background: var(--ds-error-soft); color: var(--ds-error); border-color: rgba(138, 31, 45, 0.25); }
@@ -551,6 +586,93 @@ form [aria-invalid="true"] {
 body.has-drawer-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .drawer, .drawer-backdrop { transition: none; }
+}
+
+/* P32: premium navbar — refined links, hover dropdowns, mobile drawer ------ */
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: var(--ds-radius-pill);
+  color: var(--ds-ink);
+  font-weight: 500;
+  font-size: 0.92rem;
+  line-height: 1;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: color 0.18s ease, background-color 0.18s ease;
+}
+.nav-link:hover,
+.nav-link:focus-visible { color: var(--ds-navy); background: rgba(7, 23, 47, 0.05); }
+.nav-link.is-active { color: var(--ds-navy); font-weight: 600; }
+.nav-group { position: relative; }
+.nav-caret { width: 0.7em; height: 0.7em; transition: transform 0.2s ease; opacity: 0.7; }
+.nav-group:hover .nav-caret,
+.nav-group:focus-within .nav-caret { transform: rotate(180deg); }
+.nav-menu {
+  position: absolute;
+  inset-inline-start: 0;
+  top: 100%;
+  min-width: 16rem;
+  padding: 0.5rem;
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border-soft);
+  border-radius: var(--ds-radius-lg);
+  box-shadow: var(--ds-shadow-lg);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(0.4rem);
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+  z-index: var(--ds-z-modal);
+}
+.nav-group:hover .nav-menu,
+.nav-group:focus-within .nav-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+.nav-menu a {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: var(--ds-radius-md);
+  color: var(--ds-ink);
+  text-decoration: none;
+}
+.nav-menu a:hover,
+.nav-menu a:focus-visible { background: rgba(7, 23, 47, 0.05); }
+.nav-menu__label { font-weight: 600; font-size: 0.9rem; color: var(--ds-navy); }
+.nav-menu__desc { font-size: 0.76rem; color: var(--ds-ink-soft); }
+
+/* Mobile nav drawer body */
+.nav-drawer__section { margin-bottom: 1.25rem; }
+.nav-drawer__heading {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--ds-gold-strong, #9a7b34);
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+.nav-drawer__link {
+  display: block;
+  padding: 0.6rem 0.7rem;
+  border-radius: var(--ds-radius-md);
+  color: var(--ds-ink);
+  text-decoration: none;
+  font-weight: 500;
+}
+.nav-drawer__link:hover,
+.nav-drawer__link:focus-visible { background: rgba(7, 23, 47, 0.05); color: var(--ds-navy); }
+@media (prefers-reduced-motion: reduce) {
+  .nav-menu, .nav-caret { transition: none; }
+}
+/* P32: nav responsive toggles — defined here (loads after site.css) so they win
+   over the component `display` of .nav-link. Desktop ≥1024px, mobile below. */
+.nav-desktop { display: none; }
+.nav-mobile { display: inline-flex; }
+@media (min-width: 1024px) {
+  .nav-desktop { display: flex; }
+  .nav-mobile { display: none !important; }
 }
 
 /* --- Tooltip (hover/focus, keyboard dismissable) ------------------------ */

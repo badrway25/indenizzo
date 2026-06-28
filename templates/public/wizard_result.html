@@ -134,7 +134,7 @@
 
   {# -------- Quick access to the legal sources (drawer trigger, JS-only) -------- #}
   {% if sources %}
-    <button type="button" class="premium-btn premium-btn-secondary premium-btn-sm js-only mt-6" data-drawer-open>
+    <button type="button" class="premium-btn premium-btn-secondary premium-btn-sm js-only mt-6" data-drawer-open="sources">
       {% translate "View the legal sources behind this result" %} <span aria-hidden="true">↗</span>
     </button>
   {% endif %}
@@ -281,14 +281,14 @@
     </div>
 
     {# Drawer duplicate of the inline list for quick access; display:none without JS. #}
-    <div class="drawer" data-drawer role="dialog" aria-modal="true" aria-label="{% translate 'Cited legal sources' %}">
+    <div class="drawer" data-drawer="sources" role="dialog" aria-modal="true" aria-label="{% translate 'Cited legal sources' %}">
       <div class="drawer__header">
         <h3 class="drawer__title">{% translate "Cited legal sources" %}</h3>
         <button type="button" class="drawer__close" data-drawer-close aria-label="{% translate 'Close' %}">&times;</button>
       </div>
       <div class="drawer__body">{% include "partials/_source_list.html" %}</div>
     </div>
-    <div class="drawer-backdrop" data-drawer-backdrop></div>
+    <div class="drawer-backdrop" data-drawer-backdrop="sources"></div>
   {% endif %}
 
   {# -------- Disclaimer -------- #}
@@ -378,20 +378,20 @@
   </div>
 
   <div class="mt-10 flex flex-wrap gap-3">
-    <a href="{{ contact_url }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
+    <a href="{{ contact_url }}" class="premium-btn premium-btn-primary">
       {% if has_estimate %}{% translate "Request legal review" %}{% else %}{{ public_message.primary_cta_label }}{% endif %}
-      <span aria-hidden="true">→</span>
+      <span class="cta-arrow" aria-hidden="true">→</span>
     </a>
-    <a href="{% url 'reports:simulation_pdf' public_id=simulation.public_id %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-gold-500/40 text-ink-950 hover:bg-sand-100 font-semibold">
+    <a href="{% url 'reports:simulation_pdf' public_id=simulation.public_id %}" class="premium-btn premium-btn-secondary">
       {% translate "Download PDF report" %}
       <span aria-hidden="true">↓</span>
     </a>
     {% if has_estimate %}
-      <a href="{% url 'core:methodology' %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink-950/15 text-ink-950 hover:bg-stone2-100 font-semibold">
+      <a href="{% url 'core:methodology' %}" class="premium-btn premium-btn-ghost premium-btn-sm">
         {% translate "Back to methodology" %}
       </a>
     {% else %}
-      <a href="{% url 'cases:wizard_start' %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink-950/15 text-ink-950 hover:bg-stone2-100 font-semibold">
+      <a href="{% url 'cases:wizard_start' %}" class="premium-btn premium-btn-ghost premium-btn-sm">
         {{ public_message.secondary_cta_label }}
       </a>
     {% endif %}

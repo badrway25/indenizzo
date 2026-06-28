@@ -272,28 +272,28 @@
           <div class="mt-6 flex flex-col gap-3">
             {% if wizard_url_name %}
               {% if country_code == "italy" %}
-                <a href="{% url wizard_url_name %}" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
-                  {% translate "Start Italian compensation simulation" %} →
+                <a href="{% url wizard_url_name %}" class="premium-btn premium-btn-primary premium-btn-block">
+                  {% translate "Start Italian compensation simulation" %} <span class="cta-arrow" aria-hidden="true">→</span>
                 </a>
               {% elif country_code == "france" %}
-                <a href="{% url wizard_url_name %}" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
-                  {% translate "Submit a France case to the Studio" %} →
+                <a href="{% url wizard_url_name %}" class="premium-btn premium-btn-primary premium-btn-block">
+                  {% translate "Submit a France case to the Studio" %} <span class="cta-arrow" aria-hidden="true">→</span>
                 </a>
               {% elif country_code == "belgium" %}
-                <a href="{% url wizard_url_name %}" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
-                  {% translate "Submit a Belgium case to the Studio" %} →
+                <a href="{% url wizard_url_name %}" class="premium-btn premium-btn-primary premium-btn-block">
+                  {% translate "Submit a Belgium case to the Studio" %} <span class="cta-arrow" aria-hidden="true">→</span>
                 </a>
               {% elif country_code == "morocco" %}
-                <a href="{% url wizard_url_name %}" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
-                  {% translate "Request Moroccan inheritance review" %} →
+                <a href="{% url wizard_url_name %}" class="premium-btn premium-btn-primary premium-btn-block">
+                  {% translate "Request Moroccan inheritance review" %} <span class="cta-arrow" aria-hidden="true">→</span>
                 </a>
               {% elif country_code == "tunisia" %}
-                <a href="{% url wizard_url_name %}" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
-                  {% translate "Request Tunisian inheritance review" %} →
+                <a href="{% url wizard_url_name %}" class="premium-btn premium-btn-primary premium-btn-block">
+                  {% translate "Request Tunisian inheritance review" %} <span class="cta-arrow" aria-hidden="true">→</span>
                 </a>
               {% endif %}
             {% endif %}
-            <a href="{% url 'crm:contact' %}" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full border border-ink-950/15 text-ink-950 hover:bg-stone2-100 font-semibold">
+            <a href="{% url 'crm:contact' %}" class="premium-btn premium-btn-secondary premium-btn-block">
               {% translate "Request legal review" %}
             </a>
           </div>

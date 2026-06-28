@@ -151,11 +151,11 @@
 
   {# -------- CTAs -------- #}
   <div class="mt-10 flex flex-wrap gap-3">
-    <a href="{{ landing.primary_cta_href }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
+    <a href="{{ landing.primary_cta_href }}" class="premium-btn premium-btn-primary">
       {{ landing.primary_cta_label }}
-      <span aria-hidden="true">→</span>
+      <span class="cta-arrow" aria-hidden="true">→</span>
     </a>
-    <a href="{{ landing.secondary_cta_href }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink-950/15 text-ink-950 hover:bg-stone2-100 font-semibold">
+    <a href="{{ landing.secondary_cta_href }}" class="premium-btn premium-btn-secondary">
       {{ landing.secondary_cta_label }}
     </a>
   </div>
@@ -191,16 +191,16 @@
 
   {# -------- Useful pages footer -------- #}
   <nav aria-label="{% translate 'Useful pages' %}" class="mt-10 flex flex-wrap gap-3 text-sm">
-    <a href="{% url 'core:case_types' %}" class="inline-flex items-center gap-2 px-4 py-2.5 min-h-10 rounded-full border border-stone2-200 text-ink-900 hover:bg-stone2-100 font-semibold">
+    <a href="{% url 'core:case_types' %}" class="premium-btn premium-btn-ghost premium-btn-sm">
       {% translate "Back to all case types" %}
     </a>
-    <a href="{% url 'core:methodology' %}" class="inline-flex items-center gap-2 px-4 py-2.5 min-h-10 rounded-full border border-stone2-200 text-ink-900 hover:bg-stone2-100 font-semibold">
+    <a href="{% url 'core:methodology' %}" class="premium-btn premium-btn-ghost premium-btn-sm">
       {% translate "Read the methodology" %}
     </a>
-    <a href="{% url 'core:privacy' %}" class="inline-flex items-center gap-2 px-4 py-2.5 min-h-10 rounded-full border border-stone2-200 text-ink-900 hover:bg-stone2-100 font-semibold">
+    <a href="{% url 'core:privacy' %}" class="premium-btn premium-btn-ghost premium-btn-sm">
       {% translate "Privacy notice" %}
     </a>
-    <a href="{% url 'core:disclaimer' %}" class="inline-flex items-center gap-2 px-4 py-2.5 min-h-10 rounded-full border border-stone2-200 text-ink-900 hover:bg-stone2-100 font-semibold">
+    <a href="{% url 'core:disclaimer' %}" class="premium-btn premium-btn-ghost premium-btn-sm">
       {% translate "Open the disclaimer" %}
     </a>
   </nav>
