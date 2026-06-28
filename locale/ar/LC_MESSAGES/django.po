@@ -7541,3 +7541,12 @@ msgstr "افتح القائمة"
 
 msgid "Other areas"
 msgstr "مجالات أخرى"
+
+msgid "Simulate your case and prepare the right documents."
+msgstr "حاكِ حالتك وجهّز المستندات المناسبة."
+
+msgid "Choose your country, upload your documents or start an estimate. The platform guides you step by step."
+msgstr "اختر بلدك، ارفع مستنداتك أو ابدأ تقديراً. تُرشدك المنصّة خطوة بخطوة."
+
+msgid "Start the simulation"
+msgstr "ابدأ المحاكاة"

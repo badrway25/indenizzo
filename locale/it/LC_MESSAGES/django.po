@@ -7787,3 +7787,12 @@ msgstr "Apri il menu"
 
 msgid "Other areas"
 msgstr "Altre aree"
+
+msgid "Simulate your case and prepare the right documents."
+msgstr "Simula il tuo caso e prepara i documenti giusti."
+
+msgid "Choose your country, upload your documents or start an estimate. The platform guides you step by step."
+msgstr "Scegli il paese, carica i documenti o avvia una stima. La piattaforma ti guida passo dopo passo."
+
+msgid "Start the simulation"
+msgstr "Inizia la simulazione"

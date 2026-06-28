@@ -56,21 +56,21 @@
           {% translate "Cross-border legal-tech platform" %}
         </p>
         <h1 class="premium-rise-2 mt-4 font-serif text-4xl sm:text-5xl lg:text-6xl leading-[1.05] text-sand-50">
-          {% blocktranslate %}Indicative simulations for compensation and inheritance, grounded in validated legal sources.{% endblocktranslate %}
+          {% blocktranslate %}Simulate your case and prepare the right documents.{% endblocktranslate %}
         </h1>
         <p class="premium-rise-3 mt-6 max-w-2xl text-lg text-sand-50/90 leading-relaxed">
-          {% blocktranslate %}A professional tool by Studio Legale Internazionale Badrane. Each estimate is supported by validated legal sources, transparent ranges and clear assumptions. We do not promise outcomes — we help you understand them.{% endblocktranslate %}
+          {% blocktranslate %}Choose your country, upload your documents or start an estimate. The platform guides you step by step.{% endblocktranslate %}
         </p>
 
         <div class="mt-9 flex flex-wrap gap-3">
           <a href="{% url 'cases:wizard_italy_road_accident' %}" data-magnetic="0.2"
              class="premium-btn premium-btn-gold premium-btn-lg shadow-card">
-            {% translate "Start Italian compensation simulation" %}
+            {% translate "Start the simulation" %}
             <span class="cta-arrow" aria-hidden="true">→</span>
           </a>
-          <a href="{% url 'crm:contact' %}"
+          <a href="{% url 'core:documents_upload' %}"
              class="premium-btn premium-btn-on-dark premium-btn-lg">
-            {% translate "Request legal review" %}
+            {% translate "Upload documents" %}
           </a>
         </div>
 

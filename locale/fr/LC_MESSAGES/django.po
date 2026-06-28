@@ -7832,3 +7832,12 @@ msgstr "Ouvrir le menu"
 
 msgid "Other areas"
 msgstr "Autres domaines"
+
+msgid "Simulate your case and prepare the right documents."
+msgstr "Simulez votre cas et préparez les bons documents."
+
+msgid "Choose your country, upload your documents or start an estimate. The platform guides you step by step."
+msgstr "Choisissez votre pays, téléversez vos documents ou lancez une estimation. La plateforme vous guide étape par étape."
+
+msgid "Start the simulation"
+msgstr "Lancer la simulation"

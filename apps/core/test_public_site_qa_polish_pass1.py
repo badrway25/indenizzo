@@ -132,7 +132,7 @@ def test_fr_home_has_pass1_markers():
     # The pass1 i18n iter shipped these visible strings; they must persist.
     must_have = [
         "Cabinet Légal International",
-        "Lancer la simulation Italie",
+        "Lancer la simulation",  # P35: home CTA simplified ("…Italie" dropped)
     ]
     for needle in must_have:
         assert needle in body, f"FR marker missing on /fr/: {needle!r}"
