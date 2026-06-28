@@ -426,6 +426,26 @@ LEAD_NOTIFICATION_TO_EMAILS = env.list("LEAD_NOTIFICATION_TO_EMAILS", default=[]
 
 
 # ---------------------------------------------------------------------------
+# P30 — Document intake + (optional) OpenAI document recognition.
+# Feature-flagged OFF by default and inert without a key, so the document flow
+# always works via the local fallback. The key is read ONLY from the env (never
+# committed); document content and keys are NEVER logged. No uploaded file is
+# persisted — analysis is in-memory and stateless (GDPR-light, like the
+# pre-checks).
+# ---------------------------------------------------------------------------
+OPENAI_DOCUMENT_AI_ENABLED = env.bool("OPENAI_DOCUMENT_AI_ENABLED", default=False)
+OPENAI_API_KEY = env("OPENAI_API_KEY", default="")
+OPENAI_DOCUMENT_AI_MODEL = env("OPENAI_DOCUMENT_AI_MODEL", default="gpt-4o-mini")
+OPENAI_DOCUMENT_AI_TIMEOUT = env.int("OPENAI_DOCUMENT_AI_TIMEOUT", default=20)
+# Upload guardrails (public, stateless intake).
+DOCUMENT_INTAKE_MAX_UPLOAD_MB = env.int("DOCUMENT_INTAKE_MAX_UPLOAD_MB", default=10)
+DOCUMENT_INTAKE_ALLOWED_MIME = env.list(
+    "DOCUMENT_INTAKE_ALLOWED_MIME",
+    default=["application/pdf", "image/jpeg", "image/png", "image/webp"],
+)
+
+
+# ---------------------------------------------------------------------------
 # Sentry — error monitoring opzionale (F-local-product-hardening-pass3-sentry)
 #
 # DSN vuoto = no-op completo: `init_sentry_from_settings()` esce
