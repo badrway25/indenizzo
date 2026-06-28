@@ -1,11 +1,11 @@
 {% load i18n %}
-<header class="site-header sticky top-0 z-30 border-b border-stone2-100 bg-sand-50/90 backdrop-blur">
+<header class="site-header sticky top-0 z-30">
   <div class="max-w-7xl mx-auto px-5 lg:px-8 h-20 flex items-center gap-3">
     <a href="{% url 'core:home' %}" class="flex items-center gap-3 group shrink-0" aria-label="{{ SITE_NAME }}">
-      <span aria-hidden="true" class="w-10 h-10 rounded-full bg-ink-950 text-sand-50 flex items-center justify-center font-serif text-lg font-bold transition group-hover:bg-ink-900">B</span>
+      <span aria-hidden="true" class="brand-mark w-10 h-10 rounded-full flex items-center justify-center font-serif text-lg font-bold transition">B</span>
       <span class="hidden sm:flex flex-col leading-tight">
-        <span class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">{% translate "Studio Legale Internazionale" %}</span>
-        <span class="font-serif text-xl text-ink-950">Badrane</span>
+        <span class="brand-eyebrow text-[11px] uppercase tracking-[0.18em] font-semibold">{% translate "Studio Legale Internazionale" %}</span>
+        <span class="brand-name font-serif text-xl">Badrane</span>
       </span>
     </a>
 
