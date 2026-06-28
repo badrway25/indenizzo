@@ -696,3 +696,6 @@ body { padding-bottom: var(--cookie-banner-h, 0px); }
 /* ----- F-p0-codice-4-csp: honeypot anti-bot utility (no inline style) ----- */
 .is-honeypot { position: absolute; left: -9999px; top: -9999px; }
 
+/* P30: document dropzone drag-over cue (set by site.js initDropzone). */
+.is-dragover { border-color: var(--gold-500); background: var(--ivory); }
+

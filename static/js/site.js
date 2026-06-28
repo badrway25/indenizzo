@@ -399,6 +399,33 @@
     });
   }
 
+  // P30: drag-&-drop dropzone — progressive enhancement over the file input.
+  // Shows the chosen file name; the file itself is never read here, only named.
+  function initDropzone() {
+    var zones = document.querySelectorAll("[data-dropzone]");
+    Array.prototype.forEach.call(zones, function (zone) {
+      var input = zone.querySelector("input[type='file']");
+      var nameEl = zone.querySelector("[data-dropzone-name]");
+      if (!input) return;
+      function showName() {
+        if (nameEl) nameEl.textContent = (input.files && input.files[0]) ? input.files[0].name : "";
+      }
+      input.addEventListener("change", showName);
+      ["dragenter", "dragover"].forEach(function (ev) {
+        zone.addEventListener(ev, function (e) { e.preventDefault(); zone.classList.add("is-dragover"); });
+      });
+      ["dragleave", "drop"].forEach(function (ev) {
+        zone.addEventListener(ev, function (e) { e.preventDefault(); zone.classList.remove("is-dragover"); });
+      });
+      zone.addEventListener("drop", function (e) {
+        if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
+          input.files = e.dataTransfer.files;
+          showName();
+        }
+      });
+    });
+  }
+
   // P28: internal, privacy-safe logical events — NO external tracking. Names are
   // pushed to window.__events (testable) and emitted as a CustomEvent so a future
   // first-party analytics layer can subscribe. Driven by [data-event] hooks plus
@@ -442,6 +469,7 @@
     initPrecheckForm();
     initReadinessFill();
     initPrint();
+    initDropzone();
     initEvents();
   });
 })();
