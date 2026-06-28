@@ -1228,18 +1228,26 @@ def documents(request):
     )
 
 
+def _file_kind(mime: str, name: str) -> str:
+    """Coarse preview kind: 'image' or 'pdf' (no file is stored)."""
+    name = (name or "").lower()
+    if (mime or "").startswith("image/") or name.endswith((".jpg", ".jpeg", ".png", ".webp")):
+        return "image"
+    return "pdf"
+
+
 @require_http_methods(["GET", "POST"])
 def documents_upload(request):
-    """Secure, stateless upload + recognition. The file is never persisted."""
+    """Secure, stateless multi-document intake. Files are never persisted."""
     from django.conf import settings
 
-    from apps.core.document_ai import analyze_document
+    from apps.core.document_ai import aggregate_dossier, analyze_document
     from apps.core.document_forms import DocumentUploadForm
     from apps.core.rate_limit import public_post_rate_limit
     from apps.core.seo import build_canonical_url
 
-    analysis = None
-    filename = ""
+    files_meta: list[dict] = []
+    dossier = None
     if request.method == "POST":
         # Rate-limit the public POST (same guard as the contact form).
         limited = public_post_rate_limit(lambda r: None)(request)
@@ -1250,16 +1258,27 @@ def documents_upload(request):
             if form.is_likely_bot:
                 form = DocumentUploadForm()  # drop silently
             else:
-                f = form.cleaned_data["document"]
-                filename = DocumentUploadForm.safe_filename(f.name)
-                analysis = analyze_document(
-                    filename=filename,
-                    mime=(getattr(f, "content_type", "") or ""),
-                    size=f.size,
-                    country=form.cleaned_data.get("country", ""),
-                    category=form.cleaned_data.get("category", ""),
-                )
-                # The uploaded file is intentionally NOT stored anywhere.
+                country = form.cleaned_data.get("country", "")
+                category = form.cleaned_data.get("category", "")
+                language = form.cleaned_data.get("language", "")
+                for f in form.cleaned_data["document"]:
+                    filename = DocumentUploadForm.safe_filename(f.name)
+                    mime = getattr(f, "content_type", "") or ""
+                    analysis = analyze_document(
+                        filename=filename, mime=mime, size=f.size,
+                        country=country, category=category,
+                    )
+                    if language and not analysis.language:
+                        from dataclasses import replace
+                        analysis = replace(analysis, language=language)
+                    files_meta.append({
+                        "filename": filename,
+                        "size": f.size,
+                        "kind": _file_kind(mime, filename),
+                        "analysis": analysis,
+                    })
+                    # The uploaded file is intentionally NOT stored anywhere.
+                dossier = aggregate_dossier([m["analysis"] for m in files_meta])
     else:
         form = DocumentUploadForm()
 
@@ -1268,10 +1287,11 @@ def documents_upload(request):
         "public/documents_upload.html",
         {
             "form": form,
-            "analysis": analysis,
-            "filename": filename,
+            "files_meta": files_meta,
+            "dossier": dossier,
             "ai_enabled": settings.OPENAI_DOCUMENT_AI_ENABLED,
             "max_mb": settings.DOCUMENT_INTAKE_MAX_UPLOAD_MB,
+            "max_files": settings.DOCUMENT_INTAKE_MAX_FILES,
             "canonical_url": build_canonical_url(request),
         },
     )
