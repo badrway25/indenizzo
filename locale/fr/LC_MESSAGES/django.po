@@ -7802,3 +7802,33 @@ msgstr "Les fichiers sont analysés en mémoire et jamais conservés. Aucun mont
 
 msgid "Your files are processed only to build this result and are not stored."
 msgstr "Vos fichiers sont traités uniquement pour produire ce résultat et ne sont pas conservés."
+
+msgid "Estimates"
+msgstr "Estimations"
+
+msgid "Compare an offer"
+msgstr "Comparer une offre"
+
+msgid "Upload documents"
+msgstr "Téléverser des documents"
+
+msgid "Prepare the dossier"
+msgstr "Préparer le dossier"
+
+msgid "INAIL pre-check"
+msgstr "Pré-check INAIL"
+
+msgid "Source library"
+msgstr "Bibliothèque des sources"
+
+msgid "Method"
+msgstr "Méthode"
+
+msgid "Navigation"
+msgstr "Navigation"
+
+msgid "Open menu"
+msgstr "Ouvrir le menu"
+
+msgid "Other areas"
+msgstr "Autres domaines"

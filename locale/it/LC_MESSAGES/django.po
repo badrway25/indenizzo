@@ -7757,3 +7757,33 @@ msgstr "I file vengono analizzati in memoria e mai conservati. Nessun importo vi
 
 msgid "Your files are processed only to build this result and are not stored."
 msgstr "I tuoi file vengono elaborati solo per costruire questo risultato e non vengono conservati."
+
+msgid "Estimates"
+msgstr "Stime"
+
+msgid "Compare an offer"
+msgstr "Confronta un'offerta"
+
+msgid "Upload documents"
+msgstr "Carica documenti"
+
+msgid "Prepare the dossier"
+msgstr "Prepara il dossier"
+
+msgid "INAIL pre-check"
+msgstr "Pre-check INAIL"
+
+msgid "Source library"
+msgstr "Biblioteca delle fonti"
+
+msgid "Method"
+msgstr "Metodo"
+
+msgid "Navigation"
+msgstr "Navigazione"
+
+msgid "Open menu"
+msgstr "Apri il menu"
+
+msgid "Other areas"
+msgstr "Altre aree"

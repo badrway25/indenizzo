@@ -7511,3 +7511,33 @@ msgstr "تُحلَّل الملفات في الذاكرة ولا تُخزَّن 
 
 msgid "Your files are processed only to build this result and are not stored."
 msgstr "تتم معالجة ملفاتك فقط لإنشاء هذه النتيجة ولا تُخزَّن."
+
+msgid "Estimates"
+msgstr "التقديرات"
+
+msgid "Compare an offer"
+msgstr "قارن عرضاً"
+
+msgid "Upload documents"
+msgstr "ارفع المستندات"
+
+msgid "Prepare the dossier"
+msgstr "جهّز الملف"
+
+msgid "INAIL pre-check"
+msgstr "تحقّق INAIL المسبق"
+
+msgid "Source library"
+msgstr "مكتبة المصادر"
+
+msgid "Method"
+msgstr "المنهجية"
+
+msgid "Navigation"
+msgstr "التنقّل"
+
+msgid "Open menu"
+msgstr "افتح القائمة"
+
+msgid "Other areas"
+msgstr "مجالات أخرى"
