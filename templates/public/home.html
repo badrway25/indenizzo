@@ -69,7 +69,7 @@
             <span class="cta-arrow" aria-hidden="true">→</span>
           </a>
           <a href="{% url 'crm:contact' %}"
-             class="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-sand-50/30 text-sand-50 hover:bg-sand-50/10 font-semibold">
+             class="premium-btn premium-btn-on-dark premium-btn-lg">
             {% translate "Request legal review" %}
           </a>
         </div>
@@ -116,11 +116,11 @@
       </p>
       <div class="stat-band mt-8">
         <div class="stat-item premium-stat" data-reveal data-reveal-delay="0">
-          <p class="stat-item__value">5</p>
+          <p class="stat-item__value" data-count-to="5">5</p>
           <p class="stat-item__label">{% translate "Jurisdictions mapped" %}</p>
         </div>
         <div class="stat-item premium-stat" data-reveal data-reveal-delay="80">
-          <p class="stat-item__value">4</p>
+          <p class="stat-item__value" data-count-to="4">4</p>
           <p class="stat-item__label">{% translate "Languages" %}</p>
         </div>
         <div class="stat-item premium-stat" data-reveal data-reveal-delay="160">
@@ -151,9 +151,9 @@
         </form>
       </div>
       <div class="mt-5 flex flex-wrap gap-2.5 text-sm">
-        <a href="{% url 'core:guided_router' %}" class="inline-flex items-center gap-1.5 rounded-full border border-stone2-200 bg-sand-100 px-3.5 py-1.5 text-ink-900 hover:border-gold-400">{% translate "Estimate, pre-check or dossier" %}</a>
-        <a href="{% url 'core:sources' %}" class="inline-flex items-center gap-1.5 rounded-full border border-stone2-200 bg-sand-100 px-3.5 py-1.5 text-ink-900 hover:border-gold-400"><span aria-hidden="true" class="text-gold-600">§</span>{% translate "Official source library" %}</a>
-        <a href="{% url 'core:countries' %}" class="inline-flex items-center gap-1.5 rounded-full border border-stone2-200 bg-sand-100 px-3.5 py-1.5 text-ink-900 hover:border-gold-400">{% translate "Countries we cover" %}</a>
+        <a href="{% url 'core:guided_router' %}" class="premium-chip">{% translate "Estimate, pre-check or dossier" %}</a>
+        <a href="{% url 'core:sources' %}" class="premium-chip"><span aria-hidden="true" class="text-gold-600">§</span>{% translate "Official source library" %}</a>
+        <a href="{% url 'core:countries' %}" class="premium-chip">{% translate "Countries we cover" %}</a>
       </div>
     </div>
   </section>

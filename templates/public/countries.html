@@ -79,7 +79,7 @@
     {# Mappa code → URL name della landing per paese (pass F-product-country-landing). #}
     <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {% for country in countries %}
-        <article class="bg-white border border-stone2-200 rounded-3xl overflow-hidden shadow-card flex flex-col hover:border-gold-400/60 hover:shadow-lg transition">
+        <article class="bg-white border border-stone2-200 rounded-3xl overflow-hidden shadow-card flex flex-col hover:border-gold-400/60 hover:shadow-lg transition" data-reveal data-reveal-delay="{% widthratio forloop.counter0 1 70 %}">
           {% if country.image %}
             <div class="relative h-40 lg:h-44 overflow-hidden">
               <img src="{{ country.image.src }}" alt="{{ country.image.alt }}" width="800" height="450" class="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async">
@@ -177,8 +177,8 @@
           {% blocktranslate %}If your case spans multiple jurisdictions, includes foreign assets, or the country shows an "Assisted legal pathway" badge, the Studio reviews the file directly and proposes the next step.{% endblocktranslate %}
         </p>
       </div>
-      <a href="{% url 'crm:contact' %}" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-gold-500 text-ink-950 hover:bg-gold-400 font-semibold whitespace-nowrap">
-        {% translate "Request legal review" %} →
+      <a href="{% url 'crm:contact' %}" class="premium-btn premium-btn-gold">
+        {% translate "Request legal review" %} <span class="cta-arrow" aria-hidden="true">→</span>
       </a>
     </div>
 
