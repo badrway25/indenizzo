@@ -402,7 +402,7 @@ def guided_router(request):
         {
             "country_groups": grouped_routes(),
             "canonical_url": build_canonical_url(request),
-            "pexels_image": _pexels_hero(request, "services_hero"),
+            "pexels_image": _pexels_hero(request, "guided_hero"),
         },
     )
 
@@ -1051,8 +1051,8 @@ def case_types(request):
         {
             "case_types": case_types_view,
             "case_groups": case_groups,
-            # P24: a real photographic hero for the case-types hub.
-            "pexels_image": _pexels_hero(request, "services_hero"),
+            # P32: dedicated topical hero for the case-types hub.
+            "pexels_image": _pexels_hero(request, "case_types_hero"),
             # F-product-4: surface the full landings list so the hub
             # can also show the "profile-style" landings (foreigners
             # in Italy, cross-border cases, insurance offer review)
@@ -1088,7 +1088,10 @@ def case_type_landing(request, slug):
         "public/case_type_landing.html",
         {
             "landing": landing,
-            "pexels_image": _pexels_hero(request, f"case_type_{slug}"),
+            # P32: per-slug slot if present, else the shared case-types hero
+            # (no per-case-type landing should ship heroless).
+            "pexels_image": _pexels_hero(request, f"case_type_{slug}")
+            or _pexels_hero(request, "case_types_hero"),
         },
     )
 
@@ -1144,7 +1147,7 @@ def sources(request):
             "type_labels": official.SOURCE_TYPE_LABEL,
             "use_labels": official.UNLOCK_LABEL,
             "canonical_url": build_canonical_url(request),
-            "pexels_image": _pexels_hero(request, "faq_hero"),
+            "pexels_image": _pexels_hero(request, "sources_hero"),
         },
     )
 
@@ -1223,7 +1226,7 @@ def documents(request):
         {
             "canonical_url": build_canonical_url(request),
             "ai_enabled": settings.OPENAI_DOCUMENT_AI_ENABLED,
-            "pexels_image": _pexels_hero(request, "methodology_hero"),
+            "pexels_image": _pexels_hero(request, "documents_hero"),
         },
     )
 
@@ -1293,6 +1296,7 @@ def documents_upload(request):
             "max_mb": settings.DOCUMENT_INTAKE_MAX_UPLOAD_MB,
             "max_files": settings.DOCUMENT_INTAKE_MAX_FILES,
             "canonical_url": build_canonical_url(request),
+            "pexels_image": _pexels_hero(request, "documents_hero"),
         },
     )
 
