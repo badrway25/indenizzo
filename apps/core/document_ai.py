@@ -85,6 +85,7 @@ class DocumentAnalysis:
     requires_precheck: bool = True
     warnings: tuple = ()
     provider: str = "local"      # "openai" | "local"
+    detected_pairs: tuple = ()   # P31: ((label, value), …) structured, redacted
 
     @property
     def confidence_label(self):
@@ -108,6 +109,18 @@ _F_LIABILITY = _("Accident facts and liability")
 _F_INAIL = _("INAIL recognition of the injury")
 _F_FAMILY = _("Family relationship / eligible relatives")
 _F_FOREIGN = _("A foreign-authority or translated document")
+
+# Structured-extraction labels (P31). Only non-sensitive, confirmable fields are
+# ever surfaced — never names, plates, addresses or detailed health data.
+_E_EVENT_DATE = _("Event date")
+_E_AGE = _("Age at the event")
+_E_IPP = _("Permanent impairment")
+_E_OFFER_PRESENT = _("A settlement offer is present")
+_E_INCOME_PRESENT = _("Proof of income is present")
+_E_INSURER_PRESENT = _("An insurer is identified")
+_E_FAMILY_PRESENT = _("A family relationship is documented")
+_E_TRANSLATION = _("A certified translation is needed")
+_E_YES = _("yes")
 
 # Recommended-flow labels (human).
 _R_OFFER = _("Compare the insurance offer")
@@ -255,6 +268,28 @@ def classify_local(filename: str, mime: str, *, country: str = "",
                   country=country, category=category)
 
 
+def _pairs_from_extraction(data: dict) -> tuple:
+    """Turn the OpenAI structured payload into redacted (label, value) pairs.
+
+    Only non-sensitive, confirmable fields are kept; amounts are presence flags,
+    never values, so no figure is ever surfaced without an engine run.
+    """
+    pairs: list[tuple] = []
+    for key, label in (("event_date", _E_EVENT_DATE), ("age", _E_AGE),
+                       ("impairment_percent", _E_IPP)):
+        value = str(data.get(key) or "").strip()
+        if value:
+            pairs.append((label, value))
+    for key, label in (("offer_present", _E_OFFER_PRESENT),
+                       ("income_present", _E_INCOME_PRESENT),
+                       ("insurer_present", _E_INSURER_PRESENT),
+                       ("family_relationship_present", _E_FAMILY_PRESENT),
+                       ("translation_needed", _E_TRANSLATION)):
+        if data.get(key) is True:
+            pairs.append((label, _E_YES))
+    return tuple(pairs)
+
+
 def _analyze_openai(filename, mime, *, country, category):  # pragma: no cover
     """Optional OpenAI enrichment. Returns a DocumentAnalysis or None.
 
@@ -281,12 +316,28 @@ def _analyze_openai(filename, mime, *, country, category):  # pragma: no cover
                 "language": {"type": "string"},
                 "confidence": {"type": "string",
                                "enum": [CONF_STRONG, CONF_TO_CONFIRM, CONF_NEEDS_VERIFICATION]},
+                # Structured extraction — non-sensitive, confirmable fields only.
+                "event_date": {"type": "string"},
+                "age": {"type": "string"},
+                "impairment_percent": {"type": "string"},
+                "offer_present": {"type": "boolean"},
+                "income_present": {"type": "boolean"},
+                "insurer_present": {"type": "boolean"},
+                "family_relationship_present": {"type": "boolean"},
+                "translation_needed": {"type": "boolean"},
             },
             "required": ["type_key", "confidence"],
             "additionalProperties": False,
         }
+        instructions = (
+            "Classify the legal document and extract only non-sensitive, "
+            "confirmable fields. NEVER return personal names, license plates, "
+            "addresses, identifiers or detailed health data — redact any personal "
+            "party. For amounts, report only presence as a boolean, not the value."
+        )
         resp = client.responses.create(
             model=settings.OPENAI_DOCUMENT_AI_MODEL,
+            instructions=instructions,
             input=[{"role": "user",
                     "content": f"Classify this legal document by file name: {filename[:120]}"}],
             text={"format": {"type": "json_schema", "name": "doc", "schema": schema}},
@@ -297,10 +348,15 @@ def _analyze_openai(filename, mime, *, country, category):  # pragma: no cover
         if doc is None:
             return None  # incoherent → safe fallback
         _ = src  # sources resolved by the property
-        return _build(doc, data.get("confidence", CONF_TO_CONFIRM), provider="openai",
-                      country=data.get("country") or country,
-                      category=data.get("category") or category,
-                      language=data.get("language", ""))
+        analysis = _build(doc, data.get("confidence", CONF_TO_CONFIRM), provider="openai",
+                          country=data.get("country") or country,
+                          category=data.get("category") or category,
+                          language=data.get("language", ""))
+        pairs = _pairs_from_extraction(data)
+        if pairs:
+            from dataclasses import replace
+            analysis = replace(analysis, detected_pairs=pairs)
+        return analysis
     except Exception:
         # No document content in the log — only a coarse failure marker.
         logger.info("document_ai.openai_unavailable mime=%s", mime)
@@ -314,3 +370,152 @@ def analyze_document(*, filename: str, mime: str, size: int,
     if result is not None:
         return result
     return classify_local(filename, mime, country=country, category=category)
+
+
+def dev_status() -> dict:
+    """Non-public diagnostic for the internal report only.
+
+    NEVER shown to public visitors and NEVER includes the key — not even a
+    masked fragment — nor the model name. It only answers yes/no questions so a
+    developer can confirm how the recognition is wired.
+    """
+    enabled = bool(settings.OPENAI_DOCUMENT_AI_ENABLED)
+    key_present = bool(settings.OPENAI_API_KEY)
+    notes: list[str] = []
+    if enabled and not key_present:
+        notes.append("AI enabled but no key present — recognition uses the local fallback.")
+    if not enabled:
+        notes.append("AI disabled — recognition uses the local fallback.")
+    return {
+        "ai_enabled": enabled,
+        "dev_mode": bool(settings.OPENAI_DOCUMENT_AI_DEV_MODE),
+        "model_configured": bool(settings.OPENAI_DOCUMENT_AI_MODEL),
+        "key_present": key_present,
+        "fallback_available": True,  # the local classifier is always available
+        "active_provider": "openai" if (enabled and key_present) else "local",
+        "notes": tuple(notes),
+    }
+
+
+# --- multi-document dossier aggregation (P31) --------------------------------
+# The highest-priority recognised document drives the proposed global path;
+# complementary documents that would unlock more are surfaced as "still useful",
+# never as a blocker and never as a figure.
+_LEAD_PRIORITY = (
+    "it_insurance_offer", "it_medical_report", "it_medlegal_cert",
+    "it_accident_report", "it_inail_decision", "it_civil_status",
+    "ma_accident_report", "ma_insurance_doc", "tn_accident_report",
+    "fr_constat", "be_constat", "intl_foreign_doc", "it_income_proof",
+)
+_READY_ORDER = (READY_OFFER, READY_ESTIMATE, READY_TABULAR,
+                READY_PRECHECK, READY_LAW, READY_INCOMPLETE)
+
+# Complementary documents that would strengthen the dossier (human phrases).
+_M_INJURY = _("A medical report or impairment certificate")
+_M_OFFER = _("The insurer's settlement offer, to compare it")
+_M_INCOME = _("Proof of income, for the economic component")
+_M_ACCIDENT = _("The accident report or constat")
+
+
+@dataclass(frozen=True)
+class DossierAggregate:
+    document_count: int
+    country: str
+    category: str
+    readiness: tuple
+    official_source_ids: tuple
+    recommended: tuple = ("", {})
+    recommended_label: Any = ""
+    missing_documents: tuple = ()
+    present_evidence: tuple = ()
+    can_estimate_now: bool = False     # still False — no figure without an engine
+    can_compare_offer: bool = False
+    requires_precheck: bool = True
+    analyses: tuple = ()
+
+    @property
+    def readiness_labels(self):
+        return tuple(READINESS_LABEL[r] for r in self.readiness if r in READINESS_LABEL)
+
+    @property
+    def official_sources(self):
+        from apps.core import official_sources as src
+        return tuple(s for s in (src.get_source(i) for i in self.official_source_ids) if s)
+
+
+def aggregate_dossier(analyses) -> DossierAggregate:
+    """Combine per-document analyses into one dossier with a global path."""
+    analyses = tuple(a for a in (analyses or ()) if a is not None)
+    if not analyses:
+        return DossierAggregate(0, "", "", (READY_INCOMPLETE,), (),
+                                ("core:guided_router", {}), _R_GUIDED,
+                                missing_documents=(), present_evidence=())
+
+    keys = {a.type_key for a in analyses}
+    has_offer = bool(keys & {"it_insurance_offer", "ma_insurance_doc"})
+    has_injury = bool(keys & {"it_medical_report", "it_medlegal_cert"})
+    has_accident = bool(keys & {"it_accident_report", "ma_accident_report",
+                                "tn_accident_report", "fr_constat", "be_constat"})
+    has_income = "it_income_proof" in keys
+
+    # Lead document drives the recommended path.
+    lead = None
+    for key in _LEAD_PRIORITY:
+        lead = next((a for a in analyses if a.type_key == key), None)
+        if lead is not None:
+            break
+    lead = lead or analyses[0]
+
+    # Country = most frequent non-empty; category from the lead document.
+    counts: dict[str, int] = {}
+    for a in analyses:
+        if a.country:
+            counts[a.country] = counts.get(a.country, 0) + 1
+    country = max(counts, key=lambda c: counts[c]) if counts else lead.country
+
+    # Union of readiness and sources, in a stable order.
+    ready_seen = {r for a in analyses for r in a.readiness}
+    readiness = tuple(r for r in _READY_ORDER if r in ready_seen) or (READY_INCOMPLETE,)
+    source_ids: list[str] = []
+    for a in analyses:
+        for sid in a.official_source_ids:
+            if sid not in source_ids:
+                source_ids.append(sid)
+
+    # Recognised evidence across the dossier (de-duplicated human phrases).
+    present: list[Any] = []
+    for a in analyses:
+        for f in a.extracted_fields:
+            if f not in present:
+                present.append(f)
+
+    # Complementary documents that would strengthen the dossier.
+    missing: list[Any] = []
+    if has_offer and not has_injury:
+        missing.append(_M_INJURY)
+    if (has_injury or has_accident) and not has_offer:
+        missing.append(_M_OFFER)
+    if (has_injury or has_accident) and not has_income:
+        missing.append(_M_INCOME)
+    if has_offer and not (has_injury or has_accident):
+        missing.append(_M_ACCIDENT)
+
+    can_compare_offer = has_offer and (has_injury or has_accident)
+    requires_precheck = not bool(
+        ready_seen & {READY_ESTIMATE, READY_TABULAR, READY_OFFER})
+
+    return DossierAggregate(
+        document_count=len(analyses),
+        country=country,
+        category=lead.category,
+        readiness=readiness,
+        official_source_ids=tuple(source_ids),
+        recommended=lead.recommended,
+        recommended_label=lead.recommended_label,
+        missing_documents=tuple(missing),
+        present_evidence=tuple(present),
+        can_estimate_now=False,
+        can_compare_offer=can_compare_offer,
+        requires_precheck=requires_precheck,
+        analyses=analyses,
+    )
