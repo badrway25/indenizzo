@@ -907,6 +907,55 @@ def _case_card_status(case_value: str):
     )
 
 
+# P26: the short "what data you'll provide" hint per case-type family — reuses
+# the guided-router input strings where they overlap so nothing is re-translated.
+def _case_data_required(case_value: str):
+    from django.utils.translation import gettext_lazy as _
+
+    cv = (case_value or "").lower()
+    if cv.startswith("road_accident"):
+        return _("Injury percentage and accident details")
+    if cv.startswith("medical"):
+        return _("Medical-legal impairment percentage")
+    if cv == "work_injury":
+        return _("Event date, impairment and documents")
+    if cv == "death_compensation":
+        return _("Relationship, cause of death and documents")
+    if cv == "parental_loss":
+        return _("Relationship, cohabitation and liability")
+    if cv == "patrimonial_damage":
+        return _("Documentable income and economic loss")
+    if cv == "inheritance_basic":
+        return _("Heirs and statutory shares")
+    if "inheritance" in cv:
+        return _("Countries involved and the assets")
+    return _("The facts of the case and the documents")
+
+
+# P26: thematic grouping so the case-types hub reads as a navigator, not a flat
+# grid. (group_label, group_intro, ordered case-type values).
+def _case_groups():
+    from django.utils.translation import gettext_lazy as _
+
+    return (
+        (_("Personal injury"),
+         _("Road injuries and healthcare liability, estimated on the official tables."),
+         ["road_accident_bodily_injury", "medical_malpractice"]),
+        (_("Workplace"),
+         _("Workplace injury and occupational disease on the INAIL sources."),
+         ["work_injury"]),
+        (_("Family and bereavement"),
+         _("Loss of a relative and loss-of-relationship damage, handled with care."),
+         ["death_compensation", "parental_loss"]),
+        (_("Economic damage"),
+         _("Income and economic losses, verified against the documents."),
+         ["patrimonial_damage"]),
+        (_("Inheritance"),
+         _("Statutory shares, reserved portion and international successions."),
+         ["inheritance_basic", "international_inheritance"]),
+    )
+
+
 @require_GET
 def case_types(request):
     from apps.core.public_labels import humanize as humanize_case
@@ -957,6 +1006,8 @@ def case_types(request):
                 "card_badge": card_badge,
                 "card_tone": card_tone,
                 "card_description": card_description,
+                # P26: a short "what you'll provide" hint for the navigator card.
+                "data_required": _case_data_required(case_type.value),
             }
         )
     # F-product-4-case-type-landings: surface the slug for each
@@ -975,11 +1026,20 @@ def case_types(request):
     for entry in case_types_view:
         entry["landing_slug"] = landings_by_code.get(entry["code"], "")
 
+    # P26: assemble the thematic navigator groups from the built cards.
+    by_code = {e["code"]: e for e in case_types_view}
+    case_groups = []
+    for label, intro, codes in _case_groups():
+        cards = [by_code[c] for c in codes if c in by_code]
+        if cards:
+            case_groups.append({"label": label, "intro": intro, "cases": cards})
+
     return render(
         request,
         "public/case_types.html",
         {
             "case_types": case_types_view,
+            "case_groups": case_groups,
             # P24: a real photographic hero for the case-types hub.
             "pexels_image": _pexels_hero(request, "services_hero"),
             # F-product-4: surface the full landings list so the hub
