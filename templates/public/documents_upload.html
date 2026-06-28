@@ -35,22 +35,22 @@
           </label>
           {% if form.document.errors %}<p class="mt-2 text-sm text-gold-700">{{ form.document.errors|striptags }}</p>{% endif %}
 
-          <div class="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div>
-              <label for="id_country" class="block text-sm font-semibold text-ink-900">{% translate "Country" %}</label>
-              <select id="id_country" name="country" class="field-select mt-1.5 w-full rounded-xl border border-stone2-300 bg-white px-3 py-2.5 text-sm">
+          <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="premium-field">
+              <label for="id_country" class="premium-label">{% translate "Country" %}</label>
+              <select id="id_country" name="country" class="premium-select">
                 {% for val, lbl in form.country.field.choices %}<option value="{{ val }}" {% if val == form.country.value %}selected{% endif %}>{{ lbl }}</option>{% endfor %}
               </select>
             </div>
-            <div>
-              <label for="id_category" class="block text-sm font-semibold text-ink-900">{% translate "Category" %}</label>
-              <select id="id_category" name="category" class="field-select mt-1.5 w-full rounded-xl border border-stone2-300 bg-white px-3 py-2.5 text-sm">
+            <div class="premium-field">
+              <label for="id_category" class="premium-label">{% translate "Category" %}</label>
+              <select id="id_category" name="category" class="premium-select">
                 {% for val, lbl in form.category.field.choices %}<option value="{{ val }}" {% if val == form.category.value %}selected{% endif %}>{{ lbl }}</option>{% endfor %}
               </select>
             </div>
-            <div>
-              <label for="id_language" class="block text-sm font-semibold text-ink-900">{% translate "Document language" %}</label>
-              <select id="id_language" name="language" class="field-select mt-1.5 w-full rounded-xl border border-stone2-300 bg-white px-3 py-2.5 text-sm">
+            <div class="premium-field">
+              <label for="id_language" class="premium-label">{% translate "Document language" %}</label>
+              <select id="id_language" name="language" class="premium-select">
                 {% for val, lbl in form.language.field.choices %}<option value="{{ val }}" {% if val == form.language.value %}selected{% endif %}>{{ lbl }}</option>{% endfor %}
               </select>
             </div>
@@ -58,15 +58,15 @@
 
           <div aria-hidden="true" class="is-honeypot"><label for="id_website">{% translate "Website (do not fill)" %}</label>{{ form.website }}</div>
 
-          <label class="mt-5 flex items-start gap-3 text-sm text-ink-900 cursor-pointer">
-            <input type="checkbox" name="analysis_consent" class="mt-1 accent-gold-600" required>
+          <label class="mt-5 premium-checkbox-card cursor-pointer">
+            <input type="checkbox" name="analysis_consent" required>
             <span>{% translate "I agree to the documental analysis to organise my dossier." %}{% if ai_enabled %} {% translate "A configured assistant may help read the documents; the files are not stored." %}{% endif %}</span>
           </label>
-          {% if form.analysis_consent.errors %}<p class="mt-1 text-sm text-gold-700">{{ form.analysis_consent.errors|striptags }}</p>{% endif %}
+          {% if form.analysis_consent.errors %}<p class="premium-form-error">{{ form.analysis_consent.errors|striptags }}</p>{% endif %}
 
-          <div class="mt-6 flex flex-wrap items-center gap-3">
-            <button type="submit" class="premium-btn premium-btn-primary" data-event="document_uploaded">{% translate "Build the dossier" %} <span aria-hidden="true">→</span></button>
-            <p class="text-xs text-stone2-500">{% translate "Your files are processed only to build this result and are not stored." %}</p>
+          <div class="premium-form-actions">
+            <button type="submit" class="premium-btn premium-btn-primary" data-event="document_uploaded">{% translate "Build the dossier" %} <span class="cta-arrow" aria-hidden="true">→</span></button>
+            <p class="premium-form-help">{% translate "Your files are processed only to build this result and are not stored." %}</p>
           </div>
         </form>
 

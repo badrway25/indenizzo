@@ -50,11 +50,13 @@ class ContactForm(forms.Form):
         queryset=Country.objects.filter(is_active=True),
         required=False,
         empty_label=_("Select a country (optional)"),
+        widget=forms.Select(attrs={"class": "premium-select mt-1"}),
     )
     case_type = forms.ChoiceField(
         label=_("Case type"),
         choices=[("", _("Not specified"))] + list(CaseType.choices),
         required=False,
+        widget=forms.Select(attrs={"class": "premium-select mt-1"}),
     )
     message = forms.CharField(
         label=_("How can we help?"),

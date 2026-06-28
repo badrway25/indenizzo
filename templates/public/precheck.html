@@ -56,12 +56,12 @@
               {% with f=item.field %}
               <div class="precheck-field"
                    {% if f.show_if %}data-precheck-show-if="{{ f.show_if.0 }}:{{ f.show_if.1 }}" hidden{% endif %}>
-                <label class="block text-sm font-semibold text-ink-900" {% if f.type != 'radio' %}for="id_{{ f.id }}"{% endif %}>
+                <label class="block premium-label" {% if f.type != 'radio' %}for="id_{{ f.id }}"{% endif %}>
                   {{ f.label }}{% if f.required %} <span class="text-gold-600" aria-hidden="true">*</span>{% endif %}
                 </label>
                 {% if f.type == 'select' %}
                   <select id="id_{{ f.id }}" name="{{ f.id }}" {% if f.required %}required{% endif %}
-                          class="field-select mt-2 w-full rounded-xl border border-stone2-300 bg-sand-50 px-3.5 py-2.5 text-sm text-ink-900 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30 focus:outline-none">
+                          class="premium-select mt-2">
                     <option value="">{% translate "Select…" %}</option>
                     {% for val, lbl in f.choices %}<option value="{{ val }}" {% if val == item.value %}selected{% endif %}>{{ lbl }}</option>{% endfor %}
                   </select>
@@ -75,27 +75,27 @@
                   </div>
                 {% elif f.type == 'date' %}
                   <input type="date" id="id_{{ f.id }}" name="{{ f.id }}" value="{{ item.value }}" {% if f.required %}required{% endif %}
-                         class="mt-2 w-full rounded-xl border border-stone2-300 bg-sand-50 px-3.5 py-2.5 text-sm text-ink-900 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30 focus:outline-none">
+                         class="premium-input mt-2">
                 {% elif f.type == 'number' %}
                   <input type="number" id="id_{{ f.id }}" name="{{ f.id }}" value="{{ item.value }}"
                          {% if f.min_value is not None %}min="{{ f.min_value }}"{% endif %} {% if f.max_value is not None %}max="{{ f.max_value }}"{% endif %}
                          {% if f.required %}required{% endif %} inputmode="numeric"
-                         class="mt-2 w-full rounded-xl border border-stone2-300 bg-sand-50 px-3.5 py-2.5 text-sm text-ink-900 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30 focus:outline-none">
+                         class="premium-input mt-2">
                 {% else %}
                   <input type="text" id="id_{{ f.id }}" name="{{ f.id }}" value="{{ item.value }}" {% if f.required %}required{% endif %}
-                         class="mt-2 w-full rounded-xl border border-stone2-300 bg-sand-50 px-3.5 py-2.5 text-sm text-ink-900 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30 focus:outline-none">
+                         class="premium-input mt-2">
                 {% endif %}
-                {% if f.help_text %}<p class="mt-1.5 text-xs text-stone2-500">{{ f.help_text }}</p>{% endif %}
+                {% if f.help_text %}<p class="premium-form-help mt-1.5">{{ f.help_text }}</p>{% endif %}
               </div>
               {% endwith %}
             {% endfor %}
           </div>
 
-          <div class="mt-7 flex flex-wrap items-center gap-3">
+          <div class="premium-form-actions">
             <button type="submit" class="premium-btn premium-btn-primary">
               {% translate "Get my guided result" %} <span class="cta-arrow" aria-hidden="true">→</span>
             </button>
-            <p class="text-xs text-stone2-500">{% translate "Your answers are processed only to build this result and are not stored." %}</p>
+            <p class="premium-form-help">{% translate "Your answers are processed only to build this result and are not stored." %}</p>
           </div>
         </div>
       </form>
