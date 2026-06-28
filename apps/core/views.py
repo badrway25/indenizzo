@@ -1208,6 +1208,76 @@ def search(request):
 
 
 # ---------------------------------------------------------------------------
+# P30 — intelligent document intake (stateless, local-first, OpenAI-optional)
+# ---------------------------------------------------------------------------
+@require_GET
+def documents(request):
+    """Landing for the document-intelligence flow."""
+    from django.conf import settings
+
+    from apps.core.seo import build_canonical_url
+
+    return render(
+        request,
+        "public/documents.html",
+        {
+            "canonical_url": build_canonical_url(request),
+            "ai_enabled": settings.OPENAI_DOCUMENT_AI_ENABLED,
+            "pexels_image": _pexels_hero(request, "methodology_hero"),
+        },
+    )
+
+
+@require_http_methods(["GET", "POST"])
+def documents_upload(request):
+    """Secure, stateless upload + recognition. The file is never persisted."""
+    from django.conf import settings
+
+    from apps.core.document_ai import analyze_document
+    from apps.core.document_forms import DocumentUploadForm
+    from apps.core.rate_limit import public_post_rate_limit
+    from apps.core.seo import build_canonical_url
+
+    analysis = None
+    filename = ""
+    if request.method == "POST":
+        # Rate-limit the public POST (same guard as the contact form).
+        limited = public_post_rate_limit(lambda r: None)(request)
+        if limited is not None:
+            return limited
+        form = DocumentUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            if form.is_likely_bot:
+                form = DocumentUploadForm()  # drop silently
+            else:
+                f = form.cleaned_data["document"]
+                filename = DocumentUploadForm.safe_filename(f.name)
+                analysis = analyze_document(
+                    filename=filename,
+                    mime=(getattr(f, "content_type", "") or ""),
+                    size=f.size,
+                    country=form.cleaned_data.get("country", ""),
+                    category=form.cleaned_data.get("category", ""),
+                )
+                # The uploaded file is intentionally NOT stored anywhere.
+    else:
+        form = DocumentUploadForm()
+
+    return render(
+        request,
+        "public/documents_upload.html",
+        {
+            "form": form,
+            "analysis": analysis,
+            "filename": filename,
+            "ai_enabled": settings.OPENAI_DOCUMENT_AI_ENABLED,
+            "max_mb": settings.DOCUMENT_INTAKE_MAX_UPLOAD_MB,
+            "canonical_url": build_canonical_url(request),
+        },
+    )
+
+
+# ---------------------------------------------------------------------------
 # Staff project status dashboard
 # ---------------------------------------------------------------------------
 

@@ -152,6 +152,9 @@ _GLOBAL_HREFLANG_VIEW_NAMES = frozenset(
         "core:sources",
         "core:source_detail",
         "core:search",
+        # P30: document intake landing (the upload POST page stays out of the
+        # hreflang allowlist — it is a stateless form, not indexable content).
+        "core:documents",
         # country landings (gia' coperte dalla view, ma le includiamo
         # nella allowlist per documentare l'intento e per fallback)
         "core:country_italy",

@@ -33,6 +33,9 @@ urlpatterns = [
     path("sources/", views.sources, name="sources"),
     path("sources/<slug:slug>/", views.source_detail, name="source_detail"),
     path("search/", views.search, name="search"),
+    # P30: intelligent document intake (landing + secure stateless upload).
+    path("documents/", views.documents, name="documents"),
+    path("documents/upload/", views.documents_upload, name="documents_upload"),
     # P15: country × category guided router — pick country → category → route.
     path("guided/", views.guided_router, name="guided_router"),
     # P15: guided documental pre-check flows for non-numeric sections.
