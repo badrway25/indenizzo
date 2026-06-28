@@ -48,6 +48,42 @@
     els.forEach(function (el) { io.observe(el); });
   }
 
+  /* 1b. Count-up for stat numerals — [data-count-to] ------------------ */
+  /* P32: animates from 0 to the target when the element scrolls into view.
+     Bails to the final value immediately under prefers-reduced-motion. */
+  function initCountUp() {
+    var els = document.querySelectorAll("[data-count-to]");
+    if (!els.length) return;
+    function suffixOf(el) { return el.getAttribute("data-count-suffix") || ""; }
+    function finalOf(el) { return el.getAttribute("data-count-to") + suffixOf(el); }
+    if (prefersReduced || !hasIO) {
+      Array.prototype.forEach.call(els, function (el) { el.textContent = finalOf(el); });
+      return;
+    }
+    function animate(el) {
+      var target = parseFloat(el.getAttribute("data-count-to")) || 0;
+      var suffix = suffixOf(el);
+      var dur = 1100, start = null;
+      function step(ts) {
+        if (start === null) start = ts;
+        var p = Math.min((ts - start) / dur, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(eased * target) + suffix;
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = finalOf(el);
+      }
+      requestAnimationFrame(step);
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        animate(entry.target);
+        io.unobserve(entry.target);
+      });
+    }, { threshold: 0.4 });
+    els.forEach(function (el) { io.observe(el); });
+  }
+
   /* 2. Sticky conversion bar ------------------------------------------ */
   function initStickyCta() {
     var bar = document.querySelector("[data-sticky-cta]");
@@ -94,56 +130,64 @@
     refresh();
   }
 
-  /* 3. Off-canvas drawer (source list) -------------------------------- */
+  /* 3. Off-canvas drawer(s) — keyed, supports several per page ---------- */
+  /* P32: generalized from a single source-list drawer to N independent
+     drawers (e.g. the mobile nav drawer + the wizard-result source drawer).
+     A drawer is `[data-drawer="<key>"]`; its openers/closers/backdrop share
+     the key. An empty key ("") stays backward-compatible with legacy markup. */
   function initDrawer() {
-    var drawer = document.querySelector("[data-drawer]");
-    if (!drawer) return;
-    var backdrop = document.querySelector("[data-drawer-backdrop]");
-    var openers = document.querySelectorAll("[data-drawer-open]");
-    var closers = drawer.querySelectorAll("[data-drawer-close]");
-    var lastFocus = null;
+    var drawers = document.querySelectorAll("[data-drawer]");
+    if (!drawers.length) return;
+    Array.prototype.forEach.call(drawers, function (drawer) {
+      var key = drawer.getAttribute("data-drawer") || "";
+      if (!key) return;  // P32: every drawer is keyed (e.g. "nav", "sources")
+      var openers = document.querySelectorAll('[data-drawer-open="' + key + '"]');
+      var backdrop = document.querySelector('[data-drawer-backdrop="' + key + '"]');
+      var closers = drawer.querySelectorAll("[data-drawer-close]");
+      var lastFocus = null;
 
-    function focusable() {
-      return drawer.querySelectorAll(
-        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
-      );
-    }
-    function onKey(e) {
-      if (e.key === "Escape") { close(); return; }
-      if (e.key !== "Tab") return;
-      var items = focusable();
-      if (!items.length) return;
-      var first = items[0];
-      var last = items[items.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault(); last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault(); first.focus();
+      function focusable() {
+        return drawer.querySelectorAll(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
       }
-    }
-    function open() {
-      lastFocus = document.activeElement;
-      drawer.classList.add("is-open");
-      drawer.setAttribute("aria-hidden", "false");
-      if (backdrop) backdrop.classList.add("is-open");
-      document.body.classList.add("has-drawer-open");
-      document.addEventListener("keydown", onKey);
-      var items = focusable();
-      if (items.length) items[0].focus();
-    }
-    function close() {
-      drawer.classList.remove("is-open");
-      drawer.setAttribute("aria-hidden", "true");
-      if (backdrop) backdrop.classList.remove("is-open");
-      document.body.classList.remove("has-drawer-open");
-      document.removeEventListener("keydown", onKey);
-      if (lastFocus && lastFocus.focus) lastFocus.focus();
-    }
+      function onKey(e) {
+        if (e.key === "Escape") { close(); return; }
+        if (e.key !== "Tab") return;
+        var items = focusable();
+        if (!items.length) return;
+        var first = items[0];
+        var last = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault(); last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault(); first.focus();
+        }
+      }
+      function open() {
+        lastFocus = document.activeElement;
+        drawer.classList.add("is-open");
+        drawer.setAttribute("aria-hidden", "false");
+        if (backdrop) backdrop.classList.add("is-open");
+        document.body.classList.add("has-drawer-open");
+        document.addEventListener("keydown", onKey);
+        var items = focusable();
+        if (items.length) items[0].focus();
+      }
+      function close() {
+        drawer.classList.remove("is-open");
+        drawer.setAttribute("aria-hidden", "true");
+        if (backdrop) backdrop.classList.remove("is-open");
+        document.body.classList.remove("has-drawer-open");
+        document.removeEventListener("keydown", onKey);
+        if (lastFocus && lastFocus.focus) lastFocus.focus();
+      }
 
-    drawer.setAttribute("aria-hidden", "true");
-    openers.forEach(function (o) { o.addEventListener("click", open); });
-    closers.forEach(function (c) { c.addEventListener("click", close); });
-    if (backdrop) backdrop.addEventListener("click", close);
+      drawer.setAttribute("aria-hidden", "true");
+      Array.prototype.forEach.call(openers, function (o) { o.addEventListener("click", open); });
+      Array.prototype.forEach.call(closers, function (c) { c.addEventListener("click", close); });
+      if (backdrop) backdrop.addEventListener("click", close);
+    });
   }
 
   /* 4. Tooltips -------------------------------------------------------- */
@@ -479,6 +523,7 @@
 
   ready(function () {
     initReveal();
+    initCountUp();
     initStickyCta();
     initDrawer();
     initTooltips();

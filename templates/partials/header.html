@@ -1,38 +1,106 @@
 {% load i18n %}
-<header class="border-b border-stone2-100 bg-sand-50/95 backdrop-blur sticky top-0 z-30">
-  <div class="max-w-7xl mx-auto px-5 lg:px-8 h-20 flex items-center gap-6">
-    <a href="{% url 'core:home' %}" class="flex items-center gap-3 group" aria-label="{{ SITE_NAME }}">
-      <span aria-hidden="true" class="w-9 h-9 rounded-full bg-ink-950 text-sand-50 flex items-center justify-center font-serif text-lg font-bold">B</span>
+<header class="site-header sticky top-0 z-30 border-b border-stone2-100 bg-sand-50/90 backdrop-blur">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 h-20 flex items-center gap-3">
+    <a href="{% url 'core:home' %}" class="flex items-center gap-3 group shrink-0" aria-label="{{ SITE_NAME }}">
+      <span aria-hidden="true" class="w-10 h-10 rounded-full bg-ink-950 text-sand-50 flex items-center justify-center font-serif text-lg font-bold transition group-hover:bg-ink-900">B</span>
       <span class="hidden sm:flex flex-col leading-tight">
         <span class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">{% translate "Studio Legale Internazionale" %}</span>
         <span class="font-serif text-xl text-ink-950">Badrane</span>
       </span>
     </a>
 
-    {% comment %}
-      Progressive-reveal nav: only the primary items show on mobile; more appear
-      at sm/md/lg so the header never gets crowded. Everything is discoverable in
-      the footer sitemap below.
-    {% endcomment %}
-    <nav class="ms-auto flex items-center gap-1 sm:gap-2 text-sm" aria-label="{% translate 'Primary navigation' %}">
-      <a href="{% url 'cases:wizard_italy_road_accident' %}" class="px-3 py-2 rounded-full text-ink-900 font-medium hover:text-ink-950 hover:bg-stone2-100">{% translate "Calculator" %}</a>
-      <a href="{% url 'core:services' %}" class="px-3 py-2 rounded-full text-ink-800 hover:text-ink-950 hover:bg-stone2-100">{% translate "Services" %}</a>
-      <a href="{% url 'core:how_it_works' %}" class="px-3 py-2 rounded-full text-ink-800 hover:text-ink-950 hover:bg-stone2-100 hidden md:inline-flex">{% translate "How it works" %}</a>
-      <a href="{% url 'core:faq' %}" class="px-3 py-2 rounded-full text-ink-800 hover:text-ink-950 hover:bg-stone2-100 hidden md:inline-flex">{% translate "FAQ" %}</a>
-      <a href="{% url 'core:countries' %}" class="px-3 py-2 rounded-full text-ink-800 hover:text-ink-950 hover:bg-stone2-100 hidden lg:inline-flex">{% translate "Countries" %}</a>
-      <a href="{% url 'core:case_types' %}" class="px-3 py-2 rounded-full text-ink-800 hover:text-ink-950 hover:bg-stone2-100 hidden lg:inline-flex">{% translate "Case types" %}</a>
-      {# P30: document intake — upload, recognise, prepare the dossier. #}
-      <a href="{% url 'core:documents' %}" class="px-3 py-2 rounded-full text-ink-800 hover:text-ink-950 hover:bg-stone2-100 hidden md:inline-flex">{% translate "Documents" %}</a>
-      {# P29: official source library — the platform's evidence layer. #}
-      <a href="{% url 'core:sources' %}" class="px-3 py-2 rounded-full text-ink-800 hover:text-ink-950 hover:bg-stone2-100 hidden lg:inline-flex">{% translate "Sources" %}</a>
-      {# P29: global search entry. #}
-      <a href="{% url 'core:search' %}" class="px-2.5 py-2 rounded-full text-ink-800 hover:text-ink-950 hover:bg-stone2-100 hidden md:inline-flex" aria-label="{% translate 'Search the platform' %}" title="{% translate 'Search the platform' %}">
-        <span aria-hidden="true">{% include "partials/_icon.html" with name="search" icon_class="w-4 h-4" %}</span>
-      </a>
+    {# ---- Desktop nav with hover/focus dropdowns (lg+) ---- #}
+    <nav class="nav-desktop items-center gap-1 ms-5" aria-label="{% translate 'Primary navigation' %}">
+      <div class="nav-group">
+        <a href="{% url 'cases:wizard_start' %}" class="nav-link" aria-haspopup="true">{% translate "Estimates" %} <span aria-hidden="true" class="nav-caret">{% include "partials/_icon.html" with name="chevron-down" %}</span></a>
+        <div class="nav-menu" role="menu">
+          <a href="{% url 'cases:wizard_italy_road_accident' %}" role="menuitem"><span class="nav-menu__label">{% translate "Road accident" %}</span></a>
+          <a href="{% url 'cases:wizard_italy_medical' %}" role="menuitem"><span class="nav-menu__label">{% translate "Medical liability" %}</span></a>
+          <a href="{% url 'cases:wizard_insurance_offer' %}" role="menuitem"><span class="nav-menu__label">{% translate "Compare an offer" %}</span></a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <a href="{% url 'core:documents' %}" class="nav-link" aria-haspopup="true">{% translate "Documents" %} <span aria-hidden="true" class="nav-caret">{% include "partials/_icon.html" with name="chevron-down" %}</span></a>
+        <div class="nav-menu" role="menu">
+          <a href="{% url 'core:documents_upload' %}" role="menuitem"><span class="nav-menu__label">{% translate "Upload documents" %}</span></a>
+          <a href="{% url 'core:documents' %}" role="menuitem"><span class="nav-menu__label">{% translate "Prepare the dossier" %}</span></a>
+          <a href="{% url 'core:precheck' slug='inail' %}" role="menuitem"><span class="nav-menu__label">{% translate "INAIL pre-check" %}</span></a>
+          <a href="{% url 'cases:wizard_insurance_offer' %}" role="menuitem"><span class="nav-menu__label">{% translate "Insurance offer" %}</span></a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <a href="{% url 'core:countries' %}" class="nav-link" aria-haspopup="true">{% translate "Countries" %} <span aria-hidden="true" class="nav-caret">{% include "partials/_icon.html" with name="chevron-down" %}</span></a>
+        <div class="nav-menu" role="menu">
+          <a href="{% url 'core:country_italy' %}" role="menuitem"><span class="nav-menu__label">{% translate "Italy" %}</span></a>
+          <a href="{% url 'core:country_morocco' %}" role="menuitem"><span class="nav-menu__label">{% translate "Morocco" %}</span></a>
+          <a href="{% url 'core:country_tunisia' %}" role="menuitem"><span class="nav-menu__label">{% translate "Tunisia" %}</span></a>
+          <a href="{% url 'core:country_france' %}" role="menuitem"><span class="nav-menu__label">{% translate "France" %}</span></a>
+          <a href="{% url 'core:country_belgium' %}" role="menuitem"><span class="nav-menu__label">{% translate "Belgium" %}</span></a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <a href="{% url 'core:sources' %}" class="nav-link" aria-haspopup="true">{% translate "Sources" %} <span aria-hidden="true" class="nav-caret">{% include "partials/_icon.html" with name="chevron-down" %}</span></a>
+        <div class="nav-menu" role="menu">
+          <a href="{% url 'core:sources' %}" role="menuitem"><span class="nav-menu__label">{% translate "Source library" %}</span></a>
+          <a href="{% url 'core:case_types' %}" role="menuitem"><span class="nav-menu__label">{% translate "Case types" %}</span></a>
+          <a href="{% url 'core:services' %}" role="menuitem"><span class="nav-menu__label">{% translate "Services" %}</span></a>
+        </div>
+      </div>
+      <a href="{% url 'core:how_it_works' %}" class="nav-link">{% translate "Method" %}</a>
     </nav>
 
-    {% include "partials/language_switcher.html" %}
+    {# ---- Right cluster ---- #}
+    <div class="ms-auto flex items-center gap-2">
+      <a href="{% url 'core:search' %}" class="nav-link px-2.5" aria-label="{% translate 'Search the platform' %}" title="{% translate 'Search the platform' %}">
+        <span aria-hidden="true">{% include "partials/_icon.html" with name="search" icon_class="w-4 h-4" %}</span>
+      </a>
+      <span class="nav-desktop">{% include "partials/language_switcher.html" %}</span>
+      <span class="nav-desktop">{% include "partials/cta_consultation.html" with variant="header" %}</span>
+      <button type="button" class="nav-link nav-mobile px-2.5" data-drawer-open="nav" aria-label="{% translate 'Open menu' %}" aria-controls="nav-drawer">
+        <span aria-hidden="true">{% include "partials/_icon.html" with name="menu" icon_class="w-5 h-5" %}</span>
+      </button>
+    </div>
+  </div>
 
-    {% include "partials/cta_consultation.html" with variant="header" %}
+  {# ---- Mobile nav drawer (<lg) ---- #}
+  <div class="drawer-backdrop lg:hidden" data-drawer-backdrop="nav"></div>
+  <div id="nav-drawer" class="drawer lg:hidden" data-drawer="nav" role="dialog" aria-modal="true" aria-label="{% translate 'Navigation' %}">
+    <div class="drawer__header">
+      <span class="drawer__title">{% translate "Navigation" %}</span>
+      <button type="button" class="drawer__close" data-drawer-close aria-label="{% translate 'Close' %}">&times;</button>
+    </div>
+    <div class="drawer__body">
+      <div class="nav-drawer__section">
+        <p class="nav-drawer__heading">{% translate "Estimates" %}</p>
+        <a href="{% url 'cases:wizard_italy_road_accident' %}" class="nav-drawer__link">{% translate "Road accident" %}</a>
+        <a href="{% url 'cases:wizard_italy_medical' %}" class="nav-drawer__link">{% translate "Medical liability" %}</a>
+        <a href="{% url 'cases:wizard_insurance_offer' %}" class="nav-drawer__link">{% translate "Compare an offer" %}</a>
+      </div>
+      <div class="nav-drawer__section">
+        <p class="nav-drawer__heading">{% translate "Documents" %}</p>
+        <a href="{% url 'core:documents_upload' %}" class="nav-drawer__link">{% translate "Upload documents" %}</a>
+        <a href="{% url 'core:documents' %}" class="nav-drawer__link">{% translate "Prepare the dossier" %}</a>
+        <a href="{% url 'core:precheck' slug='inail' %}" class="nav-drawer__link">{% translate "INAIL pre-check" %}</a>
+      </div>
+      <div class="nav-drawer__section">
+        <p class="nav-drawer__heading">{% translate "Countries" %}</p>
+        <a href="{% url 'core:country_italy' %}" class="nav-drawer__link">{% translate "Italy" %}</a>
+        <a href="{% url 'core:country_morocco' %}" class="nav-drawer__link">{% translate "Morocco" %}</a>
+        <a href="{% url 'core:country_tunisia' %}" class="nav-drawer__link">{% translate "Tunisia" %}</a>
+        <a href="{% url 'core:country_france' %}" class="nav-drawer__link">{% translate "France" %}</a>
+        <a href="{% url 'core:country_belgium' %}" class="nav-drawer__link">{% translate "Belgium" %}</a>
+      </div>
+      <div class="nav-drawer__section">
+        <p class="nav-drawer__heading">{% translate "Sources" %}</p>
+        <a href="{% url 'core:sources' %}" class="nav-drawer__link">{% translate "Source library" %}</a>
+        <a href="{% url 'core:case_types' %}" class="nav-drawer__link">{% translate "Case types" %}</a>
+        <a href="{% url 'core:services' %}" class="nav-drawer__link">{% translate "Services" %}</a>
+        <a href="{% url 'core:how_it_works' %}" class="nav-drawer__link">{% translate "Method" %}</a>
+        <a href="{% url 'core:faq' %}" class="nav-drawer__link">{% translate "FAQ" %}</a>
+        <a href="{% url 'core:search' %}" class="nav-drawer__link">{% translate "Search the platform" %}</a>
+      </div>
+      <div class="nav-drawer__section">{% include "partials/language_switcher.html" %}</div>
+      <div>{% include "partials/cta_consultation.html" with variant="default" %}</div>
+    </div>
   </div>
 </header>
