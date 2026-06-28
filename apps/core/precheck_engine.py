@@ -1,17 +1,27 @@
-"""P16 — pre-check decision engine: turns interactive answers into a guided result.
+"""P16/P25 — pre-check decision engine: turns interactive answers into a guided result.
 
 Given a `PreCheckFlow` and the submitted answers, this produces a personalised,
-non-numeric result: a completeness level, the missing documents/data, the
-applicable official sources, contextual guidance messages, the recommended next
-step and a CTA. It NEVER computes or shows an amount — these flows have no
-approved engine, so the output is organisational, not monetary.
+non-numeric result. P25 turns the result from a flat readiness signal into a
+professional dossier analysis:
 
-Stateless: the answers are evaluated in memory and never persisted (GDPR-light).
+  * a top-line ``result_status`` ("Dossier ready for analysis" / "Documents to
+    consolidate" / "Initial document collection") with a one-line summary;
+  * the data that is already SOLID vs. the points that still need ATTENTION;
+  * WHY this legal path applies, what can be ASSESSED now and what is PENDING
+    before any figure;
+  * a CATEGORISED document checklist (essential / useful / optional) with the
+    purpose of each record;
+  * a primary AND a secondary next action.
+
+It NEVER computes or shows an amount — these flows have no approved engine, so
+the output is organisational and analytical, not monetary. Stateless: the
+answers are evaluated in memory and never persisted (GDPR-light).
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import Any
 
 from django.utils.translation import gettext_lazy as _
 
@@ -28,6 +38,39 @@ COMPLETENESS_LABEL = {
     INITIAL: _("Initial document collection needed"),
 }
 COMPLETENESS_TONE = {ESSENTIAL: "ok", PARTIAL: "gold", INITIAL: "gold"}
+
+# --- P25: analytical top-line status ----------------------------------------
+STATUS_READY = "ready"
+STATUS_CONSOLIDATING = "consolidating"
+STATUS_INITIAL = "initial"
+
+RESULT_STATUS_LABEL = {
+    STATUS_READY: _("Dossier ready for analysis"),
+    STATUS_CONSOLIDATING: _("Documents to consolidate"),
+    STATUS_INITIAL: _("Initial document collection"),
+}
+RESULT_STATUS_TONE = {STATUS_READY: "ok", STATUS_CONSOLIDATING: "gold", STATUS_INITIAL: "gold"}
+_STATUS_FROM_COMPLETENESS = {ESSENTIAL: STATUS_READY, PARTIAL: STATUS_CONSOLIDATING, INITIAL: STATUS_INITIAL}
+
+_SUMMARY_BY_STATUS = {
+    STATUS_READY: _("The essential records are in place; the Studio can review the "
+                    "file against the official sources."),
+    STATUS_CONSOLIDATING: _("The core of the file is there; a few essential records "
+                            "still need to be gathered."),
+    STATUS_INITIAL: _("The case is framed; the essential records still need to be "
+                      "collected before a review."),
+}
+
+# --- P25: document categories -----------------------------------------------
+DOC_ESSENTIAL = "essential"
+DOC_USEFUL = "useful"
+DOC_OPTIONAL = "optional"
+
+DOC_CATEGORY_LABEL = {
+    DOC_ESSENTIAL: _("Essential"),
+    DOC_USEFUL: _("Useful to strengthen the file"),
+    DOC_OPTIONAL: _("Optional"),
+}
 
 # --- Guidance message strings (fixed, translatable) -------------------------
 _M_INAIL_CAPITAL = _("Estimated impairment in the 6–15% band: the INAIL capital "
@@ -75,6 +118,79 @@ _UNLOCK_LIABILITY = _("Established liability and the assessed permanent incapaci
 _UNLOCK_PARENTAL = _("The documented family relationship and the established liability")
 _UNLOCK_LAW = _("Identification of the applicable law and the competent court")
 
+# --- P25: "why this path" reasons -------------------------------------------
+_WHY_INAIL = _("Workplace injuries are indemnified on the INAIL tariff (D.P.R. 1124/1965): "
+               "the figure follows the official table, not a free estimate.")
+_WHY_MA = _("Moroccan road-accident compensation is settled by the insurer on the Dahir "
+            "1-84-177 barème — the amount derives from the official capital de référence.")
+_WHY_TN = _("Tunisian road-accident compensation follows the Code des assurances "
+            "(loi 2005-86) barème applied by the insurer.")
+_WHY_PARENTAL = _("Loss-of-relationship damage has no statutory table: Italian courts "
+                  "assess it case by case under artt. 2043 and 2059 of the Civil Code.")
+_WHY_LAW = _("Before any figure, Rome II decides which national law and which court "
+            "govern a cross-border case.")
+
+# --- P25: what can be assessed now vs. what is pending ----------------------
+_NOW_INAIL = _("We can map the file to the INAIL framework and to any differential beyond it.")
+_PEND_INAIL = _("The indemnity figure needs the validated INAIL capital / annuity table "
+                "for the assessed impairment.")
+_NOW_MA = _("We can check the file against the structure the Dahir / ACAPS barème requires.")
+_PEND_MA = _("The amount needs the validated capital-de-référence table and the assessed "
+             "permanent incapacity.")
+_NOW_TN = _("We can check the file against the structure the Code des assurances barème requires.")
+_PEND_TN = _("The amount needs the validated barème (loi 2005-86) and the assessed "
+             "permanent incapacity.")
+_NOW_PARENTAL = _("We can structure the parental-damage claim and weigh the relationship "
+                  "and the established liability.")
+_PEND_PARENTAL = _("No statutory table fixes the amount: it depends on the deciding court "
+                   "and the documented relationship.")
+_NOW_LAW = _("We can frame which law applies and which court is competent.")
+_PEND_LAW = _("Any figure follows only once the governing law and the forum are settled.")
+
+# --- P25: solid (strong) vs. attention signals ------------------------------
+_SIG_MEDICAL_OK = _("Medical-legal report available")
+_SIG_MEDICAL_TODO = _("Medical-legal report still to obtain")
+_SIG_INAIL_OK = _("INAIL recognition documented")
+_SIG_INAIL_TODO = _("INAIL recognition documents to gather")
+_SIG_IPP_OK = _("Permanent incapacity assessed")
+_SIG_IPP_TODO = _("Permanent incapacity not yet assessed")
+_SIG_INCOME_OK = _("Income is documentable")
+_SIG_INCOME_TODO = _("Proof of income still to gather")
+_SIG_LIABILITY_OK = _("Liability is established")
+_SIG_LIABILITY_TODO = _("Liability still to establish")
+_SIG_ACCIDENT_OK = _("Accident / police report available")
+_SIG_ACCIDENT_TODO = _("Accident / police report to obtain")
+_SIG_CIVIL_OK = _("Civil-status documents available")
+_SIG_CIVIL_TODO = _("Civil-status documents to gather")
+_SIG_INSURER_OK = _("Insurer identified")
+_SIG_INSURER_TODO = _("Insurer to identify")
+_SIG_THIRDPARTY = _("Third-party / employer liability to pursue beyond INAIL")
+_SIG_OFFER = _("An insurance offer was received — worth comparing")
+_SIG_RELATIONSHIP = _("Family relationship indicated")
+
+# --- P25: document-checklist reasons ----------------------------------------
+_R_MEDICAL = _("Quantifies the permanent impairment that drives any indemnity.")
+_R_INAIL = _("Establishes the INAIL recognition and the benefit already paid.")
+_R_ACCIDENT = _("Fixes the facts and the dynamics that found liability.")
+_R_INSURANCE = _("Identifies the insurer and any offer to weigh.")
+_R_INCOME = _("Supports the economic-loss component of the claim.")
+_R_CIVIL = _("Proves the family relationship and the eligible relatives.")
+_R_FOREIGN = _("Needed before a cross-border file can be assessed.")
+
+
+@dataclass(frozen=True)
+class DocItem:
+    """One categorised document in the readiness checklist."""
+
+    label: Any
+    category: str = DOC_ESSENTIAL
+    present: bool = False
+    reason: Any = ""
+
+    @property
+    def category_label(self):
+        return DOC_CATEGORY_LABEL.get(self.category, "")
+
 
 @dataclass(frozen=True)
 class PreCheckResult:
@@ -91,6 +207,17 @@ class PreCheckResult:
     readiness_pct: int = 0  # documental readiness, NOT a monetary figure
     potential_path: str = ""  # the official route toward a figure
     unlocking_data: tuple = ()  # what would unlock a numeric estimate
+    # --- P25 analytical layer (all optional / defaulted) ---
+    dossier_summary: Any = ""        # one-line readiness explanation
+    strong_points: tuple = ()        # data that is already solid
+    attention_points: tuple = ()     # points to verify (NOT alarms)
+    path_reason: Any = ""            # why this legal path applies
+    assessable_now: Any = ""         # what can be assessed now
+    pending_for_estimate: Any = ""   # what blocks a numeric figure
+    document_items: tuple = ()       # tuple[DocItem] — categorised checklist
+    secondary_cta_label: Any = ""
+    secondary_cta_url_name: str = ""
+    secondary_cta_kwargs: dict = field(default_factory=dict)
 
     @property
     def completeness_label(self):
@@ -99,6 +226,29 @@ class PreCheckResult:
     @property
     def completeness_tone(self):
         return COMPLETENESS_TONE[self.completeness]
+
+    @property
+    def result_status(self):
+        return _STATUS_FROM_COMPLETENESS.get(self.completeness, STATUS_INITIAL)
+
+    @property
+    def result_status_label(self):
+        return RESULT_STATUS_LABEL.get(self.result_status, "")
+
+    @property
+    def result_status_tone(self):
+        return RESULT_STATUS_TONE.get(self.result_status, "gold")
+
+    @property
+    def documents_by_category(self):
+        """Group document_items into ordered (category_label, items) sections."""
+        order = (DOC_ESSENTIAL, DOC_USEFUL, DOC_OPTIONAL)
+        out = []
+        for cat in order:
+            items = tuple(d for d in self.document_items if d.category == cat)
+            if items:
+                out.append((DOC_CATEGORY_LABEL[cat], items))
+        return tuple(out)
 
 
 # --- Helpers ----------------------------------------------------------------
@@ -153,132 +303,224 @@ def _summary(flow, answers):
     return tuple(out)
 
 
+def _signals(specs):
+    """Split (ok, strong_label, attention_label) specs into two ordered tuples."""
+    strong, attention = [], []
+    for ok, s_label, a_label in specs:
+        if ok:
+            if s_label:
+                strong.append(s_label)
+        elif a_label:
+            attention.append(a_label)
+    return tuple(strong), tuple(attention)
+
+
+def _docs(specs):
+    """Build categorised DocItems and the essential-but-missing labels.
+
+    `specs` is an iterable of (label, category, present, reason). Returns
+    (document_items, missing_essential_labels).
+    """
+    items, missing = [], []
+    for label, category, present, reason in specs:
+        items.append(DocItem(label=label, category=category, present=present, reason=reason))
+        if category == DOC_ESSENTIAL and not present:
+            missing.append(label)
+    return tuple(items), tuple(missing)
+
+
 # --- Per-flow evaluators ----------------------------------------------------
 def _eval_inail(flow, answers):
-    missing = []
-    if not _yes(answers, "medical_cert"):
-        missing.append(pc._DOC_MEDICAL)
-    if not _yes(answers, "employer_docs"):
-        missing.append(pc._DOC_INAIL)
+    has_medical = _yes(answers, "medical_cert")
+    has_inail = _yes(answers, "employer_docs")
+    pct = _int(answers, "impairment_pct")
+    third_party = _yes(answers, "third_party_liability")
+
+    document_items, missing = _docs([
+        (pc._DOC_INAIL, DOC_ESSENTIAL, has_inail, _R_INAIL),
+        (pc._DOC_MEDICAL, DOC_ESSENTIAL, has_medical, _R_MEDICAL),
+        (pc._DOC_INSURANCE, DOC_USEFUL, False, _R_INSURANCE),
+    ])
 
     messages = []
-    pct = _int(answers, "impairment_pct")
     if pct is not None:
         if 6 <= pct <= 15:
             messages.append(_M_INAIL_CAPITAL)
         elif pct > 15:
             messages.append(_M_INAIL_ANNUITY)
-    if _yes(answers, "third_party_liability"):
+    if third_party:
         messages.append(_M_INAIL_DIFFERENTIAL)
 
-    completeness = _completeness([_yes(answers, "medical_cert"), _yes(answers, "employer_docs")])
-    return PreCheckResult(
-        completeness=completeness,
-        answered_summary=_summary(flow, answers),
-        missing_documents=tuple(missing),
-        applicable_sources=flow.official_sources,
-        messages=tuple(messages),
+    strong, attention = _signals([
+        (has_inail, _SIG_INAIL_OK, _SIG_INAIL_TODO),
+        (has_medical, _SIG_MEDICAL_OK, _SIG_MEDICAL_TODO),
+        (pct is not None, _SIG_IPP_OK, _SIG_IPP_TODO),
+        (third_party, _SIG_THIRDPARTY, ""),
+    ])
+    completeness = _completeness([has_medical, has_inail])
+    return _result(
+        flow, answers, completeness, missing, messages,
         next_step=_NS_DOCUMENTAL,
-        cta_label=flow.cta_label,
-        readiness_pct=_readiness(flow, answers),
-        potential_path=_PATH_INAIL,
-        unlocking_data=(_UNLOCK_INAIL, _UNLOCK_LIABILITY),
+        potential_path=_PATH_INAIL, unlocking=(_UNLOCK_INAIL, _UNLOCK_LIABILITY),
+        strong=strong, attention=attention, document_items=document_items,
+        path_reason=_WHY_INAIL, assessable_now=_NOW_INAIL, pending=_PEND_INAIL,
+        secondary=("crm:contact", {}, pc._CTA_LAW) if third_party else None,
     )
 
 
 def _eval_loss(flow, answers):
-    missing = []
-    if not _yes(answers, "civil_docs"):
-        missing.append(pc._DOC_CIVIL)
+    has_civil = _yes(answers, "civil_docs")
+    offer = _yes(answers, "offer_received")
+    liability = _yes(answers, "liability_established")
+    country = answers.get("country")
+
+    document_items, missing = _docs([
+        (pc._DOC_CIVIL, DOC_ESSENTIAL, has_civil, _R_CIVIL),
+        (pc._DOC_MEDICAL, DOC_USEFUL, False, _R_MEDICAL),
+        (pc._DOC_INSURANCE, DOC_USEFUL, offer, _R_INSURANCE),
+    ])
 
     messages = []
-    country = answers.get("country")
-    if country == "IT" and answers.get("death_cause") == "road_accident" and _yes(answers, "offer_received"):
+    if country == "IT" and answers.get("death_cause") == "road_accident" and offer:
         messages.append(_M_LOSS_OFFER)
     if country and country != "IT":
         messages.append(_M_LOSS_FOREIGN)
 
-    completeness = _completeness([_yes(answers, "civil_docs")])
-    # Foreign case → suggest the applicable-law framing flow as the CTA.
+    strong, attention = _signals([
+        (has_civil, _SIG_CIVIL_OK, _SIG_CIVIL_TODO),
+        (bool(answers.get("relationship")), _SIG_RELATIONSHIP, ""),
+        (liability, _SIG_LIABILITY_OK, _SIG_LIABILITY_TODO),
+        (offer, _SIG_OFFER, ""),
+    ])
+    completeness = _completeness([has_civil])
+
+    # Foreign case → primary CTA becomes the applicable-law framing flow.
     if country and country not in ("IT", ""):
-        cta_url, cta_kwargs, cta_label = ("core:precheck",
-                                          {"slug": "international-road-accident"},
-                                          pc._CTA_LAW)
+        primary = ("core:precheck", {"slug": "international-road-accident"}, pc._CTA_LAW)
+        secondary = ("crm:contact", {}, flow.cta_label)
     else:
-        cta_url, cta_kwargs, cta_label = ("crm:contact", {}, flow.cta_label)
-    return PreCheckResult(
-        completeness=completeness,
-        answered_summary=_summary(flow, answers),
-        missing_documents=tuple(missing),
-        applicable_sources=flow.official_sources,
-        messages=tuple(messages),
-        next_step=_NS_DOCUMENTAL,
-        cta_label=cta_label,
-        cta_url_name=cta_url,
-        cta_kwargs=cta_kwargs,
-        readiness_pct=_readiness(flow, answers),
-        potential_path=_PATH_PARENTAL,
-        unlocking_data=(_UNLOCK_PARENTAL,),
+        primary = ("crm:contact", {}, flow.cta_label)
+        secondary = None
+    return _result(
+        flow, answers, completeness, missing, messages,
+        next_step=_NS_DOCUMENTAL, primary=primary, secondary=secondary,
+        potential_path=_PATH_PARENTAL, unlocking=(_UNLOCK_PARENTAL,),
+        strong=strong, attention=attention, document_items=document_items,
+        path_reason=_WHY_PARENTAL, assessable_now=_NOW_PARENTAL, pending=_PEND_PARENTAL,
     )
 
 
-def _eval_road(flow, answers, ready_message, potential_path, unlock):
+def _eval_road(flow, answers, ready_message, potential_path, unlock, why, now, pending):
     """Shared logic for Morocco / Tunisia road-accident flows."""
-    missing = []
-    if not _yes(answers, "police_report"):
-        missing.append(pc._DOC_ACCIDENT)
-    if not _yes(answers, "medical_cert"):
-        missing.append(pc._DOC_MEDICAL)
-    if not _yes(answers, "ipp_known"):
+    has_accident = _yes(answers, "police_report")
+    has_medical = _yes(answers, "medical_cert")
+    has_ipp = _yes(answers, "ipp_known")
+    has_income = _yes(answers, "income_documentable")
+    insurer_ok = _yes(answers, "vehicle_insured") or _yes(answers, "insurer_identified")
+    liability_ok = answers.get("liability_estimate") in ("full", "partial")
+    if "liability_estimate" not in {f.id for f in flow.fields}:
+        liability_ok = True
+
+    document_items, doc_missing = _docs([
+        (pc._DOC_ACCIDENT, DOC_ESSENTIAL, has_accident, _R_ACCIDENT),
+        (pc._DOC_MEDICAL, DOC_ESSENTIAL, has_medical, _R_MEDICAL),
+        (pc._DOC_INSURANCE, DOC_USEFUL, insurer_ok, _R_INSURANCE),
+        (pc._DOC_INCOME, DOC_USEFUL, has_income, _R_INCOME),
+    ])
+    # Keep the legacy missing set (docs + key data) for backward compatibility.
+    missing = list(doc_missing)
+    if not has_ipp:
         missing.append(_MISS_IPP)
-    if not _yes(answers, "income_documentable"):
+    if not has_income and pc._DOC_INCOME not in missing:
         missing.append(pc._DOC_INCOME)
 
     messages = []
-    liability_ok = answers.get("liability_estimate") in ("full", "partial")
-    # Tunisia has no liability_estimate field → treat as satisfied there.
-    if "liability_estimate" not in {f.id for f in flow.fields}:
-        liability_ok = True
-    if _yes(answers, "ipp_known") and _yes(answers, "income_documentable") and liability_ok:
+    if has_ipp and has_income and liability_ok:
         messages.append(ready_message)
 
-    completeness = _completeness([_yes(answers, "police_report"), _yes(answers, "medical_cert")])
-    return PreCheckResult(
-        completeness=completeness,
-        answered_summary=_summary(flow, answers),
-        missing_documents=tuple(missing),
-        applicable_sources=flow.official_sources,
-        messages=tuple(messages),
+    strong, attention = _signals([
+        (has_accident, _SIG_ACCIDENT_OK, _SIG_ACCIDENT_TODO),
+        (has_medical, _SIG_MEDICAL_OK, _SIG_MEDICAL_TODO),
+        (has_ipp, _SIG_IPP_OK, _SIG_IPP_TODO),
+        (has_income, _SIG_INCOME_OK, _SIG_INCOME_TODO),
+        (insurer_ok, _SIG_INSURER_OK, _SIG_INSURER_TODO),
+        (liability_ok, _SIG_LIABILITY_OK, _SIG_LIABILITY_TODO),
+    ])
+    completeness = _completeness([has_accident, has_medical])
+    return _result(
+        flow, answers, completeness, tuple(missing), messages,
         next_step=_NS_DOCUMENTAL,
-        cta_label=flow.cta_label,
-        readiness_pct=_readiness(flow, answers),
-        potential_path=potential_path,
-        unlocking_data=(unlock, _UNLOCK_LIABILITY),
+        potential_path=potential_path, unlocking=(unlock, _UNLOCK_LIABILITY),
+        strong=strong, attention=attention, document_items=document_items,
+        path_reason=why, assessable_now=now, pending=pending,
     )
 
 
 def _eval_international(flow, answers):
-    messages = [_M_INT_LAW, _M_INT_CROSS]
-    missing = []
-    if _yes(answers, "foreign_docs") or _yes(answers, "translation_needed"):
-        messages.insert(1, _M_INT_TRANSLATE)
-        missing.append(_FOREIGN_DOCS)
+    foreign = _yes(answers, "foreign_docs") or _yes(answers, "translation_needed")
+    has_event = bool((answers.get("event_country") or "").strip())
+    has_residence = bool((answers.get("residence_country") or "").strip())
+    contract = _yes(answers, "contract_present")
 
-    # Completeness here reflects whether the key location facts are provided.
-    present = [bool((answers.get("event_country") or "").strip()),
-               bool((answers.get("residence_country") or "").strip())]
-    completeness = _completeness(present)
+    messages = [_M_INT_LAW, _M_INT_CROSS]
+    if foreign:
+        messages.insert(1, _M_INT_TRANSLATE)
+
+    document_items, _missing = _docs([
+        (pc._DOC_ACCIDENT, DOC_USEFUL, False, _R_ACCIDENT),
+        (pc._DOC_INSURANCE, DOC_USEFUL, contract, _R_INSURANCE),
+        (_FOREIGN_DOCS, DOC_USEFUL, not foreign, _R_FOREIGN),
+    ])
+    missing = (_FOREIGN_DOCS,) if foreign else ()
+
+    strong, attention = _signals([
+        (has_event, _("Country of the event indicated"), _("Country of the event to confirm")),
+        (has_residence, _("Country of residence indicated"), _("Country of residence to confirm")),
+        (contract, _SIG_INSURER_OK, _SIG_INSURER_TODO),
+    ])
+    completeness = _completeness([has_event, has_residence])
+    return _result(
+        flow, answers, completeness, missing, messages,
+        next_step=_NS_LAW,
+        potential_path=_PATH_LAW, unlocking=(_UNLOCK_LAW,),
+        strong=strong, attention=attention, document_items=document_items,
+        path_reason=_WHY_LAW, assessable_now=_NOW_LAW, pending=_PEND_LAW,
+    )
+
+
+def _result(flow, answers, completeness, missing, messages, *, next_step,
+            potential_path="", unlocking=(), strong=(), attention=(),
+            document_items=(), path_reason="", assessable_now="", pending="",
+            primary=None, secondary=None):
+    """Assemble a PreCheckResult, including the P25 analytical layer."""
+    if primary is None:
+        primary = (flow.cta_url_name, {}, flow.cta_label)
+    cta_url, cta_kwargs, cta_label = primary
+    sec_url, sec_kwargs, sec_label = (secondary or ("", {}, ""))
+    status = _STATUS_FROM_COMPLETENESS.get(completeness, STATUS_INITIAL)
     return PreCheckResult(
         completeness=completeness,
         answered_summary=_summary(flow, answers),
         missing_documents=tuple(missing),
         applicable_sources=flow.official_sources,
         messages=tuple(messages),
-        next_step=_NS_LAW,
-        cta_label=flow.cta_label,
+        next_step=next_step,
+        cta_label=cta_label,
+        cta_url_name=cta_url,
+        cta_kwargs=cta_kwargs,
         readiness_pct=_readiness(flow, answers),
-        potential_path=_PATH_LAW,
-        unlocking_data=(_UNLOCK_LAW,),
+        potential_path=potential_path,
+        unlocking_data=tuple(unlocking),
+        dossier_summary=_SUMMARY_BY_STATUS.get(status, ""),
+        strong_points=tuple(strong),
+        attention_points=tuple(attention),
+        path_reason=path_reason,
+        assessable_now=assessable_now,
+        pending_for_estimate=pending,
+        document_items=tuple(document_items),
+        secondary_cta_label=sec_label,
+        secondary_cta_url_name=sec_url,
+        secondary_cta_kwargs=sec_kwargs,
     )
 
 
@@ -289,19 +531,12 @@ def evaluate(flow, answers) -> PreCheckResult:
     if flow.slug == "loss-of-relative":
         return _eval_loss(flow, answers)
     if flow.slug == "morocco-road-accident":
-        return _eval_road(flow, answers, _M_MA_READY, _PATH_MA, _UNLOCK_MA)
+        return _eval_road(flow, answers, _M_MA_READY, _PATH_MA, _UNLOCK_MA,
+                          _WHY_MA, _NOW_MA, _PEND_MA)
     if flow.slug == "tunisia-road-accident":
-        return _eval_road(flow, answers, _M_TN_READY, _PATH_TN, _UNLOCK_TN)
+        return _eval_road(flow, answers, _M_TN_READY, _PATH_TN, _UNLOCK_TN,
+                          _WHY_TN, _NOW_TN, _PEND_TN)
     if flow.slug == "international-road-accident":
         return _eval_international(flow, answers)
     # Defensive fallback — should be unreachable (every flow is handled).
-    return PreCheckResult(
-        completeness=INITIAL,
-        answered_summary=_summary(flow, answers),
-        missing_documents=(),
-        applicable_sources=flow.official_sources,
-        messages=(),
-        next_step=_NS_DOCUMENTAL,
-        cta_label=flow.cta_label,
-        readiness_pct=_readiness(flow, answers),
-    )
+    return _result(flow, answers, INITIAL, (), (), next_step=_NS_DOCUMENTAL)
