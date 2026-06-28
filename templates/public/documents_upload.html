@@ -121,7 +121,7 @@
                 </span>
                 <div class="min-w-0 flex-1">
                   <p class="font-serif text-base text-ink-950 leading-snug truncate">{{ m.analysis.document_type }}</p>
-                  <p class="mt-0.5 text-xs text-stone2-500 truncate">{{ m.filename }} · {{ m.size|filesizeformat }}</p>
+                  <p class="mt-0.5 text-xs text-stone2-500 truncate" dir="ltr">{{ m.filename }} · {{ m.size|filesizeformat }}</p>
                 </div>
                 {% if m.analysis.confidence == 'strong' %}
                   <span class="premium-badge premium-badge-success shrink-0">{{ m.analysis.confidence_label }}</span>
@@ -183,7 +183,7 @@
             {% for m in files_meta %}
             <li class="flex items-center gap-2.5">
               <span aria-hidden="true" class="shrink-0 grid place-items-center w-7 h-7 rounded-lg border border-gold-400/40 bg-sand-100 text-gold-700 text-xs">{% if m.kind == 'image' %}◫{% else %}§{% endif %}</span>
-              <span class="truncate">{{ m.filename }}</span>
+              <span class="truncate" dir="ltr">{{ m.filename }}</span>
             </li>
             {% endfor %}
           </ul>
