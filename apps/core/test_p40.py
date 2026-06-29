@@ -29,7 +29,7 @@ def test_documentation_hub_200_and_cards():
     body = _get("/documentation/")
     assert "doc-toc" in body
     assert body.count('class="doc-card scroll-mt-24"') == 9
-    assert body.count("doc-toc__link") == 9
+    assert body.count("doc-toc__link") >= 9  # P44 added glossary + quick-answers anchors
     # links out to the key journeys
     for href in ("/guided/", "/documents/upload/", "/sources/"):
         assert href in body
