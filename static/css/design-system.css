@@ -800,6 +800,68 @@ body.has-drawer-open { overflow: hidden; }
   .premium-form-actions .premium-form-help { text-align: center; }
 }
 
+/* P36: intent card — premium image card for the "what do you want to do?" grid. */
+.intent-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: var(--ds-radius-xl);
+  overflow: hidden;
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border-soft);
+  box-shadow: var(--ds-shadow-sm);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .intent-card:hover { transform: translateY(-4px); box-shadow: var(--ds-shadow-lg); border-color: var(--ds-gold); }
+}
+.intent-card__media { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: var(--ds-navy); }
+.intent-card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ds-ease-out, ease); }
+@media (hover: hover) and (pointer: fine) {
+  .intent-card:hover .intent-card__media img { transform: scale(1.06); }
+}
+.intent-card__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(7, 18, 38, 0.05), rgba(7, 18, 38, 0.5));
+}
+/* The medallion lives in the body and overlaps UP into the image, so it is never
+   clipped by the media's overflow:hidden (which powers the slow-zoom). */
+.intent-card__icon {
+  position: relative;
+  z-index: 1;
+  margin-top: -3.35rem;
+  margin-bottom: 0.5rem;
+  width: 2.9rem;
+  height: 2.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.85rem;
+  background: linear-gradient(160deg, var(--ds-gold, #c9a86a), var(--ds-gold-strong, #a9863f));
+  color: var(--ds-navy, #0a1730);
+  box-shadow: 0 8px 18px -8px rgba(201, 168, 106, 0.85);
+}
+.intent-card__icon svg { width: 1.45rem; height: 1.45rem; stroke-width: 1.8; }
+.intent-card__body { display: flex; flex-direction: column; gap: 0.5rem; padding: 1.25rem; flex: 1; }
+.intent-card__title { font-family: var(--ds-font-serif); font-size: 1.2rem; color: var(--ds-navy); line-height: 1.25; }
+.intent-card__text { font-size: 0.9rem; color: var(--ds-ink); line-height: 1.55; flex: 1; }
+.intent-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--ds-gold-strong);
+}
+@media (prefers-reduced-motion: reduce) {
+  .intent-card, .intent-card__media img { transition: none; }
+}
+
 /* --- Tooltip (hover/focus, keyboard dismissable) ------------------------ */
 .tooltip-anchor {
   display: inline-flex;
