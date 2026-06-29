@@ -60,10 +60,11 @@ def test_services_is_grouped_into_sections():
 def test_guided_router_has_stepper_cockpit():
     body = _get("/guided/")
     assert "Come funziona l'instradamento guidato" in body  # stepper aria-label
-    assert "Scegli la categoria" in body                     # step 2
+    # P39: the cockpit is now a four-step visual path (Country/Case/Documents/Result).
+    assert "Caso" in body and "Risultato" in body            # path steps 2 & 4
     assert "Passo 1" in body                                 # step labelling
-    # the three step medallions render
-    assert body.count("icon-medallion") >= 3
+    # the four step medallions render
+    assert body.count("icon-medallion") >= 4
 
 
 # --- No regression: redesigned pages stay clean -----------------------------
