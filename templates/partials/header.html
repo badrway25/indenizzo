@@ -111,10 +111,15 @@
             <span aria-hidden="true" class="nav-menu__ico">{% include "partials/_icon.html" with name="check" %}</span>
             <span class="nav-menu__text"><span class="nav-menu__label">{% translate "Estimate, check or summary" %}</span><span class="nav-menu__desc">{% translate "Find the right path for your case." %}</span></span>
           </a>
+          <a href="{% url 'core:documentation' %}" class="nav-menu__item" role="menuitem">
+            <span aria-hidden="true" class="nav-menu__ico">{% include "partials/_icon.html" with name="book-open" %}</span>
+            <span class="nav-menu__text"><span class="nav-menu__label">{% translate "Documentation" %}</span><span class="nav-menu__desc">{% translate "Plain-language guides to the platform." %}</span></span>
+          </a>
           <a href="/privacy/" class="nav-menu__item" role="menuitem">
             <span aria-hidden="true" class="nav-menu__ico">{% include "partials/_icon.html" with name="shield-check" %}</span>
             <span class="nav-menu__text"><span class="nav-menu__label">{% translate "Privacy and disclaimer" %}</span><span class="nav-menu__desc">{% translate "How we handle your data." %}</span></span>
           </a>
+          <a href="{% url 'core:documentation' %}" class="nav-menu__cta">{% translate "Open documentation" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
         </div>
       </div>
     </nav>
@@ -167,6 +172,7 @@
         <a href="{% url 'core:case_types' %}" class="nav-drawer__link">{% translate "Case types" %}</a>
         <a href="{% url 'core:services' %}" class="nav-drawer__link">{% translate "Services" %}</a>
         <a href="{% url 'core:how_it_works' %}" class="nav-drawer__link">{% translate "Method" %}</a>
+        <a href="{% url 'core:documentation' %}" class="nav-drawer__link">{% translate "Documentation" %}</a>
         <a href="{% url 'core:faq' %}" class="nav-drawer__link">{% translate "FAQ" %}</a>
         <a href="{% url 'core:search' %}" class="nav-drawer__link">{% translate "Search the platform" %}</a>
       </div>
