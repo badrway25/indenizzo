@@ -1,0 +1,65 @@
+{% load i18n %}
+{% comment %}
+  P39: human result "report header" — the same four plain-language sections on
+  every result page (estimate, pre-check, document dossier), beside a calm
+  report image. It reads like a short letter, not a technical dump.
+
+  Optional context (each page passes what it has; all have honest defaults):
+  - report_mode      -> "estimate" | "check" | "prepare" (default "prepare").
+                        Drives the "We can do now" verb.
+  - report_indicated -> one line on what the person provided.
+  - report_missing   -> one line on what is still needed.
+  - report_next      -> one line on the next action.
+  - img_report       -> body image dict for the side panel.
+
+  No technical words (no readiness / engine / flow / result kind / metadata).
+{% endcomment %}
+{% translate "The information you entered about your case." as indicated_default %}
+{% translate "A short legal review by the Studio to confirm the details of your case." as missing_default %}
+{% translate "Send your summary to the Studio and gather the documents listed below." as next_default %}
+<section class="result-report" data-reveal aria-label="{% translate 'Your result in plain words' %}">
+  <div class="result-report__grid">
+    <div class="result-report__body">
+      <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Your result, in plain words" %}</p>
+      <ul class="result-report__rows">
+        <li class="result-report__row">
+          <span class="result-report__ico" aria-hidden="true">{% include "partials/_icon.html" with name="list-checks" icon_class="w-5 h-5" %}</span>
+          <div>
+            <p class="result-report__term">{% translate "You indicated" %}</p>
+            <p class="result-report__desc">{{ report_indicated|default:indicated_default }}</p>
+          </div>
+        </li>
+        <li class="result-report__row">
+          <span class="result-report__ico result-report__ico--ok" aria-hidden="true">{% include "partials/_icon.html" with name="scale" icon_class="w-5 h-5" %}</span>
+          <div>
+            <p class="result-report__term">{% translate "We can do now" %}</p>
+            <p class="result-report__desc">
+              {% if report_mode == "estimate" %}{% translate "We can calculate an indicative range from the validated official sources." %}
+              {% elif report_mode == "check" %}{% translate "We can check your documents and point you to the right path." %}
+              {% else %}{% translate "We can prepare your dossier and list the official references that apply." %}{% endif %}
+            </p>
+          </div>
+        </li>
+        <li class="result-report__row">
+          <span class="result-report__ico result-report__ico--gold" aria-hidden="true">{% include "partials/_icon.html" with name="document" icon_class="w-5 h-5" %}</span>
+          <div>
+            <p class="result-report__term">{% translate "Still missing" %}</p>
+            <p class="result-report__desc">{{ report_missing|default:missing_default }}</p>
+          </div>
+        </li>
+        <li class="result-report__row">
+          <span class="result-report__ico" aria-hidden="true">{% include "partials/_icon.html" with name="arrow-right" icon_class="w-5 h-5" %}</span>
+          <div>
+            <p class="result-report__term">{% translate "Your next step" %}</p>
+            <p class="result-report__desc">{{ report_next|default:next_default }}</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+    {% if img_report %}
+    <div class="result-report__media">
+      {% include "partials/_premium_body_image.html" with image=img_report figure_class="h-full min-h-[15rem]" %}
+    </div>
+    {% endif %}
+  </div>
+</section>

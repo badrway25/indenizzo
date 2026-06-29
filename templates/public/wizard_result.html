@@ -20,6 +20,13 @@
 <section class="max-w-3xl mx-auto px-5 lg:px-8 pt-8 pb-16">
   <div>{% include "partials/_premium_stepper.html" with step=3 %}</div>
 
+  {# P39: human "report header" — indicated / can do / missing / next, with a report image. #}
+  {% if has_estimate %}
+    {% include "partials/_result_report_summary.html" with report_mode="estimate" report_missing=_("A short legal review by the Studio to confirm documents, expert reports and the responsibility split.") report_next=_("Download the PDF, then request a legal review from the Studio.") %}
+  {% else %}
+    {% include "partials/_result_report_summary.html" with report_mode="prepare" %}
+  {% endif %}
+
   {# P9 Fase C: mandatory scope note for medical-liability simulations. #}
   {% if medical_scope_note %}
     <div class="mt-6 rounded-2xl border border-gold-400/50 bg-sand-100 px-5 py-4 text-sm text-ink-900 leading-relaxed" role="note">

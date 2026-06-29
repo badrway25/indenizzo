@@ -103,6 +103,8 @@
 
       {% if result %}
       <section id="precheck-result" class="mt-8 scroll-mt-24 space-y-5" aria-live="polite">
+        {# P39: human "report header" — same plain-language framing as every result page. #}
+        {% include "partials/_result_report_summary.html" with report_mode="check" report_indicated=result.dossier_summary report_next=result.next_step %}
         {# ---- Result hero: top-line status + one-line dossier summary ---- #}
         <div class="premium-card p-6 lg:p-7 premium-rise">
           <p class="premium-eyebrow text-gold-700">{% translate "Dossier analysis" %}</p>
