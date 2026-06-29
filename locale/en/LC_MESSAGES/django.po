@@ -5139,3 +5139,102 @@ msgstr "Recognise"
 
 msgid "Your path"
 msgstr "Your path"
+
+msgid "Start here"
+msgstr "Start here"
+
+msgid "New here? Three steps to your first simulation"
+msgstr "New here? Three steps to your first simulation"
+
+msgid "Choose your country and your case."
+msgstr "Choose your country and your case."
+
+msgid "Answer a few simple questions."
+msgstr "Answer a few simple questions."
+
+msgid "Get an estimate or a clear documental summary."
+msgstr "Get an estimate or a clear documental summary."
+
+msgid "Start the guided path"
+msgstr "Start the guided path"
+
+msgid "Read how it works"
+msgstr "Read how it works"
+
+msgid "Simple glossary"
+msgstr "Simple glossary"
+
+msgid "A few words, explained plainly"
+msgstr "A few words, explained plainly"
+
+msgid "Indicative estimate"
+msgstr "Indicative estimate"
+
+msgid "A range, not a promise — a starting point for negotiation, based on official sources."
+msgstr "A range, not a promise — a starting point for negotiation, based on official sources."
+
+msgid "A law, decree or official table that grounds what the platform shows."
+msgstr "A law, decree or official table that grounds what the platform shows."
+
+msgid "Official table"
+msgstr "Official table"
+
+msgid "The validated table that lets the platform calculate. Without it, no figure is shown."
+msgstr "The validated table that lets the platform calculate. Without it, no figure is shown."
+
+msgid "The harm to your health and daily life, valued by age and disability percentage."
+msgstr "The harm to your health and daily life, valued by age and disability percentage."
+
+msgid "Documental check"
+msgstr "Documental check"
+
+msgid "When there is no table, the platform organises your documents instead of guessing."
+msgstr "When there is no table, the platform organises your documents instead of guessing."
+
+msgid "Applicable law"
+msgstr "Applicable law"
+
+msgid "For cross-border cases, which country's law applies to your situation."
+msgstr "For cross-border cases, which country's law applies to your situation."
+
+msgid "Quick answers"
+msgstr "Quick answers"
+
+msgid "Common questions"
+msgstr "Common questions"
+
+msgid "No. It is indicative and does not constitute legal advice or a guarantee. The actual amount depends on documents, expert reports and the competent court."
+msgstr "No. It is indicative and does not constitute legal advice or a guarantee. The actual amount depends on documents, expert reports and the competent court."
+
+msgid "What does it cost to try?"
+msgstr "What does it cost to try?"
+
+msgid "Running a simulation and preparing a summary is free. A professional engagement begins only with a separate written agreement."
+msgstr "Running a simulation and preparing a summary is free. A professional engagement begins only with a separate written agreement."
+
+msgid "What happens to my documents?"
+msgstr "What happens to my documents?"
+
+msgid "They are analysed in memory to build your result and are not stored. You decide what to share with the Studio."
+msgstr "They are analysed in memory to build your result and are not stored. You decide what to share with the Studio."
+
+msgid "Why does my case show no amount?"
+msgstr "Why does my case show no amount?"
+
+msgid "Because there is no validated official table for it yet. The platform never invents a figure — it helps you prepare your documents instead."
+msgstr "Because there is no validated official table for it yet. The platform never invents a figure — it helps you prepare your documents instead."
+
+msgid "In 3 steps: country, case, documents."
+msgstr "In 3 steps: country, case, documents."
+
+msgid "Upload PDF or images — your files are never stored."
+msgstr "Upload PDF or images — your files are never stored."
+
+msgid "Choose where the case happened."
+msgstr "Choose where the case happened."
+
+msgid "See the official rules we use — and when a table allows a calculation."
+msgstr "See the official rules we use — and when a table allows a calculation."
+
+msgid "Understand how the platform works, simply."
+msgstr "Understand how the platform works, simply."

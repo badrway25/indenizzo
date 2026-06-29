@@ -17,6 +17,26 @@
       {% blocktranslate %}Short, plain-language guides — written for people, not for engineers. Find what you need, in order, from a first simulation to reading your result.{% endblocktranslate %}
     </p>
 
+    {# P44: "Start here" — a one-glance quick start for first-time visitors. #}
+    <div class="doc-start mt-10" data-reveal>
+      <div class="doc-start__head">
+        <span aria-hidden="true" class="doc-start__ico">{% include "partials/_icon.html" with name="sparkles" icon_class="w-6 h-6" %}</span>
+        <div>
+          <p class="text-[11px] uppercase tracking-[0.22em] text-gold-400 font-semibold">{% translate "Start here" %}</p>
+          <h2 class="mt-1 font-serif text-2xl sm:text-3xl text-sand-50 leading-tight">{% translate "New here? Three steps to your first simulation" %}</h2>
+        </div>
+      </div>
+      <ol class="doc-start__steps">
+        <li class="doc-start__step"><span aria-hidden="true" class="doc-start__num">1</span>{% translate "Choose your country and your case." %}</li>
+        <li class="doc-start__step"><span aria-hidden="true" class="doc-start__num">2</span>{% translate "Answer a few simple questions." %}</li>
+        <li class="doc-start__step"><span aria-hidden="true" class="doc-start__num">3</span>{% translate "Get an estimate or a clear documental summary." %}</li>
+      </ol>
+      <div class="doc-start__cta">
+        <a href="{% url 'core:guided_router' %}" class="premium-btn premium-btn-gold">{% translate "Start the guided path" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+        <a href="#doc-simulation" class="premium-btn premium-btn-on-dark premium-btn-sm">{% translate "Read how it works" %}</a>
+      </div>
+    </div>
+
     <div class="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
       {# Sticky sidebar: the nine topics as in-page anchors. #}
       <aside>
@@ -32,6 +52,8 @@
             <li><a href="#doc-summary" class="doc-toc__link">{% translate "When it prepares only a summary" %}</a></li>
             <li><a href="#doc-privacy" class="doc-toc__link">{% translate "Privacy and your data" %}</a></li>
             <li><a href="#doc-faq" class="doc-toc__link">{% translate "Frequently asked questions" %}</a></li>
+            <li><a href="#doc-glossary" class="doc-toc__link">{% translate "Simple glossary" %}</a></li>
+            <li><a href="#doc-mini-faq" class="doc-toc__link">{% translate "Quick answers" %}</a></li>
           </ol>
         </nav>
       </aside>
@@ -121,7 +143,45 @@
       </div>
     </div>
 
-    <p class="mt-12 text-xs text-stone2-500 leading-relaxed border-t border-stone2-200 pt-6 max-w-3xl">
+    {# P44: a simple glossary — plain-language definitions, no jargon. #}
+    <div id="doc-glossary" class="mt-16 scroll-mt-24" data-reveal>
+      <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Simple glossary" %}</p>
+      <h2 class="mt-3 font-serif text-2xl sm:text-3xl text-ink-950 leading-tight">{% translate "A few words, explained plainly" %}</h2>
+      <dl class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="doc-term"><dt class="doc-term__name">{% translate "Indicative estimate" %}</dt><dd class="doc-term__def">{% translate "A range, not a promise — a starting point for negotiation, based on official sources." %}</dd></div>
+        <div class="doc-term"><dt class="doc-term__name">{% translate "Official source" %}</dt><dd class="doc-term__def">{% translate "A law, decree or official table that grounds what the platform shows." %}</dd></div>
+        <div class="doc-term"><dt class="doc-term__name">{% translate "Official table" %}</dt><dd class="doc-term__def">{% translate "The validated table that lets the platform calculate. Without it, no figure is shown." %}</dd></div>
+        <div class="doc-term"><dt class="doc-term__name">{% translate "Biological damage" %}</dt><dd class="doc-term__def">{% translate "The harm to your health and daily life, valued by age and disability percentage." %}</dd></div>
+        <div class="doc-term"><dt class="doc-term__name">{% translate "Documental check" %}</dt><dd class="doc-term__def">{% translate "When there is no table, the platform organises your documents instead of guessing." %}</dd></div>
+        <div class="doc-term"><dt class="doc-term__name">{% translate "Applicable law" %}</dt><dd class="doc-term__def">{% translate "For cross-border cases, which country's law applies to your situation." %}</dd></div>
+      </dl>
+    </div>
+
+    {# P44: mini FAQ — the questions people ask most, as a light accordion. #}
+    <div id="doc-mini-faq" class="mt-16 scroll-mt-24 max-w-3xl" data-reveal>
+      <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Quick answers" %}</p>
+      <h2 class="mt-3 font-serif text-2xl sm:text-3xl text-ink-950 leading-tight">{% translate "Common questions" %}</h2>
+      <div class="mt-6 space-y-3">
+        <details class="doc-faq">
+          <summary class="doc-faq__q">{% translate "Is the estimate binding?" %}</summary>
+          <p class="doc-faq__a">{% translate "No. It is indicative and does not constitute legal advice or a guarantee. The actual amount depends on documents, expert reports and the competent court." %}</p>
+        </details>
+        <details class="doc-faq">
+          <summary class="doc-faq__q">{% translate "What does it cost to try?" %}</summary>
+          <p class="doc-faq__a">{% translate "Running a simulation and preparing a summary is free. A professional engagement begins only with a separate written agreement." %}</p>
+        </details>
+        <details class="doc-faq">
+          <summary class="doc-faq__q">{% translate "What happens to my documents?" %}</summary>
+          <p class="doc-faq__a">{% translate "They are analysed in memory to build your result and are not stored. You decide what to share with the Studio." %}</p>
+        </details>
+        <details class="doc-faq">
+          <summary class="doc-faq__q">{% translate "Why does my case show no amount?" %}</summary>
+          <p class="doc-faq__a">{% translate "Because there is no validated official table for it yet. The platform never invents a figure — it helps you prepare your documents instead." %}</p>
+        </details>
+      </div>
+    </div>
+
+    <p class="mt-16 text-xs text-stone2-500 leading-relaxed border-t border-stone2-200 pt-6 max-w-3xl">
       {% blocktranslate %}This documentation is informative and does not constitute legal advice. A simulation is indicative; the actual valuation depends on documents, expert reports, applicable law and the competent jurisdiction.{% endblocktranslate %}
     </p>
   </section>

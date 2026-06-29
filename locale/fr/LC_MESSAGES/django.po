@@ -8183,3 +8183,90 @@ msgstr "Reconnaître"
 
 msgid "Your path"
 msgstr "Votre parcours"
+
+msgid "New here? Three steps to your first simulation"
+msgstr "Nouveau ? Trois étapes pour votre première simulation"
+
+msgid "Choose your country and your case."
+msgstr "Choisissez votre pays et votre dossier."
+
+msgid "Answer a few simple questions."
+msgstr "Répondez à quelques questions simples."
+
+msgid "Get an estimate or a clear documental summary."
+msgstr "Obtenez une estimation ou un récapitulatif documentaire clair."
+
+msgid "Start the guided path"
+msgstr "Lancer le parcours guidé"
+
+msgid "Read how it works"
+msgstr "Lire comment ça marche"
+
+msgid "Simple glossary"
+msgstr "Glossaire simple"
+
+msgid "A few words, explained plainly"
+msgstr "Quelques mots, expliqués simplement"
+
+msgid "A range, not a promise — a starting point for negotiation, based on official sources."
+msgstr "Une fourchette, pas une promesse — un point de départ pour la négociation, fondé sur des sources officielles."
+
+msgid "A law, decree or official table that grounds what the platform shows."
+msgstr "Une loi, un décret ou une table officielle qui fonde ce que la plateforme affiche."
+
+msgid "The validated table that lets the platform calculate. Without it, no figure is shown."
+msgstr "La table validée qui permet à la plateforme de calculer. Sans elle, aucun montant n'est affiché."
+
+msgid "The harm to your health and daily life, valued by age and disability percentage."
+msgstr "L'atteinte à votre santé et à votre vie quotidienne, évaluée selon l'âge et le taux d'incapacité."
+
+msgid "Documental check"
+msgstr "Vérification documentaire"
+
+msgid "When there is no table, the platform organises your documents instead of guessing."
+msgstr "Lorsqu'il n'y a pas de table, la plateforme organise vos documents au lieu de deviner."
+
+msgid "For cross-border cases, which country's law applies to your situation."
+msgstr "Pour les dossiers transfrontaliers, quelle loi nationale s'applique à votre situation."
+
+msgid "Quick answers"
+msgstr "Réponses rapides"
+
+msgid "Common questions"
+msgstr "Questions courantes"
+
+msgid "No. It is indicative and does not constitute legal advice or a guarantee. The actual amount depends on documents, expert reports and the competent court."
+msgstr "Non. Elle est indicative et ne constitue ni un avis juridique ni une garantie. Le montant réel dépend des documents, des expertises et du tribunal compétent."
+
+msgid "What does it cost to try?"
+msgstr "Combien coûte un essai ?"
+
+msgid "Running a simulation and preparing a summary is free. A professional engagement begins only with a separate written agreement."
+msgstr "Lancer une simulation et préparer un récapitulatif est gratuit. Un mandat professionnel ne commence qu'avec un accord écrit distinct."
+
+msgid "What happens to my documents?"
+msgstr "Qu'arrive-t-il à mes documents ?"
+
+msgid "They are analysed in memory to build your result and are not stored. You decide what to share with the Studio."
+msgstr "Ils sont analysés en mémoire pour construire votre résultat et ne sont pas conservés. Vous décidez de ce que vous partagez avec le Cabinet."
+
+msgid "Why does my case show no amount?"
+msgstr "Pourquoi mon dossier n'affiche aucun montant ?"
+
+msgid "Because there is no validated official table for it yet. The platform never invents a figure — it helps you prepare your documents instead."
+msgstr "Parce qu'il n'existe pas encore de table officielle validée. La plateforme n'invente jamais de montant — elle vous aide plutôt à préparer vos documents."
+
+msgid "In 3 steps: country, case, documents."
+msgstr "En 3 étapes : pays, dossier, documents."
+
+msgid "Upload PDF or images — your files are never stored."
+msgstr "Téléversez PDF ou images — vos fichiers ne sont jamais conservés."
+
+msgid "Choose where the case happened."
+msgstr "Choisissez où le dossier s'est produit."
+
+msgid "See the official rules we use — and when a table allows a calculation."
+msgstr "Voyez les règles officielles que nous utilisons — et quand une table permet le calcul."
+
+msgid "Understand how the platform works, simply."
+msgstr "Comprenez simplement comment fonctionne la plateforme."

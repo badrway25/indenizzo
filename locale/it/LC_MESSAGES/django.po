@@ -8138,3 +8138,90 @@ msgstr "Riconosci"
 
 msgid "Your path"
 msgstr "Il tuo percorso"
+
+msgid "New here? Three steps to your first simulation"
+msgstr "Sei nuovo? Tre passi per la tua prima simulazione"
+
+msgid "Choose your country and your case."
+msgstr "Scegli il paese e il caso."
+
+msgid "Answer a few simple questions."
+msgstr "Rispondi a poche domande semplici."
+
+msgid "Get an estimate or a clear documental summary."
+msgstr "Ottieni una stima o un riepilogo documentale chiaro."
+
+msgid "Start the guided path"
+msgstr "Avvia il percorso guidato"
+
+msgid "Read how it works"
+msgstr "Leggi come funziona"
+
+msgid "Simple glossary"
+msgstr "Glossario semplice"
+
+msgid "A few words, explained plainly"
+msgstr "Poche parole, spiegate in modo semplice"
+
+msgid "A range, not a promise — a starting point for negotiation, based on official sources."
+msgstr "Un intervallo, non una promessa — un punto di partenza per la trattativa, basato su fonti ufficiali."
+
+msgid "A law, decree or official table that grounds what the platform shows."
+msgstr "Una legge, un decreto o una tabella ufficiale che fonda ciò che la piattaforma mostra."
+
+msgid "The validated table that lets the platform calculate. Without it, no figure is shown."
+msgstr "La tabella validata che permette alla piattaforma di calcolare. Senza, non viene mostrato alcun importo."
+
+msgid "The harm to your health and daily life, valued by age and disability percentage."
+msgstr "Il danno alla tua salute e alla vita quotidiana, valutato per età e percentuale di invalidità."
+
+msgid "Documental check"
+msgstr "Verifica documentale"
+
+msgid "When there is no table, the platform organises your documents instead of guessing."
+msgstr "Quando non c'è una tabella, la piattaforma organizza i tuoi documenti invece di indovinare."
+
+msgid "For cross-border cases, which country's law applies to your situation."
+msgstr "Per i casi transfrontalieri, quale legge nazionale si applica alla tua situazione."
+
+msgid "Quick answers"
+msgstr "Risposte rapide"
+
+msgid "Common questions"
+msgstr "Domande comuni"
+
+msgid "No. It is indicative and does not constitute legal advice or a guarantee. The actual amount depends on documents, expert reports and the competent court."
+msgstr "No. È indicativa e non costituisce parere legale né garanzia. L'importo effettivo dipende da documenti, perizie e dal giudice competente."
+
+msgid "What does it cost to try?"
+msgstr "Quanto costa provare?"
+
+msgid "Running a simulation and preparing a summary is free. A professional engagement begins only with a separate written agreement."
+msgstr "Eseguire una simulazione e preparare un riepilogo è gratuito. Un incarico professionale inizia solo con un accordo scritto separato."
+
+msgid "What happens to my documents?"
+msgstr "Cosa succede ai miei documenti?"
+
+msgid "They are analysed in memory to build your result and are not stored. You decide what to share with the Studio."
+msgstr "Sono analizzati in memoria per costruire il tuo risultato e non vengono conservati. Decidi tu cosa condividere con lo Studio."
+
+msgid "Why does my case show no amount?"
+msgstr "Perché il mio caso non mostra un importo?"
+
+msgid "Because there is no validated official table for it yet. The platform never invents a figure — it helps you prepare your documents instead."
+msgstr "Perché non esiste ancora una tabella ufficiale validata. La piattaforma non inventa mai un importo — ti aiuta invece a preparare i documenti."
+
+msgid "In 3 steps: country, case, documents."
+msgstr "In 3 passaggi: paese, caso, documenti."
+
+msgid "Upload PDF or images — your files are never stored."
+msgstr "Carica PDF o immagini — i tuoi file non vengono mai conservati."
+
+msgid "Choose where the case happened."
+msgstr "Scegli dove è successo il caso."
+
+msgid "See the official rules we use — and when a table allows a calculation."
+msgstr "Vedi le regole ufficiali che usiamo — e quando una tabella permette il calcolo."
+
+msgid "Understand how the platform works, simply."
+msgstr "Capisci come funziona la piattaforma, in modo semplice."

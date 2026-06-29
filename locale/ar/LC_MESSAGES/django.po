@@ -7892,3 +7892,90 @@ msgstr "تعرّف"
 
 msgid "Your path"
 msgstr "مسارك"
+
+msgid "New here? Three steps to your first simulation"
+msgstr "جديد هنا؟ ثلاث خطوات نحو محاكاتك الأولى"
+
+msgid "Choose your country and your case."
+msgstr "اختر بلدك وقضيتك."
+
+msgid "Answer a few simple questions."
+msgstr "أجب عن بضعة أسئلة بسيطة."
+
+msgid "Get an estimate or a clear documental summary."
+msgstr "احصل على تقدير أو ملخّص مستندي واضح."
+
+msgid "Start the guided path"
+msgstr "ابدأ المسار الموجَّه"
+
+msgid "Read how it works"
+msgstr "اقرأ كيف يعمل"
+
+msgid "Simple glossary"
+msgstr "مسرد مبسّط"
+
+msgid "A few words, explained plainly"
+msgstr "بعض الكلمات، مشروحة ببساطة"
+
+msgid "A range, not a promise — a starting point for negotiation, based on official sources."
+msgstr "نطاق، لا وعد — نقطة انطلاق للتفاوض، استنادًا إلى مصادر رسمية."
+
+msgid "A law, decree or official table that grounds what the platform shows."
+msgstr "قانون أو مرسوم أو جدول رسمي يستند إليه ما تعرضه المنصة."
+
+msgid "The validated table that lets the platform calculate. Without it, no figure is shown."
+msgstr "الجدول المعتمد الذي يتيح للمنصة الحساب. وبدونه لا يُعرَض أي مبلغ."
+
+msgid "The harm to your health and daily life, valued by age and disability percentage."
+msgstr "الضرر الذي يلحق بصحتك وحياتك اليومية، مُقدَّرًا حسب العمر ونسبة العجز."
+
+msgid "Documental check"
+msgstr "تحقّق مستندي"
+
+msgid "When there is no table, the platform organises your documents instead of guessing."
+msgstr "عندما لا يوجد جدول، تنظّم المنصة مستنداتك بدل التخمين."
+
+msgid "For cross-border cases, which country's law applies to your situation."
+msgstr "في القضايا العابرة للحدود، قانون أي بلد ينطبق على وضعك."
+
+msgid "Quick answers"
+msgstr "إجابات سريعة"
+
+msgid "Common questions"
+msgstr "أسئلة شائعة"
+
+msgid "No. It is indicative and does not constitute legal advice or a guarantee. The actual amount depends on documents, expert reports and the competent court."
+msgstr "لا. إنه إرشادي ولا يشكّل استشارة قانونية ولا ضمانًا. ويعتمد المبلغ الفعلي على المستندات والتقارير الخبيرة والمحكمة المختصة."
+
+msgid "What does it cost to try?"
+msgstr "كم تكلفة التجربة؟"
+
+msgid "Running a simulation and preparing a summary is free. A professional engagement begins only with a separate written agreement."
+msgstr "تشغيل محاكاة وإعداد ملخّص مجاني. ولا يبدأ التوكيل المهني إلا باتفاق مكتوب منفصل."
+
+msgid "What happens to my documents?"
+msgstr "ماذا يحدث لمستنداتي؟"
+
+msgid "They are analysed in memory to build your result and are not stored. You decide what to share with the Studio."
+msgstr "تُحلَّل في الذاكرة لبناء نتيجتك ولا تُخزَّن. وأنت تقرّر ما تشاركه مع المكتب."
+
+msgid "Why does my case show no amount?"
+msgstr "لماذا لا تُظهر قضيتي أي مبلغ؟"
+
+msgid "Because there is no validated official table for it yet. The platform never invents a figure — it helps you prepare your documents instead."
+msgstr "لأنه لا يوجد بعدُ جدول رسمي معتمد لها. لا تختلق المنصة أي مبلغ أبدًا — بل تساعدك على تجهيز مستنداتك."
+
+msgid "In 3 steps: country, case, documents."
+msgstr "في 3 خطوات: البلد، القضية، المستندات."
+
+msgid "Upload PDF or images — your files are never stored."
+msgstr "حمّل ملفات PDF أو صورًا — لا تُخزَّن ملفاتك أبدًا."
+
+msgid "Choose where the case happened."
+msgstr "اختر أين وقعت القضية."
+
+msgid "See the official rules we use — and when a table allows a calculation."
+msgstr "اطّلع على القواعد الرسمية التي نستخدمها — ومتى يتيح جدولٌ الحساب."
+
+msgid "Understand how the platform works, simply."
+msgstr "افهم كيف تعمل المنصة، ببساطة."
