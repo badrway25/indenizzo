@@ -52,6 +52,7 @@
             <li><a href="#doc-summary" class="doc-toc__link">{% translate "When it prepares only a summary" %}</a></li>
             <li><a href="#doc-privacy" class="doc-toc__link">{% translate "Privacy and your data" %}</a></li>
             <li><a href="#doc-faq" class="doc-toc__link">{% translate "Frequently asked questions" %}</a></li>
+            <li><a href="#doc-by-category" class="doc-toc__link">{% translate "Guides by case type" %}</a></li>
             <li><a href="#doc-glossary" class="doc-toc__link">{% translate "Simple glossary" %}</a></li>
             <li><a href="#doc-mini-faq" class="doc-toc__link">{% translate "Quick answers" %}</a></li>
           </ol>
@@ -140,6 +141,50 @@
             <a href="{% url 'core:faq' %}" class="doc-card__cta">{% translate "Read the FAQ" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
           </div>
         </article>
+      </div>
+    </div>
+
+    {# P45: guides by case type — one card per category, linking to its full guide. #}
+    <div id="doc-by-category" class="mt-16 scroll-mt-24" data-reveal>
+      <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Guides by case type" %}</p>
+      <h2 class="mt-3 font-serif text-2xl sm:text-3xl text-ink-950 leading-tight">{% translate "Find your case, see what you can do" %}</h2>
+      <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <a href="{% url 'core:case_type_landing' slug='road-accident' %}" class="doc-cat premium-card premium-card-hover">
+          <span aria-hidden="true" class="icon-medallion shrink-0">{% include "partials/_icon.html" with name="car" icon_class="w-5 h-5" %}</span>
+          <span class="doc-cat__text"><span class="doc-cat__name">{% translate "Road accident" %}</span><span class="doc-cat__line">{% translate "An indicative estimate where the official table allows it." %}</span></span>
+        </a>
+        <a href="{% url 'core:case_type_landing' slug='bodily-injury' %}" class="doc-cat premium-card premium-card-hover">
+          <span aria-hidden="true" class="icon-medallion shrink-0">{% include "partials/_icon.html" with name="heart" icon_class="w-5 h-5" %}</span>
+          <span class="doc-cat__text"><span class="doc-cat__name">{% translate "Biological damage" %}</span><span class="doc-cat__line">{% translate "Valued by age and disability percentage." %}</span></span>
+        </a>
+        <a href="{% url 'core:case_type_landing' slug='medical-malpractice' %}" class="doc-cat premium-card premium-card-hover">
+          <span aria-hidden="true" class="icon-medallion shrink-0">{% include "partials/_icon.html" with name="stethoscope" icon_class="w-5 h-5" %}</span>
+          <span class="doc-cat__text"><span class="doc-cat__name">{% translate "Medical liability" %}</span><span class="doc-cat__line">{% translate "We read the clinical records and map the path." %}</span></span>
+        </a>
+        <a href="{% url 'core:case_type_landing' slug='insurance-offer-review' %}" class="doc-cat premium-card premium-card-hover">
+          <span aria-hidden="true" class="icon-medallion shrink-0">{% include "partials/_icon.html" with name="shield-check" icon_class="w-5 h-5" %}</span>
+          <span class="doc-cat__text"><span class="doc-cat__name">{% translate "Insurance offer" %}</span><span class="doc-cat__line">{% translate "Compare an offer against the official reference." %}</span></span>
+        </a>
+        <a href="{% url 'core:case_type_landing' slug='work-injury' %}" class="doc-cat premium-card premium-card-hover">
+          <span aria-hidden="true" class="icon-medallion shrink-0">{% include "partials/_icon.html" with name="hard-hat" icon_class="w-5 h-5" %}</span>
+          <span class="doc-cat__text"><span class="doc-cat__name">{% translate "Work injury (INAIL)" %}</span><span class="doc-cat__line">{% translate "Check your INAIL documents and any further claim." %}</span></span>
+        </a>
+        <a href="{% url 'core:case_type_landing' slug='death-of-relative' %}" class="doc-cat premium-card premium-card-hover">
+          <span aria-hidden="true" class="icon-medallion shrink-0">{% include "partials/_icon.html" with name="users" icon_class="w-5 h-5" %}</span>
+          <span class="doc-cat__text"><span class="doc-cat__name">{% translate "Loss of a relative" %}</span><span class="doc-cat__line">{% translate "An assisted path, handled with discretion." %}</span></span>
+        </a>
+        <a href="{% url 'core:case_type_landing' slug='product-liability' %}" class="doc-cat premium-card premium-card-hover">
+          <span aria-hidden="true" class="icon-medallion shrink-0">{% include "partials/_icon.html" with name="file-text" icon_class="w-5 h-5" %}</span>
+          <span class="doc-cat__text"><span class="doc-cat__name">{% translate "Defective product" %}</span><span class="doc-cat__line">{% translate "Framed on the Consumer Code; documental analysis." %}</span></span>
+        </a>
+        <a href="{% url 'core:case_type_landing' slug='cross-border-cases' %}" class="doc-cat premium-card premium-card-hover">
+          <span aria-hidden="true" class="icon-medallion shrink-0">{% include "partials/_icon.html" with name="globe" icon_class="w-5 h-5" %}</span>
+          <span class="doc-cat__text"><span class="doc-cat__name">{% translate "International inheritance" %}</span><span class="doc-cat__line">{% translate "Which law applies and what the shares are." %}</span></span>
+        </a>
+        <a href="{% url 'core:case_type_landing' slug='foreigners-in-italy' %}" class="doc-cat premium-card premium-card-hover">
+          <span aria-hidden="true" class="icon-medallion shrink-0">{% include "partials/_icon.html" with name="map-pin" icon_class="w-5 h-5" %}</span>
+          <span class="doc-cat__text"><span class="doc-cat__name">{% translate "Foreign citizens in Italy" %}</span><span class="doc-cat__line">{% translate "Multilingual handling of your case in Italy." %}</span></span>
+        </a>
       </div>
     </div>
 
