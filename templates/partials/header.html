@@ -27,6 +27,7 @@
             <span aria-hidden="true" class="nav-menu__ico">{% include "partials/_icon.html" with name="shield-check" %}</span>
             <span class="nav-menu__text"><span class="nav-menu__label">{% translate "Check an offer" %}</span><span class="nav-menu__desc">{% translate "See if the insurer's offer is in line." %}</span></span>
           </a>
+          <p class="nav-menu__preview">{% translate "In 3 steps: country, case, documents." %}</p>
           <a href="{% url 'cases:wizard_italy_road_accident' %}" class="nav-menu__cta">{% translate "Start an estimate" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
         </div>
       </div>
@@ -50,6 +51,7 @@
             <span aria-hidden="true" class="nav-menu__ico">{% include "partials/_icon.html" with name="shield-check" %}</span>
             <span class="nav-menu__text"><span class="nav-menu__label">{% translate "Insurance offer" %}</span><span class="nav-menu__desc">{% translate "Compare a settlement offer." %}</span></span>
           </a>
+          <p class="nav-menu__preview">{% translate "Upload PDF or images — your files are never stored." %}</p>
           <a href="{% url 'core:documents_upload' %}" class="nav-menu__cta">{% translate "Upload documents" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
         </div>
       </div>
@@ -77,6 +79,7 @@
             <span aria-hidden="true" class="nav-menu__ico">{% include "partials/_icon.html" with name="globe" %}</span>
             <span class="nav-menu__text"><span class="nav-menu__label">{% translate "Belgium" %}</span><span class="nav-menu__desc">{% translate "See what's available." %}</span></span>
           </a>
+          <p class="nav-menu__preview">{% translate "Choose where the case happened." %}</p>
           <a href="{% url 'core:countries' %}" class="nav-menu__cta">{% translate "Choose a country" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
         </div>
       </div>
@@ -96,6 +99,7 @@
             <span aria-hidden="true" class="nav-menu__ico">{% include "partials/_icon.html" with name="scale" %}</span>
             <span class="nav-menu__text"><span class="nav-menu__label">{% translate "Services" %}</span><span class="nav-menu__desc">{% translate "What the Studio can do for you." %}</span></span>
           </a>
+          <p class="nav-menu__preview">{% translate "See the official rules we use — and when a table allows a calculation." %}</p>
           <a href="{% url 'core:sources' %}" class="nav-menu__cta">{% translate "Browse sources" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
         </div>
       </div>
@@ -119,6 +123,7 @@
             <span aria-hidden="true" class="nav-menu__ico">{% include "partials/_icon.html" with name="shield-check" %}</span>
             <span class="nav-menu__text"><span class="nav-menu__label">{% translate "Privacy and disclaimer" %}</span><span class="nav-menu__desc">{% translate "How we handle your data." %}</span></span>
           </a>
+          <p class="nav-menu__preview">{% translate "Understand how the platform works, simply." %}</p>
           <a href="{% url 'core:documentation' %}" class="nav-menu__cta">{% translate "Open documentation" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
         </div>
       </div>
