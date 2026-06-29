@@ -17,6 +17,40 @@
       {% blocktranslate %}Each path on the platform is grounded in an official source. Browse the library by country, category or type, see what each source unlocks, and open the official document.{% endblocktranslate %}
     </p>
 
+    {# P39: official-library framing — a real library image + a plain "how to read a source" explainer. #}
+    <div class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-stretch">
+      <div data-reveal>
+        <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Official documents, explained simply" %}</p>
+        <h2 class="mt-3 font-serif text-2xl sm:text-3xl text-ink-950 leading-tight">{% translate "How to read a source" %}</h2>
+        <p class="mt-3 text-ink-800 leading-relaxed">{% blocktranslate %}Every source answers the same five questions. Read them in order and you will know exactly what each document lets you do.{% endblocktranslate %}</p>
+        <dl class="mt-6 space-y-3">
+          <div class="source-read-row">
+            <span aria-hidden="true" class="source-read-row__num">1</span>
+            <div><dt class="source-read-row__term">{% translate "Country" %}</dt><dd class="source-read-row__desc">{% translate "Which country's law the document belongs to." %}</dd></div>
+          </div>
+          <div class="source-read-row">
+            <span aria-hidden="true" class="source-read-row__num">2</span>
+            <div><dt class="source-read-row__term">{% translate "Category" %}</dt><dd class="source-read-row__desc">{% translate "The kind of case it applies to." %}</dd></div>
+          </div>
+          <div class="source-read-row">
+            <span aria-hidden="true" class="source-read-row__num">3</span>
+            <div><dt class="source-read-row__term">{% translate "What it lets you do" %}</dt><dd class="source-read-row__desc">{% translate "Whether it can feed an estimate or guide a document check." %}</dd></div>
+          </div>
+          <div class="source-read-row">
+            <span aria-hidden="true" class="source-read-row__num">4</span>
+            <div><dt class="source-read-row__term">{% translate "When a table is needed" %}</dt><dd class="source-read-row__desc">{% translate "A figure appears only when the official table or formula is validated." %}</dd></div>
+          </div>
+          <div class="source-read-row">
+            <span aria-hidden="true" class="source-read-row__num">5</span>
+            <div><dt class="source-read-row__term">{% translate "When a document check is enough" %}</dt><dd class="source-read-row__desc">{% translate "Without a validated table, the source still guides which documents to prepare." %}</dd></div>
+          </div>
+        </dl>
+      </div>
+      <div data-reveal>
+        {% include "partials/_premium_body_image.html" with image=img_library figure_class="h-56 sm:h-72 lg:h-full lg:min-h-[24rem]" %}
+      </div>
+    </div>
+
     {# Smart-search prompt → /search/ #}
     <form action="{% url 'core:search' %}" method="get" class="mt-7 flex flex-wrap gap-2 max-w-2xl" role="search" data-lead-form="search">
       <label for="src-search" class="sr-only">{% translate "Search a country, a damage type or a source…" %}</label>
