@@ -38,24 +38,31 @@ _C_PRODUCT = _("Defective product")
 _C_SUCC = _("Inheritance")
 _C_LAW = _("Applicable law")
 
-# country -> [(category_label, state_key)] — truthful, based on validated engines.
+# country -> [(category_label, state_key)] — truthful, based on what the live
+# engines actually return on the public DB. P40: corrected after the official
+# estimate-expansion audit + a run_simulation check proved only IT road / IT
+# danno-biologico / IT medical produce a real figure today. Every other pair
+# returns `unavailable_requires_legal_validation` (FR/BE road have no validated
+# state table; IT/MA/TN inheritance engines are registered but gate to legal
+# review), so they must NOT be labelled "Estimate available". See
+# docs/audits/P40_OFFICIAL_ESTIMATE_EXPANSION_MASTERPLAN_2026-06-29.md.
 _MATRIX = [
     (_("Italy"), [
         (_C_ROAD, ST_ESTIMATE), (_C_BIO, ST_ESTIMATE), (_C_MED, ST_ESTIMATE),
-        (_C_OFFER, ST_OFFER), (_C_SUCC, ST_ESTIMATE),
+        (_C_OFFER, ST_OFFER), (_C_SUCC, ST_DOCS),
         (_C_INAIL, ST_DOCS), (_C_LOSS, ST_DOCS), (_C_PRODUCT, ST_DOCS),
     ]),
     (_("Morocco"), [
-        (_C_SUCC, ST_ESTIMATE), (_C_ROAD, ST_TABLE), (_C_LOSS, ST_DOCS),
+        (_C_SUCC, ST_DOCS), (_C_ROAD, ST_TABLE), (_C_LOSS, ST_DOCS),
     ]),
     (_("Tunisia"), [
-        (_C_SUCC, ST_ESTIMATE), (_C_ROAD, ST_TABLE), (_C_LOSS, ST_DOCS),
+        (_C_SUCC, ST_DOCS), (_C_ROAD, ST_TABLE), (_C_LOSS, ST_DOCS),
     ]),
     (_("France"), [
-        (_C_ROAD, ST_ESTIMATE), (_C_OFFER, ST_DOCS),
+        (_C_ROAD, ST_TABLE), (_C_OFFER, ST_DOCS),
     ]),
     (_("Belgium"), [
-        (_C_ROAD, ST_ESTIMATE), (_C_OFFER, ST_DOCS),
+        (_C_ROAD, ST_TABLE), (_C_OFFER, ST_DOCS),
     ]),
     (_("Cross-border"), [
         (_C_LAW, ST_LAW), (_C_SUCC, ST_LAW),
