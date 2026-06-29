@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load i18n estimate_tags %}
 
 {% block title %}{% translate "Find your guided path" %} — {{ SITE_NAME }}{% endblock %}
 {% block meta_description %}{% translate "Pick a country and a category: the platform routes you to the right path — an indicative estimate where an official table exists, or a documental pre-check otherwise. No amount is invented." %}{% endblock %}
@@ -103,4 +103,6 @@
     {% translate "No amount is calculated without a verified official table or formula." %}
   </p>
 </section>
+
+{% estimate_matrix %}
 {% endblock %}

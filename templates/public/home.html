@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load i18n estimate_tags %}
 
 {% block title %}{% blocktranslate with site=SITE_NAME %}{{ site }} — International compensation simulator{% endblocktranslate %}{% endblock %}
 
@@ -229,6 +229,8 @@
       </div>
     </div>
   </section>
+
+  {% estimate_matrix %}
 
   {# -------- Documental pre-checks (no invented amount) -------- #}
   <section class="bg-white border-y border-stone2-100">

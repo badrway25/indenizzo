@@ -7931,3 +7931,30 @@ msgstr "Confidentialité et avertissements"
 
 msgid "How we handle your data."
 msgstr "Comment nous traitons vos données."
+
+msgid "Coverage"
+msgstr "Couverture"
+
+msgid "What you can do, country by country"
+msgstr "Ce que vous pouvez faire, pays par pays"
+
+msgid "Where an official table exists, you get an estimate. Otherwise we help you check your documents and prepare your summary."
+msgstr "Là où un barème officiel existe, vous obtenez une estimation. Sinon, nous vous aidons à vérifier vos documents et à préparer votre résumé."
+
+msgid "Estimate available"
+msgstr "Estimation disponible"
+
+msgid "Offer check"
+msgstr "Vérification de l'offre"
+
+msgid "Check your documents"
+msgstr "Vérifiez vos documents"
+
+msgid "Understand which law may apply"
+msgstr "Comprenez quelle loi peut s'appliquer"
+
+msgid "Needs the official table first"
+msgstr "Nécessite d'abord le barème officiel"
+
+msgid "Biological damage"
+msgstr "Dommage biologique"

@@ -895,6 +895,65 @@ body.has-drawer-open { overflow: hidden; }
   .intent-card, .intent-card__media img { transition: none; }
 }
 
+/* P38: "What you can estimate today" matrix — card per country, state chips. */
+.matrix-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.4rem;
+  border-radius: var(--ds-radius-xl);
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border-soft);
+  box-shadow: var(--ds-shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .matrix-card:hover { transform: translateY(-3px); box-shadow: var(--ds-shadow-md); border-color: var(--ds-gold); }
+}
+.matrix-card__country {
+  font-family: var(--ds-font-serif);
+  font-size: 1.25rem;
+  color: var(--ds-navy);
+  padding-bottom: 0.7rem;
+  margin-bottom: 0.7rem;
+  border-bottom: 1px solid var(--ds-border-soft);
+}
+.matrix-card__rows { display: flex; flex-direction: column; gap: 0.55rem; list-style: none; margin: 0; padding: 0; }
+.matrix-row { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; min-width: 0; }
+.matrix-row__cat { font-size: 0.88rem; color: var(--ds-ink); min-width: 0; }
+.matrix-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+  max-width: 60%;
+  padding: 0.28rem 0.6rem;
+  border-radius: var(--ds-radius-pill);
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.2;
+  border: 1px solid transparent;
+}
+.matrix-chip__ico { display: inline-flex; }
+.matrix-chip__ico svg { width: 0.85rem; height: 0.85rem; }
+.matrix-chip__label { overflow-wrap: anywhere; }
+.matrix-chip--ok { background: var(--ds-success-soft); color: var(--ds-success); border-color: rgba(47, 125, 92, 0.25); }
+.matrix-chip--teal { background: rgba(47, 111, 115, 0.10); color: var(--ds-teal); border-color: rgba(47, 111, 115, 0.25); }
+.matrix-chip--gold { background: var(--ds-warning-soft); color: var(--ds-warning); border-color: rgba(183, 121, 31, 0.25); }
+.matrix-chip--slate { background: rgba(100, 116, 139, 0.10); color: var(--ds-slate); border-color: rgba(100, 116, 139, 0.25); }
+.matrix-chip--muted { background: var(--ds-sand); color: var(--ds-ink-soft, #5b6472); border-color: var(--ds-border-soft); }
+.matrix-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 1.6rem;
+}
+@media (max-width: 480px) {
+  .matrix-row { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+  .matrix-chip { max-width: 100%; }
+}
+
 /* --- Tooltip (hover/focus, keyboard dismissable) ------------------------ */
 .tooltip-anchor {
   display: inline-flex;

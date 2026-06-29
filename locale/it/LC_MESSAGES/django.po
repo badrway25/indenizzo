@@ -7886,3 +7886,30 @@ msgstr "Privacy e avvertenze"
 
 msgid "How we handle your data."
 msgstr "Come trattiamo i tuoi dati."
+
+msgid "Coverage"
+msgstr "Copertura"
+
+msgid "What you can do, country by country"
+msgstr "Cosa puoi fare, paese per paese"
+
+msgid "Where an official table exists, you get an estimate. Otherwise we help you check your documents and prepare your summary."
+msgstr "Dove esiste una tabella ufficiale, ottieni una stima. Altrimenti ti aiutiamo a controllare i documenti e a preparare il riepilogo."
+
+msgid "Estimate available"
+msgstr "Stima disponibile"
+
+msgid "Offer check"
+msgstr "Controllo offerta"
+
+msgid "Check your documents"
+msgstr "Verifica i documenti"
+
+msgid "Understand which law may apply"
+msgstr "Capisci quale legge può valere"
+
+msgid "Needs the official table first"
+msgstr "Serve prima la tabella ufficiale"
+
+msgid "Biological damage"
+msgstr "Danno biologico"

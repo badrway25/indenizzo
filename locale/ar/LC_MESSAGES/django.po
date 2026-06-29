@@ -7640,3 +7640,30 @@ msgstr "الخصوصية والإشعارات"
 
 msgid "How we handle your data."
 msgstr "كيف نتعامل مع بياناتك."
+
+msgid "Coverage"
+msgstr "التغطية"
+
+msgid "What you can do, country by country"
+msgstr "ما الذي يمكنك فعله، بلداً ببلد"
+
+msgid "Where an official table exists, you get an estimate. Otherwise we help you check your documents and prepare your summary."
+msgstr "حيث يوجد جدول رسمي، تحصل على تقدير. وإلا نساعدك في التحقّق من مستنداتك وتجهيز ملخّصك."
+
+msgid "Estimate available"
+msgstr "التقدير متاح"
+
+msgid "Offer check"
+msgstr "فحص العرض"
+
+msgid "Check your documents"
+msgstr "تحقّق من مستنداتك"
+
+msgid "Understand which law may apply"
+msgstr "افهم أي قانون قد ينطبق"
+
+msgid "Needs the official table first"
+msgstr "يتطلّب الجدول الرسمي أولاً"
+
+msgid "Biological damage"
+msgstr "الضرر البيولوجي"

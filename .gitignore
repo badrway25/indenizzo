@@ -110,3 +110,6 @@ backups/
 **/pexels/*.jpeg
 **/pexels/*.png
 **/pexels/*.webp
+
+p3*_*.jpeg
+p3*_*.png
