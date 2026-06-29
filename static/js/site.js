@@ -521,6 +521,41 @@
     if (document.querySelector("[data-lead-form]")) logEvent("lead_form_view");
   }
 
+  function initPathStudio() {
+    // P45: client-side guided "path studio" — a few simple toggles recommend a
+    // path (estimate / offer / documents / needs-table / applicable-law). It only
+    // shows pre-rendered result cards; it never builds a monetary figure. The
+    // "estimate" path is offered only where a validated engine exists (IT injury).
+    var root = document.querySelector("[data-path-studio]");
+    if (!root) return;
+    var results = root.querySelectorAll("[data-path-result]");
+    function val(name) {
+      var el = root.querySelector("[name='" + name + "']");
+      return el ? el.value : "";
+    }
+    function checked(name) {
+      var el = root.querySelector("[name='" + name + "']");
+      return !!(el && el.checked);
+    }
+    function compute() {
+      var country = val("ps-country");
+      var injury = checked("ps-injury");
+      var offer = checked("ps-offer");
+      var law = checked("ps-law");
+      var path = "documents";
+      if (law) path = "law";
+      else if (offer) path = "offer";
+      else if (country === "IT" && injury) path = "estimate";
+      else if ((country === "MA" || country === "TN") && injury) path = "needs_table";
+      else path = "documents";
+      Array.prototype.forEach.call(results, function (r) {
+        r.hidden = r.getAttribute("data-path-result") !== path;
+      });
+    }
+    root.addEventListener("change", compute);
+    compute();
+  }
+
   ready(function () {
     initReveal();
     initCountUp();
@@ -536,5 +571,6 @@
     initPrint();
     initDropzone();
     initEvents();
+    initPathStudio();
   });
 })();

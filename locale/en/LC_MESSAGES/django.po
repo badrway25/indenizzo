@@ -5238,3 +5238,108 @@ msgstr "See the official rules we use — and when a table allows a calculation.
 
 msgid "Understand how the platform works, simply."
 msgstr "Understand how the platform works, simply."
+
+msgid "Guides by case type"
+msgstr "Guides by case type"
+
+msgid "Find your case, see what you can do"
+msgstr "Find your case, see what you can do"
+
+msgid "Work injury (INAIL)"
+msgstr "Work injury (INAIL)"
+
+msgid "International inheritance"
+msgstr "International inheritance"
+
+msgid "Foreign citizens in Italy"
+msgstr "Foreign citizens in Italy"
+
+msgid "An indicative estimate where the official table allows it."
+msgstr "An indicative estimate where the official table allows it."
+
+msgid "Valued by age and disability percentage."
+msgstr "Valued by age and disability percentage."
+
+msgid "We read the clinical records and map the path."
+msgstr "We read the clinical records and map the path."
+
+msgid "Compare an offer against the official reference."
+msgstr "Compare an offer against the official reference."
+
+msgid "Check your INAIL documents and any further claim."
+msgstr "Check your INAIL documents and any further claim."
+
+msgid "An assisted path, handled with discretion."
+msgstr "An assisted path, handled with discretion."
+
+msgid "Framed on the Consumer Code; documental analysis."
+msgstr "Framed on the Consumer Code; documental analysis."
+
+msgid "Which law applies and what the shares are."
+msgstr "Which law applies and what the shares are."
+
+msgid "Multilingual handling of your case in Italy."
+msgstr "Multilingual handling of your case in Italy."
+
+msgid "Quick path finder"
+msgstr "Quick path finder"
+
+msgid "Guided studio"
+msgstr "Guided studio"
+
+msgid "Answer a few questions, see the recommended path"
+msgstr "Answer a few questions, see the recommended path"
+
+msgid "Where did the case happen?"
+msgstr "Where did the case happen?"
+
+msgid "Choose…"
+msgstr "Choose…"
+
+msgid "Another country / cross-border"
+msgstr "Another country / cross-border"
+
+msgid "There is a physical injury"
+msgstr "There is a physical injury"
+
+msgid "I have an insurance offer"
+msgstr "I have an insurance offer"
+
+msgid "I just want to understand which law applies"
+msgstr "I just want to understand which law applies"
+
+msgid "You can prepare your documents"
+msgstr "You can prepare your documents"
+
+msgid "Upload what you have: the platform organises your file and lists the official references — no invented amount."
+msgstr "Upload what you have: the platform organises your file and lists the official references — no invented amount."
+
+msgid "You can make an estimate"
+msgstr "You can make an estimate"
+
+msgid "An official validated table exists for this case: answer a few questions and get an indicative range."
+msgstr "An official validated table exists for this case: answer a few questions and get an indicative range."
+
+msgid "You can check the offer"
+msgstr "You can check the offer"
+
+msgid "Compare the insurer's offer against the official reference and see the deviation."
+msgstr "Compare the insurer's offer against the official reference and see the deviation."
+
+msgid "An official table is needed first"
+msgstr "An official table is needed first"
+
+msgid "There is no validated table for this country and case yet, so no figure is shown — prepare your documents and summary instead."
+msgstr "There is no validated table for this country and case yet, so no figure is shown — prepare your documents and summary instead."
+
+msgid "You can understand which law may apply"
+msgstr "You can understand which law may apply"
+
+msgid "For cross-border cases, the platform helps you frame which country's law applies before anything else."
+msgstr "For cross-border cases, the platform helps you frame which country's law applies before anything else."
+
+msgid "Understand the applicable law"
+msgstr "Understand the applicable law"
+
+msgid "A quick guide only — no amount is shown without a validated official table. See the full router below."
+msgstr "A quick guide only — no amount is shown without a validated official table. See the full router below."

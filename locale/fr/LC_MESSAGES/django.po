@@ -8270,3 +8270,105 @@ msgstr "Voyez les règles officielles que nous utilisons — et quand une table 
 
 msgid "Understand how the platform works, simply."
 msgstr "Comprenez simplement comment fonctionne la plateforme."
+
+msgid "Guides by case type"
+msgstr "Guides par type de dossier"
+
+msgid "Find your case, see what you can do"
+msgstr "Trouvez votre dossier, voyez ce que vous pouvez faire"
+
+msgid "International inheritance"
+msgstr "Succession internationale"
+
+msgid "Foreign citizens in Italy"
+msgstr "Citoyens étrangers en Italie"
+
+msgid "An indicative estimate where the official table allows it."
+msgstr "Une estimation indicative là où la table officielle le permet."
+
+msgid "Valued by age and disability percentage."
+msgstr "Évalué selon l'âge et le taux d'incapacité."
+
+msgid "We read the clinical records and map the path."
+msgstr "Nous lisons les dossiers cliniques et traçons le parcours."
+
+msgid "Compare an offer against the official reference."
+msgstr "Comparez une offre à la référence officielle."
+
+msgid "Check your INAIL documents and any further claim."
+msgstr "Vérifiez vos documents INAIL et toute demande complémentaire."
+
+msgid "An assisted path, handled with discretion."
+msgstr "Un parcours accompagné, traité avec discrétion."
+
+msgid "Framed on the Consumer Code; documental analysis."
+msgstr "Cadré sur le Code de la consommation ; analyse documentaire."
+
+msgid "Which law applies and what the shares are."
+msgstr "Quelle loi s'applique et quelles sont les parts."
+
+msgid "Multilingual handling of your case in Italy."
+msgstr "Gestion multilingue de votre dossier en Italie."
+
+msgid "Quick path finder"
+msgstr "Trouveur de parcours rapide"
+
+msgid "Guided studio"
+msgstr "Studio guidé"
+
+msgid "Answer a few questions, see the recommended path"
+msgstr "Répondez à quelques questions, voyez le parcours recommandé"
+
+msgid "Where did the case happen?"
+msgstr "Où le dossier s'est-il produit ?"
+
+msgid "Choose…"
+msgstr "Choisir…"
+
+msgid "Another country / cross-border"
+msgstr "Un autre pays / transfrontalier"
+
+msgid "There is a physical injury"
+msgstr "Il y a un dommage corporel"
+
+msgid "I have an insurance offer"
+msgstr "J'ai une offre d'assurance"
+
+msgid "I just want to understand which law applies"
+msgstr "Je veux juste comprendre quelle loi s'applique"
+
+msgid "You can prepare your documents"
+msgstr "Vous pouvez préparer vos documents"
+
+msgid "Upload what you have: the platform organises your file and lists the official references — no invented amount."
+msgstr "Téléversez ce que vous avez : la plateforme organise votre dossier et liste les références officielles — aucun montant inventé."
+
+msgid "You can make an estimate"
+msgstr "Vous pouvez faire une estimation"
+
+msgid "An official validated table exists for this case: answer a few questions and get an indicative range."
+msgstr "Une table officielle validée existe pour ce dossier : répondez à quelques questions et obtenez une fourchette indicative."
+
+msgid "You can check the offer"
+msgstr "Vous pouvez vérifier l'offre"
+
+msgid "Compare the insurer's offer against the official reference and see the deviation."
+msgstr "Comparez l'offre de l'assureur à la référence officielle et voyez l'écart."
+
+msgid "An official table is needed first"
+msgstr "Une table officielle est d'abord nécessaire"
+
+msgid "There is no validated table for this country and case yet, so no figure is shown — prepare your documents and summary instead."
+msgstr "Il n'existe pas encore de table validée pour ce pays et ce dossier, donc aucun montant n'est affiché — préparez plutôt vos documents et votre récapitulatif."
+
+msgid "You can understand which law may apply"
+msgstr "Vous pouvez comprendre quelle loi peut s'appliquer"
+
+msgid "For cross-border cases, the platform helps you frame which country's law applies before anything else."
+msgstr "Pour les dossiers transfrontaliers, la plateforme vous aide à cadrer quelle loi nationale s'applique avant tout."
+
+msgid "Understand the applicable law"
+msgstr "Comprendre la loi applicable"
+
+msgid "A quick guide only — no amount is shown without a validated official table. See the full router below."
+msgstr "Un guide rapide seulement — aucun montant n'est affiché sans table officielle validée. Voir le routeur complet ci-dessous."

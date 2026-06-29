@@ -8225,3 +8225,105 @@ msgstr "Vedi le regole ufficiali che usiamo — e quando una tabella permette il
 
 msgid "Understand how the platform works, simply."
 msgstr "Capisci come funziona la piattaforma, in modo semplice."
+
+msgid "Guides by case type"
+msgstr "Guide per categoria"
+
+msgid "Find your case, see what you can do"
+msgstr "Trova il tuo caso, scopri cosa puoi fare"
+
+msgid "International inheritance"
+msgstr "Successione internazionale"
+
+msgid "Foreign citizens in Italy"
+msgstr "Cittadini stranieri in Italia"
+
+msgid "An indicative estimate where the official table allows it."
+msgstr "Una stima indicativa dove la tabella ufficiale lo permette."
+
+msgid "Valued by age and disability percentage."
+msgstr "Valutato per età e percentuale di invalidità."
+
+msgid "We read the clinical records and map the path."
+msgstr "Leggiamo la documentazione clinica e tracciamo il percorso."
+
+msgid "Compare an offer against the official reference."
+msgstr "Confronta un'offerta con il riferimento ufficiale."
+
+msgid "Check your INAIL documents and any further claim."
+msgstr "Verifica i documenti INAIL e l'eventuale danno ulteriore."
+
+msgid "An assisted path, handled with discretion."
+msgstr "Un percorso assistito, gestito con discrezione."
+
+msgid "Framed on the Consumer Code; documental analysis."
+msgstr "Inquadrato sul Codice del Consumo; analisi documentale."
+
+msgid "Which law applies and what the shares are."
+msgstr "Quale legge si applica e quali sono le quote."
+
+msgid "Multilingual handling of your case in Italy."
+msgstr "Gestione multilingue del tuo caso in Italia."
+
+msgid "Quick path finder"
+msgstr "Trova rapidamente il percorso"
+
+msgid "Guided studio"
+msgstr "Studio guidato"
+
+msgid "Answer a few questions, see the recommended path"
+msgstr "Rispondi a poche domande, vedi il percorso consigliato"
+
+msgid "Where did the case happen?"
+msgstr "Dove è successo il caso?"
+
+msgid "Choose…"
+msgstr "Scegli…"
+
+msgid "Another country / cross-border"
+msgstr "Un altro paese / transfrontaliero"
+
+msgid "There is a physical injury"
+msgstr "C'è un danno fisico"
+
+msgid "I have an insurance offer"
+msgstr "Ho un'offerta assicurativa"
+
+msgid "I just want to understand which law applies"
+msgstr "Voglio solo capire quale legge si applica"
+
+msgid "You can prepare your documents"
+msgstr "Puoi preparare i documenti"
+
+msgid "Upload what you have: the platform organises your file and lists the official references — no invented amount."
+msgstr "Carica ciò che hai: la piattaforma organizza il fascicolo ed elenca i riferimenti ufficiali — nessun importo inventato."
+
+msgid "You can make an estimate"
+msgstr "Puoi fare una stima"
+
+msgid "An official validated table exists for this case: answer a few questions and get an indicative range."
+msgstr "Per questo caso esiste una tabella ufficiale validata: rispondi a poche domande e ottieni un intervallo indicativo."
+
+msgid "You can check the offer"
+msgstr "Puoi controllare l'offerta"
+
+msgid "Compare the insurer's offer against the official reference and see the deviation."
+msgstr "Confronta l'offerta dell'assicuratore con il riferimento ufficiale e vedi lo scostamento."
+
+msgid "An official table is needed first"
+msgstr "Serve prima una tabella ufficiale"
+
+msgid "There is no validated table for this country and case yet, so no figure is shown — prepare your documents and summary instead."
+msgstr "Per questo paese e caso non esiste ancora una tabella validata, quindi non viene mostrato alcun importo — prepara invece i documenti e il riepilogo."
+
+msgid "You can understand which law may apply"
+msgstr "Puoi capire quale legge può valere"
+
+msgid "For cross-border cases, the platform helps you frame which country's law applies before anything else."
+msgstr "Per i casi transfrontalieri, la piattaforma ti aiuta a inquadrare quale legge nazionale si applica prima di tutto."
+
+msgid "Understand the applicable law"
+msgstr "Capisci la legge applicabile"
+
+msgid "A quick guide only — no amount is shown without a validated official table. See the full router below."
+msgstr "Solo una guida rapida — nessun importo viene mostrato senza una tabella ufficiale validata. Vedi il router completo qui sotto."

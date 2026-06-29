@@ -7979,3 +7979,105 @@ msgstr "اطّلع على القواعد الرسمية التي نستخدمه�
 
 msgid "Understand how the platform works, simply."
 msgstr "افهم كيف تعمل المنصة، ببساطة."
+
+msgid "Guides by case type"
+msgstr "أدلة حسب نوع القضية"
+
+msgid "Find your case, see what you can do"
+msgstr "اعثر على قضيتك واطّلع على ما يمكنك فعله"
+
+msgid "International inheritance"
+msgstr "ميراث دولي"
+
+msgid "Foreign citizens in Italy"
+msgstr "مواطنون أجانب في إيطاليا"
+
+msgid "An indicative estimate where the official table allows it."
+msgstr "تقدير إرشادي حيث يسمح الجدول الرسمي."
+
+msgid "Valued by age and disability percentage."
+msgstr "مُقدَّر حسب العمر ونسبة العجز."
+
+msgid "We read the clinical records and map the path."
+msgstr "نقرأ السجلات السريرية ونرسم المسار."
+
+msgid "Compare an offer against the official reference."
+msgstr "قارن عرضًا بالمرجع الرسمي."
+
+msgid "Check your INAIL documents and any further claim."
+msgstr "تحقّق من مستندات INAIL وأي مطالبة إضافية."
+
+msgid "An assisted path, handled with discretion."
+msgstr "مسار مُرافَق، يُدار بتكتّم."
+
+msgid "Framed on the Consumer Code; documental analysis."
+msgstr "مؤطَّر على قانون الاستهلاك؛ تحليل مستندي."
+
+msgid "Which law applies and what the shares are."
+msgstr "أي قانون ينطبق وما هي الأنصبة."
+
+msgid "Multilingual handling of your case in Italy."
+msgstr "معالجة متعددة اللغات لقضيتك في إيطاليا."
+
+msgid "Quick path finder"
+msgstr "مُحدِّد المسار السريع"
+
+msgid "Guided studio"
+msgstr "الاستوديو الموجَّه"
+
+msgid "Answer a few questions, see the recommended path"
+msgstr "أجب عن بضعة أسئلة، واطّلع على المسار الموصى به"
+
+msgid "Where did the case happen?"
+msgstr "أين وقعت القضية؟"
+
+msgid "Choose…"
+msgstr "اختر…"
+
+msgid "Another country / cross-border"
+msgstr "بلد آخر / عابر للحدود"
+
+msgid "There is a physical injury"
+msgstr "هناك ضرر جسدي"
+
+msgid "I have an insurance offer"
+msgstr "لديّ عرض تأمين"
+
+msgid "I just want to understand which law applies"
+msgstr "أريد فقط أن أفهم أي قانون ينطبق"
+
+msgid "You can prepare your documents"
+msgstr "يمكنك تجهيز مستنداتك"
+
+msgid "Upload what you have: the platform organises your file and lists the official references — no invented amount."
+msgstr "حمّل ما لديك: تنظّم المنصة ملفك وتسرد المراجع الرسمية — دون أي مبلغ مُختلق."
+
+msgid "You can make an estimate"
+msgstr "يمكنك إجراء تقدير"
+
+msgid "An official validated table exists for this case: answer a few questions and get an indicative range."
+msgstr "يوجد جدول رسمي معتمد لهذه القضية: أجب عن بضعة أسئلة واحصل على نطاق إرشادي."
+
+msgid "You can check the offer"
+msgstr "يمكنك التحقّق من العرض"
+
+msgid "Compare the insurer's offer against the official reference and see the deviation."
+msgstr "قارن عرض المؤمِّن بالمرجع الرسمي واطّلع على الفارق."
+
+msgid "An official table is needed first"
+msgstr "يلزم أولًا جدول رسمي"
+
+msgid "There is no validated table for this country and case yet, so no figure is shown — prepare your documents and summary instead."
+msgstr "لا يوجد بعدُ جدول معتمد لهذا البلد وهذه القضية، لذا لا يُعرَض أي مبلغ — جهّز مستنداتك وملخّصك بدلًا من ذلك."
+
+msgid "You can understand which law may apply"
+msgstr "يمكنك فهم أي قانون قد ينطبق"
+
+msgid "For cross-border cases, the platform helps you frame which country's law applies before anything else."
+msgstr "في القضايا العابرة للحدود، تساعدك المنصة على تحديد قانون أي بلد ينطبق قبل كل شيء."
+
+msgid "Understand the applicable law"
+msgstr "افهم القانون المنطبق"
+
+msgid "A quick guide only — no amount is shown without a validated official table. See the full router below."
+msgstr "دليل سريع فقط — لا يُعرَض أي مبلغ دون جدول رسمي معتمد. اطّلع على المُوجِّه الكامل أدناه."

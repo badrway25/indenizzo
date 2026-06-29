@@ -43,6 +43,64 @@
     </div>
   </div>
 
+  {# P45: guided "path studio" — a quick recommender (JS-enhanced; the documents card shows without JS). #}
+  <section class="path-studio mt-12" data-path-studio data-reveal aria-label="{% translate 'Quick path finder' %}">
+    <div class="path-studio__head">
+      <span aria-hidden="true" class="path-studio__ico">{% include "partials/_icon.html" with name="sparkles" icon_class="w-5 h-5" %}</span>
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Guided studio" %}</p>
+        <h2 class="mt-1 font-serif text-2xl text-ink-950 leading-tight">{% translate "Answer a few questions, see the recommended path" %}</h2>
+      </div>
+    </div>
+    <div class="path-studio__grid">
+      <div class="path-studio__form">
+        <div class="path-studio__field">
+          <label for="ps-country" class="premium-label">{% translate "Where did the case happen?" %}</label>
+          <select id="ps-country" name="ps-country" class="premium-select">
+            <option value="">{% translate "Choose…" %}</option>
+            <option value="IT">{% translate "Italy" %}</option>
+            <option value="FR">{% translate "France" %}</option>
+            <option value="BE">{% translate "Belgium" %}</option>
+            <option value="MA">{% translate "Morocco" %}</option>
+            <option value="TN">{% translate "Tunisia" %}</option>
+            <option value="XX">{% translate "Another country / cross-border" %}</option>
+          </select>
+        </div>
+        <label class="path-studio__toggle"><input type="checkbox" name="ps-injury"><span>{% translate "There is a physical injury" %}</span></label>
+        <label class="path-studio__toggle"><input type="checkbox" name="ps-offer"><span>{% translate "I have an insurance offer" %}</span></label>
+        <label class="path-studio__toggle"><input type="checkbox" name="ps-law"><span>{% translate "I just want to understand which law applies" %}</span></label>
+      </div>
+      <div class="path-studio__results" aria-live="polite">
+        <div class="path-studio__result premium-card p-5" data-path-result="documents">
+          <span class="path-studio__badge path-studio__badge--gold">{% translate "You can prepare your documents" %}</span>
+          <p class="mt-2 text-sm text-ink-800 leading-relaxed">{% translate "Upload what you have: the platform organises your file and lists the official references — no invented amount." %}</p>
+          <a href="{% url 'core:documents_upload' %}" class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-gold-700">{% translate "Upload documents" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+        </div>
+        <div class="path-studio__result premium-card p-5" data-path-result="estimate" hidden>
+          <span class="path-studio__badge path-studio__badge--ok">{% translate "You can make an estimate" %}</span>
+          <p class="mt-2 text-sm text-ink-800 leading-relaxed">{% translate "An official validated table exists for this case: answer a few questions and get an indicative range." %}</p>
+          <a href="{% url 'cases:wizard_start' %}" class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-gold-700">{% translate "Start the estimate" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+        </div>
+        <div class="path-studio__result premium-card p-5" data-path-result="offer" hidden>
+          <span class="path-studio__badge path-studio__badge--teal">{% translate "You can check the offer" %}</span>
+          <p class="mt-2 text-sm text-ink-800 leading-relaxed">{% translate "Compare the insurer's offer against the official reference and see the deviation." %}</p>
+          <a href="{% url 'cases:wizard_insurance_offer' %}" class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-gold-700">{% translate "Check an offer" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+        </div>
+        <div class="path-studio__result premium-card p-5" data-path-result="needs_table" hidden>
+          <span class="path-studio__badge path-studio__badge--slate">{% translate "An official table is needed first" %}</span>
+          <p class="mt-2 text-sm text-ink-800 leading-relaxed">{% translate "There is no validated table for this country and case yet, so no figure is shown — prepare your documents and summary instead." %}</p>
+          <a href="{% url 'core:documents_upload' %}" class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-gold-700">{% translate "Prepare a summary" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+        </div>
+        <div class="path-studio__result premium-card p-5" data-path-result="law" hidden>
+          <span class="path-studio__badge path-studio__badge--slate">{% translate "You can understand which law may apply" %}</span>
+          <p class="mt-2 text-sm text-ink-800 leading-relaxed">{% translate "For cross-border cases, the platform helps you frame which country's law applies before anything else." %}</p>
+          <a href="{% url 'core:case_type_landing' slug='cross-border-cases' %}" class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-gold-700">{% translate "Understand the applicable law" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </div>
+    <p class="mt-4 text-xs text-stone2-500 leading-relaxed">{% translate "A quick guide only — no amount is shown without a validated official table. See the full router below." %}</p>
+  </section>
+
   {# Step 1 — country chips (in-page anchors to each country block). #}
   <p class="mt-10 text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">{% translate "Step 1 — your country" %}</p>
   <nav class="mt-3 flex flex-wrap gap-2" aria-label="{% translate 'Choose a country' %}">
