@@ -5034,3 +5034,108 @@ msgstr "Open the recommended path, or send the whole dossier to the Studio."
 
 msgid "Each path on the platform is grounded in an official source. Browse the library by country, category or type, see what each source unlocks, and open the official document."
 msgstr "Each path on the platform is grounded in an official source. Browse the library by country, category or type, see what each source unlocks, and open the official document."
+
+msgid "How to use the platform"
+msgstr "How to use the platform"
+
+msgid "Plain-language guides to the Badrane platform: how the simulation works, how to prepare your documents, how to read the result and the official sources, which countries are covered and when the platform can produce an estimate."
+msgstr "Plain-language guides to the Badrane platform: how the simulation works, how to prepare your documents, how to read the result and the official sources, which countries are covered and when the platform can produce an estimate."
+
+msgid "Short, plain-language guides — written for people, not for engineers. Find what you need, in order, from a first simulation to reading your result."
+msgstr "Short, plain-language guides — written for people, not for engineers. Find what you need, in order, from a first simulation to reading your result."
+
+msgid "On this page"
+msgstr "On this page"
+
+msgid "Documentation topics"
+msgstr "Documentation topics"
+
+msgid "How the simulation works"
+msgstr "How the simulation works"
+
+msgid "How to prepare your documents"
+msgstr "How to prepare your documents"
+
+msgid "How to read your result"
+msgstr "How to read your result"
+
+msgid "How to read the official sources"
+msgstr "How to read the official sources"
+
+msgid "Which countries are covered"
+msgstr "Which countries are covered"
+
+msgid "When the platform can estimate"
+msgstr "When the platform can estimate"
+
+msgid "When it prepares only a summary"
+msgstr "When it prepares only a summary"
+
+msgid "Privacy and your data"
+msgstr "Privacy and your data"
+
+msgid "You choose your country and your case, answer a few questions, and the platform shows what it can do: an indicative estimate where an official table allows it, or a guided check of your documents otherwise. No amount is ever invented."
+msgstr "You choose your country and your case, answer a few questions, and the platform shows what it can do: an indicative estimate where an official table allows it, or a guided check of your documents otherwise. No amount is ever invented."
+
+msgid "Gather what you have — the accident report, the medical report, the insurer's offer, pay slips. Upload them and the platform recognises each one, links it to the official sources and tells you what is still useful. Your files are analysed in memory and never stored."
+msgstr "Gather what you have — the accident report, the medical report, the insurer's offer, pay slips. Upload them and the platform recognises each one, links it to the official sources and tells you what is still useful. Your files are analysed in memory and never stored."
+
+msgid "Every result is written in plain words: what you indicated, what the platform can do now, what is still missing and your next step. Where there is a figure, it is an indicative range from official sources — a starting point for negotiation, not a promise of payment."
+msgstr "Every result is written in plain words: what you indicated, what the platform can do now, what is still missing and your next step. Where there is a figure, it is an indicative range from official sources — a starting point for negotiation, not a promise of payment."
+
+msgid "The library shows the laws, decrees and official tables behind every path. Each source says which country and category it belongs to, what it lets you do, and whether it can feed an estimate or only guide a document check."
+msgstr "The library shows the laws, decrees and official tables behind every path. Each source says which country and category it belongs to, what it lets you do, and whether it can feed an estimate or only guide a document check."
+
+msgid "The platform covers Italy, France, Belgium, Morocco and Tunisia, plus cross-border cases. What it can do differs by country and by case — the country pages and the coverage table show exactly where an estimate is available today."
+msgstr "The platform covers Italy, France, Belgium, Morocco and Tunisia, plus cross-border cases. What it can do differs by country and by case — the country pages and the coverage table show exactly where an estimate is available today."
+
+msgid "A figure appears only when an official table or formula is validated and tested. Where the law provides a complete national table, the platform can calculate an indicative range. Where it does not, the platform helps you prepare instead of guessing."
+msgstr "A figure appears only when an official table or formula is validated and tested. Where the law provides a complete national table, the platform can calculate an indicative range. Where it does not, the platform helps you prepare instead of guessing."
+
+msgid "When there is no validated table for your case, the platform does not show a number. Instead it organises your file, lists the official references that apply and prepares a clear summary you can send to the Studio."
+msgstr "When there is no validated table for your case, the platform does not show a number. Instead it organises your file, lists the official references that apply and prepares a clear summary you can send to the Studio."
+
+msgid "You decide what to share. Uploaded files are analysed only to build your result and are not stored. Sensitive data is handled with care, and a simulation is never a legal engagement — that begins only with a separate written agreement."
+msgstr "You decide what to share. Uploaded files are analysed only to build your result and are not stored. Sensitive data is handled with care, and a simulation is never a legal engagement — that begins only with a separate written agreement."
+
+msgid "Short answers to the questions people ask most: is the estimate binding, what does it cost, what happens to my documents, and how the Studio can help next."
+msgstr "Short answers to the questions people ask most: is the estimate binding, what does it cost, what happens to my documents, and how the Studio can help next."
+
+msgid "This documentation is informative and does not constitute legal advice. A simulation is indicative; the actual valuation depends on documents, expert reports, applicable law and the competent jurisdiction."
+msgstr "This documentation is informative and does not constitute legal advice. A simulation is indicative; the actual valuation depends on documents, expert reports, applicable law and the competent jurisdiction."
+
+msgid "See the method"
+msgstr "See the method"
+
+msgid "Open the source library"
+msgstr "Open the source library"
+
+msgid "See what we can estimate"
+msgstr "See what we can estimate"
+
+msgid "Prepare a summary"
+msgstr "Prepare a summary"
+
+msgid "Read the FAQ"
+msgstr "Read the FAQ"
+
+msgid "Plain-language guides to the platform."
+msgstr "Plain-language guides to the platform."
+
+msgid "Open documentation"
+msgstr "Open documentation"
+
+msgid "How document recognition works"
+msgstr "How document recognition works"
+
+msgid "Upload"
+msgstr "Upload"
+
+msgid "Your document is analysed in memory and never stored."
+msgstr "Your document is analysed in memory and never stored."
+
+msgid "Recognise"
+msgstr "Recognise"
+
+msgid "Your path"
+msgstr "Your path"

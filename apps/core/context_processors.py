@@ -136,6 +136,8 @@ _GLOBAL_HREFLANG_VIEW_NAMES = frozenset(
         "core:faq",
         "core:about",
         "core:community",
+        # P40: public documentation hub (plain-language guides).
+        "core:documentation",
         # F-product-4-case-type-landings: per-case-type SEO landings
         # under `/case-types/<slug>/`. Indexable, SEO-targeted,
         # multilingue. Stessa view, kwargs `slug` diverso per

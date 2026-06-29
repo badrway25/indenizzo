@@ -313,6 +313,23 @@ def methodology(request):
 
 
 @require_GET
+def documentation(request):
+    """P40: public documentation hub — plain-language guides for normal users
+    (not technical docs). Indexable, multilingual. The topics are rendered in
+    the template; the view only supplies the hero image and canonical URL."""
+    from apps.core.seo import build_canonical_url
+
+    return render(
+        request,
+        "public/documentation.html",
+        {
+            "pexels_image": _pexels_hero(request, "methodology_hero"),
+            "canonical_url": build_canonical_url(request),
+        },
+    )
+
+
+@require_GET
 def disclaimer(request):
     return render(request, "public/disclaimer.html")
 

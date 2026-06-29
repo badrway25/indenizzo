@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Documentation" %} — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}{% blocktranslate %}Plain-language guides to the Badrane platform: how the simulation works, how to prepare your documents, how to read the result and the official sources, which countries are covered and when the platform can produce an estimate.{% endblocktranslate %}{% endblock %}
+{% block head_extra %}{% if canonical_url %}<link rel="canonical" href="{{ canonical_url }}">{% endif %}{% endblock %}
+
+{% block content %}
+  {% translate "Documentation" as hero_eyebrow %}
+  {% translate "How to use the platform" as hero_title %}
+  {% include "partials/_premium_hero_image.html" with hero_eyebrow=hero_eyebrow hero_title=hero_title %}
+
+  <section class="max-w-7xl mx-auto px-5 lg:px-8 py-14">
+    <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Documentation" %}</p>
+    <h1 class="mt-4 font-serif text-4xl sm:text-5xl text-ink-950 leading-tight">{% translate "How to use the platform" %}</h1>
+    <p class="mt-5 max-w-3xl text-lg text-ink-800 leading-relaxed">
+      {% blocktranslate %}Short, plain-language guides — written for people, not for engineers. Find what you need, in order, from a first simulation to reading your result.{% endblocktranslate %}
+    </p>
+
+    <div class="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+      {# Sticky sidebar: the nine topics as in-page anchors. #}
+      <aside>
+        <nav class="doc-toc premium-sidebar-sticky" aria-label="{% translate 'Documentation topics' %}">
+          <p class="doc-toc__title">{% translate "On this page" %}</p>
+          <ol class="doc-toc__list">
+            <li><a href="#doc-simulation" class="doc-toc__link">{% translate "How the simulation works" %}</a></li>
+            <li><a href="#doc-documents" class="doc-toc__link">{% translate "How to prepare your documents" %}</a></li>
+            <li><a href="#doc-result" class="doc-toc__link">{% translate "How to read your result" %}</a></li>
+            <li><a href="#doc-sources" class="doc-toc__link">{% translate "How to read the official sources" %}</a></li>
+            <li><a href="#doc-countries" class="doc-toc__link">{% translate "Which countries are covered" %}</a></li>
+            <li><a href="#doc-estimate" class="doc-toc__link">{% translate "When the platform can estimate" %}</a></li>
+            <li><a href="#doc-summary" class="doc-toc__link">{% translate "When it prepares only a summary" %}</a></li>
+            <li><a href="#doc-privacy" class="doc-toc__link">{% translate "Privacy and your data" %}</a></li>
+            <li><a href="#doc-faq" class="doc-toc__link">{% translate "Frequently asked questions" %}</a></li>
+          </ol>
+        </nav>
+      </aside>
+
+      {# Main content: one premium card per topic. #}
+      <div class="lg:col-span-2 space-y-6">
+        <article id="doc-simulation" class="doc-card scroll-mt-24" data-reveal>
+          <span aria-hidden="true" class="doc-card__ico">{% include "partials/_icon.html" with name="list-checks" icon_class="w-6 h-6" %}</span>
+          <div class="doc-card__body">
+            <h2 class="doc-card__title">{% translate "How the simulation works" %}</h2>
+            <p class="doc-card__text">{% blocktranslate %}You choose your country and your case, answer a few questions, and the platform shows what it can do: an indicative estimate where an official table allows it, or a guided check of your documents otherwise. No amount is ever invented.{% endblocktranslate %}</p>
+            <a href="{% url 'core:guided_router' %}" class="doc-card__cta">{% translate "Find your guided path" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </article>
+
+        <article id="doc-documents" class="doc-card scroll-mt-24" data-reveal>
+          <span aria-hidden="true" class="doc-card__ico">{% include "partials/_icon.html" with name="document" icon_class="w-6 h-6" %}</span>
+          <div class="doc-card__body">
+            <h2 class="doc-card__title">{% translate "How to prepare your documents" %}</h2>
+            <p class="doc-card__text">{% blocktranslate %}Gather what you have — the accident report, the medical report, the insurer's offer, pay slips. Upload them and the platform recognises each one, links it to the official sources and tells you what is still useful. Your files are analysed in memory and never stored.{% endblocktranslate %}</p>
+            <a href="{% url 'core:documents_upload' %}" class="doc-card__cta">{% translate "Upload documents" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </article>
+
+        <article id="doc-result" class="doc-card scroll-mt-24" data-reveal>
+          <span aria-hidden="true" class="doc-card__ico">{% include "partials/_icon.html" with name="file-text" icon_class="w-6 h-6" %}</span>
+          <div class="doc-card__body">
+            <h2 class="doc-card__title">{% translate "How to read your result" %}</h2>
+            <p class="doc-card__text">{% blocktranslate %}Every result is written in plain words: what you indicated, what the platform can do now, what is still missing and your next step. Where there is a figure, it is an indicative range from official sources — a starting point for negotiation, not a promise of payment.{% endblocktranslate %}</p>
+            <a href="{% url 'core:methodology' %}" class="doc-card__cta">{% translate "See the method" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </article>
+
+        <article id="doc-sources" class="doc-card scroll-mt-24" data-reveal>
+          <span aria-hidden="true" class="doc-card__ico">{% include "partials/_icon.html" with name="book-open" icon_class="w-6 h-6" %}</span>
+          <div class="doc-card__body">
+            <h2 class="doc-card__title">{% translate "How to read the official sources" %}</h2>
+            <p class="doc-card__text">{% blocktranslate %}The library shows the laws, decrees and official tables behind every path. Each source says which country and category it belongs to, what it lets you do, and whether it can feed an estimate or only guide a document check.{% endblocktranslate %}</p>
+            <a href="{% url 'core:sources' %}" class="doc-card__cta">{% translate "Open the source library" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </article>
+
+        <article id="doc-countries" class="doc-card scroll-mt-24" data-reveal>
+          <span aria-hidden="true" class="doc-card__ico">{% include "partials/_icon.html" with name="globe" icon_class="w-6 h-6" %}</span>
+          <div class="doc-card__body">
+            <h2 class="doc-card__title">{% translate "Which countries are covered" %}</h2>
+            <p class="doc-card__text">{% blocktranslate %}The platform covers Italy, France, Belgium, Morocco and Tunisia, plus cross-border cases. What it can do differs by country and by case — the country pages and the coverage table show exactly where an estimate is available today.{% endblocktranslate %}</p>
+            <a href="{% url 'core:countries' %}" class="doc-card__cta">{% translate "Choose a country" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </article>
+
+        <article id="doc-estimate" class="doc-card scroll-mt-24" data-reveal>
+          <span aria-hidden="true" class="doc-card__ico">{% include "partials/_icon.html" with name="scale" icon_class="w-6 h-6" %}</span>
+          <div class="doc-card__body">
+            <h2 class="doc-card__title">{% translate "When the platform can estimate" %}</h2>
+            <p class="doc-card__text">{% blocktranslate %}A figure appears only when an official table or formula is validated and tested. Where the law provides a complete national table, the platform can calculate an indicative range. Where it does not, the platform helps you prepare instead of guessing.{% endblocktranslate %}</p>
+            <a href="{% url 'core:services' %}" class="doc-card__cta">{% translate "See what we can estimate" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </article>
+
+        <article id="doc-summary" class="doc-card scroll-mt-24" data-reveal>
+          <span aria-hidden="true" class="doc-card__ico">{% include "partials/_icon.html" with name="folder" icon_class="w-6 h-6" %}</span>
+          <div class="doc-card__body">
+            <h2 class="doc-card__title">{% translate "When it prepares only a summary" %}</h2>
+            <p class="doc-card__text">{% blocktranslate %}When there is no validated table for your case, the platform does not show a number. Instead it organises your file, lists the official references that apply and prepares a clear summary you can send to the Studio.{% endblocktranslate %}</p>
+            <a href="{% url 'core:documents' %}" class="doc-card__cta">{% translate "Prepare a summary" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </article>
+
+        <article id="doc-privacy" class="doc-card scroll-mt-24" data-reveal>
+          <span aria-hidden="true" class="doc-card__ico">{% include "partials/_icon.html" with name="shield-check" icon_class="w-6 h-6" %}</span>
+          <div class="doc-card__body">
+            <h2 class="doc-card__title">{% translate "Privacy and your data" %}</h2>
+            <p class="doc-card__text">{% blocktranslate %}You decide what to share. Uploaded files are analysed only to build your result and are not stored. Sensitive data is handled with care, and a simulation is never a legal engagement — that begins only with a separate written agreement.{% endblocktranslate %}</p>
+            <a href="{% url 'core:privacy' %}" class="doc-card__cta">{% translate "Read the privacy notice" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </article>
+
+        <article id="doc-faq" class="doc-card scroll-mt-24" data-reveal>
+          <span aria-hidden="true" class="doc-card__ico">{% include "partials/_icon.html" with name="search" icon_class="w-6 h-6" %}</span>
+          <div class="doc-card__body">
+            <h2 class="doc-card__title">{% translate "Frequently asked questions" %}</h2>
+            <p class="doc-card__text">{% blocktranslate %}Short answers to the questions people ask most: is the estimate binding, what does it cost, what happens to my documents, and how the Studio can help next.{% endblocktranslate %}</p>
+            <a href="{% url 'core:faq' %}" class="doc-card__cta">{% translate "Read the FAQ" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <p class="mt-12 text-xs text-stone2-500 leading-relaxed border-t border-stone2-200 pt-6 max-w-3xl">
+      {% blocktranslate %}This documentation is informative and does not constitute legal advice. A simulation is indicative; the actual valuation depends on documents, expert reports, applicable law and the competent jurisdiction.{% endblocktranslate %}
+    </p>
+  </section>
+{% endblock %}

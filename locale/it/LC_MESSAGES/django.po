@@ -8033,3 +8033,108 @@ msgstr "Apri il percorso consigliato, oppure invia l'intero fascicolo allo Studi
 
 msgid "Each path on the platform is grounded in an official source. Browse the library by country, category or type, see what each source unlocks, and open the official document."
 msgstr "Ogni percorso della piattaforma si fonda su una fonte ufficiale. Sfoglia la biblioteca per paese, categoria o tipo, vedi cosa permette ogni fonte e apri il documento ufficiale."
+
+msgid "How to use the platform"
+msgstr "Come usare la piattaforma"
+
+msgid "Plain-language guides to the Badrane platform: how the simulation works, how to prepare your documents, how to read the result and the official sources, which countries are covered and when the platform can produce an estimate."
+msgstr "Guide in linguaggio semplice alla piattaforma Badrane: come funziona la simulazione, come preparare i documenti, come leggere il risultato e le fonti ufficiali, quali paesi sono coperti e quando la piattaforma può produrre una stima."
+
+msgid "Short, plain-language guides — written for people, not for engineers. Find what you need, in order, from a first simulation to reading your result."
+msgstr "Guide brevi e semplici — scritte per le persone, non per i tecnici. Trova ciò che ti serve, in ordine, dalla prima simulazione alla lettura del risultato."
+
+msgid "On this page"
+msgstr "In questa pagina"
+
+msgid "Documentation topics"
+msgstr "Argomenti della documentazione"
+
+msgid "How the simulation works"
+msgstr "Come funziona la simulazione"
+
+msgid "How to prepare your documents"
+msgstr "Come preparare i documenti"
+
+msgid "How to read your result"
+msgstr "Come leggere il risultato"
+
+msgid "How to read the official sources"
+msgstr "Come leggere le fonti ufficiali"
+
+msgid "Which countries are covered"
+msgstr "Quali paesi sono coperti"
+
+msgid "When the platform can estimate"
+msgstr "Quando la piattaforma può stimare"
+
+msgid "When it prepares only a summary"
+msgstr "Quando prepara solo un riepilogo"
+
+msgid "Privacy and your data"
+msgstr "Privacy e i tuoi dati"
+
+msgid "You choose your country and your case, answer a few questions, and the platform shows what it can do: an indicative estimate where an official table allows it, or a guided check of your documents otherwise. No amount is ever invented."
+msgstr "Scegli il paese e il caso, rispondi a poche domande e la piattaforma mostra cosa può fare: una stima indicativa dove una tabella ufficiale lo permette, oppure una verifica guidata dei documenti. Nessun importo viene mai inventato."
+
+msgid "Gather what you have — the accident report, the medical report, the insurer's offer, pay slips. Upload them and the platform recognises each one, links it to the official sources and tells you what is still useful. Your files are analysed in memory and never stored."
+msgstr "Raccogli ciò che hai — il verbale dell'incidente, il referto medico, l'offerta dell'assicurazione, le buste paga. Caricali e la piattaforma riconosce ognuno, lo collega alle fonti ufficiali e ti dice cosa è ancora utile. I file sono analizzati in memoria e mai conservati."
+
+msgid "Every result is written in plain words: what you indicated, what the platform can do now, what is still missing and your next step. Where there is a figure, it is an indicative range from official sources — a starting point for negotiation, not a promise of payment."
+msgstr "Ogni risultato è scritto in parole semplici: cosa hai indicato, cosa può fare ora la piattaforma, cosa manca ancora e il prossimo passo. Dove c'è un importo, è un intervallo indicativo dalle fonti ufficiali — un punto di partenza per la trattativa, non una promessa di pagamento."
+
+msgid "The library shows the laws, decrees and official tables behind every path. Each source says which country and category it belongs to, what it lets you do, and whether it can feed an estimate or only guide a document check."
+msgstr "La biblioteca mostra leggi, decreti e tabelle ufficiali dietro ogni percorso. Ogni fonte indica a quale paese e categoria appartiene, cosa permette e se può alimentare una stima o solo guidare una verifica dei documenti."
+
+msgid "The platform covers Italy, France, Belgium, Morocco and Tunisia, plus cross-border cases. What it can do differs by country and by case — the country pages and the coverage table show exactly where an estimate is available today."
+msgstr "La piattaforma copre Italia, Francia, Belgio, Marocco e Tunisia, oltre ai casi transfrontalieri. Ciò che può fare varia per paese e per caso — le pagine paese e la tabella di copertura mostrano esattamente dove oggi è disponibile una stima."
+
+msgid "A figure appears only when an official table or formula is validated and tested. Where the law provides a complete national table, the platform can calculate an indicative range. Where it does not, the platform helps you prepare instead of guessing."
+msgstr "Un importo compare solo quando una tabella o formula ufficiale è validata e testata. Dove la legge prevede una tabella nazionale completa, la piattaforma può calcolare un intervallo indicativo. Dove non c'è, la piattaforma ti aiuta a preparare invece di indovinare."
+
+msgid "When there is no validated table for your case, the platform does not show a number. Instead it organises your file, lists the official references that apply and prepares a clear summary you can send to the Studio."
+msgstr "Quando non c'è una tabella validata per il tuo caso, la piattaforma non mostra un numero. Organizza invece il tuo fascicolo, elenca i riferimenti ufficiali applicabili e prepara un riepilogo chiaro da inviare allo Studio."
+
+msgid "You decide what to share. Uploaded files are analysed only to build your result and are not stored. Sensitive data is handled with care, and a simulation is never a legal engagement — that begins only with a separate written agreement."
+msgstr "Decidi tu cosa condividere. I file caricati sono analizzati solo per costruire il tuo risultato e non vengono conservati. I dati sensibili sono trattati con cura e una simulazione non è mai un incarico legale — quello inizia solo con un accordo scritto separato."
+
+msgid "Short answers to the questions people ask most: is the estimate binding, what does it cost, what happens to my documents, and how the Studio can help next."
+msgstr "Risposte brevi alle domande più frequenti: la stima è vincolante, quanto costa, cosa succede ai miei documenti e come lo Studio può aiutarti dopo."
+
+msgid "This documentation is informative and does not constitute legal advice. A simulation is indicative; the actual valuation depends on documents, expert reports, applicable law and the competent jurisdiction."
+msgstr "Questa documentazione è informativa e non costituisce parere legale. Una simulazione è indicativa; la valutazione effettiva dipende da documenti, perizie, legge applicabile e giurisdizione competente."
+
+msgid "See the method"
+msgstr "Vedi il metodo"
+
+msgid "Open the source library"
+msgstr "Apri la biblioteca delle fonti"
+
+msgid "See what we can estimate"
+msgstr "Vedi cosa possiamo stimare"
+
+msgid "Prepare a summary"
+msgstr "Prepara un riepilogo"
+
+msgid "Read the FAQ"
+msgstr "Leggi le FAQ"
+
+msgid "Plain-language guides to the platform."
+msgstr "Guide semplici alla piattaforma."
+
+msgid "Open documentation"
+msgstr "Apri la documentazione"
+
+msgid "How document recognition works"
+msgstr "Come funziona il riconoscimento dei documenti"
+
+msgid "Upload"
+msgstr "Carica"
+
+msgid "Your document is analysed in memory and never stored."
+msgstr "Il tuo documento è analizzato in memoria e mai conservato."
+
+msgid "Recognise"
+msgstr "Riconosci"
+
+msgid "Your path"
+msgstr "Il tuo percorso"

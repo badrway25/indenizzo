@@ -72,6 +72,8 @@ class StaticSitemap(Sitemap):
         "cases:wizard_start": 0.6,
         # Workstream-3 content pages.
         "core:how_it_works": 0.7,
+        # P40: public documentation hub.
+        "core:documentation": 0.6,
         "core:services": 0.7,
         "core:faq": 0.6,
         "core:about": 0.5,

@@ -9,6 +9,8 @@ app_name = "core"
 urlpatterns = [
     path("", views.home, name="home"),
     path("methodology/", views.methodology, name="methodology"),
+    # P40: public documentation hub (plain-language guides; indexable, multilingual).
+    path("documentation/", views.documentation, name="documentation"),
     path("disclaimer/", views.disclaimer, name="disclaimer"),
     path("privacy/", views.privacy, name="privacy"),
     # Workstream-3 public content pages (indexable, multilingual — see the

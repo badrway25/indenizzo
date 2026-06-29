@@ -7787,3 +7787,108 @@ msgstr "افتح المسار الموصى به، أو أرسل الملف بأ�
 
 msgid "Each path on the platform is grounded in an official source. Browse the library by country, category or type, see what each source unlocks, and open the official document."
 msgstr "يستند كل مسار في المنصة إلى مصدر رسمي. تصفّح المكتبة حسب البلد أو الفئة أو النوع، واطّلع على ما يتيحه كل مصدر، وافتح الوثيقة الرسمية."
+
+msgid "How to use the platform"
+msgstr "كيفية استخدام المنصة"
+
+msgid "Plain-language guides to the Badrane platform: how the simulation works, how to prepare your documents, how to read the result and the official sources, which countries are covered and when the platform can produce an estimate."
+msgstr "أدلة بلغة بسيطة لمنصة بدران: كيف تعمل المحاكاة، كيف تجهّز مستنداتك، كيف تقرأ النتيجة والمصادر الرسمية، أي البلدان مشمولة، ومتى يمكن للمنصة إنتاج تقدير."
+
+msgid "Short, plain-language guides — written for people, not for engineers. Find what you need, in order, from a first simulation to reading your result."
+msgstr "أدلة قصيرة وواضحة — مكتوبة للناس، لا للمهندسين. اعثر على ما تحتاجه بالترتيب، من أول محاكاة إلى قراءة نتيجتك."
+
+msgid "On this page"
+msgstr "في هذه الصفحة"
+
+msgid "Documentation topics"
+msgstr "مواضيع التوثيق"
+
+msgid "How the simulation works"
+msgstr "كيف تعمل المحاكاة"
+
+msgid "How to prepare your documents"
+msgstr "كيف تجهّز مستنداتك"
+
+msgid "How to read your result"
+msgstr "كيف تقرأ نتيجتك"
+
+msgid "How to read the official sources"
+msgstr "كيف تقرأ المصادر الرسمية"
+
+msgid "Which countries are covered"
+msgstr "أي البلدان مشمولة"
+
+msgid "When the platform can estimate"
+msgstr "متى يمكن للمنصة أن تقدّر"
+
+msgid "When it prepares only a summary"
+msgstr "متى تُعدّ ملخّصًا فقط"
+
+msgid "Privacy and your data"
+msgstr "الخصوصية وبياناتك"
+
+msgid "You choose your country and your case, answer a few questions, and the platform shows what it can do: an indicative estimate where an official table allows it, or a guided check of your documents otherwise. No amount is ever invented."
+msgstr "تختار بلدك وقضيتك، وتجيب عن بضعة أسئلة، فتُظهر المنصة ما يمكنها فعله: تقديرًا إرشاديًا حيث يسمح جدول رسمي، أو فحصًا موجَّهًا لمستنداتك. ولا يُختلق أي مبلغ أبدًا."
+
+msgid "Gather what you have — the accident report, the medical report, the insurer's offer, pay slips. Upload them and the platform recognises each one, links it to the official sources and tells you what is still useful. Your files are analysed in memory and never stored."
+msgstr "اجمع ما لديك — محضر الحادث، التقرير الطبي، عرض المؤمِّن، كشوف الراتب. حمّلها فتتعرّف المنصة على كل منها وتربطه بالمصادر الرسمية وتخبرك بما لا يزال مفيدًا. تُحلَّل ملفاتك في الذاكرة ولا تُخزَّن أبدًا."
+
+msgid "Every result is written in plain words: what you indicated, what the platform can do now, what is still missing and your next step. Where there is a figure, it is an indicative range from official sources — a starting point for negotiation, not a promise of payment."
+msgstr "كل نتيجة مكتوبة بكلمات بسيطة: ما أوضحته، وما يمكن للمنصة فعله الآن، وما لا يزال ناقصًا، وخطوتك التالية. وحيث يوجد رقم، فهو نطاق إرشادي من المصادر الرسمية — نقطة انطلاق للتفاوض، لا وعدًا بالدفع."
+
+msgid "The library shows the laws, decrees and official tables behind every path. Each source says which country and category it belongs to, what it lets you do, and whether it can feed an estimate or only guide a document check."
+msgstr "تُظهر المكتبة القوانين والمراسيم والجداول الرسمية وراء كل مسار. يوضّح كل مصدر إلى أي بلد وفئة ينتمي، وما الذي يتيحه، وهل يمكنه تغذية تقدير أم توجيه التحقّق من المستندات فقط."
+
+msgid "The platform covers Italy, France, Belgium, Morocco and Tunisia, plus cross-border cases. What it can do differs by country and by case — the country pages and the coverage table show exactly where an estimate is available today."
+msgstr "تغطّي المنصة إيطاليا وفرنسا وبلجيكا والمغرب وتونس، إضافة إلى القضايا العابرة للحدود. وما يمكنها فعله يختلف حسب البلد والقضية — وتُظهر صفحات البلدان وجدول التغطية بالضبط أين يتوفّر تقدير اليوم."
+
+msgid "A figure appears only when an official table or formula is validated and tested. Where the law provides a complete national table, the platform can calculate an indicative range. Where it does not, the platform helps you prepare instead of guessing."
+msgstr "لا يظهر رقم إلا عندما يُعتمد جدول أو صيغة رسمية ويُختبر. حيث يوفّر القانون جدولًا وطنيًا كاملًا، يمكن للمنصة حساب نطاق إرشادي. وحيث لا يوجد، تساعدك المنصة على التجهيز بدل التخمين."
+
+msgid "When there is no validated table for your case, the platform does not show a number. Instead it organises your file, lists the official references that apply and prepares a clear summary you can send to the Studio."
+msgstr "عندما لا يوجد جدول معتمد لقضيتك، لا تعرض المنصة رقمًا. بل تنظّم ملفك، وتسرد المراجع الرسمية المنطبقة، وتُعدّ ملخّصًا واضحًا يمكنك إرساله إلى المكتب."
+
+msgid "You decide what to share. Uploaded files are analysed only to build your result and are not stored. Sensitive data is handled with care, and a simulation is never a legal engagement — that begins only with a separate written agreement."
+msgstr "أنت تقرّر ما تشاركه. تُحلَّل الملفات المرفوعة فقط لبناء نتيجتك ولا تُخزَّن. تُعالَج البيانات الحساسة بعناية، والمحاكاة ليست توكيلًا قانونيًا أبدًا — فذلك لا يبدأ إلا باتفاق مكتوب منفصل."
+
+msgid "Short answers to the questions people ask most: is the estimate binding, what does it cost, what happens to my documents, and how the Studio can help next."
+msgstr "إجابات قصيرة عن أكثر الأسئلة شيوعًا: هل التقدير مُلزِم، وكم يكلّف، وماذا يحدث لمستنداتي، وكيف يمكن للمكتب المساعدة لاحقًا."
+
+msgid "This documentation is informative and does not constitute legal advice. A simulation is indicative; the actual valuation depends on documents, expert reports, applicable law and the competent jurisdiction."
+msgstr "هذا التوثيق إعلامي ولا يشكّل استشارة قانونية. المحاكاة إرشادية؛ ويعتمد التقييم الفعلي على المستندات والتقارير الخبيرة والقانون المنطبق والجهة القضائية المختصة."
+
+msgid "See the method"
+msgstr "اطّلع على المنهجية"
+
+msgid "Open the source library"
+msgstr "افتح مكتبة المصادر"
+
+msgid "See what we can estimate"
+msgstr "اطّلع على ما يمكننا تقديره"
+
+msgid "Prepare a summary"
+msgstr "أعدّ ملخّصًا"
+
+msgid "Read the FAQ"
+msgstr "اقرأ الأسئلة الشائعة"
+
+msgid "Plain-language guides to the platform."
+msgstr "أدلة بلغة بسيطة للمنصة."
+
+msgid "Open documentation"
+msgstr "افتح التوثيق"
+
+msgid "How document recognition works"
+msgstr "كيف يعمل التعرّف على المستندات"
+
+msgid "Upload"
+msgstr "حمّل"
+
+msgid "Your document is analysed in memory and never stored."
+msgstr "يُحلَّل مستندك في الذاكرة ولا يُخزَّن أبدًا."
+
+msgid "Recognise"
+msgstr "تعرّف"
+
+msgid "Your path"
+msgstr "مسارك"

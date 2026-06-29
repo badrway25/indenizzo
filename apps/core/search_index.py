@@ -127,6 +127,8 @@ def _entries() -> list[SearchEntry]:
         ("core:guided_router", _("Find your guided path"), "guidato guided percorso path navigator"),
         ("core:services", _("Areas the Studio handles"), "servizi services aree areas"),
         ("core:how_it_works", _("How it works"), "come funziona how it works metodo"),
+        ("core:documentation", _("Documentation"),
+         "documentazione documentation guida guide aiuto help manuale come usare"),
         # P30: the document-intake flow — found via document-type keywords.
         ("core:documents", _("Prepare your dossier"),
          "documenti documents carica upload dossier referto medico report offerta "
