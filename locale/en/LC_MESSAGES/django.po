@@ -4908,3 +4908,129 @@ msgid ""
 "statut personnel, Livre IX: a precise computation requires Studio review of "
 "the actual case context."
 msgstr ""
+
+msgid "Official documents, explained simply"
+msgstr "Official documents, explained simply"
+
+msgid "How to read a source"
+msgstr "How to read a source"
+
+msgid "Every source answers the same five questions. Read them in order and you will know exactly what each document lets you do."
+msgstr "Every source answers the same five questions. Read them in order and you will know exactly what each document lets you do."
+
+msgid "Which country's law the document belongs to."
+msgstr "Which country's law the document belongs to."
+
+msgid "The kind of case it applies to."
+msgstr "The kind of case it applies to."
+
+msgid "What it lets you do"
+msgstr "What it lets you do"
+
+msgid "Whether it can feed an estimate or guide a document check."
+msgstr "Whether it can feed an estimate or guide a document check."
+
+msgid "When a table is needed"
+msgstr "When a table is needed"
+
+msgid "A figure appears only when the official table or formula is validated."
+msgstr "A figure appears only when the official table or formula is validated."
+
+msgid "When a document check is enough"
+msgstr "When a document check is enough"
+
+msgid "Without a validated table, the source still guides which documents to prepare."
+msgstr "Without a validated table, the source still guides which documents to prepare."
+
+msgid "What this source is for"
+msgstr "What this source is for"
+
+msgid "When it can support an estimate"
+msgstr "When it can support an estimate"
+
+msgid "This source backs an indicative estimate: when your data matches the validated table, the platform can calculate a range."
+msgstr "This source backs an indicative estimate: when your data matches the validated table, the platform can calculate a range."
+
+msgid "This source does not produce a figure on its own. A number appears only where a national table or formula is validated."
+msgstr "This source does not produce a figure on its own. A number appears only where a national table or formula is validated."
+
+msgid "Use it to see which documents to prepare and which official references apply to your case, even before any amount."
+msgstr "Use it to see which documents to prepare and which official references apply to your case, even before any amount."
+
+msgid "Useful links"
+msgstr "Useful links"
+
+msgid "See an indicative range where an official table exists"
+msgstr "See an indicative range where an official table exists"
+
+msgid "Answer a few questions about your case. Where the law and the validated table allow it, you get an indicative range — never an invented number."
+msgstr "Answer a few questions about your case. Where the law and the validated table allow it, you get an indicative range — never an invented number."
+
+msgid "Start the estimate"
+msgstr "Start the estimate"
+
+msgid "Upload your file and see which path fits"
+msgstr "Upload your file and see which path fits"
+
+msgid "Add your documents: each is recognised and linked to the official sources, then combined into one dossier with a clear next step."
+msgstr "Add your documents: each is recognised and linked to the official sources, then combined into one dossier with a clear next step."
+
+msgid "Upload documents"
+msgstr "Upload documents"
+
+msgid "Understand which country's law may apply"
+msgstr "Understand which country's law may apply"
+
+msgid "For accidents or successions across borders, start from the country and see the official references and the documents to prepare."
+msgstr "For accidents or successions across borders, start from the country and see the official references and the documents to prepare."
+
+msgid "Case"
+msgstr "Case"
+
+msgid "Your result in plain words"
+msgstr "Your result in plain words"
+
+msgid "Your result, in plain words"
+msgstr "Your result, in plain words"
+
+msgid "You indicated"
+msgstr "You indicated"
+
+msgid "We can do now"
+msgstr "We can do now"
+
+msgid "We can calculate an indicative range from the validated official sources."
+msgstr "We can calculate an indicative range from the validated official sources."
+
+msgid "We can check your documents and point you to the right path."
+msgstr "We can check your documents and point you to the right path."
+
+msgid "We can prepare your dossier and list the official references that apply."
+msgstr "We can prepare your dossier and list the official references that apply."
+
+msgid "Still missing"
+msgstr "Still missing"
+
+msgid "Your next step"
+msgstr "Your next step"
+
+msgid "The information you entered about your case."
+msgstr "The information you entered about your case."
+
+msgid "A short legal review by the Studio to confirm the details of your case."
+msgstr "A short legal review by the Studio to confirm the details of your case."
+
+msgid "Send your summary to the Studio and gather the documents listed below."
+msgstr "Send your summary to the Studio and gather the documents listed below."
+
+msgid "A short legal review by the Studio to confirm documents, expert reports and the responsibility split."
+msgstr "A short legal review by the Studio to confirm documents, expert reports and the responsibility split."
+
+msgid "Download the PDF, then request a legal review from the Studio."
+msgstr "Download the PDF, then request a legal review from the Studio."
+
+msgid "Open the recommended path, or send the whole dossier to the Studio."
+msgstr "Open the recommended path, or send the whole dossier to the Studio."
+
+msgid "Each path on the platform is grounded in an official source. Browse the library by country, category or type, see what each source unlocks, and open the official document."
+msgstr "Each path on the platform is grounded in an official source. Browse the library by country, category or type, see what each source unlocks, and open the official document."

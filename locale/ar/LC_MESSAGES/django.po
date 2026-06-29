@@ -7667,3 +7667,123 @@ msgstr "يتطلّب الجدول الرسمي أولاً"
 
 msgid "Biological damage"
 msgstr "الضرر البيولوجي"
+
+msgid "Official documents, explained simply"
+msgstr "وثائق رسمية، مشروحة ببساطة"
+
+msgid "How to read a source"
+msgstr "كيف تقرأ مصدرًا"
+
+msgid "Every source answers the same five questions. Read them in order and you will know exactly what each document lets you do."
+msgstr "كل مصدر يجيب عن الأسئلة الخمسة نفسها. اقرأها بالترتيب لتعرف بالضبط ما يتيحه كل مستند."
+
+msgid "Which country's law the document belongs to."
+msgstr "إلى قانون أي بلد ينتمي المستند."
+
+msgid "The kind of case it applies to."
+msgstr "نوع القضية التي ينطبق عليها."
+
+msgid "What it lets you do"
+msgstr "ما الذي تتيحه"
+
+msgid "Whether it can feed an estimate or guide a document check."
+msgstr "ما إذا كانت تغذّي تقديرًا أو توجّه التحقّق من المستندات."
+
+msgid "When a table is needed"
+msgstr "متى تكون هناك حاجة إلى جدول"
+
+msgid "A figure appears only when the official table or formula is validated."
+msgstr "لا يظهر أي مبلغ إلا عندما يُعتمد الجدول أو الصيغة الرسمية."
+
+msgid "When a document check is enough"
+msgstr "متى يكفي التحقّق من المستندات"
+
+msgid "Without a validated table, the source still guides which documents to prepare."
+msgstr "حتى بدون جدول معتمد، يرشدك المصدر إلى المستندات التي يجب تجهيزها."
+
+msgid "What this source is for"
+msgstr "ما الغرض من هذا المصدر"
+
+msgid "When it can support an estimate"
+msgstr "متى يمكن أن تدعم تقديرًا"
+
+msgid "This source backs an indicative estimate: when your data matches the validated table, the platform can calculate a range."
+msgstr "يدعم هذا المصدر تقديرًا إرشاديًا: عندما تتطابق بياناتك مع الجدول المعتمد، يمكن للمنصة حساب نطاق."
+
+msgid "This source does not produce a figure on its own. A number appears only where a national table or formula is validated."
+msgstr "لا ينتج هذا المصدر مبلغًا بمفرده. لا يظهر رقم إلا حيث يُعتمد جدول أو صيغة وطنية."
+
+msgid "Use it to see which documents to prepare and which official references apply to your case, even before any amount."
+msgstr "استخدمها لمعرفة المستندات التي يجب تجهيزها والمراجع الرسمية التي تنطبق على قضيتك، حتى قبل أي مبلغ."
+
+msgid "Useful links"
+msgstr "روابط مفيدة"
+
+msgid "See an indicative range where an official table exists"
+msgstr "اطّلع على نطاق إرشادي حيث يوجد جدول رسمي"
+
+msgid "Answer a few questions about your case. Where the law and the validated table allow it, you get an indicative range — never an invented number."
+msgstr "أجب عن بضعة أسئلة حول قضيتك. حيث يسمح القانون والجدول المعتمد، تحصل على نطاق إرشادي — لا رقم مُختلق أبدًا."
+
+msgid "Upload your file and see which path fits"
+msgstr "حمّل ملفك واطّلع على المسار المناسب"
+
+msgid "Add your documents: each is recognised and linked to the official sources, then combined into one dossier with a clear next step."
+msgstr "أضِف مستنداتك: يُتعرّف على كل منها ويُربط بالمصادر الرسمية، ثم تُجمع في ملف واحد بخطوة تالية واضحة."
+
+msgid "Understand which country's law may apply"
+msgstr "افهم قانون أي بلد قد ينطبق"
+
+msgid "For accidents or successions across borders, start from the country and see the official references and the documents to prepare."
+msgstr "في الحوادث أو المواريث العابرة للحدود، ابدأ من البلد واطّلع على المراجع الرسمية والمستندات الواجب تجهيزها."
+
+msgid "Case"
+msgstr "القضية"
+
+msgid "Your result in plain words"
+msgstr "نتيجتك بكلمات بسيطة"
+
+msgid "Your result, in plain words"
+msgstr "نتيجتك، بكلمات بسيطة"
+
+msgid "You indicated"
+msgstr "لقد أوضحت"
+
+msgid "We can do now"
+msgstr "ما يمكننا فعله الآن"
+
+msgid "We can calculate an indicative range from the validated official sources."
+msgstr "يمكننا حساب نطاق إرشادي من المصادر الرسمية المعتمدة."
+
+msgid "We can check your documents and point you to the right path."
+msgstr "يمكننا فحص مستنداتك وإرشادك إلى المسار الصحيح."
+
+msgid "We can prepare your dossier and list the official references that apply."
+msgstr "يمكننا تجهيز ملفك وسرد المراجع الرسمية المنطبقة."
+
+msgid "Still missing"
+msgstr "ما زال ناقصًا"
+
+msgid "Your next step"
+msgstr "خطوتك التالية"
+
+msgid "The information you entered about your case."
+msgstr "المعلومات التي أدخلتها عن قضيتك."
+
+msgid "A short legal review by the Studio to confirm the details of your case."
+msgstr "مراجعة قانونية قصيرة من المكتب لتأكيد تفاصيل قضيتك."
+
+msgid "Send your summary to the Studio and gather the documents listed below."
+msgstr "أرسل ملخّصك إلى المكتب واجمع المستندات المذكورة أدناه."
+
+msgid "A short legal review by the Studio to confirm documents, expert reports and the responsibility split."
+msgstr "مراجعة قانونية قصيرة من المكتب لتأكيد المستندات والتقارير الخبيرة وتوزيع المسؤولية."
+
+msgid "Download the PDF, then request a legal review from the Studio."
+msgstr "نزّل ملف PDF ثم اطلب مراجعة قانونية من المكتب."
+
+msgid "Open the recommended path, or send the whole dossier to the Studio."
+msgstr "افتح المسار الموصى به، أو أرسل الملف بأكمله إلى المكتب."
+
+msgid "Each path on the platform is grounded in an official source. Browse the library by country, category or type, see what each source unlocks, and open the official document."
+msgstr "يستند كل مسار في المنصة إلى مصدر رسمي. تصفّح المكتبة حسب البلد أو الفئة أو النوع، واطّلع على ما يتيحه كل مصدر، وافتح الوثيقة الرسمية."

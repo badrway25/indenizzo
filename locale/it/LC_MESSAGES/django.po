@@ -7913,3 +7913,123 @@ msgstr "Serve prima la tabella ufficiale"
 
 msgid "Biological damage"
 msgstr "Danno biologico"
+
+msgid "Official documents, explained simply"
+msgstr "Documenti ufficiali, spiegati in modo semplice"
+
+msgid "How to read a source"
+msgstr "Come leggere una fonte"
+
+msgid "Every source answers the same five questions. Read them in order and you will know exactly what each document lets you do."
+msgstr "Ogni fonte risponde alle stesse cinque domande. Leggile in ordine e saprai con esattezza cosa ti permette ogni documento."
+
+msgid "Which country's law the document belongs to."
+msgstr "A quale legge nazionale appartiene il documento."
+
+msgid "The kind of case it applies to."
+msgstr "Il tipo di caso a cui si applica."
+
+msgid "What it lets you do"
+msgstr "Cosa ti permette"
+
+msgid "Whether it can feed an estimate or guide a document check."
+msgstr "Se può alimentare una stima o guidare una verifica dei documenti."
+
+msgid "When a table is needed"
+msgstr "Quando serve una tabella"
+
+msgid "A figure appears only when the official table or formula is validated."
+msgstr "Un importo compare solo quando la tabella o la formula ufficiale è validata."
+
+msgid "When a document check is enough"
+msgstr "Quando basta la verifica dei documenti"
+
+msgid "Without a validated table, the source still guides which documents to prepare."
+msgstr "Senza una tabella validata, la fonte indica comunque quali documenti preparare."
+
+msgid "What this source is for"
+msgstr "A cosa serve questa fonte"
+
+msgid "When it can support an estimate"
+msgstr "Quando può aiutare una stima"
+
+msgid "This source backs an indicative estimate: when your data matches the validated table, the platform can calculate a range."
+msgstr "Questa fonte sostiene una stima indicativa: quando i tuoi dati corrispondono alla tabella validata, la piattaforma può calcolare un intervallo."
+
+msgid "This source does not produce a figure on its own. A number appears only where a national table or formula is validated."
+msgstr "Questa fonte da sola non produce un importo. Un numero compare solo dove una tabella o formula nazionale è validata."
+
+msgid "Use it to see which documents to prepare and which official references apply to your case, even before any amount."
+msgstr "Usala per vedere quali documenti preparare e quali riferimenti ufficiali valgono per il tuo caso, ancora prima di qualsiasi importo."
+
+msgid "Useful links"
+msgstr "Collegamenti utili"
+
+msgid "See an indicative range where an official table exists"
+msgstr "Vedi un intervallo indicativo dove esiste una tabella ufficiale"
+
+msgid "Answer a few questions about your case. Where the law and the validated table allow it, you get an indicative range — never an invented number."
+msgstr "Rispondi a poche domande sul tuo caso. Dove la legge e la tabella validata lo permettono, ottieni un intervallo indicativo — mai un numero inventato."
+
+msgid "Upload your file and see which path fits"
+msgstr "Carica il tuo fascicolo e scopri quale percorso è adatto"
+
+msgid "Add your documents: each is recognised and linked to the official sources, then combined into one dossier with a clear next step."
+msgstr "Aggiungi i tuoi documenti: ognuno viene riconosciuto e collegato alle fonti ufficiali, poi riunito in un unico fascicolo con un passo successivo chiaro."
+
+msgid "Understand which country's law may apply"
+msgstr "Capisci quale legge nazionale può valere"
+
+msgid "For accidents or successions across borders, start from the country and see the official references and the documents to prepare."
+msgstr "Per incidenti o successioni transfrontaliere, parti dal paese e vedi i riferimenti ufficiali e i documenti da preparare."
+
+msgid "Case"
+msgstr "Caso"
+
+msgid "Your result in plain words"
+msgstr "Il tuo risultato in parole semplici"
+
+msgid "Your result, in plain words"
+msgstr "Il tuo risultato, in parole semplici"
+
+msgid "You indicated"
+msgstr "Hai indicato"
+
+msgid "We can do now"
+msgstr "Possiamo fare ora"
+
+msgid "We can calculate an indicative range from the validated official sources."
+msgstr "Possiamo calcolare un intervallo indicativo dalle fonti ufficiali validate."
+
+msgid "We can check your documents and point you to the right path."
+msgstr "Possiamo controllare i tuoi documenti e indicarti il percorso giusto."
+
+msgid "We can prepare your dossier and list the official references that apply."
+msgstr "Possiamo preparare il tuo fascicolo ed elencare i riferimenti ufficiali che valgono."
+
+msgid "Still missing"
+msgstr "Manca ancora"
+
+msgid "Your next step"
+msgstr "Prossimo passo"
+
+msgid "The information you entered about your case."
+msgstr "Le informazioni che hai inserito sul tuo caso."
+
+msgid "A short legal review by the Studio to confirm the details of your case."
+msgstr "Una breve revisione legale dello Studio per confermare i dettagli del tuo caso."
+
+msgid "Send your summary to the Studio and gather the documents listed below."
+msgstr "Invia il tuo riepilogo allo Studio e raccogli i documenti elencati qui sotto."
+
+msgid "A short legal review by the Studio to confirm documents, expert reports and the responsibility split."
+msgstr "Una breve revisione legale dello Studio per confermare documenti, perizie e la ripartizione delle responsabilità."
+
+msgid "Download the PDF, then request a legal review from the Studio."
+msgstr "Scarica il PDF, poi richiedi una revisione legale allo Studio."
+
+msgid "Open the recommended path, or send the whole dossier to the Studio."
+msgstr "Apri il percorso consigliato, oppure invia l'intero fascicolo allo Studio."
+
+msgid "Each path on the platform is grounded in an official source. Browse the library by country, category or type, see what each source unlocks, and open the official document."
+msgstr "Ogni percorso della piattaforma si fonda su una fonte ufficiale. Sfoglia la biblioteca per paese, categoria o tipo, vedi cosa permette ogni fonte e apri il documento ufficiale."

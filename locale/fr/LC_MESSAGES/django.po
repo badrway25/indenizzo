@@ -7958,3 +7958,123 @@ msgstr "Nécessite d'abord le barème officiel"
 
 msgid "Biological damage"
 msgstr "Dommage biologique"
+
+msgid "Official documents, explained simply"
+msgstr "Documents officiels, expliqués simplement"
+
+msgid "How to read a source"
+msgstr "Comment lire une source"
+
+msgid "Every source answers the same five questions. Read them in order and you will know exactly what each document lets you do."
+msgstr "Chaque source répond aux mêmes cinq questions. Lisez-les dans l'ordre et vous saurez exactement ce que chaque document permet."
+
+msgid "Which country's law the document belongs to."
+msgstr "À quelle loi nationale appartient le document."
+
+msgid "The kind of case it applies to."
+msgstr "Le type de dossier auquel il s'applique."
+
+msgid "What it lets you do"
+msgstr "Ce qu'elle permet"
+
+msgid "Whether it can feed an estimate or guide a document check."
+msgstr "Si elle peut alimenter une estimation ou guider une vérification des documents."
+
+msgid "When a table is needed"
+msgstr "Quand une table est nécessaire"
+
+msgid "A figure appears only when the official table or formula is validated."
+msgstr "Un montant n'apparaît que lorsque la table ou la formule officielle est validée."
+
+msgid "When a document check is enough"
+msgstr "Quand une vérification des documents suffit"
+
+msgid "Without a validated table, the source still guides which documents to prepare."
+msgstr "Sans table validée, la source indique tout de même quels documents préparer."
+
+msgid "What this source is for"
+msgstr "À quoi sert cette source"
+
+msgid "When it can support an estimate"
+msgstr "Quand elle peut soutenir une estimation"
+
+msgid "This source backs an indicative estimate: when your data matches the validated table, the platform can calculate a range."
+msgstr "Cette source soutient une estimation indicative : lorsque vos données correspondent à la table validée, la plateforme peut calculer une fourchette."
+
+msgid "This source does not produce a figure on its own. A number appears only where a national table or formula is validated."
+msgstr "Cette source ne produit pas de montant à elle seule. Un chiffre n'apparaît que là où une table ou une formule nationale est validée."
+
+msgid "Use it to see which documents to prepare and which official references apply to your case, even before any amount."
+msgstr "Utilisez-la pour voir quels documents préparer et quelles références officielles s'appliquent à votre dossier, avant même tout montant."
+
+msgid "Useful links"
+msgstr "Liens utiles"
+
+msgid "See an indicative range where an official table exists"
+msgstr "Voyez une fourchette indicative là où une table officielle existe"
+
+msgid "Answer a few questions about your case. Where the law and the validated table allow it, you get an indicative range — never an invented number."
+msgstr "Répondez à quelques questions sur votre dossier. Là où la loi et la table validée le permettent, vous obtenez une fourchette indicative — jamais un chiffre inventé."
+
+msgid "Upload your file and see which path fits"
+msgstr "Téléversez votre dossier et voyez quel parcours convient"
+
+msgid "Add your documents: each is recognised and linked to the official sources, then combined into one dossier with a clear next step."
+msgstr "Ajoutez vos documents : chacun est reconnu et relié aux sources officielles, puis réuni en un seul dossier avec une étape suivante claire."
+
+msgid "Understand which country's law may apply"
+msgstr "Comprenez quelle loi nationale peut s'appliquer"
+
+msgid "For accidents or successions across borders, start from the country and see the official references and the documents to prepare."
+msgstr "Pour les accidents ou successions transfrontaliers, partez du pays et voyez les références officielles et les documents à préparer."
+
+msgid "Case"
+msgstr "Dossier"
+
+msgid "Your result in plain words"
+msgstr "Votre résultat en mots simples"
+
+msgid "Your result, in plain words"
+msgstr "Votre résultat, en mots simples"
+
+msgid "You indicated"
+msgstr "Vous avez indiqué"
+
+msgid "We can do now"
+msgstr "Ce que nous pouvons faire maintenant"
+
+msgid "We can calculate an indicative range from the validated official sources."
+msgstr "Nous pouvons calculer une fourchette indicative à partir des sources officielles validées."
+
+msgid "We can check your documents and point you to the right path."
+msgstr "Nous pouvons vérifier vos documents et vous orienter vers le bon parcours."
+
+msgid "We can prepare your dossier and list the official references that apply."
+msgstr "Nous pouvons préparer votre dossier et lister les références officielles applicables."
+
+msgid "Still missing"
+msgstr "Il manque encore"
+
+msgid "Your next step"
+msgstr "Prochaine étape"
+
+msgid "The information you entered about your case."
+msgstr "Les informations que vous avez saisies sur votre dossier."
+
+msgid "A short legal review by the Studio to confirm the details of your case."
+msgstr "Un bref examen juridique du Cabinet pour confirmer les détails de votre dossier."
+
+msgid "Send your summary to the Studio and gather the documents listed below."
+msgstr "Envoyez votre récapitulatif au Cabinet et rassemblez les documents listés ci-dessous."
+
+msgid "A short legal review by the Studio to confirm documents, expert reports and the responsibility split."
+msgstr "Un bref examen juridique du Cabinet pour confirmer les documents, les expertises et le partage des responsabilités."
+
+msgid "Download the PDF, then request a legal review from the Studio."
+msgstr "Téléchargez le PDF, puis demandez un examen juridique au Cabinet."
+
+msgid "Open the recommended path, or send the whole dossier to the Studio."
+msgstr "Ouvrez le parcours recommandé, ou envoyez l'intégralité du dossier au Cabinet."
+
+msgid "Each path on the platform is grounded in an official source. Browse the library by country, category or type, see what each source unlocks, and open the official document."
+msgstr "Chaque parcours de la plateforme repose sur une source officielle. Parcourez la bibliothèque par pays, catégorie ou type, voyez ce que permet chaque source et ouvrez le document officiel."
