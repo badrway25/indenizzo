@@ -7550,3 +7550,36 @@ msgstr "اختر بلدك، ارفع مستنداتك أو ابدأ تقديرا
 
 msgid "Start the simulation"
 msgstr "ابدأ المحاكاة"
+
+msgid "Start here"
+msgstr "ابدأ من هنا"
+
+msgid "What would you like to do?"
+msgstr "ماذا تريد أن تفعل؟"
+
+msgid "Pick a starting point — the platform guides you the rest of the way."
+msgstr "اختر نقطة بداية — وتُرشدك المنصّة في الباقي."
+
+msgid "Open"
+msgstr "افتح"
+
+msgid "Make an estimate"
+msgstr "احسب تقديراً"
+
+msgid "Check an offer"
+msgstr "تحقّق من عرض"
+
+msgid "Which law applies"
+msgstr "أي قانون ينطبق"
+
+msgid "See an indicative range where an official table allows it."
+msgstr "اطّلع على نطاق إرشادي حيث يسمح جدول رسمي بذلك."
+
+msgid "Find out whether the insurer's offer is in line."
+msgstr "اكتشف ما إذا كان عرض المؤمّن متوافقاً."
+
+msgid "We recognise your documents and prepare your file."
+msgstr "نتعرّف على مستنداتك ونجهّز ملفك."
+
+msgid "Understand which country's law may apply to your case."
+msgstr "افهم قانون أي بلد قد ينطبق على حالتك."

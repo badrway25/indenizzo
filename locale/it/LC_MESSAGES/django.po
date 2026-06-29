@@ -7796,3 +7796,36 @@ msgstr "Scegli il paese, carica i documenti o avvia una stima. La piattaforma ti
 
 msgid "Start the simulation"
 msgstr "Inizia la simulazione"
+
+msgid "Start here"
+msgstr "Inizia da qui"
+
+msgid "What would you like to do?"
+msgstr "Cosa vuoi fare?"
+
+msgid "Pick a starting point — the platform guides you the rest of the way."
+msgstr "Scegli un punto di partenza — la piattaforma ti guida nel resto."
+
+msgid "Open"
+msgstr "Apri"
+
+msgid "Make an estimate"
+msgstr "Fai una stima"
+
+msgid "Check an offer"
+msgstr "Controlla un'offerta"
+
+msgid "Which law applies"
+msgstr "Quale legge si applica"
+
+msgid "See an indicative range where an official table allows it."
+msgstr "Vedi un intervallo indicativo dove una tabella ufficiale lo consente."
+
+msgid "Find out whether the insurer's offer is in line."
+msgstr "Scopri se l'offerta dell'assicurazione è coerente."
+
+msgid "We recognise your documents and prepare your file."
+msgstr "Riconosciamo i tuoi documenti e prepariamo il tuo riepilogo."
+
+msgid "Understand which country's law may apply to your case."
+msgstr "Capisci quale legge nazionale può valere per il tuo caso."
