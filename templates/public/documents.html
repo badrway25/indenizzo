@@ -18,20 +18,29 @@
       {% blocktranslate %}Upload a medical report, an insurance offer, an accident report or an INAIL decision. The platform recognises the kind of document, links it to the official sources and proposes the path — an estimate where an official table allows it, a documental pre-check otherwise.{% endblocktranslate %}
     </p>
 
-    <div class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4" data-reveal>
-      <div class="premium-card flex items-start gap-3 p-5">
-        <span aria-hidden="true" class="icon-medallion shrink-0">{% include "partials/_icon.html" with name="document" icon_class="w-5 h-5" %}</span>
-        <span class="text-sm text-ink-900 leading-snug">{% translate "Upload your document — it is analysed in memory and never stored." %}</span>
-      </div>
-      <div class="premium-card flex items-start gap-3 p-5">
-        <span aria-hidden="true" class="icon-medallion shrink-0">{% include "partials/_icon.html" with name="scale" icon_class="w-5 h-5" %}</span>
-        <span class="text-sm text-ink-900 leading-snug">{% translate "We recognise the type and link the official sources." %}</span>
-      </div>
-      <div class="premium-card flex items-start gap-3 p-5">
-        <span aria-hidden="true" class="icon-medallion shrink-0">{% include "partials/_icon.html" with name="arrow-right" icon_class="w-5 h-5" %}</span>
-        <span class="text-sm text-ink-900 leading-snug">{% translate "You get the recommended path and a dossier to consolidate." %}</span>
-      </div>
-    </div>
+    {# P40: animated CSS/SVG explainer (no video/CDN); motion gated on prefers-reduced-motion, static fallback. #}
+    <section class="explainer mt-10" data-reveal aria-label="{% translate 'How document recognition works' %}">
+      <ol class="explainer-flow" role="list">
+        <li class="explainer-step">
+          <span class="explainer-step__num" aria-hidden="true">1</span>
+          <span class="explainer-step__ico" aria-hidden="true">{% include "partials/_icon.html" with name="upload" icon_class="w-6 h-6" %}</span>
+          <span class="explainer-step__label">{% translate "Upload" %}</span>
+          <span class="explainer-step__text">{% translate "Your document is analysed in memory and never stored." %}</span>
+        </li>
+        <li class="explainer-step">
+          <span class="explainer-step__num" aria-hidden="true">2</span>
+          <span class="explainer-step__ico" aria-hidden="true">{% include "partials/_icon.html" with name="scale" icon_class="w-6 h-6" %}</span>
+          <span class="explainer-step__label">{% translate "Recognise" %}</span>
+          <span class="explainer-step__text">{% translate "We recognise the type and link the official sources." %}</span>
+        </li>
+        <li class="explainer-step">
+          <span class="explainer-step__num" aria-hidden="true">3</span>
+          <span class="explainer-step__ico" aria-hidden="true">{% include "partials/_icon.html" with name="folder" icon_class="w-6 h-6" %}</span>
+          <span class="explainer-step__label">{% translate "Your path" %}</span>
+          <span class="explainer-step__text">{% translate "You get the recommended path and a dossier to consolidate." %}</span>
+        </li>
+      </ol>
+    </section>
 
     <div class="mt-9">
       <a href="{% url 'core:documents_upload' %}" class="premium-btn premium-btn-gold premium-btn-lg" data-event="document_intake_started">{% translate "Upload a document" %} <span aria-hidden="true">→</span></a>
