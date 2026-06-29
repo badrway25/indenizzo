@@ -184,6 +184,15 @@ SITE_IMAGE_SLOTS: list[dict[str, Any]] = [
     {"purpose": "intent_offer", "country": None, "query": "business contract pen signed desk"},
     {"purpose": "intent_documents", "country": None, "query": "tidy office desk files folders"},
     {"purpose": "intent_law", "country": None, "query": "globe classic law books wood"},
+    # P39: internal body imagery (not heroes) — sources library, source document
+    # sheet, human result report, and the three service sections + guided path.
+    {"purpose": "sources_body", "country": None, "query": "elegant law library wooden bookshelves"},
+    {"purpose": "source_document", "country": None, "query": "official documents desk papers folder"},
+    {"purpose": "result_report", "country": None, "query": "professional reviewing legal report desk"},
+    {"purpose": "services_estimate", "country": None, "query": "balance scales legal documents wooden desk"},
+    {"purpose": "services_documents", "country": None, "query": "neat office binders files folders desk"},
+    {"purpose": "services_international", "country": None, "query": "world globe law books international desk"},
+    {"purpose": "guided_workflow", "country": None, "query": "lawyers reviewing documents law books desk"},
 ]
 
 

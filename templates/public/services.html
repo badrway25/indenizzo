@@ -26,6 +26,40 @@
     <div data-sticky-cta-sentinel aria-hidden="true"></div>
   </header>
 
+  {# P39: three visual ways to start — image + text + CTA bands. #}
+  <section class="max-w-7xl mx-auto px-5 lg:px-8 pt-10 space-y-12 lg:space-y-16">
+    {# 1 — Make an estimate. DOM order = layout (subset CSS has no order-* utilities). #}
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center" data-reveal>
+      <div>{% include "partials/_premium_body_image.html" with image=img_estimate figure_class="h-56 sm:h-72 lg:h-80" %}</div>
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Make an estimate" %}</p>
+        <h2 class="mt-3 font-serif text-2xl sm:text-3xl text-ink-950 leading-tight">{% translate "See an indicative range where an official table exists" %}</h2>
+        <p class="mt-4 text-ink-800 leading-relaxed">{% blocktranslate %}Answer a few questions about your case. Where the law and the validated table allow it, you get an indicative range — never an invented number.{% endblocktranslate %}</p>
+        <a href="{% url 'cases:wizard_start' %}" class="mt-6 premium-btn premium-btn-primary">{% translate "Start the estimate" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+    {# 2 — Check your documents (image right: text comes first in the DOM). #}
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center" data-reveal>
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Check your documents" %}</p>
+        <h2 class="mt-3 font-serif text-2xl sm:text-3xl text-ink-950 leading-tight">{% translate "Upload your file and see which path fits" %}</h2>
+        <p class="mt-4 text-ink-800 leading-relaxed">{% blocktranslate %}Add your documents: each is recognised and linked to the official sources, then combined into one dossier with a clear next step.{% endblocktranslate %}</p>
+        <a href="{% url 'core:documents_upload' %}" class="mt-6 premium-btn premium-btn-secondary">{% translate "Upload documents" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+      </div>
+      <div>{% include "partials/_premium_body_image.html" with image=img_documents figure_class="h-56 sm:h-72 lg:h-80" %}</div>
+    </div>
+    {# 3 — Cross-border cases (image left). #}
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center" data-reveal>
+      <div>{% include "partials/_premium_body_image.html" with image=img_international figure_class="h-56 sm:h-72 lg:h-80" %}</div>
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Cross-border cases" %}</p>
+        <h2 class="mt-3 font-serif text-2xl sm:text-3xl text-ink-950 leading-tight">{% translate "Understand which country's law may apply" %}</h2>
+        <p class="mt-4 text-ink-800 leading-relaxed">{% blocktranslate %}For accidents or successions across borders, start from the country and see the official references and the documents to prepare.{% endblocktranslate %}</p>
+        <a href="{% url 'core:countries' %}" class="mt-6 premium-btn premium-btn-secondary">{% translate "Choose a country" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
   {% comment %} P22: services grouped into clear sections (estimates / comparison /
      pre-checks / cross-border) so the page reads as a structured offer, not a
      flat list. Each card keeps the s.calculable contract + badge wording. {% endcomment %}

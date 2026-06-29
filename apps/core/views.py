@@ -349,6 +349,10 @@ def services(request):
             "service_groups": public_pages.grouped_services(),
             "canonical_url": build_canonical_url(request),
             "pexels_image": _pexels_hero(request, "services_hero"),
+            # P39: internal imagery for the three service sections.
+            "img_estimate": _pexels_hero(request, "services_estimate"),
+            "img_documents": _pexels_hero(request, "services_documents"),
+            "img_international": _pexels_hero(request, "services_international"),
         },
     )
 
@@ -404,6 +408,8 @@ def precheck(request, slug):
             "dossier": dossier,
             "canonical_url": build_canonical_url(request),
             "pexels_image": _pexels_hero(request, "services_hero"),
+            # P39: report-style side panel for the human pre-check result.
+            "img_report": _pexels_hero(request, "result_report"),
         },
     )
 
@@ -426,6 +432,8 @@ def guided_router(request):
             "country_groups": grouped_routes(),
             "canonical_url": build_canonical_url(request),
             "pexels_image": _pexels_hero(request, "guided_hero"),
+            # P39: internal imagery beside the visual stepper.
+            "img_workflow": _pexels_hero(request, "guided_workflow"),
         },
     )
 
@@ -1171,6 +1179,8 @@ def sources(request):
             "use_labels": official.UNLOCK_LABEL,
             "canonical_url": build_canonical_url(request),
             "pexels_image": _pexels_hero(request, "sources_hero"),
+            # P39: body image for the "official documents, explained simply" block.
+            "img_library": _pexels_hero(request, "sources_body"),
         },
     )
 
@@ -1210,6 +1220,8 @@ def source_detail(request, slug):
             "category_labels": _SOURCE_CATEGORY_LABELS,
             "canonical_url": build_canonical_url(request),
             "pexels_image": _pexels_hero(request, "methodology_hero"),
+            # P39: visual document panel for the source sheet.
+            "img_document": _pexels_hero(request, "source_document"),
         },
     )
 
@@ -1320,6 +1332,8 @@ def documents_upload(request):
             "max_files": settings.DOCUMENT_INTAKE_MAX_FILES,
             "canonical_url": build_canonical_url(request),
             "pexels_image": _pexels_hero(request, "documents_hero"),
+            # P39: report-style side panel for the human dossier result.
+            "img_report": _pexels_hero(request, "result_report"),
         },
     )
 

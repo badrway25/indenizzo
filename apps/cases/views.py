@@ -496,6 +496,8 @@ def wizard_result(request, public_id: uuid.UUID):
             "simulation": simulation,
             "dossier": dossier,
             "pexels_image": _pexels_hero(request, "methodology_hero"),
+            # P39: report-style side panel image for the human result layout.
+            "img_report": _pexels_hero(request, "result_report"),
             "sources": sources,
             "assumptions": assumptions,
             "legal_disclaimer": legal_disclaimer,

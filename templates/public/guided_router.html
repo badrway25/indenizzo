@@ -9,27 +9,39 @@
 {% translate "Find your guided path" as hero_title %}
 {% include "partials/_premium_hero_image.html" with hero_title=hero_title %}
 <section class="max-w-6xl mx-auto px-5 lg:px-8 py-16">
-  <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Guided router" %}</p>
-  <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Find your guided path" %}</h1>
-  <p class="mt-5 max-w-3xl text-lg text-ink-800 leading-relaxed">
-    {% blocktranslate %}Choose your country, then the category. Where an official table or formula is validated, you get an indicative estimate; otherwise the platform opens a documental pre-check on the official sources. No amount is invented.{% endblocktranslate %}
-  </p>
+  {# P39: two-column cockpit — intro + 4-step path preview, with a consultation image. #}
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+    <div data-reveal>
+      <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Guided router" %}</p>
+      <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Find your guided path" %}</h1>
+      <p class="mt-5 text-lg text-ink-800 leading-relaxed">
+        {% blocktranslate %}Choose your country, then the category. Where an official table or formula is validated, you get an indicative estimate; otherwise the platform opens a documental pre-check on the official sources. No amount is invented.{% endblocktranslate %}
+      </p>
 
-  {# Visual stepper — frames the router as a 3-step cockpit. #}
-  <ol class="mt-9 grid grid-cols-1 sm:grid-cols-3 gap-3" aria-label="{% translate 'How the guided router works' %}">
-    <li class="premium-card flex items-center gap-3 p-4">
-      <span aria-hidden="true" class="icon-medallion shrink-0 font-serif text-lg text-gold-700">1</span>
-      <span class="text-sm text-ink-900 leading-snug">{% translate "Choose your country" %}</span>
-    </li>
-    <li class="premium-card flex items-center gap-3 p-4">
-      <span aria-hidden="true" class="icon-medallion shrink-0 font-serif text-lg text-gold-700">2</span>
-      <span class="text-sm text-ink-900 leading-snug">{% translate "Choose the category" %}</span>
-    </li>
-    <li class="premium-card flex items-center gap-3 p-4">
-      <span aria-hidden="true" class="icon-medallion shrink-0 font-serif text-lg text-gold-700">3</span>
-      <span class="text-sm text-ink-900 leading-snug">{% translate "Get your path: estimate or documental pre-check" %}</span>
-    </li>
-  </ol>
+      {# Visual path preview — the four steps your case travels. #}
+      <ol class="mt-8 grid grid-cols-2 gap-3" aria-label="{% translate 'How the guided router works' %}">
+        <li class="premium-card flex items-center gap-3 p-4">
+          <span aria-hidden="true" class="icon-medallion shrink-0 font-serif text-base text-gold-700">1</span>
+          <span class="text-sm text-ink-900 leading-snug">{% translate "Country" %}</span>
+        </li>
+        <li class="premium-card flex items-center gap-3 p-4">
+          <span aria-hidden="true" class="icon-medallion shrink-0 font-serif text-base text-gold-700">2</span>
+          <span class="text-sm text-ink-900 leading-snug">{% translate "Case" %}</span>
+        </li>
+        <li class="premium-card flex items-center gap-3 p-4">
+          <span aria-hidden="true" class="icon-medallion shrink-0 font-serif text-base text-gold-700">3</span>
+          <span class="text-sm text-ink-900 leading-snug">{% translate "Documents" %}</span>
+        </li>
+        <li class="premium-card flex items-center gap-3 p-4">
+          <span aria-hidden="true" class="icon-medallion shrink-0 font-serif text-base text-gold-700">4</span>
+          <span class="text-sm text-ink-900 leading-snug">{% translate "Result" %}</span>
+        </li>
+      </ol>
+    </div>
+    <div data-reveal>
+      {% include "partials/_premium_body_image.html" with image=img_workflow figure_class="h-60 sm:h-72 lg:h-full lg:min-h-[24rem]" %}
+    </div>
+  </div>
 
   {# Step 1 — country chips (in-page anchors to each country block). #}
   <p class="mt-10 text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">{% translate "Step 1 — your country" %}</p>
