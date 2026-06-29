@@ -278,6 +278,48 @@
         "selfie"
       ],
       "editorial_notes": "Guided router hero. Analytical, organised, minimal people."
+    },
+    "intent_estimate": {
+      "query": "balance scales documents desk office",
+      "photo_id": 6077520,
+      "approved_visual": true,
+      "approved_reason": "Gold balance scales on a professional desk — premium 'estimate' symbol, no people.",
+      "avoid_terms": [
+        "scam",
+        "people"
+      ],
+      "editorial_notes": "Home intent card: make an estimate."
+    },
+    "intent_offer": {
+      "query": "business contract pen signed desk",
+      "photo_id": 7841410,
+      "approved_visual": true,
+      "approved_reason": "Contract document with a pen on a desk — clean, no people.",
+      "avoid_terms": [
+        "smiling",
+        "handshake"
+      ],
+      "editorial_notes": "Home intent card: check an insurance offer."
+    },
+    "intent_documents": {
+      "query": "tidy office desk files folders",
+      "photo_id": 17065769,
+      "approved_visual": true,
+      "approved_reason": "Tidy office desk with files and folders — modern, approachable, no people.",
+      "avoid_terms": [
+        "scam"
+      ],
+      "editorial_notes": "Home intent card: upload documents."
+    },
+    "intent_law": {
+      "query": "globe classic law books wood",
+      "photo_id": 9331326,
+      "approved_visual": true,
+      "approved_reason": "A globe nested between classic books — international/applicable-law theme, no people.",
+      "avoid_terms": [
+        "tourist"
+      ],
+      "editorial_notes": "Home intent card: which law applies."
     }
   }
 }

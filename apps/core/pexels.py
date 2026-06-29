@@ -179,6 +179,11 @@ SITE_IMAGE_SLOTS: list[dict[str, Any]] = [
     {"purpose": "case_types_hero", "country": None, "query": "law books justice scales detail"},
     {"purpose": "result_hero", "country": None, "query": "premium legal report documents desk"},
     {"purpose": "guided_hero", "country": None, "query": "consultation desk legal advisor documents"},
+    # P36: home "what do you want to do?" intent cards (section imagery).
+    {"purpose": "intent_estimate", "country": None, "query": "balance scales documents desk office"},
+    {"purpose": "intent_offer", "country": None, "query": "business contract pen signed desk"},
+    {"purpose": "intent_documents", "country": None, "query": "tidy office desk files folders"},
+    {"purpose": "intent_law", "country": None, "query": "globe classic law books wood"},
 ]
 
 

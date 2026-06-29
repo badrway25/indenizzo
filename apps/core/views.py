@@ -276,6 +276,29 @@ def home(request):
             "pexels_image": _pexels_hero(request, "home_hero"),
             # P24: a distinct, heavily-tinted photo behind the closing CTA band.
             "pexels_texture": _pexels_hero(request, "methodology_hero"),
+            # P36: "what do you want to do?" intent cards with section imagery.
+            "intent_cards": [
+                {"url": reverse("cases:wizard_italy_road_accident"), "icon": "scale",
+                 "image": _pexels_hero(request, "intent_estimate"), "delay": 0,
+                 "event": "intent_estimate",
+                 "title": _("Make an estimate"),
+                 "text": _("See an indicative range where an official table allows it.")},
+                {"url": reverse("cases:wizard_insurance_offer"), "icon": "shield-check",
+                 "image": _pexels_hero(request, "intent_offer"), "delay": 80,
+                 "event": "intent_offer",
+                 "title": _("Check an offer"),
+                 "text": _("Find out whether the insurer's offer is in line.")},
+                {"url": reverse("core:documents_upload"), "icon": "document",
+                 "image": _pexels_hero(request, "intent_documents"), "delay": 160,
+                 "event": "intent_documents",
+                 "title": _("Upload documents"),
+                 "text": _("We recognise your documents and prepare your file.")},
+                {"url": reverse("core:guided_router"), "icon": "globe",
+                 "image": _pexels_hero(request, "intent_law"), "delay": 240,
+                 "event": "intent_law",
+                 "title": _("Which law applies"),
+                 "text": _("Understand which country's law may apply to your case.")},
+            ],
         },
     )
 

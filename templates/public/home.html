@@ -108,6 +108,36 @@
   {# Drives the sticky conversion bar: it appears once the hero scrolls away. #}
   <div data-sticky-cta-sentinel aria-hidden="true"></div>
 
+  {# -------- P36: "What would you like to do?" — the first choice for a normal visitor. -------- #}
+  <section class="max-w-7xl mx-auto px-5 lg:px-8 py-16 lg:py-20" aria-label="{% translate 'What would you like to do?' %}">
+    <div class="max-w-2xl mx-auto text-center" data-reveal>
+      <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Start here" %}</p>
+      <h2 class="mt-3 font-serif text-3xl sm:text-4xl text-ink-950 leading-tight">{% translate "What would you like to do?" %}</h2>
+      <p class="mt-3 text-ink-800 leading-relaxed">{% translate "Pick a starting point — the platform guides you the rest of the way." %}</p>
+    </div>
+    <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      {% for card in intent_cards %}
+        <a href="{{ card.url }}" class="intent-card" data-reveal data-reveal-delay="{{ card.delay }}" data-event="{{ card.event }}">
+          <div class="intent-card__media">
+            {% if card.image %}
+              <picture>
+                {% if card.image.webp_src_mobile %}<source media="(max-width: 640px)" type="image/webp" srcset="{{ card.image.webp_src_mobile }}">{% endif %}
+                {% if card.image.webp_src %}<source type="image/webp" srcset="{{ card.image.webp_src }}">{% endif %}
+                <img src="{{ card.image.src }}" alt="{{ card.image.alt }}" width="640" height="400" loading="lazy" decoding="async">
+              </picture>
+            {% endif %}
+          </div>
+          <div class="intent-card__body">
+            <span aria-hidden="true" class="intent-card__icon">{% include "partials/_icon.html" with name=card.icon icon_class="w-6 h-6" %}</span>
+            <h3 class="intent-card__title">{{ card.title }}</h3>
+            <p class="intent-card__text">{{ card.text }}</p>
+            <span class="intent-card__cta">{% translate "Open" %} <span class="cta-arrow" aria-hidden="true">→</span></span>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </section>
+
   {# -------- At-a-glance band (verifiable facts only — no fabricated KPIs) -------- #}
   <section class="bg-white border-b border-stone2-100" aria-label="{% translate 'Platform at a glance' %}">
     <div class="max-w-7xl mx-auto px-5 lg:px-8 py-12">
