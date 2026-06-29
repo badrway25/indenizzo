@@ -7583,3 +7583,60 @@ msgstr "نتعرّف على مستنداتك ونجهّز ملفك."
 
 msgid "Understand which country's law may apply to your case."
 msgstr "افهم قانون أي بلد قد ينطبق على حالتك."
+
+msgid "An estimate where an official table allows it."
+msgstr "تقدير حيث يسمح جدول رسمي بذلك."
+
+msgid "Biological damage based on official tables."
+msgstr "الضرر البيولوجي وفق الجداول الرسمية."
+
+msgid "See if the insurer's offer is in line."
+msgstr "اطّلع على مدى توافق عرض المؤمّن."
+
+msgid "We recognise your files and organise them."
+msgstr "نتعرّف على ملفاتك وننظّمها."
+
+msgid "Prepare the summary"
+msgstr "جهّز الملخّص"
+
+msgid "Build a summary to send to the Studio."
+msgstr "أنشئ ملخّصاً لإرساله إلى المكتب."
+
+msgid "INAIL / work injury"
+msgstr "INAIL / إصابة العمل"
+
+msgid "Check your work-injury documents first."
+msgstr "تحقّق أولاً من مستندات إصابة العمل."
+
+msgid "Compare a settlement offer."
+msgstr "قارن عرض تسوية."
+
+msgid "See what's available."
+msgstr "اطّلع على المتاح."
+
+msgid "Browse the official rules we use."
+msgstr "تصفّح القواعد الرسمية التي نستخدمها."
+
+msgid "Every area we cover."
+msgstr "كل المجالات التي نغطّيها."
+
+msgid "What the Studio can do for you."
+msgstr "ما الذي يمكن للمكتب فعله من أجلك."
+
+msgid "Browse sources"
+msgstr "تصفّح المصادر"
+
+msgid "Three simple steps."
+msgstr "ثلاث خطوات بسيطة."
+
+msgid "Estimate, check or summary"
+msgstr "تقدير أو تحقّق أو ملخّص"
+
+msgid "Find the right path for your case."
+msgstr "اعثر على المسار المناسب لحالتك."
+
+msgid "Privacy and disclaimer"
+msgstr "الخصوصية والإشعارات"
+
+msgid "How we handle your data."
+msgstr "كيف نتعامل مع بياناتك."

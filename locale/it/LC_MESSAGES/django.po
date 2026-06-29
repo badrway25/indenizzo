@@ -7829,3 +7829,60 @@ msgstr "Riconosciamo i tuoi documenti e prepariamo il tuo riepilogo."
 
 msgid "Understand which country's law may apply to your case."
 msgstr "Capisci quale legge nazionale può valere per il tuo caso."
+
+msgid "An estimate where an official table allows it."
+msgstr "Una stima dove una tabella ufficiale lo consente."
+
+msgid "Biological damage based on official tables."
+msgstr "Danno biologico secondo le tabelle ufficiali."
+
+msgid "See if the insurer's offer is in line."
+msgstr "Vedi se l'offerta dell'assicurazione è coerente."
+
+msgid "We recognise your files and organise them."
+msgstr "Riconosciamo i tuoi file e li organizziamo."
+
+msgid "Prepare the summary"
+msgstr "Prepara il riepilogo"
+
+msgid "Build a summary to send to the Studio."
+msgstr "Crea un riepilogo da inviare allo Studio."
+
+msgid "INAIL / work injury"
+msgstr "INAIL / infortunio sul lavoro"
+
+msgid "Check your work-injury documents first."
+msgstr "Controlla prima i documenti dell'infortunio."
+
+msgid "Compare a settlement offer."
+msgstr "Confronta un'offerta di liquidazione."
+
+msgid "See what's available."
+msgstr "Vedi cosa è disponibile."
+
+msgid "Browse the official rules we use."
+msgstr "Sfoglia le regole ufficiali che usiamo."
+
+msgid "Every area we cover."
+msgstr "Tutte le aree che copriamo."
+
+msgid "What the Studio can do for you."
+msgstr "Cosa può fare lo Studio per te."
+
+msgid "Browse sources"
+msgstr "Consulta le fonti"
+
+msgid "Three simple steps."
+msgstr "Tre passaggi semplici."
+
+msgid "Estimate, check or summary"
+msgstr "Stima, verifica o riepilogo"
+
+msgid "Find the right path for your case."
+msgstr "Trova il percorso giusto per il tuo caso."
+
+msgid "Privacy and disclaimer"
+msgstr "Privacy e avvertenze"
+
+msgid "How we handle your data."
+msgstr "Come trattiamo i tuoi dati."

@@ -7874,3 +7874,60 @@ msgstr "Nous reconnaissons vos documents et préparons votre dossier."
 
 msgid "Understand which country's law may apply to your case."
 msgstr "Comprenez quelle loi nationale peut s'appliquer à votre cas."
+
+msgid "An estimate where an official table allows it."
+msgstr "Une estimation lorsqu'un barème officiel le permet."
+
+msgid "Biological damage based on official tables."
+msgstr "Dommage biologique selon les barèmes officiels."
+
+msgid "See if the insurer's offer is in line."
+msgstr "Voyez si l'offre de l'assureur est cohérente."
+
+msgid "We recognise your files and organise them."
+msgstr "Nous reconnaissons vos fichiers et les organisons."
+
+msgid "Prepare the summary"
+msgstr "Préparer le résumé"
+
+msgid "Build a summary to send to the Studio."
+msgstr "Constituez un résumé à envoyer au Cabinet."
+
+msgid "INAIL / work injury"
+msgstr "INAIL / accident du travail"
+
+msgid "Check your work-injury documents first."
+msgstr "Vérifiez d'abord vos documents d'accident du travail."
+
+msgid "Compare a settlement offer."
+msgstr "Comparez une offre de règlement."
+
+msgid "See what's available."
+msgstr "Voyez ce qui est disponible."
+
+msgid "Browse the official rules we use."
+msgstr "Parcourez les règles officielles que nous utilisons."
+
+msgid "Every area we cover."
+msgstr "Tous les domaines que nous couvrons."
+
+msgid "What the Studio can do for you."
+msgstr "Ce que le Cabinet peut faire pour vous."
+
+msgid "Browse sources"
+msgstr "Parcourir les sources"
+
+msgid "Three simple steps."
+msgstr "Trois étapes simples."
+
+msgid "Estimate, check or summary"
+msgstr "Estimation, vérification ou résumé"
+
+msgid "Find the right path for your case."
+msgstr "Trouvez le bon parcours pour votre cas."
+
+msgid "Privacy and disclaimer"
+msgstr "Confidentialité et avertissements"
+
+msgid "How we handle your data."
+msgstr "Comment nous traitons vos données."
