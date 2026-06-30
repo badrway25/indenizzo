@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "legal_tables/_schema.json",
+  "title": "Validated legal table (P50)",
+  "description": "Shape for an extracted official table. The engine MUST ignore any file whose validation_status != 'ready_for_engine' or whose canaries are empty. No value here is invented.",
+  "type": "object",
+  "required": [
+    "source_id", "authority", "url", "fetched_at", "version_date",
+    "extraction_method", "hash", "fields", "rows", "validation_status",
+    "canaries", "notes"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "source_id": { "type": "string", "minLength": 3 },
+    "authority": { "type": "string", "minLength": 3 },
+    "url": { "type": "string", "format": "uri" },
+    "fetched_at": { "type": "string", "format": "date-time" },
+    "version_date": { "type": "string" },
+    "extraction_method": {
+      "type": "string",
+      "enum": ["pdf_table", "html_table", "ocr", "manual_transcription"]
+    },
+    "hash": { "type": "string", "pattern": "^sha256:" },
+    "fields": { "type": "array", "items": { "type": "string" } },
+    "rows": { "type": "array" },
+    "validation_status": {
+      "type": "string",
+      "enum": [
+        "ready_for_engine", "needs_official_table", "needs_formula",
+        "needs_canary", "needs_legal_review", "not_calculable"
+      ]
+    },
+    "canaries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["input", "expected_output", "source_row", "version_date"],
+        "properties": {
+          "input": { "type": "object" },
+          "expected_output": {},
+          "source_row": { "type": "string" },
+          "version_date": { "type": "string" }
+        }
+      }
+    },
+    "notes": { "type": "string" }
+  }
+}
