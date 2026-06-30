@@ -8387,3 +8387,9 @@ msgstr "S'il manque une table, nous vous aidons tout de même à préparer vos d
 
 msgid "A correct summary is better than an unreliable number."
 msgstr "Mieux vaut un récapitulatif correct qu'un chiffre peu fiable."
+
+msgid "What does it take to show an amount?"
+msgstr "Que faut-il pour afficher un montant ?"
+
+msgid "Three things: an official table or rule from a public authority, a clear way to apply it to your case, and a verified example to check it against. When all three exist we show the amount — otherwise we prepare your documents."
+msgstr "Trois choses : une table ou une règle officielle d'une autorité publique, une façon claire de l'appliquer à votre cas, et un exemple vérifié pour la contrôler. Quand les trois existent, nous affichons le montant ; sinon, nous préparons vos documents."

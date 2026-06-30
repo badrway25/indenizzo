@@ -8096,3 +8096,9 @@ msgstr "إذا كان هناك جدول مفقود، فإننا نساعدك م�
 
 msgid "A correct summary is better than an unreliable number."
 msgstr "ملخّص صحيح خير من رقم غير موثوق."
+
+msgid "What does it take to show an amount?"
+msgstr "ما الذي يلزم لعرض مبلغ؟"
+
+msgid "Three things: an official table or rule from a public authority, a clear way to apply it to your case, and a verified example to check it against. When all three exist we show the amount — otherwise we prepare your documents."
+msgstr "ثلاثة أمور: جدول أو قاعدة رسمية من جهة عامة، وطريقة واضحة لتطبيقها على حالتك، ومثال موثّق للتحقق منها. عند توفّر الثلاثة نعرض المبلغ، وإلا نُجهّز مستنداتك."

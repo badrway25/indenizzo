@@ -5358,3 +5358,9 @@ msgstr "If a table is missing, we still help you prepare your documents."
 
 msgid "A correct summary is better than an unreliable number."
 msgstr "A correct summary is better than an unreliable number."
+
+msgid "What does it take to show an amount?"
+msgstr "What does it take to show an amount?"
+
+msgid "Three things: an official table or rule from a public authority, a clear way to apply it to your case, and a verified example to check it against. When all three exist we show the amount — otherwise we prepare your documents."
+msgstr "Three things: an official table or rule from a public authority, a clear way to apply it to your case, and a verified example to check it against. When all three exist we show the amount — otherwise we prepare your documents."
