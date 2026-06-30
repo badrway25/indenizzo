@@ -65,7 +65,7 @@ def test_category_country_keeps_categories_and_source_panel(path):
     body = _get(path)
     assert "Categorie coperte" in body
     assert "premium-hero-mini" in body  # new dossier band
-    assert "§" in body                  # source chips
+    assert "M12 7v14" in body  # book-open source icon (P46 replaced §)                  # source chips
 
 
 # --- Case-types hub + landing -----------------------------------------------

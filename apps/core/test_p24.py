@@ -74,7 +74,8 @@ def test_case_cards_have_varied_descriptions():
 # single mocked render below (production ships the manifest + media).
 def test_imagery_partial_uses_overlay_classes():
     src = (TEMPLATES.parent / "partials" / "_premium_hero_image.html").read_text("utf-8")
-    for cls in ("premium-hero-image", "premium-hero-overlay", "premium-hero-content"):
+    # P46: the hero is now full-bleed; the readable copy layer is `premium-hero-inner`.
+    for cls in ("premium-hero-image", "premium-hero-overlay", "premium-hero-inner", "premium-hero-fullbleed"):
         assert cls in src, f"hero partial missing {cls}"
 
 
@@ -107,7 +108,7 @@ def test_case_types_renders_image_hero_when_media_present(monkeypatch):
     body = _get("/case-types/")
     assert "premium-hero-image" in body
     assert "premium-hero-overlay" in body
-    assert "premium-hero-content" in body  # the readable text-over-image layer
+    assert "premium-hero-inner" in body  # P46: the readable text-over-image layer (full-bleed)
 
 
 @pytest.mark.django_db

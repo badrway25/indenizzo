@@ -99,7 +99,7 @@ def test_only_real_engines_compute_an_amount():
 @pytest.mark.parametrize("slug", PRECHECK_SLUGS)
 def test_precheck_shows_official_source_chips(slug):
     body = _get(f"/precheck/{slug}/")
-    assert "§" in body, f"no source chip on /precheck/{slug}/"
+    assert "M12 7v14" in body  # book-open source icon (P46 replaced §), f"no source chip on /precheck/{slug}/"
 
 
 @pytest.mark.django_db

@@ -49,7 +49,7 @@ def test_country_not_succession_only(path, road_src):
 def test_country_pages_show_category_source_chips(path):
     body = Client().get(path, HTTP_ACCEPT_LANGUAGE="it").content.decode("utf-8")
     # at least one official source chip in the categories section
-    assert "§" in body
+    assert "M12 7v14" in body  # book-open source icon (P46 replaced §)
     assert ("ACAPS" in body) or ("CGA" in body) or ("Code des assurances" in body)
 
 

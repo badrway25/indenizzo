@@ -91,7 +91,7 @@ def test_precheck_has_sidebar_and_readiness(slug):
     # GET shows the sidebar (sources / documents / next step).
     body = _get(f"/precheck/{slug}/")
     assert "premium-sidebar-sticky" in body
-    assert "§" in body  # source chips
+    assert "M12 7v14" in body  # book-open source icon (P46 replaced §)  # source chips
     # POST surfaces the documental readiness meter.
     posted = _post(slug, {"injury_or_death": "injury", "country": "IT",
                           "medical_cert": "yes", "civil_docs": "yes"})
