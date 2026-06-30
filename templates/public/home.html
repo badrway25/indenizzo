@@ -182,7 +182,7 @@
       </div>
       <div class="mt-5 flex flex-wrap gap-2.5 text-sm">
         <a href="{% url 'core:guided_router' %}" class="premium-chip">{% translate "Estimate, pre-check or dossier" %}</a>
-        <a href="{% url 'core:sources' %}" class="premium-chip"><span aria-hidden="true" class="text-gold-600">§</span>{% translate "Official source library" %}</a>
+        <a href="{% url 'core:sources' %}" class="premium-chip"><span aria-hidden="true" class="text-gold-600">{% include "partials/_icon.html" with name="book-open" icon_class="w-3.5 h-3.5 inline-block" %}</span>{% translate "Official source library" %}</a>
         <a href="{% url 'core:countries' %}" class="premium-chip">{% translate "Countries we cover" %}</a>
       </div>
     </div>

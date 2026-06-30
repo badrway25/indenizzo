@@ -121,9 +121,9 @@
             <h3 class="font-serif text-lg text-ink-950">{% translate route.category_key %}</h3>
             <p class="mt-3">
               {% if route.computes_amount %}
-                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-ok-600/10 text-ok-600 text-[10px] font-semibold uppercase tracking-[0.14em]"><span aria-hidden="true">●</span>{{ route.status_label }}</span>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-ok-600/10 text-ok-600 text-[10px] font-semibold uppercase tracking-[0.14em]"><span class="badge-dot" aria-hidden="true"></span>{{ route.status_label }}</span>
               {% else %}
-                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gold-500/15 text-gold-700 text-[10px] font-semibold uppercase tracking-[0.14em]"><span aria-hidden="true">●</span>{{ route.status_label }}</span>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gold-500/15 text-gold-700 text-[10px] font-semibold uppercase tracking-[0.14em]"><span class="badge-dot" aria-hidden="true"></span>{{ route.status_label }}</span>
               {% endif %}
             </p>
             <p class="mt-3 text-sm text-stone2-500 leading-relaxed">
@@ -144,11 +144,11 @@
               {% if route.main_source %}
               <div class="flex items-baseline gap-2">
                 <dt class="uppercase tracking-[0.14em] text-stone2-500 font-semibold shrink-0 w-20">{% translate "Source" %}</dt>
-                <dd class="text-ink-900"><span aria-hidden="true" class="text-gold-600">§</span> {{ route.main_source }}</dd>
+                <dd class="text-ink-900"><span aria-hidden="true" class="text-gold-600 inline-flex shrink-0">{% include "partials/_icon.html" with name="book-open" icon_class="w-3.5 h-3.5" %}</span> {{ route.main_source }}</dd>
               </div>
               {% endif %}
-              <div class="flex items-baseline gap-2">
-                <dt class="uppercase tracking-[0.14em] text-stone2-500 font-semibold shrink-0 w-20">{% translate "Time" %}</dt>
+              <div class="flex items-center gap-2">
+                <dt class="inline-flex items-center gap-1.5 uppercase tracking-[0.14em] text-stone2-500 font-semibold shrink-0 w-20"><span aria-hidden="true" class="text-gold-600 inline-flex">{% include "partials/_icon.html" with name="clock" icon_class="w-3.5 h-3.5" %}</span>{% translate "Time" %}</dt>
                 <dd class="text-ink-900">{{ route.est_time }}</dd>
               </div>
             </dl>

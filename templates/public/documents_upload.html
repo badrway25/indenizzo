@@ -148,7 +148,7 @@
             <p class="text-[11px] uppercase tracking-[0.18em] text-gold-700 font-semibold">{% translate "Connected official sources" %}</p>
             <ul class="mt-3 flex flex-wrap gap-2">
               {% for s in dossier.official_sources %}
-                <li><a href="{% url 'core:source_detail' slug=s.source_id %}" class="inline-flex items-center gap-1.5 rounded-full border border-gold-400/40 bg-sand-100 px-3 py-1 text-xs text-ink-900 transition hover:border-gold-500"><span aria-hidden="true" class="text-gold-600">§</span>{{ s.title }}</a></li>
+                <li><a href="{% url 'core:source_detail' slug=s.source_id %}" class="inline-flex items-center gap-1.5 rounded-full border border-gold-400/40 bg-sand-100 px-3 py-1 text-xs text-ink-900 transition hover:border-gold-500"><span aria-hidden="true" class="text-gold-600 inline-flex shrink-0">{% include "partials/_icon.html" with name="book-open" icon_class="w-3.5 h-3.5" %}</span>{{ s.title }}</a></li>
               {% endfor %}
             </ul>
           </div>
@@ -185,7 +185,7 @@
           <ul class="mt-3 space-y-2 text-sm text-ink-900">
             {% for m in files_meta %}
             <li class="flex items-center gap-2.5">
-              <span aria-hidden="true" class="shrink-0 grid place-items-center w-7 h-7 rounded-lg border border-gold-400/40 bg-sand-100 text-gold-700 text-xs">{% if m.kind == 'image' %}◫{% else %}§{% endif %}</span>
+              <span aria-hidden="true" class="shrink-0 grid place-items-center w-7 h-7 rounded-lg border border-gold-400/40 bg-sand-100 text-gold-700 text-xs">{% if m.kind == 'image' %}{% include "partials/_icon.html" with name="image" icon_class="w-4 h-4" %}{% else %}{% include "partials/_icon.html" with name="file-text" icon_class="w-4 h-4" %}{% endif %}</span>
               <span class="truncate" dir="ltr">{{ m.filename }}</span>
             </li>
             {% endfor %}

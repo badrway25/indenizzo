@@ -46,7 +46,7 @@
     {% if dossier.official_sources %}
       <p class="mt-5 text-[11px] uppercase tracking-[0.16em] text-stone2-500 font-semibold">{% translate "Applicable sources" %}</p>
       <ul class="mt-2 flex flex-wrap gap-1.5">
-        {% for s in dossier.official_sources %}<li class="inline-flex items-center gap-1 rounded-full border border-gold-400/40 bg-sand-100 px-2.5 py-0.5 text-[11px] text-ink-900"><span aria-hidden="true" class="text-gold-600">§</span>{{ s }}</li>{% endfor %}
+        {% for s in dossier.official_sources %}<li class="inline-flex items-center gap-1 rounded-full border border-gold-400/40 bg-sand-100 px-2.5 py-0.5 text-[11px] text-ink-900"><span aria-hidden="true" class="text-gold-600 inline-flex shrink-0">{% include "partials/_icon.html" with name="book-open" icon_class="w-3.5 h-3.5" %}</span>{{ s }}</li>{% endfor %}
       </ul>
     {% endif %}
 
