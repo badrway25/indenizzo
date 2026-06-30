@@ -13,7 +13,7 @@
     <nav class="nav-desktop items-center gap-1 ms-5" aria-label="{% translate 'Primary navigation' %}">
       {# ---- Estimates ---- #}
       <div class="nav-group">
-        <a href="{% url 'cases:wizard_start' %}" class="nav-link" aria-haspopup="true">{% translate "Estimates" %} <span aria-hidden="true" class="nav-caret">{% include "partials/_icon.html" with name="chevron-down" %}</span></a>
+        <a href="{% url 'cases:wizard_start' %}" class="nav-link" aria-haspopup="true"><span aria-hidden="true" class="nav-link__ico">{% include "partials/_icon.html" with name="scale" %}</span>{% translate "Estimates" %} <span aria-hidden="true" class="nav-caret">{% include "partials/_icon.html" with name="chevron-down" %}</span></a>
         <div class="nav-menu" role="menu">
           <a href="{% url 'cases:wizard_italy_road_accident' %}" class="nav-menu__item" role="menuitem">
             <span aria-hidden="true" class="nav-menu__ico">{% include "partials/_icon.html" with name="car" %}</span>
@@ -33,7 +33,7 @@
       </div>
       {# ---- Documents ---- #}
       <div class="nav-group">
-        <a href="{% url 'core:documents' %}" class="nav-link" aria-haspopup="true">{% translate "Documents" %} <span aria-hidden="true" class="nav-caret">{% include "partials/_icon.html" with name="chevron-down" %}</span></a>
+        <a href="{% url 'core:documents' %}" class="nav-link" aria-haspopup="true"><span aria-hidden="true" class="nav-link__ico">{% include "partials/_icon.html" with name="document" %}</span>{% translate "Documents" %} <span aria-hidden="true" class="nav-caret">{% include "partials/_icon.html" with name="chevron-down" %}</span></a>
         <div class="nav-menu" role="menu">
           <a href="{% url 'core:documents_upload' %}" class="nav-menu__item" role="menuitem">
             <span aria-hidden="true" class="nav-menu__ico">{% include "partials/_icon.html" with name="document" %}</span>
@@ -57,7 +57,7 @@
       </div>
       {# ---- Countries ---- #}
       <div class="nav-group">
-        <a href="{% url 'core:countries' %}" class="nav-link" aria-haspopup="true">{% translate "Countries" %} <span aria-hidden="true" class="nav-caret">{% include "partials/_icon.html" with name="chevron-down" %}</span></a>
+        <a href="{% url 'core:countries' %}" class="nav-link" aria-haspopup="true"><span aria-hidden="true" class="nav-link__ico">{% include "partials/_icon.html" with name="globe" %}</span>{% translate "Countries" %} <span aria-hidden="true" class="nav-caret">{% include "partials/_icon.html" with name="chevron-down" %}</span></a>
         <div class="nav-menu" role="menu">
           <a href="{% url 'core:country_italy' %}" class="nav-menu__item" role="menuitem">
             <span aria-hidden="true" class="nav-menu__ico">{% include "partials/_icon.html" with name="globe" %}</span>
@@ -85,7 +85,7 @@
       </div>
       {# ---- Sources ---- #}
       <div class="nav-group">
-        <a href="{% url 'core:sources' %}" class="nav-link" aria-haspopup="true">{% translate "Sources" %} <span aria-hidden="true" class="nav-caret">{% include "partials/_icon.html" with name="chevron-down" %}</span></a>
+        <a href="{% url 'core:sources' %}" class="nav-link" aria-haspopup="true"><span aria-hidden="true" class="nav-link__ico">{% include "partials/_icon.html" with name="book-open" %}</span>{% translate "Sources" %} <span aria-hidden="true" class="nav-caret">{% include "partials/_icon.html" with name="chevron-down" %}</span></a>
         <div class="nav-menu" role="menu">
           <a href="{% url 'core:sources' %}" class="nav-menu__item" role="menuitem">
             <span aria-hidden="true" class="nav-menu__ico">{% include "partials/_icon.html" with name="document" %}</span>
@@ -105,7 +105,7 @@
       </div>
       {# ---- Method ---- #}
       <div class="nav-group">
-        <a href="{% url 'core:how_it_works' %}" class="nav-link" aria-haspopup="true">{% translate "Method" %} <span aria-hidden="true" class="nav-caret">{% include "partials/_icon.html" with name="chevron-down" %}</span></a>
+        <a href="{% url 'core:how_it_works' %}" class="nav-link" aria-haspopup="true"><span aria-hidden="true" class="nav-link__ico">{% include "partials/_icon.html" with name="list-checks" %}</span>{% translate "Method" %} <span aria-hidden="true" class="nav-caret">{% include "partials/_icon.html" with name="chevron-down" %}</span></a>
         <div class="nav-menu" role="menu">
           <a href="{% url 'core:how_it_works' %}" class="nav-menu__item" role="menuitem">
             <span aria-hidden="true" class="nav-menu__ico">{% include "partials/_icon.html" with name="list-checks" %}</span>
