@@ -556,6 +556,132 @@
     compute();
   }
 
+  function initCustomSelect() {
+    // P47: accessible custom select (progressive enhancement). The native
+    // <select> stays in the DOM and remains the form's source of truth — we only
+    // build an ARIA listbox on top and sync the value back, dispatching `change`
+    // so dependent behaviours (e.g. the path studio) still react. Without JS the
+    // native select works unchanged.
+    var selects = document.querySelectorAll("select.premium-select, select.field-select");
+    Array.prototype.forEach.call(selects, function (sel) {
+      if (sel.dataset.enhanced || sel.multiple) return;
+      sel.dataset.enhanced = "1";
+
+      var wrap = document.createElement("div");
+      wrap.className = "premium-select-enhanced";
+      sel.parentNode.insertBefore(wrap, sel);
+      wrap.appendChild(sel);
+      sel.classList.add("premium-select-native-hidden");
+      sel.setAttribute("tabindex", "-1");
+      sel.setAttribute("aria-hidden", "true");
+
+      var labelEl = sel.id ? document.querySelector("label[for='" + sel.id + "']") : null;
+      if (labelEl && !labelEl.id) labelEl.id = sel.id + "-label";
+      var valueId = (sel.id || "sel") + "-value";
+
+      var trigger = document.createElement("button");
+      trigger.type = "button";
+      trigger.className = "premium-select-trigger";
+      trigger.setAttribute("aria-haspopup", "listbox");
+      trigger.setAttribute("aria-expanded", "false");
+      trigger.setAttribute("aria-labelledby", (labelEl ? labelEl.id + " " : "") + valueId);
+      var valueSpan = document.createElement("span");
+      valueSpan.className = "premium-select-value";
+      valueSpan.id = valueId;
+      trigger.appendChild(valueSpan);
+      var caret = document.createElement("span");
+      caret.className = "premium-select-caret";
+      caret.setAttribute("aria-hidden", "true");
+      trigger.appendChild(caret);
+      wrap.appendChild(trigger);
+
+      var menu = document.createElement("ul");
+      menu.className = "premium-select-menu";
+      menu.setAttribute("role", "listbox");
+      if (labelEl) menu.setAttribute("aria-labelledby", labelEl.id);
+      menu.hidden = true;
+      var options = [];
+      Array.prototype.forEach.call(sel.options, function (opt, i) {
+        var li = document.createElement("li");
+        li.className = "premium-select-option";
+        li.setAttribute("role", "option");
+        li.id = (sel.id || "sel") + "-opt-" + i;
+        var check = document.createElement("span");
+        check.className = "premium-select-check";
+        check.setAttribute("aria-hidden", "true");
+        var txt = document.createElement("span");
+        txt.textContent = opt.textContent;
+        li.appendChild(check);
+        li.appendChild(txt);
+        menu.appendChild(li);
+        options.push(li);
+      });
+      wrap.appendChild(menu);
+
+      var activeIndex = sel.selectedIndex < 0 ? 0 : sel.selectedIndex;
+
+      function syncLabel() {
+        var o = sel.options[sel.selectedIndex];
+        valueSpan.textContent = o ? o.textContent : "";
+        options.forEach(function (li, i) {
+          var on = i === sel.selectedIndex;
+          li.classList.toggle("premium-select-option--selected", on);
+          li.setAttribute("aria-selected", on ? "true" : "false");
+        });
+      }
+      function isOpen() { return !menu.hidden; }
+      function setActive(i) {
+        activeIndex = Math.max(0, Math.min(options.length - 1, i));
+        options.forEach(function (li, idx) { li.classList.toggle("is-active", idx === activeIndex); });
+        var li = options[activeIndex];
+        if (li) { li.scrollIntoView({ block: "nearest" }); menu.setAttribute("aria-activedescendant", li.id); }
+      }
+      function open() {
+        if (isOpen()) return;
+        menu.hidden = false;
+        trigger.setAttribute("aria-expanded", "true");
+        setActive(sel.selectedIndex < 0 ? 0 : sel.selectedIndex);
+      }
+      function close() {
+        menu.hidden = true;
+        trigger.setAttribute("aria-expanded", "false");
+      }
+      function choose(i) {
+        sel.selectedIndex = i;
+        sel.dispatchEvent(new Event("change", { bubbles: true }));
+        syncLabel();
+        close();
+        trigger.focus();
+      }
+      trigger.addEventListener("click", function () { isOpen() ? close() : open(); });
+      trigger.addEventListener("keydown", function (e) {
+        var k = e.key;
+        if (k === "ArrowDown" || k === "ArrowUp") {
+          e.preventDefault();
+          if (!isOpen()) { open(); } else { setActive(activeIndex + (k === "ArrowDown" ? 1 : -1)); }
+        } else if (k === "Enter" || k === " ") {
+          e.preventDefault();
+          if (isOpen()) { choose(activeIndex); } else { open(); }
+        } else if (k === "Escape") {
+          if (isOpen()) { e.preventDefault(); close(); }
+        } else if (k === "Home") {
+          if (isOpen()) { e.preventDefault(); setActive(0); }
+        } else if (k === "End") {
+          if (isOpen()) { e.preventDefault(); setActive(options.length - 1); }
+        }
+      });
+      options.forEach(function (li, i) {
+        li.addEventListener("click", function () { choose(i); });
+        li.addEventListener("mousemove", function () { setActive(i); });
+      });
+      document.addEventListener("click", function (e) {
+        if (isOpen() && !wrap.contains(e.target)) close();
+      });
+      sel.addEventListener("change", syncLabel);
+      syncLabel();
+    });
+  }
+
   ready(function () {
     initReveal();
     initCountUp();
@@ -571,6 +697,7 @@
     initPrint();
     initDropzone();
     initEvents();
+    initCustomSelect();
     initPathStudio();
   });
 })();
