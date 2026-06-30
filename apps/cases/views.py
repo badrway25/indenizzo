@@ -42,6 +42,7 @@ from apps.core.rate_limit import public_post_rate_limit
 from .forms import (
     BelgiumRoadAccidentWizardForm,
     FranceRoadAccidentWizardForm,
+    InsuranceOfferComparisonForm,
     InternationalInheritanceWizardForm,
     ItalyRoadAccidentWizardForm,
 )
@@ -59,6 +60,12 @@ BELGIUM_ROAD_ACCIDENT_CASE_TYPE = CaseType.ROAD_ACCIDENT_BODILY_INJURY.value
 MOROCCO_INHERITANCE_JURISDICTION = "MA-NATIONAL"
 TUNISIA_INHERITANCE_JURISDICTION = "TN-NATIONAL"
 INTERNATIONAL_INHERITANCE_CASE_TYPE = CaseType.INTERNATIONAL_INHERITANCE.value
+# P9 Fase C: Italy medical-liability biological damage shares the Italian
+# road-accident jurisdiction and reuses the same domain inputs (age,
+# permanent disability %, ITT days). The engine decides 1–9% → art. 139
+# micro vs ≥10% → TUN art. 138 internally.
+ITALY_MEDICAL_JURISDICTION = "IT-NATIONAL"
+ITALY_MEDICAL_CASE_TYPE = CaseType.MEDICAL_LIABILITY_BIOLOGICAL.value
 SIMULATION_CONSENT_PURPOSE_CODE = "simulation_processing"
 
 
@@ -216,6 +223,102 @@ def wizard_italy_road_accident(request):
 
 
 # ---------------------------------------------------------------------------
+# /wizard/it/medical-malpractice/  — danno biologico tabellare (L. 24/2017)
+# ---------------------------------------------------------------------------
+
+
+@public_post_rate_limit
+@require_http_methods(["GET", "POST"])
+def wizard_italy_medical(request):
+    """Italy medical-liability biological damage — tabular estimate only.
+
+    Reuses the road-accident input form (age, permanent disability %, ITT):
+    the engine routes 1–9% → art. 139 micro and ≥10% → TUN art. 138. The
+    public result page carries the mandatory scope disclaimer clarifying that
+    only tabular biological damage is estimated — never medical fault,
+    causation, loss of chance, patrimonial damage or overall liability.
+    """
+    if request.method == "POST":
+        form = ItalyRoadAccidentWizardForm(request.POST)
+        if form.is_valid():
+            if form.is_likely_bot:
+                logger.info("cases.wizard.dropped reason=honeypot path=%s", request.path)
+                return redirect(reverse("cases:wizard_start"))
+
+            simulation = _run_italy_medical(request, form)
+            return redirect(
+                reverse(
+                    "cases:wizard_result",
+                    kwargs={"public_id": str(simulation.public_id)},
+                )
+            )
+    else:
+        form = ItalyRoadAccidentWizardForm()
+
+    from apps.core.views import _pexels_hero
+
+    return render(
+        request,
+        "public/wizard_italy_medical.html",
+        {
+            "form": form,
+            "jurisdiction_code": ITALY_MEDICAL_JURISDICTION,
+            "case_type": ITALY_MEDICAL_CASE_TYPE,
+            "pexels_image": _pexels_hero(
+                request, "wizard_italy_medical_hero", country_code="IT"
+            ),
+        },
+    )
+
+
+# ---------------------------------------------------------------------------
+# /wizard/it/offer-comparison/  — confronto offerta assicurativa
+# ---------------------------------------------------------------------------
+
+
+@public_post_rate_limit
+@require_http_methods(["GET", "POST"])
+def wizard_insurance_offer(request):
+    """Compare an insurer's settlement offer against the official tabular estimate.
+
+    Reuses the approved Italian biological-damage engine (art. 139 micro for
+    1–9%, TUN art. 138 for 10%+) for the estimate, then the result page shows
+    a pure-arithmetic comparison of the offer against that indicative range.
+    """
+    if request.method == "POST":
+        form = InsuranceOfferComparisonForm(request.POST)
+        if form.is_valid():
+            if form.is_likely_bot:
+                logger.info("cases.wizard.dropped reason=honeypot path=%s", request.path)
+                return redirect(reverse("cases:wizard_start"))
+
+            simulation = _run_insurance_offer(request, form)
+            return redirect(
+                reverse(
+                    "cases:wizard_result",
+                    kwargs={"public_id": str(simulation.public_id)},
+                )
+            )
+    else:
+        form = InsuranceOfferComparisonForm()
+
+    from apps.core.views import _pexels_hero
+
+    return render(
+        request,
+        "public/wizard_insurance_offer.html",
+        {
+            "form": form,
+            "jurisdiction_code": ITALY_ROAD_ACCIDENT_JURISDICTION,
+            "case_type": ITALY_ROAD_ACCIDENT_CASE_TYPE,
+            "pexels_image": _pexels_hero(
+                request, "wizard_insurance_offer_hero", country_code="IT"
+            ),
+        },
+    )
+
+
+# ---------------------------------------------------------------------------
 # /wizard/result/<uuid>/  — pagina risultato
 # ---------------------------------------------------------------------------
 
@@ -320,6 +423,37 @@ def wizard_result(request, public_id: uuid.UUID):
 
     recommended_landings = get_recommended_landings(case_type_value)
 
+    # P9 Fase C: medical-liability simulations carry a mandatory scope note
+    # clarifying that only the tabular biological damage is estimated — never
+    # medical fault, causation, loss of chance, patrimonial damage or overall
+    # healthcare liability. Shown on every medical result, estimate or not.
+    from django.utils.translation import gettext
+
+    medical_scope_note = ""
+    if case_type_value == ITALY_MEDICAL_CASE_TYPE:
+        medical_scope_note = gettext(
+            "This estimate covers tabular biological damage only. It does not "
+            "assess medical fault, causation, loss of chance, patrimonial "
+            "damage or overall healthcare liability."
+        )
+
+    # P9 Fase D: insurance-offer comparison. When the wizard carried an
+    # ``offer_amount`` and the engine produced an estimate, compare the offer
+    # against the indicative range (pure arithmetic on the official estimate).
+    offer_comparison = _build_offer_comparison(simulation, has_estimate)
+
+    # P13-FIX: the public estimate badge reflects WHICH approved engine produced
+    # the result, so the result page distinguishes the three estimate states
+    # (not just road accident). Empty on the no-estimate path.
+    estimate_badge = ""
+    if has_estimate:
+        if case_type_value == ITALY_MEDICAL_CASE_TYPE:
+            estimate_badge = gettext("Official table-based biological damage estimate")
+        elif offer_comparison is not None:
+            estimate_badge = gettext("Comparison based on official sources")
+        else:
+            estimate_badge = gettext("Estimate based on official sources")
+
     # H1-8: compact, public-safe provenance summary. Only display-safe fields
     # (source version label, abbreviated content hash, engine version, calc
     # date) — never the raw JSON. Present only on the calculated path and only
@@ -336,11 +470,34 @@ def wizard_result(request, public_id: uuid.UUID):
             "calculated_date": (provenance.get("calculated_at") or "")[:10],
         }
 
+    # P24: a calm photographic hero for the result page (deferred import keeps
+    # the cases ↔ core view modules free of an import cycle at load time).
+    # P28: a unified dossier summary drives the "consolidate the dossier" panel,
+    # the print layout and the result-aware contact CTA (?sim=…).
+    from django.utils.translation import get_language
+
+    from apps.core.dossier import from_estimate
+    from apps.core.views import _pexels_hero
+
+    dossier = from_estimate(
+        simulation,
+        has_estimate=has_estimate,
+        sources=sources,
+        missing_documents=public_missing_documents,
+        offer_comparison=offer_comparison,
+        assumptions=assumptions,
+        language=get_language() or "",
+    )
+
     return render(
         request,
         "public/wizard_result.html",
         {
             "simulation": simulation,
+            "dossier": dossier,
+            "pexels_image": _pexels_hero(request, "methodology_hero"),
+            # P39: report-style side panel image for the human result layout.
+            "img_report": _pexels_hero(request, "result_report"),
             "sources": sources,
             "assumptions": assumptions,
             "legal_disclaimer": legal_disclaimer,
@@ -353,6 +510,9 @@ def wizard_result(request, public_id: uuid.UUID):
             "public_message": public_message,
             "recommended_landings": recommended_landings,
             "provenance_summary": provenance_summary,
+            "medical_scope_note": medical_scope_note,
+            "offer_comparison": offer_comparison,
+            "estimate_badge": estimate_badge,
         },
     )
 
@@ -360,6 +520,50 @@ def wizard_result(request, public_id: uuid.UUID):
 # ---------------------------------------------------------------------------
 # helpers
 # ---------------------------------------------------------------------------
+
+
+def _build_offer_comparison(simulation, has_estimate: bool) -> dict | None:
+    """Compare a persisted ``offer_amount`` against the indicative estimate.
+
+    Pure arithmetic on the official estimate and the user-supplied offer — no
+    invented legal data. Returns ``None`` when there is no offer or no
+    estimate, so the result template silently omits the comparison block.
+    """
+    from decimal import Decimal, InvalidOperation
+
+    offer_raw = (simulation.input_data or {}).get("offer_amount")
+    if not offer_raw or not has_estimate:
+        return None
+    try:
+        offer = Decimal(str(offer_raw))
+    except (InvalidOperation, TypeError):
+        return None
+
+    mid = simulation.estimated_mid
+    low = simulation.estimated_min
+    high = simulation.estimated_max
+    if mid is None or mid <= 0:
+        return None
+
+    deviation_pct = ((offer - mid) / mid * Decimal(100)).quantize(Decimal("0.1"))
+    if low is not None and offer < low:
+        verdict = "below"
+    elif high is not None and offer > high:
+        verdict = "above"
+    else:
+        verdict = "within"
+    return {
+        "offer": offer,
+        "estimate_min": low,
+        "estimate_mid": mid,
+        "estimate_max": high,
+        "deviation_pct": deviation_pct,
+        # Pre-formatted with the "%" sign so the template placeholder is not
+        # followed by a literal "%", which would break blocktranslate's
+        # %-interpolation at render time.
+        "deviation_display": f"{abs(deviation_pct)}%",
+        "verdict": verdict,
+    }
 
 
 def _run_italy_road_accident(request, form: ItalyRoadAccidentWizardForm) -> Simulation:
@@ -371,14 +575,69 @@ def _run_italy_road_accident(request, form: ItalyRoadAccidentWizardForm) -> Simu
     (`simulation_processing` + `special_categories_processing`) e
     salviamo i campi denormalizzati sulla `Simulation`.
     """
+    # P8: route by permanent-disability percentage. Micropermanenti (1–9%) use the
+    # official art. 139 engine; 10%+ stay on the TUN art. 138 engine — so the TUN
+    # canary (35/10/0) is untouched. Only Italy routes; FR/BE stay fail-closed.
+    pct = form.cleaned_data.get("permanent_disability_percentage")
+    case_type = ITALY_ROAD_ACCIDENT_CASE_TYPE
+    try:
+        if pct is not None and 1 <= int(pct) <= 9:
+            case_type = CaseType.ROAD_ACCIDENT_MICROLESIONS.value
+    except (TypeError, ValueError):
+        pass
     return _run_road_accident_simulation(
         request=request,
         form=form,
         jurisdiction_code=ITALY_ROAD_ACCIDENT_JURISDICTION,
-        case_type=ITALY_ROAD_ACCIDENT_CASE_TYPE,
+        case_type=case_type,
         trigger="wizard_italy_road_accident",
         privacy_purpose_code=SIMULATION_CONSENT_PURPOSE_CODE,
         privacy_purpose_label="Italy road-accident simulation",
+        default_locale="it",
+    )
+
+
+def _run_italy_medical(request, form: ItalyRoadAccidentWizardForm) -> Simulation:
+    """Run the medical-liability biological-damage estimate (L. 24/2017).
+
+    The case_type is always ``medical_liability_biological_damage``; the engine
+    sub-routes 1–9% (art. 139 micro) vs ≥10% (TUN art. 138) on its own, so the
+    view does not branch on the percentage (unlike the road wizard).
+    """
+    return _run_road_accident_simulation(
+        request=request,
+        form=form,
+        jurisdiction_code=ITALY_MEDICAL_JURISDICTION,
+        case_type=ITALY_MEDICAL_CASE_TYPE,
+        trigger="wizard_italy_medical",
+        privacy_purpose_code=SIMULATION_CONSENT_PURPOSE_CODE,
+        privacy_purpose_label="Italy medical biological-damage simulation",
+        default_locale="it",
+    )
+
+
+def _run_insurance_offer(request, form: InsuranceOfferComparisonForm) -> Simulation:
+    """Run the official tabular estimate behind the insurance-offer comparison.
+
+    Same percentage routing as the road wizard (1–9% → art. 139 micro, else
+    TUN art. 138). The user's ``offer_amount`` rides along in ``input_data``
+    (the engine ignores it) so the result page can compare it to the estimate.
+    """
+    pct = form.cleaned_data.get("permanent_disability_percentage")
+    case_type = ITALY_ROAD_ACCIDENT_CASE_TYPE
+    try:
+        if pct is not None and 1 <= int(pct) <= 9:
+            case_type = CaseType.ROAD_ACCIDENT_MICROLESIONS.value
+    except (TypeError, ValueError):
+        pass
+    return _run_road_accident_simulation(
+        request=request,
+        form=form,
+        jurisdiction_code=ITALY_ROAD_ACCIDENT_JURISDICTION,
+        case_type=case_type,
+        trigger="wizard_insurance_offer",
+        privacy_purpose_code=SIMULATION_CONSENT_PURPOSE_CODE,
+        privacy_purpose_label="Italy insurance offer comparison",
         default_locale="it",
     )
 

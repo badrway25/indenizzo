@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% load i18n estimate_tags %}
+
+{% block title %}{% translate "Find your guided path" %} — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}{% translate "Pick a country and a category: the platform routes you to the right path — an indicative estimate where an official table exists, or a documental pre-check otherwise. No amount is invented." %}{% endblock %}
+{% block head_extra %}{% if canonical_url %}<link rel="canonical" href="{{ canonical_url }}">{% endif %}{% endblock %}
+
+{% block content %}
+{% translate "Find your guided path" as hero_title %}
+{% include "partials/_premium_hero_image.html" with hero_title=hero_title %}
+<section class="max-w-6xl mx-auto px-5 lg:px-8 py-16">
+  {# P39: two-column cockpit — intro + 4-step path preview, with a consultation image. #}
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+    <div data-reveal>
+      <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Guided router" %}</p>
+      <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Find your guided path" %}</h1>
+      <p class="mt-5 text-lg text-ink-800 leading-relaxed">
+        {% blocktranslate %}Choose your country, then the category. Where an official table or formula is validated, you get an indicative estimate; otherwise the platform opens a documental pre-check on the official sources. No amount is invented.{% endblocktranslate %}
+      </p>
+
+      {# Visual path preview — the four steps your case travels. #}
+      <ol class="mt-8 grid grid-cols-2 gap-3" aria-label="{% translate 'How the guided router works' %}">
+        <li class="premium-card flex items-center gap-3 p-4">
+          <span aria-hidden="true" class="icon-medallion shrink-0 font-serif text-base text-gold-700">1</span>
+          <span class="text-sm text-ink-900 leading-snug">{% translate "Country" %}</span>
+        </li>
+        <li class="premium-card flex items-center gap-3 p-4">
+          <span aria-hidden="true" class="icon-medallion shrink-0 font-serif text-base text-gold-700">2</span>
+          <span class="text-sm text-ink-900 leading-snug">{% translate "Case" %}</span>
+        </li>
+        <li class="premium-card flex items-center gap-3 p-4">
+          <span aria-hidden="true" class="icon-medallion shrink-0 font-serif text-base text-gold-700">3</span>
+          <span class="text-sm text-ink-900 leading-snug">{% translate "Documents" %}</span>
+        </li>
+        <li class="premium-card flex items-center gap-3 p-4">
+          <span aria-hidden="true" class="icon-medallion shrink-0 font-serif text-base text-gold-700">4</span>
+          <span class="text-sm text-ink-900 leading-snug">{% translate "Result" %}</span>
+        </li>
+      </ol>
+    </div>
+    <div data-reveal>
+      {% include "partials/_premium_body_image.html" with image=img_workflow figure_class="h-60 sm:h-72 lg:h-full lg:min-h-[24rem]" %}
+    </div>
+  </div>
+
+  {# P45: guided "path studio" — a quick recommender (JS-enhanced; the documents card shows without JS). #}
+  <section class="path-studio mt-12" data-path-studio data-reveal aria-label="{% translate 'Quick path finder' %}">
+    <div class="path-studio__head">
+      <span aria-hidden="true" class="path-studio__ico">{% include "partials/_icon.html" with name="sparkles" icon_class="w-5 h-5" %}</span>
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Guided studio" %}</p>
+        <h2 class="mt-1 font-serif text-2xl text-ink-950 leading-tight">{% translate "Answer a few questions, see the recommended path" %}</h2>
+      </div>
+    </div>
+    <div class="path-studio__grid">
+      <div class="path-studio__form">
+        <div class="path-studio__field">
+          <label for="ps-country" class="premium-label">{% translate "Where did the case happen?" %}</label>
+          <select id="ps-country" name="ps-country" class="premium-select">
+            <option value="">{% translate "Choose…" %}</option>
+            <option value="IT">{% translate "Italy" %}</option>
+            <option value="FR">{% translate "France" %}</option>
+            <option value="BE">{% translate "Belgium" %}</option>
+            <option value="MA">{% translate "Morocco" %}</option>
+            <option value="TN">{% translate "Tunisia" %}</option>
+            <option value="XX">{% translate "Another country / cross-border" %}</option>
+          </select>
+        </div>
+        <label class="path-studio__toggle"><input type="checkbox" name="ps-injury"><span>{% translate "There is a physical injury" %}</span></label>
+        <label class="path-studio__toggle"><input type="checkbox" name="ps-offer"><span>{% translate "I have an insurance offer" %}</span></label>
+        <label class="path-studio__toggle"><input type="checkbox" name="ps-law"><span>{% translate "I just want to understand which law applies" %}</span></label>
+      </div>
+      <div class="path-studio__results" aria-live="polite">
+        <div class="path-studio__result premium-card p-5" data-path-result="documents">
+          <span class="path-studio__badge path-studio__badge--gold">{% translate "You can prepare your documents" %}</span>
+          <p class="mt-2 text-sm text-ink-800 leading-relaxed">{% translate "Upload what you have: the platform organises your file and lists the official references — no invented amount." %}</p>
+          <a href="{% url 'core:documents_upload' %}" class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-gold-700">{% translate "Upload documents" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+        </div>
+        <div class="path-studio__result premium-card p-5" data-path-result="estimate" hidden>
+          <span class="path-studio__badge path-studio__badge--ok">{% translate "You can make an estimate" %}</span>
+          <p class="mt-2 text-sm text-ink-800 leading-relaxed">{% translate "An official validated table exists for this case: answer a few questions and get an indicative range." %}</p>
+          <a href="{% url 'cases:wizard_start' %}" class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-gold-700">{% translate "Start the estimate" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+        </div>
+        <div class="path-studio__result premium-card p-5" data-path-result="offer" hidden>
+          <span class="path-studio__badge path-studio__badge--teal">{% translate "You can check the offer" %}</span>
+          <p class="mt-2 text-sm text-ink-800 leading-relaxed">{% translate "Compare the insurer's offer against the official reference and see the deviation." %}</p>
+          <a href="{% url 'cases:wizard_insurance_offer' %}" class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-gold-700">{% translate "Check an offer" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+        </div>
+        <div class="path-studio__result premium-card p-5" data-path-result="needs_table" hidden>
+          <span class="path-studio__badge path-studio__badge--slate">{% translate "An official table is needed first" %}</span>
+          <p class="mt-2 text-sm text-ink-800 leading-relaxed">{% translate "There is no validated table for this country and case yet, so no figure is shown — prepare your documents and summary instead." %}</p>
+          <a href="{% url 'core:documents_upload' %}" class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-gold-700">{% translate "Prepare a summary" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+        </div>
+        <div class="path-studio__result premium-card p-5" data-path-result="law" hidden>
+          <span class="path-studio__badge path-studio__badge--slate">{% translate "You can understand which law may apply" %}</span>
+          <p class="mt-2 text-sm text-ink-800 leading-relaxed">{% translate "For cross-border cases, the platform helps you frame which country's law applies before anything else." %}</p>
+          <a href="{% url 'core:case_type_landing' slug='cross-border-cases' %}" class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-gold-700">{% translate "Understand the applicable law" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </div>
+    <p class="mt-4 text-xs text-stone2-500 leading-relaxed">{% translate "A quick guide only — no amount is shown without a validated official table. See the full router below." %}</p>
+  </section>
+
+  {# Step 1 — country chips (in-page anchors to each country block). #}
+  <p class="mt-10 text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">{% translate "Step 1 — your country" %}</p>
+  <nav class="mt-3 flex flex-wrap gap-2" aria-label="{% translate 'Choose a country' %}">
+    {% for group in country_groups %}
+      <a href="#guided-{{ group.country_code }}" class="premium-chip">
+        {% translate group.country_key %}
+      </a>
+    {% endfor %}
+  </nav>
+
+  {# Step 2 — per-country category cards, each routing to its destination. #}
+  {% for group in country_groups %}
+    <section id="guided-{{ group.country_code }}" class="mt-12 scroll-mt-24">
+      <h2 class="font-serif text-2xl text-ink-950">{% translate group.country_key %}</h2>
+      <div class="mt-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% for route in group.routes %}
+          <article class="premium-card premium-card-hover flex flex-col p-5">
+            <h3 class="font-serif text-lg text-ink-950">{% translate route.category_key %}</h3>
+            <p class="mt-3">
+              {% if route.computes_amount %}
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-ok-600/10 text-ok-600 text-[10px] font-semibold uppercase tracking-[0.14em]"><span class="badge-dot" aria-hidden="true"></span>{{ route.status_label }}</span>
+              {% else %}
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gold-500/15 text-gold-700 text-[10px] font-semibold uppercase tracking-[0.14em]"><span class="badge-dot" aria-hidden="true"></span>{{ route.status_label }}</span>
+              {% endif %}
+            </p>
+            <p class="mt-3 text-sm text-stone2-500 leading-relaxed">
+              {% if route.computes_amount %}
+                {% translate "An indicative estimate is produced from the validated official source." %}
+              {% else %}
+                {% translate "No amount is produced: the path lists the official sources, the data and the documents to prepare." %}
+              {% endif %}
+            </p>
+            {# P25: pre-click preview — data required, main source, indicative time. #}
+            <dl class="mt-4 space-y-2 text-xs border-t border-stone2-100 pt-3">
+              {% if route.min_inputs %}
+              <div class="flex items-baseline gap-2">
+                <dt class="uppercase tracking-[0.14em] text-gold-700 font-semibold shrink-0 w-20">{% translate "You'll need" %}</dt>
+                <dd class="text-ink-900">{{ route.min_inputs }}</dd>
+              </div>
+              {% endif %}
+              {% if route.main_source %}
+              <div class="flex items-baseline gap-2">
+                <dt class="uppercase tracking-[0.14em] text-stone2-500 font-semibold shrink-0 w-20">{% translate "Source" %}</dt>
+                <dd class="text-ink-900"><span aria-hidden="true" class="text-gold-600 inline-flex shrink-0">{% include "partials/_icon.html" with name="book-open" icon_class="w-3.5 h-3.5" %}</span> {{ route.main_source }}</dd>
+              </div>
+              {% endif %}
+              <div class="flex items-center gap-2">
+                <dt class="inline-flex items-center gap-1.5 uppercase tracking-[0.14em] text-stone2-500 font-semibold shrink-0 w-20"><span aria-hidden="true" class="text-gold-600 inline-flex">{% include "partials/_icon.html" with name="clock" icon_class="w-3.5 h-3.5" %}</span>{% translate "Time" %}</dt>
+                <dd class="text-ink-900">{{ route.est_time }}</dd>
+              </div>
+            </dl>
+            <div class="mt-4 pt-4 border-t border-stone2-200">
+              {% if route.url_kwargs.slug %}
+                <a href="{% url route.url_name slug=route.url_kwargs.slug %}" class="premium-btn premium-btn-primary">
+              {% else %}
+                <a href="{% url route.url_name %}" class="premium-btn premium-btn-primary">
+              {% endif %}
+                {{ route.cta_label }}
+                <span class="cta-arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+  {% endfor %}
+
+  {# Mandatory no-amount disclaimer. #}
+  <p class="mt-12 text-xs text-stone2-500 leading-relaxed border-t border-stone2-200 pt-6">
+    {% translate "No amount is calculated without a verified official table or formula." %}
+  </p>
+</section>
+
+{% estimate_matrix %}
+{% endblock %}

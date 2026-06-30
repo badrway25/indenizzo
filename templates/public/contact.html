@@ -66,61 +66,61 @@
 
     <div class="grid sm:grid-cols-2 gap-5">
       <div>
-        <label for="{{ form.first_name.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.first_name.label }}</label>
+        <label for="{{ form.first_name.id_for_label }}" class="premium-label">{{ form.first_name.label }}</label>
         <input type="text" name="{{ form.first_name.html_name }}" id="{{ form.first_name.id_for_label }}" value="{{ form.first_name.value|default_if_none:'' }}" required maxlength="80"
-          class="mt-1 w-full rounded-xl border border-stone2-200 bg-sand-50 px-3 py-2.5 focus:border-gold-500 focus:bg-white outline-none">
+          class="premium-input mt-1">
         {% for err in form.first_name.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
       </div>
       <div>
-        <label for="{{ form.last_name.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.last_name.label }}</label>
+        <label for="{{ form.last_name.id_for_label }}" class="premium-label">{{ form.last_name.label }}</label>
         <input type="text" name="{{ form.last_name.html_name }}" id="{{ form.last_name.id_for_label }}" value="{{ form.last_name.value|default_if_none:'' }}" required maxlength="80"
-          class="mt-1 w-full rounded-xl border border-stone2-200 bg-sand-50 px-3 py-2.5 focus:border-gold-500 focus:bg-white outline-none">
+          class="premium-input mt-1">
         {% for err in form.last_name.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
       </div>
     </div>
 
     <div class="grid sm:grid-cols-2 gap-5">
       <div>
-        <label for="{{ form.email.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.email.label }}</label>
+        <label for="{{ form.email.id_for_label }}" class="premium-label">{{ form.email.label }}</label>
         <input type="email" name="{{ form.email.html_name }}" id="{{ form.email.id_for_label }}" value="{{ form.email.value|default_if_none:'' }}" required
-          class="mt-1 w-full rounded-xl border border-stone2-200 bg-sand-50 px-3 py-2.5 focus:border-gold-500 focus:bg-white outline-none">
+          class="premium-input mt-1">
         {% for err in form.email.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
       </div>
       <div>
-        <label for="{{ form.phone_number.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.phone_number.label }} <span class="text-stone2-500 font-normal">{% translate "(optional)" %}</span></label>
+        <label for="{{ form.phone_number.id_for_label }}" class="premium-label">{{ form.phone_number.label }} <span class="text-stone2-500 font-normal">{% translate "(optional)" %}</span></label>
         <input type="tel" name="{{ form.phone_number.html_name }}" id="{{ form.phone_number.id_for_label }}" value="{{ form.phone_number.value|default_if_none:'' }}" maxlength="32"
-          class="mt-1 w-full rounded-xl border border-stone2-200 bg-sand-50 px-3 py-2.5 focus:border-gold-500 focus:bg-white outline-none">
+          class="premium-input mt-1">
         {% for err in form.phone_number.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
       </div>
     </div>
 
     <div class="grid sm:grid-cols-3 gap-5">
       <div>
-        <label for="{{ form.preferred_language.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.preferred_language.label }}</label>
+        <label for="{{ form.preferred_language.id_for_label }}" class="premium-label">{{ form.preferred_language.label }}</label>
         <select name="{{ form.preferred_language.html_name }}" id="{{ form.preferred_language.id_for_label }}"
-          class="mt-1 w-full rounded-xl border border-stone2-200 bg-sand-50 px-3 py-2.5 focus:border-gold-500 focus:bg-white outline-none">
+          class="premium-select mt-1">
           {% for code, label in form.preferred_language.field.choices %}
             <option value="{{ code }}" {% if form.preferred_language.value|default:'it' == code %}selected{% endif %}>{{ code|upper }} — {{ label }}</option>
           {% endfor %}
         </select>
       </div>
       <div>
-        <label for="{{ form.country.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.country.label }}</label>
+        <label for="{{ form.country.id_for_label }}" class="premium-label">{{ form.country.label }}</label>
         {{ form.country }}
         {% for err in form.country.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
       </div>
       <div>
-        <label for="{{ form.case_type.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.case_type.label }}</label>
+        <label for="{{ form.case_type.id_for_label }}" class="premium-label">{{ form.case_type.label }}</label>
         {{ form.case_type }}
         {% for err in form.case_type.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
       </div>
     </div>
 
     <div>
-      <label for="{{ form.message.id_for_label }}" class="text-sm font-medium text-ink-900">{{ form.message.label }}</label>
+      <label for="{{ form.message.id_for_label }}" class="premium-label">{{ form.message.label }}</label>
       <textarea name="{{ form.message.html_name }}" id="{{ form.message.id_for_label }}" rows="6" required minlength="20"
-        class="mt-1 w-full rounded-xl border border-stone2-200 bg-sand-50 px-3 py-2.5 focus:border-gold-500 focus:bg-white outline-none">{{ form.message.value|default_if_none:'' }}</textarea>
-      <p class="mt-1 text-xs text-stone2-500">{% blocktranslate %}Briefly describe what happened, when, and where. Avoid sharing sensitive medical details now — we will request them only if needed.{% endblocktranslate %}</p>
+        class="premium-textarea mt-1">{{ form.message.value|default_if_none:'' }}</textarea>
+      <p class="premium-form-help mt-1">{% blocktranslate %}Briefly describe what happened, when, and where. Avoid sharing sensitive medical details now — we will request them only if needed.{% endblocktranslate %}</p>
       {% for err in form.message.errors %}<p class="text-xs text-red-700 mt-1">{{ err }}</p>{% endfor %}
     </div>
 
@@ -129,13 +129,13 @@
 
     {{ form.simulation_public_id }}
 
-    <div class="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between pt-2">
-      <p class="text-xs text-stone2-500">
+    <div class="premium-form-actions sm:justify-between">
+      <p class="premium-form-help">
         {% blocktranslate %}Submitting this form does not create a professional engagement.{% endblocktranslate %}
       </p>
       <button type="submit" class="premium-btn premium-btn-primary">
         {% translate "Send my request" %}
-        <span aria-hidden="true">→</span>
+        <span class="cta-arrow" aria-hidden="true">→</span>
       </button>
     </div>
   </form>

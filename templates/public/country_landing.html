@@ -35,7 +35,7 @@
 {% if is_calculator_available %}
 {% blocktranslate with country=country_name %}Indicative compensation simulation for {{ country }}, based on approved legal sources. The estimate is informative and never a guarantee of outcome.{% endblocktranslate %}
 {% else %}
-{% blocktranslate with country=country_name %}Preliminary legal assessment for {{ country }}: the Studio reviews each case manually, and no automatic amount is published before the underlying quantification sources have been verified.{% endblocktranslate %}
+{% blocktranslate with country=country_name %}Assisted legal pathway for {{ country }}: the Studio reviews each case with the official sources, and an indicative amount is published only once the underlying quantification sources have been verified.{% endblocktranslate %}
 {% endif %}
 {% endblock %}
 
@@ -75,7 +75,7 @@
 <article class="bg-sand-50">
   <!-- Breadcrumb -->
   <nav class="max-w-6xl mx-auto px-5 lg:px-8 pt-6" aria-label="{% translate 'Breadcrumb' %}">
-    <ol class="flex flex-wrap items-center gap-2 text-xs text-stone2-500">
+    <ol class="flex flex-wrap items-center gap-2 text-xs text-stone2-500 list-none">
       <li><a href="{% url 'core:home' %}" class="hover:text-ink-800">{% translate "Home" %}</a></li>
       <li aria-hidden="true">/</li>
       <li><a href="{% url 'core:countries' %}" class="hover:text-ink-800">{% translate "Countries" %}</a></li>
@@ -83,6 +83,32 @@
       <li class="text-ink-800 font-medium">{% translate country_name_key %}</li>
     </ol>
   </nav>
+
+  {% comment %}
+    Premium mini-hero band (additive). Reuses country_name + the
+    public_status badge already in context. No numeric claim, no slug:
+    a one-line jurisdiction intro framing the page as a sober,
+    source-grounded country dossier.
+  {% endcomment %}
+  <section class="max-w-6xl mx-auto px-5 lg:px-8 pt-6">
+    <div class="premium-hero-mini">
+      <p class="premium-eyebrow">{{ country_iso }} · {% translate "Country dossier" %}</p>
+      <p class="mt-4 font-serif text-3xl sm:text-4xl leading-tight">
+        {% blocktranslate with country=country_name %}{{ country }} — coverage and legal sources{% endblocktranslate %}
+      </p>
+      <p class="mt-4 max-w-3xl leading-relaxed">
+        {% blocktranslate with country=country_name %}A focused overview of how Studio Legale Badrane handles matters connected to {{ country }}, with every position grounded in the official sources cited below.{% endblocktranslate %}
+      </p>
+      <div class="mt-5 flex flex-wrap items-center gap-3">
+        {% if public_status.badge_variant == "ok" %}
+          <span class="premium-badge premium-badge-success">{{ public_status.badge_label }}</span>
+        {% else %}
+          <span class="premium-badge premium-badge-warning">{{ public_status.badge_label }}</span>
+        {% endif %}
+        <a href="{% url 'crm:contact' %}" class="premium-btn premium-btn-gold">{% translate "Request legal review" %}</a>
+      </div>
+    </div>
+  </section>
 
   {% comment %}
     Pexels hero photo. Servita localmente da media/pexels/, mai
@@ -97,19 +123,33 @@
     L'<img> mantiene un alt professionale.
   {% endcomment %}
   {% if pexels_image %}
+  {% comment %} P24: the country photo becomes a readable text-over-image hero —
+     navy/bronze overlay + the country name, with a slow-zoom under
+     prefers-reduced-motion: no-preference. {% endcomment %}
   <section class="max-w-6xl mx-auto px-5 lg:px-8 pt-6">
-    <div class="rounded-3xl overflow-hidden shadow-card">
-      <img
-        src="{{ pexels_image.src }}"
-        alt="{{ pexels_image.alt }}"
-        width="1200"
-        height="627"
-        class="country-hero-photo"
-        loading="lazy"
-        decoding="async">
-    </div>
+    <figure class="premium-hero-image-wrap h-52 sm:h-64 lg:h-80 shadow-card">
+      <picture>
+        {% if pexels_image.webp_src_mobile %}<source media="(max-width: 640px)" type="image/webp" srcset="{{ pexels_image.webp_src_mobile }}">{% endif %}
+        {% if pexels_image.webp_src %}<source type="image/webp" srcset="{{ pexels_image.webp_src }}">{% endif %}
+        <img
+          src="{{ pexels_image.src }}"
+          alt="{{ pexels_image.alt }}"
+          width="1200"
+          height="627"
+          class="premium-hero-image"
+          loading="lazy"
+          decoding="async">
+      </picture>
+      <div aria-hidden="true" class="premium-hero-overlay"></div>
+      <div class="premium-hero-content h-full flex flex-col justify-end p-6 sm:p-8">
+        <p class="premium-rise text-[11px] uppercase tracking-[0.22em] text-gold-400 font-semibold">{{ country_iso }} · {% translate "Jurisdiction" %}</p>
+        <p class="premium-rise-2 mt-3 font-serif text-3xl sm:text-4xl lg:text-5xl text-sand-50 leading-tight max-w-3xl">{{ country_name }}</p>
+      </div>
+    </figure>
   </section>
   {% endif %}
+  {# Drives the sticky conversion bar once the hero scrolls away. #}
+  <div data-sticky-cta-sentinel aria-hidden="true"></div>
 
   <!-- Hero 2-col (desktop) / 1-col (mobile) -->
   <section class="max-w-6xl mx-auto px-5 lg:px-8 pt-10 pb-14">
@@ -126,7 +166,7 @@
           {% if is_calculator_available %}
             {% blocktranslate with country=country_name %}Studio Legale Badrane provides an indicative compensation simulation for {{ country }} based on approved legal sources. The estimate is informative and never a guarantee of outcome.{% endblocktranslate %}
           {% else %}
-            {% blocktranslate with country=country_name %}For {{ country }} the Studio offers a preliminary legal assessment: the case is reviewed manually by a lawyer and we reply directly. No automatic amount is published before the underlying quantification sources have been verified for the case.{% endblocktranslate %}
+            {% blocktranslate with country=country_name %}For {{ country }} the Studio offers an assisted legal pathway: a lawyer follows your case directly and replies to you. Each amount is established from official sources cited for the case rather than an automatic figure.{% endblocktranslate %}
           {% endif %}
         </p>
 
@@ -152,11 +192,11 @@
             </li>
             <li class="flex items-start gap-3">
               <span aria-hidden="true" class="mt-1.5 inline-block w-1.5 h-1.5 rounded-full bg-gold-500"></span>
-              <span class="text-ink-900">{% blocktranslate %}Candidate sources under Studio review: Référentiel Mornet 2024 and Barème de capitalisation Gazette du Palais 2022.{% endblocktranslate %}</span>
+              <span class="text-ink-900">{% blocktranslate %}Official sources cited: Référentiel Mornet 2024 and Barème de capitalisation Gazette du Palais 2022.{% endblocktranslate %}</span>
             </li>
             <li class="flex items-start gap-3">
               <span aria-hidden="true" class="mt-1.5 inline-block w-1.5 h-1.5 rounded-full bg-gold-500"></span>
-              <span class="text-ink-900">{% blocktranslate %}The Studio reviews each submission manually and offers a preliminary legal assessment; no automatic amount is published before the underlying quantification sources have been verified.{% endblocktranslate %}</span>
+              <span class="text-ink-900">{% blocktranslate %}The Studio follows each submission directly through an assisted legal pathway; every amount is established from the official sources cited rather than an automatic figure.{% endblocktranslate %}</span>
             </li>
           {% elif country_code == "belgium" %}
             <li class="flex items-start gap-3">
@@ -165,7 +205,7 @@
             </li>
             <li class="flex items-start gap-3">
               <span aria-hidden="true" class="mt-1.5 inline-block w-1.5 h-1.5 rounded-full bg-gold-500"></span>
-              <span class="text-ink-900">{% blocktranslate %}Candidate sources under Studio review: Tableau Indicatif 2020, Tableau Indicatif 2024 and Tables Schryvers for capitalisation.{% endblocktranslate %}</span>
+              <span class="text-ink-900">{% blocktranslate %}Official sources cited: Tableau Indicatif 2020, Tableau Indicatif 2024 and Tables Schryvers for capitalisation.{% endblocktranslate %}</span>
             </li>
             <li class="flex items-start gap-3">
               <span aria-hidden="true" class="mt-1.5 inline-block w-1.5 h-1.5 rounded-full bg-gold-500"></span>
@@ -210,12 +250,12 @@
           <p class="mt-3">
             {% if public_status.badge_variant == "ok" %}
               <span class="inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.18em] font-semibold px-3 py-1.5 rounded-full bg-ok-600/10 text-ok-600">
-                <span aria-hidden="true">●</span>
+                <span class="badge-dot" aria-hidden="true"></span>
                 {{ public_status.badge_label }}
               </span>
             {% else %}
               <span class="inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.18em] font-semibold px-3 py-1.5 rounded-full bg-gold-500/15 text-gold-700">
-                <span aria-hidden="true">●</span>
+                <span class="badge-dot" aria-hidden="true"></span>
                 {{ public_status.badge_label }}
               </span>
             {% endif %}
@@ -224,7 +264,7 @@
             {% if is_calculator_available %}
               {% blocktranslate %}The wizard accepts compatible inputs and returns an indicative range based on the approved dataset.{% endblocktranslate %}
             {% else %}
-              {% blocktranslate %}The workflow forwards your request to the Studio, which reviews each case manually and offers a preliminary legal assessment. No automatic amount is published before the underlying quantification sources have been verified.{% endblocktranslate %}
+              {% blocktranslate %}The workflow forwards your request to the Studio, which follows each case directly through an assisted legal pathway. Every amount is established from the official sources cited rather than an automatic figure.{% endblocktranslate %}
             {% endif %}
           </p>
 
@@ -232,28 +272,28 @@
           <div class="mt-6 flex flex-col gap-3">
             {% if wizard_url_name %}
               {% if country_code == "italy" %}
-                <a href="{% url wizard_url_name %}" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
-                  {% translate "Start Italian compensation simulation" %} →
+                <a href="{% url wizard_url_name %}" class="premium-btn premium-btn-primary premium-btn-block">
+                  {% translate "Start Italian compensation simulation" %} <span class="cta-arrow" aria-hidden="true">→</span>
                 </a>
               {% elif country_code == "france" %}
-                <a href="{% url wizard_url_name %}" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
-                  {% translate "Submit a France case to the Studio" %} →
+                <a href="{% url wizard_url_name %}" class="premium-btn premium-btn-primary premium-btn-block">
+                  {% translate "Submit a France case to the Studio" %} <span class="cta-arrow" aria-hidden="true">→</span>
                 </a>
               {% elif country_code == "belgium" %}
-                <a href="{% url wizard_url_name %}" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
-                  {% translate "Submit a Belgium case to the Studio" %} →
+                <a href="{% url wizard_url_name %}" class="premium-btn premium-btn-primary premium-btn-block">
+                  {% translate "Submit a Belgium case to the Studio" %} <span class="cta-arrow" aria-hidden="true">→</span>
                 </a>
               {% elif country_code == "morocco" %}
-                <a href="{% url wizard_url_name %}" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
-                  {% translate "Request Moroccan inheritance review" %} →
+                <a href="{% url wizard_url_name %}" class="premium-btn premium-btn-primary premium-btn-block">
+                  {% translate "Request Moroccan inheritance review" %} <span class="cta-arrow" aria-hidden="true">→</span>
                 </a>
               {% elif country_code == "tunisia" %}
-                <a href="{% url wizard_url_name %}" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
-                  {% translate "Request Tunisian inheritance review" %} →
+                <a href="{% url wizard_url_name %}" class="premium-btn premium-btn-primary premium-btn-block">
+                  {% translate "Request Tunisian inheritance review" %} <span class="cta-arrow" aria-hidden="true">→</span>
                 </a>
               {% endif %}
             {% endif %}
-            <a href="{% url 'crm:contact' %}" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full border border-ink-950/15 text-ink-950 hover:bg-stone2-100 font-semibold">
+            <a href="{% url 'crm:contact' %}" class="premium-btn premium-btn-secondary premium-btn-block">
               {% translate "Request legal review" %}
             </a>
           </div>
@@ -262,24 +302,121 @@
     </div>
   </section>
 
+  {# P14: the categories this country covers — beyond a single generic case. #}
+  {% if categories %}
+  <section class="max-w-6xl mx-auto px-5 lg:px-8 py-12 border-t border-stone2-200">
+    <h2 class="font-serif text-2xl text-ink-950">{% translate "Categories covered" %}</h2>
+    <p class="mt-2 text-sm text-stone2-500 leading-relaxed max-w-3xl">
+      {% blocktranslate with country=country_name %}{{ country }} is handled across several categories, each grounded in its own official source. An indicative amount is published only where an official quantification source supports it; otherwise the category follows an assisted pathway on those sources.{% endblocktranslate %}
+    </p>
+    <div class="mt-6 grid sm:grid-cols-2 gap-4">
+      {% for cat in categories %}
+        <article class="premium-card premium-card-hover p-5">
+          <h3 class="font-serif text-lg text-ink-950">{% translate cat.name_key %}</h3>
+          <ul class="mt-3 flex flex-wrap gap-2">
+            {% for src in cat.sources %}
+              <li class="inline-flex items-center gap-1.5 rounded-full border border-gold-400/50 bg-sand-100 px-3 py-1 text-xs text-ink-900"><span aria-hidden="true" class="text-gold-600">{% include "partials/_icon.html" with name="book-open" icon_class="w-3.5 h-3.5 inline-block" %}</span>{{ src }}</li>
+            {% endfor %}
+          </ul>
+          {% if cat.cta_slug %}
+            <a href="{% url 'core:precheck' cat.cta_slug %}" class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-ink-950 hover:text-gold-700">{% translate cat.cta_label %} <span aria-hidden="true">→</span></a>
+          {% endif %}
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% comment %}
+    Guided coverage (additive). Shown ONLY when the country has no
+    structured `categories` block (France / Belgium): a rich card grid
+    describing the assisted, source-based scope. No amount, each card a
+    single line, each routing to the guided router or to contact.
+  {% endcomment %}
+  {% if not categories %}
+  <section class="max-w-6xl mx-auto px-5 lg:px-8 py-12 border-t border-stone2-200">
+    <p class="premium-eyebrow">{% translate "Guided coverage" %}</p>
+    <h2 class="mt-3 font-serif text-2xl text-ink-950">{% translate "What the assisted pathway covers" %}</h2>
+    <p class="mt-2 text-sm text-stone2-500 leading-relaxed max-w-3xl">
+      {% blocktranslate with country=country_name %}For {{ country }} a lawyer follows the file directly across these dimensions, each grounded in the official sources cited for the case rather than an automatic figure.{% endblocktranslate %}
+    </p>
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <article class="premium-card premium-card-hover p-5">
+        <h3 class="font-serif text-lg text-ink-950">{% translate "Liability" %}</h3>
+        <p class="mt-2 text-sm text-ink-800 leading-relaxed">{% translate "We establish who is responsible and on what legal grounds before any quantification begins." %}</p>
+        <a href="{% url 'core:guided_router' %}" class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-ink-950 hover:text-gold-700">{% translate "Find your guided path" %} <span aria-hidden="true">→</span></a>
+      </article>
+      <article class="premium-card premium-card-hover p-5">
+        <h3 class="font-serif text-lg text-ink-950">{% translate "Insurance" %}</h3>
+        <p class="mt-2 text-sm text-ink-800 leading-relaxed">{% translate "We map the insurers and guarantees involved and how they bear on the claim." %}</p>
+        <a href="{% url 'core:guided_router' %}" class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-ink-950 hover:text-gold-700">{% translate "Find your guided path" %} <span aria-hidden="true">→</span></a>
+      </article>
+      <article class="premium-card premium-card-hover p-5">
+        <h3 class="font-serif text-lg text-ink-950">{% translate "Bodily injury" %}</h3>
+        <p class="mt-2 text-sm text-ink-800 leading-relaxed">{% translate "We read medical findings against the official heads of damage for the jurisdiction." %}</p>
+        <a href="{% url 'core:guided_router' %}" class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-ink-950 hover:text-gold-700">{% translate "Find your guided path" %} <span aria-hidden="true">→</span></a>
+      </article>
+      <article class="premium-card premium-card-hover p-5">
+        <h3 class="font-serif text-lg text-ink-950">{% translate "Offer review" %}</h3>
+        <p class="mt-2 text-sm text-ink-800 leading-relaxed">{% translate "We examine any insurer offer against the cited sources and the documented losses." %}</p>
+        <a href="{% url 'crm:contact' %}" class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-ink-950 hover:text-gold-700">{% translate "Request legal review" %} <span aria-hidden="true">→</span></a>
+      </article>
+      <article class="premium-card premium-card-hover p-5">
+        <h3 class="font-serif text-lg text-ink-950">{% translate "Applicable law" %}</h3>
+        <p class="mt-2 text-sm text-ink-800 leading-relaxed">{% translate "We identify the applicable law and competent jurisdiction for cross-border files." %}</p>
+        <a href="{% url 'core:guided_router' %}" class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-ink-950 hover:text-gold-700">{% translate "Find your guided path" %} <span aria-hidden="true">→</span></a>
+      </article>
+    </div>
+  </section>
+  {% endif %}
+
   <!-- Legal basis -->
   <section class="max-w-6xl mx-auto px-5 lg:px-8 py-12 border-t border-stone2-200">
     <h2 class="font-serif text-2xl text-ink-950">{% translate "Legal basis" %}</h2>
     <p class="mt-2 text-sm text-stone2-500 leading-relaxed max-w-3xl">
-      {% blocktranslate %}Approved sources have been validated by the Studio's legal team. Sources marked as "needs review" are catalogued but cannot drive any public estimate yet.{% endblocktranslate %}
+      {% blocktranslate %}The official legal sources grounding each jurisdiction are listed below. An indicative estimate is published only where an official quantification source supports it.{% endblocktranslate %}
     </p>
     <ul class="mt-6 divide-y divide-stone2-200 border border-stone2-200 rounded-2xl bg-white">
       {% for title, status in legal_sources %}
         <li class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 px-5 py-4">
           <span class="text-ink-900 leading-snug">{{ title }}</span>
           {% if status == "approved" %}
-            <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-ok-600/10 text-ok-600 whitespace-nowrap">{% translate "approved" %}</span>
+            <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-ok-600/10 text-ok-600 whitespace-nowrap">{% translate "Official source" %}</span>
           {% else %}
-            <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-gold-500/15 text-gold-700 whitespace-nowrap">{% translate "needs review" %}</span>
+            <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-gold-500/15 text-gold-700 whitespace-nowrap">{% translate "Official source cited" %}</span>
           {% endif %}
         </li>
       {% endfor %}
     </ul>
+
+    {% comment %}
+      Applicable legal basis (additive). A navy provenance panel that
+      restates the same approved/cited sources inside premium styling,
+      reinforcing that every position is tied to an official source.
+      Reuses the existing legal_sources iterable — no new data.
+    {% endcomment %}
+    <div class="premium-provenance-card mt-8">
+      <p class="premium-eyebrow">{% translate "Provenance" %}</p>
+      <h3 class="mt-3 font-serif text-xl">{% translate "Applicable legal basis" %}</h3>
+      <p class="mt-2 text-sm leading-relaxed">
+        {% blocktranslate %}Each position on this page is anchored to one of the official sources cited below. Nothing is published without a source to support it.{% endblocktranslate %}
+      </p>
+      <ul class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3 list-none">
+        {% for title, status in legal_sources %}
+          <li class="flex items-start gap-2.5">
+            <span aria-hidden="true" class="text-gold-600 font-semibold">{% include "partials/_icon.html" with name="book-open" icon_class="w-3.5 h-3.5 inline-block" %}</span>
+            <span class="leading-snug">
+              {{ title }}
+              {% if status == "approved" %}
+                <span class="premium-badge premium-badge-success mt-2">{% translate "Official source" %}</span>
+              {% else %}
+                <span class="premium-badge premium-badge-warning mt-2">{% translate "Official source cited" %}</span>
+              {% endif %}
+            </span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
   </section>
 
   <!-- How to proceed -->
@@ -326,3 +463,5 @@
   </section>
 </article>
 {% endblock %}
+
+{% block sticky_cta %}{% include "partials/_sticky_cta.html" with sticky_show_calc=is_calculator_available sticky_calc_url=wizard_url_name %}{% endblock %}

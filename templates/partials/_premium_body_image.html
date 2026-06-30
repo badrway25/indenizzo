@@ -1,0 +1,32 @@
+{% load i18n %}
+{% comment %}
+  P39: internal BODY image (not a hero). Renders a real photograph inside the
+  page body — a side panel in a two-column block, or an inline band — with a
+  WebP <picture> + lazy loading. Distinct from `_premium_hero_image.html`,
+  which is the full-width text-over-image banner.
+
+  Input context:
+  - image -> dict with at least {"src", "alt"} and optionally
+    {"webp_src", "webp_src_mobile"} (None => renders nothing, so every caller
+    degrades gracefully when the manifest entry is missing).
+
+  Optional include args:
+  - figure_class -> extra classes on the <figure> (height / rounding / ratio).
+                    Defaults to a calm rounded side-panel frame.
+{% endcomment %}
+{% if image %}
+<figure class="premium-figure {{ figure_class }}">
+  <picture>
+    {% if image.webp_src_mobile %}<source media="(max-width: 640px)" type="image/webp" srcset="{{ image.webp_src_mobile }}">{% endif %}
+    {% if image.webp_src %}<source type="image/webp" srcset="{{ image.webp_src }}">{% endif %}
+    <img
+      src="{{ image.src }}"
+      alt="{{ image.alt }}"
+      width="1280"
+      height="853"
+      class="premium-figure__img"
+      loading="lazy"
+      decoding="async">
+  </picture>
+</figure>
+{% endif %}

@@ -1,0 +1,36 @@
+{% load i18n %}
+{% comment %}
+  Persistent conversion bar. Hidden until the page's hero scrolls out of view
+  (the `[data-sticky-cta-sentinel]` element drives it via IntersectionObserver
+  in site.js); fully inert / never shown without JavaScript. Dismissable.
+
+  Caller contract:
+  - sticky_show_calc (bool, REQUIRED): show the "Calculate the estimate" button.
+    Pass False on jurisdictions/pages where no calculator is available, so the
+    bar offers only the free-assessment CTA — never a wrong calculator link.
+  - sticky_calc_url (str, optional): URL name for the calculator button.
+    Defaults to the Italy road-accident wizard.
+
+  Included only on marketing pages via the base `sticky_cta` block — never on
+  the wizard, result or contact pages, where the user is already converting.
+{% endcomment %}
+{% with calc_url=sticky_calc_url|default:"cases:wizard_italy_road_accident" %}
+<div class="sticky-cta" data-sticky-cta role="region" aria-label="{% translate 'Quick actions' %}">
+  <div class="sticky-cta__inner">
+    <div class="sticky-cta__copy">
+      <p class="sticky-cta__title">{% translate "Estimate your compensation" %}</p>
+      <p class="sticky-cta__sub">{% translate "Indicative and source-based — not a guarantee of outcome." %}</p>
+    </div>
+    <div class="sticky-cta__actions">
+      {% if sticky_show_calc %}
+        <a href="{% url calc_url %}"
+           class="premium-btn premium-btn-gold premium-btn-inline">{% translate "Calculate the estimate" %}</a>
+      {% endif %}
+      <a href="{% url 'crm:contact' %}"
+         class="premium-btn premium-btn-secondary premium-btn-inline sticky-cta__secondary">{% translate "Free assessment" %}</a>
+    </div>
+    <button type="button" class="sticky-cta__dismiss" data-sticky-cta-dismiss
+            aria-label="{% translate 'Dismiss' %}">&times;</button>
+  </div>
+</div>
+{% endwith %}

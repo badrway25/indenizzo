@@ -94,10 +94,10 @@ _AVAILABLE = PublicStatus(
 
 _LEGAL_ASSESSMENT = PublicStatus(
     status_key=STATUS_LEGAL_ASSESSMENT,
-    badge_label=_("Preliminary legal assessment"),
+    badge_label=_("Assisted legal pathway"),
     badge_variant="gold",
     short_description=_(
-        "The Studio offers a preliminary legal assessment for this "
+        "The Studio offers an assisted legal pathway for this "
         "country: each case is reviewed manually and no automatic "
         "amount is published before the underlying quantification "
         "sources have been verified."
@@ -109,7 +109,7 @@ _LEGAL_ASSESSMENT = PublicStatus(
         "examined by a lawyer."
     ),
     primary_cta_label=_("Submit the case to the Studio"),
-    secondary_cta_label=_("Request a manual legal review"),
+    secondary_cta_label=_("Request a dedicated legal review"),
     no_amounts_message=_(
         "No automatic amount is shown before the quantification "
         "sources have been verified for the case."
@@ -134,7 +134,7 @@ _INHERITANCE_REVIEW = PublicStatus(
         "law mapping for the case."
     ),
     primary_cta_label=_("Submit the case to the Studio"),
-    secondary_cta_label=_("Request a manual legal review"),
+    secondary_cta_label=_("Request a dedicated legal review"),
     no_amounts_message=_(
         "Inheritance shares are not computed automatically without "
         "an applicable-law mapping for the case."
@@ -145,7 +145,7 @@ _INHERITANCE_REVIEW = PublicStatus(
 
 _MANUAL_REVIEW = PublicStatus(
     status_key=STATUS_MANUAL_REVIEW,
-    badge_label=_("Manual legal review"),
+    badge_label=_("Dedicated legal review"),
     badge_variant="sand",
     short_description=_(
         "The Studio offers a manual legal review for this country on "
@@ -158,7 +158,7 @@ _MANUAL_REVIEW = PublicStatus(
         "No automatic amount is published until the underlying "
         "quantification dataset has been verified."
     ),
-    primary_cta_label=_("Request a manual legal review"),
+    primary_cta_label=_("Request a dedicated legal review"),
     secondary_cta_label=_("Contact the Studio"),
     no_amounts_message=_(
         "No automatic amount is published until the underlying "

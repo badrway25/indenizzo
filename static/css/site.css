@@ -81,6 +81,7 @@ main { flex: 1 1 auto; }
 .mt-3 { margin-top: 0.75rem; } .mt-4 { margin-top: 1rem; } .mt-5 { margin-top: 1.25rem; }
 .mt-6 { margin-top: 1.5rem; } .mt-8 { margin-top: 2rem; } .mt-10 { margin-top: 2.5rem; }
 .mt-12 { margin-top: 3rem; } .mt-16 { margin-top: 4rem; } .mt-20 { margin-top: 5rem; }
+.mt-auto { margin-top: auto; }
 .mb-0 { margin-bottom: 0; } .mb-1 { margin-bottom: 0.25rem; } .mb-2 { margin-bottom: 0.5rem; }
 .mb-3 { margin-bottom: 0.75rem; } .mb-4 { margin-bottom: 1rem; } .mb-6 { margin-bottom: 1.5rem; }
 .mb-8 { margin-bottom: 2rem; }
@@ -172,6 +173,15 @@ main { flex: 1 1 auto; }
 .justify-end { justify-content: flex-end; }
 .self-start { align-self: flex-start; }
 .self-end { align-self: flex-end; }
+/* P32: flex/sizing helpers the templates rely on but that were never defined
+   after the Tailwind CDN runtime was removed (these were silent no-ops). */
+.shrink-0 { flex-shrink: 0; }
+.shrink { flex-shrink: 1; }
+.grow { flex-grow: 1; }
+.flex-none { flex: none; }
+.min-w-0 { min-width: 0; }
+.max-w-full { max-width: 100%; }
+.place-items-center { place-items: center; }
 
 /* ----- grid ----- */
 .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
@@ -210,10 +220,13 @@ main { flex: 1 1 auto; }
 .text-right { text-align: right; }
 .break-all { word-break: break-all; }
 .break-words { overflow-wrap: break-word; }
+.overflow-wrap-anywhere { overflow-wrap: anywhere; }
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .whitespace-nowrap { white-space: nowrap; }
 .list-decimal { list-style-type: decimal; }
 .list-disc { list-style-type: disc; }
 .list-inside { list-style-position: inside; }
+.list-none { list-style: none; }
 .underline { text-decoration: underline; }
 
 /* ----- palette utilities ----- */
@@ -568,6 +581,9 @@ body { padding-bottom: var(--cookie-banner-h, 0px); }
 @media (min-width: 1024px) {
   .lg\:flex-row { flex-direction: row; }
   .lg\:inline-flex { display: inline-flex; }
+  .lg\:flex { display: flex; }
+  .lg\:hidden { display: none; }
+  .lg\:block { display: block; }
   .lg\:items-center { align-items: center; }
   .lg\:items-start { align-items: flex-start; }
   .lg\:items-end { align-items: flex-end; }
@@ -674,8 +690,36 @@ body { padding-bottom: var(--cookie-banner-h, 0px); }
   .shadow-card, .shadow, .shadow-sm { box-shadow: none; }
   a { color: var(--ink-900); text-decoration: underline; }
   .bg-ink-950, .bg-ink-900 { background: #fff !important; color: var(--ink-950) !important; }
+
+  /* P28: when the dossier "Print the summary" button is used, JS adds
+     .printing-dossier to <html> so ONLY the .dossier-print region prints —
+     a clean one-page summary without nav, hero, form or buttons. A plain
+     Ctrl+P (no class) keeps the basic reset above and prints the page. */
+  .printing-dossier body * { visibility: hidden; }
+  .printing-dossier .dossier-print,
+  .printing-dossier .dossier-print * { visibility: visible; }
+  .printing-dossier .dossier-print {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 0 8mm;
+  }
 }
 
 /* ----- F-p0-codice-4-csp: honeypot anti-bot utility (no inline style) ----- */
 .is-honeypot { position: absolute; left: -9999px; top: -9999px; }
+
+/* P30: document dropzone drag-over cue (set by site.js initDropzone). */
+.is-dragover { border-color: var(--gold-500); background: var(--sand-100); }
+
+/* P31: client-side image thumbnails in the dropzone (FileReader data URLs). */
+.dropzone-thumb {
+  width: 3.5rem;
+  height: 3.5rem;
+  object-fit: cover;
+  border-radius: 0.6rem;
+  border: 1px solid var(--gold-400, #c9a86a);
+  box-shadow: 0 2px 8px rgba(20, 24, 40, 0.12);
+}
 

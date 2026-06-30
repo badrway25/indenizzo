@@ -1,0 +1,39 @@
+{% load i18n %}
+{# P38: "What you can estimate today" — truthful country × category matrix. #}
+<section class="estimate-matrix max-w-7xl mx-auto px-5 lg:px-8 py-16 lg:py-20" aria-label="{% translate 'What you can estimate today' %}">
+  <div class="max-w-2xl mx-auto text-center" data-reveal>
+    <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Coverage" %}</p>
+    <h2 class="mt-3 font-serif text-3xl sm:text-4xl text-ink-950 leading-tight">{% translate "What you can do, country by country" %}</h2>
+    <p class="mt-3 text-ink-800 leading-relaxed">{% translate "Where an official table exists, you get an estimate. Otherwise we help you check your documents and prepare your summary." %}</p>
+  </div>
+
+  <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+    {% for card in matrix_cards %}
+      <article class="matrix-card" data-reveal data-reveal-delay="{% widthratio forloop.counter0 1 60 %}">
+        <h3 class="matrix-card__country">{{ card.country }}</h3>
+        <ul class="matrix-card__rows">
+          {% for row in card.rows %}
+            <li class="matrix-row">
+              <span class="matrix-row__cat">{{ row.category }}</span>
+              <span class="matrix-chip matrix-chip--{{ row.tone }}">
+                <span aria-hidden="true" class="matrix-chip__ico">{% include "partials/_icon.html" with name=row.icon icon_class="w-4 h-4" %}</span>
+                <span class="matrix-chip__label">{{ row.label }}</span>
+              </span>
+            </li>
+          {% endfor %}
+        </ul>
+      </article>
+    {% endfor %}
+  </div>
+
+  <div class="matrix-legend" data-reveal>
+    {% for l in matrix_legend %}
+      <span class="matrix-chip matrix-chip--{{ l.tone }}">
+        <span aria-hidden="true" class="matrix-chip__ico">{% include "partials/_icon.html" with name=l.icon icon_class="w-4 h-4" %}</span>
+        <span class="matrix-chip__label">{{ l.label }}</span>
+      </span>
+    {% endfor %}
+  </div>
+
+  <div class="mt-8 max-w-2xl mx-auto">{% include "partials/_why_no_amount.html" %}</div>
+</section>

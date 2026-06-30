@@ -3,7 +3,7 @@
 
 {% block title %}{% translate "Methodology — sources, validation and ranges" %} — {{ SITE_NAME }}{% endblock %}
 
-{% block meta_description %}{% blocktranslate %}How we work: source-of-law catalogue, controlled validation lifecycle (draft → approved), explicit "calculation not available" when no approved source exists, and transparent ranges with assumptions and confidence.{% endblocktranslate %}{% endblock %}
+{% block meta_description %}{% blocktranslate %}How we work: official sources catalogued and validated by our legal team, only validated official sources drive a public estimate, and transparent ranges with assumptions and confidence.{% endblocktranslate %}{% endblock %}
 
 {% block content %}
   {% include "partials/_premium_hero_image.html" %}
@@ -13,9 +13,11 @@
     <p class="mt-4 text-lg text-ink-800 leading-relaxed">
       {% blocktranslate %}Our simulator is built on a single principle: no figure is shown to the public unless we can cite the legal source behind it. This page explains how we collect, validate and version those sources.{% endblocktranslate %}
     </p>
+    {# Drives the sticky conversion bar once the intro scrolls away. #}
+    <div data-sticky-cta-sentinel aria-hidden="true"></div>
 
-    <div class="mt-12 grid sm:grid-cols-2 gap-5">
-      <article class="bg-white border border-stone2-200 rounded-3xl p-6 lg:p-7 shadow-card">
+    <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-5">
+      <article class="bg-white border border-stone2-200 rounded-3xl p-6 lg:p-7 shadow-card" data-reveal data-reveal-delay="0">
         <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">01</p>
         <h2 class="mt-2 font-serif text-2xl text-ink-950">{% translate "Sources of law" %}</h2>
         <p class="mt-3 text-ink-800 leading-relaxed">
@@ -23,29 +25,29 @@
         </p>
       </article>
 
-      <article class="bg-white border border-stone2-200 rounded-3xl p-6 lg:p-7 shadow-card">
+      <article class="bg-white border border-stone2-200 rounded-3xl p-6 lg:p-7 shadow-card" data-reveal data-reveal-delay="80">
         <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">02</p>
-        <h2 class="mt-2 font-serif text-2xl text-ink-950">{% translate "Validation status" %}</h2>
+        <h2 class="mt-2 font-serif text-2xl text-ink-950">{% translate "Validation by our legal team" %}</h2>
         <p class="mt-3 text-ink-800 leading-relaxed">
-          {% blocktranslate %}A source moves through a controlled lifecycle: draft, extracted, needs review, reviewed, approved, deprecated, replaced. Only sources marked as approved can feed a public calculation.{% endblocktranslate %}
+          {% blocktranslate %}Each official source is catalogued and validated by our legal team before it can influence anything public. Only validated official sources drive a public estimate; superseded sources are retired and replaced.{% endblocktranslate %}
         </p>
         <div class="mt-4 flex flex-wrap gap-2 text-xs">
-          <span class="px-3 py-1 rounded-full bg-stone2-100 text-stone2-500">{% translate "draft" %}</span>
-          <span class="px-3 py-1 rounded-full bg-stone2-100 text-stone2-500">{% translate "needs review" %}</span>
-          <span class="px-3 py-1 rounded-full bg-ok-600/10 text-ok-600 font-semibold">{% translate "approved" %}</span>
-          <span class="px-3 py-1 rounded-full bg-stone2-100 text-stone2-500">{% translate "deprecated" %}</span>
+          <span class="px-3 py-1 rounded-full bg-stone2-100 text-stone2-500">{% translate "catalogued" %}</span>
+          <span class="px-3 py-1 rounded-full bg-stone2-100 text-stone2-500">{% translate "legal review" %}</span>
+          <span class="px-3 py-1 rounded-full bg-ok-600/10 text-ok-600 font-semibold">{% translate "validated" %}</span>
+          <span class="px-3 py-1 rounded-full bg-stone2-100 text-stone2-500">{% translate "retired" %}</span>
         </div>
       </article>
 
-      <article class="bg-white border border-stone2-200 rounded-3xl p-6 lg:p-7 shadow-card">
+      <article class="bg-white border border-stone2-200 rounded-3xl p-6 lg:p-7 shadow-card" data-reveal data-reveal-delay="0">
         <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">03</p>
-        <h2 class="mt-2 font-serif text-2xl text-ink-950">{% translate "When a calculation is not available" %}</h2>
+        <h2 class="mt-2 font-serif text-2xl text-ink-950">{% translate "When an estimate needs the legal team" %}</h2>
         <p class="mt-3 text-ink-800 leading-relaxed">
-          {% blocktranslate %}If no approved source exists for the jurisdiction or the case type you select, the platform tells you explicitly. We do not invent a fallback estimate. Instead, we invite you to request a human legal evaluation.{% endblocktranslate %}
+          {% blocktranslate %}If no validated official source covers the jurisdiction or case type you select, the platform tells you so transparently. We do not invent a fallback figure. Instead, the section follows an assisted legal pathway and we invite you to request a human legal evaluation.{% endblocktranslate %}
         </p>
       </article>
 
-      <article class="bg-white border border-stone2-200 rounded-3xl p-6 lg:p-7 shadow-card">
+      <article class="bg-white border border-stone2-200 rounded-3xl p-6 lg:p-7 shadow-card" data-reveal data-reveal-delay="80">
         <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">04</p>
         <h2 class="mt-2 font-serif text-2xl text-ink-950">{% translate "Ranges, assumptions and confidence" %}</h2>
         <p class="mt-3 text-ink-800 leading-relaxed">
@@ -55,3 +57,5 @@
     </div>
   </section>
 {% endblock %}
+
+{% block sticky_cta %}{% include "partials/_sticky_cta.html" with sticky_show_calc=True %}{% endblock %}

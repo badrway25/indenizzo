@@ -17,10 +17,10 @@
   </p>
 
   <div class="mt-10 flex flex-wrap gap-3 justify-center">
-    <a href="{% url 'core:home' %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink-950/15 text-ink-950 hover:bg-stone2-100 font-semibold">
+    <a href="{% url 'core:home' %}" class="premium-btn premium-btn-secondary">
       {% translate "Back to homepage" %}
     </a>
-    <a href="{{ PARENT_SITE_URL }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
+    <a href="{{ PARENT_SITE_URL }}" class="premium-btn premium-btn-primary">
       {% translate "Visit institutional website" %}
       <span aria-hidden="true">↗</span>
     </a>

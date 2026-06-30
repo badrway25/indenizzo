@@ -3,6 +3,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% comment %}
+      Progressive-enhancement flag. The behavioural CSS (scroll-reveal
+      pre-states in design-system.css) is scoped to `.js`, so a browser
+      without JavaScript never hides content. Runs synchronously during head
+      parse — before any `[data-reveal]` element paints — to avoid a flash.
+      Nonce-protected per the strict CSP (script-src 'self' + nonce).
+    {% endcomment %}
+    <script nonce="{{ CSP_NONCE }}">document.documentElement.classList.add("js");</script>
     <title>{% block title %}{{ SITE_NAME }}{% endblock %}</title>
     <meta name="description" content="{% block meta_description %}{% blocktranslate with site=SITE_NAME %}{{ site }} — simulazioni indicative su risarcimenti e successioni internazionali, basate su fonti legali validate.{% endblocktranslate %}{% endblock %}">
     <meta name="robots" content="{% block meta_robots %}index, follow{% endblock %}">
@@ -139,5 +147,11 @@
     {% include "partials/disclaimer_banner.html" %}
     {% include "partials/footer.html" %}
     {% include "partials/cookie_consent_banner.html" %}
+
+    {% block sticky_cta %}{% endblock %}
+
+    {# Self-hosted progressive-enhancement behaviours (CSP script-src 'self'). #}
+    <script src="{% static 'js/site.js' %}" defer></script>
+    {% block body_scripts %}{% endblock %}
   </body>
 </html>

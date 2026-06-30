@@ -1,11 +1,10 @@
 {% load i18n %}
-{# Language switcher tramite Django `set_language` view. Funziona via POST per #}
-{# rispettare CSRF; il <select> nativo è accessibile da tastiera.            #}
-{# L'auto-submit alla selezione è agganciato da uno <script> con nonce CSP:  #}
-{# niente attributi-handler inline (`on*=...`), perché `script-src 'self'     #}
-{# <nonce>` (senza unsafe-inline) li bloccherebbe in produzione, lasciando il #}
-{# selettore muto. Fallback senza JS: il bottone "Apply" nel <noscript>.      #}
-<form action="{% url 'set_language' %}" method="post" class="block" aria-label="{% translate 'Language switcher' %}">
+{# P17 premium language switcher: globe icon + chevron rendered as CSS         #}
+{# backgrounds on a refined native <select> (.lang-switch-select). Native      #}
+{# select keeps full keyboard a11y, RTL safety and a no-JS fallback. Globe +   #}
+{# chevron flip in RTL via the [dir=rtl] rule. Auto-submit on change via a     #}
+{# nonce'd script — no inline on*= handlers (blocked by script-src 'self').    #}
+<form action="{% url 'set_language' %}" method="post" class="inline-block" aria-label="{% translate 'Language switcher' %}">
   {% csrf_token %}
   <input name="next" type="hidden" value="{{ request.path }}">
   <label for="lang-switcher" class="sr-only">{% translate "Choose language" %}</label>
@@ -13,10 +12,10 @@
     id="lang-switcher"
     name="language"
     data-autosubmit="true"
-    class="bg-transparent text-sm text-ink-900 border border-stone2-200 rounded-full px-3 py-1.5 focus:border-gold-500 min-h-[40px]"
+    class="lang-switch-select text-sm font-medium text-ink-900 border border-stone2-200 rounded-full py-2 hover:border-gold-400 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30 focus:outline-none"
   >
     {% for code, label in AVAILABLE_LANGUAGES %}
-      <option value="{{ code }}" {% if code == CURRENT_LANGUAGE %}selected{% endif %}>{{ code|upper }} — {{ label }}</option>
+      <option value="{{ code }}" {% if code == CURRENT_LANGUAGE %}selected{% endif %}>{{ label }}</option>
     {% endfor %}
   </select>
   <noscript>
@@ -27,8 +26,6 @@
   (function () {
     var sel = document.getElementById("lang-switcher");
     if (!sel || !sel.form) return;
-    sel.addEventListener("change", function () {
-      sel.form.submit();
-    });
+    sel.addEventListener("change", function () { sel.form.submit(); });
   })();
 </script>

@@ -10,8 +10,8 @@
 
     {% include "partials/legal_page_status.html" with page_label=_("Disclaimer") version=DISCLAIMER_VERSION status=DISCLAIMER_STATUS signed_at=DISCLAIMER_SIGNED_AT %}
 
-    <article class="mt-2 space-y-6 text-ink-800 leading-relaxed">
-      <h2 class="font-serif text-2xl text-ink-950 mt-8">{% translate "1. Informational nature" %}</h2>
+    <article class="premium-card mt-6 p-6 lg:p-8 space-y-6 text-ink-800 leading-relaxed">
+      <h2 class="font-serif text-2xl text-ink-950">{% translate "1. Informational nature" %}</h2>
       <p>
         {% blocktranslate %}This platform offers indicative simulations of compensation and inheritance scenarios across multiple jurisdictions. The content is informational; it is not a binding legal evaluation of your case.{% endblocktranslate %}
       </p>
@@ -28,12 +28,12 @@
 
       <h2 class="font-serif text-2xl text-ink-950 mt-8">{% translate "4. Indicative ranges only" %}</h2>
       <p>
-        {% blocktranslate %}When a result is shown, it is an indicative range based on legal sources catalogued and validated by our team. Where no validated calculator exists for a jurisdiction or case type, the platform explicitly states that the simulation is unavailable and requires legal validation.{% endblocktranslate %}
+        {% blocktranslate %}When a result is shown, it is an indicative range based on official sources catalogued and validated by our legal team; only validated official sources drive a public estimate. Where no validated calculator yet exists for a jurisdiction or case type, the platform clearly says so and the section follows an assisted legal pathway with our team.{% endblocktranslate %}
       </p>
 
       <h2 class="font-serif text-2xl text-ink-950 mt-8">{% translate "5. Sources and limits of the tables" %}</h2>
       <p>
-        {% blocktranslate %}Each simulation references the legal sources used (decrees, statutes, judicial guidelines). Tables and coefficients are linked to a publication date, an effective date and a validation status. Sources marked working-copy or under review are not used for public calculations.{% endblocktranslate %}
+        {% blocktranslate %}Each simulation references the legal sources used (decrees, statutes, judicial guidelines). Tables and coefficients are linked to a publication date, an effective date and a validation status. Only official sources validated by our legal team drive a public calculation; sources still being catalogued are kept out of public estimates.{% endblocktranslate %}
       </p>
 
       <h2 class="font-serif text-2xl text-ink-950 mt-8">{% translate "6. Engagement only by written agreement" %}</h2>

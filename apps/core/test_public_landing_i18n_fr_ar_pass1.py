@@ -54,7 +54,7 @@ def test_fr_landing_renders_french():
     assert "dommage corporel" in body.lower()
     # title is French, not the left-over Italian (fuzzy/stale-.mo regression).
     title = re.search(r"<title>(.*?)</title>", body, re.S).group(1)
-    assert "préliminaire" in title.lower()
+    assert "accompagné" in title.lower()  # "parcours juridique accompagné"
     assert "valutazione" not in title.lower()
 
 

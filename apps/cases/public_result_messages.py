@@ -54,7 +54,7 @@ class PublicResultMessage:
 
 
 _ROAD_ACCIDENT_PRELIMINARY_REVIEW = PublicResultMessage(
-    public_title=_("Preliminary legal assessment"),
+    public_title=_("Assisted legal pathway"),
     public_summary=_(
         "Your case has been received for a preliminary legal " "assessment by the Studio."
     ),
@@ -121,7 +121,7 @@ _INHERITANCE_REVIEW = PublicResultMessage(
 
 
 _DEFAULT_PRELIMINARY = PublicResultMessage(
-    public_title=_("Preliminary legal assessment"),
+    public_title=_("Assisted legal pathway"),
     public_summary=_(
         "Your case has been received for a preliminary legal " "assessment by the Studio."
     ),

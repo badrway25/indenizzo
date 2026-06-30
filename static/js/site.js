@@ -1,0 +1,703 @@
+/* Studio Legale Badrane — progressive-enhancement behaviours.
+ *
+ * Single self-hosted module (CSP `script-src 'self'`, loaded `defer`). Every
+ * behaviour is opt-in via a `data-*` hook and a no-op when its hook is absent,
+ * so this one file serves every page. Nothing here is required to read the
+ * site: forms submit, content shows and links work with JavaScript disabled.
+ * All motion honours `prefers-reduced-motion`. No inline styles are written to
+ * the DOM as attributes — dynamic values go through the CSSOM (element.style),
+ * which CSP does not gate.
+ */
+(function () {
+  "use strict";
+
+  var prefersReduced =
+    window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var hasIO = "IntersectionObserver" in window;
+
+  function ready(fn) {
+    if (document.readyState !== "loading") {
+      fn();
+    } else {
+      document.addEventListener("DOMContentLoaded", fn);
+    }
+  }
+
+  /* 1. Scroll reveal --------------------------------------------------- */
+  function initReveal() {
+    var els = document.querySelectorAll("[data-reveal]");
+    if (!els.length) return;
+    if (prefersReduced || !hasIO) {
+      for (var i = 0; i < els.length; i++) els[i].classList.add("is-revealed");
+      return;
+    }
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var el = entry.target;
+          var delay = el.getAttribute("data-reveal-delay");
+          if (delay) el.style.transitionDelay = delay + "ms";
+          el.classList.add("is-revealed");
+          io.unobserve(el);
+        });
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.06 }
+    );
+    els.forEach(function (el) { io.observe(el); });
+  }
+
+  /* 1b. Count-up for stat numerals — [data-count-to] ------------------ */
+  /* P32: animates from 0 to the target when the element scrolls into view.
+     Bails to the final value immediately under prefers-reduced-motion. */
+  function initCountUp() {
+    var els = document.querySelectorAll("[data-count-to]");
+    if (!els.length) return;
+    function suffixOf(el) { return el.getAttribute("data-count-suffix") || ""; }
+    function finalOf(el) { return el.getAttribute("data-count-to") + suffixOf(el); }
+    if (prefersReduced || !hasIO) {
+      Array.prototype.forEach.call(els, function (el) { el.textContent = finalOf(el); });
+      return;
+    }
+    function animate(el) {
+      var target = parseFloat(el.getAttribute("data-count-to")) || 0;
+      var suffix = suffixOf(el);
+      var dur = 1100, start = null;
+      function step(ts) {
+        if (start === null) start = ts;
+        var p = Math.min((ts - start) / dur, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(eased * target) + suffix;
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = finalOf(el);
+      }
+      requestAnimationFrame(step);
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        animate(entry.target);
+        io.unobserve(entry.target);
+      });
+    }, { threshold: 0.4 });
+    els.forEach(function (el) { io.observe(el); });
+  }
+
+  /* 2. Sticky conversion bar ------------------------------------------ */
+  function initStickyCta() {
+    var bar = document.querySelector("[data-sticky-cta]");
+    if (!bar) return;
+    var sentinel = document.querySelector("[data-sticky-cta-sentinel]");
+    var cookie = document.getElementById("cookie-consent-banner");
+    var dismissed = false;
+    var pastHero = !sentinel; // no sentinel → treat as already scrolled past
+
+    // The cookie-consent banner is also bottom-fixed and takes precedence:
+    // never show the bar while consent is still pending.
+    function cookieUp() { return !!cookie && !cookie.classList.contains("hidden"); }
+    function refresh() {
+      if (!dismissed && pastHero && !cookieUp()) bar.classList.add("is-visible");
+      else bar.classList.remove("is-visible");
+    }
+
+    var dismiss = bar.querySelector("[data-sticky-cta-dismiss]");
+    if (dismiss) {
+      dismiss.addEventListener("click", function () {
+        dismissed = true;
+        bar.classList.remove("is-visible");
+        bar.classList.add("is-dismissed");
+      });
+    }
+
+    if (sentinel && hasIO) {
+      new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            // "Not intersecting" is true both below the fold (not yet reached)
+            // and above it (scrolled past). Only the latter — top above the
+            // viewport — means the user has scrolled past the hero.
+            pastHero = entry.boundingClientRect.top < 0;
+          });
+          refresh();
+        },
+        { threshold: 0 }
+      ).observe(sentinel);
+    }
+    if (cookie && "MutationObserver" in window) {
+      new MutationObserver(refresh).observe(cookie, { attributes: true, attributeFilter: ["class"] });
+    }
+    refresh();
+  }
+
+  /* 3. Off-canvas drawer(s) — keyed, supports several per page ---------- */
+  /* P32: generalized from a single source-list drawer to N independent
+     drawers (e.g. the mobile nav drawer + the wizard-result source drawer).
+     A drawer is `[data-drawer="<key>"]`; its openers/closers/backdrop share
+     the key. An empty key ("") stays backward-compatible with legacy markup. */
+  function initDrawer() {
+    var drawers = document.querySelectorAll("[data-drawer]");
+    if (!drawers.length) return;
+    Array.prototype.forEach.call(drawers, function (drawer) {
+      var key = drawer.getAttribute("data-drawer") || "";
+      if (!key) return;  // P32: every drawer is keyed (e.g. "nav", "sources")
+      var openers = document.querySelectorAll('[data-drawer-open="' + key + '"]');
+      var backdrop = document.querySelector('[data-drawer-backdrop="' + key + '"]');
+      var closers = drawer.querySelectorAll("[data-drawer-close]");
+      var lastFocus = null;
+
+      function focusable() {
+        return drawer.querySelectorAll(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+      }
+      function onKey(e) {
+        if (e.key === "Escape") { close(); return; }
+        if (e.key !== "Tab") return;
+        var items = focusable();
+        if (!items.length) return;
+        var first = items[0];
+        var last = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault(); last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault(); first.focus();
+        }
+      }
+      function open() {
+        lastFocus = document.activeElement;
+        drawer.classList.add("is-open");
+        drawer.setAttribute("aria-hidden", "false");
+        if (backdrop) backdrop.classList.add("is-open");
+        document.body.classList.add("has-drawer-open");
+        document.addEventListener("keydown", onKey);
+        var items = focusable();
+        if (items.length) items[0].focus();
+      }
+      function close() {
+        drawer.classList.remove("is-open");
+        drawer.setAttribute("aria-hidden", "true");
+        if (backdrop) backdrop.classList.remove("is-open");
+        document.body.classList.remove("has-drawer-open");
+        document.removeEventListener("keydown", onKey);
+        if (lastFocus && lastFocus.focus) lastFocus.focus();
+      }
+
+      drawer.setAttribute("aria-hidden", "true");
+      Array.prototype.forEach.call(openers, function (o) { o.addEventListener("click", open); });
+      Array.prototype.forEach.call(closers, function (c) { c.addEventListener("click", close); });
+      if (backdrop) backdrop.addEventListener("click", close);
+    });
+  }
+
+  /* 4. Tooltips -------------------------------------------------------- */
+  function initTooltips() {
+    var anchors = document.querySelectorAll("[data-tooltip]");
+    if (!anchors.length) return;
+    var idn = 0;
+
+    anchors.forEach(function (anchor) {
+      var text = anchor.getAttribute("data-tooltip");
+      if (!text) return;
+      var bubble = document.createElement("span");
+      bubble.className = "tooltip-bubble";
+      bubble.setAttribute("role", "tooltip");
+      bubble.id = "tt-" + idn++;
+      bubble.textContent = text;
+      document.body.appendChild(bubble);
+      anchor.setAttribute("aria-describedby", bubble.id);
+      if (anchor.tagName === "BUTTON" && !anchor.getAttribute("type")) {
+        anchor.setAttribute("type", "button");
+      }
+
+      function place() {
+        var r = anchor.getBoundingClientRect();
+        var top = r.bottom + window.scrollY + 8;
+        var left = r.left + window.scrollX;
+        bubble.style.top = top + "px";
+        // keep inside the viewport horizontally
+        var maxLeft = window.scrollX + document.documentElement.clientWidth - bubble.offsetWidth - 12;
+        bubble.style.left = Math.max(window.scrollX + 12, Math.min(left, maxLeft)) + "px";
+      }
+      function open() { place(); bubble.classList.add("is-open"); }
+      function hide() { bubble.classList.remove("is-open"); }
+
+      anchor.addEventListener("mouseenter", open);
+      anchor.addEventListener("mouseleave", hide);
+      anchor.addEventListener("focus", open);
+      anchor.addEventListener("blur", hide);
+      anchor.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") hide();
+      });
+    });
+  }
+
+  /* 5. Wizard progress ------------------------------------------------- */
+  function initWizardProgress() {
+    var root = document.querySelector("[data-wizard-progress]");
+    if (!root) return;
+    var form = root.closest("form") || document.querySelector("[data-wizard-form]");
+    if (!form) return;
+    var bar = root.querySelector("[data-wizard-progress-bar]");
+    var label = root.querySelector("[data-wizard-progress-label]");
+    var tmpl = label ? label.getAttribute("data-progress-template") || "{pct}%" : "";
+
+    function tracked() {
+      // Domain fields that build a fuller picture. They are optional by design,
+      // so this measures completeness, not required-validation. Skip hidden,
+      // honeypot, CSRF and the consent checkboxes (handled separately).
+      return Array.prototype.filter.call(
+        form.querySelectorAll("input, select, textarea"),
+        function (el) {
+          if (el.type === "hidden" || el.type === "checkbox" || el.type === "radio") return false;
+          if (el.name === "csrfmiddlewaretoken") return false;
+          if (el.closest(".is-honeypot")) return false;
+          return true;
+        }
+      );
+    }
+    function filled(el) {
+      if (el.type === "checkbox" || el.type === "radio") return el.checked;
+      return String(el.value || "").trim() !== "";
+    }
+    function update() {
+      var fields = tracked();
+      if (!fields.length) return;
+      var done = fields.filter(filled).length;
+      var pct = Math.round((done / fields.length) * 100);
+      if (bar) bar.style.width = pct + "%";
+      root.setAttribute("aria-valuenow", String(pct));
+      if (label) label.textContent = tmpl.replace("{pct}", pct).replace("{done}", done).replace("{total}", fields.length);
+    }
+
+    root.setAttribute("role", "progressbar");
+    root.setAttribute("aria-valuemin", "0");
+    root.setAttribute("aria-valuemax", "100");
+    form.addEventListener("input", update);
+    form.addEventListener("change", update);
+    update();
+  }
+
+  /* 6. Light hero parallax -------------------------------------------- */
+  function initParallax() {
+    if (prefersReduced) return;
+    var els = document.querySelectorAll("[data-parallax]");
+    if (!els.length || window.innerWidth < 768) return;
+    var ticking = false;
+    function frame() {
+      var y = window.scrollY;
+      els.forEach(function (el) {
+        var speed = parseFloat(el.getAttribute("data-parallax")) || 0.15;
+        el.style.transform = "translate3d(0," + (y * speed).toFixed(1) + "px,0)";
+      });
+      ticking = false;
+    }
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (!ticking) { window.requestAnimationFrame(frame); ticking = true; }
+      },
+      { passive: true }
+    );
+  }
+
+  /* 7. Magnetic CTA -------------------------------------------------------
+   * A subtle pull of the element toward the cursor. Desktop + fine pointer
+   * only (skipped on touch and when the user prefers reduced motion). The
+   * transform is written through the CSSOM (element.style), never as an inline
+   * HTML attribute, so the strict CSP style-src is respected. */
+  function initMagnetic() {
+    if (prefersReduced) return;
+    if (!(window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches)) return;
+    var els = document.querySelectorAll("[data-magnetic]");
+    if (!els.length) return;
+    els.forEach(function (el) {
+      var strength = parseFloat(el.getAttribute("data-magnetic")) || 0.25;
+      var max = 8; // cap the displacement so it stays restrained
+      function move(e) {
+        var r = el.getBoundingClientRect();
+        var dx = (e.clientX - (r.left + r.width / 2)) * strength;
+        var dy = (e.clientY - (r.top + r.height / 2)) * strength;
+        dx = Math.max(-max, Math.min(max, dx));
+        dy = Math.max(-max, Math.min(max, dy));
+        el.style.transform = "translate(" + dx.toFixed(1) + "px," + dy.toFixed(1) + "px)";
+      }
+      function reset() { el.style.transform = ""; }
+      el.addEventListener("mousemove", move);
+      el.addEventListener("mouseleave", reset);
+    });
+  }
+
+  /* 8. Light 3D tilt ------------------------------------------------------
+   * A gentle perspective tilt of a card following the cursor. Same desktop /
+   * fine-pointer / reduced-motion guards as the magnetic effect. */
+  function initTilt() {
+    if (prefersReduced) return;
+    if (!(window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches)) return;
+    var els = document.querySelectorAll("[data-tilt]");
+    if (!els.length) return;
+    els.forEach(function (el) {
+      var maxDeg = parseFloat(el.getAttribute("data-tilt")) || 5;
+      function move(e) {
+        var r = el.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        var rx = (-py * maxDeg).toFixed(2);
+        var ry = (px * maxDeg).toFixed(2);
+        el.style.transform = "perspective(900px) rotateX(" + rx + "deg) rotateY(" + ry + "deg)";
+      }
+      function reset() { el.style.transform = ""; }
+      el.addEventListener("mousemove", move);
+      el.addEventListener("mouseleave", reset);
+    });
+  }
+
+  /* 9. Interactive pre-check form (P16) -------------------------------------
+   * Progressive enhancement for /precheck/<slug>/: reveals conditional fields
+   * (data-precheck-show-if="name:value") and tracks a live completeness bar.
+   * No-JS fallback: every field stays visible and the form still submits. */
+  function initPrecheckForm() {
+    var form = document.querySelector("[data-precheck-form]");
+    if (!form) return;
+    var progress = form.querySelector("[data-precheck-progress]");
+    var bar = form.querySelector("[data-precheck-progress-bar]");
+    var label = form.querySelector("[data-precheck-progress-label]");
+    if (progress) progress.hidden = false;
+
+    function answered(wrapper) {
+      var radios = wrapper.querySelectorAll("input[type=radio]");
+      if (radios.length) return Array.prototype.some.call(radios, function (r) { return r.checked; });
+      var sel = wrapper.querySelector("select");
+      if (sel) return String(sel.value || "").trim() !== "";
+      var inp = wrapper.querySelector("input, textarea");
+      if (inp) return String(inp.value || "").trim() !== "";
+      return false;
+    }
+
+    function applyConditionals() {
+      var conds = form.querySelectorAll("[data-precheck-show-if]");
+      Array.prototype.forEach.call(conds, function (el) {
+        var spec = (el.getAttribute("data-precheck-show-if") || "").split(":");
+        var name = spec[0];
+        var want = spec[1];
+        var current = "";
+        var checked = form.querySelector("input[name='" + name + "']:checked");
+        if (checked) {
+          current = checked.value;
+        } else {
+          var ctrl = form.querySelector("select[name='" + name + "'], input[name='" + name + "']");
+          if (ctrl) current = ctrl.value || "";
+        }
+        el.hidden = current !== want;
+      });
+    }
+
+    function update() {
+      applyConditionals();
+      var wrappers = Array.prototype.filter.call(
+        form.querySelectorAll(".precheck-field"),
+        function (w) { return !w.hidden; }
+      );
+      if (!wrappers.length) return;
+      var done = wrappers.filter(answered).length;
+      var pct = Math.round((done / wrappers.length) * 100);
+      if (bar) bar.style.width = pct + "%";
+      if (label) label.textContent = pct + "%";
+    }
+
+    form.addEventListener("input", update);
+    form.addEventListener("change", update);
+    update();
+  }
+
+  /* 10. Readiness fill (P17) -------------------------------------------------
+   * Sets the documental-readiness bar width from data-readiness-fill via the
+   * CSSOM (CSP forbids inline style attributes). No-op if the element absent. */
+  function initReadinessFill() {
+    var els = document.querySelectorAll("[data-readiness-fill]");
+    Array.prototype.forEach.call(els, function (el) {
+      var pct = parseInt(el.getAttribute("data-readiness-fill"), 10);
+      if (!isNaN(pct)) el.style.width = Math.max(0, Math.min(100, pct)) + "%";
+    });
+  }
+
+  // P28: [data-print] → window.print(). Lets the dossier panel print the
+  // clean .dossier-print region via the @media print stylesheet.
+  function initPrint() {
+    var els = document.querySelectorAll("[data-print]");
+    Array.prototype.forEach.call(els, function (el) {
+      el.addEventListener("click", function (e) {
+        e.preventDefault();
+        var root = document.documentElement;
+        // Scope the print-isolation to this action so a plain Ctrl+P on any
+        // other page is unaffected by the dossier-only @media print rules.
+        root.classList.add("printing-dossier");
+        function cleanup() {
+          root.classList.remove("printing-dossier");
+          window.removeEventListener("afterprint", cleanup);
+        }
+        window.addEventListener("afterprint", cleanup);
+        window.print();
+        setTimeout(cleanup, 1500);
+      });
+    });
+  }
+
+  // P30/P31: drag-&-drop dropzone — progressive enhancement over the file input.
+  // Lists the chosen file names and renders local image thumbnails for preview.
+  // Previews are built client-side via FileReader and are NEVER uploaded or saved
+  // beyond the actual form submission of the original files.
+  function initDropzone() {
+    var zones = document.querySelectorAll("[data-dropzone]");
+    Array.prototype.forEach.call(zones, function (zone) {
+      var input = zone.querySelector("input[type='file']");
+      var nameEl = zone.querySelector("[data-dropzone-name]");
+      var previewEl = zone.querySelector("[data-dropzone-previews]");
+      if (!input) return;
+      function renderThumb(file) {
+        if (!previewEl || !file || !/^image\//.test(file.type) || !window.FileReader) return;
+        var reader = new FileReader();
+        reader.onload = function (ev) {
+          var img = document.createElement("img");
+          img.src = ev.target.result;          // data URL, stays in the browser
+          img.alt = file.name;
+          img.className = "dropzone-thumb";
+          previewEl.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      }
+      function showFiles() {
+        var files = input.files;
+        if (previewEl) previewEl.textContent = "";
+        if (!files || !files.length) { if (nameEl) nameEl.textContent = ""; return; }
+        var names = [];
+        for (var i = 0; i < files.length; i++) { names.push(files[i].name); renderThumb(files[i]); }
+        if (nameEl) nameEl.textContent = names.join("  ·  ");
+      }
+      input.addEventListener("change", showFiles);
+      ["dragenter", "dragover"].forEach(function (ev) {
+        zone.addEventListener(ev, function (e) { e.preventDefault(); zone.classList.add("is-dragover"); });
+      });
+      ["dragleave", "drop"].forEach(function (ev) {
+        zone.addEventListener(ev, function (e) { e.preventDefault(); zone.classList.remove("is-dragover"); });
+      });
+      zone.addEventListener("drop", function (e) {
+        if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
+          input.files = e.dataTransfer.files;
+          showFiles();
+        }
+      });
+    });
+  }
+
+  // P28: internal, privacy-safe logical events — NO external tracking. Names are
+  // pushed to window.__events (testable) and emitted as a CustomEvent so a future
+  // first-party analytics layer can subscribe. Driven by [data-event] hooks plus
+  // a couple of lifecycle signals on page load.
+  function logEvent(name, detail) {
+    if (!name) return;
+    window.__events = window.__events || [];
+    window.__events.push({ name: name, detail: detail || {} });
+    try {
+      document.dispatchEvent(new CustomEvent("app:event", { detail: { name: name, detail: detail || {} } }));
+    } catch (err) {
+      /* CustomEvent unsupported — the __events array still records it */
+    }
+  }
+
+  function initEvents() {
+    // Click-driven events (lead_started, dossier_printed, …).
+    document.addEventListener("click", function (e) {
+      var t = e.target.closest ? e.target.closest("[data-event]") : null;
+      if (t) logEvent(t.getAttribute("data-event"));
+    });
+    // Lifecycle events derived from what is on the page.
+    if (document.querySelector("[data-event-zone='dossier']")) {
+      var kind = document.querySelector("[data-result-kind]");
+      var rk = kind ? kind.getAttribute("data-result-kind") : "";
+      logEvent(rk === "estimate" || rk === "comparison" ? "estimate_completed" : "precheck_completed");
+    }
+    if (document.querySelector("[data-precheck-form]")) logEvent("precheck_started");
+    if (document.querySelector("[data-lead-form]")) logEvent("lead_form_view");
+  }
+
+  function initPathStudio() {
+    // P45: client-side guided "path studio" — a few simple toggles recommend a
+    // path (estimate / offer / documents / needs-table / applicable-law). It only
+    // shows pre-rendered result cards; it never builds a monetary figure. The
+    // "estimate" path is offered only where a validated engine exists (IT injury).
+    var root = document.querySelector("[data-path-studio]");
+    if (!root) return;
+    var results = root.querySelectorAll("[data-path-result]");
+    function val(name) {
+      var el = root.querySelector("[name='" + name + "']");
+      return el ? el.value : "";
+    }
+    function checked(name) {
+      var el = root.querySelector("[name='" + name + "']");
+      return !!(el && el.checked);
+    }
+    function compute() {
+      var country = val("ps-country");
+      var injury = checked("ps-injury");
+      var offer = checked("ps-offer");
+      var law = checked("ps-law");
+      var path = "documents";
+      if (law) path = "law";
+      else if (offer) path = "offer";
+      else if (country === "IT" && injury) path = "estimate";
+      else if ((country === "MA" || country === "TN") && injury) path = "needs_table";
+      else path = "documents";
+      Array.prototype.forEach.call(results, function (r) {
+        r.hidden = r.getAttribute("data-path-result") !== path;
+      });
+    }
+    root.addEventListener("change", compute);
+    compute();
+  }
+
+  function initCustomSelect() {
+    // P47: accessible custom select (progressive enhancement). The native
+    // <select> stays in the DOM and remains the form's source of truth — we only
+    // build an ARIA listbox on top and sync the value back, dispatching `change`
+    // so dependent behaviours (e.g. the path studio) still react. Without JS the
+    // native select works unchanged.
+    var selects = document.querySelectorAll("select.premium-select, select.field-select");
+    Array.prototype.forEach.call(selects, function (sel) {
+      if (sel.dataset.enhanced || sel.multiple) return;
+      sel.dataset.enhanced = "1";
+
+      var wrap = document.createElement("div");
+      wrap.className = "premium-select-enhanced";
+      sel.parentNode.insertBefore(wrap, sel);
+      wrap.appendChild(sel);
+      sel.classList.add("premium-select-native-hidden");
+      sel.setAttribute("tabindex", "-1");
+      sel.setAttribute("aria-hidden", "true");
+
+      var labelEl = sel.id ? document.querySelector("label[for='" + sel.id + "']") : null;
+      if (labelEl && !labelEl.id) labelEl.id = sel.id + "-label";
+      var valueId = (sel.id || "sel") + "-value";
+
+      var trigger = document.createElement("button");
+      trigger.type = "button";
+      trigger.className = "premium-select-trigger";
+      trigger.setAttribute("aria-haspopup", "listbox");
+      trigger.setAttribute("aria-expanded", "false");
+      trigger.setAttribute("aria-labelledby", (labelEl ? labelEl.id + " " : "") + valueId);
+      var valueSpan = document.createElement("span");
+      valueSpan.className = "premium-select-value";
+      valueSpan.id = valueId;
+      trigger.appendChild(valueSpan);
+      var caret = document.createElement("span");
+      caret.className = "premium-select-caret";
+      caret.setAttribute("aria-hidden", "true");
+      trigger.appendChild(caret);
+      wrap.appendChild(trigger);
+
+      var menu = document.createElement("ul");
+      menu.className = "premium-select-menu";
+      menu.setAttribute("role", "listbox");
+      if (labelEl) menu.setAttribute("aria-labelledby", labelEl.id);
+      menu.hidden = true;
+      var options = [];
+      Array.prototype.forEach.call(sel.options, function (opt, i) {
+        var li = document.createElement("li");
+        li.className = "premium-select-option";
+        li.setAttribute("role", "option");
+        li.id = (sel.id || "sel") + "-opt-" + i;
+        var check = document.createElement("span");
+        check.className = "premium-select-check";
+        check.setAttribute("aria-hidden", "true");
+        var txt = document.createElement("span");
+        txt.textContent = opt.textContent;
+        li.appendChild(check);
+        li.appendChild(txt);
+        menu.appendChild(li);
+        options.push(li);
+      });
+      wrap.appendChild(menu);
+
+      var activeIndex = sel.selectedIndex < 0 ? 0 : sel.selectedIndex;
+
+      function syncLabel() {
+        var o = sel.options[sel.selectedIndex];
+        valueSpan.textContent = o ? o.textContent : "";
+        options.forEach(function (li, i) {
+          var on = i === sel.selectedIndex;
+          li.classList.toggle("premium-select-option--selected", on);
+          li.setAttribute("aria-selected", on ? "true" : "false");
+        });
+      }
+      function isOpen() { return !menu.hidden; }
+      function setActive(i) {
+        activeIndex = Math.max(0, Math.min(options.length - 1, i));
+        options.forEach(function (li, idx) { li.classList.toggle("is-active", idx === activeIndex); });
+        var li = options[activeIndex];
+        if (li) { li.scrollIntoView({ block: "nearest" }); menu.setAttribute("aria-activedescendant", li.id); }
+      }
+      function open() {
+        if (isOpen()) return;
+        menu.hidden = false;
+        trigger.setAttribute("aria-expanded", "true");
+        setActive(sel.selectedIndex < 0 ? 0 : sel.selectedIndex);
+      }
+      function close() {
+        menu.hidden = true;
+        trigger.setAttribute("aria-expanded", "false");
+      }
+      function choose(i) {
+        sel.selectedIndex = i;
+        sel.dispatchEvent(new Event("change", { bubbles: true }));
+        syncLabel();
+        close();
+        trigger.focus();
+      }
+      trigger.addEventListener("click", function () { isOpen() ? close() : open(); });
+      trigger.addEventListener("keydown", function (e) {
+        var k = e.key;
+        if (k === "ArrowDown" || k === "ArrowUp") {
+          e.preventDefault();
+          if (!isOpen()) { open(); } else { setActive(activeIndex + (k === "ArrowDown" ? 1 : -1)); }
+        } else if (k === "Enter" || k === " ") {
+          e.preventDefault();
+          if (isOpen()) { choose(activeIndex); } else { open(); }
+        } else if (k === "Escape") {
+          if (isOpen()) { e.preventDefault(); close(); }
+        } else if (k === "Home") {
+          if (isOpen()) { e.preventDefault(); setActive(0); }
+        } else if (k === "End") {
+          if (isOpen()) { e.preventDefault(); setActive(options.length - 1); }
+        }
+      });
+      options.forEach(function (li, i) {
+        li.addEventListener("click", function () { choose(i); });
+        li.addEventListener("mousemove", function () { setActive(i); });
+      });
+      document.addEventListener("click", function (e) {
+        if (isOpen() && !wrap.contains(e.target)) close();
+      });
+      sel.addEventListener("change", syncLabel);
+      syncLabel();
+    });
+  }
+
+  ready(function () {
+    initReveal();
+    initCountUp();
+    initStickyCta();
+    initDrawer();
+    initTooltips();
+    initWizardProgress();
+    initParallax();
+    initMagnetic();
+    initTilt();
+    initPrecheckForm();
+    initReadinessFill();
+    initPrint();
+    initDropzone();
+    initEvents();
+    initCustomSelect();
+    initPathStudio();
+  });
+})();

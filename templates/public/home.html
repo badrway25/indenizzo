@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load i18n estimate_tags %}
 
 {% block title %}{% blocktranslate with site=SITE_NAME %}{{ site }} — International compensation simulator{% endblocktranslate %}{% endblock %}
 
@@ -33,43 +33,44 @@
     has not run `manage.py compress_pexels_images` still
     renders the page — it just serves the original asset.
   {% endcomment %}
-  <section class="relative isolate overflow-hidden">
+  <section class="premium-hero relative isolate overflow-hidden bg-ink-950">
     {% if pexels_image %}
       <picture>
         {% if pexels_image.webp_src_mobile %}<source media="(max-width: 640px)" type="image/webp" srcset="{{ pexels_image.webp_src_mobile }}">{% endif %}
         {% if pexels_image.webp_src %}<source type="image/webp" srcset="{{ pexels_image.webp_src }}">{% endif %}
         <img src="{{ pexels_image.src }}" alt="{{ pexels_image.alt }}"
              width="1920" height="1080"
-             class="absolute inset-0 w-full h-full object-cover"
+             class="premium-hero-image absolute inset-0 w-full h-full object-cover"
              loading="eager" decoding="async" fetchpriority="high">
       </picture>
-      {# Overlay scuro per leggibilità testo: gradient ink-950/80 → ink-900/70. #}
-      <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-br from-ink-950/85 via-ink-950/75 to-ink-900/65"></div>
-    {% else %}
-      <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-br from-ink-950 via-ink-900 to-ink-800"></div>
     {% endif %}
+    {% comment %} P4: layered veil (dark wash + soft gold spotlight) keeps the photo
+       legible with depth; the ledger pattern evokes a legal document. Source order
+       places both above the img and below the content — see design-system.css. {% endcomment %}
+    <div aria-hidden="true" class="premium-hero__veil"></div>
+    <div aria-hidden="true" class="premium-hero__pattern"></div>
 
     <div class="relative max-w-7xl mx-auto px-5 lg:px-8 py-24 sm:py-28 lg:py-36 grid lg:grid-cols-12 gap-10 items-center">
       <div class="lg:col-span-7 text-sand-50">
-        <p class="text-[11px] uppercase tracking-[0.22em] text-gold-400 font-semibold">
+        <p class="premium-rise text-[11px] uppercase tracking-[0.22em] text-gold-400 font-semibold">
           {% translate "Cross-border legal-tech platform" %}
         </p>
-        <h1 class="mt-4 font-serif text-4xl sm:text-5xl lg:text-6xl leading-[1.05] text-sand-50">
-          {% blocktranslate %}Indicative simulations for compensation and inheritance, grounded in validated legal sources.{% endblocktranslate %}
+        <h1 class="premium-rise-2 mt-4 font-serif text-4xl sm:text-5xl lg:text-6xl leading-[1.05] text-sand-50">
+          {% blocktranslate %}Simulate your case and prepare the right documents.{% endblocktranslate %}
         </h1>
-        <p class="mt-6 max-w-2xl text-lg text-sand-50/90 leading-relaxed">
-          {% blocktranslate %}A professional tool by Studio Legale Internazionale Badrane. Each estimate is supported by validated legal sources, transparent ranges and clear assumptions. We do not promise outcomes — we help you understand them.{% endblocktranslate %}
+        <p class="premium-rise-3 mt-6 max-w-2xl text-lg text-sand-50/90 leading-relaxed">
+          {% blocktranslate %}Choose your country, upload your documents or start an estimate. The platform guides you step by step.{% endblocktranslate %}
         </p>
 
         <div class="mt-9 flex flex-wrap gap-3">
-          <a href="{% url 'cases:wizard_italy_road_accident' %}"
-             class="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-gold-500 text-ink-950 hover:bg-gold-400 font-semibold shadow-card">
-            {% translate "Start Italian compensation simulation" %}
-            <span aria-hidden="true">→</span>
+          <a href="{% url 'cases:wizard_italy_road_accident' %}" data-magnetic="0.2"
+             class="premium-btn premium-btn-gold premium-btn-lg shadow-card">
+            {% translate "Start the simulation" %}
+            <span class="cta-arrow" aria-hidden="true">→</span>
           </a>
-          <a href="{% url 'crm:contact' %}"
-             class="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-sand-50/30 text-sand-50 hover:bg-sand-50/10 font-semibold">
-            {% translate "Request legal review" %}
+          <a href="{% url 'core:documents_upload' %}"
+             class="premium-btn premium-btn-on-dark premium-btn-lg">
+            {% translate "Upload documents" %}
           </a>
         </div>
 
@@ -102,6 +103,158 @@
         </div>
       </div>
     </div>
+    <div aria-hidden="true" class="premium-hero__rule"></div>
+  </section>
+  {# Drives the sticky conversion bar: it appears once the hero scrolls away. #}
+  <div data-sticky-cta-sentinel aria-hidden="true"></div>
+
+  {# -------- P36: "What would you like to do?" — the first choice for a normal visitor. -------- #}
+  <section class="max-w-7xl mx-auto px-5 lg:px-8 py-16 lg:py-20" aria-label="{% translate 'What would you like to do?' %}">
+    <div class="max-w-2xl mx-auto text-center" data-reveal>
+      <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Start here" %}</p>
+      <h2 class="mt-3 font-serif text-3xl sm:text-4xl text-ink-950 leading-tight">{% translate "What would you like to do?" %}</h2>
+      <p class="mt-3 text-ink-800 leading-relaxed">{% translate "Pick a starting point — the platform guides you the rest of the way." %}</p>
+    </div>
+    <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      {% for card in intent_cards %}
+        <a href="{{ card.url }}" class="intent-card" data-reveal data-reveal-delay="{{ card.delay }}" data-event="{{ card.event }}">
+          <div class="intent-card__media">
+            {% if card.image %}
+              <picture>
+                {% if card.image.webp_src_mobile %}<source media="(max-width: 640px)" type="image/webp" srcset="{{ card.image.webp_src_mobile }}">{% endif %}
+                {% if card.image.webp_src %}<source type="image/webp" srcset="{{ card.image.webp_src }}">{% endif %}
+                <img src="{{ card.image.src }}" alt="{{ card.image.alt }}" width="640" height="400" loading="lazy" decoding="async">
+              </picture>
+            {% endif %}
+          </div>
+          <div class="intent-card__body">
+            <span aria-hidden="true" class="intent-card__icon">{% include "partials/_icon.html" with name=card.icon icon_class="w-6 h-6" %}</span>
+            <h3 class="intent-card__title">{{ card.title }}</h3>
+            <p class="intent-card__text">{{ card.text }}</p>
+            <span class="intent-card__cta">{% translate "Open" %} <span class="cta-arrow" aria-hidden="true">→</span></span>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </section>
+
+  {# -------- At-a-glance band (verifiable facts only — no fabricated KPIs) -------- #}
+  <section class="bg-white border-b border-stone2-100" aria-label="{% translate 'Platform at a glance' %}">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8 py-12">
+      <p class="text-center text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold" data-reveal>
+        {% translate "Built on evidence, not estimates" %}
+      </p>
+      <div class="stat-band mt-8">
+        <div class="stat-item premium-stat" data-reveal data-reveal-delay="0">
+          <p class="stat-item__value" data-count-to="5">5</p>
+          <p class="stat-item__label">{% translate "Jurisdictions mapped" %}</p>
+        </div>
+        <div class="stat-item premium-stat" data-reveal data-reveal-delay="80">
+          <p class="stat-item__value" data-count-to="4">4</p>
+          <p class="stat-item__label">{% translate "Languages" %}</p>
+        </div>
+        <div class="stat-item premium-stat" data-reveal data-reveal-delay="160">
+          <p class="stat-item__value">{% translate "Official" %}</p>
+          <p class="stat-item__label">{% translate "Validated sources only" %}</p>
+        </div>
+        <div class="stat-item premium-stat" data-reveal data-reveal-delay="240">
+          <p class="stat-item__value">0</p>
+          <p class="stat-item__label">{% translate "Invented figures" %}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {# P29: platform search band — search by country, damage or official source. #}
+  <section class="max-w-7xl mx-auto px-5 lg:px-8 py-12">
+    <div class="rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-8" data-reveal>
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+        <div>
+          <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">{% translate "One platform" %}</p>
+          <h2 class="mt-2 font-serif text-2xl sm:text-3xl text-ink-950 leading-tight">{% translate "Search by country, damage or official source" %}</h2>
+        </div>
+        <form action="{% url 'core:search' %}" method="get" class="flex flex-wrap gap-2 lg:min-w-[24rem]" role="search">
+          <label for="home-search" class="sr-only">{% translate "Search a country, a damage type or a source…" %}</label>
+          <input id="home-search" name="q" type="search" aria-label="{% translate 'Search a country, a damage type or a source…' %}"
+                 class="flex-1 min-w-0 rounded-full border border-stone2-300 bg-sand-50 px-4 py-2.5 text-sm text-ink-900 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30 focus:outline-none">
+          <button type="submit" class="premium-btn premium-btn-primary">{% translate "Search" %}</button>
+        </form>
+      </div>
+      <div class="mt-5 flex flex-wrap gap-2.5 text-sm">
+        <a href="{% url 'core:guided_router' %}" class="premium-chip">{% translate "Estimate, pre-check or dossier" %}</a>
+        <a href="{% url 'core:sources' %}" class="premium-chip"><span aria-hidden="true" class="text-gold-600">{% include "partials/_icon.html" with name="book-open" icon_class="w-3.5 h-3.5 inline-block" %}</span>{% translate "Official source library" %}</a>
+        <a href="{% url 'core:countries' %}" class="premium-chip">{% translate "Countries we cover" %}</a>
+      </div>
+    </div>
+  </section>
+
+  {# -------- What you can estimate today (live engines) -------- #}
+  <section class="max-w-7xl mx-auto px-5 lg:px-8 py-20">
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3" data-reveal>
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">{% translate "Available estimates" %}</p>
+        <h2 class="mt-2 font-serif text-3xl sm:text-4xl text-ink-950">{% translate "What you can estimate today" %}</h2>
+        <p class="mt-3 max-w-2xl text-base text-ink-800 leading-relaxed">{% blocktranslate %}Where an official source and a validated table exist, the simulator produces an indicative min–mid–max range with the sources behind it.{% endblocktranslate %}</p>
+      </div>
+      {# P26: funnel to the services hub (the guided-path CTA leads the pre-checks section below). #}
+      <a href="{% url 'core:services' %}" class="text-sm text-ink-900 hover:text-gold-600 font-medium whitespace-nowrap">{% translate "See all areas" %} →</a>
+    </div>
+    <div class="mt-9 grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div data-reveal data-reveal-delay="0">
+        <article class="premium-service-card is-calculable h-full" data-tilt="3">
+          <span aria-hidden="true" class="premium-icon-tile premium-icon-tile-gold">{% include "partials/_icon.html" with name="car" %}</span>
+          <h3 class="mt-4 font-serif text-xl text-ink-950">{% translate "Road accident with injuries" %}</h3>
+          <p class="mt-2 text-sm text-ink-800 leading-relaxed flex-1">{% blocktranslate %}Micro-permanent injuries on art. 139 and macro injuries on the Tabella Unica Nazionale 2025.{% endblocktranslate %}</p>
+          <p class="mt-4"><span class="premium-badge premium-badge-success">{% translate "Estimate based on official sources" %}</span></p>
+          <a href="{% url 'cases:wizard_italy_road_accident' %}" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-gold-700 hover:text-gold-600">{% translate "Open the calculator" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+        </article>
+      </div>
+      <div data-reveal data-reveal-delay="90">
+        <article class="premium-service-card is-calculable h-full" data-tilt="3">
+          <span aria-hidden="true" class="premium-icon-tile premium-icon-tile-gold">{% include "partials/_icon.html" with name="stethoscope" %}</span>
+          <h3 class="mt-4 font-serif text-xl text-ink-950">{% translate "Healthcare liability" %}</h3>
+          <p class="mt-2 text-sm text-ink-800 leading-relaxed flex-1">{% blocktranslate %}When the injury is quantified medico-legally, the platform returns a tabular biological-damage estimate.{% endblocktranslate %}</p>
+          <p class="mt-4"><span class="premium-badge premium-badge-success">{% translate "Official table-based biological damage estimate" %}</span></p>
+          <a href="{% url 'cases:wizard_italy_medical' %}" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-gold-700 hover:text-gold-600">{% translate "Open the calculator" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+        </article>
+      </div>
+      <div data-reveal data-reveal-delay="180">
+        <article class="premium-service-card is-calculable h-full" data-tilt="3">
+          <span aria-hidden="true" class="premium-icon-tile premium-icon-tile-gold">{% include "partials/_icon.html" with name="shield-check" %}</span>
+          <h3 class="mt-4 font-serif text-xl text-ink-950">{% translate "Insurance-offer check" %}</h3>
+          <p class="mt-2 text-sm text-ink-800 leading-relaxed flex-1">{% blocktranslate %}Compare a settlement offer against the official tabular estimate and see the deviation.{% endblocktranslate %}</p>
+          <p class="mt-4"><span class="premium-badge premium-badge-success">{% translate "Comparison based on official sources" %}</span></p>
+          <a href="{% url 'cases:wizard_insurance_offer' %}" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-gold-700 hover:text-gold-600">{% translate "Open the calculator" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  {% estimate_matrix %}
+
+  {# -------- Documental pre-checks (no invented amount) -------- #}
+  <section class="bg-white border-y border-stone2-100">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8 py-20">
+      <div data-reveal>
+        <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">{% translate "Guided pre-checks" %}</p>
+        <h2 class="mt-2 font-serif text-3xl sm:text-4xl text-ink-950">{% translate "When a validated table is not yet available" %}</h2>
+        <p class="mt-3 max-w-2xl text-base text-ink-800 leading-relaxed">{% blocktranslate %}Where an official source exists but the table is still being validated, a documental pre-check organises your data and cites the applicable sources — never an invented amount.{% endblocktranslate %}</p>
+      </div>
+      <div class="mt-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% for pc in home_prechecks %}
+          <a href="{% url 'core:precheck' pc.slug %}" data-reveal data-reveal-delay="{% widthratio forloop.counter0 1 70 %}"
+             class="premium-card premium-card-hover group flex items-start gap-4 p-5">
+            <span aria-hidden="true" class="icon-medallion shrink-0">{% include "partials/_icon.html" with name=pc.icon icon_class="w-5 h-5" %}</span>
+            <span class="min-w-0">
+              <span class="block font-serif text-lg text-ink-950">{% translate pc.label %}</span>
+              <span class="mt-1 block text-xs uppercase tracking-[0.12em] text-gold-700 font-semibold">{% translate pc.badge %}</span>
+              <span class="mt-2 block text-sm text-stone2-500 group-hover:text-ink-800">{{ pc.source }}</span>
+            </span>
+          </a>
+        {% endfor %}
+      </div>
+      <a href="{% url 'core:guided_router' %}" class="mt-8 inline-flex items-center gap-2 premium-btn premium-btn-secondary">{% translate "Find your guided path" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+    </div>
   </section>
 
   {# -------- Country strip -------- #}
@@ -117,6 +270,7 @@
       <div class="mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
         {% for country in mvp_countries %}
           <a href="{% if country.code == 'IT' %}{% url 'core:country_italy' %}{% elif country.code == 'FR' %}{% url 'core:country_france' %}{% elif country.code == 'BE' %}{% url 'core:country_belgium' %}{% elif country.code == 'MA' %}{% url 'core:country_morocco' %}{% elif country.code == 'TN' %}{% url 'core:country_tunisia' %}{% endif %}"
+             data-reveal data-reveal-delay="{% widthratio forloop.counter0 1 70 %}"
              class="group rounded-2xl border border-stone2-200 bg-sand-50 px-4 py-5 text-center hover:border-gold-400/60 hover:shadow-card transition">
             <p class="font-serif text-3xl text-ink-950 leading-none">{{ country.code }}</p>
             <p class="text-xs text-stone2-500 uppercase tracking-[0.14em] mt-2 group-hover:text-gold-600">{% translate country.name_key %}</p>
@@ -126,35 +280,58 @@
     </div>
   </section>
 
-  {# -------- Methodology preview -------- #}
-  <section class="max-w-7xl mx-auto px-5 lg:px-8 py-20 grid lg:grid-cols-3 gap-6">
-    <article class="bg-white border border-stone2-200 rounded-3xl p-7 shadow-card">
-      <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">01</p>
-      <h3 class="mt-3 font-serif text-2xl text-ink-950">{% translate "Validated sources only" %}</h3>
-      <p class="mt-2 text-sm text-ink-800 leading-relaxed">
-        {% blocktranslate %}Every coefficient and figure used in a public calculation is tied to a legal source marked as approved by our team.{% endblocktranslate %}
-      </p>
-    </article>
-    <article class="bg-white border border-stone2-200 rounded-3xl p-7 shadow-card">
-      <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">02</p>
-      <h3 class="mt-3 font-serif text-2xl text-ink-950">{% translate "Transparent ranges" %}</h3>
-      <p class="mt-2 text-sm text-ink-800 leading-relaxed">
-        {% blocktranslate %}You receive a minimum, a midpoint and a maximum, with the assumptions, the formulas and the missing documents clearly listed.{% endblocktranslate %}
-      </p>
-    </article>
-    <article class="bg-white border border-stone2-200 rounded-3xl p-7 shadow-card">
-      <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">03</p>
-      <h3 class="mt-3 font-serif text-2xl text-ink-950">{% translate "Human review" %}</h3>
-      <p class="mt-2 text-sm text-ink-800 leading-relaxed">
-        {% blocktranslate %}A simulation is a starting point. The Studio takes over for real legal evaluation when you need a binding opinion.{% endblocktranslate %}
-      </p>
-    </article>
+  {% comment %} Methodology preview (P4): premium service cards with an icon tile + numeral.
+     data-reveal stays on the wrapper so the fade-in is not clobbered by the data-tilt
+     transform on the inner card (tilt is desktop + motion only). {% endcomment %}
+  <section class="max-w-7xl mx-auto px-5 lg:px-8 py-20 grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div data-reveal data-reveal-delay="0">
+      <article class="premium-service-card h-full" data-tilt="4">
+        <div class="flex items-center justify-between">
+          <span class="premium-icon-tile premium-icon-tile-gold">{% include "partials/_icon.html" with name="shield-check" %}</span>
+          <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">01</p>
+        </div>
+        <h3 class="mt-4 font-serif text-2xl text-ink-950">{% translate "Validated sources only" %}</h3>
+        <p class="mt-2 text-sm text-ink-800 leading-relaxed">
+          {% blocktranslate %}Every coefficient and figure used in a public calculation is tied to a legal source marked as approved by our team.{% endblocktranslate %}
+        </p>
+      </article>
+    </div>
+    <div data-reveal data-reveal-delay="90">
+      <article class="premium-service-card h-full" data-tilt="4">
+        <div class="flex items-center justify-between">
+          <span class="premium-icon-tile premium-icon-tile-gold">{% include "partials/_icon.html" with name="document" %}</span>
+          <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">02</p>
+        </div>
+        <h3 class="mt-4 font-serif text-2xl text-ink-950">{% translate "Transparent ranges" %}</h3>
+        <p class="mt-2 text-sm text-ink-800 leading-relaxed">
+          {% blocktranslate %}You receive a minimum, a midpoint and a maximum, with the assumptions, the formulas and the missing documents clearly listed.{% endblocktranslate %}
+        </p>
+      </article>
+    </div>
+    <div data-reveal data-reveal-delay="180">
+      <article class="premium-service-card h-full" data-tilt="4">
+        <div class="flex items-center justify-between">
+          <span class="premium-icon-tile premium-icon-tile-gold">{% include "partials/_icon.html" with name="users" %}</span>
+          <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">03</p>
+        </div>
+        <h3 class="mt-4 font-serif text-2xl text-ink-950">{% translate "Human review" %}</h3>
+        <p class="mt-2 text-sm text-ink-800 leading-relaxed">
+          {% blocktranslate %}A simulation is a starting point. The Studio takes over for real legal evaluation when you need a binding opinion.{% endblocktranslate %}
+        </p>
+      </article>
+    </div>
   </section>
 
   {# -------- CTA -------- #}
-  <section class="bg-ink-950 text-sand-50">
-    <div class="max-w-7xl mx-auto px-5 lg:px-8 py-16 grid lg:grid-cols-2 gap-8 items-center">
-      <div>
+  {% comment %} P24: closing CTA over a real, heavily-tinted architectural photo
+     (premium-bg-architecture) so the page ends on photographic direction, not a
+     flat gradient. The faint image sits behind a navy/sage wash for legibility. {% endcomment %}
+  <section class="premium-bg-architecture bg-ink-950 text-sand-50">
+    {% if pexels_texture %}
+      <img class="premium-bg-media" src="{{ pexels_texture.src }}" alt="" aria-hidden="true" width="1280" height="640" loading="lazy" decoding="async">
+    {% endif %}
+    <div class="relative z-10 max-w-7xl mx-auto px-5 lg:px-8 py-16 grid lg:grid-cols-2 gap-8 items-center">
+      <div data-reveal>
         <h2 class="font-serif text-3xl sm:text-4xl">{% translate "Ready for a real legal evaluation?" %}</h2>
         <p class="mt-3 text-sand-100/80 max-w-xl leading-relaxed">
           {% blocktranslate %}Our international team handles compensation, medical liability and cross-border inheritance matters across Europe and North Africa.{% endblocktranslate %}
@@ -166,3 +343,5 @@
     </div>
   </section>
 {% endblock %}
+
+{% block sticky_cta %}{% include "partials/_sticky_cta.html" with sticky_show_calc=True %}{% endblock %}

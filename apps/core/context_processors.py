@@ -130,12 +130,33 @@ _GLOBAL_HREFLANG_VIEW_NAMES = frozenset(
         "core:privacy",
         "core:countries",
         "core:case_types",
+        # Workstream-3 content pages (indexable, multilingual).
+        "core:how_it_works",
+        "core:services",
+        "core:faq",
+        "core:about",
+        "core:community",
+        # P40: public documentation hub (plain-language guides).
+        "core:documentation",
         # F-product-4-case-type-landings: per-case-type SEO landings
         # under `/case-types/<slug>/`. Indexable, SEO-targeted,
         # multilingue. Stessa view, kwargs `slug` diverso per
         # landing — il builder accetta i kwargs e produce alternate
         # URLs coerenti.
         "core:case_type_landing",
+        # P15: country × category guided router (static) + the guided
+        # documental pre-check flows (slug-parametric, like case_type_landing).
+        # Indicizzabili, multilingua — il builder accetta i kwargs `slug`.
+        "core:guided_router",
+        "core:precheck",
+        # P29: official source library, per-source detail and smart search —
+        # indexable, multilingual (source_detail/search take a slug/query).
+        "core:sources",
+        "core:source_detail",
+        "core:search",
+        # P30: document intake landing (the upload POST page stays out of the
+        # hreflang allowlist — it is a stateless form, not indexable content).
+        "core:documents",
         # country landings (gia' coperte dalla view, ma le includiamo
         # nella allowlist per documentare l'intento e per fallback)
         "core:country_italy",

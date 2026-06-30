@@ -6,49 +6,83 @@
 {% block meta_description %}{% blocktranslate %}Modular taxonomy of case types: each module is activated only when the underlying legal sources for the chosen jurisdiction are catalogued and validated by the Studio.{% endblocktranslate %}{% endblock %}
 
 {% block content %}
-  <section class="max-w-5xl mx-auto px-5 lg:px-8 py-16">
-    <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Modular taxonomy" %}</p>
-    <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Case types" %}</h1>
-    <p class="mt-4 text-lg text-ink-800 leading-relaxed">
-      {% blocktranslate %}We implement modules in depth, one at a time. Each case type is activated only after the relevant legal sources are catalogued and validated for the chosen jurisdiction.{% endblocktranslate %}
-    </p>
+  {% comment %} P24: real photographic hero with a readable navy/bronze overlay. {% endcomment %}
+  {% translate "Modular taxonomy" as hero_eyebrow %}
+  {% translate "Case types we cover" as hero_title %}
+  {% include "partials/_premium_hero_image.html" with hero_eyebrow=hero_eyebrow hero_title=hero_title %}
 
-    <div class="mt-10 grid sm:grid-cols-2 gap-4">
-      {% for case in case_types %}
-        <article class="bg-white border border-stone2-200 rounded-3xl p-6 shadow-card">
-          <div class="flex items-start justify-between gap-4">
-            <h2 class="font-serif text-xl text-ink-950">{{ case.label }}</h2>
-            {% if case.public_status.badge_variant == "ok" %}
-              <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-ok-600/10 text-ok-600 whitespace-nowrap">
-                {{ case.public_status.badge_label }}
-              </span>
-            {% elif case.public_status.badge_variant == "gold" %}
-              <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-gold-500/15 text-gold-700 whitespace-nowrap">
-                {{ case.public_status.badge_label }}
-              </span>
-            {% else %}
-              <span class="text-[11px] uppercase tracking-[0.14em] font-semibold px-2 py-1 rounded-full bg-sand-100 text-ink-900 border border-stone2-200 whitespace-nowrap">
-                {{ case.public_status.badge_label }}
-              </span>
-            {% endif %}
-          </div>
-          <p class="mt-2 text-xs text-stone2-500 font-mono">{{ case.code }}</p>
-          <p class="mt-3 text-sm text-ink-800 leading-relaxed">
-            {{ case.public_status.short_description }}
-          </p>
-          {% comment %}
-            F-product-4: link to the per-case-type landing page if one
-            exists for this case_type code. Cards without a landing stay
-            informational only.
-          {% endcomment %}
-          {% if case.landing_slug %}
-            <a href="{% url 'core:case_type_landing' slug=case.landing_slug %}" class="mt-4 inline-flex items-center gap-2 text-sm text-gold-600 hover:text-gold-500 font-semibold">
-              {% translate "Read more" %} <span aria-hidden="true">→</span>
-            </a>
-          {% endif %}
-        </article>
-      {% endfor %}
+  <section class="max-w-5xl mx-auto px-5 lg:px-8 py-16">
+    {% comment %}
+      Premium hero band — frames the taxonomy intro as an authoritative,
+      navy-on-gold header while preserving the original eyebrow / h1 / intro
+      copy and the existing guided-router CTA below it.
+    {% endcomment %}
+    <div class="premium-hero-mini">
+      <p class="premium-eyebrow text-gold-600">{% translate "Modular taxonomy" %}</p>
+      <h1 class="mt-4 font-serif text-4xl text-sand-50 leading-tight">{% translate "Case types" %}</h1>
+      <p class="mt-4 text-lg text-sand-100 leading-relaxed">
+        {% blocktranslate %}We implement modules in depth, one at a time. Each case type is activated only after the relevant legal sources are catalogued and validated for the chosen jurisdiction.{% endblocktranslate %}
+      </p>
+
+      {% comment %} P15: route to the country × category guided picker. {% endcomment %}
+      <a href="{% url 'core:guided_router' %}" class="mt-6 premium-btn premium-btn-gold">
+        {% translate "Find your guided path" %} <span aria-hidden="true">→</span>
+      </a>
     </div>
+
+    {% comment %} P26: "select the type of damage" — a grouped navigator (by
+       damage family) replaces the flat card grid, with a compact legend and a
+       per-card "what you'll provide" hint. {% endcomment %}
+    <div class="mt-12">
+      <p class="premium-eyebrow text-gold-600">{% translate "Select the type of damage" %}</p>
+      <h2 class="mt-2 font-serif text-3xl text-ink-950 leading-tight">{% translate "What kind of case is yours?" %}</h2>
+      <div class="mt-5 flex flex-wrap items-center gap-2.5" aria-hidden="true">
+        <span class="premium-badge premium-badge-success">{% translate "Indicative estimate" %}</span>
+        <span class="premium-badge premium-badge-warning">{% translate "Documental pre-check" %}</span>
+        <span class="premium-badge premium-badge-muted">{% translate "Assisted path" %}</span>
+      </div>
+    </div>
+
+    {% for grp in case_groups %}
+    <div class="mt-10" data-reveal>
+      <div class="flex items-center gap-3">
+        <span aria-hidden="true" class="h-px flex-none w-8 bg-gold-400/60"></span>
+        <h3 class="font-serif text-2xl text-ink-950">{{ grp.label }}</h3>
+      </div>
+      <p class="mt-2 max-w-2xl text-sm text-stone2-500 leading-relaxed">{{ grp.intro }}</p>
+      <div class="mt-5 grid sm:grid-cols-2 gap-4">
+        {% for case in grp.cases %}
+          <article class="premium-card premium-card-hover h-full flex flex-col p-6">
+            <span aria-hidden="true" class="icon-medallion">{% include "partials/_icon.html" with name="scale" %}</span>
+            <div class="mt-4 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
+              <h4 class="font-serif text-xl text-ink-950 min-w-0">{{ case.display_label }}</h4>
+              {% comment %} P24: badge wording/tone from _case_card_status() so a
+                 calculable family reads as a direct estimate, not a generic tag.
+                 P32: wrap-tolerant chip (no clipping inside the card). {% endcomment %}
+              {% if case.card_tone == "ok" %}
+                <span class="self-start max-w-full text-[11px] uppercase tracking-[0.14em] font-semibold leading-tight px-2 py-1 rounded-full bg-ok-600/10 text-ok-600">{{ case.card_badge }}</span>
+              {% else %}
+                <span class="self-start max-w-full text-[11px] uppercase tracking-[0.14em] font-semibold leading-tight px-2 py-1 rounded-full bg-gold-500/15 text-gold-700">{{ case.card_badge }}</span>
+              {% endif %}
+            </div>
+            <p class="mt-3 text-sm text-ink-800 leading-relaxed flex-1">{{ case.card_description }}</p>
+            {% if case.data_required %}
+              <p class="mt-4 flex items-baseline gap-2 text-xs border-t border-stone2-100 pt-3">
+                <span class="uppercase tracking-[0.14em] text-gold-700 font-semibold shrink-0">{% translate "You'll provide" %}</span>
+                <span class="text-ink-900">{{ case.data_required }}</span>
+              </p>
+            {% endif %}
+            <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+              <a href="{% url 'core:guided_router' %}" class="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-950 hover:text-gold-700">{% translate "Start this path" %} <span class="cta-arrow" aria-hidden="true">→</span></a>
+              {% if case.landing_slug %}
+                <a href="{% url 'core:case_type_landing' slug=case.landing_slug %}" class="inline-flex items-center gap-1.5 text-sm text-gold-600 hover:text-gold-500 font-semibold">{% translate "Read more" %} <span aria-hidden="true">→</span></a>
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
 
     {% comment %}
       F-product-4: profile-style landings that do NOT map 1:1 to a
@@ -82,9 +116,9 @@
     {% endif %}
 
     <div class="mt-14 bg-sand-100 border border-stone2-200 rounded-3xl p-6">
-      <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">{% translate "Coming next" %}</p>
+      <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">{% translate "Other areas" %}</p>
       <p class="mt-2 text-ink-900 leading-relaxed">
-        {% blocktranslate %}Additional case types on the Studio roadmap include catastrophic damage, loss of chance, defamation, school/professional damage and ruined holiday claims, where legally tractable.{% endblocktranslate %}
+        {% blocktranslate %}The Studio also handles further areas — catastrophic injury, loss of chance, defamation, school or professional harm and ruined-holiday claims — where they are legally tractable.{% endblocktranslate %}
       </p>
     </div>
   </section>

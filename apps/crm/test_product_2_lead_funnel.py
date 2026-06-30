@@ -83,10 +83,12 @@ def _create_italy_simulation(client: Client) -> Simulation:
 @pytest.mark.django_db
 def test_result_page_includes_documents_to_prepare(client):
     sim = _create_italy_simulation(client)
+    # The unprefixed URL renders the default locale (it); assert the Italian
+    # copy now shipped in the catalog (previously these strings leaked English
+    # because the it/fr/ar msgstr entries were empty).
     resp = client.get(
         f"/wizard/result/{sim.public_id}/",
         HTTP_HOST="127.0.0.1",
-        HTTP_ACCEPT_LANGUAGE="en",
     )
     assert resp.status_code == 200
     body = resp.content.decode("utf-8")
@@ -94,19 +96,19 @@ def test_result_page_includes_documents_to_prepare(client):
     # the review-gated path (test DB has no approved Italy formula,
     # so the simulation lands on the review-gated branch). The
     # partial is now outside the `{% if has_estimate %}` guard.
-    assert "Documents to prepare" in body, (
-        "Result page missing the 'Documents to prepare' block — "
+    assert "Documenti da preparare" in body, (
+        "Result page missing the 'Documenti da preparare' block — "
         "F-product-2-funnel partial not included."
     )
-    # Generic content markers from the partial.
+    # Generic content markers from the partial (Italian default locale).
     hits = sum(
         1
         for marker in (
-            "Medical reports",
-            "Accident records",
-            "Insurance correspondence",
-            "Proof of economic impact",
-            "Identity and contact",
+            "Referti medici",
+            "Documentazione del sinistro",
+            "Corrispondenza con le assicurazioni",
+            "Prova dell'impatto economico",
+            "Identità e contatti",
         )
         if marker in body
     )
@@ -123,17 +125,18 @@ def test_result_page_includes_documents_to_prepare(client):
 
 @pytest.mark.django_db
 def test_thank_you_includes_while_you_wait_block(client):
-    resp = client.get("/contact/thank-you/", HTTP_HOST="127.0.0.1", HTTP_ACCEPT_LANGUAGE="en")
+    # Unprefixed URL renders the default locale (it); assert the Italian copy.
+    resp = client.get("/contact/thank-you/", HTTP_HOST="127.0.0.1")
     assert resp.status_code == 200
     body = resp.content.decode("utf-8")
     # Thank-you variant has a different headline.
-    assert "While you wait for our reply" in body, (
+    assert "Mentre attendi la nostra risposta" in body, (
         "Thank-you page missing the 'while you wait' headline — "
         "F-product-2-funnel doc-prep partial not included."
     )
     # Same checklist content, different variant.
-    assert "Medical reports" in body
-    assert "Insurance correspondence" in body
+    assert "Referti medici" in body
+    assert "Corrispondenza con le assicurazioni" in body
 
 
 # ---------------------------------------------------------------------------

@@ -51,6 +51,23 @@ def get_or_create_lead_contact_purpose() -> ConsentPurpose:
     return purpose
 
 
+def _sanitize_origin(dossier_origin: dict | None) -> dict:
+    """Whitelist + bound the P28 dossier-origin keys before they enter metadata.
+
+    Only stable analytics keys are kept; values are clipped to a short, safe
+    string so nothing arbitrary from the query string lands in the audit JSON.
+    """
+    if not dossier_origin:
+        return {}
+    allowed = ("flow", "result_kind", "readiness")
+    out = {}
+    for key in allowed:
+        val = str(dossier_origin.get(key) or "").strip()[:64]
+        if val:
+            out[key] = val
+    return out
+
+
 @transaction.atomic
 def create_lead_from_form(
     *,
@@ -58,6 +75,7 @@ def create_lead_from_form(
     simulation_public_id: str = "",
     request: Any | None = None,
     user: Any | None = None,
+    dossier_origin: dict | None = None,
 ) -> Lead:
     """
     Crea un `Lead` dal payload pulito di `ContactForm`.
@@ -124,6 +142,10 @@ def create_lead_from_form(
             "has_simulation": simulation is not None,
             "country_code": (lead.country.code if lead.country_id else ""),
             "case_type": lead.case_type,
+            # P28: the result-aware dossier origin (flow / result_kind /
+            # readiness), so a Studio/CRM payload knows which path produced
+            # the lead. Whitelisted + bounded; no health detail.
+            **_sanitize_origin(dossier_origin),
         },
     )
 

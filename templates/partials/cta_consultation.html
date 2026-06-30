@@ -2,13 +2,13 @@
 {# CTA primario verso il form interno /contact/ (F6). Il sito madre resta #}
 {# linkato come secondario nel footer e nella pagina di thank-you. #}
 {% if variant == "header" %}
-  <a href="{% url 'crm:contact' %}" class="hidden lg:inline-flex items-center gap-2 ms-2 px-4 py-2 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 transition text-sm font-semibold">
+  <a href="{% url 'crm:contact' %}" class="premium-btn premium-btn-gold premium-btn-sm">
     {% translate "Request legal review" %}
-    <span aria-hidden="true">→</span>
+    <span class="cta-arrow" aria-hidden="true">→</span>
   </a>
 {% else %}
-  <a href="{% url 'crm:contact' %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 transition font-semibold">
+  <a href="{% url 'crm:contact' %}" class="premium-btn premium-btn-primary premium-btn-block">
     {% translate "Request legal review" %}
-    <span aria-hidden="true">→</span>
+    <span class="cta-arrow" aria-hidden="true">→</span>
   </a>
 {% endif %}

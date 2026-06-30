@@ -3,7 +3,7 @@
 
 {% block title %}{% translate "France — road accident bodily injury" %} — {{ SITE_NAME }}{% endblock %}
 {% block meta_robots %}noindex, nofollow{% endblock %}
-{% block meta_description %}{% blocktranslate %}France road-accident workflow: the Studio offers a preliminary legal assessment based on the Loi Badinter, the Référentiel Mornet and the Gazette du Palais capitalisation tables. No automatic amount is published before these sources have been verified for the case.{% endblocktranslate %}{% endblock %}
+{% block meta_description %}{% blocktranslate %}France road-accident workflow: the Studio offers an assisted legal pathway based on the Loi Badinter, the Référentiel Mornet and the Gazette du Palais capitalisation tables. No automatic amount is published before these sources have been verified for the case.{% endblocktranslate %}{% endblock %}
 
 {% block content %}
 {% include "partials/_premium_hero_image.html" %}
@@ -11,7 +11,7 @@
   <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "France — road accident bodily injury" %}</p>
   <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Indicative simulation wizard" %}</h1>
   <p class="mt-4 text-lg text-ink-800 leading-relaxed">
-    {% blocktranslate %}All fields below are optional. If you don't know a value, leave it empty. The Studio reviews each case manually and offers a preliminary legal assessment; no automatic amount is published before the underlying quantification sources have been verified for the case.{% endblocktranslate %}
+    {% blocktranslate %}All fields below are optional. If you don't know a value, leave it empty. The Studio reviews each case manually and offers an assisted legal pathway; no automatic amount is published before the underlying quantification sources have been verified for the case.{% endblocktranslate %}
   </p>
 
   {% include "partials/_public_status_panel.html" with public_status=public_status country_name=_("France — road accident bodily injury") legal_basis=_("Recognised quantification sources: Loi Badinter, Référentiel Mornet, Gazette du Palais.") show_no_amounts_message=True variant="wizard" %}
@@ -53,7 +53,7 @@
       <p class="text-xs text-stone2-500 leading-relaxed">
         {% blocktranslate %}Submitting this form does not create a professional engagement.{% endblocktranslate %}
       </p>
-      <button type="submit" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
+      <button type="submit" class="premium-btn premium-btn-primary">
         {% translate "Submit for legal review" %}
         <span aria-hidden="true">→</span>
       </button>

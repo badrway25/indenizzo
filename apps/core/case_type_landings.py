@@ -19,7 +19,7 @@ audit):
   `?case_type=<code>` prefill) AND a secondary CTA. Both CTAs lead
   to pages already in tree.
 - Each landing's copy stays at the level of "what kind of cases
-  the Studio handles and what to bring for a preliminary review"
+  the Studio handles and what to bring for an indicative review"
   — informational, not advisory. No claim is case-specific.
 
 URL slug convention: English snake-case ("road-accident",
@@ -143,6 +143,15 @@ class CaseTypeLanding:
     `docs/product/CASE_TYPE_FAQ_AUDIT_2026-05-12.md`.
     """
 
+    official_basis: Sequence[str] = field(default_factory=tuple)
+    """
+    P10: official normative basis shown as public source chips, so every
+    section reads as an "official guided path" with a visible legal source.
+    These are language-neutral legal citations (law / decree identifiers),
+    NOT translatable copy and NOT computed amounts — they name the official
+    source, never invent a figure. Required on every landing (tested).
+    """
+
     def primary_cta_href(self) -> str:
         url = reverse(self.primary_cta_url_name, kwargs=self.primary_cta_url_kwargs)
         # Append `?case_type=<code>` querystring if the primary CTA
@@ -176,10 +185,14 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
     CaseTypeLanding(
         slug="road-accident",
         case_type_code=_CODE_ROAD,
+        official_basis=(
+            "D.P.R. 12/2025 — Tabella Unica Nazionale",
+            "artt. 138–139 Cod. Assicurazioni (D.Lgs. 209/2005)",
+        ),
         h1=_("Road accident — bodily injury"),
-        meta_title=_("Road accident bodily injury — preliminary legal assessment"),
+        meta_title=_("Road accident bodily injury — assisted legal pathway"),
         meta_description=_(
-            "Preliminary legal assessment of road-accident bodily injury claims, "
+            "Assisted legal pathway for road-accident bodily injury claims, "
             "based on the Tabella Unica Nazionale 2025 in Italy and recognised "
             "indicative references in France and Belgium. Indicative, not a "
             "guarantee of outcome."
@@ -187,7 +200,7 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
         intro=_(
             "If you were injured in a road accident as a driver, passenger, "
             "cyclist or pedestrian, the Studio reviews each case manually and "
-            "produces a preliminary indicative assessment based on validated "
+            "produces an assisted legal pathway based on validated "
             "legal sources. No automatic figure is published before the "
             "underlying sources have been verified for your case."
         ),
@@ -233,10 +246,14 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
     CaseTypeLanding(
         slug="bodily-injury",
         case_type_code=_CODE_ROAD,
+        official_basis=(
+            "D.P.R. 12/2025 — Tabella Unica Nazionale",
+            "artt. 138–139 Cod. Assicurazioni (D.Lgs. 209/2005)",
+        ),
         h1=_("Bodily injury claims"),
-        meta_title=_("Bodily injury — preliminary legal assessment"),
+        meta_title=_("Bodily injury — assisted legal pathway"),
         meta_description=_(
-            "Preliminary legal assessment of bodily injury claims (permanent "
+            "Assisted legal pathway for bodily injury claims (permanent "
             "disability, temporary disability, biological damage), based on "
             "the validated legal sources approved for the chosen jurisdiction. "
             "Indicative, not a guarantee of outcome."
@@ -245,8 +262,7 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
             "Bodily injury — sometimes referred to as biological damage — "
             "covers temporary disability, permanent disability and the broader "
             "impact on your life from a documented injury. The Studio reviews "
-            "each case manually using validated legal sources and produces a "
-            "preliminary indicative assessment, not a binding evaluation."
+            "each case manually using validated legal sources and produces an assisted legal pathway, not a binding evaluation."
         ),
         when_it_applies=(
             _("A medical-legal report has assessed your permanent disability percentage, or the assessment is in progress."),
@@ -288,10 +304,15 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
     CaseTypeLanding(
         slug="insurance-offer-review",
         case_type_code=_CODE_GENERIC,
+        official_basis=(
+            "D.P.R. 12/2025 — Tabella Unica Nazionale",
+            "artt. 138–139 Cod. Assicurazioni (D.Lgs. 209/2005)",
+            "IVASS — vigilanza assicurativa",
+        ),
         h1=_("Insurance offer review"),
-        meta_title=_("Insurance offer review — preliminary legal assessment"),
+        meta_title=_("Insurance offer review — assisted legal pathway"),
         meta_description=_(
-            "Preliminary review of insurance settlement offers in road-accident "
+            "Assisted legal review of insurance settlement offers in road-accident "
             "and bodily-injury cases. The Studio compares the offer against "
             "validated indicative sources and highlights what is missing. "
             "Indicative, not a guarantee of outcome."
@@ -300,8 +321,7 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
             "You received an offer from an insurance company but you are not "
             "sure whether it reflects what your case is worth. The Studio "
             "reviews each offer manually, compares it against validated "
-            "indicative sources and gives you a preliminary indicative "
-            "assessment of whether to accept, negotiate or refuse. No "
+            "indicative sources and gives you an assisted legal pathway towards whether to accept, negotiate or refuse. No "
             "professional engagement is created by this review."
         ),
         when_it_applies=(
@@ -316,10 +336,10 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
             _("Indicates whether the offer is in line, below, or significantly below the indicative range — and what is missing."),
             _("Recommends the next step — accept, negotiate, refuse — without any automatic engagement."),
         ),
-        primary_cta_label=_("Request a legal review of your offer"),
-        primary_cta_url_name="crm:contact",
-        secondary_cta_label=_("Run the indicative simulation first"),
-        secondary_cta_url_name="cases:wizard_start",
+        primary_cta_label=_("Compare your offer now"),
+        primary_cta_url_name="cases:wizard_insurance_offer",
+        secondary_cta_label=_("Request a legal review of your offer"),
+        secondary_cta_url_name="crm:contact",
         faq_items=(
             _FAQ_LEGAL_OPINION,
             FAQItem(
@@ -347,10 +367,15 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
     CaseTypeLanding(
         slug="work-injury",
         case_type_code=_CODE_WORK,
+        official_basis=(
+            "D.P.R. 1124/1965 — Testo Unico INAIL",
+            "D.Lgs. 38/2000 (art. 13) — danno biologico INAIL",
+            "D.M. 12/07/2000 — tabelle indennizzo INAIL",
+        ),
         h1=_("Work injury"),
-        meta_title=_("Work injury — preliminary legal assessment"),
+        meta_title=_("Work injury — assisted legal pathway"),
         meta_description=_(
-            "Preliminary legal assessment of work-injury claims and the "
+            "Assisted legal pathway for work-injury claims and the "
             "interaction between mandatory insurance (e.g. INAIL in Italy) and "
             "additional civil liability. Indicative, not a guarantee of outcome."
         ),
@@ -359,8 +384,7 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
             "in Italy) with potential civil liability of the employer or third "
             "parties. The Studio reviews each case manually to identify what is "
             "covered by mandatory insurance, what may be claimed as additional "
-            "damages, and how to document the case correctly. A preliminary "
-            "indicative assessment is provided after that review."
+            "damages, and how to document the case correctly. An assisted legal pathway is provided after that review."
         ),
         when_it_applies=(
             _("You were injured during work activities, including commuting where covered by law."),
@@ -371,13 +395,14 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
         what_studio_does=(
             _("Identifies what is covered by mandatory work insurance and what remains for civil-liability review."),
             _("Reviews the safety documentation (DVR, equipment records, training certificates) for a possible additional claim."),
-            _("Provides a preliminary indicative assessment of the additional damages potentially recoverable."),
+            _("Provides an assisted legal pathway of the additional damages potentially recoverable."),
             _("Indicates next steps and missing documents — without any automatic engagement."),
         ),
-        primary_cta_label=_("Request a legal review"),
-        primary_cta_url_name="crm:contact",
-        secondary_cta_label=_("Open the simulation wizard"),
-        secondary_cta_url_name="cases:wizard_start",
+        primary_cta_label=_("Start the INAIL pre-check"),
+        primary_cta_url_name="core:precheck",
+        primary_cta_url_kwargs={"slug": "inail"},
+        secondary_cta_label=_("Request a legal review instead"),
+        secondary_cta_url_name="crm:contact",
         faq_items=(
             _FAQ_LEGAL_OPINION,
             FAQItem(
@@ -385,7 +410,7 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
                 answer=_(
                     "Sì. La copertura obbligatoria e l'eventuale "
                     "responsabilità civile del datore di lavoro o di terzi "
-                    "sono profili distinti: la valutazione preliminare aiuta "
+                    "sono profili distinti: la valutazione indicativa aiuta "
                     "a individuare quanto potrebbe restare esigibile in via "
                     "civilistica, oltre alla copertura obbligatoria."
                 ),
@@ -405,10 +430,14 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
     CaseTypeLanding(
         slug="medical-malpractice",
         case_type_code=_CODE_MEDICAL,
+        official_basis=(
+            "L. 24/2017 (Gelli-Bianco)",
+            "artt. 138–139 Cod. Assicurazioni (D.Lgs. 209/2005)",
+        ),
         h1=_("Medical malpractice"),
-        meta_title=_("Medical malpractice — preliminary legal assessment"),
+        meta_title=_("Medical malpractice — assisted legal pathway"),
         meta_description=_(
-            "Preliminary legal assessment of medical-malpractice claims. The "
+            "Assisted legal pathway for medical-malpractice claims. The "
             "Studio reviews the clinical documentation and identifies whether "
             "a medico-legal expert assessment is the right next step. "
             "Indicative, not a guarantee of outcome."
@@ -419,7 +448,7 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
             "from the standard of care has caused harm. The Studio reviews the "
             "available clinical documentation, identifies whether an "
             "independent medico-legal expert is the right next step, and "
-            "produces a preliminary indicative assessment. This page is "
+            "produces an assisted legal pathway. This page is "
             "informational; it does not constitute a clinical or legal opinion."
         ),
         when_it_applies=(
@@ -430,13 +459,13 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
         what_studio_does=(
             _("Reviews the clinical documentation you have and identifies the relevant medical-legal framework."),
             _("Helps you understand whether commissioning an independent medico-legal expert is justified, and at what cost."),
-            _("Produces a preliminary indicative assessment of the recoverable categories of damage."),
+            _("Produces an assisted legal pathway of the recoverable categories of damage."),
             _("Recommends next steps and the documents you should gather for a complete review."),
         ),
-        primary_cta_label=_("Request a legal review"),
-        primary_cta_url_name="crm:contact",
-        secondary_cta_label=_("Open the simulation wizard"),
-        secondary_cta_url_name="cases:wizard_start",
+        primary_cta_label=_("Start indicative simulation"),
+        primary_cta_url_name="cases:wizard_italy_medical",
+        secondary_cta_label=_("Request a legal review instead"),
+        secondary_cta_url_name="crm:contact",
         faq_items=(
             _FAQ_LEGAL_OPINION,
             FAQItem(
@@ -463,10 +492,14 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
     CaseTypeLanding(
         slug="death-of-relative",
         case_type_code=_CODE_DEATH,
+        official_basis=(
+            "artt. 2043, 2059 Cod. Civile",
+            "art. 1223 Cod. Civile — danno patrimoniale",
+        ),
         h1=_("Death of a relative"),
-        meta_title=_("Death of a relative — preliminary legal assessment"),
+        meta_title=_("Death of a relative — assisted legal pathway"),
         meta_description=_(
-            "Preliminary legal assessment of damage claims following the death "
+            "Assisted legal pathway for damage claims following the death "
             "of a relative — loss of the parental / family relationship, "
             "patrimonial damage, mandatory insurance coverage. Indicative, not "
             "a guarantee of outcome."
@@ -476,7 +509,7 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
             "the loss of the parental or family relationship and for "
             "patrimonial damage suffered by the surviving family. The Studio "
             "reviews each case manually with the sensitivity it requires and "
-            "produces a preliminary indicative assessment. The Studio does not "
+            "produces an assisted legal pathway. The Studio does not "
             "publish any automatic figure before reading the documents."
         ),
         when_it_applies=(
@@ -487,14 +520,15 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
         ),
         what_studio_does=(
             _("Reads the documentation, identifies the applicable jurisdiction and the recoverable categories of damage."),
-            _("Produces a preliminary indicative assessment based on validated indicative sources for the relevant family relationships."),
+            _("Produces an indicative assessment based on validated indicative sources for the relevant family relationships."),
             _("Indicates next steps, missing documents and the alternatives available to the family."),
             _("Handles the matter with the discretion the case requires."),
         ),
-        primary_cta_label=_("Request a legal review"),
-        primary_cta_url_name="crm:contact",
-        secondary_cta_label=_("Open the simulation wizard"),
-        secondary_cta_url_name="cases:wizard_start",
+        primary_cta_label=_("Start the documental pre-check"),
+        primary_cta_url_name="core:precheck",
+        primary_cta_url_kwargs={"slug": "loss-of-relative"},
+        secondary_cta_label=_("Request a legal review instead"),
+        secondary_cta_url_name="crm:contact",
         faq_items=(
             _FAQ_LEGAL_OPINION,
             FAQItem(
@@ -522,10 +556,14 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
     CaseTypeLanding(
         slug="foreigners-in-italy",
         case_type_code=_CODE_GENERIC,
+        official_basis=(
+            "D.P.R. 12/2025 — Tabella Unica Nazionale",
+            "Reg. (CE) 864/2007 — Roma II (legge applicabile)",
+        ),
         h1=_("Foreign citizens injured in Italy"),
-        meta_title=_("Foreign citizens injured in Italy — preliminary legal assessment"),
+        meta_title=_("Foreign citizens injured in Italy — assisted legal pathway"),
         meta_description=_(
-            "Preliminary legal assessment for foreign citizens who suffered a "
+            "Assisted legal pathway for foreign citizens who suffered a "
             "road-accident, work-injury or medical injury during a stay or "
             "residence in Italy. Multilingual handling (IT / FR / EN / AR). "
             "Indicative, not a guarantee of outcome."
@@ -535,7 +573,7 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
             "a specific procedural picture: notification to the Italian "
             "insurer, language barriers, evidence collection across countries. "
             "The Studio handles the case multilingually (Italian, French, "
-            "English, Arabic) and produces a preliminary indicative assessment "
+            "English, Arabic) and produces an indicative assessment "
             "after reading the documents."
         ),
         when_it_applies=(
@@ -547,7 +585,7 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
         what_studio_does=(
             _("Communicates in your own language and translates the procedural correspondence where needed."),
             _("Identifies the applicable jurisdiction, applicable law and competent court."),
-            _("Produces a preliminary indicative assessment of recoverable damages under Italian indicative sources."),
+            _("Produces an indicative assessment of recoverable damages under Italian indicative sources."),
             _("Coordinates with local counsel in your country of residence if cross-border execution is needed."),
         ),
         primary_cta_label=_("Request a multilingual legal review"),
@@ -569,7 +607,7 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
                 answer=_(
                     "Non sempre. La giurisdizione competente dipende dai "
                     "fatti, dalla legge applicabile e dai trattati: la "
-                    "valutazione preliminare include questo passo di triage "
+                    "valutazione indicativa include questo passo di triage "
                     "prima di qualsiasi avvio formale."
                 ),
             ),
@@ -579,10 +617,14 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
     CaseTypeLanding(
         slug="cross-border-cases",
         case_type_code=_CODE_INT_INHERITANCE,
+        official_basis=(
+            "Reg. (CE) 864/2007 — Roma II (obbligazioni extracontrattuali)",
+            "Reg. (UE) 650/2012 — successioni internazionali",
+        ),
         h1=_("Cross-border cases"),
-        meta_title=_("Cross-border legal cases — preliminary legal assessment"),
+        meta_title=_("Cross-border legal cases — assisted legal pathway"),
         meta_description=_(
-            "Preliminary legal assessment of cases with cross-border elements: "
+            "Assisted legal pathway for cases with cross-border elements: "
             "international inheritance (Morocco, Tunisia), road accidents "
             "abroad, and disputes involving parties in different countries. "
             "Indicative, not a guarantee of outcome."
@@ -604,11 +646,12 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
         what_studio_does=(
             _("Identifies the applicable conflict-of-laws rules, the competent jurisdiction and any treaty framework."),
             _("Translates / interprets foreign documents and correspondence and coordinates with local counsel."),
-            _("Produces a preliminary indicative assessment of the most likely jurisdictional outcome."),
+            _("Produces an indicative assessment of the most likely jurisdictional outcome."),
             _("Recommends a structured next step — without any automatic engagement."),
         ),
-        primary_cta_label=_("Request a cross-border legal review"),
-        primary_cta_url_name="crm:contact",
+        primary_cta_label=_("Frame the applicable law"),
+        primary_cta_url_name="core:precheck",
+        primary_cta_url_kwargs={"slug": "international-road-accident"},
         secondary_cta_label=_("Open the simulation wizard"),
         secondary_cta_url_name="cases:wizard_start",
         faq_items=(
@@ -629,6 +672,56 @@ LANDINGS: tuple[CaseTypeLanding, ...] = (
                     "l'intervento di un legale locale, lo Studio si "
                     "coordina con corrispondenti nei paesi rilevanti per "
                     "il caso."
+                ),
+            ),
+            _FAQ_MANDATE,
+        ),
+    ),
+    CaseTypeLanding(
+        slug="product-liability",
+        case_type_code=_CODE_GENERIC,
+        official_basis=(
+            "artt. 114–127 Cod. del Consumo (D.Lgs. 206/2005)",
+            "Direttiva 85/374/CEE — prodotti difettosi",
+        ),
+        h1=_("Defective product liability"),
+        meta_title=_("Defective product — official guided pathway"),
+        meta_description=_(
+            "Official guided pathway for harm caused by a defective product, "
+            "under the Italian Consumer Code (artt. 114–127, D.Lgs. 206/2005) "
+            "and Directive 85/374/EEC. Document-led analysis, not an automatic "
+            "figure."
+        ),
+        intro=_(
+            "When a defective product causes injury or damage, liability is "
+            "governed by the Italian Consumer Code (artt. 114–127) and "
+            "Directive 85/374/EEC. The Studio reviews the documentation, frames "
+            "the case against these official sources and indicates the next "
+            "steps. No automatic figure is published before the file is read."
+        ),
+        when_it_applies=(
+            _("A product caused injury or property damage that you believe is due to a defect, not to misuse."),
+            _("You can identify the product, the manufacturer or importer, and roughly when the harm occurred."),
+            _("You hold at least basic documentation: purchase proof, photos, medical or technical reports."),
+        ),
+        what_studio_does=(
+            _("Frames the case under artt. 114–127 of the Consumer Code and Directive 85/374/EEC, identifying the liable party."),
+            _("Reviews the documentation and indicates what is missing to establish the defect and the causal link."),
+            _("Explains the recoverable categories of damage and the next steps — without any automatic engagement."),
+        ),
+        primary_cta_label=_("Request a guided review"),
+        primary_cta_url_name="crm:contact",
+        secondary_cta_label=_("Read the methodology"),
+        secondary_cta_url_name="core:methodology",
+        faq_items=(
+            _FAQ_LEGAL_OPINION,
+            FAQItem(
+                question=_("Devo già provare il difetto del prodotto per chiedere una valutazione?"),
+                answer=_(
+                    "In questa fase no. Lo Studio aiuta a capire quali "
+                    "elementi servono per dimostrare il difetto e il nesso "
+                    "causale, e quali documenti raccogliere, prima di "
+                    "qualsiasi avvio formale."
                 ),
             ),
             _FAQ_MANDATE,

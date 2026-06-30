@@ -1,23 +1,85 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load i18n estimate_tags %}
 
 {% block title %}{% translate "Countries we cover" %} — {{ SITE_NAME }}{% endblock %}
 
-{% block meta_description %}{% blocktranslate %}MVP coverage map for the Badrane simulator: Italy publishes an indicative calculation on the verified TUN 2025 dataset; France, Belgium, Morocco and Tunisia receive a preliminary legal assessment from the Studio.{% endblocktranslate %}{% endblock %}
+{% block meta_description %}{% blocktranslate %}MVP coverage map for the Badrane simulator: Italy publishes an indicative calculation on the verified TUN 2025 dataset; France, Belgium, Morocco and Tunisia follow an assisted legal pathway with the Studio.{% endblocktranslate %}{% endblock %}
 
 {% block content %}
-  {% include "partials/_premium_hero_image.html" %}
+  {% translate "Jurisdictions" as hero_eyebrow %}
+  {% translate "Countries we cover" as hero_title %}
+  {% include "partials/_premium_hero_image.html" with hero_eyebrow=hero_eyebrow hero_title=hero_title %}
+
+  {% comment %} P3: bespoke premium intro band above the coverage grid — frames the
+     page as "Jurisdictions" and sets the estimate-vs-pre-check expectation before
+     the reader scrolls into the country cards. {% endcomment %}
+  <section class="max-w-6xl mx-auto px-5 lg:px-8 py-12">
+    <div class="premium-hero-mini">
+      <p class="premium-eyebrow">{% translate "Jurisdictions" %}</p>
+      <p class="mt-4 font-serif text-4xl sm:text-5xl text-sand-50 leading-tight">{% translate "Where the simulator can help today" %}</p>
+      <p class="mt-5 max-w-3xl text-lg text-sand-50/85 leading-relaxed">
+        {% blocktranslate %}We open one jurisdiction at a time and only after its official sources are verified. Each country offers either an indicative estimate or an assisted, source-based pathway with the Studio.{% endblocktranslate %}
+      </p>
+    </div>
+  </section>
+
   <section class="max-w-6xl mx-auto px-5 lg:px-8 py-16">
     <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Coverage map" %}</p>
     <h1 class="mt-4 font-serif text-4xl sm:text-5xl text-ink-950 leading-tight">{% translate "Countries we cover" %}</h1>
     <p class="mt-5 text-lg text-ink-800 leading-relaxed max-w-3xl">
-      {% blocktranslate %}We open one jurisdiction at a time, only after the underlying legal sources are verified. Each country first receives a preliminary legal assessment from the Studio; an indicative calculation is published only once the relevant national tables have been verified.{% endblocktranslate %}
+      {% blocktranslate %}We open one jurisdiction at a time, only after the underlying legal sources are verified. Each country first enters an assisted legal pathway with the Studio; an indicative calculation is published only once the relevant national tables have been verified.{% endblocktranslate %}
     </p>
+
+    {# P3: fail-closed reassurance — frames "no amount" as a guarantee, not an error. #}
+    <div class="premium-alert premium-alert-info mt-6 max-w-3xl" role="note">
+      <span aria-hidden="true" class="font-semibold">✓</span>
+      <span>{% blocktranslate %}When a legal source is not yet validated, the simulator returns no amount — by design, never an invented figure.{% endblocktranslate %}</span>
+    </div>
+
+    {% comment %} P3: explainer — sets the three pathways a jurisdiction can offer so
+       a reader interprets each country badge below correctly (estimate vs. pre-check
+       vs. cross-border framing). Cards carry no amounts, only the kind of help. {% endcomment %}
+    <div class="mt-12">
+      <p class="premium-eyebrow">{% translate "What you get" %}</p>
+      <h2 class="mt-3 font-serif text-3xl text-ink-950 leading-tight">{% translate "Estimate or pre-check?" %}</h2>
+      <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <article class="premium-card premium-card-body flex flex-col">
+          <span aria-hidden="true" class="icon-medallion premium-float">{% include "partials/_icon.html" with name="scale" %}</span>
+          <h3 class="mt-4 font-serif text-xl text-ink-950">{% translate "Indicative estimate" %}</h3>
+          <p class="mt-2 text-sm text-ink-800 leading-relaxed">
+            {% blocktranslate %}Available where a validated official table backs the calculation. You receive an indicative figure with its sources and assumptions.{% endblocktranslate %}
+          </p>
+        </article>
+        <article class="premium-card premium-card-body flex flex-col">
+          <span aria-hidden="true" class="icon-medallion premium-float">{% include "partials/_icon.html" with name="list-checks" %}</span>
+          <h3 class="mt-4 font-serif text-xl text-ink-950">{% translate "Documental pre-check" %}</h3>
+          <p class="mt-2 text-sm text-ink-800 leading-relaxed">
+            {% blocktranslate %}The official source is identified while its table is being verified. The path lists the documents and data the Studio needs to assess your file.{% endblocktranslate %}
+          </p>
+        </article>
+        <article class="premium-card premium-card-body flex flex-col">
+          <span aria-hidden="true" class="icon-medallion premium-float">{% include "partials/_icon.html" with name="globe" %}</span>
+          <h3 class="mt-4 font-serif text-xl text-ink-950">{% translate "Applicable-law framing" %}</h3>
+          <p class="mt-2 text-sm text-ink-800 leading-relaxed">
+            {% blocktranslate %}For cross-border matters, the Studio frames which jurisdiction and which law govern your case before any figure is considered.{% endblocktranslate %}
+          </p>
+        </article>
+      </div>
+    </div>
+
+    {% comment %} P3: short provenance note — explains the editorial rule behind the
+       three pathways above, so the absence of an amount reads as discipline. {% endcomment %}
+    <div class="premium-provenance-card mt-8 max-w-3xl">
+      <p class="premium-eyebrow text-gold-400">{% translate "How we choose the source" %}</p>
+      <p class="mt-3 text-sm text-sand-50/85 leading-relaxed">
+        {% blocktranslate %}For each jurisdiction we start from the official national source and publish an estimate only once its table is verified by the Studio. Until then the country stays on the assisted pathway — never on an invented figure.{% endblocktranslate %}
+      </p>
+    </div>
 
     {# Mappa code → URL name della landing per paese (pass F-product-country-landing). #}
     <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {% for country in countries %}
-        <article class="bg-white border border-stone2-200 rounded-3xl overflow-hidden shadow-card flex flex-col hover:border-gold-400/60 hover:shadow-lg transition">
+        <article class="bg-white border border-stone2-200 rounded-3xl overflow-hidden shadow-card flex flex-col hover:border-gold-400/60 hover:shadow-lg transition" data-reveal data-reveal-delay="{% widthratio forloop.counter0 1 70 %}">
           {% if country.image %}
             <div class="relative h-40 lg:h-44 overflow-hidden">
               <img src="{{ country.image.src }}" alt="{{ country.image.alt }}" width="800" height="450" class="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async">
@@ -26,17 +88,17 @@
                 {# Badge wording / variant centralised in apps/core/public_status.py #}
                 {% if country.public_status.badge_variant == "ok" %}
                   <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-ok-600 text-sand-50 whitespace-nowrap">
-                    <span aria-hidden="true">●</span>
+                    <span class="badge-dot" aria-hidden="true"></span>
                     {{ country.public_status.badge_label }}
                   </span>
                 {% elif country.public_status.badge_variant == "gold" %}
                   <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-gold-500 text-ink-950 whitespace-nowrap">
-                    <span aria-hidden="true">●</span>
+                    <span class="badge-dot" aria-hidden="true"></span>
                     {{ country.public_status.badge_label }}
                   </span>
                 {% else %}
                   <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-sand-100 text-ink-900 border border-stone2-200 whitespace-nowrap">
-                    <span aria-hidden="true">●</span>
+                    <span class="badge-dot" aria-hidden="true"></span>
                     {{ country.public_status.badge_label }}
                   </span>
                 {% endif %}
@@ -46,32 +108,49 @@
               </div>
             </div>
           {% else %}
-            <div class="flex items-center justify-between gap-3 p-6 lg:p-7 pb-0">
-              <span class="font-serif text-3xl text-ink-950 leading-none">{{ country.code }}</span>
-              {% if country.public_status.badge_variant == "ok" %}
-                <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-ok-600/10 text-ok-600 whitespace-nowrap">
-                  <span aria-hidden="true">●</span>
-                  {{ country.public_status.badge_label }}
-                </span>
-              {% elif country.public_status.badge_variant == "gold" %}
-                <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-gold-500/15 text-gold-700 whitespace-nowrap">
-                  <span aria-hidden="true">●</span>
-                  {{ country.public_status.badge_label }}
-                </span>
-              {% else %}
-                <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-sand-100 text-ink-900 border border-stone2-200 whitespace-nowrap">
-                  <span aria-hidden="true">●</span>
-                  {{ country.public_status.badge_label }}
-                </span>
-              {% endif %}
+            {# P4-2: no curated photo → premium gradient header so MA/TN match the photo cards. #}
+            <div class="country-card__cover relative h-40 lg:h-44 overflow-hidden">
+              <div class="absolute top-3 right-3 z-10">
+                {% if country.public_status.badge_variant == "ok" %}
+                  <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-ok-600 text-sand-50 whitespace-nowrap">
+                    <span class="badge-dot" aria-hidden="true"></span>
+                    {{ country.public_status.badge_label }}
+                  </span>
+                {% elif country.public_status.badge_variant == "gold" %}
+                  <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-gold-500 text-ink-950 whitespace-nowrap">
+                    <span class="badge-dot" aria-hidden="true"></span>
+                    {{ country.public_status.badge_label }}
+                  </span>
+                {% else %}
+                  <span class="text-[10px] uppercase tracking-[0.18em] font-semibold px-2.5 py-1 rounded-full bg-sand-100 text-ink-900 border border-stone2-200 whitespace-nowrap">
+                    <span class="badge-dot" aria-hidden="true"></span>
+                    {{ country.public_status.badge_label }}
+                  </span>
+                {% endif %}
+              </div>
+              <div class="absolute bottom-3 left-4 z-10">
+                <span class="font-serif text-3xl text-sand-50 leading-none drop-shadow">{{ country.code }}</span>
+              </div>
             </div>
           {% endif %}
           <div class="p-6 lg:p-7 flex flex-col flex-1">
             <p class="text-ink-900 font-serif text-2xl leading-tight">{% translate country.name_key %}</p>
-            <p class="mt-3 text-sm text-stone2-500 leading-relaxed flex-1">
+            <p class="mt-3 text-sm text-stone2-500 leading-relaxed">
               {{ country.public_status.short_description }}
             </p>
-            <div class="mt-6 pt-5 border-t border-stone2-100">
+            {% comment %} P26: real coverage categories (so no country reads as
+               inheritance-only) + the primary normative reference. {% endcomment %}
+            {% if country.categories %}
+              <div class="mt-4 flex flex-wrap gap-1.5">
+                {% for cat in country.categories %}
+                  <span class="inline-flex items-center rounded-full border border-stone2-200 bg-sand-100 px-2.5 py-0.5 text-[11px] text-ink-800">{{ cat }}</span>
+                {% endfor %}
+              </div>
+            {% endif %}
+            {% if country.main_source %}
+              <p class="mt-3 flex items-baseline gap-1.5 text-[11px] text-stone2-500"><span aria-hidden="true" class="text-gold-600">{% include "partials/_icon.html" with name="book-open" icon_class="w-3.5 h-3.5 inline-block" %}</span>{{ country.main_source }}</p>
+            {% endif %}
+            <div class="mt-auto pt-5 border-t border-stone2-100">
               {% if country.code == "IT" %}
                 <a href="{% url 'core:country_italy' %}" class="text-sm font-semibold text-ink-900 hover:text-gold-600 inline-flex items-center gap-1.5">{% translate "Open country page" %} <span aria-hidden="true">→</span></a>
               {% elif country.code == "FR" %}
@@ -95,16 +174,18 @@
         <p class="text-[11px] uppercase tracking-[0.22em] text-gold-400 font-semibold">{% translate "Need a direct review?" %}</p>
         <h2 class="mt-3 font-serif text-3xl leading-tight">{% translate "Request a legal review on a complex case" %}</h2>
         <p class="mt-3 text-sm text-sand-50/80 leading-relaxed">
-          {% blocktranslate %}If your case spans multiple jurisdictions, includes foreign assets, or the country shows a "Preliminary legal assessment" badge, the Studio reviews the file directly and proposes the next step.{% endblocktranslate %}
+          {% blocktranslate %}If your case spans multiple jurisdictions, includes foreign assets, or the country shows an "Assisted legal pathway" badge, the Studio reviews the file directly and proposes the next step.{% endblocktranslate %}
         </p>
       </div>
-      <a href="{% url 'crm:contact' %}" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-gold-500 text-ink-950 hover:bg-gold-400 font-semibold whitespace-nowrap">
-        {% translate "Request legal review" %} →
+      <a href="{% url 'crm:contact' %}" class="premium-btn premium-btn-gold">
+        {% translate "Request legal review" %} <span class="cta-arrow" aria-hidden="true">→</span>
       </a>
     </div>
 
     <p class="mt-12 text-sm text-stone2-500 leading-relaxed">
-      {% blocktranslate %}Future jurisdictions on the roadmap include Spain, Germany, Canada, Romania, Algeria and Egypt.{% endblocktranslate %}
+      {% blocktranslate %}The Studio also follows cases connected to Spain, Germany, Canada, Romania, Algeria and Egypt.{% endblocktranslate %}
     </p>
   </section>
+
+  {% estimate_matrix %}
 {% endblock %}

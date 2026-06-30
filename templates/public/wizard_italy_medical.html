@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Italy — medical biological damage" %} — {{ SITE_NAME }}{% endblock %}
+{% block meta_robots %}noindex, nofollow{% endblock %}
+{% block meta_description %}{% blocktranslate %}Indicative wizard for the tabular biological damage from healthcare liability in Italy (L. 24/2017, artt. 138–139 CAP). It estimates only the tabular biological damage and does not assess medical fault, causation, loss of chance or patrimonial damage.{% endblocktranslate %}{% endblock %}
+
+{% block content %}
+{% include "partials/_premium_hero_image.html" %}
+<section class="max-w-3xl mx-auto px-5 lg:px-8 py-16">
+  <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Italy — medical biological damage" %}</p>
+  <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Indicative simulation wizard" %}</h1>
+  <p class="mt-4 text-lg text-ink-800 leading-relaxed">
+    {% blocktranslate %}Healthcare-liability biological damage is liquidated with the same CAP tables (artt. 138–139) used for road accidents. This wizard estimates only that tabular biological damage from the disability percentage and the temporary-disability days you provide.{% endblocktranslate %}
+  </p>
+
+  <div class="mt-8">{% include "partials/_premium_stepper.html" with step=2 %}</div>
+
+  {# P9 Fase C: mandatory scope disclaimer — the estimate is tabular biological damage only. #}
+  <div class="mt-6 rounded-2xl border border-gold-400/50 bg-sand-100 px-5 py-4 text-sm text-ink-900 leading-relaxed" role="note">
+    <strong class="font-semibold">{% translate "Scope of this estimate" %}.</strong>
+    {% blocktranslate %}This estimate covers tabular biological damage only. It does not assess medical fault, causation, loss of chance, patrimonial damage or overall healthcare liability.{% endblocktranslate %}
+  </div>
+
+  {% include "partials/_module_status_card.html" with msc_does=_("Produces an indicative range for the tabular biological damage under L. 24/2017 (artt. 138–139 CAP): 1 to 9 disability points via the official art. 139 micro table, 10 points and above via the approved Tabella Unica Nazionale 2025.") msc_does_not=_("It does not assess medical fault, causal link, loss of chance, patrimonial damage or overall healthcare liability, does not constitute legal or medical advice, and does not replace a medico-legal expert report.") msc_next_step=_("Submit to view the indicative range, download the PDF report, then request a legal review from the Studio to assess fault and the wider liability.") msc_status_label=_("Calculator available — CAP artt. 138–139") msc_status_tone="ok" %}
+
+  <form method="post" novalidate class="premium-wizard-shell mt-10 p-6 sm:p-8 space-y-6">
+    {% csrf_token %}
+
+    {# Honeypot anti-bot — invisibile agli utenti reali #}
+    <div aria-hidden="true" class="is-honeypot">
+      <label for="id_website">{% translate "Website (do not fill)" %}</label>
+      {{ form.website }}
+    </div>
+
+    {# Completeness meter (JS-only); optional fields, never gates submission. #}
+    <div class="wizard-progress" data-wizard-progress aria-label="{% translate 'Form completeness' %}">
+      <div class="wizard-progress__meta">
+        <span>{% translate "Completeness" %}<button type="button" class="tooltip-anchor" data-tooltip="{% translate 'The more details you provide, the more precise the indicative range. All fields stay optional.' %}" aria-label="{% translate 'What is this?' %}">?</button></span>
+        <span data-wizard-progress-label data-progress-template="{done}/{total}">0/0</span>
+      </div>
+      <div class="wizard-progress__track"><div class="wizard-progress__bar" data-wizard-progress-bar></div></div>
+    </div>
+
+    {% if form.non_field_errors %}
+      <div class="rounded-xl border border-red-300 bg-red-50 p-3 text-sm text-red-800">
+        {{ form.non_field_errors }}
+      </div>
+    {% endif %}
+
+    {{ form.accident_country }}
+
+    {% include "public/_road_accident_wizard_form_fields.html" %}
+
+    {% include "partials/consent_checkboxes.html" with privacy_field=form.consent_simulation special_categories_field=form.special_categories_consent %}
+
+    <div class="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between pt-2">
+      <p class="text-xs text-stone2-500 leading-relaxed">
+        {% blocktranslate %}Submitting this form does not create a professional engagement.{% endblocktranslate %}
+      </p>
+      <button type="submit" class="premium-btn premium-btn-primary">
+        {% translate "Calculate indicative estimate" %}
+        <span class="cta-arrow" aria-hidden="true">→</span>
+      </button>
+    </div>
+  </form>
+
+  <p class="mt-8 text-xs text-stone2-500 leading-relaxed">
+    {% blocktranslate %}The simulation is indicative and does not constitute legal advice, medical-legal opinion, or guarantee of outcome.{% endblocktranslate %}
+  </p>
+</section>
+
+{% comment %}
+Same minimal premium styling hook used by the road-accident wizard: native
+inputs/selects rendered via {{ form.field }} don't get Tailwind classes, so we
+add them via a tiny CSP-nonced DOM hook. JS-free fallback still works.
+{% endcomment %}
+<script nonce="{{ CSP_NONCE }}">
+  (function(){
+    const cls = "mt-1 w-full rounded-xl border border-stone2-200 bg-sand-50 px-3 py-2.5 focus:border-gold-500 focus:bg-white outline-none";
+    document.querySelectorAll('form input[type="date"], form input[type="number"], form input[type="text"]:not([type="hidden"])').forEach(function(el){
+      if (el.type === "checkbox" || el.type === "hidden") return;
+      el.className = cls;
+    });
+  })();
+</script>
+{% endblock %}

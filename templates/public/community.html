@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Ta3ouid — assistance for Arabic and French speakers" %} — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}{% blocktranslate %}Ta3ouid: clear, multilingual assistance for Arabic- and French-speaking people who suffered harm in Italy, including those living abroad. Free preliminary assessment, no promises, no guarantee of outcome.{% endblocktranslate %}{% endblock %}
+{% block head_extra %}{% if canonical_url %}<link rel="canonical" href="{{ canonical_url }}">{% endif %}{% endblock %}
+
+{% block content %}
+<article class="bg-sand-50">
+  {% include "partials/_premium_hero_image.html" %}
+  <nav class="max-w-4xl mx-auto px-5 lg:px-8 pt-6" aria-label="{% translate 'Breadcrumb' %}">
+    <ol class="flex flex-wrap items-center gap-2 text-xs text-stone2-500 list-none">
+      <li><a href="{% url 'core:home' %}" class="hover:text-ink-800">{% translate "Home" %}</a></li>
+      <li aria-hidden="true">/</li>
+      <li class="text-ink-800 font-medium">Ta3ouid</li>
+    </ol>
+  </nav>
+
+  <header class="max-w-4xl mx-auto px-5 lg:px-8 pt-8 pb-2">
+    <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">Ta3ouid · {% translate "Community assistance" %}</p>
+    <h1 class="mt-4 font-serif text-4xl sm:text-5xl text-ink-950 leading-tight">{% translate "Harmed in Italy? You can ask for an assessment in your language." %}</h1>
+    <p class="mt-5 max-w-2xl text-lg text-ink-800 leading-relaxed">
+      {% blocktranslate %}If you or a relative suffered harm in Italy — a road accident, an injury at work, a medical matter — you can request a preliminary assessment even if you now live abroad. The Studio assists in Arabic, French, Italian and English.{% endblocktranslate %}
+    </p>
+    <p class="mt-4 inline-flex items-center gap-2 rounded-full bg-sand-100 border border-stone2-200 px-4 py-1.5 text-sm text-ink-900">
+      <span aria-hidden="true" class="w-1.5 h-1.5 rounded-full bg-gold-500"></span>
+      العربية · Français · Italiano · English
+    </p>
+  </header>
+
+  <section class="max-w-4xl mx-auto px-5 lg:px-8 py-10 grid grid-cols-1 sm:grid-cols-3 gap-5">
+    <article class="rounded-3xl border border-stone2-200 bg-white shadow-card p-6" data-reveal data-reveal-delay="0">
+      <span aria-hidden="true" class="premium-icon-tile premium-icon-tile-gold">{% include "partials/_icon.html" with name="globe" %}</span>
+      <h2 class="mt-4 font-serif text-lg text-ink-950">{% translate "From anywhere" %}</h2>
+      <p class="mt-2 text-sm text-ink-800 leading-relaxed">{% blocktranslate %}You do not need to be in Italy. A first assessment can be requested remotely, in your language.{% endblocktranslate %}</p>
+    </article>
+    <article class="rounded-3xl border border-stone2-200 bg-white shadow-card p-6" data-reveal data-reveal-delay="70">
+      <span aria-hidden="true" class="premium-icon-tile premium-icon-tile-gold">{% include "partials/_icon.html" with name="shield-check" %}</span>
+      <h2 class="mt-4 font-serif text-lg text-ink-950">{% translate "Clear and prudent" %}</h2>
+      <p class="mt-2 text-sm text-ink-800 leading-relaxed">{% blocktranslate %}We explain plainly what can be estimated from official sources and what needs professional review. No promises.{% endblocktranslate %}</p>
+    </article>
+    <article class="rounded-3xl border border-stone2-200 bg-white shadow-card p-6" data-reveal data-reveal-delay="140">
+      <span aria-hidden="true" class="premium-icon-tile premium-icon-tile-gold">{% include "partials/_icon.html" with name="heart" %}</span>
+      <h2 class="mt-4 font-serif text-lg text-ink-950">{% translate "Free first step" %}</h2>
+      <p class="mt-2 text-sm text-ink-800 leading-relaxed">{% blocktranslate %}The preliminary assessment is free and without obligation. An engagement begins only with a written agreement.{% endblocktranslate %}</p>
+    </article>
+  </section>
+
+  <section class="max-w-4xl mx-auto px-5 lg:px-8 pb-12">
+    <div class="rounded-3xl bg-ink-950 text-sand-50 p-7 lg:p-9 grid grid-cols-1 lg:grid-cols-2 gap-6 items-center" data-reveal>
+      <div>
+        <h2 class="font-serif text-2xl sm:text-3xl">{% translate "Tell us what happened" %}</h2>
+        <p class="mt-3 text-sand-100/80 leading-relaxed">{% blocktranslate %}Send your request in your language. A lawyer will read it and reply on whether and how the Studio can help.{% endblocktranslate %}</p>
+      </div>
+      <div class="flex flex-wrap gap-3 lg:justify-end">
+        <a href="{% url 'crm:contact' %}" class="premium-btn premium-btn-gold">{% translate "Request a free assessment" %}</a>
+        <a href="{% url 'cases:wizard_italy_road_accident' %}" class="premium-btn premium-btn-secondary">{% translate "Calculate the estimate" %}</a>
+      </div>
+    </div>
+    <p class="mt-6 text-sm text-stone2-500 leading-relaxed max-w-3xl">{% blocktranslate %}The simulation is indicative and does not constitute legal or medical-legal advice nor a guarantee of outcome. A professional engagement begins only with a separate written agreement.{% endblocktranslate %}</p>
+  </section>
+</article>
+{% endblock %}

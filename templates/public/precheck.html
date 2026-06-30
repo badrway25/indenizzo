@@ -1,0 +1,326 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{ flow.title }} — {{ SITE_NAME }}{% endblock %}
+{% block meta_description %}{{ flow.intro }}{% endblock %}
+{% block head_extra %}{% if canonical_url %}<link rel="canonical" href="{{ canonical_url }}">{% endif %}{% endblock %}
+
+{% block content %}
+{% include "partials/_premium_hero_image.html" with hero_title=flow.title %}
+<section class="max-w-6xl mx-auto px-5 lg:px-8 py-16">
+  <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{{ flow.country_code }} · {% translate "Guided pre-check" %}</p>
+  <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{{ flow.title }}</h1>
+  <p class="mt-4">
+    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-500/15 text-gold-700 text-xs font-semibold uppercase tracking-[0.14em]">
+      <span class="badge-dot" aria-hidden="true"></span>{{ flow.status_label }}
+    </span>
+  </p>
+  <p class="mt-5 max-w-3xl text-lg text-ink-800 leading-relaxed">{{ flow.intro }}</p>
+
+  {# P23: "what we'll do with your data" — frames the pre-check before the form. #}
+  <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3" data-reveal>
+    <div class="premium-card flex items-start gap-3 p-4">
+      <span aria-hidden="true" class="icon-medallion shrink-0">{% include "partials/_icon.html" with name="list-checks" icon_class="w-5 h-5" %}</span>
+      <span class="text-sm text-ink-900 leading-snug">{% translate "We read your answers and organise the file." %}</span>
+    </div>
+    <div class="premium-card flex items-start gap-3 p-4">
+      <span aria-hidden="true" class="icon-medallion shrink-0">{% include "partials/_icon.html" with name="scale" icon_class="w-5 h-5" %}</span>
+      <span class="text-sm text-ink-900 leading-snug">{% translate "We cite the applicable official sources — no invented number." %}</span>
+    </div>
+    <div class="premium-card flex items-start gap-3 p-4">
+      <span aria-hidden="true" class="icon-medallion shrink-0">{% include "partials/_icon.html" with name="arrow-right" icon_class="w-5 h-5" %}</span>
+      <span class="text-sm text-ink-900 leading-snug">{% translate "You get a readiness result and a clear next step." %}</span>
+    </div>
+  </div>
+
+  <div class="mt-10 precheck-layout">
+    {# ---- Main column: interactive form + guided result ---- #}
+    <div>
+      {% if flow.fields %}
+      <form method="post" data-precheck-form aria-label="{% translate 'Pre-check questions' %}">
+        {% csrf_token %}
+        <div class="premium-card p-6 lg:p-7">
+          <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Guided questions" %}</p>
+          <h2 class="mt-2 font-serif text-2xl text-ink-950">{% translate "Tell us about your case" %}</h2>
+
+          {# Completeness progress (JS-enhanced; harmless without JS). #}
+          <div class="mt-5" data-precheck-progress hidden>
+            <div class="flex items-center justify-between text-[11px] uppercase tracking-[0.16em] text-stone2-500 font-semibold">
+              <span>{% translate "Completeness" %}</span><span data-precheck-progress-label>0%</span>
+            </div>
+            <div class="mt-2 readiness-track"><div class="readiness-fill w-0" data-precheck-progress-bar></div></div>
+          </div>
+
+          <div class="mt-6 space-y-5">
+            {% for item in form_fields %}
+              {% with f=item.field %}
+              <div class="precheck-field"
+                   {% if f.show_if %}data-precheck-show-if="{{ f.show_if.0 }}:{{ f.show_if.1 }}" hidden{% endif %}>
+                <label class="block premium-label" {% if f.type != 'radio' %}for="id_{{ f.id }}"{% endif %}>
+                  {{ f.label }}{% if f.required %} <span class="text-gold-600" aria-hidden="true">*</span>{% endif %}
+                </label>
+                {% if f.type == 'select' %}
+                  <select id="id_{{ f.id }}" name="{{ f.id }}" {% if f.required %}required{% endif %}
+                          class="premium-select mt-2">
+                    <option value="">{% translate "Select…" %}</option>
+                    {% for val, lbl in f.choices %}<option value="{{ val }}" {% if val == item.value %}selected{% endif %}>{{ lbl }}</option>{% endfor %}
+                  </select>
+                {% elif f.type == 'radio' %}
+                  <div class="mt-2 flex flex-wrap gap-2" role="radiogroup" aria-label="{{ f.label }}">
+                    {% for val, lbl in f.choices %}
+                      <label class="inline-flex items-center gap-2 rounded-full border border-stone2-300 bg-sand-50 px-4 py-2 text-sm text-ink-900 cursor-pointer hover:border-gold-500 has-[:checked]:border-gold-600 has-[:checked]:bg-gold-500/10 has-[:checked]:text-gold-700">
+                        <input type="radio" name="{{ f.id }}" value="{{ val }}" class="accent-gold-600" {% if val == item.value %}checked{% endif %} {% if f.required %}required{% endif %}>{{ lbl }}
+                      </label>
+                    {% endfor %}
+                  </div>
+                {% elif f.type == 'date' %}
+                  <input type="date" id="id_{{ f.id }}" name="{{ f.id }}" value="{{ item.value }}" {% if f.required %}required{% endif %}
+                         class="premium-input mt-2">
+                {% elif f.type == 'number' %}
+                  <input type="number" id="id_{{ f.id }}" name="{{ f.id }}" value="{{ item.value }}"
+                         {% if f.min_value is not None %}min="{{ f.min_value }}"{% endif %} {% if f.max_value is not None %}max="{{ f.max_value }}"{% endif %}
+                         {% if f.required %}required{% endif %} inputmode="numeric"
+                         class="premium-input mt-2">
+                {% else %}
+                  <input type="text" id="id_{{ f.id }}" name="{{ f.id }}" value="{{ item.value }}" {% if f.required %}required{% endif %}
+                         class="premium-input mt-2">
+                {% endif %}
+                {% if f.help_text %}<p class="premium-form-help mt-1.5">{{ f.help_text }}</p>{% endif %}
+              </div>
+              {% endwith %}
+            {% endfor %}
+          </div>
+
+          <div class="premium-form-actions">
+            <button type="submit" class="premium-btn premium-btn-primary">
+              {% translate "Get my guided result" %} <span class="cta-arrow" aria-hidden="true">→</span>
+            </button>
+            <p class="premium-form-help">{% translate "Your answers are processed only to build this result and are not stored." %}</p>
+          </div>
+        </div>
+      </form>
+      {% endif %}
+
+      {% if result %}
+      <section id="precheck-result" class="mt-8 scroll-mt-24 space-y-5" aria-live="polite">
+        {# P39: human "report header" — same plain-language framing as every result page. #}
+        {% include "partials/_result_report_summary.html" with report_mode="check" report_indicated=result.dossier_summary report_next=result.next_step %}
+        {# ---- Result hero: top-line status + one-line dossier summary ---- #}
+        <div class="premium-card p-6 lg:p-7 premium-rise">
+          <p class="premium-eyebrow text-gold-700">{% translate "Dossier analysis" %}</p>
+          <div class="mt-3 flex flex-wrap items-center gap-3">
+            <h2 class="font-serif text-2xl sm:text-3xl text-ink-950 leading-tight">{{ result.result_status_label }}</h2>
+            {% if result.result_status_tone == 'ok' %}
+              <span class="premium-badge premium-badge-success">{{ result.completeness_label }}</span>
+            {% else %}
+              <span class="premium-badge premium-badge-warning">{{ result.completeness_label }}</span>
+            {% endif %}
+          </div>
+          {% if result.dossier_summary %}<p class="mt-3 max-w-2xl text-sm text-ink-800 leading-relaxed">{{ result.dossier_summary }}</p>{% endif %}
+
+          {# Documental readiness meter — organisational, never a money figure. #}
+          <div class="mt-5 max-w-md">
+            <div class="flex items-center justify-between text-[11px] uppercase tracking-[0.16em] text-stone2-500 font-semibold">
+              <span>{% translate "Documental readiness" %}</span><span>{{ result.readiness_pct }}%</span>
+            </div>
+            <div class="mt-2 readiness-track"><div class="readiness-fill w-0" data-readiness-fill="{{ result.readiness_pct }}"></div></div>
+          </div>
+        </div>
+
+        {# ---- What we evaluated: solid vs. points to verify ---- #}
+        {% if result.strong_points or result.attention_points %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="premium-card p-5">
+            <p class="text-[11px] uppercase tracking-[0.18em] text-ok-600 font-semibold">{% translate "Solid in your file" %}</p>
+            {% if result.strong_points %}
+              <ul class="mt-3 space-y-2 text-sm text-ink-900">
+                {% for s in result.strong_points %}<li class="flex gap-2.5"><span aria-hidden="true" class="mt-0.5 text-ok-600">✓</span><span>{{ s }}</span></li>{% endfor %}
+              </ul>
+            {% else %}
+              <p class="mt-3 text-sm text-stone2-500 leading-relaxed">{% translate "The strong points emerge once you complete the answers." %}</p>
+            {% endif %}
+          </div>
+          <div class="premium-card p-5">
+            <p class="text-[11px] uppercase tracking-[0.18em] text-gold-700 font-semibold">{% translate "Points to verify" %}</p>
+            {% if result.attention_points %}
+              <ul class="mt-3 space-y-2 text-sm text-ink-900">
+                {% for a in result.attention_points %}<li class="flex gap-2.5"><span aria-hidden="true" class="mt-0.5 text-gold-600">•</span><span>{{ a }}</span></li>{% endfor %}
+              </ul>
+            {% else %}
+              <p class="mt-3 text-sm text-ok-600 leading-relaxed">{% translate "Nothing essential is flagged for attention." %}</p>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+
+        {# ---- Legal path: why this route, what can be assessed now, what is pending ---- #}
+        {% if result.path_reason or result.potential_path %}
+        <div class="premium-card p-6 lg:p-7">
+          <p class="text-[11px] uppercase tracking-[0.18em] text-gold-700 font-semibold">{% translate "Legal path" %}</p>
+          {% if result.path_reason %}<p class="mt-3 max-w-2xl text-sm text-ink-900 leading-relaxed">{{ result.path_reason }}</p>{% endif %}
+          {% if result.assessable_now or result.pending_for_estimate %}
+          <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {% if result.assessable_now %}
+            <div class="rounded-2xl border border-ok-600/30 bg-white px-4 py-3.5">
+              <p class="text-[11px] uppercase tracking-[0.16em] text-ok-600 font-semibold">{% translate "What we can assess now" %}</p>
+              <p class="mt-1.5 text-sm text-ink-900 leading-relaxed">{{ result.assessable_now }}</p>
+            </div>
+            {% endif %}
+            {% if result.pending_for_estimate %}
+            <div class="rounded-2xl border border-gold-400/40 bg-white px-4 py-3.5">
+              <p class="text-[11px] uppercase tracking-[0.16em] text-gold-700 font-semibold">{% translate "What is pending for a figure" %}</p>
+              <p class="mt-1.5 text-sm text-ink-900 leading-relaxed">{{ result.pending_for_estimate }}</p>
+            </div>
+            {% endif %}
+          </div>
+          {% endif %}
+          {% if result.potential_path %}
+            <p class="mt-5 text-[11px] uppercase tracking-[0.18em] text-stone2-500 font-semibold">{% translate "Official route" %}</p>
+            <p class="mt-1.5 text-sm text-ink-900 leading-relaxed">{{ result.potential_path }}</p>
+            {% if result.unlocking_data %}
+              <ul class="mt-3 space-y-1.5 text-sm text-ink-900">
+                {% for u in result.unlocking_data %}<li class="flex gap-2.5"><span aria-hidden="true" class="mt-0.5 text-gold-600">→</span><span>{{ u }}</span></li>{% endfor %}
+              </ul>
+            {% endif %}
+          {% endif %}
+        </div>
+        {% endif %}
+
+        {# ---- Notes specific to the answers ---- #}
+        {% if result.messages %}
+        <div class="premium-card p-5">
+          <p class="text-[11px] uppercase tracking-[0.18em] text-gold-700 font-semibold">{% translate "Notes on your case" %}</p>
+          <ul class="mt-3 space-y-3">
+            {% for msg in result.messages %}<li class="flex gap-3 text-sm text-ink-900 leading-relaxed"><span aria-hidden="true" class="mt-1 inline-block w-1.5 h-1.5 rounded-full bg-gold-500 shrink-0"></span><span>{{ msg }}</span></li>{% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        {# ---- Categorised document checklist ---- #}
+        <div class="premium-card p-6 lg:p-7">
+          <p class="text-[11px] uppercase tracking-[0.18em] text-gold-700 font-semibold">{% translate "Document checklist" %}</p>
+          {% if result.documents_by_category %}
+            <div class="mt-4 space-y-5">
+              {% for cat_label, items in result.documents_by_category %}
+              <div>
+                <p class="text-[11px] uppercase tracking-[0.16em] text-stone2-500 font-semibold">{{ cat_label }}</p>
+                <ul class="mt-2.5 space-y-2.5">
+                  {% for d in items %}
+                  <li class="flex gap-3">
+                    <span aria-hidden="true" class="mt-0.5 shrink-0 {% if d.present %}text-ok-600{% else %}text-gold-600{% endif %}">{% if d.present %}✓{% else %}☐{% endif %}</span>
+                    <span class="leading-snug">
+                      <span class="text-sm {% if d.present %}text-stone2-500{% else %}text-ink-900 font-medium{% endif %}">{{ d.label }}</span>
+                      {% if d.reason %}<span class="block text-xs text-stone2-500 mt-0.5">{{ d.reason }}</span>{% endif %}
+                    </span>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+              {% endfor %}
+            </div>
+          {% elif result.missing_documents %}
+            <ul class="mt-3 space-y-2 text-sm text-ink-900">
+              {% for doc in result.missing_documents %}<li class="flex gap-2.5"><span aria-hidden="true" class="mt-0.5 text-gold-600">☐</span><span>{{ doc }}</span></li>{% endfor %}
+            </ul>
+          {% else %}
+            <p class="mt-3 text-sm text-ok-600">{% translate "No essential document is missing from your answers." %}</p>
+          {% endif %}
+        </div>
+
+        {# ---- Next-step timeline + contextual CTAs ---- #}
+        <div class="premium-card p-6 lg:p-7">
+          <p class="text-[11px] uppercase tracking-[0.18em] text-gold-700 font-semibold">{% translate "What happens next" %}</p>
+          <ol class="mt-4 space-y-3">
+            <li class="flex items-start gap-3">
+              <span aria-hidden="true" class="icon-medallion shrink-0 font-serif text-sm text-gold-700">1</span>
+              <span class="text-sm text-ink-900 leading-snug pt-1.5">{% translate "Gather the documents listed above." %}</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span aria-hidden="true" class="icon-medallion shrink-0 font-serif text-sm text-gold-700">2</span>
+              <span class="text-sm text-ink-900 leading-snug pt-1.5">{% translate "Send the file to the Studio for a documental check on the official sources." %}</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span aria-hidden="true" class="icon-medallion shrink-0 font-serif text-sm text-gold-700">3</span>
+              <span class="text-sm text-ink-900 leading-snug pt-1.5">{% translate "A lawyer reviews it and replies on the next step." %}</span>
+            </li>
+          </ol>
+          <p class="mt-5 text-sm text-ink-900 leading-relaxed max-w-2xl">{{ result.next_step }}</p>
+          <div class="mt-4 flex flex-wrap items-center gap-3">
+            {% if result.cta_kwargs.slug %}
+              <a href="{% url result.cta_url_name slug=result.cta_kwargs.slug %}" class="premium-btn premium-btn-primary">{{ result.cta_label }} <span aria-hidden="true">→</span></a>
+            {% else %}
+              <a href="{% url result.cta_url_name %}" class="premium-btn premium-btn-primary">{{ result.cta_label }} <span aria-hidden="true">→</span></a>
+            {% endif %}
+            {% if result.secondary_cta_label %}
+              {% if result.secondary_cta_kwargs.slug %}
+                <a href="{% url result.secondary_cta_url_name slug=result.secondary_cta_kwargs.slug %}" class="premium-btn premium-btn-ghost">{{ result.secondary_cta_label }}</a>
+              {% else %}
+                <a href="{% url result.secondary_cta_url_name %}" class="premium-btn premium-btn-ghost">{{ result.secondary_cta_label }}</a>
+              {% endif %}
+            {% endif %}
+          </div>
+        </div>
+
+        {% if result.answered_summary %}
+          <details class="rounded-2xl border border-stone2-200 bg-white px-5 py-3">
+            <summary class="text-sm font-semibold text-ink-900 cursor-pointer">{% translate "Summary of your answers" %}</summary>
+            <dl class="mt-3 grid sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
+              {% for label, value in result.answered_summary %}
+                <div class="flex justify-between gap-3 border-b border-stone2-100 pb-1.5"><dt class="text-stone2-500">{{ label }}</dt><dd class="text-ink-900 text-right">{{ value }}</dd></div>
+              {% endfor %}
+            </dl>
+          </details>
+        {% endif %}
+
+        <p class="text-xs text-stone2-500 leading-relaxed">{% translate "This pre-check does not calculate an amount: it organises the data you need based on official sources." %}</p>
+      </section>
+
+      {# P28: unified "consolidate the dossier" panel — send / print / next step. #}
+      {% include "partials/_dossier_panel.html" %}
+      {% endif %}
+    </div>
+
+    {# ---- Premium sidebar: sources, documents, next step (sticky desktop) ---- #}
+    <aside class="mt-8 premium-sidebar-sticky space-y-5">
+      {% if flow.official_sources %}
+      <div class="premium-card p-5">
+        <div class="flex items-center gap-3">
+          <span class="icon-medallion">{% include "partials/_icon.html" with name="scale" icon_class="w-4 h-4" %}</span>
+          <h2 class="font-serif text-base text-ink-950">{% translate "Official sources" %}</h2>
+        </div>
+        <ul class="mt-3 flex flex-wrap gap-2">
+          {% for src in flow.official_sources %}
+            <li class="inline-flex items-center gap-1.5 rounded-full border border-gold-400/50 bg-sand-100 px-3 py-1 text-xs text-ink-900"><span aria-hidden="true" class="text-gold-600 inline-flex shrink-0">{% include "partials/_icon.html" with name="book-open" icon_class="w-3.5 h-3.5" %}</span>{{ src }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+      {% if flow.documents %}
+      <div class="premium-card p-5">
+        <div class="flex items-center gap-3">
+          <span class="icon-medallion">{% include "partials/_icon.html" with name="list-checks" icon_class="w-4 h-4" %}</span>
+          <h2 class="font-serif text-base text-ink-950">{% translate "Documents to prepare" %}</h2>
+        </div>
+        <ul class="mt-3 space-y-2.5 text-sm text-ink-900 leading-relaxed">
+          {% for doc in flow.documents %}<li class="flex gap-2.5"><span aria-hidden="true" class="mt-0.5 text-gold-600">☐</span><span>{{ doc }}</span></li>{% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+      <div class="premium-card p-5">
+        <div class="flex items-center gap-3">
+          <span class="icon-medallion">{% include "partials/_icon.html" with name="arrow-right" icon_class="w-4 h-4" %}</span>
+          <h2 class="font-serif text-base text-ink-950">{% translate "Next step" %}</h2>
+        </div>
+        <p class="mt-3 text-sm text-stone2-500 leading-relaxed">{% translate "Answer the questions to get a guided result, then ask the Studio for a documental check on the official sources." %}</p>
+        <a href="{% url 'core:services' %}" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-ink-950 hover:text-gold-700">{% translate "Back to services" %} <span aria-hidden="true">→</span></a>
+      </div>
+    </aside>
+  </div>
+
+  <p class="mt-10 text-xs text-stone2-500 leading-relaxed border-t border-stone2-200 pt-6">
+    {% translate "No amount is calculated without a verified official table or formula." %}
+  </p>
+</section>
+{% endblock %}

@@ -10,14 +10,18 @@ Il wizard pubblico (F-wizard) e il lead form (F6) avranno view dedicate.
 
 from __future__ import annotations
 
+import json
+
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
-from django.views.decorators.http import require_GET
+from django.utils.translation import gettext_lazy as _
+from django.views.decorators.http import require_GET, require_http_methods
 
 from apps.calculators.enums import CaseType
 from apps.calculators.registry import list_available_calculators
+from apps.core import public_pages
 from apps.core.country_readiness import public_country_readiness
 from apps.core.public_status import get_country_public_status
 
@@ -41,6 +45,24 @@ MVP_COUNTRIES = [
     {"code": "MA", "name_key": "Morocco"},
     {"code": "TN", "name_key": "Tunisia"},
 ]
+
+# P26: per-country coverage for the redesigned countries hub — the main
+# categories (so no country reads as inheritance-only) and the primary
+# normative reference. Categories reuse already-translated labels; main_source
+# is a language-neutral citation, never an amount.
+_COUNTRY_COVERAGE = {
+    "IT": {"categories": [_("Road accident"), _("Medical liability"),
+                          _("Workplace injury"), _("Loss of a relative"), _("Inheritance")],
+           "main_source": "art. 139 CAP · Tabella Unica Nazionale 2025"},
+    "FR": {"categories": [_("Road accident")],
+           "main_source": "Loi Badinter (loi 85-677)"},
+    "BE": {"categories": [_("Road accident")],
+           "main_source": "Indicatieve tabel / Tableau indicatif"},
+    "MA": {"categories": [_("Road accident"), _("Inheritance")],
+           "main_source": "Dahir 1-84-177 · ACAPS"},
+    "TN": {"categories": [_("Road accident"), _("Inheritance")],
+           "main_source": "Loi 2005-86 (Code des assurances)"},
+}
 
 # Case type publici (sottoinsieme della tassonomia REQ-4).
 # Il flag `available` è derivato dal registry F4: se nessun calculator è
@@ -229,13 +251,54 @@ def _pexels_hero(request, purpose: str, country_code: str | None = None) -> dict
 
 @require_GET
 def home(request):
+    # P22: featured documental pre-checks for the home product section. The
+    # label/badge are gettext msgids (translated in-template); the source is a
+    # language-neutral citation rendered as-is.
+    home_prechecks = [
+        {"slug": "inail", "icon": "hard-hat", "label": "Work injury (INAIL)",
+         "badge": "Documental pre-check with official sources", "source": "D.P.R. 1124/1965 · D.M. 45/2019"},
+        {"slug": "morocco-road-accident", "icon": "car", "label": "Road accident in Morocco",
+         "badge": "Documental pre-check with official sources", "source": "Dahir 1-84-177 · ACAPS"},
+        {"slug": "tunisia-road-accident", "icon": "car", "label": "Road accident in Tunisia",
+         "badge": "Documental pre-check with official sources", "source": "Loi 2005-86 · CGA"},
+        {"slug": "loss-of-relative", "icon": "heart", "label": "Loss of a relative",
+         "badge": "Assisted path based on official sources", "source": "artt. 2043, 2059 c.c."},
+        {"slug": "international-road-accident", "icon": "globe", "label": "Cross-border accident",
+         "badge": "Applicable-law framing", "source": "Reg. CE 864/2007 (Roma II)"},
+    ]
     return render(
         request,
         "public/home.html",
         {
             "mvp_countries": MVP_COUNTRIES,
             "case_types_count": len(PUBLIC_CASE_TYPES),
+            "home_prechecks": home_prechecks,
             "pexels_image": _pexels_hero(request, "home_hero"),
+            # P24: a distinct, heavily-tinted photo behind the closing CTA band.
+            "pexels_texture": _pexels_hero(request, "methodology_hero"),
+            # P36: "what do you want to do?" intent cards with section imagery.
+            "intent_cards": [
+                {"url": reverse("cases:wizard_italy_road_accident"), "icon": "scale",
+                 "image": _pexels_hero(request, "intent_estimate"), "delay": 0,
+                 "event": "intent_estimate",
+                 "title": _("Make an estimate"),
+                 "text": _("See an indicative range where an official table allows it.")},
+                {"url": reverse("cases:wizard_insurance_offer"), "icon": "shield-check",
+                 "image": _pexels_hero(request, "intent_offer"), "delay": 80,
+                 "event": "intent_offer",
+                 "title": _("Check an offer"),
+                 "text": _("Find out whether the insurer's offer is in line.")},
+                {"url": reverse("core:documents_upload"), "icon": "document",
+                 "image": _pexels_hero(request, "intent_documents"), "delay": 160,
+                 "event": "intent_documents",
+                 "title": _("Upload documents"),
+                 "text": _("We recognise your documents and prepare your file.")},
+                {"url": reverse("core:guided_router"), "icon": "globe",
+                 "image": _pexels_hero(request, "intent_law"), "delay": 240,
+                 "event": "intent_law",
+                 "title": _("Which law applies"),
+                 "text": _("Understand which country's law may apply to your case.")},
+            ],
         },
     )
 
@@ -250,6 +313,23 @@ def methodology(request):
 
 
 @require_GET
+def documentation(request):
+    """P40: public documentation hub — plain-language guides for normal users
+    (not technical docs). Indexable, multilingual. The topics are rendered in
+    the template; the view only supplies the hero image and canonical URL."""
+    from apps.core.seo import build_canonical_url
+
+    return render(
+        request,
+        "public/documentation.html",
+        {
+            "pexels_image": _pexels_hero(request, "methodology_hero"),
+            "canonical_url": build_canonical_url(request),
+        },
+    )
+
+
+@require_GET
 def disclaimer(request):
     return render(request, "public/disclaimer.html")
 
@@ -257,6 +337,189 @@ def disclaimer(request):
 @require_GET
 def privacy(request):
     return render(request, "public/privacy.html")
+
+
+@require_GET
+def how_it_works(request):
+    from apps.core.seo import build_canonical_url
+
+    return render(
+        request,
+        "public/how_it_works.html",
+        {
+            "steps": public_pages.HOW_IT_WORKS_STEPS,
+            "canonical_url": build_canonical_url(request),
+            "pexels_image": _pexels_hero(request, "how_it_works_hero"),
+        },
+    )
+
+
+@require_GET
+def services(request):
+    from apps.core.seo import build_canonical_url
+
+    return render(
+        request,
+        "public/services.html",
+        {
+            "services": public_pages.SERVICES,
+            "service_groups": public_pages.grouped_services(),
+            "canonical_url": build_canonical_url(request),
+            "pexels_image": _pexels_hero(request, "services_hero"),
+            # P39: internal imagery for the three service sections.
+            "img_estimate": _pexels_hero(request, "services_estimate"),
+            "img_documents": _pexels_hero(request, "services_documents"),
+            "img_international": _pexels_hero(request, "services_international"),
+        },
+    )
+
+
+@require_http_methods(["GET", "POST"])
+def precheck(request, slug):
+    """P15/P16: interactive guided documental pre-check for a non-numeric section.
+
+    GET renders the premium mini-form. POST evaluates the answers in memory
+    (stateless, GDPR-light — nothing is persisted) and renders a personalised
+    guided result: completeness, missing documents, applicable official sources,
+    contextual messages and a CTA. Never an amount (no approved engine here).
+    404 for an unknown slug.
+    """
+    from django.http import Http404
+
+    from apps.core.precheck import get_precheck
+    from apps.core.precheck_engine import evaluate
+    from apps.core.seo import build_canonical_url
+
+    flow = get_precheck(slug)
+    if flow is None:
+        raise Http404("Unknown pre-check flow")
+
+    answers = {}
+    result = None
+    if request.method == "POST":
+        # Collect only the known field ids — ignore anything else in POST.
+        answers = {f.id: request.POST.get(f.id, "").strip() for f in flow.fields}
+        result = evaluate(flow, answers)
+
+    # Render-ready fields: pair each field with its submitted value so the
+    # template can repopulate without a dict-lookup template filter.
+    form_fields = [{"field": f, "value": answers.get(f.id, "")} for f in flow.fields]
+
+    # P28: a unified dossier summary drives the "consolidate the dossier" panel,
+    # the print layout and the result-aware contact CTA. Built statelessly.
+    dossier = None
+    if result is not None:
+        from django.utils.translation import get_language
+
+        from apps.core.dossier import from_precheck
+
+        dossier = from_precheck(flow, result, get_language() or "")
+
+    return render(
+        request,
+        "public/precheck.html",
+        {
+            "flow": flow,
+            "form_fields": form_fields,
+            "result": result,
+            "dossier": dossier,
+            "canonical_url": build_canonical_url(request),
+            "pexels_image": _pexels_hero(request, "services_hero"),
+            # P39: report-style side panel for the human pre-check result.
+            "img_report": _pexels_hero(request, "result_report"),
+        },
+    )
+
+
+@require_GET
+def guided_router(request):
+    """P15: country × category guided router.
+
+    A single navigable entry point — pick a country, then a category — that
+    routes to the right destination (live engine, tabular/comparison wizard or
+    documental pre-check). It only routes: no amount is computed here.
+    """
+    from apps.core.guided_router import grouped_routes
+    from apps.core.seo import build_canonical_url
+
+    return render(
+        request,
+        "public/guided_router.html",
+        {
+            "country_groups": grouped_routes(),
+            "canonical_url": build_canonical_url(request),
+            "pexels_image": _pexels_hero(request, "guided_hero"),
+            # P39: internal imagery beside the visual stepper.
+            "img_workflow": _pexels_hero(request, "guided_workflow"),
+        },
+    )
+
+
+@require_GET
+def faq(request):
+    """Public FAQ + FAQPage structured data.
+
+    The JSON-LD is built from the SAME `public_pages.FAQ_ITEMS` rendered on the
+    page (gettext_lazy resolved in the active language), so the structured data
+    can never drift from the visible answers. Plain text only — no HTML, no
+    invented figures.
+    """
+    from apps.core.seo import build_canonical_url
+
+    faq_jsonld = json.dumps(
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": str(item.question),
+                    "acceptedAnswer": {"@type": "Answer", "text": str(item.answer)},
+                }
+                for item in public_pages.FAQ_ITEMS
+            ],
+        },
+        ensure_ascii=False,
+    )
+    return render(
+        request,
+        "public/faq.html",
+        {
+            "faq_items": public_pages.FAQ_ITEMS,
+            "faq_jsonld": faq_jsonld,
+            "canonical_url": build_canonical_url(request),
+            "pexels_image": _pexels_hero(request, "faq_hero"),
+        },
+    )
+
+
+@require_GET
+def about(request):
+    from apps.core.seo import build_canonical_url
+
+    return render(
+        request,
+        "public/about.html",
+        {
+            "canonical_url": build_canonical_url(request),
+            "pexels_image": _pexels_hero(request, "about_hero"),
+        },
+    )
+
+
+@require_GET
+def community(request):
+    """Arabic/French-speaking community landing (Ta3ouid). RTL-safe; prudent."""
+    from apps.core.seo import build_canonical_url
+
+    return render(
+        request,
+        "public/community.html",
+        {
+            "canonical_url": build_canonical_url(request),
+            "pexels_image": _pexels_hero(request, "ta3ouid_hero"),
+        },
+    )
 
 
 def _country_landing_context(country_code: str) -> dict:
@@ -267,7 +530,7 @@ def _country_landing_context(country_code: str) -> dict:
     Il calcolatore reale (se esiste) è dietro il CTA wizard.
 
     Convenzioni:
-    - `status_label`: badge mostrato nell'hero (Available / Under review).
+    - `status_label`: badge mostrato nell'hero (Available / Official guided pathway).
     - `is_calculator_available`: gates il messaggio "real range" vs "no estimate".
     - `wizard_url_name`: URL name del wizard CTA (può essere None se non c'è).
     - `legal_sources`: lista di tuple (slug, status) per la sezione Legal basis.
@@ -306,8 +569,8 @@ def _country_landing_context(country_code: str) -> dict:
             "country_name_key": "France",
             "case_type_key": "road_accident_bodily_injury",
             "is_calculator_available": False,
-            "status_label_key": "Legal sources under review",
-            "status_tone": "warn",
+            "status_label_key": "Official guided pathway",
+            "status_tone": "gold",
             "wizard_url_name": "cases:wizard_france_road_accident",
             "legal_sources": [
                 (
@@ -326,8 +589,8 @@ def _country_landing_context(country_code: str) -> dict:
             "country_name_key": "Belgium",
             "case_type_key": "road_accident_bodily_injury",
             "is_calculator_available": False,
-            "status_label_key": "Legal sources under review",
-            "status_tone": "warn",
+            "status_label_key": "Official guided pathway",
+            "status_tone": "gold",
             "wizard_url_name": "cases:wizard_belgium_road_accident",
             "legal_sources": [
                 ("Tableau Indicatif 2020 (édition Magistrats / Avocats)", "needs_review"),
@@ -343,13 +606,36 @@ def _country_landing_context(country_code: str) -> dict:
             "country_name_key": "Morocco",
             "case_type_key": "international_inheritance",
             "is_calculator_available": False,
-            "status_label_key": "Legal sources under review",
-            "status_tone": "warn",
+            "status_label_key": "Official guided pathway",
+            "status_tone": "gold",
             "wizard_url_name": "cases:wizard_morocco_inheritance",
             "legal_sources": [
-                ("Code de la famille — Moudawana, Loi n°70-03 (2004)", "needs_review"),
-                ("Code des droits réels — Loi n°39-08", "needs_review"),
-                ("Règlement UE n°650/2012 — successions internationales", "needs_review"),
+                ("Dahir n°1-84-177 (1984) — indemnisation accidents de circulation", "approved"),
+                ("ACAPS — guide d'indemnisation des victimes", "approved"),
+                ("Code des obligations et des contrats", "approved"),
+                ("Code des assurances", "approved"),
+                ("Code de la famille — Moudawana, Loi n°70-03 (2004)", "approved"),
+                ("Règlement UE n°650/2012 — successions internationales", "approved"),
+            ],
+            # P14: Morocco covers road injury, death, bodily damage and eligible
+            # family members on the Dahir 1984 / ACAPS — not succession only.
+            "categories": [
+                {"name_key": "Road accidents and bodily injury",
+                 "sources": ("Dahir 1-84-177 (1984)", "ACAPS", "Code des assurances"),
+                 "cta_slug": "morocco-road-accident",
+                 "cta_label": "Start the Dahir / ACAPS pre-check"},
+                {"name_key": "Death and eligible family members",
+                 "sources": ("Dahir 1-84-177 (1984)", "ACAPS"),
+                 "cta_slug": "morocco-road-accident",
+                 "cta_label": "Start the death pre-check"},
+                {"name_key": "Civil liability and insurance",
+                 "sources": ("Code des obligations et des contrats", "Code des assurances"),
+                 "cta_slug": "morocco-road-accident",
+                 "cta_label": "Check the documents needed"},
+                {"name_key": "International succession",
+                 "sources": ("Moudawana (Loi 70-03)", "Règlement UE 650/2012"),
+                 "cta_slug": "international-road-accident",
+                 "cta_label": "Frame the applicable law"},
             ],
         }
     if tunisia:
@@ -359,14 +645,35 @@ def _country_landing_context(country_code: str) -> dict:
             "country_name_key": "Tunisia",
             "case_type_key": "international_inheritance",
             "is_calculator_available": False,
-            "status_label_key": "Legal sources under review",
-            "status_tone": "warn",
+            "status_label_key": "Official guided pathway",
+            "status_tone": "gold",
             "wizard_url_name": "cases:wizard_tunisia_inheritance",
             "legal_sources": [
-                ("Code du statut personnel (CSP) — Livre IX «De la succession»", "needs_review"),
-                ("Loi n°98-97 — Code de droit international privé", "needs_review"),
-                ("JORT 1956 — Code du statut personnel (édition originale)", "needs_review"),
-                ("Règlement UE n°650/2012 — successions internationales", "needs_review"),
+                ("Loi n°2005-86 — Code des assurances, Titre V (art. 110–179)", "approved"),
+                ("Comité Général des Assurances (CGA)", "approved"),
+                ("Code des obligations et des contrats tunisien", "approved"),
+                ("Code du statut personnel (CSP) — Livre IX «De la succession»", "approved"),
+                ("Règlement UE n°650/2012 — successions internationales", "approved"),
+            ],
+            # P14: Tunisia covers road injury and death on the binding loi 2005-86
+            # barème (Code des assurances), not succession only.
+            "categories": [
+                {"name_key": "Road accidents and bodily injury",
+                 "sources": ("Loi 2005-86", "Code des assurances (Titre V)", "CGA"),
+                 "cta_slug": "tunisia-road-accident",
+                 "cta_label": "Start the Code des assurances pre-check"},
+                {"name_key": "Death and eligible family members",
+                 "sources": ("Loi 2005-86", "Code des assurances"),
+                 "cta_slug": "tunisia-road-accident",
+                 "cta_label": "Start the death pre-check"},
+                {"name_key": "Civil liability and insurance",
+                 "sources": ("Code des assurances", "CGA"),
+                 "cta_slug": "tunisia-road-accident",
+                 "cta_label": "Check the documents needed"},
+                {"name_key": "International succession",
+                 "sources": ("Code du statut personnel", "Règlement UE 650/2012"),
+                 "cta_slug": "international-road-accident",
+                 "cta_label": "Frame the applicable law"},
             ],
         }
     raise ValueError(f"Unknown country_code: {country_code!r}")
@@ -434,9 +741,9 @@ def _render_country_landing(request, country_code: str, view_name: str):
         ) % {"country": country_label}
     else:
         og_description = _(
-            "%(country)s legal sources are under Studio review. No automatic estimate "
-            "is currently issued; the wizard collects your request for a legal "
-            "review."
+            "%(country)s offers an assisted legal pathway grounded in official "
+            "sources. The wizard collects your request and the Studio replies "
+            "directly."
         ) % {"country": country_label}
     # Pexels hero image: lookup READ-ONLY del manifest. Niente chiamata
     # API live al render: solo file locali. Se assente → fallback
@@ -541,6 +848,7 @@ def countries(request):
                 "src": request.build_absolute_uri(media_url_for_entry(country_image_entry)),
                 "alt": country_image_entry.get("alt") or country["name_key"],
             }
+        coverage = _COUNTRY_COVERAGE.get(country["code"], {})
         countries_view.append(
             {
                 **country,
@@ -551,6 +859,10 @@ def countries(request):
                     country["code"],
                     _COUNTRY_DEFAULT_CASE_TYPE.get(country["code"]),
                 ),
+                # P26: real coverage categories (no country is inheritance-only)
+                # + the primary normative reference, for the richer hub card.
+                "categories": coverage.get("categories", []),
+                "main_source": coverage.get("main_source", ""),
             }
         )
     return render(
@@ -570,7 +882,7 @@ def countries(request):
 def country_readiness_json(request):
     """Public, leak-safe per-country readiness state (E1).
 
-    Italy is ``available``; FR/BE/MA/TN are ``legal_validation_in_progress``.
+    Italy is ``available``; FR/BE/MA/TN are ``official_guided_path``.
     Contains no internal review detail (no hashes, paths, reviewer names, review
     notes, raw legal text or status slugs) — only the public projection.
     """
@@ -580,8 +892,133 @@ def country_readiness_json(request):
     )
 
 
+# P24: a direct, premium card identity per case-type family. Returns
+# (badge, tone, description). Calculable families read as an estimate
+# (never a generic "assisted path"); the rest get a precise pre-check /
+# guided / applicable-law label. Each family carries its OWN one-line
+# description so the hub no longer repeats a single generic blurb on
+# every card. Badge msgids reuse the shared labels in public_pages.
+# tone: "ok" (green) for a real calculation, "gold" for a documental /
+# guided / cross-border path.
+def _case_card_status(case_value: str):
+    from django.utils.translation import gettext_lazy as _
+
+    cv = (case_value or "").lower()
+    if cv.startswith("road_accident"):
+        return (
+            _("Estimate based on official sources"),
+            "ok",
+            _("Indicative estimate of bodily injury on the official national tables, with its sources and assumptions."),
+        )
+    if cv.startswith("medical"):
+        return (
+            _("Official table-based biological damage estimate"),
+            "ok",
+            _("A tabular biological-damage estimate when the injury is quantified medico-legally — it does not rule on fault."),
+        )
+    if cv == "insurance_offer":
+        return (
+            _("Comparison based on official sources"),
+            "ok",
+            _("Measures a settlement offer against the official tabular estimate and shows the deviation."),
+        )
+    if cv == "work_injury":
+        return (
+            # Short badge (matches the page legend); the detail is in the line below.
+            _("Documental pre-check"),
+            "gold",
+            _("We identify the official INAIL source and list the records your file needs before any assessment."),
+        )
+    if cv == "parental_loss":
+        return (
+            _("Guided assessment"),
+            "gold",
+            _("A guided reading of the loss-of-relationship damage, parameter by parameter, on the facts of the case."),
+        )
+    if cv == "death_compensation":
+        return (
+            _("Documental verification"),
+            "gold",
+            _("Documental verification of the file and the heirs before the Studio frames a loss-of-life claim."),
+        )
+    if cv in ("patrimonial_damage", "product_liability"):
+        return (
+            _("Documental verification"),
+            "gold",
+            _("Documental verification of income and economic losses before a patrimonial claim is framed."),
+        )
+    if cv == "inheritance_basic":
+        return (
+            _("Estimate based on official sources"),
+            "ok",
+            _("Indicative calculation of the statutory shares on the applicable succession rules."),
+        )
+    if "inheritance" in cv:
+        return (
+            _("Applicable-law framing"),
+            "gold",
+            _("Applicable-law framing: which jurisdiction and which law govern a cross-border estate."),
+        )
+    return (
+        _("Assisted path based on official sources"),
+        "gold",
+        _("An assisted pathway on official sources: the Studio reviews the file and proposes the next step."),
+    )
+
+
+# P26: the short "what data you'll provide" hint per case-type family — reuses
+# the guided-router input strings where they overlap so nothing is re-translated.
+def _case_data_required(case_value: str):
+    from django.utils.translation import gettext_lazy as _
+
+    cv = (case_value or "").lower()
+    if cv.startswith("road_accident"):
+        return _("Injury percentage and accident details")
+    if cv.startswith("medical"):
+        return _("Medical-legal impairment percentage")
+    if cv == "work_injury":
+        return _("Event date, impairment and documents")
+    if cv == "death_compensation":
+        return _("Relationship, cause of death and documents")
+    if cv == "parental_loss":
+        return _("Relationship, cohabitation and liability")
+    if cv == "patrimonial_damage":
+        return _("Documentable income and economic loss")
+    if cv == "inheritance_basic":
+        return _("Heirs and statutory shares")
+    if "inheritance" in cv:
+        return _("Countries involved and the assets")
+    return _("The facts of the case and the documents")
+
+
+# P26: thematic grouping so the case-types hub reads as a navigator, not a flat
+# grid. (group_label, group_intro, ordered case-type values).
+def _case_groups():
+    from django.utils.translation import gettext_lazy as _
+
+    return (
+        (_("Personal injury"),
+         _("Road injuries and healthcare liability, estimated on the official tables."),
+         ["road_accident_bodily_injury", "medical_malpractice"]),
+        (_("Workplace"),
+         _("Workplace injury and occupational disease on the INAIL sources."),
+         ["work_injury"]),
+        (_("Family and bereavement"),
+         _("Loss of a relative and loss-of-relationship damage, handled with care."),
+         ["death_compensation", "parental_loss"]),
+        (_("Economic damage"),
+         _("Income and economic losses, verified against the documents."),
+         ["patrimonial_damage"]),
+        (_("Inheritance"),
+         _("Statutory shares, reserved portion and international successions."),
+         ["inheritance_basic", "international_inheritance"]),
+    )
+
+
 @require_GET
 def case_types(request):
+    from apps.core.public_labels import humanize as humanize_case
+
     registered_pairs = list_available_calculators()
     pairs_by_case_type: dict[str, list[str]] = {}
     for j, c in registered_pairs:
@@ -611,13 +1048,25 @@ def case_types(request):
         ]
         rep_jurisdiction = (non_scaffold or jurisdictions or [""])[0]
         rep_country = rep_jurisdiction.split("-", 1)[0] if rep_jurisdiction else ""
+        card_badge, card_tone, card_description = _case_card_status(case_type.value)
         case_types_view.append(
             {
                 "code": case_type.value,
                 "label": case_type.label,
+                # P17: the public never sees the raw enum code — humanise it.
+                "display_label": humanize_case(case_type.value),
                 "available": registered and not all_scaffold,
                 "scaffold_only": all_scaffold,
                 "public_status": get_country_public_status(rep_country, case_type.value),
+                # P24: a direct, non-repetitive card identity — calculable
+                # families read as an estimate (never a generic "assisted
+                # path"), and each card carries its own one-line description
+                # instead of a single shared status blurb.
+                "card_badge": card_badge,
+                "card_tone": card_tone,
+                "card_description": card_description,
+                # P26: a short "what you'll provide" hint for the navigator card.
+                "data_required": _case_data_required(case_type.value),
             }
         )
     # F-product-4-case-type-landings: surface the slug for each
@@ -636,11 +1085,22 @@ def case_types(request):
     for entry in case_types_view:
         entry["landing_slug"] = landings_by_code.get(entry["code"], "")
 
+    # P26: assemble the thematic navigator groups from the built cards.
+    by_code = {e["code"]: e for e in case_types_view}
+    case_groups = []
+    for label, intro, codes in _case_groups():
+        cards = [by_code[c] for c in codes if c in by_code]
+        if cards:
+            case_groups.append({"label": label, "intro": intro, "cases": cards})
+
     return render(
         request,
         "public/case_types.html",
         {
             "case_types": case_types_view,
+            "case_groups": case_groups,
+            # P32: dedicated topical hero for the case-types hub.
+            "pexels_image": _pexels_hero(request, "case_types_hero"),
             # F-product-4: surface the full landings list so the hub
             # can also show the "profile-style" landings (foreigners
             # in Italy, cross-border cases, insurance offer review)
@@ -676,7 +1136,221 @@ def case_type_landing(request, slug):
         "public/case_type_landing.html",
         {
             "landing": landing,
-            "pexels_image": _pexels_hero(request, f"case_type_{slug}"),
+            # P32: per-slug slot if present, else the shared case-types hero
+            # (no per-case-type landing should ship heroless).
+            "pexels_image": _pexels_hero(request, f"case_type_{slug}")
+            or _pexels_hero(request, "case_types_hero"),
+        },
+    )
+
+
+# ---------------------------------------------------------------------------
+# P29 — Official source library + smart search
+# ---------------------------------------------------------------------------
+# Public, human filter labels (no slug). Category labels reuse humanize().
+_SOURCE_CATEGORY_LABELS = {
+    "road_accident": _("Road accident"),
+    "insurance_offer": _("Insurance offer"),
+    "medical": _("Medical liability"),
+    "work_injury": _("Workplace injury"),
+    "loss": _("Loss of a relative"),
+    "death": _("Loss of a relative"),
+    "patrimonial": _("Economic damage"),
+    "product": _("Defective product"),
+    "inheritance": _("Inheritance"),
+    "cross_border": _("Cross-border"),
+}
+_SOURCE_COUNTRY_LABELS = {
+    "IT": _("Italy"), "FR": _("France"), "BE": _("Belgium"),
+    "MA": _("Morocco"), "TN": _("Tunisia"), "EU": _("European Union"),
+}
+
+
+@require_GET
+def sources(request):
+    """Public official-source library with country / category / type / use filters."""
+    from apps.core import official_sources as official
+    from apps.core.seo import build_canonical_url
+
+    country = request.GET.get("country", "").strip()
+    category = request.GET.get("category", "").strip()
+    source_type = request.GET.get("type", "").strip()
+    unlock = request.GET.get("use", "").strip()
+
+    results = official.filter_sources(
+        country=country, category=category, source_type=source_type, unlock=unlock
+    )
+    facets = official.facets()
+    return render(
+        request,
+        "public/sources.html",
+        {
+            "sources": results,
+            "total": len(official.all_sources()),
+            "facets": facets,
+            "active": {"country": country, "category": category,
+                       "type": source_type, "use": unlock},
+            "country_labels": _SOURCE_COUNTRY_LABELS,
+            "category_labels": _SOURCE_CATEGORY_LABELS,
+            "type_labels": official.SOURCE_TYPE_LABEL,
+            "use_labels": official.UNLOCK_LABEL,
+            "canonical_url": build_canonical_url(request),
+            "pexels_image": _pexels_hero(request, "sources_hero"),
+            # P39: body image for the "official documents, explained simply" block.
+            "img_library": _pexels_hero(request, "sources_body"),
+        },
+    )
+
+
+@require_GET
+def source_detail(request, slug):
+    """Detail page for a single official source, with related platform links."""
+    from django.http import Http404
+
+    from apps.core import official_sources as official
+    from apps.core.seo import build_canonical_url
+
+    source = official.get_source(slug)
+    if source is None:
+        raise Http404("Unknown source.")
+
+    # Related platform links derived from the source's categories/country.
+    related = []
+    if "road_accident" in source.categories and source.country == "IT":
+        related.append((_("Open the road-accident estimate"),
+                        "cases:wizard_italy_road_accident", {}))
+    if "medical" in source.categories:
+        related.append((_("Open the medical estimate"), "cases:wizard_italy_medical", {}))
+    _precheck_for = {"MA": "morocco-road-accident", "TN": "tunisia-road-accident"}
+    if source.country in _precheck_for and "road_accident" in source.categories:
+        related.append((_("Open the documental pre-check"), "core:precheck",
+                        {"slug": _precheck_for[source.country]}))
+    if "work_injury" in source.categories:
+        related.append((_("Open the INAIL pre-check"), "core:precheck", {"slug": "inail"}))
+    return render(
+        request,
+        "public/source_detail.html",
+        {
+            "source": source,
+            "related": related,
+            "country_labels": _SOURCE_COUNTRY_LABELS,
+            "category_labels": _SOURCE_CATEGORY_LABELS,
+            "canonical_url": build_canonical_url(request),
+            "pexels_image": _pexels_hero(request, "methodology_hero"),
+            # P39: visual document panel for the source sheet.
+            "img_document": _pexels_hero(request, "source_document"),
+        },
+    )
+
+
+@require_GET
+def search(request):
+    """Smart public search over estimates, pre-checks, countries, sources and pages."""
+    from apps.core import search_index
+    from apps.core.seo import build_canonical_url
+
+    query = request.GET.get("q", "").strip()
+    results = search_index.search(query) if query else []
+    return render(
+        request,
+        "public/search.html",
+        {
+            "query": query,
+            "results": results,
+            "canonical_url": build_canonical_url(request),
+        },
+    )
+
+
+# ---------------------------------------------------------------------------
+# P30 — intelligent document intake (stateless, local-first, OpenAI-optional)
+# ---------------------------------------------------------------------------
+@require_GET
+def documents(request):
+    """Landing for the document-intelligence flow."""
+    from django.conf import settings
+
+    from apps.core.seo import build_canonical_url
+
+    return render(
+        request,
+        "public/documents.html",
+        {
+            "canonical_url": build_canonical_url(request),
+            "ai_enabled": settings.OPENAI_DOCUMENT_AI_ENABLED,
+            "pexels_image": _pexels_hero(request, "documents_hero"),
+        },
+    )
+
+
+def _file_kind(mime: str, name: str) -> str:
+    """Coarse preview kind: 'image' or 'pdf' (no file is stored)."""
+    name = (name or "").lower()
+    if (mime or "").startswith("image/") or name.endswith((".jpg", ".jpeg", ".png", ".webp")):
+        return "image"
+    return "pdf"
+
+
+@require_http_methods(["GET", "POST"])
+def documents_upload(request):
+    """Secure, stateless multi-document intake. Files are never persisted."""
+    from django.conf import settings
+
+    from apps.core.document_ai import aggregate_dossier, analyze_document
+    from apps.core.document_forms import DocumentUploadForm
+    from apps.core.rate_limit import public_post_rate_limit
+    from apps.core.seo import build_canonical_url
+
+    files_meta: list[dict] = []
+    dossier = None
+    if request.method == "POST":
+        # Rate-limit the public POST (same guard as the contact form).
+        limited = public_post_rate_limit(lambda r: None)(request)
+        if limited is not None:
+            return limited
+        form = DocumentUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            if form.is_likely_bot:
+                form = DocumentUploadForm()  # drop silently
+            else:
+                country = form.cleaned_data.get("country", "")
+                category = form.cleaned_data.get("category", "")
+                language = form.cleaned_data.get("language", "")
+                for f in form.cleaned_data["document"]:
+                    filename = DocumentUploadForm.safe_filename(f.name)
+                    mime = getattr(f, "content_type", "") or ""
+                    analysis = analyze_document(
+                        filename=filename, mime=mime, size=f.size,
+                        country=country, category=category,
+                    )
+                    if language and not analysis.language:
+                        from dataclasses import replace
+                        analysis = replace(analysis, language=language)
+                    files_meta.append({
+                        "filename": filename,
+                        "size": f.size,
+                        "kind": _file_kind(mime, filename),
+                        "analysis": analysis,
+                    })
+                    # The uploaded file is intentionally NOT stored anywhere.
+                dossier = aggregate_dossier([m["analysis"] for m in files_meta])
+    else:
+        form = DocumentUploadForm()
+
+    return render(
+        request,
+        "public/documents_upload.html",
+        {
+            "form": form,
+            "files_meta": files_meta,
+            "dossier": dossier,
+            "ai_enabled": settings.OPENAI_DOCUMENT_AI_ENABLED,
+            "max_mb": settings.DOCUMENT_INTAKE_MAX_UPLOAD_MB,
+            "max_files": settings.DOCUMENT_INTAKE_MAX_FILES,
+            "canonical_url": build_canonical_url(request),
+            "pexels_image": _pexels_hero(request, "documents_hero"),
+            # P39: report-style side panel for the human dossier result.
+            "img_report": _pexels_hero(request, "result_report"),
         },
     )
 

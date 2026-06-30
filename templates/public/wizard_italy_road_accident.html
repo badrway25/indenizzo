@@ -43,13 +43,22 @@
     <p class="mt-4 text-xs text-stone2-500 leading-relaxed">{% blocktranslate %}The range is indicative, not a guaranteed payout. The actual valuation depends on documents, expert reports, applicable law and judicial orientation.{% endblocktranslate %}</p>
   </aside>
 
-  <form method="post" novalidate class="mt-10 bg-white border border-stone2-200 rounded-3xl shadow-card p-6 sm:p-8 space-y-6">
+  <form method="post" novalidate class="premium-wizard-shell mt-10 p-6 sm:p-8 space-y-6">
     {% csrf_token %}
 
     {# Honeypot anti-bot — invisibile agli utenti reali #}
     <div aria-hidden="true" class="is-honeypot">
       <label for="id_website">{% translate "Website (do not fill)" %}</label>
       {{ form.website }}
+    </div>
+
+    {# Completeness meter (JS-only); optional fields, never gates submission. #}
+    <div class="wizard-progress" data-wizard-progress aria-label="{% translate 'Form completeness' %}">
+      <div class="wizard-progress__meta">
+        <span>{% translate "Completeness" %}<button type="button" class="tooltip-anchor" data-tooltip="{% translate 'The more details you provide, the more precise the indicative range. All fields stay optional.' %}" aria-label="{% translate 'What is this?' %}">?</button></span>
+        <span data-wizard-progress-label data-progress-template="{done}/{total}">0/0</span>
+      </div>
+      <div class="wizard-progress__track"><div class="wizard-progress__bar" data-wizard-progress-bar></div></div>
     </div>
 
     {% if form.non_field_errors %}
@@ -80,7 +89,7 @@
       </p>
       <button type="submit" class="premium-btn premium-btn-primary">
         {% translate "Calculate indicative estimate" %}
-        <span aria-hidden="true">→</span>
+        <span class="cta-arrow" aria-hidden="true">→</span>
       </button>
     </div>
   </form>

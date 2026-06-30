@@ -126,10 +126,20 @@ def contact(request):
                 logger.info("crm.lead.dropped reason=honeypot path=%s", request.path)
                 return redirect(reverse("crm:contact_thank_you"))
 
+            # P28: the dossier origin travels in the query string of the
+            # send-CTA (/contact/?flow=…&result_kind=…&readiness=…). The form
+            # posts to the same query-stringed URL, so request.GET still
+            # carries it here. Whitelisted + bounded in the service.
+            dossier_origin = {
+                "flow": request.GET.get("flow", ""),
+                "result_kind": request.GET.get("result_kind", ""),
+                "readiness": request.GET.get("readiness", ""),
+            }
             lead = create_lead_from_form(
                 form_kwargs=form.to_lead_kwargs(),
                 simulation_public_id=form.cleaned_data.get("simulation_public_id") or "",
                 request=request,
+                dossier_origin=dossier_origin,
             )
             # Notifica transazionale allo Studio. Failure-soft a tutti i
             # livelli: né Celery né SMTP possono rompere il redirect

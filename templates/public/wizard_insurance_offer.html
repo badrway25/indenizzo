@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Italy — insurance offer comparison" %} — {{ SITE_NAME }}{% endblock %}
+{% block meta_robots %}noindex, nofollow{% endblock %}
+{% block meta_description %}{% blocktranslate %}Compare an insurer's settlement offer against the indicative biological-damage estimate from the approved Italian sources (TUN 2025 and art. 139 CAP). Indicative comparison only — it does not replace the full analysis of the case.{% endblocktranslate %}{% endblock %}
+
+{% block content %}
+{% include "partials/_premium_hero_image.html" %}
+<section class="max-w-3xl mx-auto px-5 lg:px-8 py-16">
+  <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Italy — insurance offer comparison" %}</p>
+  <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Compare an insurance offer" %}</h1>
+  <p class="mt-4 text-lg text-ink-800 leading-relaxed">
+    {% blocktranslate %}Enter the offer you received and the basic facts of the injury. We compute the indicative tabular estimate from the approved official sources and show how the offer compares to it.{% endblocktranslate %}
+  </p>
+
+  <div class="mt-8">{% include "partials/_premium_stepper.html" with step=2 %}</div>
+
+  {# P9 Fase D: mandatory comparison disclaimer. #}
+  <div class="mt-6 rounded-2xl border border-gold-400/50 bg-sand-100 px-5 py-4 text-sm text-ink-900 leading-relaxed" role="note">
+    <strong class="font-semibold">{% translate "Important" %}.</strong>
+    {% blocktranslate %}Indicative tabular comparison based on official sources. It does not replace the full analysis of the case.{% endblocktranslate %}
+  </div>
+
+  {% include "partials/_module_status_card.html" with msc_does=_("Compares your offer against the indicative biological-damage range computed from the approved Italian sources (art. 139 CAP for minor disability, Tabella Unica Nazionale 2025 for higher disability).") msc_does_not=_("It does not value patrimonial damage, personalisation or the wider claim, does not constitute legal advice, and does not replace the full analysis of the case by a lawyer.") msc_next_step=_("Submit to see the indicative range, your offer and the deviation, then request a legal review before accepting or refusing any settlement.") msc_status_label=_("Comparison available — official Italian sources") msc_status_tone="ok" %}
+
+  <form method="post" novalidate class="premium-wizard-shell mt-10 p-6 sm:p-8 space-y-6">
+    {% csrf_token %}
+
+    {# Honeypot anti-bot — invisibile agli utenti reali #}
+    <div aria-hidden="true" class="is-honeypot">
+      <label for="id_website">{% translate "Website (do not fill)" %}</label>
+      {{ form.website }}
+    </div>
+
+    {% if form.non_field_errors %}
+      <div class="rounded-xl border border-red-300 bg-red-50 p-3 text-sm text-red-800">
+        {{ form.non_field_errors }}
+      </div>
+    {% endif %}
+
+    {{ form.accident_country }}
+
+    {# The offer amount is the load-bearing input for this module — render it first and prominently. #}
+    <div class="rounded-2xl border border-gold-400/50 bg-sand-50 p-5">
+      <label for="{{ form.offer_amount.id_for_label }}" class="block text-sm font-semibold text-ink-900">{{ form.offer_amount.label }}</label>
+      {{ form.offer_amount }}
+      {% if form.offer_amount.help_text %}<p class="mt-1 text-xs text-stone2-500">{{ form.offer_amount.help_text }}</p>{% endif %}
+      {% if form.offer_amount.errors %}<p class="mt-1 text-xs text-red-700">{{ form.offer_amount.errors|striptags }}</p>{% endif %}
+    </div>
+
+    {% include "public/_road_accident_wizard_form_fields.html" %}
+
+    {% include "partials/consent_checkboxes.html" with privacy_field=form.consent_simulation special_categories_field=form.special_categories_consent %}
+
+    <div class="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between pt-2">
+      <p class="text-xs text-stone2-500 leading-relaxed">
+        {% blocktranslate %}Submitting this form does not create a professional engagement.{% endblocktranslate %}
+      </p>
+      <button type="submit" class="premium-btn premium-btn-primary">
+        {% translate "Compare with the official estimate" %}
+        <span class="cta-arrow" aria-hidden="true">→</span>
+      </button>
+    </div>
+  </form>
+
+  <p class="mt-8 text-xs text-stone2-500 leading-relaxed">
+    {% blocktranslate %}The simulation is indicative and does not constitute legal advice, medical-legal opinion, or guarantee of outcome.{% endblocktranslate %}
+  </p>
+</section>
+
+<script nonce="{{ CSP_NONCE }}">
+  (function(){
+    const cls = "mt-1 w-full rounded-xl border border-stone2-200 bg-sand-50 px-3 py-2.5 focus:border-gold-500 focus:bg-white outline-none";
+    document.querySelectorAll('form input[type="date"], form input[type="number"], form input[type="text"]:not([type="hidden"])').forEach(function(el){
+      if (el.type === "checkbox" || el.type === "hidden") return;
+      el.className = cls;
+    });
+  })();
+</script>
+{% endblock %}

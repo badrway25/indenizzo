@@ -5,17 +5,42 @@
 {% block meta_robots %}noindex, nofollow{% endblock %}
 
 {% block content %}
-<section class="max-w-3xl mx-auto px-5 lg:px-8 py-16">
-  <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Indicative simulation" %}</p>
-  <h1 class="mt-4 font-serif text-4xl text-ink-950 leading-tight">{% translate "Preliminary result" %}</h1>
+{% comment %} P24: a calm photographic banner opens the result page; the navy hero
+   band with the real <h1> follows immediately below. {% endcomment %}
+{% include "partials/_premium_hero_image.html" %}
+{% comment %} P23: premium result shell — a navy hero band frames the preliminary
+   result before the indicative range, consistent with the redesigned pages. {% endcomment %}
+<section class="max-w-3xl mx-auto px-5 lg:px-8 pt-10">
+  <div class="premium-hero-mini">
+    <p class="premium-rise premium-eyebrow">{% translate "Indicative simulation" %}</p>
+    <h1 class="premium-rise-2 mt-3 font-serif text-4xl text-sand-50 leading-tight">{% translate "Preliminary result" %}</h1>
+    <p class="premium-rise-3 mt-3 max-w-xl text-sand-50/85 leading-relaxed">{% translate "An indicative range from the validated official sources, with the assumptions and limits set out below." %}</p>
+  </div>
+</section>
+<section class="max-w-3xl mx-auto px-5 lg:px-8 pt-8 pb-16">
+  <div>{% include "partials/_premium_stepper.html" with step=3 %}</div>
 
-  <div class="mt-8">{% include "partials/_premium_stepper.html" with step=3 %}</div>
+  {# P39: human "report header" — indicated / can do / missing / next, with a report image. #}
+  {% if has_estimate %}
+    {% include "partials/_result_report_summary.html" with report_mode="estimate" report_missing=_("A short legal review by the Studio to confirm documents, expert reports and the responsibility split.") report_next=_("Download the PDF, then request a legal review from the Studio.") %}
+  {% else %}
+    {% include "partials/_result_report_summary.html" with report_mode="prepare" %}
+  {% endif %}
+
+  {# P9 Fase C: mandatory scope note for medical-liability simulations. #}
+  {% if medical_scope_note %}
+    <div class="mt-6 rounded-2xl border border-gold-400/50 bg-sand-100 px-5 py-4 text-sm text-ink-900 leading-relaxed" role="note">
+      <strong class="font-semibold">{% translate "Scope of this estimate" %}.</strong>
+      {{ medical_scope_note }}
+    </div>
+  {% endif %}
 
   {# -------- Status box -------- #}
   {# Range presentation: trailing zeros stripped via floatformat:"-2" (Decimal field has 4 places, irrelevant for integer EUR amounts at this scale). Mid cell gets visual emphasis because it is the working anchor referenced by the "Calculation basis" block below; the "Read how to read this range" link points readers to the explanation without forcing a tooltip. #}
   {% if has_estimate %}
     <div class="mt-8 rounded-3xl border border-ok-600/30 bg-ok-600/5 p-6">
-      <p class="text-[11px] uppercase tracking-[0.18em] text-ok-600 font-semibold">{{ status_public_label }}</p>
+      {# P13-FIX: badge reflects which approved engine produced the estimate. #}
+      <p class="text-[11px] uppercase tracking-[0.18em] text-ok-600 font-semibold">{% if estimate_badge %}{{ estimate_badge }}{% else %}{{ status_public_label }}{% endif %}</p>
       <h2 id="result-range-heading" class="mt-2 font-serif text-2xl text-ink-950">{% translate "Indicative range" %}</h2>
       <dl class="mt-4 grid sm:grid-cols-3 gap-4" role="group" aria-labelledby="result-range-heading">
         <div>
@@ -49,6 +74,40 @@
         <a href="#result-calculation-basis" class="underline decoration-gold-500/50 underline-offset-4 hover:decoration-gold-500">{% translate "How to read this range" %} <span aria-hidden="true">↓</span></a>
       </p>
     </div>
+
+    {# P9 Fase D: insurance-offer comparison block (only when an offer was provided). #}
+    {% if offer_comparison %}
+      <div class="mt-6 rounded-3xl border border-stone2-200 bg-white shadow-card p-6" data-offer-verdict="{{ offer_comparison.verdict }}">
+        <p class="text-[11px] uppercase tracking-[0.18em] text-gold-600 font-semibold">{% translate "Offer comparison" %}</p>
+        <dl class="mt-4 grid sm:grid-cols-2 gap-4">
+          <div class="rounded-2xl bg-sand-100 p-4">
+            <dt class="text-xs text-stone2-500 uppercase tracking-[0.12em]">{% translate "Your offer" %}</dt>
+            <dd class="mt-1 font-serif text-2xl text-ink-950">{{ offer_comparison.offer|floatformat:"-2" }} {{ simulation.currency }}</dd>
+          </div>
+          <div class="rounded-2xl bg-sand-100 p-4">
+            <dt class="text-xs text-stone2-500 uppercase tracking-[0.12em]">{% translate "Central indicative estimate" %}</dt>
+            <dd class="mt-1 font-serif text-2xl text-ink-950">{{ offer_comparison.estimate_mid|floatformat:"-2" }} {{ simulation.currency }}</dd>
+          </div>
+        </dl>
+        <p class="mt-4 text-sm text-ink-900 leading-relaxed">
+          {% if offer_comparison.deviation_pct < 0 %}
+            {% blocktranslate with pct=offer_comparison.deviation_display %}Your offer is about {{ pct }} below the central indicative estimate.{% endblocktranslate %}
+          {% else %}
+            {% blocktranslate with pct=offer_comparison.deviation_display %}Your offer is about {{ pct }} above the central indicative estimate.{% endblocktranslate %}
+          {% endif %}
+        </p>
+        <p class="mt-3 inline-flex items-center gap-2 text-sm font-semibold">
+          {% if offer_comparison.verdict == "below" %}
+            <span class="px-2.5 py-1 rounded-full text-xs border border-gold-500 text-gold-700 bg-sand-100">{% translate "Below the indicative range" %}</span>
+          {% elif offer_comparison.verdict == "above" %}
+            <span class="px-2.5 py-1 rounded-full text-xs border border-ok-600 text-ok-600 bg-sand-100">{% translate "Above the indicative range" %}</span>
+          {% else %}
+            <span class="px-2.5 py-1 rounded-full text-xs border border-ok-600 text-ok-600 bg-sand-100">{% translate "Within the indicative range" %}</span>
+          {% endif %}
+        </p>
+        <p class="mt-4 text-xs text-stone2-500 leading-relaxed">{% blocktranslate %}Indicative tabular comparison based on official sources. It does not replace the full analysis of the case.{% endblocktranslate %}</p>
+      </div>
+    {% endif %}
   {% else %}
     <div class="mt-8">
       <h2 class="font-serif text-2xl text-ink-950">{{ public_message.public_summary }}</h2>
@@ -78,6 +137,13 @@
         {% endif %}
       </div>
     </div>
+  {% endif %}
+
+  {# -------- Quick access to the legal sources (drawer trigger, JS-only) -------- #}
+  {% if sources %}
+    <button type="button" class="premium-btn premium-btn-secondary premium-btn-sm js-only mt-6" data-drawer-open="sources">
+      {% translate "View the legal sources behind this result" %} <span aria-hidden="true">↗</span>
+    </button>
   {% endif %}
 
   {# -------- What this means (plain language) -------- #}
@@ -127,6 +193,13 @@
         {% blocktranslate %}Amounts are derived from validated legal sources cited below. They are indicative: the actual valuation depends on documents, expert reports, applicable law, competent jurisdiction and judicial orientation. This page is not legal advice and does not guarantee any outcome.{% endblocktranslate %}
       </p>
     </div>
+
+    {# P3: honest scope-of-coverage card — what the engine models vs not. #}
+    <div class="premium-disclaimer-card mt-6" data-testid="coverage-and-limits">
+      <p class="text-[11px] uppercase tracking-[0.22em] text-gold-700 font-semibold">{% translate "Coverage and limits" %}</p>
+      <p class="mt-2">{% blocktranslate %}This estimate models permanent biological damage and moral damages by age band and disability percentage, with an optional fault reduction.{% endblocktranslate %}</p>
+      <p class="mt-2">{% blocktranslate %}It does not model temporary disability, personalisation, income loss or other items beyond the above. Those require a document review by the Studio.{% endblocktranslate %}</p>
+    </div>
   {% endif %}
 
   {% comment %}
@@ -138,6 +211,9 @@
     Django renders as literal text — converted to {% comment %}.)
   {% endcomment %}
   {% include "partials/_documents_to_prepare.html" with variant="result" %}
+
+  {# Prudential statute-of-limitations notice (no invented periods). #}
+  {% include "partials/_prescrizione_notice.html" %}
 
   {% comment %}
     H2-2: the engine's `missing_documents` codes ARE now surfaced on the
@@ -204,30 +280,22 @@
     </div>
   {% endif %}
 
-  {# -------- Sources -------- #}
+  {# -------- Sources: always-visible inline list + JS-only off-canvas drawer -------- #}
   {% if sources %}
     <div class="mt-8">
       <h3 class="font-serif text-xl text-ink-950">{% translate "Cited legal sources" %}</h3>
-      <ul class="mt-4 space-y-3">
-        {% for src in sources %}
-          <li class="rounded-2xl border border-stone2-200 bg-white p-4 shadow-card">
-            <p class="text-sm font-semibold text-ink-950">{{ src.title }}</p>
-            {% if src.citation %}<p class="mt-1 text-xs text-stone2-500 font-mono">{{ src.citation }}</p>{% endif %}
-            <div class="mt-2 flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.12em] text-stone2-500">
-              {% if src.country %}<span class="px-2 py-0.5 rounded-full bg-stone2-100">{{ src.country }}</span>{% endif %}
-              {% if src.jurisdiction %}<span class="px-2 py-0.5 rounded-full bg-stone2-100">{{ src.jurisdiction }}</span>{% endif %}
-              {% if src.source_type %}<span class="px-2 py-0.5 rounded-full bg-stone2-100">{{ src.source_type }}</span>{% endif %}
-              {% if src.publication_date %}<span class="px-2 py-0.5 rounded-full bg-stone2-100">{{ src.publication_date }}</span>{% endif %}
-            </div>
-            {% if src.official_url %}
-              <a href="{{ src.official_url }}" rel="noopener noreferrer" target="_blank" aria-label="{% blocktranslate with title=src.title %}Open official source: {{ title }} (opens in a new tab){% endblocktranslate %}" class="mt-3 inline-block text-sm text-gold-600 hover:text-gold-500">
-                {% translate "Open official source" %} <span aria-hidden="true">↗</span>
-              </a>
-            {% endif %}
-          </li>
-        {% endfor %}
-      </ul>
+      <div class="mt-4">{% include "partials/_source_list.html" %}</div>
     </div>
+
+    {# Drawer duplicate of the inline list for quick access; display:none without JS. #}
+    <div class="drawer" data-drawer="sources" role="dialog" aria-modal="true" aria-label="{% translate 'Cited legal sources' %}">
+      <div class="drawer__header">
+        <h3 class="drawer__title">{% translate "Cited legal sources" %}</h3>
+        <button type="button" class="drawer__close" data-drawer-close aria-label="{% translate 'Close' %}">&times;</button>
+      </div>
+      <div class="drawer__body">{% include "partials/_source_list.html" %}</div>
+    </div>
+    <div class="drawer-backdrop" data-drawer-backdrop="sources"></div>
   {% endif %}
 
   {# -------- Disclaimer -------- #}
@@ -278,6 +346,10 @@
     link, NOT a CTA — the primary CTA (Request legal review)
     stays the strongest action below.
   {% endcomment %}
+
+  {# P28: unified "consolidate the dossier" panel — print + result-aware send. #}
+  {% include "partials/_dossier_panel.html" %}
+
   {% if recommended_landings %}
     <div class="mt-10 rounded-3xl border border-stone2-200 bg-white shadow-card p-6 lg:p-7">
       <p class="text-[11px] uppercase tracking-[0.22em] text-gold-600 font-semibold">{% translate "Useful pages for your case" %}</p>
@@ -313,20 +385,20 @@
   </div>
 
   <div class="mt-10 flex flex-wrap gap-3">
-    <a href="{{ contact_url }}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-ink-950 text-sand-50 hover:bg-ink-900 font-semibold">
+    <a href="{{ contact_url }}" class="premium-btn premium-btn-primary">
       {% if has_estimate %}{% translate "Request legal review" %}{% else %}{{ public_message.primary_cta_label }}{% endif %}
-      <span aria-hidden="true">→</span>
+      <span class="cta-arrow" aria-hidden="true">→</span>
     </a>
-    <a href="{% url 'reports:simulation_pdf' public_id=simulation.public_id %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-gold-500/40 text-ink-950 hover:bg-sand-100 font-semibold">
+    <a href="{% url 'reports:simulation_pdf' public_id=simulation.public_id %}" class="premium-btn premium-btn-secondary">
       {% translate "Download PDF report" %}
       <span aria-hidden="true">↓</span>
     </a>
     {% if has_estimate %}
-      <a href="{% url 'core:methodology' %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink-950/15 text-ink-950 hover:bg-stone2-100 font-semibold">
+      <a href="{% url 'core:methodology' %}" class="premium-btn premium-btn-ghost premium-btn-sm">
         {% translate "Back to methodology" %}
       </a>
     {% else %}
-      <a href="{% url 'cases:wizard_start' %}" class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-ink-950/15 text-ink-950 hover:bg-stone2-100 font-semibold">
+      <a href="{% url 'cases:wizard_start' %}" class="premium-btn premium-btn-ghost premium-btn-sm">
         {{ public_message.secondary_cta_label }}
       </a>
     {% endif %}

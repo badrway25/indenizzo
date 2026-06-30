@@ -62,7 +62,22 @@ class StaticSitemap(Sitemap):
         "core:countries": 0.8,
         "core:methodology": 0.6,
         "core:case_types": 0.6,
+        # P15: country × category guided router — navigational pivot.
+        "core:guided_router": 0.7,
+        # P29: official source library + smart search.
+        "core:sources": 0.7,
+        "core:search": 0.5,
+        # P30: document intake landing.
+        "core:documents": 0.7,
         "cases:wizard_start": 0.6,
+        # Workstream-3 content pages.
+        "core:how_it_works": 0.7,
+        # P40: public documentation hub.
+        "core:documentation": 0.6,
+        "core:services": 0.7,
+        "core:faq": 0.6,
+        "core:about": 0.5,
+        "core:community": 0.6,
         "core:privacy": 0.3,
         "core:disclaimer": 0.3,
     }

@@ -119,15 +119,18 @@ def test_countries_page_lists_mvp_countries():
 
 @pytest.mark.django_db
 def test_case_types_page_lists_taxonomy():
+    from django.utils import translation
+
+    from apps.core.public_labels import humanize
+
     response = Client().get(reverse("core:case_types"))
     body = response.content.decode("utf-8")
-    # Almeno questi codici della tassonomia REQ-4 devono apparire.
-    for code in (
-        "road_accident_bodily_injury",
-        "medical_malpractice",
-        "inheritance_basic",
-    ):
-        assert code in body
+    # P17: the page surfaces the premium human label for each taxonomy entry —
+    # never the raw enum code/slug.
+    with translation.override("it"):  # default unprefixed page renders in IT
+        for code in ("road_accident_bodily_injury", "medical_malpractice", "inheritance_basic"):
+            assert str(humanize(code)) in body, code
+            assert code not in body, f"raw slug {code} leaked"
 
 
 @pytest.mark.django_db
@@ -139,7 +142,10 @@ def test_case_types_page_marks_italy_modules_as_available():
     response = Client().get("/en/case-types/")
     body = response.content.decode("utf-8")
     assert (
-        ("Indicative calculation available" in body)
+        # P24: calculable Italian families now read as a direct estimate badge.
+        ("Estimate based on official sources" in body)
+        or ("Official table-based biological damage estimate" in body)
+        or ("Indicative calculation available" in body)
         or ("Module ready" in body)
         or ("module ready" in body.lower())
     )
@@ -464,13 +470,13 @@ def test_countries_page_shows_france_as_legal_sources_under_review():
     """Public /countries/ marks FR with the scaffold-only badge.
 
     Pass-5 renamed the badge from "Legal sources under review" to
-    "Preliminary legal assessment". Either still satisfies the
+    "Assisted legal pathway". Either still satisfies the
     contract that France is not marked as available.
     """
     response = Client().get("/en/countries/")
     assert response.status_code == 200
     body = response.content.decode("utf-8")
-    assert ("Preliminary legal assessment" in body) or ("Legal sources under review" in body)
+    assert ("Assisted legal pathway" in body) or ("Legal sources under review" in body)
 
 
 @pytest.mark.django_db
@@ -482,7 +488,7 @@ def test_wizard_start_page_offers_france_scaffold_link():
     assert "/en/wizard/fr/road-accident/" in body
     assert (
         ("Submit the case to the Studio" in body)
-        or ("Preliminary legal assessment" in body)
+        or ("Assisted legal pathway" in body)
         or ("Open scaffold wizard" in body)
         or ("Legal sources under review" in body)
     )
@@ -514,7 +520,7 @@ def test_countries_page_shows_belgium_as_legal_sources_under_review():
     assert response.status_code == 200
     body = response.content.decode("utf-8")
     # Both FR and BE are scaffold-only. Pass-5 renamed the badge.
-    badge_hits = body.count("Preliminary legal assessment") + body.count(
+    badge_hits = body.count("Assisted legal pathway") + body.count(
         "Legal sources under review"
     )
     assert badge_hits >= 2
@@ -556,12 +562,12 @@ def test_countries_page_shows_morocco_and_tunisia_as_legal_sources_under_review(
     assert response.status_code == 200
     body = response.content.decode("utf-8")
     # FR, BE, MA, TN all scaffold-only → 4 occurrences of a non-available badge.
-    # Pass-5 renamed the badge to "Preliminary legal assessment"; pass-6
+    # Pass-5 renamed the badge to "Assisted legal pathway"; pass-6
     # split MA/TN out into "International inheritance review" while
-    # keeping FR/BE on "Preliminary legal assessment". Either way, the
+    # keeping FR/BE on "Assisted legal pathway". Either way, the
     # 4 scaffolded countries must surface a non-available badge.
     badge_hits = (
-        body.count("Preliminary legal assessment")
+        body.count("Assisted legal pathway")
         + body.count("International inheritance review")
         + body.count("Legal sources under review")
     )
@@ -587,12 +593,18 @@ def test_case_types_page_marks_international_inheritance_as_scaffold():
     forward / backward compatibility.
     """
 
+    from apps.core.public_labels import humanize
+
     response = Client().get("/en/case-types/")
     assert response.status_code == 200
     body = response.content.decode("utf-8")
-    assert "international_inheritance" in body
+    # P17: the premium human label appears, never the raw enum code.
+    assert str(humanize("international_inheritance")) in body
+    assert "international_inheritance" not in body
     assert (
-        ("International inheritance review" in body)
-        or ("Preliminary legal assessment" in body)
+        # P24: the international-inheritance card now reads as cross-border framing.
+        ("Applicable-law framing" in body)
+        or ("International inheritance review" in body)
+        or ("Assisted legal pathway" in body)
         or ("Legal sources under review" in body)
     )

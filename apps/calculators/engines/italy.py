@@ -47,6 +47,7 @@ Priorità degli stati (ordine di valutazione):
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from decimal import Decimal
 from typing import Any
 
@@ -523,6 +524,214 @@ class ItalyRoadAccidentBodilyInjuryCalculator(_ItalyPlaceholderCalculator):
         )
 
 
+# ---------------------------------------------------------------------------
+# P8 — Official art. 139 CAP micropermanenti (1–9%) engine.
+#
+# Source-approved by the owner (CHATGPT_SOURCE_APPROVALS): art. 139 CAP +
+# D.M. MIMIT 18/07/2025 (G.U. n.176 del 31/07/2025, decorrenza aprile 2025).
+# ALL numeric values are read from approved CompensationTableRow rows (the 9
+# progression coefficients, the first-point value, the ITT daily value) — never
+# hardcoded here. The formula (art. 139 co.1 + co.6) lives in code:
+#
+#   danno permanente = primo_punto × coeff(P) × P × (1 − max(0, età−10)×0,005)
+#   danno temporaneo = giorni_ITT_assoluta × itt_daily
+#                      (+ giorni_parziale × itt_daily × percentuale/100)
+#
+# Row layout of the approved micro dataset (case_type road_accident_microlesions):
+#   row_type="disability_coefficient", disability_min=disability_max=P, coefficient=coeff
+#   row_type="first_point_value",      point_value=primo_punto
+#   row_type="itt_daily_absolute",     daily_amount=itt_daily
+# ---------------------------------------------------------------------------
+
+ITALY_MICRO_ENGINE_VERSION = "italy-art139-micro-1.0"
+_AGE_REDUCTION_PER_YEAR = Decimal("0.005")
+_MICRO_MIN_PCT = 1
+_MICRO_MAX_PCT = 9
+
+
+def _age_demultiplier(age: int) -> Decimal | None:
+    """art. 139: −0,5% per anno dall'11° anno di età. Floor a 0; None se età
+    fuori da un range plausibile (fail-closed, mai un demoltiplicatore assurdo)."""
+    if age < 0 or age > 120:
+        return None
+    reduction = _AGE_REDUCTION_PER_YEAR * Decimal(max(0, age - 10))
+    demult = Decimal(1) - reduction
+    return demult if demult > 0 else Decimal(0)
+
+
+@dataclass
+class _MicroComputation:
+    permanent: Decimal
+    temporary: Decimal
+    total: Decimal
+    coeff: Decimal
+    primo_punto: Decimal
+    itt_daily: Decimal
+
+
+def _compute_art139_micro(dataset, input_data: dict[str, Any]) -> _MicroComputation | None:
+    """Apply the official art. 139 formula reading values from the approved
+    micro dataset rows. Returns None when any required approved row/value is
+    missing (the caller then fails closed — never a guessed amount)."""
+    from decimal import ROUND_HALF_UP
+
+    pct = _to_int(input_data.get("permanent_disability_percentage"))
+    if pct is None or pct < _MICRO_MIN_PCT or pct > _MICRO_MAX_PCT:
+        return None
+    age = _to_int(input_data.get("victim_age"))
+    if age is None:
+        return None
+    demult = _age_demultiplier(age)
+    if demult is None:
+        return None
+
+    rows = dataset.rows.all()
+    coeff_row = next(
+        (r for r in rows
+         if r.row_type == "disability_coefficient"
+         and (r.disability_min is None or r.disability_min <= pct)
+         and (r.disability_max is None or r.disability_max >= pct)),
+        None,
+    )
+    base_row = next((r for r in rows if r.row_type == "first_point_value"), None)
+    itt_row = next((r for r in rows if r.row_type == "itt_daily_absolute"), None)
+    if coeff_row is None or base_row is None or itt_row is None:
+        return None
+    coeff = getattr(coeff_row, "coefficient", None)
+    primo_punto = getattr(base_row, "point_value", None)
+    itt_daily = getattr(itt_row, "daily_amount", None)
+    if coeff is None or primo_punto is None or itt_daily is None:
+        return None
+
+    cents = Decimal("0.01")
+    permanent = (primo_punto * coeff * Decimal(pct) * demult).quantize(cents, ROUND_HALF_UP)
+
+    itt_abs = _to_int(input_data.get("total_temporary_disability_days")) or 0
+    itt_partial = _to_int(input_data.get("partial_temporary_disability_days")) or 0
+    # Partial ITT is conventionally weighted at 50% of a day of absolute ITT when
+    # no explicit per-day percentage is collected; this is documented and shown.
+    temporary = (
+        (Decimal(itt_abs) * itt_daily)
+        + (Decimal(itt_partial) * itt_daily * Decimal("0.5"))
+    ).quantize(cents, ROUND_HALF_UP)
+
+    total = (permanent + temporary).quantize(cents, ROUND_HALF_UP)
+    return _MicroComputation(permanent, temporary, total, coeff, primo_punto, itt_daily)
+
+
+class _ItalyArt139MicroMixin:
+    """Shared art. 139 micro computation for road-accident and medical-liability
+    biological damage. Reads the approved micro dataset (road_accident_microlesions)
+    regardless of the invoking case_type, since the same official table applies."""
+
+    def _micro_result(self, input_data, source_refs, *, extra_assumptions=None,
+                      extra_warnings=None):
+        from apps.compensation.services import get_approved_dataset_for_sources
+
+        # the micro values live under the road_accident_microlesions dataset
+        sources_models = [s for s in self._approved_sources_cache]
+        micro_dataset = get_approved_dataset_for_sources(
+            sources_models, CaseType.ROAD_ACCIDENT_MICROLESIONS.value
+        )
+        if micro_dataset is None:
+            return self._build_result(
+                status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
+                sources=source_refs,
+                warnings=[_diag.diagnostic_to_internal_warning(_diag.COMPENSATION_DATASET_NOT_APPROVED)],
+                missing_documents=[_diag.COMPENSATION_DATASET_NOT_APPROVED],
+            )
+        comp = _compute_art139_micro(micro_dataset, input_data)
+        if comp is None:
+            return self._build_result(
+                status=CalculationStatus.UNAVAILABLE_REQUIRES_LEGAL_VALIDATION.value,
+                sources=source_refs,
+                warnings=[_diag.diagnostic_to_internal_warning(_diag.COMPENSATION_ROW_VALUE_MISSING)],
+                missing_documents=[_diag.COMPENSATION_ROW_VALUE_MISSING],
+            )
+        breakdown = [
+            BreakdownItem(
+                label="Danno biologico permanente (art. 139)",
+                amount_min=comp.permanent, amount_mid=comp.permanent, amount_max=comp.permanent,
+                formula="italy_art139_micro_v1",
+                source_ref_ids=tuple(s.id for s in source_refs),
+                notes=(f"primo_punto={comp.primo_punto} × coeff={comp.coeff} × punti × "
+                       f"demoltiplicatore_età (art. 139 co.1/co.6)."),
+            ),
+            BreakdownItem(
+                label="Danno biologico temporaneo (ITT)",
+                amount_min=comp.temporary, amount_mid=comp.temporary, amount_max=comp.temporary,
+                formula="italy_art139_micro_v1",
+                source_ref_ids=tuple(s.id for s in source_refs),
+                notes=f"giorni ITT × {comp.itt_daily}/giorno (parziali al 50%).",
+            ),
+        ]
+        provenance = build_calculation_provenance(
+            engine="italy_art139_micro_v1",
+            engine_version=ITALY_MICRO_ENGINE_VERSION,
+            amount_rule="italy_art139_micro_v1",
+            dataset=micro_dataset,
+            formula=None,
+            rows=list(micro_dataset.rows.all()),
+        )
+        return self._build_result(
+            status=CalculationStatus.CALCULATED.value,
+            estimated_min=comp.total, estimated_mid=comp.total, estimated_max=comp.total,
+            breakdown=breakdown,
+            sources=source_refs,
+            assumptions=list(extra_assumptions or []),
+            warnings=list(extra_warnings or []),
+            confidence=ConfidenceLevel.MEDIUM.value,
+            provenance=provenance,
+        )
+
+
+class ItalyRoadAccidentMicrolesionCalculator(_ItalyArt139MicroMixin, _ItalyPlaceholderCalculator):
+    """Italia — incidente stradale, micropermanenti 1–9% (art. 139 CAP)."""
+
+    case_type = CaseType.ROAD_ACCIDENT_MICROLESIONS.value
+
+    def _compute_with_sources(self, input_data, sources):
+        self._approved_sources_cache = sources
+        source_refs = [SourceRef.from_legal_source(s) for s in sources]
+        return self._micro_result(input_data, source_refs)
+
+
+class ItalyMedicalLiabilityBiologicalCalculator(_ItalyArt139MicroMixin, _ItalyPlaceholderCalculator):
+    """Italia — responsabilità sanitaria, stima TABELLARE del danno biologico.
+
+    L. 24/2017 → il danno biologico da attività sanitaria si liquida con le
+    tabelle artt. 138/139 CAP. Stima SOLO il danno biologico tabellare: 1–9% via
+    art. 139 micro; ≥10% delega al TUN (art. 138). NON valuta colpa, nesso
+    causale, perdita di chance, danno morale extra, danno patrimoniale o la
+    responsabilità sanitaria complessiva (disclaimer pubblico forte)."""
+
+    case_type = CaseType.MEDICAL_LIABILITY_BIOLOGICAL.value
+
+    def _compute_with_sources(self, input_data, sources):
+        self._approved_sources_cache = sources
+        source_refs = [SourceRef.from_legal_source(s) for s in sources]
+        pct = _to_int(input_data.get("permanent_disability_percentage"))
+        if pct is None or pct < 1:
+            return self._build_result(
+                status=CalculationStatus.INSUFFICIENT_INPUT.value,
+                sources=source_refs,
+                warnings=[
+                    _diag.diagnostic_to_public_warning(
+                        _diag.ITALY_REQUIRED_INPUT_MISSING,
+                        context={"fields": ("permanent_disability_percentage",)},
+                    )
+                ],
+            )
+        if pct <= _MICRO_MAX_PCT:
+            # 1–9% → art. 139 micro (the medical disclaimer is added on the result page)
+            return self._micro_result(input_data, source_refs)
+        # ≥10% → reuse the approved TUN art. 138 engine, presented under L. 24/2017.
+        tun = ItalyRoadAccidentBodilyInjuryCalculator(
+            simulation_id=self.simulation_id, language=self.language
+        )
+        return tun._compute_with_sources(input_data, sources)
+
+
 class ItalyInheritanceBasicCalculator(_ItalyPlaceholderCalculator):
     """Italia — successione di base. Placeholder."""
 
@@ -546,6 +755,23 @@ def _row_amount_value_missing(row: Any) -> bool:
     gate protegge la sola superficie pubblica, l'engine IT.
     """
     return getattr(row, "point_value", None) is None
+
+
+def _to_int(raw: Any) -> int | None:
+    """Parse an integer from wizard input; None when absent/blank/invalid."""
+    if raw is None:
+        return None
+    if isinstance(raw, bool):
+        return None
+    if isinstance(raw, int):
+        return raw
+    s = str(raw).strip()
+    if not s:
+        return None
+    try:
+        return int(Decimal(s))
+    except Exception:
+        return None
 
 
 def _has_value(input_data: dict[str, Any], field: str) -> bool:
@@ -590,4 +816,15 @@ register_calculator(
     JURISDICTION_CODE_IT,
     CaseType.INHERITANCE_BASIC.value,
     ItalyInheritanceBasicCalculator,
+)
+# P8: official art. 139 micro engine + medical-liability tabular biological damage.
+register_calculator(
+    JURISDICTION_CODE_IT,
+    CaseType.ROAD_ACCIDENT_MICROLESIONS.value,
+    ItalyRoadAccidentMicrolesionCalculator,
+)
+register_calculator(
+    JURISDICTION_CODE_IT,
+    CaseType.MEDICAL_LIABILITY_BIOLOGICAL.value,
+    ItalyMedicalLiabilityBiologicalCalculator,
 )

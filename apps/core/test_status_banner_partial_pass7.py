@@ -5,7 +5,7 @@ Pin the contract of ``templates/partials/_public_status_panel.html``:
 1. The partial renders the badge label of the public_status it
    receives.
 2. ``/wizard/fr/road-accident/`` surfaces the FR
-   ``Preliminary legal assessment`` badge (or its translation), through
+   ``Assisted legal pathway`` badge (or its translation), through
    the partial and the public_status helper.
 3. ``/wizard/be/road-accident/`` does the same for Belgium.
 4. ``/wizard/ma/inheritance/`` surfaces the
@@ -68,8 +68,8 @@ def test_partial_renders_public_status_badge():
     )
     visible = _visible(html)
     # Badge label must be present (FR default IT translation).
-    assert ("Preliminary legal assessment" in visible) or (
-        "Valutazione legale preliminare" in visible
+    assert ("Assisted legal pathway" in visible) or (
+        "Percorso legale assistito" in visible
     )
     # CTA must be present too.
     assert ("Submit the case to the Studio" in visible) or (
@@ -86,8 +86,8 @@ def test_partial_renders_public_status_badge():
 def test_france_wizard_uses_public_status_panel():
     body = Client().get("/wizard/fr/road-accident/").content.decode("utf-8")
     visible = _visible(body)
-    assert ("Preliminary legal assessment" in visible) or (
-        "Valutazione legale preliminare" in visible
+    assert ("Assisted legal pathway" in visible) or (
+        "Percorso legale assistito" in visible
     )
     # The legal_basis line of the partial must surface the framework.
     assert "Loi Badinter" in visible
@@ -98,8 +98,8 @@ def test_france_wizard_uses_public_status_panel():
 def test_belgium_wizard_uses_public_status_panel():
     body = Client().get("/wizard/be/road-accident/").content.decode("utf-8")
     visible = _visible(body)
-    assert ("Preliminary legal assessment" in visible) or (
-        "Valutazione legale preliminare" in visible
+    assert ("Assisted legal pathway" in visible) or (
+        "Percorso legale assistito" in visible
     )
     assert "Tableau Indicatif" in visible
     assert "Schryvers" in visible
@@ -213,7 +213,7 @@ def test_pass7_principal_pages_have_no_banned_words(locale_prefix):
 
 
 HIGH_PRIORITY_EN = (
-    "Preliminary legal assessment",
+    "Assisted legal pathway",
     "International inheritance review",
     "Studio reviews each",
     "applicable-law mapping",

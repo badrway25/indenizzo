@@ -161,10 +161,9 @@ def test_landing_has_load_bearing_content(client, slug):
     # The H1 element contains the landing's title (translatable). We
     # do not pin the exact string — just confirm one H1 with text.
     assert "<h1 " in body
-    # Primary + secondary CTA buttons present (anchor tags with the
-    # standard CTA classes).
-    cta_count = body.count('class="inline-flex items-center gap-2 px-5 py-3 rounded-full')
-    assert cta_count >= 2, f"{slug}: expected at least 2 styled CTA buttons, found {cta_count}"
+    # Primary + secondary CTA buttons present (P32: unified premium button system).
+    cta_count = body.count("premium-btn premium-btn-")
+    assert cta_count >= 2, f"{slug}: expected at least 2 premium CTA buttons, found {cta_count}"
     # When-it-applies + What-Studio-does sections rendered.
     assert "When this applies" in body
     assert "What the Studio does" in body

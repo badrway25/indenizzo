@@ -165,6 +165,34 @@ SITE_IMAGE_SLOTS: list[dict[str, Any]] = [
     },
     # Contact
     {"purpose": "contact_hero", "country": None, "query": "law office consultation"},
+    # P6: section heroes for the content pages that lacked an image.
+    {"purpose": "services_hero", "country": None, "query": "professional legal documents desk"},
+    {"purpose": "about_hero", "country": None, "query": "law firm office interior"},
+    {"purpose": "ta3ouid_hero", "country": None, "query": "Mediterranean architecture legal office"},
+    # P7: complete the content-page hero coverage.
+    {"purpose": "how_it_works_hero", "country": None, "query": "justice scales detail desk"},
+    {"purpose": "faq_hero", "country": None, "query": "law books shelves library"},
+    # P32: dedicated heroes for the P28-P31 platform pages (document intelligence,
+    # sources library, case types, dossier result, guided router).
+    {"purpose": "documents_hero", "country": None, "query": "organised legal documents desk dossier"},
+    {"purpose": "sources_hero", "country": None, "query": "law library archive official volumes"},
+    {"purpose": "case_types_hero", "country": None, "query": "law books justice scales detail"},
+    {"purpose": "result_hero", "country": None, "query": "premium legal report documents desk"},
+    {"purpose": "guided_hero", "country": None, "query": "consultation desk legal advisor documents"},
+    # P36: home "what do you want to do?" intent cards (section imagery).
+    {"purpose": "intent_estimate", "country": None, "query": "balance scales documents desk office"},
+    {"purpose": "intent_offer", "country": None, "query": "business contract pen signed desk"},
+    {"purpose": "intent_documents", "country": None, "query": "tidy office desk files folders"},
+    {"purpose": "intent_law", "country": None, "query": "globe classic law books wood"},
+    # P39: internal body imagery (not heroes) — sources library, source document
+    # sheet, human result report, and the three service sections + guided path.
+    {"purpose": "sources_body", "country": None, "query": "elegant law library wooden bookshelves"},
+    {"purpose": "source_document", "country": None, "query": "official documents desk papers folder"},
+    {"purpose": "result_report", "country": None, "query": "professional reviewing legal report desk"},
+    {"purpose": "services_estimate", "country": None, "query": "balance scales legal documents wooden desk"},
+    {"purpose": "services_documents", "country": None, "query": "neat office binders files folders desk"},
+    {"purpose": "services_international", "country": None, "query": "world globe law books international desk"},
+    {"purpose": "guided_workflow", "country": None, "query": "lawyers reviewing documents law books desk"},
 ]
 
 
