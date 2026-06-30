@@ -41,3 +41,7 @@ _(Empty until verbatim shares are transcribed. No invented value.)_
 ## Next action
 Bundle with the Morocco road validation. General (non-road) parental loss is
 `not_calculable` and remains a documental/guided path.
+
+## Harvest probe (P50, 2026-06-30)
+- `sgg.gov.ma` → **HTTP 200** (landing reachable). The ayants-droit shares live only **inside** the same unvalidated road-death Dahir barème (scanned). **Not extracted.**
+- **Status unchanged: `needs_legal_review`.**

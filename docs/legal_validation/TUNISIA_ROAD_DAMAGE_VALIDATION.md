@@ -42,3 +42,8 @@ _(Empty until a verbatim Titre V worked example is transcribed. No invented valu
 This is the **lowest-friction** non-IT candidate (binding State barème, just needs
 transcription). Validate Titre V → fill the canary → build a fail-closed
 `tunisia_road_injury` engine (TND) + canary.
+
+## Harvest probe (P50, 2026-06-30)
+- `cga.gov.tn` → **HTTP 200** (landing reachable; this env, unlike earlier probes); `iort.gov.tn` → **ConnectionError**.
+- The Code des assurances **Titre V** barème is in a sub-page / PDF, not the homepage; **not extracted/transcribed**.
+- **Status unchanged: `needs_legal_review`.**

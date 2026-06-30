@@ -46,3 +46,8 @@ _(Empty until a verbatim Bulletin Officiel row is transcribed. No invented value
 Legal validation of the Dahir capital-de-référence barème → fill the canary →
 build a fail-closed `morocco_road_injury` engine (MAD) + canary; never use the
 non-binding ACAPS guide as the quantum basis.
+
+## Harvest probe (P50, 2026-06-30)
+- `acaps.ma` → **HTTP 200**, `sgg.gov.ma` → **HTTP 200** (landing pages reachable).
+- The Dahir 1-84-177 *capital de référence* barème is a **scanned image** behind those portals; the homepage 200 does not yield the table, and OCR of a scan is not a validated transcription. **Not extracted.**
+- **Status unchanged: `needs_legal_review`.**

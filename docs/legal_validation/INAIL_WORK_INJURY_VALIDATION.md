@@ -48,3 +48,8 @@ transcribes a verbatim row.)_
 Legal review of the INAIL indemnity table → fill the canary above → engineering
 builds an `inail_biological_damage` fail-closed engine + canary, flips
 `it-dm-45-2019` to usable, updates the matrix and source library.
+
+## Harvest probe (P50, 2026-06-30)
+- `inail.it` → **SSLError** (not reachable for an automated probe); `normattiva.it` (D.Lgs. 38/2000) → **HTTP 200** (legal basis only, not the indemnity table).
+- The menomazione% × indemnity table is **not** on the reachable landing pages — it lives in the D.M. 12/07/2000 annexes / INAIL portal sub-pages. **Not extracted.**
+- **Status unchanged: `needs_legal_review`.** Reaching the domain does not validate the table; a legal reviewer must still transcribe the verbatim rows and fill the canary.

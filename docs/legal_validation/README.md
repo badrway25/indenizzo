@@ -18,6 +18,10 @@ engineering. A monetary engine is built **only** when a pack reaches
 - `needs_official_table` — no usable official table/formula exists yet.
 - `needs_legal_review` — a real official instrument exists but is not yet legally
   validated / extracted / transcribed.
+- `needs_formula` — an official table exists but the computation method
+  (coefficients/age/responsibility rules) is not yet fixed.
+- `needs_canary` — source + formula are ready, but no legally-reviewed worked
+  example exists yet to lock the engine against.
 - `not_calculable` — the law gives no computable quantum (assessed case-by-case).
 
 ## Current candidates
@@ -29,6 +33,20 @@ engineering. A monetary engine is built **only** when a pack reaches
 | [TUNISIA_ROAD_DAMAGE_VALIDATION](TUNISIA_ROAD_DAMAGE_VALIDATION.md) | TN · road injury | `needs_legal_review` | Code des assurances Titre V barème is binding but not transcribed/validated. |
 | [MOROCCO_FAMILY_LOSS_VALIDATION](MOROCCO_FAMILY_LOSS_VALIDATION.md) | MA · loss of a relative | `needs_legal_review` | Ayants-droit shares live only inside the same unvalidated Dahir road-death barème. |
 | [TUNISIA_FAMILY_LOSS_VALIDATION](TUNISIA_FAMILY_LOSS_VALIDATION.md) | TN · loss of a relative | `needs_legal_review` | Titre V décès/ayants-droit distribution is binding but not transcribed. |
+| [PRODUCT_LIABILITY_VALIDATION](PRODUCT_LIABILITY_VALIDATION.md) | IT/EU · defective product | `not_calculable` | Cod. Consumo 114–127 + Dir. 85/374 define liability, not a monetary quantum. |
+| [FRANCE_ROAD_DAMAGE_VALIDATION](FRANCE_ROAD_DAMAGE_VALIDATION.md) | FR · road injury | `not_calculable` | No binding State barème; only the non-binding Mornet/Dintilhac practice. |
+| [BELGIUM_ROAD_DAMAGE_VALIDATION](BELGIUM_ROAD_DAMAGE_VALIDATION.md) | BE · road injury | `not_calculable` | No binding State barème; only the non-binding Tableau Indicatif. |
 
-**No pack is `ready_for_engine` today → no new engine is activated in P45.**
+**No pack is `ready_for_engine` today → no new engine is activated (P45 → P50).**
 Priority when validation arrives: INAIL → TN road → MA road → family loss.
+`not_calculable` packs (product liability, FR/BE road) will **never** become an
+estimate unless official law itself introduces a binding quantum table.
+
+## P50 harvest note (2026-06-30)
+A controlled, allowlisted reachability probe (`manage.py harvest_official_sources`)
+confirmed several official **landing pages** are reachable (normattiva, acaps,
+sgg, cga, economie.fgov.be, eur-lex = 200/202; inail SSL-error, iort
+connection-error, legifrance 403). **Reaching a domain is not validating a
+table** — every binding barème lives in a sub-page/PDF (often a scanned image) and
+none was extracted or transcribed. All statuses are unchanged; **no engine is
+activated**. The probe writes only a gitignored provenance manifest.

@@ -38,3 +38,7 @@ _(Empty until verbatim shares are transcribed. No invented value.)_
 ## Next action
 Bundle with the Tunisia road validation (share the Titre V transcription). General
 (non-road) parental loss is `not_calculable` and remains a documental/guided path.
+
+## Harvest probe (P50, 2026-06-30)
+- `cga.gov.tn` → **HTTP 200** (landing reachable). The death/ayants-droit distribution is **inside** Titre V (sub-page/PDF), not the homepage. **Not extracted.**
+- **Status unchanged: `needs_legal_review`.**
