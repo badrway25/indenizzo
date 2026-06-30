@@ -1,53 +1,45 @@
 {% load i18n %}
 {% comment %}
-  Premium hero image partial (P24: text-over-image).
+  Premium FULL-BLEED hero image partial (P24 text-over-image; P46 full-bleed).
 
-  Renders a real photograph as the backdrop of a secondary-page hero, with a
-  navy→bronze overlay (`.premium-hero-overlay`) dark enough to keep any copy
-  legible. The image lives behind the overlay via `.premium-hero-image`
-  (absolute, object-cover, slow-zoom motion under prefers-reduced-motion:
-  no-preference).
+  The photograph now spans the full page width (edge to edge) behind a
+  navy→bronze overlay, with the hero copy constrained to the page container so
+  the site reads large and premium instead of a small contained banner.
 
   Input context:
   - pexels_image -> dict con almeno {"src", "alt"} (None => non renderizza nulla).
 
-  Optional include args (set per-page with `{% include … with %}`):
-  - hero_eyebrow -> short kicker rendered above the title
-  - hero_title   -> large editorial line OVER the image (a styled <p>, NOT a
-                    heading, so the page keeps a single real <h1> below and
-                    heading order is preserved)
-  - hero_lead    -> one-line supporting sentence
-
-  Senza i tre arg opzionali il partial resta un banner fotografico (immagine +
-  overlay leggibile) come nelle pagine che non hanno testo hero dedicato.
+  Optional include args:
+  - hero_eyebrow / hero_title / hero_lead (hero_title is a styled <p>, not a
+    heading, so each page keeps a single real <h1> below).
 {% endcomment %}
 {% if pexels_image %}
-<section class="max-w-7xl mx-auto px-5 lg:px-8 pt-8">
-  <figure class="premium-hero-image-wrap h-52 sm:h-64 lg:h-80 shadow-card">
+<section class="premium-hero-fullbleed">
+  <div class="premium-hero-media">
     <picture>
       {% if pexels_image.webp_src_mobile %}<source media="(max-width: 640px)" type="image/webp" srcset="{{ pexels_image.webp_src_mobile }}">{% endif %}
       {% if pexels_image.webp_src %}<source type="image/webp" srcset="{{ pexels_image.webp_src }}">{% endif %}
       <img
         src="{{ pexels_image.src }}"
         alt="{{ pexels_image.alt }}"
-        width="1280"
-        height="640"
+        width="1600"
+        height="600"
         class="premium-hero-image"
         loading="lazy"
         decoding="async">
     </picture>
     <div aria-hidden="true" class="premium-hero-overlay"></div>
-    <div class="premium-hero-content h-full flex flex-col justify-end p-6 sm:p-8">
-      {% if hero_eyebrow %}
-        <p class="premium-rise text-[11px] uppercase tracking-[0.22em] text-gold-400 font-semibold">{{ hero_eyebrow }}</p>
-      {% endif %}
-      {% if hero_title %}
-        <p class="premium-rise-2 mt-3 font-serif text-3xl sm:text-4xl lg:text-5xl text-sand-50 leading-tight max-w-3xl">{{ hero_title }}</p>
-      {% endif %}
-      {% if hero_lead %}
-        <p class="premium-rise-3 mt-3 text-sm text-sand-50 leading-relaxed max-w-2xl">{{ hero_lead }}</p>
-      {% endif %}
-    </div>
-  </figure>
+  </div>
+  <div class="premium-hero-inner max-w-7xl mx-auto px-5 lg:px-8">
+    {% if hero_eyebrow %}
+      <p class="premium-rise text-[11px] uppercase tracking-[0.22em] text-gold-400 font-semibold">{{ hero_eyebrow }}</p>
+    {% endif %}
+    {% if hero_title %}
+      <p class="premium-rise-2 mt-3 font-serif text-3xl sm:text-4xl lg:text-5xl text-sand-50 leading-tight max-w-3xl">{{ hero_title }}</p>
+    {% endif %}
+    {% if hero_lead %}
+      <p class="premium-rise-3 mt-3 text-sm text-sand-50 leading-relaxed max-w-2xl">{{ hero_lead }}</p>
+    {% endif %}
+  </div>
 </section>
 {% endif %}

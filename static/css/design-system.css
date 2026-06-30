@@ -179,11 +179,39 @@
   text-align: center;
   line-height: 1.25;
 }
-.premium-badge::before { content: "●"; font-size: 0.62em; line-height: 1; flex-shrink: 0; }
+/* P46: a crisp CSS-drawn status dot (not the "●" font glyph, which renders
+   unevenly and reads as a low-quality bullet). Badges that carry their own icon
+   add `.premium-badge--has-icon` to suppress the dot. */
+.premium-badge::before {
+  content: "";
+  width: 0.42em;
+  height: 0.42em;
+  border-radius: 999px;
+  background: currentColor;
+  opacity: 0.9;
+  flex-shrink: 0;
+}
+.premium-badge--has-icon::before { display: none; }
+.premium-badge svg { width: 0.92em; height: 0.92em; flex-shrink: 0; }
 .premium-badge-success { background: var(--ds-success-soft); color: var(--ds-success); border-color: rgba(47, 125, 92, 0.25); }
 .premium-badge-warning { background: var(--ds-warning-soft); color: var(--ds-warning); border-color: rgba(183, 121, 31, 0.25); }
 .premium-badge-danger { background: var(--ds-error-soft); color: var(--ds-error); border-color: rgba(138, 31, 45, 0.25); }
 .premium-badge-muted { background: var(--ds-sand); color: var(--ds-ink); border-color: var(--ds-border-soft); }
+/* P46: semantic badge variants (source / time / status / country / document). */
+.premium-badge--source { background: var(--ds-warning-soft); color: var(--ds-warning); border-color: rgba(183, 121, 31, 0.25); }
+.premium-badge--time { background: var(--ds-sand); color: var(--ds-slate); border-color: var(--ds-border-soft); }
+.premium-badge--status { background: var(--ds-success-soft); color: var(--ds-success); border-color: rgba(47, 125, 92, 0.25); }
+.premium-badge--country { background: rgba(47, 111, 115, 0.10); color: var(--ds-teal); border-color: rgba(47, 111, 115, 0.25); }
+.premium-badge--document { background: var(--ds-sand); color: var(--ds-navy); border-color: var(--ds-border-soft); }
+/* P46: a standalone crisp dot for inline status chips (replaces the "●" glyph). */
+.badge-dot {
+  display: inline-block;
+  width: 0.45em;
+  height: 0.45em;
+  border-radius: 999px;
+  background: currentColor;
+  flex-shrink: 0;
+}
 .country-status-badge,
 .calc-readiness-badge { display: inline-flex; align-items: center; gap: 0.4rem; }
 
@@ -644,22 +672,35 @@ body.has-drawer-open { overflow: hidden; }
 .nav-caret { width: 0.7em; height: 0.7em; transition: transform 0.2s ease; opacity: 0.7; }
 .nav-group:hover .nav-caret,
 .nav-group:focus-within .nav-caret { transform: rotate(180deg); }
-/* P37: mega-menu panel — icon rows + a panel CTA (not a plain link list). */
+/* P46: leading champagne icon on each top nav item. */
+.nav-link__ico { display: inline-flex; }
+.nav-link__ico svg { width: 1rem; height: 1rem; opacity: 0.8; color: var(--ds-gold-strong); transition: opacity 0.18s ease; }
+.nav-link:hover .nav-link__ico svg,
+.nav-link:focus-visible .nav-link__ico svg { opacity: 1; }
+/* P37/P46: mega-menu panel — icon rows + a panel CTA (not a plain link list). */
 .nav-menu {
   position: absolute;
   inset-inline-start: 0;
   top: 100%;
-  min-width: 22rem;
-  padding: 0.6rem;
+  min-width: 23rem;
+  padding: 0.7rem;
+  margin-top: 0.4rem;
   background: var(--ds-surface);
   border: 1px solid var(--ds-border-soft);
-  border-radius: var(--ds-radius-lg);
-  box-shadow: var(--ds-shadow-lg);
+  border-radius: var(--ds-radius-xl);
+  box-shadow: 0 24px 60px -20px rgba(7, 23, 47, 0.28), 0 8px 24px -12px rgba(7, 23, 47, 0.18);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(0.5rem);
-  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+  transform: translateY(0.6rem) scale(0.985);
+  transform-origin: top center;
+  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.2s ease;
   z-index: var(--ds-z-modal);
+}
+.nav-group:hover .nav-menu,
+.nav-group:focus-within .nav-menu { transform: translateY(0) scale(1); }
+@media (prefers-reduced-motion: reduce) {
+  .nav-menu { transition: opacity 0.15s ease, visibility 0.15s ease; transform: none; }
+  .nav-group:hover .nav-menu, .nav-group:focus-within .nav-menu { transform: none; }
 }
 .nav-group:hover .nav-menu,
 .nav-group:focus-within .nav-menu { opacity: 1; visibility: visible; transform: translateY(0); }
@@ -770,6 +811,27 @@ body.has-drawer-open { overflow: hidden; }
   transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
 .premium-textarea { min-height: 7rem; resize: vertical; }
+/* P46: premium select trigger — hide the default browser arrow and add a
+   champagne caret so the closed control no longer looks like a grey default
+   box. (The open native option list stays browser-rendered — see
+   P46 audit "native option menu" note.) */
+.premium-select,
+.field-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23b7791f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  padding-right: 2.4rem;
+  cursor: pointer;
+}
+[dir="rtl"] .premium-select,
+[dir="rtl"] .field-select {
+  background-position: left 0.85rem center;
+  padding-right: 0.95rem;
+  padding-left: 2.4rem;
+}
 .premium-input:hover,
 .premium-select:hover,
 .premium-textarea:hover { border-color: var(--ds-border-strong); }
@@ -2108,6 +2170,20 @@ li.inline-flex.rounded-full {
   isolation: isolate;
   border-radius: var(--premium-radius-xl);
 }
+/* P46: full-bleed hero — edge-to-edge media, content constrained inside. */
+.premium-hero-fullbleed {
+  position: relative;
+  width: 100%;
+  min-height: 16rem;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  isolation: isolate;
+}
+@media (min-width: 640px) { .premium-hero-fullbleed { min-height: 20rem; } }
+@media (min-width: 1024px) { .premium-hero-fullbleed { min-height: 26rem; } }
+.premium-hero-media { position: absolute; inset: 0; z-index: 0; }
+.premium-hero-inner { position: relative; z-index: 2; width: 100%; padding-top: 3.5rem; padding-bottom: 2.5rem; }
 .premium-hero-image {
   position: absolute;
   inset: 0;
