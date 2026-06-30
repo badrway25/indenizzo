@@ -74,10 +74,15 @@ def test_validation_packs_exist(pack):
 
 
 def test_no_validation_pack_is_ready_for_engine():
-    # Cardinal rule: an engine is built only at ready_for_engine. None is, today.
+    # Cardinal rule: an engine is built only at ready_for_engine. None declares it.
+    # (P50 added not_calculable packs for product liability + FR/BE road, so a pack
+    # may be needs_legal_review OR not_calculable — but never ready_for_engine.)
+    _NON_READY = ("needs_legal_review", "not_calculable", "needs_official_table",
+                  "needs_formula", "needs_canary")
     for pack in VALIDATION.glob("*_VALIDATION.md"):
         text = pack.read_text("utf-8")
-        assert "**Status:** `needs_legal_review`" in text, f"{pack.name} status changed"
+        assert "**Status:** `ready_for_engine`" not in text, f"{pack.name} claims ready_for_engine"
+        assert any(f"**Status:** `{s}`" in text for s in _NON_READY), f"{pack.name} has no known status"
 
 
 @pytest.mark.django_db
