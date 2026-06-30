@@ -5343,3 +5343,18 @@ msgstr "Understand the applicable law"
 
 msgid "A quick guide only — no amount is shown without a validated official table. See the full router below."
 msgstr "A quick guide only — no amount is shown without a validated official table. See the full router below."
+
+msgid "Why some sections show no amount"
+msgstr "Why some sections show no amount"
+
+msgid "Why do some sections show no amount?"
+msgstr "Why do some sections show no amount?"
+
+msgid "We only show an amount when a verified official rule or table exists."
+msgstr "We only show an amount when a verified official rule or table exists."
+
+msgid "If a table is missing, we still help you prepare your documents."
+msgstr "If a table is missing, we still help you prepare your documents."
+
+msgid "A correct summary is better than an unreliable number."
+msgstr "A correct summary is better than an unreliable number."

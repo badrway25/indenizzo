@@ -8081,3 +8081,18 @@ msgstr "افهم القانون المنطبق"
 
 msgid "A quick guide only — no amount is shown without a validated official table. See the full router below."
 msgstr "دليل سريع فقط — لا يُعرَض أي مبلغ دون جدول رسمي معتمد. اطّلع على المُوجِّه الكامل أدناه."
+
+msgid "Why some sections show no amount"
+msgstr "لماذا لا تُظهر بعض الأقسام أي مبلغ"
+
+msgid "Why do some sections show no amount?"
+msgstr "لماذا لا تُظهر بعض الأقسام أي مبلغ؟"
+
+msgid "We only show an amount when a verified official rule or table exists."
+msgstr "نعرض مبلغًا فقط عندما توجد قاعدة أو جدول رسمي موثّق."
+
+msgid "If a table is missing, we still help you prepare your documents."
+msgstr "إذا كان هناك جدول مفقود، فإننا نساعدك مع ذلك على تجهيز مستنداتك."
+
+msgid "A correct summary is better than an unreliable number."
+msgstr "ملخّص صحيح خير من رقم غير موثوق."

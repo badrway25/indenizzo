@@ -8327,3 +8327,18 @@ msgstr "Capisci la legge applicabile"
 
 msgid "A quick guide only — no amount is shown without a validated official table. See the full router below."
 msgstr "Solo una guida rapida — nessun importo viene mostrato senza una tabella ufficiale validata. Vedi il router completo qui sotto."
+
+msgid "Why some sections show no amount"
+msgstr "Perché alcune sezioni non mostrano un importo"
+
+msgid "Why do some sections show no amount?"
+msgstr "Perché alcune sezioni non mostrano un importo?"
+
+msgid "We only show an amount when a verified official rule or table exists."
+msgstr "Mostriamo un importo solo quando esiste una regola o tabella ufficiale verificata."
+
+msgid "If a table is missing, we still help you prepare your documents."
+msgstr "Se manca una tabella, ti aiutiamo comunque a preparare i documenti."
+
+msgid "A correct summary is better than an unreliable number."
+msgstr "Meglio un riepilogo corretto che un numero non affidabile."

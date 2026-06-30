@@ -1,0 +1,13 @@
+{% load i18n %}
+{# P47: plain, honest explanation of why some sections show no figure (reused under the matrix). #}
+<aside class="why-no-amount" data-reveal aria-label="{% translate 'Why some sections show no amount' %}">
+  <span aria-hidden="true" class="why-no-amount__ico">{% include "partials/_icon.html" with name="shield-check" icon_class="w-5 h-5" %}</span>
+  <div>
+    <p class="why-no-amount__title">{% translate "Why do some sections show no amount?" %}</p>
+    <ul class="why-no-amount__list">
+      <li>{% translate "We only show an amount when a verified official rule or table exists." %}</li>
+      <li>{% translate "If a table is missing, we still help you prepare your documents." %}</li>
+      <li>{% translate "A correct summary is better than an unreliable number." %}</li>
+    </ul>
+  </div>
+</aside>
